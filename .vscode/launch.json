@@ -11,6 +11,7 @@
             "program": "${command:cmake.launchTargetPath}",
             "args": [],
             "cwd": "${workspaceFolder}",
+            "initCommands":["settings set target.disable-aslr false"]
         }
     ]
 }

@@ -60,7 +60,7 @@ public:
       -> MotionModelCV<CovarianceMatrixType, FloatType>& = default;
   auto operator=(MotionModelCV<CovarianceMatrixType, FloatType>&&) noexcept
       -> MotionModelCV<CovarianceMatrixType, FloatType>& = default;
-  ~MotionModelCV() final = default;
+  ~MotionModelCV() = default;
 
 
   auto getVx() const -> FloatType final { return this->getVec()[StateDef::VX]; }

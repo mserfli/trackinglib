@@ -131,4 +131,6 @@
   
     // Add `\\` in doxygen command suggestion for better readability (need to enable commandSuggestion)
     "doxdocgen.generic.commandSuggestionAddPrefix": false,
+    
+    "cmake.configureOnOpen": true,
   }

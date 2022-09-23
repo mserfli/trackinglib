@@ -29,6 +29,7 @@ Checks: >
   readability-*,
   -modernize-make-unique,
   -readability-avoid-const-params-in-decls,
+  -readability-identifier-length,
   -bugprone-easily-swappable-parameters,
   -google-readability-namespace-comments,
   -google-runtime-int,
