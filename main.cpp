@@ -1,10 +1,3 @@
-//
-//  main.cpp
-//  TrackingLib
-//
-//  Created by Matthias Serfling on 20.09.22.
-//
-
 #include "base/covariance_matrix_full.h"
 #include "base/covariance_matrix_factored.h"
 #include "env/ego_motion.h"

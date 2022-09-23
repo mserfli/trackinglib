@@ -1,7 +1,7 @@
 #ifndef state_mem_h
 #define state_mem_h
 
-#include "base/covariance_matrix_full.h"
+#include "base/matrix.h"
 #include <memory>
 
 namespace tracking
