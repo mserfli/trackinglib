@@ -1,0 +1,42 @@
+# Use the Microsoft style in this project.
+BasedOnStyle: Microsoft
+Language: Cpp
+Standard: Cpp11
+
+# Some folks prefer to write "int& foo" while others prefer "int &foo".  The
+# Google Style Guide only asks for consistency within a project, we chose
+# "int& foo" for this project:
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+IndentWidth: 2
+AccessModifierOffset: '-2'
+UseTab: Never
+
+BinPackArguments: false
+BinPackParameters: false
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: true
+
+# https://zed0.co.uk/clang-format-configurator/
+AllowShortFunctionsOnASingleLine: InlineOnly
+AlwaysBreakTemplateDeclarations: 'Yes'
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
+MaxEmptyLinesToKeep: '2'
+SpaceBeforeInheritanceColon: 'false'
+
+IncludeBlocks: Merge
+IncludeCategories:
+  - Regex: '^\"'
+    Priority: 1000
+  - Regex: '^<google/cloud/'
+    Priority: 1500
+  - Regex: '^<grpc/'
+    Priority: 2000
+  - Regex: '^<google/'
+    Priority: 3000
+  - Regex: '^<[^>]*/'
+    Priority: 4000
+  - Regex: '^<[^/>]*>'
+    Priority: 5000

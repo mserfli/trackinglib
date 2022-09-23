@@ -1,0 +1,62 @@
+#ifndef imotion_model_h
+#define imotion_model_h
+
+#include "base/atomic_types.h"
+#include "base/state_mem.h"
+#include "env/ego_motion.h"
+#include "filter/kalman_filter.h"
+
+namespace tracking
+{
+namespace motion
+{
+
+template <typename FloatType>
+class IMotionModel
+{
+public:
+  IMotionModel()                                   = default;
+  IMotionModel(const IMotionModel<FloatType>&)     = default;
+  IMotionModel(IMotionModel<FloatType>&&) noexcept = default;
+  auto operator=(const IMotionModel<FloatType>&) -> IMotionModel<FloatType>& = default;
+  auto operator=(IMotionModel<FloatType>&&) noexcept -> IMotionModel<FloatType>& = default;
+  virtual ~IMotionModel()                                                        = default;
+
+  virtual auto getX() const -> FloatType  = 0;
+  virtual auto getVx() const -> FloatType = 0;
+  
+  // prediction is a functionality of the MotionModel (filter shall not know about egomotion compensation ...), tbd
+  virtual void predict(const FloatType                        dt,
+                       const filter::KalmanFilter<FloatType>& filter,
+                       const env::EgoMotion<FloatType>&       egoMotion) = 0;
+};
+
+template <typename MotionModel,
+          template <typename FloatType, sint32 Size>
+          class CovarianceMatrixType,
+          typename FloatType,
+          sint32 Size>
+class ExtendedMotionModel
+    : public IMotionModel<FloatType>
+    , public base::StateMem<CovarianceMatrixType, FloatType, Size>
+{
+public:
+  using typename base::StateMem<CovarianceMatrixType, FloatType, Size>::StateVec;
+  using typename base::StateMem<CovarianceMatrixType, FloatType, Size>::StateCov;
+  
+  ExtendedMotionModel()                                                                                   = default;
+  ExtendedMotionModel(const ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>&)     = default;
+  ExtendedMotionModel(ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>&&) noexcept = default;
+  auto operator=(const ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>&)
+      -> ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>& = default;
+  auto operator=(ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>&&) noexcept
+      -> ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>& = default;
+  virtual ~ExtendedMotionModel()                                                  = default;
+
+  auto getX() const -> FloatType final { return this->getVec()[MotionModel::X]; }
+};
+
+} // namespace motion
+} // namespace tracking
+
+#endif /* imotion_model_h */
