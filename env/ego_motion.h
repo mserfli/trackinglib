@@ -1,12 +1,15 @@
-#ifndef ego_motion_h
-#define ego_motion_h
+#ifndef EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8
+#define EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8
 
 #include "base/covariance_matrix_full.h"
+#include "base/point2d.h"
+#include "base/vector.h"
 
 namespace tracking
 {
 namespace env
 {
+
 template <typename FloatType>
 class EgoMotion
 {
@@ -25,6 +28,7 @@ public:
   struct Motion
   {
   };
+
   struct Geometry
   {
     FloatType width;
@@ -35,6 +39,7 @@ public:
     FloatType distFrontAxle2Ego;
     FloatType distFrontAxle2RearAxle;
   };
+
   struct Displacement
   {
     DisplacementVec vec;
@@ -43,8 +48,6 @@ public:
     FloatType       cosDeltaPsi;
   };
 
-  EgoMotion() = default;
-
   auto getDeltaTime() const -> FloatType { return _dt; }
   auto getDisplacementCog() const -> const Displacement& { return _displacementCog; }
   auto getGeometry() const -> const Geometry& { return _geometry; }
@@ -52,33 +55,54 @@ public:
   void compensatePosition(FloatType&      posXNewEgo,
                           FloatType&      posYNewEgo,
                           const FloatType posXOldEgo,
-                          const FloatType posYOldEgo) const
-  {
-    assert(0);
-    static_cast<void>(posXNewEgo);
-    static_cast<void>(posYNewEgo);
-    static_cast<void>(posXOldEgo);
-    static_cast<void>(posYOldEgo);
-  }
+                          const FloatType posYOldEgo) const;
 
   void compensateDirection(FloatType&      dxNewEgo,
                            FloatType&      dyNewEgo,
                            const FloatType dxOldEgo,
-                           const FloatType dyOldEgo) const
-  {
-    assert(0);
-    static_cast<void>(dxNewEgo);
-    static_cast<void>(dyNewEgo);
-    static_cast<void>(dxOldEgo);
-    static_cast<void>(dyOldEgo);
-  }
+                           const FloatType dyOldEgo) const;
 
 private:
+  using Point2d = base::Point2d<FloatType>;
   Geometry     _geometry{};
   Displacement _displacementCog{};
   FloatType    _dt{};
 };
 
+template <typename FloatType>
+void EgoMotion<FloatType>::compensatePosition(FloatType&      posXNewEgo,
+                                              FloatType&      posYNewEgo,
+                                              const FloatType posXOldEgo,
+                                              const FloatType posYOldEgo) const
+{
+  // transfer to COG
+  Point2d posOldCog{posXOldEgo, posYOldEgo};
+  posOldCog.x() += _geometry.distCog2Ego;
+
+  // translate first
+  // compensate motion displacement
+  const Point2d displacement{_displacementCog.vec[DS_X], _displacementCog.vec[DS_Y]};
+  const Point2d translated = posOldCog - displacement;
+
+  // rotate according to deltaPsi
+  compensateDirection(posXNewEgo, posYNewEgo, translated.x(), translated.y());
+
+  // transfer from COG
+  posXNewEgo -= _geometry.distCog2Ego;
+}
+
+template <typename FloatType>
+void EgoMotion<FloatType>::compensateDirection(FloatType&      dxNewEgo,
+                                               FloatType&      dyNewEgo,
+                                               const FloatType dxOldEgo,
+                                               const FloatType dyOldEgo) const
+{
+  // rotate a vector (velocity or acceleration) according to deltaPsi
+  dxNewEgo = (_displacementCog.cosDeltaPsi * dxOldEgo) + (_displacementCog.sinDeltaPsi * dyOldEgo);
+  dyNewEgo = -(_displacementCog.sinDeltaPsi * dxOldEgo) + (_displacementCog.cosDeltaPsi * dyOldEgo);
+}
+
 } // namespace env
 } // namespace tracking
-#endif /* ego_motion_h */
+
+#endif // EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8

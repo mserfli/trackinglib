@@ -1,5 +1,5 @@
-#ifndef covariance_matrix_full_h
-#define covariance_matrix_full_h
+#ifndef DD2B2494_7486_42BA_84E2_32308E26DBBC
+#define DD2B2494_7486_42BA_84E2_32308E26DBBC
 
 #include "base/matrix.h"
 
@@ -9,19 +9,25 @@ namespace base
 {
 
 template <typename FloatType, sint32 Size>
-using CovarianceMatrixFull = Eigen::Matrix<FloatType, Size, Size>;
-#if 0
 class CovarianceMatrixFull: public SquareMatrix<FloatType, Size>
 {
 public:
-  static constexpr sint32 rows = Size;
-  using const_type             = std::add_const<FloatType>;
-  using type                   = std::remove_const<FloatType>;
-  using self                   = CovarianceMatrixFull<type, rows>;
-  using FullMatrix             = SquareMatrix<type, rows>;
+  using FullMatrix = SquareMatrix<FloatType, Size>;
+
+  CovarianceMatrixFull<FloatType, Size>() = default;
+  
+  // NOLINTNEXTLINE(google-explicit-constructor)
+  CovarianceMatrixFull<FloatType, Size>(
+      const SquareMatrix<FloatType, Size>& other);
 };
-#endif
+
+template <typename FloatType, sint32 Size>
+CovarianceMatrixFull<FloatType, Size>::CovarianceMatrixFull(const SquareMatrix<FloatType, Size>& other)
+    : SquareMatrix<FloatType, Size>{other}
+{
+}
+
 } // namespace base
 } // namespace tracking
 
-#endif /* covariance_matrix_full_h */
+#endif // DD2B2494_7486_42BA_84E2_32308E26DBBC

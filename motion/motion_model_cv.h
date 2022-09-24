@@ -1,5 +1,5 @@
-#ifndef motion_model_cv_h
-#define motion_model_cv_h
+#ifndef FA800472_29A5_4B6F_90A0_4283A0D513D6
+#define FA800472_29A5_4B6F_90A0_4283A0D513D6
 
 #include "base/covariance_matrix_factored.h"
 #include "base/covariance_matrix_full.h"
@@ -142,8 +142,9 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 void MotionModelCV<CovarianceMatrixType, FloatType>::computeQ(ProcessNoiseDiagMatrix& Q, const FloatType /* dt */)
 {
-  Q.diagonal().array()[Q_VX] = static_cast<FloatType>(10.0);
-  Q.diagonal().array()[Q_VY] = static_cast<FloatType>(10.0);
+  Q.setZero();
+  Q(Q_VX, Q_VX) = static_cast<FloatType>(10.0);
+  Q(Q_VY, Q_VY) = static_cast<FloatType>(10.0);
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
@@ -161,4 +162,4 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::computeG(ProcessNoiseMappin
 } // namespace motion
 } // namespace tracking
 
-#endif /* motion_model_cv_h */
+#endif // FA800472_29A5_4B6F_90A0_4283A0D513D6

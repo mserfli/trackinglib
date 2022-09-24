@@ -1,7 +1,8 @@
-#ifndef matrix_h
-#define matrix_h
+#ifndef FDEAAACC_9EF1_4C87_94DC_2FA494822664
+#define FDEAAACC_9EF1_4C87_94DC_2FA494822664
 
 #include "base/atomic_types.h"
+#include <cmath>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
@@ -13,17 +14,162 @@ namespace tracking
 namespace base
 {
 template <typename FloatType, sint32 Rows, sint32 Cols>
-using Matrix = Eigen::Matrix<FloatType, Rows, Cols>;
+class Matrix
+{
+public:
+  using self = Matrix<FloatType, Rows, Cols>;
+
+  auto operator()(sint32 row, sint32 col) const -> FloatType;
+  auto operator()(sint32 row, sint32 col) -> FloatType&;
+
+  auto operator+=(const self& other) -> self&;
+  auto operator-=(const self& other) -> self&;
+  template <sint32 Cols2>
+  auto operator*=(const Matrix<FloatType, Cols, Cols2>& other) -> Matrix<FloatType, Rows, Cols2>;
+
+  auto operator*=(FloatType scale) -> self&;
+  auto operator/=(FloatType scale) -> self&;
+
+  auto transpose() const -> Matrix<FloatType, Cols, Rows>;
+
+  void setZero();
+
+  void setIdentity();
+
+protected:
+  Eigen::Matrix<FloatType, Rows, Cols> _data{};
+
+  template <typename U, sint32 Rows_, sint32 Cols_>
+  friend class Matrix; // needed to access private member _data in operator*=
+};
 
 template <typename FloatType, sint32 Size>
-using SquareMatrix = Eigen::Matrix<FloatType, Size, Size>;
+using SquareMatrix = Matrix<FloatType, Size, Size>;
 
 template <typename FloatType, sint32 Size>
-using DiagonalMatrix = Eigen::DiagonalMatrix<FloatType, Size>;
+using DiagonalMatrix = Matrix<FloatType, Size, Size>;
 
-template <typename FloatType, sint32 Size>
-using Vector = Eigen::Vector<FloatType, Size>;
+
+//
+// implementation of member functions/opoerators
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) const -> FloatType
+{
+  return _data(row, col);
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) -> FloatType&
+{
+  return _data(row, col);
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline auto Matrix<FloatType, Rows, Cols>::operator+=(const self& other) -> self&
+{
+  _data += other._data;
+  return *this;
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline auto Matrix<FloatType, Rows, Cols>::operator-=(const self& other) -> self&
+{
+  _data -= other._data;
+  return *this;
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+template <sint32 Cols2>
+inline auto Matrix<FloatType, Rows, Cols>::operator*=(const Matrix<FloatType, Cols, Cols2>& other)
+    -> Matrix<FloatType, Rows, Cols2>
+{
+  Matrix<FloatType, Rows, Cols2> temp;
+  temp._data = (_data * other._data).eval();
+  return temp;
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline auto Matrix<FloatType, Rows, Cols>::operator*=(FloatType scale) -> self&
+{
+  _data *= scale;
+  return *this;
+}
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scale) -> self&
+{
+  _data /= scale;
+  return *this;
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline auto Matrix<FloatType, Rows, Cols>::transpose() const -> Matrix<FloatType, Cols, Rows>
+{
+  Matrix<FloatType, Cols, Rows> temp;
+  temp._data = _data.transpose();
+  return temp;
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline void Matrix<FloatType, Rows, Cols>::setZero()
+{
+  _data.setZero();
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline void Matrix<FloatType, Rows, Cols>::setIdentity()
+{
+  _data.setIdentity();
+}
+
+//
+// non member class operators
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+auto operator+(const Matrix<FloatType, Rows, Cols>& m1, const Matrix<FloatType, Rows, Cols>& m2)
+    -> Matrix<FloatType, Rows, Cols>
+{
+  Matrix<FloatType, Rows, Cols> temp(m1);
+  return (temp += m2);
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+auto operator-(const Matrix<FloatType, Rows, Cols>& m1, const Matrix<FloatType, Rows, Cols>& m2)
+    -> Matrix<FloatType, Rows, Cols>
+{
+  Matrix<FloatType, Rows, Cols> temp(m1);
+  return (temp -= m2);
+}
+
+template <typename FloatType, sint32 Rows1, sint32 Cols1, sint32 Cols2>
+auto operator*(const Matrix<FloatType, Rows1, Cols1>& m1, const Matrix<FloatType, Cols1, Cols2>& m2)
+    -> Matrix<FloatType, Rows1, Cols2>
+{
+  Matrix<FloatType, Rows1, Cols1> temp(m1);
+  return (temp *= m2);
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+auto operator*(const Matrix<FloatType, Rows, Cols>& m, double num) -> Matrix<FloatType, Rows, Cols>
+{
+  Matrix<FloatType, Rows, Cols> temp(m);
+  return (temp *= num);
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+auto operator*(double num, const Matrix<FloatType, Rows, Cols>& m) -> Matrix<FloatType, Rows, Cols>
+{
+  return (m * num);
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+auto operator/(const Matrix<FloatType, Rows, Cols>& m, double num) -> Matrix<FloatType, Rows, Cols>
+{
+  Matrix<FloatType, Rows, Cols> temp(m);
+  return (temp /= num);
+}
+
 } // namespace base
 } // namespace tracking
 
-#endif /* matrix_h */
+#endif // FDEAAACC_9EF1_4C87_94DC_2FA494822664

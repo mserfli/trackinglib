@@ -1,5 +1,5 @@
-#ifndef generic_predict_h
-#define generic_predict_h
+#ifndef CFE4ADAC_CBD6_4488_B120_96D9FBE6C1A5
+#define CFE4ADAC_CBD6_4488_B120_96D9FBE6C1A5
 
 #include "base/atomic_types.h"
 #include "base/state_mem.h"
@@ -69,8 +69,8 @@ public:
     PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
     typename MotionModel::StateCovPtr P(
-        new typename MotionModel::StateCov(data.Go * underlying.getCov() * data.Go.transpose() +
-                                           data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose()));
+        new typename MotionModel::StateCov(data.Go * (underlying.getCov() * data.Go.transpose()) +
+                                           data.Ge * (egoMotion.getDisplacementCog().cov * data.Ge.transpose())));
 
     filter.predictCovariance(*P, data.A, data.G, data.Q);
 
@@ -109,4 +109,4 @@ public:
 } // namespace motion
 } // namespace tracking
 
-#endif // generic_predict_h
+#endif // CFE4ADAC_CBD6_4488_B120_96D9FBE6C1A5

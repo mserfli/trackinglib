@@ -1,7 +1,8 @@
-#ifndef state_mem_h
-#define state_mem_h
+#ifndef D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
+#define D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 
 #include "base/matrix.h"
+#include "base/vector.h"
 #include <memory>
 
 namespace tracking
@@ -13,8 +14,6 @@ template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
 class StateMem
 {
 public:
-  StateMem() = default;
-
   using StateVec    = Vector<FloatType, Size>;
   using StateCov    = CovarianceMatrixType<FloatType, Size>;
   using StateVecPtr = std::unique_ptr<StateVec>;
@@ -26,17 +25,17 @@ public:
   auto operator[](const sint32 idx) -> FloatType& { return (*_vec)[idx]; }
   auto operator[](const sint32 idx) const -> const FloatType& { return (*_vec)[idx]; }
 
-  auto operator()(const sint32 row, const sint32 col) -> FloatType& { return (*_cov)(row, col); }
+  //auto operator()(const sint32 row, const sint32 col) -> FloatType& { return (*_cov)(row, col); } // cannot be provided due to factored covariance
   auto operator()(const sint32 row, const sint32 col) const -> const FloatType& { return (*_cov)(row, col); }
 
   void setVec(StateVecPtr&& vec) { _vec = std::move(vec); }
   void setCov(StateCovPtr&& cov) { _cov = std::move(cov); }
 
 private:
-  StateVecPtr _vec{new StateVec};
-  StateCovPtr _cov{new StateCov};
+  StateVecPtr _vec{std::make_unique<StateVec>()};
+  StateCovPtr _cov{std::make_unique<StateCov>()};
 };
 
 } // namespace base
 } // namespace tracking
-#endif /* state_mem_h */
+#endif // D118B69B_C3E7_43F7_A2FC_F44B7ACF965F

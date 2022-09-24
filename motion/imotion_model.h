@@ -1,5 +1,5 @@
-#ifndef imotion_model_h
-#define imotion_model_h
+#ifndef D33C0BB9_EF21_44C6_8DAD_0C38C418D824
+#define D33C0BB9_EF21_44C6_8DAD_0C38C418D824
 
 #include "base/atomic_types.h"
 #include "base/state_mem.h"
@@ -59,4 +59,4 @@ public:
 } // namespace motion
 } // namespace tracking
 
-#endif /* imotion_model_h */
+#endif // D33C0BB9_EF21_44C6_8DAD_0C38C418D824

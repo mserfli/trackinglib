@@ -1,5 +1,5 @@
-#ifndef covariance_matrix_factored_h
-#define covariance_matrix_factored_h
+#ifndef F9044FD7_A3A8_43F4_BDD6_F43011384722
+#define F9044FD7_A3A8_43F4_BDD6_F43011384722
 
 #include "base/matrix.h"
 
@@ -22,4 +22,4 @@ public:
 } // namespace base
 } // namespace tracking
 
-#endif /* covariance_matrix_factored_h */
+#endif // F9044FD7_A3A8_43F4_BDD6_F43011384722
