@@ -17,26 +17,57 @@ public:
 
   /// \brief Construct a new Point 2d< Float Type> object
   /// \param[in] other A base class object
-  Point2d<FloatType>(const Vector<FloatType, 2>& other) // NOLINT(google-explicit-constructor)
-      : Vector<FloatType, 2>{other}
-  {
-  }
+  Point2d<FloatType>(const Vector<FloatType, 2>& other); // NOLINT(google-explicit-constructor)
 
-  Point2d<FloatType>(const FloatType x, const FloatType y)
-      : Vector<FloatType, 2>()
-  {
-    this->x() = x;
-    this->y() = y;
-  }
+  Point2d<FloatType>(const FloatType x, const FloatType y);
 
-  auto x() const -> FloatType { return this->operator[](0); }
-  auto y() const -> FloatType { return this->operator[](1); }
-  auto x() -> FloatType& { return this->operator[](0); }
-  auto y() -> FloatType& { return this->operator[](1); }
+  auto x() const -> FloatType;
+  auto y() const -> FloatType;
+  auto x() -> FloatType&;
+  auto y() -> FloatType&;
 
 private:
   using Vector<FloatType, 2>::operator[];
+  using Vector<FloatType, 2>::transpose;
 };
+
+template <typename FloatType>
+Point2d<FloatType>::Point2d(const Vector<FloatType, 2>& other)
+    : Vector<FloatType, 2>{other}
+{
+}
+
+template <typename FloatType>
+Point2d<FloatType>::Point2d(const FloatType x, const FloatType y)
+    : Vector<FloatType, 2>()
+{
+  this->x() = x;
+  this->y() = y;
+}
+
+template <typename FloatType>
+inline auto Point2d<FloatType>::x() const -> FloatType
+{
+  return this->operator[](0);
+}
+
+template <typename FloatType>
+inline auto Point2d<FloatType>::y() const -> FloatType
+{
+  return this->operator[](1);
+}
+
+template <typename FloatType>
+inline auto Point2d<FloatType>::x() -> FloatType&
+{
+  return this->operator[](0);
+}
+
+template <typename FloatType>
+inline auto Point2d<FloatType>::y() -> FloatType&
+{
+  return this->operator[](1);
+}
 
 } // namespace base
 } // namespace tracking
