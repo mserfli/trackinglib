@@ -5,7 +5,6 @@ include(CTest)
 enable_testing()
 
 add_definitions(-DCMAKE_EXPORT_COMPILE_COMMANDS=1)
-add_compile_options(-fcolor-diagnostics)
 
 add_executable(trackingLib main.cpp)
 target_include_directories(trackingLib PRIVATE 
