@@ -18,6 +18,11 @@ namespace tracking
 {
 namespace base
 {
+
+// forward declaration to prevent cyclic includes
+template<typename FloatType, sint32 Size>
+class CovarianceMatrixFull;
+
 template <typename FloatType, sint32 Rows, sint32 Cols>
 class Matrix
 {
@@ -58,7 +63,10 @@ protected:
   Eigen::Matrix<FloatType, Rows, Cols> _data{};
 
   template <typename U, sint32 Rows_, sint32 Cols_>
-  friend class Matrix; // needed to access private member _data in operator*=
+  friend class Matrix; // needed to access member _data in operator*=
+
+  template <typename U, sint32 Size>
+  friend class CovarianceMatrixFull; // needed to access member _data in inverse()
 };
 
 //

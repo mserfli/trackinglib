@@ -1,4 +1,5 @@
 #include "base/atomic_types.h"
+#include "base/covariance_matrix_full.h"
 #include "base/diagonal_matrix.h"
 #include "base/matrix.h"
 #include "base/square_matrix.h"
@@ -10,6 +11,7 @@ using tracking::base::Matrix;
 using tracking::base::SquareMatrix;
 using tracking::base::TriangularMatrix;
 using tracking::base::DiagonalMatrix;
+using tracking::base::CovarianceMatrixFull;
 using tracking::base::Vector;
 using tracking::base::Point2d;
 auto main() -> int
@@ -78,6 +80,12 @@ auto main() -> int
     D.print();
     m1=U*D*U.transpose();
     m1.print();
+  }
+
+  {
+    CovarianceMatrixFull<float64, 3> cov{{1.8547, 1.3984, 1.2923}, {1.3984, 1.2222, 1.2328}, {1.2923, 1.2328, 1.3428}};
+    CovarianceMatrixFull<float64, 3> inv = cov.inverse();
+    inv.print();
   }
   return 0;
 }
