@@ -9,6 +9,7 @@ Standard: Cpp11
 DerivePointerAlignment: false
 PointerAlignment: Left
 
+ColumnLimit: 130
 IndentWidth: 2
 AccessModifierOffset: '-2'
 UseTab: Never
