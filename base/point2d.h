@@ -19,16 +19,30 @@ public:
   /// \param[in] other A base class object
   Point2d<FloatType>(const Vector<FloatType, 2>& other); // NOLINT(google-explicit-constructor)
 
+  /// \brief Construct a new Point 2d< Float Type> object
+  /// \param[in] x  Value for x
+  /// \param[in] y  Value for y
   Point2d<FloatType>(const FloatType x, const FloatType y);
 
+  /// \brief Read access to x value
+  /// \return FloatType 
   auto x() const -> FloatType;
+
+  /// \brief Read access to y value
+  /// \return FloatType 
   auto y() const -> FloatType;
+
+  /// \brief Write access to x value
+  /// \return FloatType 
   auto x() -> FloatType&;
+
+  /// \brief Write access to y value
+  /// \return FloatType 
   auto y() -> FloatType&;
 
 private:
+  /// \brief hide inherited operator[] to prevent wrong access
   using Vector<FloatType, 2>::operator[];
-  using Vector<FloatType, 2>::transpose;
 };
 
 template <typename FloatType>

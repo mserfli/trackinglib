@@ -54,9 +54,6 @@ public:
   void        setZero();
   static auto Zero() -> self;
 
-  void        setIdentity();
-  static auto Identity() -> self;
-
   auto transpose() const -> Matrix<FloatType, Cols, Rows>;
 
   void print() const;
@@ -83,12 +80,16 @@ Matrix<FloatType, Rows, Cols>::Matrix(const std::initializer_list<std::initializ
 template <typename FloatType, sint32 Rows, sint32 Cols>
 inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) const -> FloatType
 {
+  assert((row>=0 && row<Rows) && "bad row index");
+  assert((col>=0 && col<Cols) && "bad col index");
   return _data(row, col);
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
 inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) -> FloatType&
 {
+  assert((row>=0 && row<Rows) && "bad row index");
+  assert((col>=0 && col<Cols) && "bad col index");
   return _data(row, col);
 }
 
@@ -125,6 +126,7 @@ inline auto Matrix<FloatType, Rows, Cols>::operator*=(FloatType scalar) -> self&
 template <typename FloatType, sint32 Rows, sint32 Cols>
 inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scalar) -> self&
 {
+  assert(std::abs(scalar)>static_cast<FloatType>(0.0));
   _data /= scalar;
   return *this;
 }
@@ -140,20 +142,6 @@ auto Matrix<FloatType, Rows, Cols>::Zero() -> self
 {
   self tmp;
   tmp.setZero();
-  return tmp;
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline void Matrix<FloatType, Rows, Cols>::setIdentity()
-{
-  _data.setIdentity();
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::Identity() -> self
-{
-  self tmp;
-  tmp.setIdentity();
   return tmp;
 }
 
@@ -198,23 +186,24 @@ auto operator*(const Matrix<FloatType, Rows1, Cols1>& m1, const Matrix<FloatType
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto operator*(const Matrix<FloatType, Rows, Cols>& m, double num) -> Matrix<FloatType, Rows, Cols>
+auto operator*(const Matrix<FloatType, Rows, Cols>& m, FloatType scalar) -> Matrix<FloatType, Rows, Cols>
 {
   Matrix<FloatType, Rows, Cols> temp(m);
-  return (temp *= num);
+  return (temp *= scalar);
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto operator*(double num, const Matrix<FloatType, Rows, Cols>& m) -> Matrix<FloatType, Rows, Cols>
+auto operator*(FloatType scalar, const Matrix<FloatType, Rows, Cols>& m) -> Matrix<FloatType, Rows, Cols>
 {
-  return (m * num);
+  return (m * scalar);
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto operator/(const Matrix<FloatType, Rows, Cols>& m, double num) -> Matrix<FloatType, Rows, Cols>
+auto operator/(const Matrix<FloatType, Rows, Cols>& m, FloatType scalar) -> Matrix<FloatType, Rows, Cols>
 {
+  assert(std::abs(scalar)>static_cast<FloatType>(0.0));
   Matrix<FloatType, Rows, Cols> temp(m);
-  return (temp /= num);
+  return (temp /= scalar);
 }
 
 } // namespace base

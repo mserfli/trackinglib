@@ -15,11 +15,25 @@ public:
   /// \brief Inherit Rule of 5 behavior from base class
   using SquareMatrix<FloatType, Size>::SquareMatrix;
 
+  /// \brief Construct a new Triangular Matrix object
+  /// \param[in] other
   TriangularMatrix(const SquareMatrix<FloatType, Size>& other); // NOLINT(google-explicit-constructor)
 
   /// \brief Construct a new TriangularMatrix object given initializer list
   /// \param[in] list  An initializer list describing a full square matrix
   TriangularMatrix(const std::initializer_list<std::initializer_list<FloatType>>& list);
+
+  /// \brief Element read-only access to a scalar triangular value
+  /// \param[in] row  Row index of the element
+  /// \param[in] col  Col index of the element
+  /// \return FloatType  scalar triangular value
+  auto operator()(sint32 row, sint32 col) const -> FloatType;
+
+  /// \brief Element access to a scalar triangular value
+  /// \param[in] row  Row index of the element
+  /// \param[in] col  Col index of the element
+  /// \return FloatType&  Reference to the scalar triangular value
+  auto operator()(sint32 row, sint32 col) -> FloatType&;
 
   /// \brief Calculate the transposed matrix
   /// \return TriangularMatrix<FloatType, Size, !isLower>
@@ -33,7 +47,11 @@ public:
   auto solve(const Matrix<FloatType, Size, Cols>& b) -> Matrix<FloatType, Size, Cols>;
 
 private:
+  /// \brief hide inherited transpose function
   using SquareMatrix<FloatType, Size>::transpose;
+
+  /// \brief hide inherited operator() to prevent accessing off-triangular elements
+  using SquareMatrix<FloatType, Size>::operator();
 };
 
 template <typename FloatType, sint32 Size, bool isLower>
@@ -58,7 +76,7 @@ template <typename FloatType, sint32 Size, bool isLower>
 TriangularMatrix<FloatType, Size, isLower>::TriangularMatrix(const std::initializer_list<std::initializer_list<FloatType>>& list)
     : SquareMatrix<FloatType, Size>{list}
 {
-  // zero anti-triangular elements
+  // zero off-triangular elements
   for (sint32 row = 0; row < Size; ++row)
   {
     for (sint32 col = row + 1; col < Size; ++col)
@@ -66,9 +84,23 @@ TriangularMatrix<FloatType, Size, isLower>::TriangularMatrix(const std::initiali
       const sint32 rowIdx = !isLower ? col : row;
       const sint32 colIdx = !isLower ? row : col;
 
-      this->operator()(rowIdx, colIdx) = static_cast<FloatType>(0.0);
+      SquareMatrix<FloatType, Size>::operator()(rowIdx, colIdx) = static_cast<FloatType>(0.0);
     }
   }
+}
+
+template <typename FloatType, sint32 Size, bool isLower>
+inline auto TriangularMatrix<FloatType, Size, isLower>::operator()(sint32 row, sint32 col) const -> FloatType
+{
+  assert((isLower ? row >= col : row <= col) && "accessing off-triangular elements");
+  return SquareMatrix<FloatType, Size>::operator()(row, col);
+}
+
+template <typename FloatType, sint32 Size, bool isLower>
+inline auto TriangularMatrix<FloatType, Size, isLower>::operator()(sint32 row, sint32 col) -> FloatType&
+{
+  assert((isLower ? row >= col : row <= col) && "accessing off-triangular elements");
+  return SquareMatrix<FloatType, Size>::operator()(row, col);
 }
 
 template <typename FloatType, sint32 Size, bool isLower>

@@ -28,9 +28,31 @@ public:
   /// \param[in] other A base class object
   SquareMatrix<FloatType, Size>(const Matrix<FloatType, Size, Size>& other); // NOLINT(google-explicit-constructor)
 
+  /// \brief Set internal matrix to the Identity matrix
+  void setIdentity();
+
+  /// \brief Construct an Identity matrix
+  /// \return SquareMatrix<FloatType, Size>  Resulting identity matrix
+  static auto Identity() -> SquareMatrix<FloatType, Size>;
+
+  /// \brief Decompose internal matrix into L*L' using standard Cholesky factorization
+  /// \param[out] L  Calculated lower triangular matrix
+  /// \return true   if calculation was successful
   // TODO(matthias): use std::expected or sth similar as result type
   auto decomposeLLT(TriangularMatrix<FloatType, Size, true>& L) const -> bool;
+
+  /// \brief Decompose internal matrix into L*D*L' using rational Cholesky factorization
+  /// \param[out] L  Calculated lower triangular matrix
+  /// \param[out] D  Calculated diagonal matrix
+  /// \return true   if calculation was successful
+  // TODO(matthias): use std::expected or sth similar as result type
   auto decomposeLDLT(TriangularMatrix<FloatType, Size, true>& L, DiagonalMatrix<FloatType, Size>& D) const -> bool;
+
+  /// \brief Decompose internal matrix into U*D*U' using rational Cholesky factorization
+  /// \param[out] U  Calculated upper triangular matrix
+  /// \param[out] D  Calculated diagonal matrix
+  /// \return true   if calculation was successful
+  // TODO(matthias): use std::expected or sth similar as result type
   auto decomposeUDUT(TriangularMatrix<FloatType, Size, false>& U, DiagonalMatrix<FloatType, Size>& D) const -> bool;
 };
 
@@ -61,6 +83,20 @@ inline auto SquareMatrix<FloatType, Size>::decomposeLLT(TriangularMatrix<FloatTy
     }
   }
   return isOk;
+}
+
+template <typename FloatType, sint32 Size>
+inline void SquareMatrix<FloatType, Size>::setIdentity()
+{
+  this->_data.setIdentity();
+}
+
+template <typename FloatType, sint32 Size>
+inline auto SquareMatrix<FloatType, Size>::Identity() -> SquareMatrix<FloatType, Size>
+{
+  SquareMatrix<FloatType, Size> tmp;
+  tmp.setIdentity();
+  return tmp;
 }
 
 template <typename FloatType, sint32 Size>
@@ -108,16 +144,16 @@ inline auto SquareMatrix<FloatType, Size>::decomposeUDUT(TriangularMatrix<FloatT
       auto sigma = P(i, j);
       for (sint32 k = j + 1; k < Size; ++k)
       {
-        sigma -= U(i, k) * D(k, k) * U(j, k);
+        sigma -= U(i, k) * D[k] * U(j, k);
       }
       if (i == j)
       {
-        D(j, j) = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
+        D[j] = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
         U(j, j) = static_cast<FloatType>(1.0);
       }
       else
       {
-        U(i, j) = sigma / D(j, j);
+        U(i, j) = sigma / D[j];
       }
     }
   }

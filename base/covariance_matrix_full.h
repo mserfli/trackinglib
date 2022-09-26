@@ -19,6 +19,8 @@ public:
   /// \param[in] other A base class object
   CovarianceMatrixFull<FloatType, Size>(const SquareMatrix<FloatType, Size>& other); // NOLINT(google-explicit-constructor)
 
+  /// \brief Calculates the inverse based on Cholesky decomposition 
+  /// \return CovarianceMatrixFull<FloatType, Size> 
   auto inverse() const -> CovarianceMatrixFull<FloatType, Size>;
 };
 
