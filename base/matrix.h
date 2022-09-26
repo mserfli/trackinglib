@@ -20,8 +20,8 @@ namespace base
 {
 
 // forward declaration to prevent cyclic includes
-template<typename FloatType, sint32 Size>
-class CovarianceMatrixFull;
+template <typename FloatType, sint32 Size, bool isLower>
+class TriangularMatrix;
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
 class Matrix
@@ -51,22 +51,24 @@ public:
   auto operator*=(FloatType scalar) -> self&;
   auto operator/=(FloatType scalar) -> self&;
 
-  void setZero();
+  void        setZero();
+  static auto Zero() -> self;
 
-  void setIdentity();
+  void        setIdentity();
+  static auto Identity() -> self;
 
   auto transpose() const -> Matrix<FloatType, Cols, Rows>;
 
   void print() const;
 
 protected:
-  Eigen::Matrix<FloatType, Rows, Cols> _data{};
+  Eigen::Matrix<FloatType, Rows, Cols> _data{}; // TODO(matthias): make this a unique_ptr to profit from move ctor/assignment
 
   template <typename U, sint32 Rows_, sint32 Cols_>
   friend class Matrix; // needed to access member _data in operator*=
 
-  template <typename U, sint32 Size>
-  friend class CovarianceMatrixFull; // needed to access member _data in inverse()
+  template <typename U, sint32 Size, bool isLower>
+  friend class TriangularMatrix; // needed to access member _data in solve()
 };
 
 //
@@ -134,9 +136,25 @@ inline void Matrix<FloatType, Rows, Cols>::setZero()
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
+auto Matrix<FloatType, Rows, Cols>::Zero() -> self
+{
+  self tmp;
+  tmp.setZero();
+  return tmp;
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
 inline void Matrix<FloatType, Rows, Cols>::setIdentity()
 {
   _data.setIdentity();
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+auto Matrix<FloatType, Rows, Cols>::Identity() -> self
+{
+  self tmp;
+  tmp.setIdentity();
+  return tmp;
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>

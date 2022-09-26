@@ -31,14 +31,17 @@ CovarianceMatrixFull<FloatType, Size>::CovarianceMatrixFull(const SquareMatrix<F
 template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> CovarianceMatrixFull<FloatType, Size>
 {
-  CovarianceMatrixFull<FloatType, Size> inv{};
+  CovarianceMatrixFull<FloatType, Size>   inv{};
   TriangularMatrix<FloatType, Size, true> L{};
-  this->decomposeLLT(L);
-  // L*L'*Ainv = eye(n,n)
+
+  auto isOk = this->decomposeLLT(L);
+  assert(isOk && "covariance not positive definite");
+
+  // L*(L'*Ainv) = eye(n,n)
   // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
-  auto u = L._data.template triangularView<Eigen::Lower>().solve(Eigen::Matrix<FloatType, Size, Size>::Identity());
+  auto u = std::move(L.solve(SquareMatrix<FloatType, Size>::Identity()));
   // L'*Ainv = u     -> solve for Ainv using backward substitution
-  inv._data = L._data.transpose().template triangularView<Eigen::Upper>().solve(u);
+  inv = std::move(L.transpose().solve(u));
 
   return inv;
 }
