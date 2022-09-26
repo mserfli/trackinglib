@@ -1,9 +1,9 @@
 #ifndef D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 #define D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 
+#include "base/utility.h"
 #include "base/matrix.h"
 #include "base/vector.h"
-#include <memory>
 
 namespace tracking
 {
@@ -32,8 +32,8 @@ public:
   void setCov(StateCovPtr&& cov) { _cov = std::move(cov); }
 
 private:
-  StateVecPtr _vec{std::make_unique<StateVec>()};
-  StateCovPtr _cov{std::make_unique<StateCov>()};
+  StateVecPtr _vec{make_unique<StateVec>()};
+  StateCovPtr _cov{make_unique<StateCov>()};
 };
 
 } // namespace base

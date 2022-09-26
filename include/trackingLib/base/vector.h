@@ -56,13 +56,13 @@ Vector<FloatType,Size>::Vector(const Matrix<FloatType, Size, 1>& other)
 template <typename FloatType, sint32 Size>
 inline auto Vector<FloatType,Size>::operator[](sint32 idx) const -> FloatType
 {
-  return this->operator()(idx, 1);
+  return this->operator()(idx, 0);
 }
 
 template <typename FloatType, sint32 Size>
 inline auto Vector<FloatType,Size>::operator[](sint32 idx) -> FloatType&
 {
-  return this->operator()(idx, 1);
+  return this->operator()(idx, 0);
 }
 
 template <typename FloatType, sint32 Size>

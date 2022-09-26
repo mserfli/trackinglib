@@ -142,9 +142,7 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 void MotionModelCV<CovarianceMatrixType, FloatType>::computeQ(ProcessNoiseDiagMatrix& Q, const FloatType /* dt */)
 {
-  Q.setZero();
-  Q(Q_VX, Q_VX) = static_cast<FloatType>(10.0);
-  Q(Q_VY, Q_VY) = static_cast<FloatType>(10.0);
+  Q = {static_cast<FloatType>(10.0), static_cast<FloatType>(10.0)};
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>

@@ -28,6 +28,14 @@ public:
   /// \param[in] list  An initializer list describing a full square matrix
   DiagonalMatrix(const std::initializer_list<std::initializer_list<FloatType>>& list);
 
+  /// \brief Assign a new DiagonalMatrix object given initializer list
+  /// \param[in] list  An initializer list describing the diagonal elements
+  auto operator=(const std::initializer_list<FloatType>& list) -> DiagonalMatrix<FloatType, Size>&;
+
+  /// \brief Assign a new DiagonalMatrix object given initializer list
+  /// \param[in] list  An initializer list describing a full square matrix
+  auto operator=(const std::initializer_list<std::initializer_list<FloatType>>& list) -> DiagonalMatrix<FloatType, Size>&;
+
   /// \brief Element access to a scalar diagonal value
   /// \param[in] idx  Row/Col index of the element
   /// \return FloatType&  Reference to the scalar diagonal value
@@ -50,7 +58,7 @@ DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const SquareMatrix<FloatType, Si
   // copy diagonal elements from other
   for (sint32 idx = 0; idx < Size; ++idx)
   {
-    *this[idx] = other(idx, idx);
+    SquareMatrix<FloatType, Size>::operator()(idx, idx) = other(idx, idx);
   }
 }
 
@@ -58,12 +66,13 @@ template <typename FloatType, sint32 Size>
 DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const std::initializer_list<FloatType>& list)
     : SquareMatrix<FloatType, Size>{}
 {
-  static_assert(list.size() == Size, "Mismatching size of intializer list");
+  assert((list.size() == Size) && "Mismatching size of intializer list");
 
   // fill diagonal elements
-  for (sint32 idx = 0; idx < Size; ++idx)
+  sint32 idx = 0;
+  for (auto val : list)
   {
-    *this[idx] = list[idx];
+    this->operator[](idx++) = val;
   }
 }
 
@@ -80,6 +89,22 @@ DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const std::initializer_list<std:
       this->operator()(col, row) = static_cast<FloatType>(0.0);
     }
   }
+}
+
+template <typename FloatType, sint32 Size>
+inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_list<FloatType>& list)
+    -> DiagonalMatrix<FloatType, Size>&
+{
+  *this = DiagonalMatrix<FloatType, Size>(list);
+  return *this;
+}
+
+template <typename FloatType, sint32 Size>
+inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_list<std::initializer_list<FloatType>>& list)
+    -> DiagonalMatrix<FloatType, Size>&
+{
+  *this = DiagonalMatrix<FloatType, Size>(list);
+  return *this;
 }
 
 template <typename FloatType, sint32 Size>
