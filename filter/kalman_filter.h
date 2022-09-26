@@ -3,6 +3,7 @@
 
 #include "base/covariance_matrix_factored.h"
 #include "base/covariance_matrix_full.h"
+#include "base/diagonal_matrix.h"
 
 namespace tracking
 {
