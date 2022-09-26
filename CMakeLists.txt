@@ -4,10 +4,6 @@ project(trackingLib
         VERSION 0.1.0
 )
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -55,12 +51,13 @@ target_include_directories(
               $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
+
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
 
 #add_custom_target(examples)
 #add_subdirectory(examples)
-    
-#add_custom_target(tests)
+
 add_subdirectory(tests)
 
 # locations are provided by GNUInstallDirs

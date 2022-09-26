@@ -10,19 +10,19 @@ FetchContent_Declare (
     GIT_PROGRESS TRUE 
 )
 
-FetchContent_MakeAvailable (
-    googletest
-)
+FetchContent_MakeAvailable( googletest )
 
-add_executable(test)
-target_sources(test PRIVATE
+set(TEST_BINARY "testRunner")
+
+add_executable(${TEST_BINARY})
+target_sources(${TEST_BINARY} PRIVATE
     test.cpp
     test_point2d.cpp
 )
 target_include_directories(
-  test
-  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    ${TEST_BINARY}
+    PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
-target_link_libraries(test PUBLIC trackingLib::trackingLib gtest gtest_main pthread)
+target_link_libraries(${TEST_BINARY} PUBLIC trackingLib::trackingLib gtest gtest_main pthread)
 
-target_compile_features(test PRIVATE cxx_std_11)
+target_compile_features(${TEST_BINARY} PRIVATE cxx_std_11)
