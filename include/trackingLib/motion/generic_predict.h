@@ -2,7 +2,7 @@
 #define CFE4ADAC_CBD6_4488_B120_96D9FBE6C1A5
 
 #include "base/atomic_types.h"
-#include "base/state_mem.h"
+#include "motion/state_mem.h"
 #include "env/ego_motion.h"
 #include "filter/kalman_filter.h"
 
@@ -55,7 +55,7 @@ class Predict
 };
 
 template <typename MotionModel, typename FloatType>
-class Predict<MotionModel, FloatType, base::CovarianceMatrixFull>: public PredictCommon<MotionModel, FloatType>
+class Predict<MotionModel, FloatType, math::CovarianceMatrixFull>: public PredictCommon<MotionModel, FloatType>
 {
 public:
   void run(const FloatType                        dt,
@@ -79,7 +79,7 @@ public:
 };
 
 template <typename MotionModel, typename FloatType>
-class Predict<MotionModel, FloatType, base::CovarianceMatrixFactored>: public PredictCommon<MotionModel, FloatType>
+class Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>: public PredictCommon<MotionModel, FloatType>
 {
 public:
   void run(const FloatType                        dt,

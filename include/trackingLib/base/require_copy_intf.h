@@ -11,10 +11,10 @@ namespace contract
 {
 
 template <typename ImplType>
-class RequireAbstractIntf
+class RequireCopyIntf
 {
 public:
-  RequireAbstractIntf()
+  RequireCopyIntf()
   {
     static_assert(std::is_copy_constructible<ImplType>::value, "missing copy ctor");
     static_assert(std::is_copy_assignable<ImplType>::value, "missing copy assignment operator");

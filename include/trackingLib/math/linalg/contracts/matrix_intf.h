@@ -14,11 +14,13 @@ namespace contract
 
 template <typename ImplType>
 struct MatrixIntf
-    : public base::contract::RequireAbstractIntf<ImplType>
+    : public base::contract::RequireCopyIntf<ImplType>
     , public base::contract::RequireMoveIntf<ImplType>
 {
   MatrixIntf()
-      : base::contract::RequireAbstractIntf<ImplType>()
+      : base::contract::RequireCopyIntf<ImplType>()
+      , base::contract::RequireMoveIntf<ImplType>()
+
   {
     static_assert(has_setZero<ImplType, void (ImplType::*)()>::value, ERR_MSG_MISSING_FUNCTION);
   }

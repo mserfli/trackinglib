@@ -39,6 +39,7 @@ namespace contract
 } // namespace contract
 } // namespace base
 } // namespace tracking
+
 // --- an example ----------------------------------------------------------------------------------------------------------------
 // template <typename ImplementationType>
 // struct Interface

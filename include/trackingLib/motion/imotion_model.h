@@ -2,7 +2,7 @@
 #define D33C0BB9_EF21_44C6_8DAD_0C38C418D824
 
 #include "base/atomic_types.h"
-#include "base/state_mem.h"
+#include "motion/state_mem.h"
 #include "env/ego_motion.h"
 #include "filter/kalman_filter.h"
 
@@ -38,11 +38,11 @@ template <typename MotionModel,
           sint32 Size>
 class ExtendedMotionModel
     : public IMotionModel<FloatType>
-    , public base::StateMem<CovarianceMatrixType, FloatType, Size>
+    , public StateMem<CovarianceMatrixType, FloatType, Size>
 {
 public:
-  using typename base::StateMem<CovarianceMatrixType, FloatType, Size>::StateVec;
-  using typename base::StateMem<CovarianceMatrixType, FloatType, Size>::StateCov;
+  using typename StateMem<CovarianceMatrixType, FloatType, Size>::StateVec;
+  using typename StateMem<CovarianceMatrixType, FloatType, Size>::StateCov;
   
   ExtendedMotionModel()                                                                                   = default;
   ExtendedMotionModel(const ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>&)     = default;

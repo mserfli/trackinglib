@@ -22,8 +22,8 @@ public:
     DS_NUM_VARIABLES
   };
 
-  using DisplacementVec = base::Vector<FloatType, DS_NUM_VARIABLES>;
-  using DisplacementCov = base::CovarianceMatrixFull<FloatType, DS_NUM_VARIABLES>;
+  using DisplacementVec = math::Vector<FloatType, DS_NUM_VARIABLES>;
+  using DisplacementCov = math::CovarianceMatrixFull<FloatType, DS_NUM_VARIABLES>;
 
   struct Motion
   {
@@ -63,7 +63,7 @@ public:
                            const FloatType dyOldEgo) const;
 
 private:
-  using Point2d = base::Point2d<FloatType>;
+  using Point2d = math::Point2d<FloatType>;
   Geometry     _geometry{};
   Displacement _displacementCog{};
   FloatType    _dt{};

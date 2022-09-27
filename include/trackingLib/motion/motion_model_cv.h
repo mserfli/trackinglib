@@ -1,9 +1,9 @@
 #ifndef FA800472_29A5_4B6F_90A0_4283A0D513D6
 #define FA800472_29A5_4B6F_90A0_4283A0D513D6
 
-#include "base/covariance_matrix_factored.h"
-#include "base/covariance_matrix_full.h"
-#include "base/matrix.h"
+#include "math/linalg/covariance_matrix_factored.h"
+#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/matrix.h"
 #include "env/ego_motion.h"
 #include "motion/generic_predict.h"
 #include "motion/imotion_model.h"
@@ -42,16 +42,16 @@ public:
   using StateVec = typename SuperExtendedMotionModel::StateVec;
   using StateCov = typename SuperExtendedMotionModel::StateCov;
 
-  using StateMatrix = base::SquareMatrix<FloatType, NUM_STATE_VARIABLES>;
-  using ProcessNoiseDiagMatrix = base::DiagonalMatrix<FloatType, NUM_PROC_NOISE_VARIABLES>;
-  using ProcessNoiseMappingMatrix = base::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_PROC_NOISE_VARIABLES>;
+  using StateMatrix = math::SquareMatrix<FloatType, NUM_STATE_VARIABLES>;
+  using ProcessNoiseDiagMatrix = math::DiagonalMatrix<FloatType, NUM_PROC_NOISE_VARIABLES>;
+  using ProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_PROC_NOISE_VARIABLES>;
 
   using EgoMotion = env::EgoMotion<FloatType>;
-  using EgoMotionMappingMatrix = base::Matrix<FloatType, NUM_STATE_VARIABLES, EgoMotion::DS_NUM_VARIABLES>;
+  using EgoMotionMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, EgoMotion::DS_NUM_VARIABLES>;
 
   static constexpr sint32 NUM_AUG_PROC_NOISE_VARIABLES = NUM_PROC_NOISE_VARIABLES + EgoMotion::DS_NUM_VARIABLES;
-  using AugmentedProcessNoiseDiagMatrix = base::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
-  using AugmentedProcessNoiseMappingMatrix = base::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
+  using AugmentedProcessNoiseDiagMatrix = math::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
+  using AugmentedProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
 
   MotionModelCV() = default;
   MotionModelCV(const MotionModelCV<CovarianceMatrixType, FloatType>&) = default;

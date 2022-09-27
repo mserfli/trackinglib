@@ -11,10 +11,10 @@ namespace contract
 {
 
 template <typename ImplType>
-class RejectMoveIntf
+class RejectCopyIntf
 {
 public:
-  RejectMoveIntf()
+  RejectCopyIntf()
   {
     static_assert(!std::is_copy_constructible<ImplType>::value, "copy ctor not deleted");
     static_assert(!std::is_copy_assignable<ImplType>::value, "copy assignment operator not deleted");
