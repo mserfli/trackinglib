@@ -3,6 +3,7 @@
 
 #include "base/interface_contract.h"
 #include "base/require_copy_intf.h"
+#include "base/require_move_intf.h"
 
 namespace tracking
 {
@@ -12,12 +13,14 @@ namespace contract
 {
 
 template <typename ImplType>
-struct MatrixIntf: public base::contract::RequireCopyIntf<ImplType>
+struct MatrixIntf
+    : public base::contract::RequireAbstractIntf<ImplType>
+    , public base::contract::RequireMoveIntf<ImplType>
 {
-  MatrixIntf() 
-  : base::contract::RequireCopyIntf<ImplType>()
+  MatrixIntf()
+      : base::contract::RequireAbstractIntf<ImplType>()
   {
-    static_assert(has_setZero<ImplType, void(ImplType::*)()>::value, ERR_MSG_MISSING_FUNCTION);
+    static_assert(has_setZero<ImplType, void (ImplType::*)()>::value, ERR_MSG_MISSING_FUNCTION);
   }
 
   DECLARE_HAS_MEM_FUNC(setZero, has_setZero);
