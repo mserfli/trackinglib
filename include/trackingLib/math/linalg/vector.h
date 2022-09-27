@@ -8,6 +8,7 @@ namespace tracking
 namespace math
 {
 
+// TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
 class Vector: public Matrix<FloatType, Size, 1>
 {
@@ -18,6 +19,12 @@ public:
   /// \brief Construct a new Vector object
   /// \param[in] other A base class object
   Vector(const Matrix<FloatType, Size, 1>& other); // NOLINT(google-explicit-constructor)
+
+  /// \brief Create unit vector 
+  /// \tparam Row  Index position equal to 1
+  /// \return Vector<FloatType, Size> 
+  template<sint32 Row>
+  static auto UnitVector() -> Vector<FloatType, Size>;
 
   /// \brief Element read-only access to a scalar vector value
   /// \param[in] idx  Row index of the element
@@ -30,17 +37,24 @@ public:
   auto operator[](sint32 idx) -> FloatType&;
 
   /// \brief Dot product with other vector of same size
-  /// \param[in,out] other
-  /// \return FloatType 
+  /// \param[in] other
+  /// \return FloatType
   auto operator*(const Vector<FloatType, Size>& other) const -> FloatType;
 
-  /// \brief Squared L1 norm (aka squared vector length) 
-  /// \return FloatType 
+  /// \brief Squared L1 norm (aka squared vector length)
+  /// \return FloatType
   auto normSq() const -> FloatType;
 
-  /// \brief L1 norm (aka vector length) 
-  /// \return FloatType 
+  /// \brief L1 norm (aka vector length)
+  /// \return FloatType
   auto norm() const -> FloatType;
+
+  /// \brief In-place normalization to unit length vector
+  void normalize();
+
+  /// \brief Create new vector normalized to unit length vector
+  /// \return Vector<FloatType, Size>
+  auto normalize() const -> Vector<FloatType, Size>;
 
 private:
   /// \brief hide inherited operator() to prevent col!=0 access
@@ -48,41 +62,66 @@ private:
 };
 
 template <typename FloatType, sint32 Size>
-Vector<FloatType,Size>::Vector(const Matrix<FloatType, Size, 1>& other)
+Vector<FloatType, Size>::Vector(const Matrix<FloatType, Size, 1>& other)
     : Matrix<FloatType, Size, 1>{other}
 {
 }
 
 template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType,Size>::operator[](sint32 idx) const -> FloatType
+template<sint32 Row>
+static inline auto Vector<FloatType, Size>::UnitVector() -> Vector<FloatType, Size>
+{
+  auto tmp(Vector<FloatType, Size>::Zero());
+  tmp[Row] = static_cast<FloatType>(1.0);
+  return tmp;
+}
+
+template <typename FloatType, sint32 Size>
+inline auto Vector<FloatType, Size>::operator[](sint32 idx) const -> FloatType
 {
   return this->operator()(idx, 0);
 }
 
 template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType,Size>::operator[](sint32 idx) -> FloatType&
+inline auto Vector<FloatType, Size>::operator[](sint32 idx) -> FloatType&
 {
   return this->operator()(idx, 0);
 }
 
 template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType,Size>::operator*(const Vector<FloatType, Size>& other) const -> FloatType
+inline auto Vector<FloatType, Size>::operator*(const Vector<FloatType, Size>& other) const -> FloatType
 {
   const Matrix<FloatType, 1, 1> temp{this->transpose() * other};
   return temp(0, 0);
 }
 
 template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType,Size>::normSq() const -> FloatType
+inline auto Vector<FloatType, Size>::normSq() const -> FloatType
 {
   return this->operator*(*this);
 }
 
 template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType,Size>::norm() const -> FloatType
+inline auto Vector<FloatType, Size>::norm() const -> FloatType
 {
   return std::sqrt(normSq());
 }
+
+template <typename FloatType, sint32 Size>
+inline void Vector<FloatType, Size>::normalize()
+{
+  auto length = norm();
+  this->operator/=(length);
+}
+
+template <typename FloatType, sint32 Size>
+inline auto Vector<FloatType, Size>::normalize() const -> Vector<FloatType, Size>
+{
+  Vector<FloatType, Size> tmp(*this);
+  tmp.normalize();
+  return tmp;
+}
+
 
 } // namespace math
 } // namespace tracking
