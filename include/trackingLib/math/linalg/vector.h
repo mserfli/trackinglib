@@ -24,7 +24,7 @@ public:
   /// \tparam Row  Index position equal to 1
   /// \return Vector<FloatType, Size> 
   template<sint32 Row>
-  static auto UnitVector() -> Vector<FloatType, Size>;
+  static auto unitVector() -> Vector<FloatType, Size>;
 
   /// \brief Element read-only access to a scalar vector value
   /// \param[in] idx  Row index of the element
@@ -69,9 +69,9 @@ Vector<FloatType, Size>::Vector(const Matrix<FloatType, Size, 1>& other)
 
 template <typename FloatType, sint32 Size>
 template<sint32 Row>
-static inline auto Vector<FloatType, Size>::UnitVector() -> Vector<FloatType, Size>
+static inline auto Vector<FloatType, Size>::unitVector() -> Vector<FloatType, Size>
 {
-  auto tmp(Vector<FloatType, Size>::Zero());
+  auto tmp(Vector<FloatType, Size>::zero());
   tmp[Row] = static_cast<FloatType>(1.0);
   return tmp;
 }

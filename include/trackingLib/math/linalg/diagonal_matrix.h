@@ -7,7 +7,6 @@ namespace tracking
 {
 namespace math
 {
-// TODO(matthias): add setBlock
 // TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
 class DiagonalMatrix: public SquareMatrix<FloatType, Size>
@@ -27,6 +26,15 @@ public:
   /// \brief Construct a new DiagonalMatrix object given initializer list
   /// \param[in] list  An initializer list describing a full square matrix
   DiagonalMatrix(const std::initializer_list<std::initializer_list<FloatType>>& list);
+
+  /// \brief Set a diagonal block matrix at given position
+  /// \tparam SrcSize    Size of the source block
+  /// \tparam SrcCount   Number of diagonal elements to copy from source
+  /// \tparam SrcIdxBeg  Begin diagonal element index in source
+  /// \tparam DstIdxBeg  Begin diagonal element index in dest
+  /// \param[in] block   Source block matrix to copy from
+  template <sint32 SrcSize, sint32 SrcCount, sint32 SrcIdxBeg, sint32 DstIdxBeg>
+  void setBlock(const DiagonalMatrix<FloatType, SrcSize>& block);
 
   /// \brief Assign a new DiagonalMatrix object given initializer list
   /// \param[in] list  An initializer list describing the diagonal elements
@@ -49,6 +57,9 @@ public:
 private:
   /// \brief hide inherited operator() to prevent accessing off-diagonal elements
   using SquareMatrix<FloatType, Size>::operator();
+
+  /// \brief hide inherited setBlock function
+  using SquareMatrix<FloatType, Size>::setBlock;
 };
 
 template <typename FloatType, sint32 Size>
@@ -88,6 +99,23 @@ DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const std::initializer_list<std:
       this->operator()(row, col) = static_cast<FloatType>(0.0);
       this->operator()(col, row) = static_cast<FloatType>(0.0);
     }
+  }
+}
+
+template <typename FloatType, sint32 Size>
+template <sint32 SrcSize, sint32 SrcCount, sint32 SrcIdxBeg, sint32 DstIdxBeg>
+void DiagonalMatrix<FloatType, Size>::setBlock(const DiagonalMatrix<FloatType, SrcSize>& block)
+{
+  static_assert(SrcCount > 1, "use scalar access operator for block copy size == 1");
+  static_assert(SrcIdxBeg + SrcCount <= SrcSize, "copy to many rows from src");
+
+  static_assert(DstIdxBeg + SrcCount <= Size, "copy to many rows to dst");
+
+  sint32 dstIdx = DstIdxBeg;
+  for (auto srcIdx = SrcIdxBeg; srcIdx < SrcIdxBeg + SrcCount; ++srcIdx)
+  {
+    this->operator[](dstIdx) = block[srcIdx];
+    ++dstIdx;
   }
 }
 

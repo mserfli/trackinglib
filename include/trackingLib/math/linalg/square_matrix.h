@@ -17,7 +17,6 @@ class TriangularMatrix;
 template <typename FloatType, sint32 Size>
 class DiagonalMatrix;
 
-// TODO(matthias): add setBlock
 // TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
 class SquareMatrix: public Matrix<FloatType, Size, Size>

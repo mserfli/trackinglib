@@ -2,6 +2,7 @@
 #define FDEAAACC_9EF1_4C87_94DC_2FA494822664
 
 #include "base/atomic_types.h"
+#include "base/config.h"
 #include "math/linalg/contracts/matrix_intf.h"
 #include <cmath>
 #include <iostream>
@@ -25,9 +26,9 @@ template <typename FloatType, sint32 Size, bool isLower>
 class TriangularMatrix;
 
 // TODO(matthias): add doxygen
-// TODO(matthias): add setBlock
+// TODO(matthias): add template params to support coord transformations (inFrame e.g. EGO_k_1, outFrame, power -> 2 for covs)
 template <typename FloatType, sint32 Rows, sint32 Cols>
-class Matrix : public contract::MatrixIntf<Matrix<FloatType, Rows, Cols>>
+class Matrix: public contract::MatrixIntf<Matrix<FloatType, Rows, Cols>>
 {
 public:
   using self = Matrix<FloatType, Rows, Cols>;
@@ -55,17 +56,32 @@ public:
   auto operator/=(FloatType scalar) -> self&;
 
   void        setZero();
-  static auto Zero() -> self;
+  static auto zero() -> self;
 
   void        setOnes();
-  static auto Ones() -> self;
+  static auto ones() -> self;
+
+  /// \brief Set a block matrix at given position
+  /// \tparam SrcRowSize   Rows of the source block
+  /// \tparam SrcColSize   Cols of the source block
+  /// \tparam SrcRowCount  Number of rows to copy from source
+  /// \tparam SrcColCount  Number of cols to copy from source
+  /// \tparam SrcRowBeg    Begin row index in source
+  /// \tparam SrcColBeg    Begin col index in source
+  /// \tparam DstRowBeg    Begin row index in dest
+  /// \tparam DstColBeg    Begin col index in dest
+  /// \param[in] block     Source block matrix to copy from
+  template <sint32 SrcRowSize, sint32 SrcColSize, sint32 SrcRowCount, sint32 SrcColCount, 
+            sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
+  void setBlock(const Matrix<FloatType, SrcRowSize, SrcColSize>& block);
 
   auto transpose() const -> Matrix<FloatType, Cols, Rows>;
 
   void print() const;
 
-protected:
-  Eigen::Matrix<FloatType, Rows, Cols> _data{}; // TODO(matthias): make this a unique_ptr to profit from move ctor/assignment
+  TEST_REMOVE_PROTECTED
+      : Eigen::Matrix<FloatType, Rows, Cols>
+            _data{}; // TODO(matthias): make this a unique_ptr to profit from move ctor/assignment
 
   template <typename U, sint32 Rows_, sint32 Cols_>
   friend class Matrix; // needed to access member _data in operator*=
@@ -86,16 +102,16 @@ Matrix<FloatType, Rows, Cols>::Matrix(const std::initializer_list<std::initializ
 template <typename FloatType, sint32 Rows, sint32 Cols>
 inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) const -> FloatType
 {
-  assert((row>=0 && row<Rows) && "bad row index");
-  assert((col>=0 && col<Cols) && "bad col index");
+  assert((row >= 0 && row < Rows) && "bad row index");
+  assert((col >= 0 && col < Cols) && "bad col index");
   return _data(row, col);
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
 inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) -> FloatType&
 {
-  assert((row>=0 && row<Rows) && "bad row index");
-  assert((col>=0 && col<Cols) && "bad col index");
+  assert((row >= 0 && row < Rows) && "bad row index");
+  assert((col >= 0 && col < Cols) && "bad col index");
   return _data(row, col);
 }
 
@@ -132,7 +148,7 @@ inline auto Matrix<FloatType, Rows, Cols>::operator*=(FloatType scalar) -> self&
 template <typename FloatType, sint32 Rows, sint32 Cols>
 inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scalar) -> self&
 {
-  assert(std::abs(scalar)>static_cast<FloatType>(0.0));
+  assert(std::abs(scalar) > static_cast<FloatType>(0.0));
   _data /= scalar;
   return *this;
 }
@@ -144,7 +160,7 @@ inline void Matrix<FloatType, Rows, Cols>::setZero()
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::Zero() -> self
+auto Matrix<FloatType, Rows, Cols>::zero() -> self
 {
   self tmp;
   tmp.setZero();
@@ -158,11 +174,32 @@ inline void Matrix<FloatType, Rows, Cols>::setOnes()
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::Ones() -> self
+auto Matrix<FloatType, Rows, Cols>::ones() -> self
 {
   self tmp;
   tmp.setOnes();
   return tmp;
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+template <sint32 SrcRowSize, sint32 SrcColSize, sint32 SrcRowCount, sint32 SrcColCount, 
+          sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
+void Matrix<FloatType, Rows, Cols>::setBlock(const Matrix<FloatType, SrcRowSize, SrcColSize>& block)
+{
+  static_assert((SrcRowCount > 1) && (SrcColCount > 1), "use scalar access operator for block copy size == 1");
+  static_assert(SrcRowBeg + SrcRowCount <= SrcRowSize, "copy to many rows from src");
+  static_assert(SrcColBeg + SrcColCount <= SrcColSize, "copy to many cols from src");
+
+  static_assert(DstRowBeg + SrcRowCount <= Rows, "copy to many rows to dst");
+  static_assert(DstColBeg + SrcColCount <= Cols, "copy to many cols to dst");
+
+  for (sint32 row = 0; row < SrcRowCount; ++row)
+  {
+    for (sint32 col = 0; col < SrcColCount; ++col)
+    {
+      this->operator()(DstRowBeg + row, DstColBeg + col) = block(SrcRowBeg + row, SrcColBeg + col);
+    }
+  }
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
@@ -221,7 +258,7 @@ auto operator*(FloatType scalar, const Matrix<FloatType, Rows, Cols>& m) -> Matr
 template <typename FloatType, sint32 Rows, sint32 Cols>
 auto operator/(const Matrix<FloatType, Rows, Cols>& m, FloatType scalar) -> Matrix<FloatType, Rows, Cols>
 {
-  assert(std::abs(scalar)>static_cast<FloatType>(0.0));
+  assert(std::abs(scalar) > static_cast<FloatType>(0.0));
   Matrix<FloatType, Rows, Cols> temp(m);
   return (temp /= scalar);
 }

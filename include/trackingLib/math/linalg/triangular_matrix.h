@@ -2,13 +2,13 @@
 #define BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 
 #include "math/linalg/square_matrix.h"
+#include <type_traits>
 
 namespace tracking
 {
 namespace math
 {
 
-// TODO(matthias): add setBlock
 // TODO(matthias): add interface contract
 // TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
 // TODO(matthias): use own memory optimized to required number of elements
@@ -26,6 +26,17 @@ public:
   /// \brief Construct a new TriangularMatrix object given initializer list
   /// \param[in] list  An initializer list describing a full square matrix
   TriangularMatrix(const std::initializer_list<std::initializer_list<FloatType>>& list);
+
+  /// \brief Set a lower/upper triangular block matrix at given position
+  /// \tparam SrcSize    Size of the source block
+  /// \tparam SrcCount   Number of diagonal elements to copy from source
+  /// \tparam SrcRowBeg  Begin row index in source
+  /// \tparam SrcColBeg  Begin col index in source
+  /// \tparam DstRowBeg  Begin row index in dest
+  /// \tparam DstColBeg  Begin col index in dest
+  /// \param[in] block   Source block matrix to copy from
+  template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
+  void setBlock(const TriangularMatrix<FloatType, SrcSize, isLower>& block);
 
   /// \brief Element read-only access to a scalar triangular value
   /// \param[in] row  Row index of the element
@@ -89,6 +100,38 @@ TriangularMatrix<FloatType, Size, isLower>::TriangularMatrix(const std::initiali
       const sint32 colIdx = !isLower ? row : col;
 
       SquareMatrix<FloatType, Size>::operator()(rowIdx, colIdx) = static_cast<FloatType>(0.0);
+    }
+  }
+}
+
+template <typename FloatType, sint32 Size, bool isLower>
+template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
+void TriangularMatrix<FloatType, Size, isLower>::setBlock(const TriangularMatrix<FloatType, SrcSize, isLower>& block)
+{
+  static_assert(SrcCount > 1, "use scalar access operator for block copy size == 1");
+  static_assert(SrcRowBeg + SrcCount <= SrcSize, "copy to many rows from src");
+  static_assert(SrcColBeg + SrcCount <= SrcSize, "copy to many cols from src");
+
+  static_assert(DstRowBeg + SrcCount <= Size, "copy to many rows to dst");
+  static_assert(DstColBeg + SrcCount <= Size, "copy to many cols to dst");
+
+  constexpr bool checkSrcAccess = isLower ? SrcRowBeg >= SrcColBeg : SrcRowBeg <= SrcColBeg;
+  static_assert(checkSrcAccess, "accessing off diagonal part of src triangular matrix");
+  constexpr bool checkDstAccess = isLower ? DstRowBeg >= DstColBeg : DstRowBeg <= DstColBeg;
+  static_assert(checkDstAccess, "accessing off diagonal part of dst triangular matrix");
+
+  for (sint32 row = 0; row < SrcCount; ++row)
+  {
+    for (sint32 col = 0; col <= row; ++col)
+    {
+      if (isLower) // will be optimized out because isLower can be deduced at compile time
+      {
+        this->operator()(DstRowBeg + row, DstColBeg + col) = block(SrcRowBeg + row, SrcColBeg + col);
+      }
+      else
+      {
+        this->operator()(DstRowBeg + col, DstColBeg + row) = block(SrcRowBeg + col, SrcColBeg + row);
+      }
     }
   }
 }

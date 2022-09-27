@@ -14,10 +14,12 @@ FetchContent_MakeAvailable( googletest )
 
 set(TEST_BINARY "testRunner")
 
+add_compile_definitions(TEST_BUILD)
 add_executable(${TEST_BINARY})
 target_sources(${TEST_BINARY} PRIVATE
     test.cpp
     test_point2d.cpp
+    test_triangular_matrix.cpp
 )
 target_include_directories(
     ${TEST_BINARY}
