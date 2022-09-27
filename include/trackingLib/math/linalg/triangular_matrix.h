@@ -8,6 +8,10 @@ namespace tracking
 namespace math
 {
 
+// TODO(matthias): add setBlock
+// TODO(matthias): add interface contract
+// TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
+// TODO(matthias): use own memory optimized to required number of elements
 template <typename FloatType, sint32 Size, bool isLower>
 class TriangularMatrix: public SquareMatrix<FloatType, Size>
 {

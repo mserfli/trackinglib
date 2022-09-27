@@ -8,6 +8,7 @@ namespace tracking
 namespace math
 {
 
+// TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
 class CovarianceMatrixFull: public SquareMatrix<FloatType, Size>
 {
@@ -36,6 +37,7 @@ inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> Covariance
   CovarianceMatrixFull<FloatType, Size>   inv{};
   TriangularMatrix<FloatType, Size, true> L{};
 
+  // TODO(matthias): move implementation into solver class
   auto isOk = this->decomposeLLT(L);
   assert(isOk && "covariance not positive definite");
 

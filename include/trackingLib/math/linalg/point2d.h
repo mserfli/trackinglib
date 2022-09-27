@@ -8,6 +8,8 @@ namespace tracking
 namespace math
 {
 
+// TODO(matthias): add downcast from Point3d
+// TODO(matthias): add interface contract
 template <typename FloatType>
 class Point2d: public Vector<FloatType, 2>
 {

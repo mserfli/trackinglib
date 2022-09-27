@@ -10,6 +10,7 @@ namespace tracking
 namespace math
 {
 
+// TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
 class CovarianceMatrixFactored
 {

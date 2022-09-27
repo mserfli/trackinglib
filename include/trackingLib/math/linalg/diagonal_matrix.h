@@ -7,7 +7,8 @@ namespace tracking
 {
 namespace math
 {
-
+// TODO(matthias): add setBlock
+// TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
 class DiagonalMatrix: public SquareMatrix<FloatType, Size>
 {

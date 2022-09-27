@@ -24,6 +24,8 @@ namespace math
 template <typename FloatType, sint32 Size, bool isLower>
 class TriangularMatrix;
 
+// TODO(matthias): add doxygen
+// TODO(matthias): add setBlock
 template <typename FloatType, sint32 Rows, sint32 Cols>
 class Matrix : public contract::MatrixIntf<Matrix<FloatType, Rows, Cols>>
 {
@@ -54,6 +56,9 @@ public:
 
   void        setZero();
   static auto Zero() -> self;
+
+  void        setOnes();
+  static auto Ones() -> self;
 
   auto transpose() const -> Matrix<FloatType, Cols, Rows>;
 
@@ -143,6 +148,20 @@ auto Matrix<FloatType, Rows, Cols>::Zero() -> self
 {
   self tmp;
   tmp.setZero();
+  return tmp;
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline void Matrix<FloatType, Rows, Cols>::setOnes()
+{
+  _data.setOnes();
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+auto Matrix<FloatType, Rows, Cols>::Ones() -> self
+{
+  self tmp;
+  tmp.setOnes();
   return tmp;
 }
 
