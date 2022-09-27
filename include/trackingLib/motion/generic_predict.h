@@ -2,9 +2,10 @@
 #define CFE4ADAC_CBD6_4488_B120_96D9FBE6C1A5
 
 #include "base/atomic_types.h"
-#include "motion/state_mem.h"
+#include "base/utility.h"
 #include "env/ego_motion.h"
 #include "filter/kalman_filter.h"
+#include "motion/state_mem.h"
 
 namespace tracking
 {
@@ -46,10 +47,7 @@ public:
 };
 
 
-template <typename MotionModel,
-          typename FloatType,
-          template <typename FloatType_, sint32 Size>
-          class CovarianceMatrixType>
+template <typename MotionModel, typename FloatType, template <typename FloatType_, sint32 Size> class CovarianceMatrixType>
 class Predict
 {
 };
@@ -58,9 +56,7 @@ template <typename MotionModel, typename FloatType>
 class Predict<MotionModel, FloatType, math::CovarianceMatrixFull>: public PredictCommon<MotionModel, FloatType>
 {
 public:
-  void run(const FloatType                        dt,
-           const filter::KalmanFilter<FloatType>& filter,
-           const env::EgoMotion<FloatType>&       egoMotion)
+  void run(const FloatType dt, const filter::KalmanFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion)
   {
     assert(dt >= 0.0F);
     auto& underlying = static_cast<MotionModel&>(*this);
@@ -68,9 +64,8 @@ public:
     static PredictStorage<MotionModel> data;
     PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
-    typename MotionModel::StateCovPtr P(
-        new typename MotionModel::StateCov(data.Go * (underlying.getCov() * data.Go.transpose()) +
-                                           data.Ge * (egoMotion.getDisplacementCog().cov * data.Ge.transpose())));
+    auto P = make_unique<typename MotionModel::StateCov>(data.Go * (underlying.getCov() * data.Go.transpose()) +
+                                                         data.Ge * (egoMotion.getDisplacementCog().cov * data.Ge.transpose()));
 
     filter.predictCovariance(*P, data.A, data.G, data.Q);
 
@@ -82,9 +77,7 @@ template <typename MotionModel, typename FloatType>
 class Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>: public PredictCommon<MotionModel, FloatType>
 {
 public:
-  void run(const FloatType                        dt,
-           const filter::KalmanFilter<FloatType>& filter,
-           const env::EgoMotion<FloatType>&       egoMotion)
+  void run(const FloatType dt, const filter::KalmanFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion)
   {
     assert(dt >= 0.0F);
     auto& underlying = static_cast<MotionModel&>(*this);
@@ -97,7 +90,7 @@ public:
     static typename MotionModel::AugmentedProcessNoiseDiagMatrix    Qstar; // [De 0; 0 G]
     static typename MotionModel::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
 
-    typename MotionModel::StateCovPtr P(new typename MotionModel::StateCov(underlying.getCov()));
+    auto P = make_unique<typename MotionModel::StateCov>(underlying.getCov());
 
     filter.predictCovariance(*P, AGo, Gstar, Qstar);
 
