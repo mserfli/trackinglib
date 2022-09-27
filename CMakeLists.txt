@@ -37,6 +37,8 @@ FetchContent_MakeAvailable (
 # generate compile_commands.json used by clang-tidy
 add_definitions(-DCMAKE_EXPORT_COMPILE_COMMANDS=1)
 
+# create header only library 
+# based on https://github.com/bernedom/SI and https://discourse.cmake.org/t/header-only-library/5476
 add_library(${PROJECT_NAME} INTERFACE)
 # add alias so the project can be uses with add_subdirectory
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
@@ -55,9 +57,7 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
 
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
 
-#add_custom_target(examples)
-#add_subdirectory(examples)
-
+add_subdirectory(examples)
 add_subdirectory(tests)
 
 # locations are provided by GNUInstallDirs

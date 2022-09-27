@@ -1,19 +1,19 @@
 #include "base/atomic_types.h"
-#include "base/covariance_matrix_full.h"
-#include "base/diagonal_matrix.h"
-#include "base/matrix.h"
-#include "base/square_matrix.h"
-#include "base/triangular_matrix.h"
-#include "base/vector.h"
-#include "base/point2d.h"
+#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/square_matrix.h"
+#include "math/linalg/triangular_matrix.h"
+#include "math/linalg/vector.h"
+#include "math/linalg/point2d.h"
 
-using tracking::base::Matrix;
-using tracking::base::SquareMatrix;
-using tracking::base::TriangularMatrix;
-using tracking::base::DiagonalMatrix;
-using tracking::base::CovarianceMatrixFull;
-using tracking::base::Vector;
-using tracking::base::Point2d;
+using tracking::math::Matrix;
+using tracking::math::SquareMatrix;
+using tracking::math::TriangularMatrix;
+using tracking::math::DiagonalMatrix;
+using tracking::math::CovarianceMatrixFull;
+using tracking::math::Vector;
+using tracking::math::Point2d;
 auto main() -> int
 {
   {
