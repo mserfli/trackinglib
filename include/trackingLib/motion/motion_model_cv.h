@@ -13,6 +13,8 @@ namespace tracking
 namespace motion
 {
 
+// TODO(matthias): add interface contract
+// TODO(matthias): add doxygen
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 class MotionModelCV
     : public ExtendedMotionModel<MotionModelCV<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 4>

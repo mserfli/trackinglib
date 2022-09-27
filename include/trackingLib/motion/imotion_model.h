@@ -11,6 +11,8 @@ namespace tracking
 namespace motion
 {
 
+// TODO(matthias): add interface contract
+// TODO(matthias): add doxygen
 template <typename FloatType>
 class IMotionModel
 {

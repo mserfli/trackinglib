@@ -10,6 +10,8 @@ namespace tracking
 namespace filter
 {
 
+// TODO(matthias): add interface contract
+// TODO(matthias): add doxygen
 template <typename FloatType>
 struct KalmanFilter
 {
