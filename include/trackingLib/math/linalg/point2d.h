@@ -1,6 +1,7 @@
 #ifndef FFCF1757_A52C_4BEF_BFD6_2475D08B37C6
 #define FFCF1757_A52C_4BEF_BFD6_2475D08B37C6
 
+#include "base/first_include.h"
 #include "math/linalg/vector.h"
 
 namespace tracking
@@ -42,7 +43,7 @@ public:
   /// \return FloatType 
   auto y() -> FloatType&;
 
-private:
+TEST_REMOVE_PRIVATE:
   /// \brief hide inherited operator[] to prevent wrong access
   using Vector<FloatType, 2>::operator[];
 };

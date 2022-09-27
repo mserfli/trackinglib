@@ -137,7 +137,7 @@ public:
     _data = std::move(other);
   }
 
-private:
+TEST_REMOVE_PRIVATE:
   T _data{};
 };
 

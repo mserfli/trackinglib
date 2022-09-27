@@ -1,6 +1,7 @@
 #ifndef D190DD96_01E1_4A50_8090_B1337EB3B42E
 #define D190DD96_01E1_4A50_8090_B1337EB3B42E
 
+#include "base/first_include.h"
 #include "math/linalg/vector.h"
 
 namespace tracking
@@ -50,7 +51,7 @@ public:
   /// \return FloatType 
   auto z() -> FloatType&;
 
-private:
+TEST_REMOVE_PRIVATE:
   /// \brief hide inherited operator[] to prevent wrong access
   using Vector<FloatType, 3>::operator[];
 };

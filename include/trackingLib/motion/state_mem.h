@@ -1,7 +1,7 @@
 #ifndef D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 #define D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 
-#include "base/utility.h"
+#include "base/first_include.h"
 #include "math/linalg/matrix.h"
 #include "math/linalg/vector.h"
 
@@ -34,7 +34,7 @@ public:
   void setVec(StateVecPtr&& vec) { _vec = std::move(vec); }
   void setCov(StateCovPtr&& cov) { _cov = std::move(cov); }
 
-private:
+TEST_REMOVE_PRIVATE:
   StateVecPtr _vec{make_unique<StateVec>()};
   StateCovPtr _cov{make_unique<StateCov>()};
 };

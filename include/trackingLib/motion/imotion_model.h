@@ -1,7 +1,7 @@
 #ifndef D33C0BB9_EF21_44C6_8DAD_0C38C418D824
 #define D33C0BB9_EF21_44C6_8DAD_0C38C418D824
 
-#include "base/atomic_types.h"
+#include "base/first_include.h"
 #include "motion/state_mem.h"
 #include "env/ego_motion.h"
 #include "filter/kalman_filter.h"

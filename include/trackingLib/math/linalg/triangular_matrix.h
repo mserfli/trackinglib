@@ -1,8 +1,8 @@
 #ifndef BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 #define BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 
+#include "base/first_include.h"
 #include "math/linalg/square_matrix.h"
-#include <type_traits>
 
 namespace tracking
 {
@@ -61,7 +61,7 @@ public:
   template <sint32 Cols>
   auto solve(const Matrix<FloatType, Size, Cols>& b) -> Matrix<FloatType, Size, Cols>;
 
-private:
+TEST_REMOVE_PRIVATE:
   /// \brief hide inherited transpose function
   using SquareMatrix<FloatType, Size>::transpose;
 

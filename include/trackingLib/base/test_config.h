@@ -3,9 +3,11 @@
 
 #ifdef TEST_BUILD
 #define TEST_REMOVE_PROTECTED public
+#define TEST_REMOVE_PRIVATE public
 #define TEST_VIRTUAL virtual
 #else
 #define TEST_REMOVE_PROTECTED protected
+#define TEST_REMOVE_PRIVATE private
 #define TEST_VIRTUAL
 #endif
 

@@ -1,8 +1,7 @@
 #ifndef FDEAAACC_9EF1_4C87_94DC_2FA494822664
 #define FDEAAACC_9EF1_4C87_94DC_2FA494822664
 
-#include "base/atomic_types.h"
-#include "base/config.h"
+#include "base/first_include.h"
 #include "math/linalg/contracts/matrix_intf.h"
 #include <cmath>
 #include <iostream>

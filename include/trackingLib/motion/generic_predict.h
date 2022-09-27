@@ -1,8 +1,7 @@
 #ifndef CFE4ADAC_CBD6_4488_B120_96D9FBE6C1A5
 #define CFE4ADAC_CBD6_4488_B120_96D9FBE6C1A5
 
-#include "base/atomic_types.h"
-#include "base/utility.h"
+#include "base/first_include.h"
 #include "env/ego_motion.h"
 #include "filter/kalman_filter.h"
 #include "motion/state_mem.h"

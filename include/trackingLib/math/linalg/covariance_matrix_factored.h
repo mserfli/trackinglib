@@ -1,7 +1,7 @@
 #ifndef F9044FD7_A3A8_43F4_BDD6_F43011384722
 #define F9044FD7_A3A8_43F4_BDD6_F43011384722
 
-#include "base/atomic_types.h"
+#include "base/first_include.h"
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/triangular_matrix.h"
 
@@ -25,7 +25,7 @@ public:
   explicit CovarianceMatrixFactored(const SquareMatrix<FloatType, Size>& other);
   explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType, Size, false>& u, const DiagonalMatrix<FloatType, Size>& d);
 
-private:
+TEST_REMOVE_PRIVATE:
   TriangularMatrix<FloatType, Size, false> _u{};
   DiagonalMatrix<FloatType, Size>          _d{};
 };

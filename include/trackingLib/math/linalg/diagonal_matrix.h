@@ -1,6 +1,7 @@
 #ifndef EDCA948E_6A98_4AF3_8A01_916736E1577B
 #define EDCA948E_6A98_4AF3_8A01_916736E1577B
 
+#include "base/first_include.h"
 #include "math/linalg/square_matrix.h"
 
 namespace tracking
@@ -54,7 +55,7 @@ public:
   /// \return FloatType  Scalar diagonal value
   auto operator[](const sint32 idx) const -> FloatType;
 
-private:
+TEST_REMOVE_PRIVATE:
   /// \brief hide inherited operator() to prevent accessing off-diagonal elements
   using SquareMatrix<FloatType, Size>::operator();
 

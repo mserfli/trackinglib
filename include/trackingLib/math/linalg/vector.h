@@ -1,6 +1,7 @@
 #ifndef CE10BDD8_6874_4771_89BA_D153438C3E01
 #define CE10BDD8_6874_4771_89BA_D153438C3E01
 
+#include "base/first_include.h"
 #include "math/linalg/matrix.h"
 
 namespace tracking
@@ -56,7 +57,7 @@ public:
   /// \return Vector<FloatType, Size>
   auto normalize() const -> Vector<FloatType, Size>;
 
-private:
+TEST_REMOVE_PRIVATE:
   /// \brief hide inherited operator() to prevent col!=0 access
   using Matrix<FloatType, Size, 1>::operator();
 };

@@ -1,6 +1,7 @@
 #ifndef BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08
 #define BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08
 
+#include "base/first_include.h"
 #include "math/linalg/matrix.h"
 #include <limits>
 

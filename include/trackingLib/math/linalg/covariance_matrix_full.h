@@ -1,6 +1,7 @@
 #ifndef DD2B2494_7486_42BA_84E2_32308E26DBBC
 #define DD2B2494_7486_42BA_84E2_32308E26DBBC
 
+#include "base/first_include.h"
 #include "math/linalg/square_matrix.h"
 
 namespace tracking

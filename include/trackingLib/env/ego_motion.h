@@ -1,6 +1,7 @@
 #ifndef EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8
 #define EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8
 
+#include "base/first_include.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/point2d.h"
 #include "math/linalg/vector.h"
@@ -64,7 +65,7 @@ public:
                            const FloatType dxOldEgo,
                            const FloatType dyOldEgo) const;
 
-private:
+TEST_REMOVE_PRIVATE:
   using Point2d = math::Point2d<FloatType>;
   Geometry     _geometry{};
   Displacement _displacementCog{};

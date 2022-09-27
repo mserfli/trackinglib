@@ -1,10 +1,11 @@
 #ifndef FA800472_29A5_4B6F_90A0_4283A0D513D6
 #define FA800472_29A5_4B6F_90A0_4283A0D513D6
 
+#include "base/first_include.h"
+#include "env/ego_motion.h"
 #include "math/linalg/covariance_matrix_factored.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/matrix.h"
-#include "env/ego_motion.h"
 #include "motion/generic_predict.h"
 #include "motion/imotion_model.h"
 
@@ -37,8 +38,7 @@ public:
     NUM_STATE_VARIABLES
   };
 
-  using SuperGenericPredictor =
-      generic::Predict<MotionModelCV<CovarianceMatrixType, FloatType>, FloatType, CovarianceMatrixType>;
+  using SuperGenericPredictor = generic::Predict<MotionModelCV<CovarianceMatrixType, FloatType>, FloatType, CovarianceMatrixType>;
   using SuperExtendedMotionModel =
       ExtendedMotionModel<MotionModelCV<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 4>;
   using StateVec = typename SuperExtendedMotionModel::StateVec;
@@ -100,7 +100,9 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::computeA(StateMatrix& A, co
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMotionMappingMatrix& Ge, StateMatrix& Go, const EgoMotion& egoMotion)
+void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMotionMappingMatrix& Ge,
+                                                                         StateMatrix&            Go,
+                                                                         const EgoMotion&        egoMotion)
 {
   FloatType& x = this->operator[](StateDef::X);
   FloatType& y = this->operator[](StateDef::Y);

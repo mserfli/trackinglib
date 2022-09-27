@@ -1,4 +1,4 @@
-#include "base/atomic_types.h"
+#include "base/first_include.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/matrix.h"
