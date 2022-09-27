@@ -3,7 +3,14 @@
 
 #include <type_traits>
 
-// Curiously_recurring_template_pattern 
+namespace tracking
+{
+namespace base
+{
+namespace contract
+{
+
+// Curiously_recurring_template_pattern
 // https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 
 // since C++0x
@@ -27,6 +34,11 @@
     static bool const value = sizeof(chk<_T>(0)) == sizeof(yes);                                                                 \
   }
 
+#define ERR_MSG_MISSING_FUNCTION "missing function"
+
+} // namespace contract
+} // namespace base
+} // namespace tracking
 // --- an example ----------------------------------------------------------------------------------------------------------------
 // template <typename ImplementationType>
 // struct Interface
@@ -36,7 +48,8 @@
 //     static_assert(has_bar<ImplementationType, void (ImplementationType::*)(int) const>::value,
 //                   "interface not correctly implemented");
 
-//     static_assert(!has_bar<ImplementationType, void (ImplementationType::*)(int)>::value, "interface not correctly implemented");
+//     static_assert(!has_bar<ImplementationType, void (ImplementationType::*)(int)>::value, "interface not correctly
+//     implemented");
 //   }
 //   DECLARE_HAS_MEM_FUNC(bar, has_bar);
 // };

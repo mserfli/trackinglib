@@ -1,12 +1,11 @@
 #ifndef EDCA948E_6A98_4AF3_8A01_916736E1577B
 #define EDCA948E_6A98_4AF3_8A01_916736E1577B
 
-#include "base/atomic_types.h"
-#include "base/square_matrix.h"
+#include "math/linalg/square_matrix.h"
 
 namespace tracking
 {
-namespace base
+namespace math
 {
 
 template <typename FloatType, sint32 Size>
@@ -119,7 +118,7 @@ inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) const 
   return this->operator()(idx, idx);
 }
 
-} // namespace base
+} // namespace math
 } // namespace tracking
 
 #endif // EDCA948E_6A98_4AF3_8A01_916736E1577B

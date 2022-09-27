@@ -1,9 +1,9 @@
 #ifndef DA0115C7_88CB_4774_A6A3_54764AF1BF9D
 #define DA0115C7_88CB_4774_A6A3_54764AF1BF9D
 
-#include "base/covariance_matrix_factored.h"
-#include "base/covariance_matrix_full.h"
-#include "base/diagonal_matrix.h"
+#include "math/linalg/covariance_matrix_factored.h"
+#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/diagonal_matrix.h"
 
 namespace tracking
 {

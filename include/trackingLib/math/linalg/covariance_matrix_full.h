@@ -1,11 +1,11 @@
 #ifndef DD2B2494_7486_42BA_84E2_32308E26DBBC
 #define DD2B2494_7486_42BA_84E2_32308E26DBBC
 
-#include "base/square_matrix.h"
+#include "math/linalg/square_matrix.h"
 
 namespace tracking
 {
-namespace base
+namespace math
 {
 
 template <typename FloatType, sint32 Size>
@@ -48,7 +48,7 @@ inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> Covariance
   return inv;
 }
 
-} // namespace base
+} // namespace math
 } // namespace tracking
 
 #endif // DD2B2494_7486_42BA_84E2_32308E26DBBC

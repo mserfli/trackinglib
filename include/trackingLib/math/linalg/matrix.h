@@ -16,7 +16,7 @@
 
 namespace tracking
 {
-namespace base
+namespace math
 {
 
 // forward declaration to prevent cyclic includes
@@ -206,7 +206,7 @@ auto operator/(const Matrix<FloatType, Rows, Cols>& m, FloatType scalar) -> Matr
   return (temp /= scalar);
 }
 
-} // namespace base
+} // namespace math
 } // namespace tracking
 
 #endif // FDEAAACC_9EF1_4C87_94DC_2FA494822664

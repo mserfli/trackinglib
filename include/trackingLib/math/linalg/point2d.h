@@ -1,11 +1,11 @@
 #ifndef FFCF1757_A52C_4BEF_BFD6_2475D08B37C6
 #define FFCF1757_A52C_4BEF_BFD6_2475D08B37C6
 
-#include "base/vector.h"
+#include "math/linalg/vector.h"
 
 namespace tracking
 {
-namespace base
+namespace math
 {
 
 template <typename FloatType>
@@ -83,7 +83,7 @@ inline auto Point2d<FloatType>::y() -> FloatType&
   return this->operator[](1);
 }
 
-} // namespace base
+} // namespace math
 } // namespace tracking
 
 #endif // FFCF1757_A52C_4BEF_BFD6_2475D08B37C6

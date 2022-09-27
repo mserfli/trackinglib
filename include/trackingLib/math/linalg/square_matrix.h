@@ -1,12 +1,12 @@
 #ifndef BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08
 #define BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08
 
-#include "base/matrix.h"
+#include "math/linalg/matrix.h"
 #include <limits>
 
 namespace tracking
 {
-namespace base
+namespace math
 {
 
 // forward declaration to prevent cyclic includes
@@ -160,6 +160,6 @@ inline auto SquareMatrix<FloatType, Size>::decomposeUDUT(TriangularMatrix<FloatT
   return true;
 }
 
-} // namespace base
+} // namespace math
 } // namespace tracking
 #endif // BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08

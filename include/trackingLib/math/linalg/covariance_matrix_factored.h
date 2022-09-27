@@ -1,14 +1,13 @@
 #ifndef F9044FD7_A3A8_43F4_BDD6_F43011384722
 #define F9044FD7_A3A8_43F4_BDD6_F43011384722
 
-#include "base/diagonal_matrix.h"
-#include "base/matrix.h"
-#include "base/square_matrix.h"
-#include "base/triangular_matrix.h"
+#include "base/atomic_types.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/triangular_matrix.h"
 
 namespace tracking
 {
-namespace base
+namespace math
 {
 
 template <typename FloatType, sint32 Size>
@@ -30,7 +29,7 @@ private:
   DiagonalMatrix<FloatType, Size>          _d{};
 };
 
-} // namespace base
+} // namespace math
 } // namespace tracking
 
 #endif // F9044FD7_A3A8_43F4_BDD6_F43011384722

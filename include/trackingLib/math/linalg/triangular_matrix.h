@@ -1,11 +1,11 @@
 #ifndef BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 #define BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 
-#include "base/square_matrix.h"
+#include "math/linalg/square_matrix.h"
 
 namespace tracking
 {
-namespace base
+namespace math
 {
 
 template <typename FloatType, sint32 Size, bool isLower>
@@ -121,6 +121,6 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::solve(const Matrix<Float
   return x;
 }
 
-} // namespace base
+} // namespace math
 } // namespace tracking
 #endif // BC7FD90F_FBB7_481C_89C4_89BEE41309C5

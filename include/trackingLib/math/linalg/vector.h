@@ -1,11 +1,11 @@
 #ifndef CE10BDD8_6874_4771_89BA_D153438C3E01
 #define CE10BDD8_6874_4771_89BA_D153438C3E01
 
-#include "base/matrix.h"
+#include "math/linalg/matrix.h"
 
 namespace tracking
 {
-namespace base
+namespace math
 {
 
 template <typename FloatType, sint32 Size>
@@ -84,7 +84,7 @@ inline auto Vector<FloatType,Size>::norm() const -> FloatType
   return std::sqrt(normSq());
 }
 
-} // namespace base
+} // namespace math
 } // namespace tracking
 
 #endif // CE10BDD8_6874_4771_89BA_D153438C3E01
