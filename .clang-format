@@ -29,13 +29,17 @@ SpaceBeforeInheritanceColon: 'false'
 
 IncludeBlocks: Merge
 IncludeCategories:
+  - Regex: '^\".*first_include'
+    Priority: -2
+  - Regex: '^\".*test_config'
+    Priority: -1
   - Regex: '^\"'
     Priority: 1000
-  - Regex: '^<google/cloud/'
+  - Regex: '^\"base/'
     Priority: 1500
-  - Regex: '^<grpc/'
+  - Regex: '^\"math/'
     Priority: 2000
-  - Regex: '^<google/'
+  - Regex: '^\"(base|env|filter|motion)/'
     Priority: 3000
   - Regex: '^<[^>]*/'
     Priority: 4000

@@ -28,27 +28,27 @@ public:
   Point3d<FloatType>(const FloatType x, const FloatType y, const FloatType z);
 
   /// \brief Read access to x value
-  /// \return FloatType 
+  /// \return FloatType
   auto x() const -> FloatType;
 
   /// \brief Read access to y value
-  /// \return FloatType 
+  /// \return FloatType
   auto y() const -> FloatType;
 
   /// \brief Read access to z value
-  /// \return FloatType 
+  /// \return FloatType
   auto z() const -> FloatType;
 
   /// \brief Write access to x value
-  /// \return FloatType 
+  /// \return FloatType
   auto x() -> FloatType&;
 
   /// \brief Write access to y value
-  /// \return FloatType 
+  /// \return FloatType
   auto y() -> FloatType&;
 
   /// \brief Write access to z value
-  /// \return FloatType 
+  /// \return FloatType
   auto z() -> FloatType&;
 
   // clang-format off

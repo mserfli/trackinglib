@@ -3,13 +3,16 @@
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
 // instatiate all templates for full coverage report
-template class tracking::math::TriangularMatrix<float32, 3, true>; 
-template class tracking::math::TriangularMatrix<float32, 3, false>; 
-template auto  tracking::math::TriangularMatrix<float32, 3, false>::solve<1>(const tracking::math::Matrix<float32, 3, 1>&) const -> Matrix<float32, 3, 1>;
-template void  tracking::math::TriangularMatrix<float32, 3, false>::setBlock<2, 2, 0, 0, 0, 0>(const tracking::math::TriangularMatrix<float32, 2, false>&);
+template class tracking::math::TriangularMatrix<float32, 3, true>;
+template class tracking::math::TriangularMatrix<float32, 3, false>;
+template auto tracking::math::TriangularMatrix<float32, 3, false>::solve<1>(const tracking::math::Matrix<float32, 3, 1>&) const
+    -> Matrix<float32, 3, 1>;
+template void tracking::math::TriangularMatrix<float32, 3, false>::setBlock<2, 2, 0, 0, 0, 0>(
+    const tracking::math::TriangularMatrix<float32, 2, false>&);
 
-TEST(TriangularMatrix, setBlock_lowerTopLeft) 
+TEST(TriangularMatrix, setBlock_lowerTopLeft)
 {
+    // clang-format off
     tracking::math::TriangularMatrix<float32, 3, true> lowerTriaMat(
       {{1, 0, 0}, 
        {1, 1, 0}, 
@@ -21,15 +24,17 @@ TEST(TriangularMatrix, setBlock_lowerTopLeft)
       {{2, 0, 0}, 
        {4, 3, 0}, 
        {1, 1, 1}});
-    
-    // call UUT
-    lowerTriaMat.setBlock<2, 2, 0, 0, 0, 0>(lowerTriaBlockMat);
+  // clang-format on
 
-    EXPECT_EQ(expMat._data, lowerTriaMat._data);
+  // call UUT
+  lowerTriaMat.setBlock<2, 2, 0, 0, 0, 0>(lowerTriaBlockMat);
+
+  EXPECT_EQ(expMat._data, lowerTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_lowerBottomLeft) 
+TEST(TriangularMatrix, setBlock_lowerBottomLeft)
 {
+    // clang-format off
     tracking::math::TriangularMatrix<float32, 3, true> lowerTriaMat(
       {{1, 0, 0}, 
        {1, 1, 0}, 
@@ -41,15 +46,17 @@ TEST(TriangularMatrix, setBlock_lowerBottomLeft)
       {{1, 0, 0}, 
        {2, 1, 0}, 
        {4, 3, 1}});
-    
-    // call UUT
-    lowerTriaMat.setBlock<2, 2, 0, 0, 1, 0>(lowerTriaBlockMat);
+  // clang-format on
 
-    EXPECT_EQ(expMat._data, lowerTriaMat._data);
+  // call UUT
+  lowerTriaMat.setBlock<2, 2, 0, 0, 1, 0>(lowerTriaBlockMat);
+
+  EXPECT_EQ(expMat._data, lowerTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_lowerBottomRight) 
+TEST(TriangularMatrix, setBlock_lowerBottomRight)
 {
+    // clang-format off
     tracking::math::TriangularMatrix<float32, 3, true> lowerTriaMat(
       {{1, 0, 0}, 
        {1, 1, 0}, 
@@ -61,15 +68,17 @@ TEST(TriangularMatrix, setBlock_lowerBottomRight)
       {{1, 0, 0}, 
        {1, 2, 0}, 
        {1, 4, 3}});
-    
-    // call UUT
-    lowerTriaMat.setBlock<2, 2, 0, 0, 1, 1>(lowerTriaBlockMat);
+  // clang-format on
 
-    EXPECT_EQ(expMat._data, lowerTriaMat._data);
+  // call UUT
+  lowerTriaMat.setBlock<2, 2, 0, 0, 1, 1>(lowerTriaBlockMat);
+
+  EXPECT_EQ(expMat._data, lowerTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_upperTopLeft) 
+TEST(TriangularMatrix, setBlock_upperTopLeft)
 {
+    // clang-format off
     tracking::math::TriangularMatrix<float32, 3, false> upperTriaMat(
       {{1, 1, 1}, 
        {0, 1, 1}, 
@@ -81,15 +90,17 @@ TEST(TriangularMatrix, setBlock_upperTopLeft)
       {{2, 4, 1}, 
        {0, 3, 1}, 
        {0, 0, 1}});
-    
-    // call UUT
-    upperTriaMat.setBlock<2, 2, 0, 0, 0, 0>(upperTriaBlockMat);
+  // clang-format on
 
-    EXPECT_EQ(expMat._data, upperTriaMat._data);
+  // call UUT
+  upperTriaMat.setBlock<2, 2, 0, 0, 0, 0>(upperTriaBlockMat);
+
+  EXPECT_EQ(expMat._data, upperTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_upperTopRight) 
+TEST(TriangularMatrix, setBlock_upperTopRight)
 {
+    // clang-format off
     tracking::math::TriangularMatrix<float32, 3, false> upperTriaMat(
       {{1, 1, 1}, 
        {0, 1, 1}, 
@@ -101,15 +112,17 @@ TEST(TriangularMatrix, setBlock_upperTopRight)
       {{1, 2, 4}, 
        {0, 1, 3}, 
        {0, 0, 1}});
-    
-    // call UUT
-    upperTriaMat.setBlock<2, 2, 0, 0, 0, 1>(upperTriaBlockMat);
+  // clang-format on
 
-    EXPECT_EQ(expMat._data, upperTriaMat._data);
+  // call UUT
+  upperTriaMat.setBlock<2, 2, 0, 0, 0, 1>(upperTriaBlockMat);
+
+  EXPECT_EQ(expMat._data, upperTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_upperBottomRight) 
+TEST(TriangularMatrix, setBlock_upperBottomRight)
 {
+    // clang-format off
     tracking::math::TriangularMatrix<float32, 3, false> upperTriaMat(
       {{1, 1, 1}, 
        {0, 1, 1}, 
@@ -121,10 +134,11 @@ TEST(TriangularMatrix, setBlock_upperBottomRight)
       {{1, 1, 1}, 
        {0, 2, 4}, 
        {0, 0, 3}});
-    
-    // call UUT
-    upperTriaMat.setBlock<2, 2, 0, 0, 1, 1>(upperTriaBlockMat);
+  // clang-format on
+  
+  // call UUT
+  upperTriaMat.setBlock<2, 2, 0, 0, 1, 1>(upperTriaBlockMat);
 
-    EXPECT_EQ(expMat._data, upperTriaMat._data);
+  EXPECT_EQ(expMat._data, upperTriaMat._data);
 }
 // NOLINTEND(modernize-use-trailing-return-type)

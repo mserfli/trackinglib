@@ -21,10 +21,10 @@ public:
   /// \param[in] other A base class object
   Vector(const Matrix<FloatType, Size, 1>& other); // NOLINT(google-explicit-constructor)
 
-  /// \brief Create unit vector 
+  /// \brief Create unit vector
   /// \tparam Row  Index position equal to 1
-  /// \return Vector<FloatType, Size> 
-  template<sint32 Row>
+  /// \return Vector<FloatType, Size>
+  template <sint32 Row>
   static auto unitVector() -> Vector<FloatType, Size>;
 
   /// \brief Element read-only access to a scalar vector value
@@ -72,7 +72,7 @@ Vector<FloatType, Size>::Vector(const Matrix<FloatType, Size, 1>& other)
 }
 
 template <typename FloatType, sint32 Size>
-template<sint32 Row>
+template <sint32 Row>
 static inline auto Vector<FloatType, Size>::unitVector() -> Vector<FloatType, Size>
 {
   auto tmp(Vector<FloatType, Size>::zero());
@@ -114,7 +114,7 @@ inline auto Vector<FloatType, Size>::norm() const -> FloatType
 template <typename FloatType, sint32 Size>
 inline void Vector<FloatType, Size>::normalize()
 {
-  auto length = norm();
+  auto  length = norm();
   this->operator/=(length);
 }
 

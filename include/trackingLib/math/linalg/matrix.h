@@ -70,20 +70,25 @@ public:
   /// \tparam DstRowBeg    Begin row index in dest
   /// \tparam DstColBeg    Begin col index in dest
   /// \param[in] block     Source block matrix to copy from
-  template <sint32 SrcRowSize, sint32 SrcColSize, sint32 SrcRowCount, sint32 SrcColCount, 
-            sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
+  template <sint32 SrcRowSize,
+            sint32 SrcColSize,
+            sint32 SrcRowCount,
+            sint32 SrcColCount,
+            sint32 SrcRowBeg,
+            sint32 SrcColBeg,
+            sint32 DstRowBeg,
+            sint32 DstColBeg>
   void setBlock(const Matrix<FloatType, SrcRowSize, SrcColSize>& block);
 
   auto transpose() const -> Matrix<FloatType, Cols, Rows>;
 
   void print() const;
 
-   // clang-format off
+  // clang-format off
 TEST_REMOVE_PROTECTED:
   ; // workaround for correct indentation
   // clang-format on
-  Eigen::Matrix<FloatType, Rows, Cols>
-            _data{}; // TODO(matthias): make this a unique_ptr to profit from move ctor/assignment
+  Eigen::Matrix<FloatType, Rows, Cols> _data{}; // TODO(matthias): make this a unique_ptr to profit from move ctor/assignment
 
   template <typename U, sint32 Rows_, sint32 Cols_>
   friend class Matrix; // needed to access member _data in operator*=
@@ -184,8 +189,14 @@ auto Matrix<FloatType, Rows, Cols>::ones() -> self
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-template <sint32 SrcRowSize, sint32 SrcColSize, sint32 SrcRowCount, sint32 SrcColCount, 
-          sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
+template <sint32 SrcRowSize,
+          sint32 SrcColSize,
+          sint32 SrcRowCount,
+          sint32 SrcColCount,
+          sint32 SrcRowBeg,
+          sint32 SrcColBeg,
+          sint32 DstRowBeg,
+          sint32 DstColBeg>
 void Matrix<FloatType, Rows, Cols>::setBlock(const Matrix<FloatType, SrcRowSize, SrcColSize>& block)
 {
   static_assert((SrcRowCount > 1) && (SrcColCount > 1), "use scalar access operator for block copy size == 1");

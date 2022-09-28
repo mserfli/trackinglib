@@ -1,14 +1,14 @@
 #include "base/first_include.h"
-#include "math/linalg/covariance_matrix_factored.h"
-#include "math/linalg/covariance_matrix_full.h"
 #include "env/ego_motion.h"
 #include "filter/kalman_filter.h"
+#include "math/linalg/covariance_matrix_factored.h"
+#include "math/linalg/covariance_matrix_full.h"
 #include "motion/motion_model_cv.h"
 
-using tracking::math::CovarianceMatrixFactored;
-using tracking::math::CovarianceMatrixFull;
 using tracking::env::EgoMotion;
 using tracking::filter::KalmanFilter;
+using tracking::math::CovarianceMatrixFactored;
+using tracking::math::CovarianceMatrixFull;
 using tracking::motion::IMotionModel;
 using tracking::motion::MotionModelCV;
 

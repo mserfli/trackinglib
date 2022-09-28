@@ -28,19 +28,19 @@ public:
   Point2d<FloatType>(const FloatType x, const FloatType y);
 
   /// \brief Read access to x value
-  /// \return FloatType 
+  /// \return FloatType
   auto x() const -> FloatType;
 
   /// \brief Read access to y value
-  /// \return FloatType 
+  /// \return FloatType
   auto y() const -> FloatType;
 
   /// \brief Write access to x value
-  /// \return FloatType 
+  /// \return FloatType
   auto x() -> FloatType&;
 
   /// \brief Write access to y value
-  /// \return FloatType 
+  /// \return FloatType
   auto y() -> FloatType&;
 
   // clang-format off
