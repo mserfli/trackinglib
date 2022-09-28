@@ -39,7 +39,7 @@ TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
   StateVecPtr _vec{make_unique<StateVec>()};
-  StateCovPtr _cov{make_unique<StateCov>()};
+  StateCovPtr _cov{make_unique<StateCov>(StateCov::Identity())};
 };
 
 } // namespace motion

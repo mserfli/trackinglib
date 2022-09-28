@@ -34,21 +34,21 @@ public:
 
   struct Geometry
   {
-    FloatType width;
-    FloatType length;
-    FloatType height;
+    FloatType width{};
+    FloatType length{};
+    FloatType height{};
 
-    FloatType distCog2Ego;
-    FloatType distFrontAxle2Ego;
-    FloatType distFrontAxle2RearAxle;
+    FloatType distCog2Ego{};
+    FloatType distFrontAxle2Ego{};
+    FloatType distFrontAxle2RearAxle{};
   };
 
   struct Displacement
   {
-    DisplacementVec vec;
-    DisplacementCov cov;
-    FloatType       sinDeltaPsi;
-    FloatType       cosDeltaPsi;
+    DisplacementVec vec{};
+    DisplacementCov cov{DisplacementCov::Identity()};
+    FloatType       sinDeltaPsi{0.0};
+    FloatType       cosDeltaPsi{1.0};
   };
 
   auto getDeltaTime() const -> FloatType { return _dt; }
