@@ -4,6 +4,8 @@ project(trackingLib
         VERSION 0.1.0
 )
 
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -13,6 +15,14 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 include(FetchContent)
+
+FetchContent_Declare (
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG v1.12.x
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE 
+)
 
 FetchContent_Declare (
     Eigen
@@ -31,8 +41,16 @@ set(BUILD_TESTING OFF)
 set(EIGEN_BUILD_PKGCONFIG OFF)
 
 FetchContent_MakeAvailable (
+    googletest
     Eigen
 )
+
+# activate code coverage
+include(coverage)
+append_coverage_compiler_flags()
+
+enable_testing()
+include(GoogleTest)
 
 # generate compile_commands.json used by clang-tidy
 add_definitions(-DCMAKE_EXPORT_COMPILE_COMMANDS=1)
@@ -58,6 +76,7 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
 
 add_subdirectory(examples)
+
 add_subdirectory(tests)
 
 # locations are provided by GNUInstallDirs

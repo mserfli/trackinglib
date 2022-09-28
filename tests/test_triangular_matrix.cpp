@@ -2,6 +2,11 @@
 #include <trackingLib/math/linalg/triangular_matrix.h>
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
+// instatiate all templates for full coverage report
+template class tracking::math::TriangularMatrix<float32, 3, true>; 
+template class tracking::math::TriangularMatrix<float32, 3, false>; 
+template auto  tracking::math::TriangularMatrix<float32, 3, false>::solve<1>(const tracking::math::Matrix<float32, 3, 1>&) const -> Matrix<float32, 3, 1>;
+template void  tracking::math::TriangularMatrix<float32, 3, false>::setBlock<2, 2, 0, 0, 0, 0>(const tracking::math::TriangularMatrix<float32, 2, false>&);
 
 TEST(TriangularMatrix, setBlock_lowerTopLeft) 
 {
