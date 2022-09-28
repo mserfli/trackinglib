@@ -13,8 +13,11 @@ template <typename FloatType, sint32 Size>
 class DiagonalMatrix: public SquareMatrix<FloatType, Size>
 {
 public:
-  /// \brief Inherit Rule of 5 behavior from base class
-  using SquareMatrix<FloatType, Size>::SquareMatrix;
+  DiagonalMatrix() = default;
+  DiagonalMatrix(const DiagonalMatrix<FloatType, Size>& other) = default;
+  DiagonalMatrix(DiagonalMatrix<FloatType, Size>&&) noexcept = default;
+  auto operator=(const DiagonalMatrix<FloatType, Size>&) -> DiagonalMatrix<FloatType, Size>& = default;
+  auto operator=(DiagonalMatrix<FloatType, Size>&&) noexcept -> DiagonalMatrix<FloatType, Size>& = default;
 
   /// \brief Construct a new Diagonal Matrix object
   /// \param[in] other

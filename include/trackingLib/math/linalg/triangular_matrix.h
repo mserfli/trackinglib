@@ -16,8 +16,11 @@ template <typename FloatType, sint32 Size, bool isLower>
 class TriangularMatrix: public SquareMatrix<FloatType, Size>
 {
 public:
-  /// \brief Inherit Rule of 5 behavior from base class
-  using SquareMatrix<FloatType, Size>::SquareMatrix;
+  TriangularMatrix() = default;
+  TriangularMatrix(const TriangularMatrix<FloatType, Size, isLower>& other) = default;
+  TriangularMatrix(TriangularMatrix<FloatType, Size, isLower>&&) noexcept = default;
+  auto operator=(const TriangularMatrix<FloatType, Size, isLower>&) -> TriangularMatrix<FloatType, Size, isLower>& = default;
+  auto operator=(TriangularMatrix<FloatType, Size, isLower>&&) noexcept -> TriangularMatrix<FloatType, Size, isLower>& = default;
 
   /// \brief Construct a new Triangular Matrix object
   /// \param[in] other
@@ -62,13 +65,14 @@ public:
   auto solve(const Matrix<FloatType, Size, Cols>& b) const -> Matrix<FloatType, Size, Cols>;
 
   /// \brief Calculates the inverse of the underlying matrix
-  /// \return TriangularMatrix<FloatType, Size, !isLower>
-  auto inverse() const -> TriangularMatrix<FloatType, Size, !isLower>;
+  /// \return TriangularMatrix<FloatType, Size, isLower>
+  auto inverse() const -> TriangularMatrix<FloatType, Size, isLower>;
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround to keep following idententation
   // clang-format on
+private:
   /// \brief hide inherited transpose function
   using SquareMatrix<FloatType, Size>::transpose;
 
@@ -160,7 +164,8 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::operator()(sint32 row, s
 template <typename FloatType, sint32 Size, bool isLower>
 inline auto TriangularMatrix<FloatType, Size, isLower>::transpose() const -> TriangularMatrix<FloatType, Size, !isLower>
 {
-  return SquareMatrix<FloatType, Size>::transpose();
+  // TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
+  return TriangularMatrix<FloatType, Size, !isLower>(SquareMatrix<FloatType, Size>::transpose());
 }
 
 template <typename FloatType, sint32 Size, bool isLower>
@@ -176,11 +181,9 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::solve(const Matrix<Float
 }
 
 template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::inverse() const -> TriangularMatrix<FloatType, Size, !isLower>
+inline auto TriangularMatrix<FloatType, Size, isLower>::inverse() const -> TriangularMatrix<FloatType, Size, isLower>
 {
-  SquareMatrix<FloatType, Size> sol = std::forward<SquareMatrix<FloatType, Size>>(
-      this->solve(std::forward<Matrix<FloatType, Size, Size>>(SquareMatrix<FloatType, Size>::Identity())));
-  return sol;
+  return TriangularMatrix<FloatType, Size, isLower>(this->solve(SquareMatrix<FloatType, Size>::Identity()));
 }
 
 } // namespace math
