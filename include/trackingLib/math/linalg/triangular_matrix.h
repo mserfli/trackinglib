@@ -72,7 +72,6 @@ public:
 TEST_REMOVE_PRIVATE:
   ; // workaround to keep following idententation
   // clang-format on
-private:
   /// \brief hide inherited transpose function
   using SquareMatrix<FloatType, Size>::transpose;
 
