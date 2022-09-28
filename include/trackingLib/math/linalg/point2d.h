@@ -43,7 +43,10 @@ public:
   /// \return FloatType 
   auto y() -> FloatType&;
 
+  // clang-format off
 TEST_REMOVE_PRIVATE:
+  ; // workaround for correct indentation
+  // clang-format on
   /// \brief hide inherited operator[] to prevent wrong access
   using Vector<FloatType, 2>::operator[];
 };

@@ -25,7 +25,10 @@ public:
   explicit CovarianceMatrixFactored(const SquareMatrix<FloatType, Size>& other);
   explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType, Size, false>& u, const DiagonalMatrix<FloatType, Size>& d);
 
+  // clang-format off
 TEST_REMOVE_PRIVATE:
+  ; // workaround for correct indentation
+  // clang-format on
   TriangularMatrix<FloatType, Size, false> _u{};
   DiagonalMatrix<FloatType, Size>          _d{};
 };

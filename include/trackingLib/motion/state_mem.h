@@ -34,7 +34,10 @@ public:
   void setVec(StateVecPtr&& vec) { _vec = std::move(vec); }
   void setCov(StateCovPtr&& cov) { _cov = std::move(cov); }
 
+  // clang-format off
 TEST_REMOVE_PRIVATE:
+  ; // workaround for correct indentation
+  // clang-format on
   StateVecPtr _vec{make_unique<StateVec>()};
   StateCovPtr _cov{make_unique<StateCov>()};
 };

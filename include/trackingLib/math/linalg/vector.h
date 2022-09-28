@@ -57,7 +57,10 @@ public:
   /// \return Vector<FloatType, Size>
   auto normalize() const -> Vector<FloatType, Size>;
 
+  // clang-format off
 TEST_REMOVE_PRIVATE:
+  ; // workaround for correct indentation
+  // clang-format on
   /// \brief hide inherited operator() to prevent col!=0 access
   using Matrix<FloatType, Size, 1>::operator();
 };

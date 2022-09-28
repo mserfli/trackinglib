@@ -137,7 +137,10 @@ public:
     _data = std::move(other);
   }
 
+  // clang-format off
 TEST_REMOVE_PRIVATE:
+  ; // workaround for correct indentation
+  // clang-format on
   T _data{};
 };
 

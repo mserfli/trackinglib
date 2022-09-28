@@ -60,12 +60,12 @@ public:
                           const FloatType posXOldEgo,
                           const FloatType posYOldEgo) const;
 
-  void compensateDirection(FloatType&      dxNewEgo,
-                           FloatType&      dyNewEgo,
-                           const FloatType dxOldEgo,
-                           const FloatType dyOldEgo) const;
+  void compensateDirection(FloatType& dxNewEgo, FloatType& dyNewEgo, const FloatType dxOldEgo, const FloatType dyOldEgo) const;
 
+  // clang-format off
 TEST_REMOVE_PRIVATE:
+  ; // workaround for correct indentation
+  // clang-format on
   using Point2d = math::Point2d<FloatType>;
   Geometry     _geometry{};
   Displacement _displacementCog{};

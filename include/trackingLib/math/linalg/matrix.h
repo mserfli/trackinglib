@@ -78,8 +78,11 @@ public:
 
   void print() const;
 
-  TEST_REMOVE_PROTECTED
-      : Eigen::Matrix<FloatType, Rows, Cols>
+   // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround for correct indentation
+  // clang-format on
+  Eigen::Matrix<FloatType, Rows, Cols>
             _data{}; // TODO(matthias): make this a unique_ptr to profit from move ctor/assignment
 
   template <typename U, sint32 Rows_, sint32 Cols_>
