@@ -59,9 +59,16 @@ public:
   /// \param[in] b  Matrix describing the rhs of the equation A*x=b
   /// \return Matrix<FloatType, Size, Cols> describing x
   template <sint32 Cols>
-  auto solve(const Matrix<FloatType, Size, Cols>& b) -> Matrix<FloatType, Size, Cols>;
+  auto solve(const Matrix<FloatType, Size, Cols>& b) const -> Matrix<FloatType, Size, Cols>;
 
+  /// \brief Calculates the inverse of the underlying matrix
+  /// \return TriangularMatrix<FloatType, Size, !isLower>
+  auto inverse() const -> TriangularMatrix<FloatType, Size, !isLower>;
+
+  // clang-format off
 TEST_REMOVE_PRIVATE:
+  ; // workaround to keep following idententation
+  // clang-format on
   /// \brief hide inherited transpose function
   using SquareMatrix<FloatType, Size>::transpose;
 
@@ -158,7 +165,7 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::transpose() const -> Tri
 
 template <typename FloatType, sint32 Size, bool isLower>
 template <sint32 Cols>
-inline auto TriangularMatrix<FloatType, Size, isLower>::solve(const Matrix<FloatType, Size, Cols>& b)
+inline auto TriangularMatrix<FloatType, Size, isLower>::solve(const Matrix<FloatType, Size, Cols>& b) const
     -> Matrix<FloatType, Size, Cols>
 {
   Matrix<FloatType, Size, Cols> x;
@@ -166,6 +173,14 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::solve(const Matrix<Float
   // depending on UpLoType .solve does a forward/backward substitution
   x._data = this->_data.template triangularView<UpLoType>().solve(b._data);
   return x;
+}
+
+template <typename FloatType, sint32 Size, bool isLower>
+inline auto TriangularMatrix<FloatType, Size, isLower>::inverse() const -> TriangularMatrix<FloatType, Size, !isLower>
+{
+  SquareMatrix<FloatType, Size> sol = std::forward<SquareMatrix<FloatType, Size>>(
+      this->solve(std::forward<Matrix<FloatType, Size, Size>>(SquareMatrix<FloatType, Size>::Identity())));
+  return sol;
 }
 
 } // namespace math

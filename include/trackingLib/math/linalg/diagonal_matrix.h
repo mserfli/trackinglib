@@ -55,7 +55,17 @@ public:
   /// \return FloatType  Scalar diagonal value
   auto operator[](const sint32 idx) const -> FloatType;
 
+  /// \brief Calculates the inverse
+  /// \return DiagonalMatrix<FloatType, Size>
+  auto inverse() const -> DiagonalMatrix<FloatType, Size>;
+
+  /// \brief Calculates the inverse inplace
+  void inverse();
+
+  // clang-format off
 TEST_REMOVE_PRIVATE:
+  ; // workaround to keep following idententation
+  // clang-format on
   /// \brief hide inherited operator() to prevent accessing off-diagonal elements
   using SquareMatrix<FloatType, Size>::operator();
 
@@ -146,6 +156,24 @@ template <typename FloatType, sint32 Size>
 inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) const -> FloatType
 {
   return this->operator()(idx, idx);
+}
+
+template <typename FloatType, sint32 Size>
+inline auto DiagonalMatrix<FloatType, Size>::inverse() const -> DiagonalMatrix<FloatType, Size>
+{
+  DiagonalMatrix<FloatType, Size> tmp{*this};
+  tmp.inverse();
+  return tmp;
+}
+
+template <typename FloatType, sint32 Size>
+inline void DiagonalMatrix<FloatType, Size>::inverse()
+{
+  // TODO(matthias): use range based for loop as soon as DiagonalMatrix is not anymore a SquareMatrix and is more like a Vector
+  for (sint32 idx = 0; idx < Size; ++idx)
+  {
+    this->operator[](idx) = static_cast<FloatType>(1.0) / this->operator[](idx);
+  }
 }
 
 } // namespace math
