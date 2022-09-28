@@ -29,7 +29,7 @@ public:
                                     const bool                                      isInverse = false);
 
   /// \brief Creates the composed covariance
-  /// \return CovarianceMatrixFull<FloatType, Size> 
+  /// \return CovarianceMatrixFull<FloatType, Size>
   auto compose() const -> CovarianceMatrixFull<FloatType, Size>;
 
   /// \brief Calculates the inverse
@@ -65,11 +65,12 @@ template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFactored<FloatType, Size>::compose() const -> CovarianceMatrixFull<FloatType, Size>
 {
   CovarianceMatrixFull<FloatType, Size> cov{};
-  if(_isInverse)
+  if (_isInverse)
   {
     cov = _u.transpose() * _d * _u;
   }
-  else {
+  else
+  {
     cov = _u * _d * _u.transpose();
   }
   return cov;
