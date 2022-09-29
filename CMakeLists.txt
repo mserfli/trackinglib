@@ -32,6 +32,14 @@ FetchContent_Declare (
     GIT_PROGRESS TRUE 
 )
 
+FetchContent_Declare (
+    pybind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11
+    GIT_TAG stable
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE 
+)
+
 set(EIGEN_BUILD_DOC OFF)
 # note: To disable eigen tests,
 # you should put this code in a add_subdirectory to avoid to change
@@ -43,6 +51,7 @@ set(EIGEN_BUILD_PKGCONFIG OFF)
 FetchContent_MakeAvailable (
     googletest
     Eigen
+    pybind11
 )
 
 # activate code coverage
@@ -76,7 +85,7 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
 
 add_subdirectory(examples)
-
+add_subdirectory(python)
 add_subdirectory(tests)
 
 # locations are provided by GNUInstallDirs
