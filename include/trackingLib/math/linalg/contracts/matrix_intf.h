@@ -4,6 +4,7 @@
 #include "base/interface_contract.h"
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"
+#include <type_traits>
 
 namespace tracking
 {
@@ -22,6 +23,7 @@ struct MatrixIntf
       , base::contract::RequireMoveIntf<ImplType>()
 
   {
+    static_assert(std::is_floating_point<typename ImplType::value_type>());
     static_assert(has_setZero<ImplType, void (ImplType::*)()>::value, ERR_MSG_MISSING_FUNCTION);
   }
 
