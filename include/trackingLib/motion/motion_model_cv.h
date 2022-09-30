@@ -116,7 +116,7 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
   const FloatType  deltaYEgo = egoMotion.getDisplacementCog().vec[EgoMotion::DS_Y];
   const FloatType  distCog2Ego = egoMotion.getGeometry().distCog2Ego;
 
-  Go.setZero();
+  Go.setZeros();
   Go(X, X) = cosDeltaPsiEgo;
   Go(X, Y) = sinDeltaPsiEgo;
   Go(Y, X) = -sinDeltaPsiEgo;
@@ -128,7 +128,7 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
 
   const FloatType x0 = -deltaYEgo + y;
   const FloatType x1 = deltaXEgo - distCog2Ego - x;
-  Ge.setZero();
+  Ge.setZeros();
   Ge(X, EgoMotion::DS_X) = -cosDeltaPsiEgo;
   Ge(X, EgoMotion::DS_Y) = -sinDeltaPsiEgo;
   Ge(X, EgoMotion::DS_PSI) = (x0 * cosDeltaPsiEgo) + (x1 * sinDeltaPsiEgo);
@@ -155,7 +155,7 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::computeG(ProcessNoiseMappin
 {
   const FloatType halfDeltaTimePow2 = static_cast<FloatType>(0.5) * dt * dt;
 
-  G.setZero();
+  G.setZeros();
   G(X, Q_VX) = halfDeltaTimePow2;
   G(VX, Q_VX) = dt;
   G(Y, Q_VY) = halfDeltaTimePow2;

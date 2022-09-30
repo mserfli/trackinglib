@@ -29,10 +29,11 @@ class TriangularMatrix;
 // TODO(matthias): add support for external memory
 // TODO(matthias): add template params to support coord transformations (inFrame e.g. EGO_k_1, outFrame, power -> 2 for covs)
 template <typename FloatType, sint32 Rows, sint32 Cols>
-class Matrix: public contract::MatrixIntf<Matrix<FloatType, Rows, Cols>>
+class Matrix: public contract::MatrixIntf<Matrix<FloatType, Rows, Cols>, Matrix>
 {
 public:
-  using self = Matrix<FloatType, Rows, Cols>;
+  using instance_type = Matrix<FloatType, Rows, Cols>;
+  using transpose_type = Matrix<FloatType, Cols, Rows>;
   using value_type = FloatType;
   static constexpr auto rows = Rows;
   static constexpr auto cols = Cols;
@@ -47,25 +48,25 @@ public:
   /// \param[in] list  An initializer list describing list of matrix rows
   Matrix(const std::initializer_list<std::initializer_list<FloatType>>& list);
 
-  explicit Matrix(const std::array<FloatType, static_cast<size_t>(Rows * Cols)>& arr);
+  explicit Matrix(const std::array<FloatType, static_cast<size_t>(Rows* Cols)>& arr);
 
   auto operator()(sint32 row, sint32 col) const -> FloatType;
   auto operator()(sint32 row, sint32 col) -> FloatType&;
 
-  auto operator+=(const self& other) -> self&;
-  auto operator-=(const self& other) -> self&;
+  auto operator+=(const instance_type& other) -> instance_type&;
+  auto operator-=(const instance_type& other) -> instance_type&;
 
   template <sint32 Cols2>
   auto operator*=(const Matrix<FloatType, Cols, Cols2>& other) -> Matrix<FloatType, Rows, Cols2>;
 
-  auto operator*=(FloatType scalar) -> self&;
-  auto operator/=(FloatType scalar) -> self&;
+  auto operator*=(FloatType scalar) -> instance_type&;
+  auto operator/=(FloatType scalar) -> instance_type&;
 
-  void        setZero();
-  static auto zero() -> self;
+  void        setZeros();
+  static auto zeros() -> instance_type;
 
   void        setOnes();
-  static auto ones() -> self;
+  static auto ones() -> instance_type;
 
   /// \brief Set a block matrix at given position
   /// \tparam SrcRowSize   Rows of the source block
@@ -87,7 +88,7 @@ public:
             sint32 DstColBeg>
   void setBlock(const Matrix<FloatType, SrcRowSize, SrcColSize>& block);
 
-  auto transpose() const -> Matrix<FloatType, Cols, Rows>;
+  auto transpose() const -> transpose_type;
 
   void print() const;
 
@@ -114,7 +115,7 @@ Matrix<FloatType, Rows, Cols>::Matrix(const std::initializer_list<std::initializ
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-Matrix<FloatType, Rows, Cols>::Matrix(const std::array<FloatType, static_cast<size_t>(Rows * Cols)>& arr)
+Matrix<FloatType, Rows, Cols>::Matrix(const std::array<FloatType, static_cast<size_t>(Rows* Cols)>& arr)
     : _data{Eigen::Map<const Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(arr.data(), Rows, Cols)}
 {
 }
@@ -136,14 +137,14 @@ inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) ->
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator+=(const self& other) -> self&
+inline auto Matrix<FloatType, Rows, Cols>::operator+=(const instance_type& other) -> instance_type&
 {
   _data += other._data;
   return *this;
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator-=(const self& other) -> self&
+inline auto Matrix<FloatType, Rows, Cols>::operator-=(const instance_type& other) -> instance_type&
 {
   _data -= other._data;
   return *this;
@@ -160,13 +161,13 @@ inline auto Matrix<FloatType, Rows, Cols>::operator*=(const Matrix<FloatType, Co
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator*=(FloatType scalar) -> self&
+inline auto Matrix<FloatType, Rows, Cols>::operator*=(FloatType scalar) -> instance_type&
 {
   _data *= scalar;
   return *this;
 }
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scalar) -> self&
+inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scalar) -> instance_type&
 {
   assert(std::abs(scalar) > static_cast<FloatType>(0.0));
   _data /= scalar;
@@ -174,16 +175,16 @@ inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scalar) -> self&
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline void Matrix<FloatType, Rows, Cols>::setZero()
+inline void Matrix<FloatType, Rows, Cols>::setZeros()
 {
   _data.setZero();
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::zero() -> self
+auto Matrix<FloatType, Rows, Cols>::zeros() -> instance_type
 {
-  self tmp;
-  tmp.setZero();
+  instance_type tmp;
+  tmp.setZeros();
   return tmp;
 }
 
@@ -194,9 +195,9 @@ inline void Matrix<FloatType, Rows, Cols>::setOnes()
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::ones() -> self
+auto Matrix<FloatType, Rows, Cols>::ones() -> instance_type
 {
-  self tmp;
+  instance_type tmp;
   tmp.setOnes();
   return tmp;
 }

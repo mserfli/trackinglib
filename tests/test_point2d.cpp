@@ -5,7 +5,8 @@
 
 TEST(IntMatrixBasicOpTest, AddingTwoMatrix)
 {
-  tracking::math::Point2d<float32> a;
+  auto a = tracking::math::Point2d<float32>::ones();
+  auto b = tracking::math::Point2d<float32>::zeros();
   EXPECT_EQ(1, 1);
 }
 

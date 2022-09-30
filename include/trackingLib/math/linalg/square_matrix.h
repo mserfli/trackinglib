@@ -76,7 +76,7 @@ inline auto SquareMatrix<FloatType, Size>::decomposeLLT(TriangularMatrix<FloatTy
   bool isOk = (llt.info() == Eigen::Success);
   if (isOk)
   {
-    L.setZero();
+    L.setZeros();
     const auto& internalL = llt.matrixL();
     // copy lower triangular elements of internal matrix
     for (sint32 col = 0; col < Size; ++col)
