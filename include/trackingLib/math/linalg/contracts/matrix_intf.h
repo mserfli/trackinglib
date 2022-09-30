@@ -76,12 +76,12 @@ struct MatrixIntf
     static_assert(has_round_brackets_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(has_mul_assign_op<ImplType, ClassName, ImplType::rows - 1>, ERR_MSG_MISSING_FUNCTION);
 #else
-    static_assert(has_member_func_setZero<ImplType>::value, ERR_MSG_MISSING_FUNCTION);
+    static_assert(has_member_func_setZeros<ImplType>::value, ERR_MSG_MISSING_FUNCTION);
     static_assert(has_member_func_setOnes<ImplType>::value, ERR_MSG_MISSING_FUNCTION);
 #endif
   }
 
-  CREATE_MEMBER_FUNC_SIG_CHECK(setZero, void (ImplType::*)(), setZero);
+  CREATE_MEMBER_FUNC_SIG_CHECK(setZeros, void (ImplType::*)(), setZeros);
   CREATE_MEMBER_FUNC_SIG_CHECK(setOnes, void (ImplType::*)(), setOnes);
   // CREATE_MEMBER_FUNC_SIG_CHECK(transpose, typename ImplType::self(ImplType::*)(), transpose);
 };
