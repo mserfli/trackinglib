@@ -5,7 +5,9 @@
 #include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
+#include "motion/generic_predict_common.h"
 #include "motion/state_mem.h"
+
 
 namespace tracking
 {
@@ -14,52 +16,7 @@ namespace motion
 namespace generic
 {
 
-/// \brief Base class for common calculations needed for any prediction
-/// \tparam MotionModel  The underlying motion model
-/// \tparam FloatType    The float type representation
-template <typename MotionModel, typename FloatType>
-class PredictCommon
-{
-public:
-  /// \brief Structure to store the precalculations
-  struct Storage
-  {
-    /// \brief Go defines the transformation of the state caused by the ego motion
-    typename MotionModel::StateMatrix Go{};
-    /// \brief Ge defines the propagated errors of the ego motion to the state space
-    typename MotionModel::EgoMotionMappingMatrix Ge{};
-
-    /// \brief A defines the state transition from k to k+1 and is calculated as the Jacobian for nonlinear process models
-    typename MotionModel::StateMatrix A{};
-    /// \brief Q defines the process noise
-    typename MotionModel::ProcessNoiseDiagMatrix Q{};
-    /// \brief G defines the transformation of the process noise to the full state space
-    typename MotionModel::ProcessNoiseMappingMatrix G{};
-  };
-
-  /// \brief Runner to calculate the common predict data for the predictor
-  /// \param[out] data       Output data storage for all precomputed results
-  /// \param[in]  dt         The delta time from last state to predicted state
-  /// \param[in]  egoMotion  The known egoMotion from last state to predicted state
-  void run(Storage& data, const FloatType dt, const env::EgoMotion<FloatType>& egoMotion)
-  {
-    auto& underlying = static_cast<MotionModel&>(*this);
-
-    // transform posteriori state into current frame
-    underlying.compensateEgoMotion(data.Ge, data.Go, egoMotion);
-
-    // apply state transition in current frame
-    underlying.computeA(data.A, dt);
-    underlying.applyDynamicalModel(dt);
-    // post: state is predicted
-
-    // calculate process noise and its contribution to the state
-    underlying.computeQ(data.Q, dt);
-    underlying.computeG(data.G, dt);
-  }
-};
-
-/// \brief Base class to extend any motion model with a generic prediction functionality
+/// \brief Base class to extend any motion model with a generic prediction functionality using the CRTP pattern
 /// \tparam MotionModel           The underlying MotionModel
 /// \tparam FloatType             The float type representation
 /// \tparam CovarianceMatrixType  The used covariance matrix type
@@ -81,12 +38,10 @@ public:
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
   void run(const FloatType dt, const filter::KalmanFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion)
   {
-    assert(dt >= 0.0F);
-    auto& underlying = static_cast<MotionModel&>(*this);
-
-    static typename PredictCommon<MotionModel, FloatType>::Storage data;
+    static typename PredictCommon<MotionModel, FloatType>::Storage data{};
     PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
+    auto& underlying = static_cast<MotionModel&>(*this);
     // apply ego motion compensation on P
     auto P = make_unique<typename MotionModel::StateCov>((data.Go * underlying.getCov() * data.Go.transpose()) +
                                                          (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose()));
@@ -102,12 +57,10 @@ public:
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
   void run(const FloatType dt, const filter::InformationFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion)
   {
-    assert(dt >= 0.0F);
-    auto& underlying = static_cast<MotionModel&>(*this);
-
-    static typename PredictCommon<MotionModel, FloatType>::Storage data;
+    static typename PredictCommon<MotionModel, FloatType>::Storage data{};
     PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
+    auto& underlying = static_cast<MotionModel&>(*this);
     assert(underlying.getCov().isInverse() && "covariance has to represent the inverse covariance");
 #if 0    
     // TODO(matthias): ego motion compensation is quite complicated here, maybe neglect influence of Ge*Pe*Ge'
@@ -126,7 +79,7 @@ public:
     filter.predictCovariance(*Y, data.A, data.G, data.Q);
 
     underlying.setCov(std::move(Y));
-  }
+  };
 };
 
 /// \brief Partial specialization of the generic predictor for a factored covariance matrix
@@ -142,15 +95,19 @@ public:
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
   void run(const FloatType dt, const filter::KalmanFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion)
   {
-    assert(dt >= 0.0F);
-    auto& underlying = static_cast<MotionModel&>(*this);
-
-    static typename PredictCommon<MotionModel, FloatType>::Storage data;
+    static typename PredictCommon<MotionModel, FloatType>::Storage data{};
     PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
+
+    auto& underlying = static_cast<MotionModel&>(*this);
 
     static typename MotionModel::StateMatrix AGo = data.A * data.Go;
 
-    static typename MotionModel::AugmentedProcessNoiseDiagMatrix    Qstar; // [De 0; 0 G]
+    // TODO(matthias): complete calculations of the factored predict
+
+    // TODO(matthias): Optimization - provide a new BlockDiagonal matrix class to reduce operations on known zero elements
+    static typename MotionModel::AugmentedProcessNoiseDiagMatrix Qstar; // [De 0; 0 Q]
+    // TODO(matthias): Optimization - we could also have a vector of matrices to avoid constructing augmented matrices with copy
+    // operations
     static typename MotionModel::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
 
     auto P = make_unique<typename MotionModel::StateCov>(underlying.getCov());
