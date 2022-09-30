@@ -26,6 +26,8 @@ public:
 
   virtual auto getX() const -> FloatType = 0;
   virtual auto getVx() const -> FloatType = 0;
+  virtual auto getY() const -> FloatType = 0;
+  virtual auto getVy() const -> FloatType = 0;
 
   // prediction is a functionality of the MotionModel (filter shall not know about egomotion compensation ...), tbd
   virtual void predict(const FloatType                        dt,
@@ -56,6 +58,7 @@ public:
   virtual ~ExtendedMotionModel() = default;
 
   auto getX() const -> FloatType final { return this->getVec()[MotionModel::X]; }
+  auto getY() const -> FloatType final { return this->getVec()[MotionModel::Y]; }
 };
 
 } // namespace motion

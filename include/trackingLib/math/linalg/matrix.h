@@ -47,7 +47,7 @@ public:
   /// \param[in] list  An initializer list describing list of matrix rows
   Matrix(const std::initializer_list<std::initializer_list<FloatType>>& list);
 
-  Matrix(const std::array<FloatType, Rows * Cols>& arr);
+  explicit Matrix(const std::array<FloatType, static_cast<size_t>(Rows * Cols)>& arr);
 
   auto operator()(sint32 row, sint32 col) const -> FloatType;
   auto operator()(sint32 row, sint32 col) -> FloatType&;
@@ -114,7 +114,7 @@ Matrix<FloatType, Rows, Cols>::Matrix(const std::initializer_list<std::initializ
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-Matrix<FloatType, Rows, Cols>::Matrix(const std::array<FloatType, Rows * Cols>& arr)
+Matrix<FloatType, Rows, Cols>::Matrix(const std::array<FloatType, static_cast<size_t>(Rows * Cols)>& arr)
     : _data{Eigen::Map<const Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(arr.data(), Rows, Cols)}
 {
 }

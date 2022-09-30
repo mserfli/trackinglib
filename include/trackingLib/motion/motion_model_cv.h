@@ -66,6 +66,7 @@ public:
 
 
   auto getVx() const -> FloatType final { return this->getVec()[StateDef::VX]; }
+  auto getVy() const -> FloatType final { return this->getVec()[StateDef::VY]; }
   // ... all the other virtual functions
 
   void predict(const FloatType                        dt,

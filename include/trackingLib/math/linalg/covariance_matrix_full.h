@@ -23,32 +23,13 @@ public:
 
   /// \brief Calculates the inverse based on Cholesky decomposition
   /// \return CovarianceMatrixFull<FloatType, Size>
-  auto inverse() const -> CovarianceMatrixFull<FloatType, Size>;
+  //auto inverse() const -> CovarianceMatrixFull<FloatType, Size> { return SquareMatrix<FloatType, Size>::inverse(); }
 };
 
 template <typename FloatType, sint32 Size>
 CovarianceMatrixFull<FloatType, Size>::CovarianceMatrixFull(const SquareMatrix<FloatType, Size>& other)
     : SquareMatrix<FloatType, Size>{other}
 {
-}
-
-template <typename FloatType, sint32 Size>
-inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> CovarianceMatrixFull<FloatType, Size>
-{
-  CovarianceMatrixFull<FloatType, Size>   inv{};
-  TriangularMatrix<FloatType, Size, true> L{};
-
-  // TODO(matthias): move implementation into solver class
-  auto isOk = this->decomposeLLT(L);
-  assert(isOk && "covariance not positive definite");
-
-  // L*(L'*Ainv) = eye(n,n)
-  // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
-  auto u = std::move(L.solve(SquareMatrix<FloatType, Size>::Identity()));
-  // L'*Ainv = u     -> solve for Ainv using backward substitution
-  inv = std::move(L.transpose().solve(u));
-
-  return inv;
 }
 
 } // namespace math

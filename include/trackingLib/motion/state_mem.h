@@ -29,7 +29,7 @@ public:
 
   // auto operator()(const sint32 row, const sint32 col) -> FloatType& { return (*_cov)(row, col); } // cannot be provided due to
   // factored covariance
-  auto operator()(const sint32 row, const sint32 col) const -> const FloatType& { return (*_cov)(row, col); }
+  auto operator()(const sint32 row, const sint32 col) const -> FloatType { return _cov->operator()(row, col); }
 
   void setVec(StateVecPtr&& vec) { _vec = std::move(vec); }
   void setCov(StateCovPtr&& cov) { _cov = std::move(cov); }

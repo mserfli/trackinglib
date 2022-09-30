@@ -56,6 +56,10 @@ public:
   /// \return true   if calculation was successful
   // TODO(matthias): use std::expected or sth similar as result type
   auto decomposeUDUT(TriangularMatrix<FloatType, Size, false>& U, DiagonalMatrix<FloatType, Size>& D) const -> bool;
+
+  /// \brief Calculates the inverse based on Cholesky factorization
+  /// \return SquareMatrix<FloatType, Size> 
+  auto inverse() const -> SquareMatrix<FloatType, Size>;
 };
 
 template <typename FloatType, sint32 Size>
@@ -160,6 +164,25 @@ inline auto SquareMatrix<FloatType, Size>::decomposeUDUT(TriangularMatrix<FloatT
     }
   }
   return true;
+}
+
+template <typename FloatType, sint32 Size>
+inline auto SquareMatrix<FloatType, Size>::inverse() const -> SquareMatrix<FloatType, Size>
+{
+  SquareMatrix<FloatType, Size> inv{};
+  TriangularMatrix<FloatType, Size, true> L{};
+
+  // TODO(matthias): move implementation into solver class
+  auto isOk = decomposeLLT(L);
+  assert(isOk && "matrix not positive definite");
+
+  // L*(L'*Ainv) = eye(n,n)
+  // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
+  auto u = std::move(L.solve(SquareMatrix<FloatType, Size>::Identity()));
+  // L'*Ainv = u     -> solve for Ainv using backward substitution
+  inv = std::move(L.transpose().solve(u));
+
+  return inv;
 }
 
 } // namespace math
