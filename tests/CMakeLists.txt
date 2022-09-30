@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.12)
 
 set(TEST_BINARY "testRunner")
 
-setup_target_for_coverage_lcov(
-          NAME lcov
-          EXECUTABLE ${TEST_BINARY}
-          BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
-          EXCLUDE "/Library/*" "/usr/include/*" "build/*" "examples/*" "tests/*")
+#setup_target_for_coverage_lcov(
+#          NAME lcov
+#          EXECUTABLE ${TEST_BINARY}
+#          BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
+#          EXCLUDE "/Library/*" "/usr/include/*" "build/*" "examples/*" "tests/*")
 
 add_compile_definitions(TEST_BUILD)
 add_executable(${TEST_BINARY})
@@ -16,6 +16,8 @@ target_sources(${TEST_BINARY} PRIVATE
     test_triangular_matrix.cpp
     test_diagonal_matrix.cpp
     test_covariance_matrix_factored.cpp
+    test_state_mem.cpp
+    test_motion_model_cv.cpp
 )
 target_include_directories(
     ${TEST_BINARY}
