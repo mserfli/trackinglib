@@ -55,8 +55,8 @@ FetchContent_MakeAvailable (
 )
 
 # activate code coverage
-include(coverage)
-append_coverage_compiler_flags()
+#include(coverage)
+#append_coverage_compiler_flags()
 
 enable_testing()
 include(GoogleTest)
