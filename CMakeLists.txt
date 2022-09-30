@@ -55,8 +55,8 @@ FetchContent_MakeAvailable (
 )
 
 # activate code coverage
-#include(coverage)
-#append_coverage_compiler_flags()
+include(coverage)
+append_coverage_compiler_flags()
 
 enable_testing()
 include(GoogleTest)
@@ -79,6 +79,7 @@ target_include_directories(
     INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}>
               $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
 
