@@ -2,6 +2,7 @@
 #define F9044FD7_A3A8_43F4_BDD6_F43011384722
 
 #include "base/first_include.h"
+#include "math/linalg/contracts/covariance_matrix_intf.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/triangular_matrix.h"
@@ -13,9 +14,10 @@ namespace math
 
 // TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
-class CovarianceMatrixFactored
+class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType, Size>>
 {
 public:
+  using value_type = FloatType;
   // rule of 5 declarations
   CovarianceMatrixFactored() = default;
   CovarianceMatrixFactored(const CovarianceMatrixFactored<FloatType, Size>&) = default;
@@ -32,6 +34,10 @@ public:
   /// \return CovarianceMatrixFactored<FloatType, Size>
   static auto Identity() -> CovarianceMatrixFactored<FloatType, Size>;
 
+  /// \brief Access operator to the covariance value at (row, col)
+  /// \param[in,out] row  The specified row
+  /// \param[in,out] col  The specified column
+  /// \return FloatType 
   auto operator()(sint32 row, sint32 col) const -> FloatType;
 
   /// \brief Creates the composed covariance

@@ -89,6 +89,23 @@ TEST(CovarianceMatrixFactored, inverse)
   }
 }
 
+TEST(CovarianceMatrixFactored, calcCovarianceElement)
+{
+  // clang-format off
+  tracking::math::CovarianceMatrixFactored<float32, 3> cov(
+    {{1, 2, 3}, 
+     {0, 4, 5}, 
+     {0, 0, 6}}, {1, 2, 4});
+
+  const float32 expCovElem = 120.0F;
+  // clang-format on
+
+  // call UUT
+  auto res = cov(1,2);
+
+  EXPECT_EQ(res, cov(2,1));
+  EXPECT_EQ(res, expCovElem);
+}
 
 // NOLINTEND(modernize-use-trailing-return-type)
 
