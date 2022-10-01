@@ -1,5 +1,5 @@
-#ifndef C50A72AB_25E1_45C6_93E5_6607B9D345E3
-#define C50A72AB_25E1_45C6_93E5_6607B9D345E3
+#ifndef D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47
+#define D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47
 
 #include "base/first_include.h"
 #include "base/interface_contract.h"
@@ -10,29 +10,29 @@
 
 namespace tracking
 {
-namespace math
+namespace motion
 {
 namespace contract
 {
 #if __cplusplus == 202002L
 // clang-format off
-namespace covariance
+namespace state_mem
 {
 template<typename T>
-concept has_identity_static_member_func = requires {
-  { std::declval<T>().Identity() } -> std::same_as<typename T::instance_type>;
+concept has_getVec_member_func = requires {
+  { std::declval<const T>().getVec() } -> std::same_as<typename T::ConstStateVec&>;
 };
 template<typename T>
-concept has_inverse_member_func = requires {
-  { std::declval<const T>().inverse() } -> std::same_as<typename T::instance_type>;
+concept has_getCov_member_func = requires {
+  { std::declval<const T>().getCov() } -> std::same_as<typename T::ConstStateCov&>;
 };
 template<typename T>
-concept has_round_brackets_op = requires {
-  { std::declval<T>().operator()() } -> std::same_as<typename T::compose_type&>;
+concept has_setVec_member_func = requires {
+  { std::declval<T>().setVec(std::declval<typename T::StateVecPtr>()) };
 };
 template<typename T>
-concept has_round_brackets_const_op = requires {
-  { std::declval<const T>().operator()() } -> std::same_as<typename T::compose_type>;
+concept has_setCov_member_func = requires {
+  { std::declval<T>().setCov(std::declval<typename T::StateCovPtr>()) };
 };
 template<typename T>
 concept has_round_brackets_const_op_int_int = requires {
@@ -55,11 +55,11 @@ concept has_square_brackets_op_int = requires {
 #endif
 
 template <typename ImplType>
-struct CovarianceMatrixIntf
+struct StateMemIntf
     : public base::contract::RequireCopyIntf<ImplType>
     , public base::contract::RequireMoveIntf<ImplType>
 {
-  CovarianceMatrixIntf()
+  StateMemIntf()
       : base::contract::RequireCopyIntf<ImplType>()
       , base::contract::RequireMoveIntf<ImplType>()
 
@@ -67,14 +67,14 @@ struct CovarianceMatrixIntf
     static_assert(std::is_floating_point<typename ImplType::value_type>());    
 
 #if __cplusplus == 202002L
-    static_assert(covariance::has_identity_static_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
-    static_assert(covariance::has_inverse_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
-    static_assert(covariance::has_round_brackets_const_op<ImplType>, ERR_MSG_MISSING_FUNCTION);
-    static_assert(covariance::has_round_brackets_const_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);
-    static_assert(!covariance::has_round_brackets_op<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
-    static_assert(!covariance::has_round_brackets_op_int_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
-    static_assert(!covariance::has_square_brackets_const_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
-    static_assert(!covariance::has_square_brackets_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
+    static_assert(state_mem::has_getVec_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(state_mem::has_getCov_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(state_mem::has_setVec_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(state_mem::has_setCov_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(state_mem::has_square_brackets_const_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
+    static_assert(state_mem::has_square_brackets_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
+    static_assert(state_mem::has_round_brackets_const_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(!state_mem::has_round_brackets_op_int_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
 #endif
   }
 };
@@ -83,4 +83,5 @@ struct CovarianceMatrixIntf
 } // namespace math
 } // namespace tracking
 
-#endif // C50A72AB_25E1_45C6_93E5_6607B9D345E3
+
+#endif // D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47

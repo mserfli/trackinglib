@@ -1,3 +1,4 @@
+#include "env/ego_motion.h"
 #include "gtest/gtest.h"
 #include <trackingLib/motion/motion_model_cv.h>
 
@@ -16,6 +17,7 @@ TEST(MotionModelCV, predict_fullCov)
   mm.setVec(make_unique<MM::StateVec>(vec));
   mm.setCov(make_unique<MM::StateCov>(cov));
   tracking::env::EgoMotion<float32>       egoMotion{};
+  egoMotion._displacementCog.vec[tracking::env::EgoMotion<float32>::DS_X] = 10.0F;
   tracking::filter::KalmanFilter<float32> kf;
   mm.predict(1.0F, kf, egoMotion);
 

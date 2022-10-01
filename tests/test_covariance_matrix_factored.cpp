@@ -1,6 +1,3 @@
-#ifndef DAA10430_EB68_4A70_84D3_DA8750F1DF05
-#define DAA10430_EB68_4A70_84D3_DA8750F1DF05
-
 #include "gtest/gtest.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include <trackingLib/math/linalg/covariance_matrix_factored.h>
@@ -108,5 +105,3 @@ TEST(CovarianceMatrixFactored, calcCovarianceElement)
 }
 
 // NOLINTEND(modernize-use-trailing-return-type)
-
-#endif // DAA10430_EB68_4A70_84D3_DA8750F1DF05

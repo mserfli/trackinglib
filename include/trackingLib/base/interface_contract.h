@@ -250,15 +250,8 @@ struct has_member
 // https://stackoverflow.com/questions/87372/check-if-a-class-has-a-member-function-of-a-given-signature
 //
 template <typename T, typename E, bool Const>
-struct has_round_brackets_const_op_int_int
+struct has_round_brackets_op_int_int
 {
-  /* SFINAE operator-has-correct-sig :) */
-  template <typename A>
-  static auto test(E (A::*)(int, int) const) -> std::true_type
-  {
-    return {};
-  }
-
   /* SFINAE operator-has-correct-sig :) */
   template <bool Const_, typename A>
   struct SignatureTest
@@ -274,7 +267,7 @@ struct has_round_brackets_const_op_int_int
   template <typename A>
   struct SignatureTest<false, A>
   {
-    static auto test(E (A::*)(int, int)) -> std::true_type { return {}; }
+    static auto test(E& (A::*)(int, int)) -> std::true_type { return {}; }
   };
 
   /* SFINAE operator-exists :) */
@@ -300,7 +293,7 @@ struct has_round_brackets_const_op_int_int
 };
 
 template <typename T, typename E, bool Const>
-struct has_square_brackets_const_op_int
+struct has_square_brackets_op_int
 {
   /* SFINAE operator-has-correct-sig :) */
   template <bool Const_, typename A>
@@ -317,7 +310,7 @@ struct has_square_brackets_const_op_int
   template <typename A>
   struct SignatureTest<false, A>
   {
-    static auto test(E (A::*)(int)) -> std::true_type { return {}; }
+    static auto test(E& (A::*)(int)) -> std::true_type { return {}; }
   };
 
   /* SFINAE operator-exists :) */

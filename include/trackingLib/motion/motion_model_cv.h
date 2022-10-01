@@ -120,11 +120,11 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
   FloatType& vx = this->operator[](StateDef::VX);
   FloatType& vy = this->operator[](StateDef::VY);
 
-  const FloatType& sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
-  const FloatType  cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
-  const FloatType  deltaXEgo = egoMotion.getDisplacementCog().vec[EgoMotion::DS_X];
-  const FloatType  deltaYEgo = egoMotion.getDisplacementCog().vec[EgoMotion::DS_Y];
-  const FloatType  distCog2Ego = egoMotion.getGeometry().distCog2Ego;
+  const FloatType sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
+  const FloatType cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
+  const FloatType deltaXEgo = egoMotion.getDisplacementCog().vec[EgoMotion::DS_X];
+  const FloatType deltaYEgo = egoMotion.getDisplacementCog().vec[EgoMotion::DS_Y];
+  const FloatType distCog2Ego = egoMotion.getGeometry().distCog2Ego;
 
   Go.setZeros();
   Go(X, X) = cosDeltaPsiEgo;
