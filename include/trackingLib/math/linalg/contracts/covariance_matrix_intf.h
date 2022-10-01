@@ -27,6 +27,14 @@ concept has_inverse_member_func = requires {
   { std::declval<const T>().inverse() } -> std::same_as<typename T::instance_type>;
 };
 template<typename T>
+concept has_round_brackets_op = requires {
+  { std::declval<T>().operator()() } -> std::same_as<typename T::compose_type&>;
+};
+template<typename T>
+concept has_round_brackets_const_op = requires {
+  { std::declval<const T>().operator()() } -> std::same_as<typename T::compose_type>;
+};
+template<typename T>
 concept has_round_brackets_const_op_int_int = requires {
   { std::declval<const T>().operator()(std::declval<int>(), std::declval<int>()) } -> std::same_as<typename T::value_type>;
 };
@@ -63,7 +71,9 @@ struct CovarianceMatrixIntf
 
 #if __cplusplus == 202002L
     static_assert(covariance::has_inverse_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(covariance::has_round_brackets_const_op<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_round_brackets_const_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(!covariance::has_round_brackets_op<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
     static_assert(!covariance::has_round_brackets_op_int_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
     static_assert(!covariance::has_square_brackets_const_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
     static_assert(!covariance::has_square_brackets_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);

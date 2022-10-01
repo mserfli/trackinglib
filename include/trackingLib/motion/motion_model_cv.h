@@ -38,11 +38,11 @@ public:
     NUM_STATE_VARIABLES
   };
 
-  using SuperGenericPredictor = generic::Predict<MotionModelCV<CovarianceMatrixType, FloatType>, FloatType, CovarianceMatrixType>;
-  using SuperExtendedMotionModel =
-      ExtendedMotionModel<MotionModelCV<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 4>;
-  using StateVec = typename SuperExtendedMotionModel::StateVec;
-  using StateCov = typename SuperExtendedMotionModel::StateCov;
+  using instance_type = MotionModelCV<CovarianceMatrixType, FloatType>;
+  using super_extended_mm_type = ExtendedMotionModel<instance_type, CovarianceMatrixType, FloatType, 4>;
+  using super_generic_predict_type = generic::Predict<instance_type, FloatType, CovarianceMatrixType>;
+  using StateVec = typename super_extended_mm_type::StateVec;
+  using StateCov = typename super_extended_mm_type::StateCov;
 
   using StateMatrix = math::SquareMatrix<FloatType, NUM_STATE_VARIABLES>;
   using ProcessNoiseDiagMatrix = math::DiagonalMatrix<FloatType, NUM_PROC_NOISE_VARIABLES>;
@@ -55,13 +55,12 @@ public:
   using AugmentedProcessNoiseDiagMatrix = math::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
   using AugmentedProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
 
+  // rule of 5 declarations
   MotionModelCV() = default;
-  MotionModelCV(const MotionModelCV<CovarianceMatrixType, FloatType>&) = default;
-  MotionModelCV(MotionModelCV<CovarianceMatrixType, FloatType>&&) noexcept = default;
-  auto operator=(const MotionModelCV<CovarianceMatrixType, FloatType>&)
-      -> MotionModelCV<CovarianceMatrixType, FloatType>& = default;
-  auto operator=(MotionModelCV<CovarianceMatrixType, FloatType>&&) noexcept
-      -> MotionModelCV<CovarianceMatrixType, FloatType>& = default;
+  MotionModelCV(const instance_type&) = default;
+  MotionModelCV(instance_type&&) noexcept = default;
+  auto operator=(const instance_type&) -> instance_type& = default;
+  auto operator=(instance_type&&) noexcept -> instance_type& = default;
   ~MotionModelCV() = default;
 
 
@@ -69,22 +68,45 @@ public:
   auto getVy() const -> FloatType final { return this->getVec()[StateDef::VY]; }
   // ... all the other virtual functions
 
+  /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
+  /// \param[in] dt         The delta time from last state to predicted state
+  /// \param[in] filter     The filter instance
+  /// \param[in] egoMotion  The known egoMotion from last state to predicted state
   void predict(const FloatType                        dt,
                const filter::KalmanFilter<FloatType>& filter,
                const env::EgoMotion<FloatType>&       egoMotion) final
   {
-    SuperGenericPredictor::run(dt, filter, egoMotion);
+    super_generic_predict_type::run(dt, filter, egoMotion);
   }
 
-  void        applyDynamicalModel(const FloatType dt);
-  void        computeA(StateMatrix& A, const FloatType dt) const;
-  void        compensateEgoMotion(EgoMotionMappingMatrix& Ge, StateMatrix& Go, const EgoMotion& egoMotion);
+  /// \brief Compensates the state according to the known ego motion and calculates Ge and Go for compensation of the covariance
+  /// \param[out] Ge        The propagated errors of the ego motion to the state space
+  /// \param[out] Go        The transformation of the state caused by the ego motion
+  /// \param[in]  egoMotion The known egoMotion from last state to predicted state
+  void compensateEgoMotion(EgoMotionMappingMatrix& Ge, StateMatrix& Go, const EgoMotion& egoMotion);
+
+  /// \brief Apply the state transition from k to k+1 defined by the process model
+  /// \param[in] dt         The delta time from last state to predicted state
+  void applyProcessModel(const FloatType dt);
+
+  /// \brief Compute matrix A using the 1st order linearisation of the state transition from k to k+1
+  /// \param[out] A         Linearisation of the state transition
+  /// \param[in]  dt        The delta time from last state to predicted state
+  void computeA(StateMatrix& A, const FloatType dt) const;
+
+  /// \brief Compute the diagonal process noise matrix Q.
+  /// \param[out] Q         The process noise
+  /// \param[in]  dt        The delta time from last state to predicted state
   static void computeQ(ProcessNoiseDiagMatrix& Q, const FloatType dt);
+
+  /// \brief Compute the matrix G to map the diagonoal process noise to the full state
+  /// \param[out] G         The transformation of the process noise to the full state space
+  /// \param[in]  dt        The delta time from last state to predicted state
   static void computeG(ProcessNoiseMappingMatrix& G, const FloatType dt);
 };
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::applyDynamicalModel(const FloatType dt)
+void MotionModelCV<CovarianceMatrixType, FloatType>::applyProcessModel(const FloatType dt)
 {
   const StateVec& stateVec = this->getVec();
 

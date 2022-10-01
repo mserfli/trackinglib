@@ -19,6 +19,7 @@ class CovarianceMatrixFull
 public:
   using instance_type = CovarianceMatrixFull<FloatType, Size>;
   using value_type = FloatType;
+  using compose_type = instance_type;
 
   /// \brief Inherit Rule of 5 behavior from base class
   using SquareMatrix<FloatType, Size>::SquareMatrix;
@@ -36,6 +37,11 @@ public:
   /// \brief Calculates the inverse based on Cholesky decomposition
   /// \return CovarianceMatrixFull<FloatType, Size>
   auto inverse() const -> CovarianceMatrixFull<FloatType, Size>;
+
+TEST_REMOVE_PRIVATE:
+  /// \brief Creates the "composed" covariance, although no composition is needed
+  /// \return CovarianceMatrixFull<FloatType, Size>
+  auto operator()() const -> CovarianceMatrixFull<FloatType, Size> { assert(0 && "avoid calling this function."); return *this; }
 };
 
 template <typename FloatType, sint32 Size>

@@ -13,6 +13,7 @@ template <typename FloatType, sint32 Size>
 class DiagonalMatrix: public SquareMatrix<FloatType, Size>
 {
 public:
+  // rule of 5 declarations
   DiagonalMatrix() = default;
   DiagonalMatrix(const DiagonalMatrix<FloatType, Size>& other) = default;
   DiagonalMatrix(DiagonalMatrix<FloatType, Size>&&) noexcept = default;

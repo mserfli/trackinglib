@@ -19,6 +19,8 @@ class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<Covariance
 public:
   using instance_type = CovarianceMatrixFactored<FloatType, Size>;
   using value_type = FloatType;
+  using compose_type = CovarianceMatrixFull<FloatType, Size>;
+  
   // rule of 5 declarations
   CovarianceMatrixFactored() = default;
   CovarianceMatrixFactored(const CovarianceMatrixFactored<FloatType, Size>&) = default;
@@ -43,7 +45,7 @@ public:
 
   /// \brief Creates the composed covariance
   /// \return CovarianceMatrixFull<FloatType, Size>
-  auto compose() const -> CovarianceMatrixFull<FloatType, Size>;
+  auto operator()() const -> CovarianceMatrixFull<FloatType, Size>;
 
   /// \brief Calculates the inverse
   /// \return CovarianceMatrixFactored<FloatType, Size>
@@ -94,12 +96,12 @@ template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFactored<FloatType, Size>::operator()(sint32 row, sint32 col) const -> FloatType
 {
   // TODO(matthias): optimize by calculating only the requested covariance element
-  auto tmp = compose();
+  auto tmp = this->operator()();
   return tmp(row, col);
 }
 
 template <typename FloatType, sint32 Size>
-inline auto CovarianceMatrixFactored<FloatType, Size>::compose() const -> CovarianceMatrixFull<FloatType, Size>
+inline auto CovarianceMatrixFactored<FloatType, Size>::operator()() const -> CovarianceMatrixFull<FloatType, Size>
 {
   CovarianceMatrixFull<FloatType, Size> cov{};
   if (_isInverse)

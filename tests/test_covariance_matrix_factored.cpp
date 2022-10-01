@@ -24,7 +24,7 @@ TEST(CovarianceMatrixFactored, compose)
   // clang-format on
 
   // call UUT
-  auto composed = cov.compose();
+  auto composed = cov();
 
   for (sint32 i = 0; i < 3; ++i)
   {
@@ -35,7 +35,7 @@ TEST(CovarianceMatrixFactored, compose)
   }
 }
 
-TEST(CovarianceMatrixFactored, compose_isInverse)
+TEST(CovarianceMatrixFactored, composeInverse)
 {
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
@@ -50,7 +50,7 @@ TEST(CovarianceMatrixFactored, compose_isInverse)
   // clang-format on
 
   // call UUT
-  auto composed = cov.compose();
+  auto composed = cov();
 
   for (sint32 i = 0; i < 3; ++i)
   {

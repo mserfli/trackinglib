@@ -49,7 +49,7 @@ public:
 
     // apply state transition in current frame
     underlying.computeA(data.A, dt);
-    underlying.applyDynamicalModel(dt);
+    underlying.applyProcessModel(dt);
     // post: state is predicted
 
     // calculate process noise and its contribution to the state
