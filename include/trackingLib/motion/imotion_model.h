@@ -17,14 +17,6 @@ template <typename FloatType>
 class IMotionModel
 {
 public:
-  // rule of 5 declarations
-  IMotionModel() = default;
-  IMotionModel(const IMotionModel<FloatType>&) = default;
-  IMotionModel(IMotionModel<FloatType>&&) noexcept = default;
-  auto operator=(const IMotionModel<FloatType>&) -> IMotionModel<FloatType>& = default;
-  auto operator=(IMotionModel<FloatType>&&) noexcept -> IMotionModel<FloatType>& = default;
-  virtual ~IMotionModel() = default;
-
   virtual auto getX() const -> FloatType = 0;
   virtual auto getVx() const -> FloatType = 0;
   virtual auto getY() const -> FloatType = 0;
@@ -54,12 +46,6 @@ public:
   using typename StateMem<CovarianceMatrixType, FloatType, Size>::StateVec;
   using typename StateMem<CovarianceMatrixType, FloatType, Size>::StateCov;
 
-  // rule of 5 declarations
-  ExtendedMotionModel() = default;
-  ExtendedMotionModel(const instance_type&) = default;
-  ExtendedMotionModel(instance_type&&) noexcept = default;
-  auto operator=(const instance_type&) -> instance_type& = default;
-  auto operator=(instance_type&&) noexcept -> instance_type& = default;
   virtual ~ExtendedMotionModel() = default;
 
   auto getX() const -> FloatType final { return this->getVec()[MotionModel::X]; }

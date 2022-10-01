@@ -74,10 +74,7 @@ public:
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
   void predict(const FloatType                        dt,
                const filter::KalmanFilter<FloatType>& filter,
-               const env::EgoMotion<FloatType>&       egoMotion) final
-  {
-    super_generic_predict_type::run(dt, filter, egoMotion);
-  }
+               const env::EgoMotion<FloatType>&       egoMotion) final;
 
   /// \brief Compensates the state according to the known ego motion and calculates Ge and Go for compensation of the covariance
   /// \param[out] Ge        The propagated errors of the ego motion to the state space
@@ -106,20 +103,11 @@ public:
 };
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::applyProcessModel(const FloatType dt)
+void MotionModelCV<CovarianceMatrixType, FloatType>::predict(const FloatType                        dt,
+                                                             const filter::KalmanFilter<FloatType>& filter,
+                                                             const env::EgoMotion<FloatType>&       egoMotion)
 {
-  const StateVec& stateVec = this->getVec();
-
-  this->operator[](StateDef::X) += dt * stateVec[StateDef::VX];
-  this->operator[](StateDef::Y) += dt * stateVec[StateDef::VY];
-}
-
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::computeA(StateMatrix& A, const FloatType dt) const
-{
-  A.setIdentity();
-  A(StateDef::X, StateDef::VX) = dt;
-  A(StateDef::Y, StateDef::VY) = dt;
+  super_generic_predict_type::run(dt, filter, egoMotion);
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
@@ -164,6 +152,23 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
   egoMotion.compensatePosition(x, y, x, y);
   // rotate velocity and acceleration
   egoMotion.compensateDirection(vx, vy, vx, vy);
+}
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
+void MotionModelCV<CovarianceMatrixType, FloatType>::applyProcessModel(const FloatType dt)
+{
+  const StateVec& stateVec = this->getVec();
+
+  this->operator[](StateDef::X) += dt * stateVec[StateDef::VX];
+  this->operator[](StateDef::Y) += dt * stateVec[StateDef::VY];
+}
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
+void MotionModelCV<CovarianceMatrixType, FloatType>::computeA(StateMatrix& A, const FloatType dt) const
+{
+  A.setIdentity();
+  A(StateDef::X, StateDef::VX) = dt;
+  A(StateDef::Y, StateDef::VY) = dt;
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>

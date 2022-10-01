@@ -28,6 +28,11 @@ public:
   /// \param[in] other A base class object
   CovarianceMatrixFull<FloatType, Size>(const SquareMatrix<FloatType, Size>& other); // NOLINT(google-explicit-constructor)
 
+  /// \brief Construct an Identity matrix
+  /// \return CovarianceMatrixFactored<FloatType, Size>
+  static auto Identity() -> instance_type { return SquareMatrix<FloatType, Size>::Identity(); }
+
+
   /// \brief Access operator to the covariance value at (row, col)
   /// \param[in,out] row  The specified row
   /// \param[in,out] col  The specified column

@@ -35,7 +35,7 @@ public:
 
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFactored<FloatType, Size>
-  static auto Identity() -> CovarianceMatrixFactored<FloatType, Size>;
+  static auto Identity() -> instance_type;
 
   /// \brief Access operator to the covariance value at (row, col)
   /// \param[in,out] row  The specified row
@@ -49,7 +49,7 @@ public:
 
   /// \brief Calculates the inverse
   /// \return CovarianceMatrixFactored<FloatType, Size>
-  auto inverse() const -> CovarianceMatrixFactored<FloatType, Size>;
+  auto inverse() const -> instance_type;
 
   /// \brief  
   /// \return true 

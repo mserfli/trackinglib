@@ -20,7 +20,7 @@ namespace covariance
 {
 template<typename T>
 concept has_identity_static_member_func = requires {
-  { T::Identity() } -> std::same_as<T>;
+  { std::declval<T>().Identity() } -> std::same_as<typename T::instance_type>;
 };
 template<typename T>
 concept has_inverse_member_func = requires {
@@ -70,6 +70,7 @@ struct CovarianceMatrixIntf
     static_assert(std::is_floating_point<typename ImplType::value_type>());    
 
 #if __cplusplus == 202002L
+    static_assert(covariance::has_identity_static_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_inverse_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_round_brackets_const_op<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_round_brackets_const_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);
