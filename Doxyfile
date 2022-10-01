@@ -5,6 +5,13 @@ INPUT = ./include
 RECURSIVE = YES
 GENERATE_LATEX = NO
 
+ENABLE_PREPROCESSING = YES
+MACRO_EXPANSION      = YES
+EXPAND_ONLY_PREDEF   = YES
+PREDEFINED           = "TEST_REMOVE_PROTECTED=protected" \
+                       "TEST_REMOVE_PRIVATE=private" \
+                       "TEST_VIRTUAL="
+
 # If the EXTRACT_ALL tag is set to YES doxygen will assume all entities in 
 # documentation are documented, even if no documentation was available. 
 # Private class members and static file members will be hidden unless 
