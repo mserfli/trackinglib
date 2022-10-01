@@ -10,7 +10,6 @@ namespace tracking
 namespace math
 {
 
-// TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
 class CovarianceMatrixFull
     : public SquareMatrix<FloatType, Size>
@@ -29,9 +28,8 @@ public:
   CovarianceMatrixFull<FloatType, Size>(const SquareMatrix<FloatType, Size>& other); // NOLINT(google-explicit-constructor)
 
   /// \brief Construct an Identity matrix
-  /// \return CovarianceMatrixFactored<FloatType, Size>
-  static auto Identity() -> instance_type { return SquareMatrix<FloatType, Size>::Identity(); }
-
+  /// \return CovarianceMatrixFull<FloatType, Size> 
+  static auto Identity() -> instance_type;
 
   /// \brief Access operator to the covariance value at (row, col)
   /// \param[in,out] row  The specified row
@@ -53,6 +51,13 @@ template <typename FloatType, sint32 Size>
 CovarianceMatrixFull<FloatType, Size>::CovarianceMatrixFull(const SquareMatrix<FloatType, Size>& other)
     : SquareMatrix<FloatType, Size>{other}
 {
+}
+
+template <typename FloatType, sint32 Size>
+auto CovarianceMatrixFull<FloatType, Size>::Identity() -> CovarianceMatrixFull<FloatType, Size>
+{
+  CovarianceMatrixFull<FloatType, Size> cov{SquareMatrix<FloatType, Size>::Identity()};
+  return cov;
 }
 
 template <typename FloatType, sint32 Size>

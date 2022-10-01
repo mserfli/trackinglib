@@ -12,7 +12,6 @@ namespace tracking
 namespace math
 {
 
-// TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
 class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType, Size>>
 {
@@ -90,7 +89,6 @@ auto CovarianceMatrixFactored<FloatType, Size>::Identity() -> CovarianceMatrixFa
                                                 DiagonalMatrix<FloatType, Size>::Identity()};
   return cov;
 }
-
 
 template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFactored<FloatType, Size>::operator()(sint32 row, sint32 col) const -> FloatType
