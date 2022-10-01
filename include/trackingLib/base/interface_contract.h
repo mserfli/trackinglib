@@ -11,6 +11,7 @@ namespace contract
 {
 
 #define ERR_MSG_MISSING_FUNCTION "missing function"
+#define ERR_MSG_DEFINED_UNEXPECTED_FUNCTION "found unexpected function definition"
 
 // Curiously_recurring_template_pattern
 // https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern

@@ -22,7 +22,7 @@ TEST(TriangularMatrix, initFromSquareMatrix_lower)
      {1, 1, 1}});
   // clang-format on
 
-  auto ones = tracking::math::SquareMatrix<float32, 3>::ones();
+  auto ones = tracking::math::SquareMatrix<float32, 3>::Ones();
 
   // call UUT
   tracking::math::TriangularMatrix<float32, 3, true> lowerTriaMat(ones);
@@ -40,7 +40,7 @@ TEST(TriangularMatrix, initFromSquareMatrix_upper)
   // clang-format on
 
   // call UUT
-  auto lowerTriaMat = tracking::math::TriangularMatrix<float32, 3, false>(tracking::math::SquareMatrix<float32, 3>::ones());
+  auto lowerTriaMat = tracking::math::TriangularMatrix<float32, 3, false>(tracking::math::SquareMatrix<float32, 3>::Ones());
 
   EXPECT_EQ(expMat._data, lowerTriaMat._data);
 }

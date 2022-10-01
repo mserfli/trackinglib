@@ -17,6 +17,7 @@ template <typename FloatType, sint32 Size>
 class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType, Size>>
 {
 public:
+  using instance_type = CovarianceMatrixFactored<FloatType, Size>;
   using value_type = FloatType;
   // rule of 5 declarations
   CovarianceMatrixFactored() = default;

@@ -63,10 +63,10 @@ public:
   auto operator/=(FloatType scalar) -> instance_type&;
 
   void        setZeros();
-  static auto zeros() -> instance_type;
+  static auto Zeros() -> instance_type;
 
   void        setOnes();
-  static auto ones() -> instance_type;
+  static auto Ones() -> instance_type;
 
   /// \brief Set a block matrix at given position
   /// \tparam SrcRowSize   Rows of the source block
@@ -181,7 +181,7 @@ inline void Matrix<FloatType, Rows, Cols>::setZeros()
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::zeros() -> instance_type
+auto Matrix<FloatType, Rows, Cols>::Zeros() -> instance_type
 {
   instance_type tmp;
   tmp.setZeros();
@@ -195,7 +195,7 @@ inline void Matrix<FloatType, Rows, Cols>::setOnes()
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::ones() -> instance_type
+auto Matrix<FloatType, Rows, Cols>::Ones() -> instance_type
 {
   instance_type tmp;
   tmp.setOnes();

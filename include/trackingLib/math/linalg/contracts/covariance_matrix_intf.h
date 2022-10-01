@@ -14,8 +14,40 @@ namespace math
 {
 namespace contract
 {
+#if __cplusplus == 202002L
+// clang-format off
+namespace covariance
+{
+template<typename T>
+concept has_identity_static_member_func = requires {
+  { T::Identity() } -> std::same_as<T>;
+};
+template<typename T>
+concept has_inverse_member_func = requires {
+  { std::declval<const T>().inverse() } -> std::same_as<typename T::instance_type>;
+};
+template<typename T>
+concept has_round_brackets_const_op_int_int = requires {
+  { std::declval<const T>().operator()(std::declval<int>(), std::declval<int>()) } -> std::same_as<typename T::value_type>;
+};
+template<typename T>
+concept has_round_brackets_op_int_int = requires {
+  { std::declval<T>().operator()(std::declval<int>(), std::declval<int>()) } -> std::same_as<typename T::value_type&>;
+};
+template<typename T>
+concept has_square_brackets_const_op_int = requires {
+  { std::declval<const T>().operator[](std::declval<int>()) } -> std::same_as<typename T::value_type>;
+};
+template<typename T>
+concept has_square_brackets_op_int = requires {
+  { std::declval<T>().operator[](std::declval<int>()) } -> std::same_as<typename T::value_type&>;
+};
+// clang-format on
+}
+#else
 // TODO(matthias): fix all the macros in interface_contract.h to apply there the namespace correctly
 using namespace tracking::base::contract;
+#endif
 
 template <typename ImplType>
 struct CovarianceMatrixIntf
@@ -27,24 +59,34 @@ struct CovarianceMatrixIntf
       , base::contract::RequireMoveIntf<ImplType>()
 
   {
+    static_assert(std::is_floating_point<typename ImplType::value_type>());    
+
+#if __cplusplus == 202002L
+    static_assert(covariance::has_inverse_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(covariance::has_round_brackets_const_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(!covariance::has_round_brackets_op_int_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
+    static_assert(!covariance::has_square_brackets_const_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
+    static_assert(!covariance::has_square_brackets_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
+#else
     using base::contract::has_round_brackets_const_op_int_int;
     using base::contract::has_square_brackets_const_op_int;
 
-    static_assert(std::is_floating_point<typename ImplType::value_type>());    
     static_assert(has_member_func_Inverse<ImplType>(), ERR_MSG_MISSING_FUNCTION);
 
     // operator()(row,col)
     static_assert(has_round_brackets_const_op_int_int<ImplType, typename ImplType::value_type, true>::value, ERR_MSG_MISSING_FUNCTION);
-    static_assert(!has_round_brackets_const_op_int_int<ImplType, typename ImplType::value_type, false>::value, ERR_MSG_MISSING_FUNCTION);
+    static_assert(!has_round_brackets_const_op_int_int<ImplType, typename ImplType::value_type, false>::value, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
     
     // operator[](idx)
-    static_assert(!has_square_brackets_const_op_int<ImplType, typename ImplType::value_type, true>::value, ERR_MSG_MISSING_FUNCTION);
-    static_assert(!has_square_brackets_const_op_int<ImplType, typename ImplType::value_type, false>::value, ERR_MSG_MISSING_FUNCTION);
-
+    static_assert(!has_square_brackets_const_op_int<ImplType, typename ImplType::value_type, true>::value, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
+    static_assert(!has_square_brackets_const_op_int<ImplType, typename ImplType::value_type, false>::value, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
+#endif
     //auto Identity() -> CovarianceMatrixFactored<FloatType, Size>;
   }
 
+#if __cplusplus != 202002L
   CREATE_MEMBER_FUNC_SIG_CHECK(inverse, ImplType(ImplType::*)() const, Inverse );
+#endif  
 };
 
 } // namespace contract

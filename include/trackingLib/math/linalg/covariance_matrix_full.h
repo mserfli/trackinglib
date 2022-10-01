@@ -17,6 +17,9 @@ class CovarianceMatrixFull
     , public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>
 {
 public:
+  using instance_type = CovarianceMatrixFull<FloatType, Size>;
+  using value_type = FloatType;
+
   /// \brief Inherit Rule of 5 behavior from base class
   using SquareMatrix<FloatType, Size>::SquareMatrix;
 
