@@ -6,7 +6,7 @@ setup_target_for_coverage_lcov(
           NAME lcov
           EXECUTABLE ${TEST_BINARY}
           BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
-          EXCLUDE "/Library/*" "/usr/include/*" "build/*" "examples/*" "tests/*")
+          EXCLUDE "/Users/matthias/miniforge3/*" "/Library/*" "/usr/include/*" "build/*" "_deps/*" "examples/*" "python/*" "tests/*")
 
 add_compile_definitions(TEST_BUILD)
 add_executable(${TEST_BINARY})
