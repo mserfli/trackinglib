@@ -62,7 +62,6 @@ struct CovarianceMatrixIntf
   CovarianceMatrixIntf()
       : base::contract::RequireCopyIntf<ImplType>()
       , base::contract::RequireMoveIntf<ImplType>()
-
   {
     static_assert(std::is_floating_point<typename ImplType::value_type>());    
 

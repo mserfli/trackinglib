@@ -11,8 +11,6 @@ namespace tracking
 namespace motion
 {
 
-// TODO(matthias): add interface contract
-
 /// \brief StateMem class to represent a state vector with its uncertainty described by the state covariance matrix
 /// \tparam CovarianceMatrixType  Used covariance matrix type
 /// \tparam FloatType             Used floating point type
@@ -32,23 +30,9 @@ public:
 
   // rule of 5 declarations
   StateMem() = default;
-  StateMem(const instance_type& other)
-  {
-    // we have to implement the copy ctor as unique_ptr is not copyable
-    *_vec = *other._vec;
-    *_cov = *other._cov;
-  }
-
+  StateMem(const instance_type& other); // own implementation!!!
   StateMem(instance_type&&) noexcept = default;
-  auto operator=(const instance_type& other) -> instance_type&
-  {
-    if (this != &other)
-    {
-      *this->_vec = *other._vec;
-      *this->_cov = *other._cov;
-    }
-    return *this;
-  }
+  auto operator=(const instance_type& other) -> instance_type&; // own implementation!!!
   auto operator=(instance_type&&) noexcept -> instance_type& = default;
   ~StateMem() = default;
 
@@ -93,6 +77,25 @@ TEST_REMOVE_PRIVATE:
   /// \brief State covariance matrix wrapped by a unique ptr to benefit from move operator
   StateCovPtr _cov{make_unique<StateCov>(StateCov::Identity())};
 };
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType, sint32 Size>
+StateMem<CovarianceMatrixType, FloatType, Size>::StateMem(const instance_type& other)
+{
+  // we have to implement the copy ctor as unique_ptr is not copyable
+  *_vec = *other._vec;
+  *_cov = *other._cov;
+}
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType, sint32 Size>
+inline auto StateMem<CovarianceMatrixType, FloatType, Size>::operator=(const instance_type& other) -> StateMem<CovarianceMatrixType, FloatType, Size>&
+{
+  if (this != &other)
+  {
+    *this->_vec = *other._vec;
+    *this->_cov = *other._cov;
+  }
+  return *this;
+}
 
 } // namespace motion
 } // namespace tracking
