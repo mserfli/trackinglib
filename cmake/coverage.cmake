@@ -197,10 +197,8 @@ mark_as_advanced(
     CMAKE_EXE_LINKER_FLAGS_COVERAGE
     CMAKE_SHARED_LINKER_FLAGS_COVERAGE )
 
-get_property(GENERATOR_IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-if(NOT (CMAKE_BUILD_TYPE STREQUAL "Debug" OR GENERATOR_IS_MULTI_CONFIG))
-    message(WARNING "Code coverage results with an optimised (non-Debug) build may be misleading")
-endif() # NOT (CMAKE_BUILD_TYPE STREQUAL "Debug" OR GENERATOR_IS_MULTI_CONFIG)
+## Update the documentation string of CMAKE_BUILD_TYPE for GUIs
+set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel RelWithAssert Coverage." FORCE)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
     link_libraries(gcov)
@@ -261,6 +259,12 @@ function(setup_target_for_coverage_lcov)
     endif()
      
     # Setting up commands which will be run to generate coverage data.
+    message("build dir: ${CMAKE_BINARY_DIR}")
+    
+    # Remove gcda files
+    set(LCOV_REMOVE_GCDA_FILES_CMD
+        find ${CMAKE_BINARY_DIR} -name \*.gcda -delete
+    )
     # Cleanup lcov
     set(LCOV_CLEAN_CMD 
         ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} -directory . 
@@ -348,6 +352,7 @@ function(setup_target_for_coverage_lcov)
 
     # Setup target
     add_custom_target(${Coverage_NAME}
+        COMMAND ${LCOV_REMOVE_GCDA_FILES_CMD}
         COMMAND ${LCOV_CLEAN_CMD}
         COMMAND ${LCOV_BASELINE_CMD} 
         COMMAND ${LCOV_EXEC_TESTS_CMD}
@@ -724,14 +729,21 @@ function(setup_target_for_coverage_fastcov)
 endfunction() # setup_target_for_coverage_fastcov
 
 function(append_coverage_compiler_flags)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COVERAGE_COMPILER_FLAGS}" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COVERAGE_COMPILER_FLAGS}" PARENT_SCOPE)
-    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${COVERAGE_COMPILER_FLAGS}" PARENT_SCOPE)
-    message(STATUS "Appending code coverage compiler flags: ${COVERAGE_COMPILER_FLAGS}")
+    get_property(GENERATOR_IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+    if((${CMAKE_BUILD_TYPE} STREQUAL "Coverage" OR GENERATOR_IS_MULTI_CONFIG))
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COVERAGE_COMPILER_FLAGS}" PARENT_SCOPE)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COVERAGE_COMPILER_FLAGS}" PARENT_SCOPE)
+        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${COVERAGE_COMPILER_FLAGS}" PARENT_SCOPE)
+        message(STATUS "Appending code coverage compiler flags: ${COVERAGE_COMPILER_FLAGS}")
+    endif()
 endfunction() # append_coverage_compiler_flags
 
 # Setup coverage for specific library
 function(append_coverage_compiler_flags_to_target name)
-    target_compile_options(${name}
-        PRIVATE ${COVERAGE_COMPILER_FLAGS})
+    get_property(GENERATOR_IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+    if((${CMAKE_BUILD_TYPE} STREQUAL "Coverage" OR GENERATOR_IS_MULTI_CONFIG))
+        target_compile_options(${name}
+            PRIVATE ${COVERAGE_COMPILER_FLAGS})
+        message(STATUS "Appending code coverage compiler flags for target ${name}: ${COVERAGE_COMPILER_FLAGS}")
+    endif()
 endfunction()

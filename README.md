@@ -11,7 +11,7 @@ doxygen
 
 ## create coverage report
 mkdir build && cd build
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Coverage .. 
 cmake --build . --target lcov
 
 ## Python binding
