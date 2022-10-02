@@ -15,10 +15,10 @@ class DiagonalMatrix: public SquareMatrix<FloatType, Size>
 public:
   // rule of 5 declarations
   DiagonalMatrix() = default;
-  DiagonalMatrix(const DiagonalMatrix<FloatType, Size>& other) = default;
-  DiagonalMatrix(DiagonalMatrix<FloatType, Size>&&) noexcept = default;
-  auto operator=(const DiagonalMatrix<FloatType, Size>&) -> DiagonalMatrix<FloatType, Size>& = default;
-  auto operator=(DiagonalMatrix<FloatType, Size>&&) noexcept -> DiagonalMatrix<FloatType, Size>& = default;
+  DiagonalMatrix(const DiagonalMatrix& other) = default;
+  DiagonalMatrix(DiagonalMatrix&&) noexcept = default;
+  auto operator=(const DiagonalMatrix&) -> DiagonalMatrix& = default;
+  auto operator=(DiagonalMatrix&&) noexcept -> DiagonalMatrix& = default;
 
   /// \brief Construct a new Diagonal Matrix object
   /// \param[in] other
@@ -43,11 +43,11 @@ public:
 
   /// \brief Assign a new DiagonalMatrix object given initializer list
   /// \param[in] list  An initializer list describing the diagonal elements
-  auto operator=(const std::initializer_list<FloatType>& list) -> DiagonalMatrix<FloatType, Size>&;
+  auto operator=(const std::initializer_list<FloatType>& list) -> DiagonalMatrix&;
 
   /// \brief Assign a new DiagonalMatrix object given initializer list
   /// \param[in] list  An initializer list describing a full square matrix
-  auto operator=(const std::initializer_list<std::initializer_list<FloatType>>& list) -> DiagonalMatrix<FloatType, Size>&;
+  auto operator=(const std::initializer_list<std::initializer_list<FloatType>>& list) -> DiagonalMatrix&;
 
   /// \brief Element access to a scalar diagonal value
   /// \param[in] idx  Row/Col index of the element
@@ -61,7 +61,7 @@ public:
 
   /// \brief Calculates the inverse
   /// \return DiagonalMatrix<FloatType, Size>
-  auto inverse() const -> DiagonalMatrix<FloatType, Size>;
+  auto inverse() const -> DiagonalMatrix;
 
   /// \brief Calculates the inverse inplace
   void inverse();
@@ -135,18 +135,17 @@ void DiagonalMatrix<FloatType, Size>::setBlock(const DiagonalMatrix<FloatType, S
 }
 
 template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_list<FloatType>& list)
-    -> DiagonalMatrix<FloatType, Size>&
+inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_list<FloatType>& list) -> DiagonalMatrix&
 {
-  *this = DiagonalMatrix<FloatType, Size>(list);
+  *this = DiagonalMatrix(list);
   return *this;
 }
 
 template <typename FloatType, sint32 Size>
 inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_list<std::initializer_list<FloatType>>& list)
-    -> DiagonalMatrix<FloatType, Size>&
+    -> DiagonalMatrix&
 {
-  *this = DiagonalMatrix<FloatType, Size>(list);
+  *this = DiagonalMatrix(list);
   return *this;
 }
 
@@ -163,9 +162,9 @@ inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) const 
 }
 
 template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::inverse() const -> DiagonalMatrix<FloatType, Size>
+inline auto DiagonalMatrix<FloatType, Size>::inverse() const -> DiagonalMatrix
 {
-  DiagonalMatrix<FloatType, Size> tmp{*this};
+  DiagonalMatrix tmp{*this};
   tmp.inverse();
   return tmp;
 }

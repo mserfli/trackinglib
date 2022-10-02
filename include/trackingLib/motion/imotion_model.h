@@ -17,6 +17,10 @@ template <typename FloatType>
 class IMotionModel
 {
 public:
+  // rule of 5 declarations
+  IMotionModel() = default;
+  virtual ~IMotionModel() = default;
+
   virtual auto getX() const -> FloatType = 0;
   virtual auto getVx() const -> FloatType = 0;
   virtual auto getY() const -> FloatType = 0;
@@ -29,6 +33,17 @@ public:
   virtual void predict(const FloatType                        dt,
                        const filter::KalmanFilter<FloatType>& filter, // TODO(matthias): decide between overloading or base class
                        const env::EgoMotion<FloatType>&       egoMotion) = 0;
+
+  // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround to keep following idententation
+  // clang-format on
+
+  // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
+  IMotionModel(const IMotionModel& other) = default;
+  IMotionModel(IMotionModel&&) noexcept = default;
+  auto operator=(const IMotionModel& other) -> IMotionModel& = default;
+  auto operator=(IMotionModel&&) noexcept -> IMotionModel& = default;
 };
 
 // clang-format off
@@ -42,14 +57,31 @@ class ExtendedMotionModel
     , public StateMem<CovarianceMatrixType, FloatType, Size>
 {
 public:
-  using instance_type = ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>;
   using typename StateMem<CovarianceMatrixType, FloatType, Size>::StateVec;
   using typename StateMem<CovarianceMatrixType, FloatType, Size>::StateCov;
 
+  // rule of 5 declarations
+  ExtendedMotionModel() = default;
   virtual ~ExtendedMotionModel() = default;
 
-  auto getX() const -> FloatType final { return this->getVec()[MotionModel::X]; }
-  auto getY() const -> FloatType final { return this->getVec()[MotionModel::Y]; }
+  /// \brief Read access to x position
+  /// \return FloatType
+  auto getX() const -> FloatType final { return this->operator[](MotionModel::X); }
+
+  /// \brief Read access to y position
+  /// \return FloatType
+  auto getY() const -> FloatType final { return this->operator[](MotionModel::Y); }
+
+  // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround to keep following idententation
+  // clang-format on
+
+  // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
+  ExtendedMotionModel(const ExtendedMotionModel& other) = default;
+  ExtendedMotionModel(ExtendedMotionModel&&) noexcept = default;
+  auto operator=(const ExtendedMotionModel& other) -> ExtendedMotionModel& = default;
+  auto operator=(ExtendedMotionModel&&) noexcept -> ExtendedMotionModel& = default;
 };
 
 } // namespace motion

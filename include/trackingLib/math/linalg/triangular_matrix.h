@@ -16,11 +16,12 @@ template <typename FloatType, sint32 Size, bool isLower>
 class TriangularMatrix: public SquareMatrix<FloatType, Size>
 {
 public:
+  // rule of 5 declarations
   TriangularMatrix() = default;
-  TriangularMatrix(const TriangularMatrix<FloatType, Size, isLower>& other) = default;
-  TriangularMatrix(TriangularMatrix<FloatType, Size, isLower>&&) noexcept = default;
-  auto operator=(const TriangularMatrix<FloatType, Size, isLower>&) -> TriangularMatrix<FloatType, Size, isLower>& = default;
-  auto operator=(TriangularMatrix<FloatType, Size, isLower>&&) noexcept -> TriangularMatrix<FloatType, Size, isLower>& = default;
+  TriangularMatrix(const TriangularMatrix& other) = default;
+  TriangularMatrix(TriangularMatrix&&) noexcept = default;
+  auto operator=(const TriangularMatrix&) -> TriangularMatrix& = default;
+  auto operator=(TriangularMatrix&&) noexcept -> TriangularMatrix& = default;
 
   /// \brief Construct a new Triangular Matrix object
   /// \param[in] other
@@ -65,8 +66,8 @@ public:
   auto solve(const Matrix<FloatType, Size, Cols>& b) const -> Matrix<FloatType, Size, Cols>;
 
   /// \brief Calculates the inverse of the underlying matrix
-  /// \return TriangularMatrix<FloatType, Size, isLower>
-  auto inverse() const -> TriangularMatrix<FloatType, Size, isLower>;
+  /// \return TriangularMatrix
+  auto inverse() const -> TriangularMatrix;
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
@@ -180,9 +181,9 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::solve(const Matrix<Float
 }
 
 template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::inverse() const -> TriangularMatrix<FloatType, Size, isLower>
+inline auto TriangularMatrix<FloatType, Size, isLower>::inverse() const -> TriangularMatrix
 {
-  return TriangularMatrix<FloatType, Size, isLower>(this->solve(SquareMatrix<FloatType, Size>::Identity()));
+  return TriangularMatrix(this->solve(SquareMatrix<FloatType, Size>::Identity()));
 }
 
 } // namespace math

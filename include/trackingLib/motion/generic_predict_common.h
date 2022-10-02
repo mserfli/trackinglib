@@ -58,8 +58,8 @@ public:
   }
 };
 
-}
-}
-}
+} // namespace generic
+} // namespace motion
+} // namespace tracking
 
 #endif // DA3325A6_9F6B_4D55_87B2_336CB0BAF21E

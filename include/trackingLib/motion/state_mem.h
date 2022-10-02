@@ -19,7 +19,6 @@ template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
 class StateMem: public contract::StateMemIntf<StateMem<CovarianceMatrixType, FloatType, Size>>
 {
 public:
-  using instance_type = StateMem<CovarianceMatrixType, FloatType, Size>;
   using value_type = FloatType;
   using StateVec = math::Vector<FloatType, Size>;
   using ConstStateVec = const math::Vector<FloatType, Size>;
@@ -30,10 +29,10 @@ public:
 
   // rule of 5 declarations
   StateMem() = default;
-  StateMem(const instance_type& other); // own implementation!!!
-  StateMem(instance_type&&) noexcept = default;
-  auto operator=(const instance_type& other) -> instance_type&; // own implementation!!!
-  auto operator=(instance_type&&) noexcept -> instance_type& = default;
+  StateMem(const StateMem& other); // own implementation!!!
+  StateMem(StateMem&&) noexcept = default;
+  auto operator=(const StateMem& other) -> StateMem&; // own implementation!!!
+  auto operator=(StateMem&&) noexcept -> StateMem& = default;
   ~StateMem() = default;
 
   /// \brief Read access to full state vector
@@ -79,7 +78,7 @@ TEST_REMOVE_PRIVATE:
 };
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType, sint32 Size>
-StateMem<CovarianceMatrixType, FloatType, Size>::StateMem(const instance_type& other)
+StateMem<CovarianceMatrixType, FloatType, Size>::StateMem(const StateMem& other)
 {
   // we have to implement the copy ctor as unique_ptr is not copyable
   *_vec = *other._vec;
@@ -87,7 +86,7 @@ StateMem<CovarianceMatrixType, FloatType, Size>::StateMem(const instance_type& o
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType, sint32 Size>
-inline auto StateMem<CovarianceMatrixType, FloatType, Size>::operator=(const instance_type& other) -> StateMem<CovarianceMatrixType, FloatType, Size>&
+inline auto StateMem<CovarianceMatrixType, FloatType, Size>::operator=(const StateMem& other) -> StateMem&
 {
   if (this != &other)
   {

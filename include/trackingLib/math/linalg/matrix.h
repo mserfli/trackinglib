@@ -32,17 +32,16 @@ template <typename FloatType, sint32 Rows, sint32 Cols>
 class Matrix: public contract::MatrixIntf<Matrix<FloatType, Rows, Cols>, Matrix>
 {
 public:
-  using instance_type = Matrix<FloatType, Rows, Cols>;
   using transpose_type = Matrix<FloatType, Cols, Rows>;
   using value_type = FloatType;
   static constexpr auto rows = Rows;
   static constexpr auto cols = Cols;
 
   Matrix() = default;
-  Matrix(const Matrix<FloatType, Rows, Cols>&) = default;
-  Matrix(Matrix<FloatType, Rows, Cols>&&) noexcept = default;
-  auto operator=(const Matrix<FloatType, Rows, Cols>&) -> Matrix<FloatType, Rows, Cols>& = default;
-  auto operator=(Matrix<FloatType, Rows, Cols>&&) noexcept -> Matrix<FloatType, Rows, Cols>& = default;
+  Matrix(const Matrix&) = default;
+  Matrix(Matrix&&) noexcept = default;
+  auto operator=(const Matrix&) -> Matrix& = default;
+  auto operator=(Matrix&&) noexcept -> Matrix& = default;
 
   /// \brief Construct a new Matrix object given initializer list
   /// \param[in] list  An initializer list describing list of matrix rows
@@ -53,20 +52,20 @@ public:
   auto operator()(sint32 row, sint32 col) const -> FloatType;
   auto operator()(sint32 row, sint32 col) -> FloatType&;
 
-  auto operator+=(const instance_type& other) -> instance_type&;
-  auto operator-=(const instance_type& other) -> instance_type&;
+  auto operator+=(const Matrix& other) -> Matrix&;
+  auto operator-=(const Matrix& other) -> Matrix&;
 
   template <sint32 Cols2>
   auto operator*=(const Matrix<FloatType, Cols, Cols2>& other) -> Matrix<FloatType, Rows, Cols2>;
 
-  auto operator*=(FloatType scalar) -> instance_type&;
-  auto operator/=(FloatType scalar) -> instance_type&;
+  auto operator*=(FloatType scalar) -> Matrix&;
+  auto operator/=(FloatType scalar) -> Matrix&;
 
   void        setZeros();
-  static auto Zeros() -> instance_type;
+  static auto Zeros() -> Matrix;
 
   void        setOnes();
-  static auto Ones() -> instance_type;
+  static auto Ones() -> Matrix;
 
   /// \brief Set a block matrix at given position
   /// \tparam SrcRowSize   Rows of the source block
@@ -137,14 +136,14 @@ inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) ->
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator+=(const instance_type& other) -> instance_type&
+inline auto Matrix<FloatType, Rows, Cols>::operator+=(const Matrix& other) -> Matrix&
 {
   _data += other._data;
   return *this;
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator-=(const instance_type& other) -> instance_type&
+inline auto Matrix<FloatType, Rows, Cols>::operator-=(const Matrix& other) -> Matrix&
 {
   _data -= other._data;
   return *this;
@@ -161,13 +160,13 @@ inline auto Matrix<FloatType, Rows, Cols>::operator*=(const Matrix<FloatType, Co
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator*=(FloatType scalar) -> instance_type&
+inline auto Matrix<FloatType, Rows, Cols>::operator*=(FloatType scalar) -> Matrix&
 {
   _data *= scalar;
   return *this;
 }
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scalar) -> instance_type&
+inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scalar) -> Matrix&
 {
   assert(std::abs(scalar) > static_cast<FloatType>(0.0));
   _data /= scalar;
@@ -181,9 +180,9 @@ inline void Matrix<FloatType, Rows, Cols>::setZeros()
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::Zeros() -> instance_type
+auto Matrix<FloatType, Rows, Cols>::Zeros() -> Matrix
 {
-  instance_type tmp;
+  Matrix tmp;
   tmp.setZeros();
   return tmp;
 }
@@ -195,9 +194,9 @@ inline void Matrix<FloatType, Rows, Cols>::setOnes()
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::Ones() -> instance_type
+auto Matrix<FloatType, Rows, Cols>::Ones() -> Matrix
 {
-  instance_type tmp;
+  Matrix tmp;
   tmp.setOnes();
   return tmp;
 }

@@ -28,14 +28,14 @@ public:
 
   /// \brief Construct a new Square Matrix< Float Type,  Size> object
   /// \param[in] other A base class object
-  SquareMatrix<FloatType, Size>(const Matrix<FloatType, Size, Size>& other); // NOLINT(google-explicit-constructor)
+  SquareMatrix(const Matrix<FloatType, Size, Size>& other); // NOLINT(google-explicit-constructor)
 
   /// \brief Set internal matrix to the Identity matrix
   void setIdentity();
 
   /// \brief Construct an Identity matrix
-  /// \return SquareMatrix<FloatType, Size>  Resulting identity matrix
-  static auto Identity() -> SquareMatrix<FloatType, Size>;
+  /// \return SquareMatrix  Resulting identity matrix
+  static auto Identity() -> SquareMatrix;
 
   /// \brief Decompose internal matrix into L*L' using standard Cholesky factorization
   /// \param[out] L  Calculated lower triangular matrix
@@ -58,8 +58,8 @@ public:
   auto decomposeUDUT(TriangularMatrix<FloatType, Size, false>& U, DiagonalMatrix<FloatType, Size>& D) const -> bool;
 
   /// \brief Calculates the inverse based on Cholesky factorization
-  /// \return SquareMatrix<FloatType, Size> 
-  auto inverse() const -> SquareMatrix<FloatType, Size>;
+  /// \return SquareMatrix
+  auto inverse() const -> SquareMatrix;
 };
 
 template <typename FloatType, sint32 Size>
@@ -98,9 +98,9 @@ inline void SquareMatrix<FloatType, Size>::setIdentity()
 }
 
 template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::Identity() -> SquareMatrix<FloatType, Size>
+inline auto SquareMatrix<FloatType, Size>::Identity() -> SquareMatrix
 {
-  SquareMatrix<FloatType, Size> tmp;
+  SquareMatrix tmp;
   tmp.setIdentity();
   return tmp;
 }
@@ -167,9 +167,9 @@ inline auto SquareMatrix<FloatType, Size>::decomposeUDUT(TriangularMatrix<FloatT
 }
 
 template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::inverse() const -> SquareMatrix<FloatType, Size>
+inline auto SquareMatrix<FloatType, Size>::inverse() const -> SquareMatrix
 {
-  SquareMatrix<FloatType, Size> inv{};
+  SquareMatrix                            inv{};
   TriangularMatrix<FloatType, Size, true> L{};
 
   // TODO(matthias): move implementation into solver class
@@ -178,7 +178,7 @@ inline auto SquareMatrix<FloatType, Size>::inverse() const -> SquareMatrix<Float
 
   // L*(L'*Ainv) = eye(n,n)
   // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
-  auto u = std::move(L.solve(SquareMatrix<FloatType, Size>::Identity()));
+  auto u = std::move(L.solve(SquareMatrix::Identity()));
   // L'*Ainv = u     -> solve for Ainv using backward substitution
   inv = std::move(L.transpose().solve(u));
 

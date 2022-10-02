@@ -16,16 +16,15 @@ template <typename FloatType, sint32 Size>
 class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType, Size>>
 {
 public:
-  using instance_type = CovarianceMatrixFactored<FloatType, Size>;
   using value_type = FloatType;
   using compose_type = CovarianceMatrixFull<FloatType, Size>;
-  
+
   // rule of 5 declarations
   CovarianceMatrixFactored() = default;
-  CovarianceMatrixFactored(const CovarianceMatrixFactored<FloatType, Size>&) = default;
-  CovarianceMatrixFactored(CovarianceMatrixFactored<FloatType, Size>&&) noexcept = default;
-  auto operator=(const CovarianceMatrixFactored<FloatType, Size>&) -> CovarianceMatrixFactored<FloatType, Size>& = default;
-  auto operator=(CovarianceMatrixFactored<FloatType, Size>&&) noexcept -> CovarianceMatrixFactored<FloatType, Size>& = default;
+  CovarianceMatrixFactored(const CovarianceMatrixFactored&) = default;
+  CovarianceMatrixFactored(CovarianceMatrixFactored&&) noexcept = default;
+  auto operator=(const CovarianceMatrixFactored&) -> CovarianceMatrixFactored& = default;
+  auto operator=(CovarianceMatrixFactored&&) noexcept -> CovarianceMatrixFactored& = default;
 
   explicit CovarianceMatrixFactored(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
   explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType, Size, false>& u,
@@ -33,13 +32,13 @@ public:
                                     const bool                                      isInverse = false);
 
   /// \brief Construct an Identity matrix
-  /// \return CovarianceMatrixFactored<FloatType, Size>
-  static auto Identity() -> instance_type;
+  /// \return CovarianceMatrixFactored
+  static auto Identity() -> CovarianceMatrixFactored;
 
   /// \brief Access operator to the covariance value at (row, col)
   /// \param[in,out] row  The specified row
   /// \param[in,out] col  The specified column
-  /// \return FloatType 
+  /// \return FloatType
   auto operator()(sint32 row, sint32 col) const -> FloatType;
 
   /// \brief Creates the composed covariance
@@ -47,12 +46,12 @@ public:
   auto operator()() const -> CovarianceMatrixFull<FloatType, Size>;
 
   /// \brief Calculates the inverse
-  /// \return CovarianceMatrixFactored<FloatType, Size>
-  auto inverse() const -> instance_type;
+  /// \return CovarianceMatrixFactored
+  auto inverse() const -> CovarianceMatrixFactored;
 
-  /// \brief  
-  /// \return true 
-  /// \return false 
+  /// \brief
+  /// \return true
+  /// \return false
   auto isInverse() const -> bool { return _isInverse; }
 
   // clang-format off
@@ -83,10 +82,9 @@ CovarianceMatrixFactored<FloatType, Size>::CovarianceMatrixFactored(const Triang
 }
 
 template <typename FloatType, sint32 Size>
-auto CovarianceMatrixFactored<FloatType, Size>::Identity() -> CovarianceMatrixFactored<FloatType, Size>
+auto CovarianceMatrixFactored<FloatType, Size>::Identity() -> CovarianceMatrixFactored
 {
-  CovarianceMatrixFactored<FloatType, Size> cov{TriangularMatrix<FloatType, Size, false>::Identity(),
-                                                DiagonalMatrix<FloatType, Size>::Identity()};
+  CovarianceMatrixFactored cov{TriangularMatrix<FloatType, Size, false>::Identity(), DiagonalMatrix<FloatType, Size>::Identity()};
   return cov;
 }
 
@@ -114,9 +112,9 @@ inline auto CovarianceMatrixFactored<FloatType, Size>::operator()() const -> Cov
 }
 
 template <typename FloatType, sint32 Size>
-inline auto CovarianceMatrixFactored<FloatType, Size>::inverse() const -> CovarianceMatrixFactored<FloatType, Size>
+inline auto CovarianceMatrixFactored<FloatType, Size>::inverse() const -> CovarianceMatrixFactored
 {
-  return CovarianceMatrixFactored<FloatType, Size>{_u.inverse(), _d.inverse(), true};
+  return CovarianceMatrixFactored{_u.inverse(), _d.inverse(), true};
 }
 
 } // namespace math

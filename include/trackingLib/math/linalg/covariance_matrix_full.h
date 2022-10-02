@@ -16,34 +16,37 @@ class CovarianceMatrixFull
     , public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>
 {
 public:
-  using instance_type = CovarianceMatrixFull<FloatType, Size>;
   using value_type = FloatType;
-  using compose_type = instance_type;
+  using compose_type = CovarianceMatrixFull;
 
   /// \brief Inherit Rule of 5 behavior from base class
   using SquareMatrix<FloatType, Size>::SquareMatrix;
 
   /// \brief Construct a new Covariance Matrix Full< Float Type,  Size> object
   /// \param[in] other A base class object
-  CovarianceMatrixFull<FloatType, Size>(const SquareMatrix<FloatType, Size>& other); // NOLINT(google-explicit-constructor)
+  CovarianceMatrixFull(const SquareMatrix<FloatType, Size>& other); // NOLINT(google-explicit-constructor)
 
   /// \brief Construct an Identity matrix
-  /// \return CovarianceMatrixFull<FloatType, Size> 
-  static auto Identity() -> instance_type;
+  /// \return CovarianceMatrixFull
+  static auto Identity() -> CovarianceMatrixFull;
 
   /// \brief Access operator to the covariance value at (row, col)
   /// \param[in,out] row  The specified row
   /// \param[in,out] col  The specified column
-  /// \return FloatType 
+  /// \return FloatType
   auto operator()(sint32 row, sint32 col) const -> FloatType;
 
   /// \brief Creates the "composed" covariance, although no composition is needed
-  /// \return CovarianceMatrixFull<FloatType, Size>
-  auto operator()() const -> CovarianceMatrixFull<FloatType, Size> { assert(0 && "avoid calling this function."); return *this; }
+  /// \return CovarianceMatrixFull
+  auto operator()() const -> CovarianceMatrixFull
+  {
+    assert(0 && "avoid calling this function.");
+    return *this;
+  }
 
   /// \brief Calculates the inverse based on Cholesky decomposition
-  /// \return CovarianceMatrixFull<FloatType, Size>
-  auto inverse() const -> CovarianceMatrixFull<FloatType, Size>;
+  /// \return CovarianceMatrixFull
+  auto inverse() const -> CovarianceMatrixFull;
 };
 
 template <typename FloatType, sint32 Size>
@@ -53,9 +56,9 @@ CovarianceMatrixFull<FloatType, Size>::CovarianceMatrixFull(const SquareMatrix<F
 }
 
 template <typename FloatType, sint32 Size>
-auto CovarianceMatrixFull<FloatType, Size>::Identity() -> CovarianceMatrixFull<FloatType, Size>
+auto CovarianceMatrixFull<FloatType, Size>::Identity() -> CovarianceMatrixFull
 {
-  CovarianceMatrixFull<FloatType, Size> cov{SquareMatrix<FloatType, Size>::Identity()};
+  CovarianceMatrixFull cov{SquareMatrix<FloatType, Size>::Identity()};
   return cov;
 }
 
@@ -66,7 +69,7 @@ inline auto CovarianceMatrixFull<FloatType, Size>::operator()(sint32 row, sint32
 }
 
 template <typename FloatType, sint32 Size>
-inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> CovarianceMatrixFull<FloatType, Size>
+inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> CovarianceMatrixFull
 {
   return SquareMatrix<FloatType, Size>::inverse();
 }

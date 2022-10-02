@@ -57,15 +57,18 @@ public:
 
   // rule of 5 declarations
   MotionModelCV() = default;
-  MotionModelCV(const instance_type&) = default;
-  MotionModelCV(instance_type&&) noexcept = default;
-  auto operator=(const instance_type&) -> instance_type& = default;
-  auto operator=(instance_type&&) noexcept -> instance_type& = default;
-  ~MotionModelCV() = default;
+  MotionModelCV(const MotionModelCV&) = default;
+  MotionModelCV(MotionModelCV&&) noexcept = default;
+  auto operator=(const MotionModelCV&) -> MotionModelCV& = default;
+  auto operator=(MotionModelCV&&) noexcept -> MotionModelCV& = default;
+  ~MotionModelCV() final = default;
 
-
-  auto getVx() const -> FloatType final { return this->getVec()[StateDef::VX]; }
-  auto getVy() const -> FloatType final { return this->getVec()[StateDef::VY]; }
+  /// \brief Read access to x velocity
+  /// \return FloatType
+  auto getVx() const -> FloatType final { return this->operator[](StateDef::VX); }
+  /// \brief Read access to y velocity
+  /// \return FloatType
+  auto getVy() const -> FloatType final { return this->operator[](StateDef::VY); }
   // ... all the other virtual functions
 
   /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)

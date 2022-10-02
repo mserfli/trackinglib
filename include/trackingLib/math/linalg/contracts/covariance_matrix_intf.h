@@ -20,15 +20,15 @@ namespace covariance
 {
 template<typename T>
 concept has_identity_static_member_func = requires {
-  { std::declval<T>().Identity() } -> std::same_as<typename T::instance_type>;
+  { std::declval<T>().Identity() } -> std::same_as<T>;
 };
 template<typename T>
 concept has_inverse_member_func = requires {
-  { std::declval<const T>().inverse() } -> std::same_as<typename T::instance_type>;
+  { std::declval<const T>().inverse() } -> std::same_as<T>;
 };
 template<typename T>
 concept has_round_brackets_op = requires {
-  { std::declval<T>().operator()() } -> std::same_as<typename T::compose_type&>;
+  { std::declval<T>().operator()() } -> std::same_as<T&>;
 };
 template<typename T>
 concept has_round_brackets_const_op = requires {
@@ -51,7 +51,7 @@ concept has_square_brackets_op_int = requires {
   { std::declval<T>().operator[](std::declval<int>()) } -> std::same_as<typename T::value_type&>;
 };
 // clang-format on
-}
+} // namespace covariance
 #endif
 
 template <typename ImplType>
@@ -63,7 +63,7 @@ struct CovarianceMatrixIntf
       : base::contract::RequireCopyIntf<ImplType>()
       , base::contract::RequireMoveIntf<ImplType>()
   {
-    static_assert(std::is_floating_point<typename ImplType::value_type>());    
+    static_assert(std::is_floating_point<typename ImplType::value_type>());
 
 #if __cplusplus == 202002L
     static_assert(covariance::has_identity_static_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);

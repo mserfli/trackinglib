@@ -51,7 +51,7 @@ concept has_square_brackets_op_int = requires {
   { std::declval<T>().operator[](std::declval<int>()) } -> std::same_as<typename T::value_type&>;
 };
 // clang-format on
-}
+} // namespace state_mem
 #endif
 
 template <typename ImplType>
@@ -64,7 +64,7 @@ struct StateMemIntf
       , base::contract::RequireMoveIntf<ImplType>()
 
   {
-    static_assert(std::is_floating_point<typename ImplType::value_type>());    
+    static_assert(std::is_floating_point<typename ImplType::value_type>());
 
 #if __cplusplus == 202002L
     static_assert(state_mem::has_getVec_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
@@ -80,7 +80,7 @@ struct StateMemIntf
 };
 
 } // namespace contract
-} // namespace math
+} // namespace motion
 } // namespace tracking
 
 

@@ -20,12 +20,12 @@ public:
 
   /// \brief Construct a new Point 2d< Float Type> object
   /// \param[in] other A base class object
-  Point2d<FloatType>(const Vector<FloatType, 2>& other); // NOLINT(google-explicit-constructor)
+  Point2d(const Vector<FloatType, 2>& other); // NOLINT(google-explicit-constructor)
 
   /// \brief Construct a new Point 2d< Float Type> object
   /// \param[in] x  Value for x
   /// \param[in] y  Value for y
-  Point2d<FloatType>(const FloatType x, const FloatType y);
+  Point2d(const FloatType x, const FloatType y);
 
   /// \brief Read access to x value
   /// \return FloatType
@@ -47,6 +47,7 @@ public:
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
+
   /// \brief hide inherited operator[] to prevent wrong access
   using Vector<FloatType, 2>::operator[];
 };
