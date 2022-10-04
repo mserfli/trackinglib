@@ -23,8 +23,10 @@ public:
 
   virtual auto getX() const -> FloatType = 0;
   virtual auto getVx() const -> FloatType = 0;
+  virtual auto getAx() const -> FloatType = 0;
   virtual auto getY() const -> FloatType = 0;
   virtual auto getVy() const -> FloatType = 0;
+  virtual auto getAy() const -> FloatType = 0;
 
   /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
   /// \param[in] dt         The delta time from last state to predicted state

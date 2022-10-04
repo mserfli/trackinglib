@@ -42,6 +42,8 @@ public:
     PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
     auto& underlying = static_cast<MotionModel&>(*this);
+
+    // TODO(matthias): use static allocation like http://blackforrest-embedded.de/2019/09/26/a-templated-static-allocator/
     // apply ego motion compensation on P
     auto P = make_unique<typename MotionModel::StateCov>((data.Go * underlying.getCov() * data.Go.transpose()) +
                                                          (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose()));

@@ -1,5 +1,5 @@
-#ifndef FA800472_29A5_4B6F_90A0_4283A0D513D6
-#define FA800472_29A5_4B6F_90A0_4283A0D513D6
+#ifndef EB85CC72_56D5_4D88_89CF_98C6580F5B61
+#define EB85CC72_56D5_4D88_89CF_98C6580F5B61
 
 #include "base/first_include.h"
 #include "env/ego_motion.h"
@@ -17,15 +17,15 @@ namespace motion
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-class MotionModelCV
-    : public ExtendedMotionModel<MotionModelCV<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 4>
-    , public generic::Predict<MotionModelCV<CovarianceMatrixType, FloatType>, FloatType, CovarianceMatrixType>
+class MotionModelCA
+    : public ExtendedMotionModel<MotionModelCA<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 6>
+    , public generic::Predict<MotionModelCA<CovarianceMatrixType, FloatType>, FloatType, CovarianceMatrixType>
 {
 public:
   enum NoiseDef
   {
-    Q_VX = 0,
-    Q_VY,
+    Q_AX = 0,
+    Q_AY,
     NUM_PROC_NOISE_VARIABLES
   };
 
@@ -33,13 +33,15 @@ public:
   {
     X = 0,
     VX,
+    AX,
     Y,
     VY,
+    AY,
     NUM_STATE_VARIABLES
   };
 
-  using instance_type = MotionModelCV<CovarianceMatrixType, FloatType>;
-  using super_extended_mm_type = ExtendedMotionModel<instance_type, CovarianceMatrixType, FloatType, 4>;
+  using instance_type = MotionModelCA<CovarianceMatrixType, FloatType>;
+  using super_extended_mm_type = ExtendedMotionModel<instance_type, CovarianceMatrixType, FloatType, 6>;
   using super_generic_predict_type = generic::Predict<instance_type, FloatType, CovarianceMatrixType>;
   using StateVec = typename super_extended_mm_type::StateVec;
   using StateCov = typename super_extended_mm_type::StateCov;
@@ -56,12 +58,12 @@ public:
   using AugmentedProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
 
   // rule of 5 declarations
-  MotionModelCV() = default;
-  MotionModelCV(const MotionModelCV&) = default;
-  MotionModelCV(MotionModelCV&&) noexcept = default;
-  auto operator=(const MotionModelCV&) -> MotionModelCV& = default;
-  auto operator=(MotionModelCV&&) noexcept -> MotionModelCV& = default;
-  ~MotionModelCV() final = default;
+  MotionModelCA() = default;
+  MotionModelCA(const MotionModelCA&) = default;
+  MotionModelCA(MotionModelCA&&) noexcept = default;
+  auto operator=(const MotionModelCA&) -> MotionModelCA& = default;
+  auto operator=(MotionModelCA&&) noexcept -> MotionModelCA& = default;
+  ~MotionModelCA() final = default;
 
   /// \brief Read access to x velocity
   /// \return FloatType
@@ -71,10 +73,10 @@ public:
   auto getVy() const -> FloatType final { return this->operator[](StateDef::VY); }
   /// \brief Read access to x acceleration
   /// \return FloatType
-  auto getAx() const -> FloatType final { return static_cast<FloatType>(0.0); }
+  auto getAx() const -> FloatType final { return this->operator[](StateDef::AX); }
   /// \brief Read access to y acceleration
   /// \return FloatType
-  auto getAy() const -> FloatType final { return static_cast<FloatType>(0.0); }
+  auto getAy() const -> FloatType final { return this->operator[](StateDef::AY); }
   // ... all the other virtual functions
 
   /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
@@ -112,7 +114,7 @@ public:
 };
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::predict(const FloatType                        dt,
+void MotionModelCA<CovarianceMatrixType, FloatType>::predict(const FloatType                        dt,
                                                              const filter::KalmanFilter<FloatType>& filter,
                                                              const env::EgoMotion<FloatType>&       egoMotion)
 {
@@ -120,7 +122,7 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::predict(const FloatType    
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMotionMappingMatrix& Ge,
+void MotionModelCA<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMotionMappingMatrix& Ge,
                                                                          StateMatrix&            Go,
                                                                          const EgoMotion&        egoMotion)
 {
@@ -128,6 +130,8 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
   FloatType& y = this->operator[](StateDef::Y);
   FloatType& vx = this->operator[](StateDef::VX);
   FloatType& vy = this->operator[](StateDef::VY);
+  FloatType& ax = this->operator[](StateDef::AX);
+  FloatType& ay = this->operator[](StateDef::AY);
 
   const FloatType sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
   const FloatType cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
@@ -144,6 +148,10 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
   Go(VX, VY) = sinDeltaPsiEgo;
   Go(VY, VX) = -sinDeltaPsiEgo;
   Go(VY, VY) = cosDeltaPsiEgo;
+  Go(AX, AX) = cosDeltaPsiEgo;
+  Go(AX, AY) = sinDeltaPsiEgo;
+  Go(AY, AX) = -sinDeltaPsiEgo;
+  Go(AY, AY) = cosDeltaPsiEgo;
 
   const FloatType x0 = -deltaYEgo + y;
   const FloatType x1 = deltaXEgo - distCog2Ego - x;
@@ -156,50 +164,65 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
   Ge(Y, EgoMotion::DS_PSI) = -(x0 * sinDeltaPsiEgo) + (x1 * cosDeltaPsiEgo);
   Ge(VX, EgoMotion::DS_PSI) = -(vx * sinDeltaPsiEgo) + (vy * cosDeltaPsiEgo);
   Ge(VY, EgoMotion::DS_PSI) = -(vx * cosDeltaPsiEgo) - (vy * sinDeltaPsiEgo);
+  Ge(AX, EgoMotion::DS_PSI) = -(ax * sinDeltaPsiEgo) + (ay * cosDeltaPsiEgo);
+  Ge(AY, EgoMotion::DS_PSI) = -(ax * cosDeltaPsiEgo) - (ay * sinDeltaPsiEgo);
 
   // translate and rotate position
   egoMotion.compensatePosition(x, y, x, y);
   // rotate velocity and acceleration
   egoMotion.compensateDirection(vx, vy, vx, vy);
+  egoMotion.compensateDirection(ax, ay, ax, ay);
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::applyProcessModel(const FloatType dt)
+void MotionModelCA<CovarianceMatrixType, FloatType>::applyProcessModel(const FloatType dt)
 {
   const StateVec& stateVec = this->getVec();
+  const auto      halfDtSq = static_cast<FloatType>(0.5) * dt * dt;
 
-  this->operator[](StateDef::X) += dt * stateVec[StateDef::VX];
-  this->operator[](StateDef::Y) += dt * stateVec[StateDef::VY];
+  this->operator[](StateDef::X) += dt * stateVec[StateDef::VX] + halfDtSq * stateVec[StateDef::AX];
+  this->operator[](StateDef::Y) += dt * stateVec[StateDef::VY] + halfDtSq * stateVec[StateDef::AY];
+  this->operator[](StateDef::VX) += dt * stateVec[StateDef::AX];
+  this->operator[](StateDef::VY) += dt * stateVec[StateDef::AY];
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::computeA(StateMatrix& A, const FloatType dt) const
+void MotionModelCA<CovarianceMatrixType, FloatType>::computeA(StateMatrix& A, const FloatType dt) const
 {
+  const auto halfDtSq = static_cast<FloatType>(0.5) * dt * dt;
+
   A.setIdentity();
+  A(StateDef::X, StateDef::AX) = halfDtSq;
   A(StateDef::X, StateDef::VX) = dt;
+  A(StateDef::VX, StateDef::AX) = dt;
+
+  A(StateDef::Y, StateDef::AY) = halfDtSq;
   A(StateDef::Y, StateDef::VY) = dt;
+  A(StateDef::VY, StateDef::AY) = dt;
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::computeQ(ProcessNoiseDiagMatrix& Q, const FloatType /* dt */)
+void MotionModelCA<CovarianceMatrixType, FloatType>::computeQ(ProcessNoiseDiagMatrix& Q, const FloatType dt)
 {
-  // DWNA process, elements in Q define an acceleration, i.e. unit is equal to m/s**2
-  Q = {static_cast<FloatType>(10.0), static_cast<FloatType>(10.0)};
+  // DWPA process, elements in Q define an acceleration increment, i.e. unit is equal to m/s**2
+  Q = {static_cast<FloatType>(100.0 * dt * dt), static_cast<FloatType>(100.0 * dt * dt)};
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCV<CovarianceMatrixType, FloatType>::computeG(ProcessNoiseMappingMatrix& G, const FloatType dt)
+void MotionModelCA<CovarianceMatrixType, FloatType>::computeG(ProcessNoiseMappingMatrix& G, const FloatType dt)
 {
   const FloatType halfDeltaTimePow2 = static_cast<FloatType>(0.5) * dt * dt;
 
   G.setZeros();
-  G(X, Q_VX) = halfDeltaTimePow2;
-  G(VX, Q_VX) = dt;
-  G(Y, Q_VY) = halfDeltaTimePow2;
-  G(VY, Q_VY) = dt;
+  G(X, Q_AX) = halfDeltaTimePow2;
+  G(VX, Q_AX) = dt;
+  G(AX, Q_AX) = static_cast<FloatType>(1.0);
+  G(Y, Q_AY) = halfDeltaTimePow2;
+  G(VY, Q_AY) = dt;
+  G(AY, Q_AY) = static_cast<FloatType>(1.0);
 }
 
 } // namespace motion
 } // namespace tracking
 
-#endif // FA800472_29A5_4B6F_90A0_4283A0D513D6
+#endif // EB85CC72_56D5_4D88_89CF_98C6580F5B61

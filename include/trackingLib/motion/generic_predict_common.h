@@ -3,7 +3,6 @@
 
 #include "base/first_include.h"
 #include "env/ego_motion.h"
-#include "motion/motion_model_cv.h"
 
 namespace tracking
 {

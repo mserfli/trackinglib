@@ -11,6 +11,9 @@ namespace tracking
 namespace motion
 {
 
+// TODO(matthias): replace dynamic memory allocation by static allocator https://godbolt.org/z/qb4jxsEYM
+// TODO(matthias): or introduce CTORs from all other motion models to allow conversion
+
 /// \brief StateMem class to represent a state vector with its uncertainty described by the state covariance matrix
 /// \tparam CovarianceMatrixType  Used covariance matrix type
 /// \tparam FloatType             Used floating point type
@@ -38,33 +41,39 @@ public:
   /// \brief Read access to full state vector
   /// \return const StateVec&
   auto getVec() const -> ConstStateVec& { return *_vec; }
-  /// \brief Set a new state vector
-  /// \param[in] vec  New state vector
-  void setVec(StateVecPtr&& vec) { _vec = std::move(vec); }
 
   /// \brief Read access to state covariance matrix
   /// \return const StateCov&
   auto getCov() const -> ConstStateCov& { return *_cov; }
-
-  /// \brief Set a new state covariance matrix
-  /// \param[in] cov New state covariance matrix
-  void setCov(StateCovPtr&& cov) { _cov = std::move(cov); }
 
   /// \brief Read access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return const FloatType&
   auto operator[](const sint32 idx) const -> FloatType { return (*_vec)[idx]; }
 
-  /// \brief Write access to indexed element of the state vector
-  /// \param[in] idx  Index in the state vector
-  /// \return FloatType&
-  auto operator[](const sint32 idx) -> FloatType& { return (*_vec)[idx]; }
-
   /// \brief Read access to indexed element of the state covariance matrix
   /// \param[in,out] row  Row index in the state covariance matrix
   /// \param[in,out] col  Col index in the state covariance matrix
   /// \return FloatType
   auto operator()(const sint32 row, const sint32 col) const -> FloatType { return _cov->operator()(row, col); }
+
+  // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround for correct indentation
+  // clang-format on
+
+  /// \brief Set a new state vector
+  /// \param[in] vec  New state vector
+  void setVec(StateVecPtr&& vec) { _vec = std::move(vec); }
+
+  /// \brief Set a new state covariance matrix
+  /// \param[in] cov New state covariance matrix
+  void setCov(StateCovPtr&& cov) { _cov = std::move(cov); }
+
+  /// \brief Write access to indexed element of the state vector
+  /// \param[in] idx  Index in the state vector
+  /// \return FloatType&
+  auto operator[](const sint32 idx) -> FloatType& { return (*_vec)[idx]; }
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
