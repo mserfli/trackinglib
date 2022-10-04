@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include <trackingLib/math/linalg/diagonal_matrix.h>
+#include "trackingLib/math/linalg/diagonal_matrix.h"
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
 // instatiate all templates for full coverage report

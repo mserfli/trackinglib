@@ -27,83 +27,63 @@ public:
   using ConstStateVec = const math::Vector<FloatType, Size>;
   using StateCov = CovarianceMatrixType<FloatType, Size>;
   using ConstStateCov = const CovarianceMatrixType<FloatType, Size>;
-  using StateVecPtr = std::unique_ptr<StateVec>;
-  using StateCovPtr = std::unique_ptr<StateCov>;
 
   // rule of 5 declarations
   StateMem() = default;
-  StateMem(const StateMem& other); // own implementation!!!
+  StateMem(const StateMem& other) = default;
   StateMem(StateMem&&) noexcept = default;
-  auto operator=(const StateMem& other) -> StateMem&; // own implementation!!!
+  auto operator=(const StateMem& other) -> StateMem& = default;
   auto operator=(StateMem&&) noexcept -> StateMem& = default;
   ~StateMem() = default;
 
   /// \brief Read access to full state vector
   /// \return const StateVec&
-  auto getVec() const -> ConstStateVec& { return *_vec; }
+  auto getVec() const -> ConstStateVec& { return _vec; }
 
   /// \brief Read access to state covariance matrix
   /// \return const StateCov&
-  auto getCov() const -> ConstStateCov& { return *_cov; }
+  auto getCov() const -> ConstStateCov& { return _cov; }
 
   /// \brief Read access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return const FloatType&
-  auto operator[](const sint32 idx) const -> FloatType { return (*_vec)[idx]; }
+  auto operator[](const sint32 idx) const -> FloatType { return _vec[idx]; }
 
   /// \brief Read access to indexed element of the state covariance matrix
   /// \param[in,out] row  Row index in the state covariance matrix
   /// \param[in,out] col  Col index in the state covariance matrix
   /// \return FloatType
-  auto operator()(const sint32 row, const sint32 col) const -> FloatType { return _cov->operator()(row, col); }
+  auto operator()(const sint32 row, const sint32 col) const -> FloatType { return _cov(row, col); }
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
   ; // workaround for correct indentation
   // clang-format on
 
-  /// \brief Set a new state vector
-  /// \param[in] vec  New state vector
-  void setVec(StateVecPtr&& vec) { _vec = std::move(vec); }
+  /// \brief Write access to full state vector
+  /// \return const StateVec&
+  auto getVec() -> StateVec& { return _vec; }
 
-  /// \brief Set a new state covariance matrix
-  /// \param[in] cov New state covariance matrix
-  void setCov(StateCovPtr&& cov) { _cov = std::move(cov); }
+  /// \brief Write access to state covariance matrix
+  /// \return const StateCov&
+  auto getCov() -> StateCov& { return _cov; }
 
   /// \brief Write access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return FloatType&
-  auto operator[](const sint32 idx) -> FloatType& { return (*_vec)[idx]; }
+  auto operator[](const sint32 idx) -> FloatType& { return _vec[idx]; }
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
 
-  /// \brief State vector wrapped by a unique ptr to benefit from move operator
-  StateVecPtr _vec{make_unique<StateVec>()};
-  /// \brief State covariance matrix wrapped by a unique ptr to benefit from move operator
-  StateCovPtr _cov{make_unique<StateCov>(StateCov::Identity())};
+  /// \brief State vector
+  StateVec _vec{StateVec::Zeros()};
+  /// \brief State covariance matrix
+  StateCov _cov{StateCov::Identity()};
 };
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType, sint32 Size>
-StateMem<CovarianceMatrixType, FloatType, Size>::StateMem(const StateMem& other)
-{
-  // we have to implement the copy ctor as unique_ptr is not copyable
-  *_vec = *other._vec;
-  *_cov = *other._cov;
-}
-
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType, sint32 Size>
-inline auto StateMem<CovarianceMatrixType, FloatType, Size>::operator=(const StateMem& other) -> StateMem&
-{
-  if (this != &other)
-  {
-    *this->_vec = *other._vec;
-    *this->_cov = *other._cov;
-  }
-  return *this;
-}
 
 } // namespace motion
 } // namespace tracking

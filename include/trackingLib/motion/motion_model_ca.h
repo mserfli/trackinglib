@@ -16,6 +16,10 @@ namespace motion
 
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
+class MotionModelCV;
+
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 class MotionModelCA
     : public ExtendedMotionModel<MotionModelCA<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 6>
@@ -111,6 +115,8 @@ public:
   /// \param[out] G         The transformation of the process noise to the full state space
   /// \param[in]  dt        The delta time from last state to predicted state
   static void computeG(ProcessNoiseMappingMatrix& G, const FloatType dt);
+
+  void convertFrom(const MotionModelCV<CovarianceMatrixType, FloatType>& other);
 };
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>

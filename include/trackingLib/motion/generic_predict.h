@@ -42,15 +42,12 @@ public:
     PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
     auto& underlying = static_cast<MotionModel&>(*this);
-
+    auto& P          = underlying.getCov();
     // TODO(matthias): use static allocation like http://blackforrest-embedded.de/2019/09/26/a-templated-static-allocator/
     // apply ego motion compensation on P
-    auto P = make_unique<typename MotionModel::StateCov>((data.Go * underlying.getCov() * data.Go.transpose()) +
-                                                         (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose()));
+    P = (data.Go * P * data.Go.transpose()) + (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose());
 
-    filter.predictCovariance(*P, data.A, data.G, data.Q);
-
-    underlying.setCov(std::move(P));
+    filter.predictCovariance(P, data.A, data.G, data.Q);
   }
 
   /// \brief State prediction with ego motion compensation using an InformationFilter
@@ -63,11 +60,12 @@ public:
     PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
     auto& underlying = static_cast<MotionModel&>(*this);
-    assert(underlying.getCov().isInverse() && "covariance has to represent the inverse covariance");
+    auto& Y          = underlying.getCov();
+    assert(Y.isInverse() && "covariance has to represent the inverse covariance");
 #if 0    
     // TODO(matthias): ego motion compensation is quite complicated here, maybe neglect influence of Ge*Pe*Ge'
     // reconstruct P which might cause issues because P becomes extremly large
-    static auto postP = underlying.getCov().inverse();
+    static auto postP = cov.inverse();
     // apply ego motion compensation on P
     static auto compP = (data.Go * postP * data.Go.transpose())
                       + (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose());
@@ -76,11 +74,9 @@ public:
 #else
     static auto invGo = data.Go.inverse();
     // calc compensated Y, neglecting Ge
-    auto Y = make_unique<typename MotionModel::StateCov>(invGo.transpose() * underlying.getCov() * invGo, true);
+    Y = invGo.transpose() * Y * invGo;
 #endif
-    filter.predictCovariance(*Y, data.A, data.G, data.Q);
-
-    underlying.setCov(std::move(Y));
+    filter.predictCovariance(Y, data.A, data.G, data.Q);
   };
 };
 
@@ -101,6 +97,7 @@ public:
     PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
     auto& underlying = static_cast<MotionModel&>(*this);
+    auto& P          = underlying.getCov();
 
     static typename MotionModel::StateMatrix AGo = data.A * data.Go;
 
@@ -112,11 +109,7 @@ public:
     // operations
     static typename MotionModel::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
 
-    auto P = make_unique<typename MotionModel::StateCov>(underlying.getCov());
-
-    filter.predictCovariance(*P, AGo, Gstar, Qstar);
-
-    underlying.setCov(std::move(P));
+    filter.predictCovariance(P, AGo, Gstar, Qstar);
   }
 };
 

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "math/linalg/square_matrix.h"
-#include <trackingLib/math/linalg/triangular_matrix.h>
+#include "trackingLib/math/linalg/square_matrix.h"
+#include "trackingLib/math/linalg/triangular_matrix.h"
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
 // instatiate all templates for full coverage report

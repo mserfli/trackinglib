@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include <trackingLib/math/linalg/point2d.h>
+#include "trackingLib/math/linalg/point2d.h"
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
 

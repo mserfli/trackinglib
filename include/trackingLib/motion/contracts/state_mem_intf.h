@@ -27,14 +27,6 @@ concept has_getCov_member_func = requires {
   { std::declval<const T>().getCov() } -> std::same_as<typename T::ConstStateCov&>;
 };
 template<typename T>
-concept has_setVec_member_func = requires {
-  { std::declval<T>().setVec(std::declval<typename T::StateVecPtr>()) };
-};
-template<typename T>
-concept has_setCov_member_func = requires {
-  { std::declval<T>().setCov(std::declval<typename T::StateCovPtr>()) };
-};
-template<typename T>
 concept has_round_brackets_const_op_int_int = requires {
   { std::declval<const T>().operator()(std::declval<int>(), std::declval<int>()) } -> std::same_as<typename T::value_type>;
 };
@@ -69,8 +61,6 @@ struct StateMemIntf
 #if __cplusplus == 202002L
     static_assert(state_mem::has_getVec_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(state_mem::has_getCov_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
-    static_assert(state_mem::has_setVec_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
-    static_assert(state_mem::has_setCov_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(state_mem::has_square_brackets_const_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
     static_assert(state_mem::has_square_brackets_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
     static_assert(state_mem::has_round_brackets_const_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);

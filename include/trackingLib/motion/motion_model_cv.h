@@ -9,6 +9,7 @@
 #include "motion/generic_predict.h"
 #include "motion/imotion_model.h"
 
+
 namespace tracking
 {
 namespace motion
@@ -16,6 +17,10 @@ namespace motion
 
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
+class MotionModelCA;
+
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 class MotionModelCV
     : public ExtendedMotionModel<MotionModelCV<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 4>
@@ -38,30 +43,30 @@ public:
     NUM_STATE_VARIABLES
   };
 
-  using instance_type = MotionModelCV<CovarianceMatrixType, FloatType>;
-  using super_extended_mm_type = ExtendedMotionModel<instance_type, CovarianceMatrixType, FloatType, 4>;
+  using instance_type              = MotionModelCV<CovarianceMatrixType, FloatType>;
+  using super_extended_mm_type     = ExtendedMotionModel<instance_type, CovarianceMatrixType, FloatType, 4>;
   using super_generic_predict_type = generic::Predict<instance_type, FloatType, CovarianceMatrixType>;
-  using StateVec = typename super_extended_mm_type::StateVec;
-  using StateCov = typename super_extended_mm_type::StateCov;
+  using StateVec                   = typename super_extended_mm_type::StateVec;
+  using StateCov                   = typename super_extended_mm_type::StateCov;
 
-  using StateMatrix = math::SquareMatrix<FloatType, NUM_STATE_VARIABLES>;
-  using ProcessNoiseDiagMatrix = math::DiagonalMatrix<FloatType, NUM_PROC_NOISE_VARIABLES>;
+  using StateMatrix               = math::SquareMatrix<FloatType, NUM_STATE_VARIABLES>;
+  using ProcessNoiseDiagMatrix    = math::DiagonalMatrix<FloatType, NUM_PROC_NOISE_VARIABLES>;
   using ProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_PROC_NOISE_VARIABLES>;
 
-  using EgoMotion = env::EgoMotion<FloatType>;
+  using EgoMotion              = env::EgoMotion<FloatType>;
   using EgoMotionMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, EgoMotion::DS_NUM_VARIABLES>;
 
   static constexpr sint32 NUM_AUG_PROC_NOISE_VARIABLES = NUM_PROC_NOISE_VARIABLES + EgoMotion::DS_NUM_VARIABLES;
-  using AugmentedProcessNoiseDiagMatrix = math::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
+  using AugmentedProcessNoiseDiagMatrix                = math::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
   using AugmentedProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
 
   // rule of 5 declarations
-  MotionModelCV() = default;
-  MotionModelCV(const MotionModelCV&) = default;
+  MotionModelCV()                         = default;
+  MotionModelCV(const MotionModelCV&)     = default;
   MotionModelCV(MotionModelCV&&) noexcept = default;
   auto operator=(const MotionModelCV&) -> MotionModelCV& = default;
   auto operator=(MotionModelCV&&) noexcept -> MotionModelCV& = default;
-  ~MotionModelCV() final = default;
+  ~MotionModelCV() final                                     = default;
 
   /// \brief Read access to x velocity
   /// \return FloatType
@@ -109,7 +114,10 @@ public:
   /// \param[out] G         The transformation of the process noise to the full state space
   /// \param[in]  dt        The delta time from last state to predicted state
   static void computeG(ProcessNoiseMappingMatrix& G, const FloatType dt);
+
+  void convertFrom(const MotionModelCA<CovarianceMatrixType, FloatType>& other);
 };
+
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 void MotionModelCV<CovarianceMatrixType, FloatType>::predict(const FloatType                        dt,
@@ -124,22 +132,22 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
                                                                          StateMatrix&            Go,
                                                                          const EgoMotion&        egoMotion)
 {
-  FloatType& x = this->operator[](StateDef::X);
-  FloatType& y = this->operator[](StateDef::Y);
+  FloatType& x  = this->operator[](StateDef::X);
+  FloatType& y  = this->operator[](StateDef::Y);
   FloatType& vx = this->operator[](StateDef::VX);
   FloatType& vy = this->operator[](StateDef::VY);
 
   const FloatType sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
   const FloatType cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
-  const FloatType deltaXEgo = egoMotion.getDisplacementCog().vec[EgoMotion::DS_X];
-  const FloatType deltaYEgo = egoMotion.getDisplacementCog().vec[EgoMotion::DS_Y];
-  const FloatType distCog2Ego = egoMotion.getGeometry().distCog2Ego;
+  const FloatType deltaXEgo      = egoMotion.getDisplacementCog().vec[EgoMotion::DS_X];
+  const FloatType deltaYEgo      = egoMotion.getDisplacementCog().vec[EgoMotion::DS_Y];
+  const FloatType distCog2Ego    = egoMotion.getGeometry().distCog2Ego;
 
   Go.setZeros();
-  Go(X, X) = cosDeltaPsiEgo;
-  Go(X, Y) = sinDeltaPsiEgo;
-  Go(Y, X) = -sinDeltaPsiEgo;
-  Go(Y, Y) = cosDeltaPsiEgo;
+  Go(X, X)   = cosDeltaPsiEgo;
+  Go(X, Y)   = sinDeltaPsiEgo;
+  Go(Y, X)   = -sinDeltaPsiEgo;
+  Go(Y, Y)   = cosDeltaPsiEgo;
   Go(VX, VX) = cosDeltaPsiEgo;
   Go(VX, VY) = sinDeltaPsiEgo;
   Go(VY, VX) = -sinDeltaPsiEgo;
@@ -148,12 +156,12 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
   const FloatType x0 = -deltaYEgo + y;
   const FloatType x1 = deltaXEgo - distCog2Ego - x;
   Ge.setZeros();
-  Ge(X, EgoMotion::DS_X) = -cosDeltaPsiEgo;
-  Ge(X, EgoMotion::DS_Y) = -sinDeltaPsiEgo;
-  Ge(X, EgoMotion::DS_PSI) = (x0 * cosDeltaPsiEgo) + (x1 * sinDeltaPsiEgo);
-  Ge(Y, EgoMotion::DS_X) = sinDeltaPsiEgo;
-  Ge(Y, EgoMotion::DS_Y) = cosDeltaPsiEgo;
-  Ge(Y, EgoMotion::DS_PSI) = -(x0 * sinDeltaPsiEgo) + (x1 * cosDeltaPsiEgo);
+  Ge(X, EgoMotion::DS_X)    = -cosDeltaPsiEgo;
+  Ge(X, EgoMotion::DS_Y)    = -sinDeltaPsiEgo;
+  Ge(X, EgoMotion::DS_PSI)  = (x0 * cosDeltaPsiEgo) + (x1 * sinDeltaPsiEgo);
+  Ge(Y, EgoMotion::DS_X)    = sinDeltaPsiEgo;
+  Ge(Y, EgoMotion::DS_Y)    = cosDeltaPsiEgo;
+  Ge(Y, EgoMotion::DS_PSI)  = -(x0 * sinDeltaPsiEgo) + (x1 * cosDeltaPsiEgo);
   Ge(VX, EgoMotion::DS_PSI) = -(vx * sinDeltaPsiEgo) + (vy * cosDeltaPsiEgo);
   Ge(VY, EgoMotion::DS_PSI) = -(vx * cosDeltaPsiEgo) - (vy * sinDeltaPsiEgo);
 
@@ -193,9 +201,9 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::computeG(ProcessNoiseMappin
   const FloatType halfDeltaTimePow2 = static_cast<FloatType>(0.5) * dt * dt;
 
   G.setZeros();
-  G(X, Q_VX) = halfDeltaTimePow2;
+  G(X, Q_VX)  = halfDeltaTimePow2;
   G(VX, Q_VX) = dt;
-  G(Y, Q_VY) = halfDeltaTimePow2;
+  G(Y, Q_VY)  = halfDeltaTimePow2;
   G(VY, Q_VY) = dt;
 }
 
