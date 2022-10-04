@@ -39,6 +39,13 @@ public:
   static void convertFrom(typename MotionModelCV<CovarianceMatrixType, FloatType>::StateVec&       dstVec,
                           const typename MotionModelCA<CovarianceMatrixType, FloatType>::StateVec& srcVec)
   {
+    using DstType = MotionModelCV<CovarianceMatrixType, FloatType>;
+    using SrcType = MotionModelCA<CovarianceMatrixType, FloatType>;
+
+    dstVec[DstType::X]  = srcVec[SrcType::X];
+    dstVec[DstType::VX] = srcVec[SrcType::VX];
+    dstVec[DstType::Y]  = srcVec[SrcType::Y];
+    dstVec[DstType::VY] = srcVec[SrcType::VY];
   }
 };
 
@@ -52,6 +59,15 @@ public:
   static void convertFrom(typename MotionModelCA<CovarianceMatrixType, FloatType>::StateVec&       dstVec,
                           const typename MotionModelCV<CovarianceMatrixType, FloatType>::StateVec& srcVec)
   {
+    using DstType = MotionModelCA<CovarianceMatrixType, FloatType>;
+    using SrcType = MotionModelCV<CovarianceMatrixType, FloatType>;
+
+    dstVec[DstType::X]  = srcVec[SrcType::X];
+    dstVec[DstType::VX] = srcVec[SrcType::VX];
+    dstVec[DstType::AX] = static_cast<FloatType>(0.0);
+    dstVec[DstType::Y]  = srcVec[SrcType::Y];
+    dstVec[DstType::VY] = srcVec[SrcType::VY];
+    dstVec[DstType::AY] = static_cast<FloatType>(0.0);
   }
 };
 
