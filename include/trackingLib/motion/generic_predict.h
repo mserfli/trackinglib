@@ -70,7 +70,7 @@ public:
     static auto compP = (data.Go * postP * data.Go.transpose())
                       + (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose());
     // calc compensated Y
-    static auto Y = make_unique<typename MotionModel::StateCov>(compP.inverse(), true);
+    Y = compP.inverse();
 #else
     static auto invGo = data.Go.inverse();
     // calc compensated Y, neglecting Ge

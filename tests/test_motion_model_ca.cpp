@@ -39,7 +39,7 @@ TEST(MotionModelCA, predict_factoredCov)
   // mm._cov->print();
 }
 
-TEST(MotionModelCV, convertCV_fullCov)
+TEST(MotionModelCA, convertCV_fullCov)
 {
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFull, float32>;
