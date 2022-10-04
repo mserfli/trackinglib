@@ -18,13 +18,13 @@ class IMotionModel
 {
 public:
   // rule of 5 declarations
-  IMotionModel() = default;
+  IMotionModel()          = default;
   virtual ~IMotionModel() = default;
 
-  virtual auto getX() const -> FloatType = 0;
+  virtual auto getX() const -> FloatType  = 0;
   virtual auto getVx() const -> FloatType = 0;
   virtual auto getAx() const -> FloatType = 0;
-  virtual auto getY() const -> FloatType = 0;
+  virtual auto getY() const -> FloatType  = 0;
   virtual auto getVy() const -> FloatType = 0;
   virtual auto getAy() const -> FloatType = 0;
 
@@ -43,7 +43,7 @@ TEST_REMOVE_PROTECTED:
 
   // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
   IMotionModel(const IMotionModel& other) = default;
-  IMotionModel(IMotionModel&&) noexcept = default;
+  IMotionModel(IMotionModel&&) noexcept   = default;
   auto operator=(const IMotionModel& other) -> IMotionModel& = default;
   auto operator=(IMotionModel&&) noexcept -> IMotionModel& = default;
 };
@@ -63,8 +63,14 @@ public:
   using typename StateMem<CovarianceMatrixType, FloatType, Size>::StateCov;
 
   // rule of 5 declarations
-  ExtendedMotionModel() = default;
+  ExtendedMotionModel()          = default;
   virtual ~ExtendedMotionModel() = default;
+
+  explicit ExtendedMotionModel(const StateVec& vec, const StateCov& cov)
+      : IMotionModel<FloatType>{}
+      , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}
+  {
+  }
 
   /// \brief Read access to x position
   /// \return FloatType
@@ -81,7 +87,7 @@ TEST_REMOVE_PROTECTED:
 
   // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
   ExtendedMotionModel(const ExtendedMotionModel& other) = default;
-  ExtendedMotionModel(ExtendedMotionModel&&) noexcept = default;
+  ExtendedMotionModel(ExtendedMotionModel&&) noexcept   = default;
   auto operator=(const ExtendedMotionModel& other) -> ExtendedMotionModel& = default;
   auto operator=(ExtendedMotionModel&&) noexcept -> ExtendedMotionModel& = default;
 };

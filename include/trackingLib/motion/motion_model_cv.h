@@ -68,6 +68,12 @@ public:
   auto operator=(MotionModelCV&&) noexcept -> MotionModelCV& = default;
   ~MotionModelCV() final                                     = default;
 
+  explicit MotionModelCV(const StateVec& vec, const StateCov& cov)
+      : super_extended_mm_type{vec, cov}
+      , super_generic_predict_type{}
+  {
+  }
+
   /// \brief Read access to x velocity
   /// \return FloatType
   auto getVx() const -> FloatType final { return this->operator[](StateDef::VX); }

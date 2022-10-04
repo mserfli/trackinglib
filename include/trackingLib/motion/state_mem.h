@@ -22,19 +22,25 @@ template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
 class StateMem: public contract::StateMemIntf<StateMem<CovarianceMatrixType, FloatType, Size>>
 {
 public:
-  using value_type = FloatType;
-  using StateVec = math::Vector<FloatType, Size>;
+  using value_type    = FloatType;
+  using StateVec      = math::Vector<FloatType, Size>;
   using ConstStateVec = const math::Vector<FloatType, Size>;
-  using StateCov = CovarianceMatrixType<FloatType, Size>;
+  using StateCov      = CovarianceMatrixType<FloatType, Size>;
   using ConstStateCov = const CovarianceMatrixType<FloatType, Size>;
 
   // rule of 5 declarations
-  StateMem() = default;
+  StateMem()                      = default;
   StateMem(const StateMem& other) = default;
-  StateMem(StateMem&&) noexcept = default;
+  StateMem(StateMem&&) noexcept   = default;
   auto operator=(const StateMem& other) -> StateMem& = default;
   auto operator=(StateMem&&) noexcept -> StateMem& = default;
-  ~StateMem() = default;
+  ~StateMem()                                      = default;
+
+  explicit StateMem(const StateVec& vec, const StateCov& cov)
+      : _vec{vec}
+      , _cov{cov}
+  {
+  }
 
   /// \brief Read access to full state vector
   /// \return const StateVec&
