@@ -27,6 +27,7 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
+  -modernize-concat-nested-namespaces,
   -modernize-make-unique,
   -readability-avoid-const-params-in-decls,
   -readability-identifier-length,
