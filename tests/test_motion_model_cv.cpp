@@ -50,4 +50,18 @@ TEST(MotionModelCV, convertCA_fullCov)
   mm_cv.convertFrom(mm_ca);
 }
 
+TEST(MotionModelCV, convertCA_facCov)
+{
+  using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
+  using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFactored, float32>;
+  MMCA::StateVec vec({{10}, {2}, {0}, {0}, {2}, {0.1}});
+  MMCA::StateCov::compose_type cov(
+      {{5, 0, 0, 0, 0, 0}, {0, 1, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {0, 0, 0, 0, 0.1, 0}, {0, 0, 0, 0, 0, 1}});
+  MMCA mm_ca{vec, MMCA::StateCov(cov)};
+
+  MMCV mm_cv{};
+  mm_cv.convertFrom(mm_ca);
+}
+
+
 // NOLINTEND(modernize-use-trailing-return-type)

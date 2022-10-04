@@ -11,13 +11,11 @@ namespace motion
 
 template <typename MM_Dst,
           typename MM_Src,
-          typename FloatType,
-          template <typename FloatType_, sint32 Size_>
-          class CovarianceMatrixType>
+          typename FloatType>
 class StateCovConverter;
 
-template <typename MM, typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
-class StateCovConverter<MM, MM, FloatType, CovarianceMatrixType>
+template <typename MM>
+class StateCovConverter<MM, MM, typename MM::value_type>
 {
 public:
   static void convertFrom(typename MM::StateCov& dstCov, const typename MM::StateCov& srcCov)
@@ -29,28 +27,46 @@ public:
   }
 };
 
-template <typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
-class StateCovConverter<MotionModelCV<CovarianceMatrixType, FloatType>,
-                        MotionModelCA<CovarianceMatrixType, FloatType>,
-                        FloatType,
-                        CovarianceMatrixType>
+template <typename FloatType>
+class StateCovConverter<MotionModelCV<math::CovarianceMatrixFull, FloatType>,
+                        MotionModelCA<math::CovarianceMatrixFull, FloatType>, FloatType>
 {
 public:
-  static void convertFrom(typename MotionModelCV<CovarianceMatrixType, FloatType>::StateCov&       dstCov,
-                          const typename MotionModelCA<CovarianceMatrixType, FloatType>::StateCov& srcCov)
+  static void convertFrom(typename MotionModelCV<math::CovarianceMatrixFull, FloatType>::StateCov&       dstCov,
+                          const typename MotionModelCA<math::CovarianceMatrixFull, FloatType>::StateCov& srcCov)
   {
   }
 };
 
-template <typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
-class StateCovConverter<MotionModelCA<CovarianceMatrixType, FloatType>,
-                        MotionModelCV<CovarianceMatrixType, FloatType>,
-                        FloatType,
-                        CovarianceMatrixType>
+template <typename FloatType>
+class StateCovConverter<MotionModelCV<math::CovarianceMatrixFactored, FloatType>,
+                        MotionModelCA<math::CovarianceMatrixFactored, FloatType>, FloatType>
 {
 public:
-  static void convertFrom(typename MotionModelCA<CovarianceMatrixType, FloatType>::StateCov&       dstCov,
-                          const typename MotionModelCV<CovarianceMatrixType, FloatType>::StateCov& srcCov)
+  static void convertFrom(typename MotionModelCV<math::CovarianceMatrixFactored, FloatType>::StateCov&       dstCov,
+                          const typename MotionModelCA<math::CovarianceMatrixFactored, FloatType>::StateCov& srcCov)
+  {
+  }
+};
+
+template <typename FloatType>
+class StateCovConverter<MotionModelCA<math::CovarianceMatrixFull, FloatType>,
+                        MotionModelCV<math::CovarianceMatrixFull, FloatType>, FloatType>
+{
+public:
+  static void convertFrom(typename MotionModelCA<math::CovarianceMatrixFull, FloatType>::StateCov&       dstCov,
+                          const typename MotionModelCV<math::CovarianceMatrixFull, FloatType>::StateCov& srcCov)
+  {
+  }
+};
+
+template <typename FloatType>
+class StateCovConverter<MotionModelCA<math::CovarianceMatrixFactored, FloatType>,
+                        MotionModelCV<math::CovarianceMatrixFactored, FloatType>, FloatType>
+{
+public:
+  static void convertFrom(typename MotionModelCA<math::CovarianceMatrixFactored, FloatType>::StateCov&       dstCov,
+                          const typename MotionModelCV<math::CovarianceMatrixFactored, FloatType>::StateCov& srcCov)
   {
   }
 };

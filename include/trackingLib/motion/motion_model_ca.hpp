@@ -15,7 +15,7 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::convertFrom(const MotionMod
 {
   using other_type = MotionModelCV<CovarianceMatrixType, FloatType>;
   StateVecConverter<instance_type, other_type, FloatType, CovarianceMatrixType>::convertFrom(this->getVec(), other.getVec());
-  StateCovConverter<instance_type, other_type, FloatType, CovarianceMatrixType>::convertFrom(this->getCov(), other.getCov());
+  StateCovConverter<instance_type, other_type, FloatType>::convertFrom(this->getCov(), other.getCov());
 }
 
 }
