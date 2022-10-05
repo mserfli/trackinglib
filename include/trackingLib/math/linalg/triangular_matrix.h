@@ -2,7 +2,7 @@
 #define BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 
 #include "base/first_include.h"
-#include "math/linalg/square_matrix.h"
+#include "math/linalg/square_matrix.hpp"
 
 namespace tracking
 {

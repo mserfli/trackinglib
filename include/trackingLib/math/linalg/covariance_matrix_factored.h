@@ -16,12 +16,12 @@ template <typename FloatType, sint32 Size>
 class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType, Size>>
 {
 public:
-  using value_type = FloatType;
+  using value_type   = FloatType;
   using compose_type = CovarianceMatrixFull<FloatType, Size>;
 
   // rule of 5 declarations
-  CovarianceMatrixFactored() = default;
-  CovarianceMatrixFactored(const CovarianceMatrixFactored&) = default;
+  CovarianceMatrixFactored()                                    = default;
+  CovarianceMatrixFactored(const CovarianceMatrixFactored&)     = default;
   CovarianceMatrixFactored(CovarianceMatrixFactored&&) noexcept = default;
   auto operator=(const CovarianceMatrixFactored&) -> CovarianceMatrixFactored& = default;
   auto operator=(CovarianceMatrixFactored&&) noexcept -> CovarianceMatrixFactored& = default;
@@ -53,6 +53,14 @@ public:
   /// \return true
   /// \return false
   auto isInverse() const -> bool { return _isInverse; }
+
+  /// \brief Calculate A*P*A' inplace
+  /// \param[in] A
+  void apaT(const SquareMatrix<FloatType, Size>& A);
+
+  /// \brief Calculate A*P*A'
+  /// \param[in] A
+  auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFactored;
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
@@ -91,7 +99,8 @@ auto CovarianceMatrixFactored<FloatType, Size>::Identity() -> CovarianceMatrixFa
 template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFactored<FloatType, Size>::operator()(sint32 row, sint32 col) const -> FloatType
 {
-  // TODO(matthias): optimize by calculating only the requested covariance element
+  // TODO(matthias): optimize by calculating only the requested covariance
+  // element
   auto tmp = this->operator()();
   return tmp(row, col);
 }
@@ -115,6 +124,55 @@ template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFactored<FloatType, Size>::inverse() const -> CovarianceMatrixFactored
 {
   return CovarianceMatrixFactored{_u.inverse(), _d.inverse(), true};
+}
+
+template <typename FloatType, sint32 Size>
+inline void CovarianceMatrixFactored<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A)
+{
+  // M. S. Grewal and A. P. Andrews
+  // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
+  // Wiley, 2014.
+  //
+  // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method 
+  assert(!_isInverse && "check if and what needs to be changed in case cov is inverse");
+
+  auto PhiU = A * _u;
+  auto Din  = _d;
+  _u.setIdentity();
+  FloatType sigma;
+  for (sint32 i = Size - 1; i >= 0; --i)
+  {
+    sigma = static_cast<FloatType>(0.0);
+    for (sint32 j = 0; j < Size; ++j)
+    {
+      sigma += (PhiU(i, j) * PhiU(i, j)) * Din(j, j);
+    }
+    _d(i, i) = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
+    for (sint32 j = 0; j < i; ++j)
+    {
+      sigma = static_cast<FloatType>(0.0);
+      for (sint32 k = 0; k < Size; ++k)
+      {
+        sigma += PhiU(i, k) * Din(k, k) * PhiU(j, k);
+      }
+
+      _u(j, i) = sigma / _d(i, i);
+
+      for (sint32 k = 0; k < Size; ++k)
+      {
+        PhiU(j, k) -= _u(j, i) * PhiU(i, k);
+      }
+    }
+  }
+}
+
+template <typename FloatType, sint32 Size>
+inline auto CovarianceMatrixFactored<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A) const
+    -> CovarianceMatrixFactored
+{
+  CovarianceMatrixFactored cov{*this};
+  cov.apaT(A);
+  return cov;
 }
 
 } // namespace math

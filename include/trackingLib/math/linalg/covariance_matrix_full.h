@@ -3,13 +3,14 @@
 
 #include "base/first_include.h"
 #include "math/linalg/contracts/covariance_matrix_intf.h"
-#include "math/linalg/square_matrix.h"
+#include "math/linalg/square_matrix.hpp"
 
 namespace tracking
 {
 namespace math
 {
 
+// TODO(matthias): add contract for apaT functions
 template <typename FloatType, sint32 Size>
 class CovarianceMatrixFull
     : public SquareMatrix<FloatType, Size>
@@ -47,6 +48,14 @@ public:
   /// \brief Calculates the inverse based on Cholesky decomposition
   /// \return CovarianceMatrixFull
   auto inverse() const -> CovarianceMatrixFull;
+
+  /// \brief Calculate A*P*A' inplace
+  /// \param[in] A 
+  void apaT(const SquareMatrix<FloatType, Size>& A);
+
+  /// \brief Calculate A*P*A'
+  /// \param[in] A 
+  auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFull;
 };
 
 template <typename FloatType, sint32 Size>
@@ -72,6 +81,18 @@ template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> CovarianceMatrixFull
 {
   return SquareMatrix<FloatType, Size>::inverse();
+}
+
+template <typename FloatType, sint32 Size>
+inline void CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A)
+{
+  this->operator=(A * this->operator*=(A.transpose()));
+}
+
+template <typename FloatType, sint32 Size>
+inline auto CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFull
+{
+  return (A * (*this) * A.transpose());
 }
 
 } // namespace math

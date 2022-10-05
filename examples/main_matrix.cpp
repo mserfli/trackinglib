@@ -3,7 +3,7 @@
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/matrix.h"
 #include "math/linalg/point2d.h"
-#include "math/linalg/square_matrix.h"
+#include "math/linalg/square_matrix.hpp"
 #include "math/linalg/triangular_matrix.h"
 #include "math/linalg/vector.h"
 

@@ -2,7 +2,7 @@
 #define EDCA948E_6A98_4AF3_8A01_916736E1577B
 
 #include "base/first_include.h"
-#include "math/linalg/square_matrix.h"
+#include "math/linalg/square_matrix.hpp"
 
 namespace tracking
 {

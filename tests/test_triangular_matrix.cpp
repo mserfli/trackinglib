@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/square_matrix.h"
+#include "trackingLib/math/linalg/square_matrix.hpp"
 #include "trackingLib/math/linalg/triangular_matrix.h"
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
