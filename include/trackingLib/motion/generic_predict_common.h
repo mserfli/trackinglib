@@ -38,23 +38,7 @@ public:
   /// \param[out] data       Output data storage for all precomputed results
   /// \param[in]  dt         The delta time from last state to predicted state
   /// \param[in]  egoMotion  The known egoMotion from last state to predicted state
-  void run(Storage& data, const FloatType dt, const env::EgoMotion<FloatType>& egoMotion)
-  {
-    assert(dt >= static_cast<FloatType>(0.0));
-    auto& underlying = static_cast<MotionModel&>(*this);
-
-    // transform posteriori state into current frame
-    underlying.compensateEgoMotion(data.Ge, data.Go, egoMotion);
-
-    // apply state transition in current frame
-    underlying.computeA(data.A, dt);
-    underlying.applyProcessModel(dt);
-    // post: state is predicted
-
-    // calculate process noise and its contribution to the state
-    underlying.computeQ(data.Q, dt);
-    underlying.computeG(data.G, dt);
-  }
+  void run(Storage& data, const FloatType dt, const env::EgoMotion<FloatType>& egoMotion);
 };
 
 } // namespace generic

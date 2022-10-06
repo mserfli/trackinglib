@@ -1,7 +1,7 @@
 #ifndef C29F4260_CDA5_4C57_8700_E478EBEC6295
 #define C29F4260_CDA5_4C57_8700_E478EBEC6295
 
-#include "math/linalg/square_matrix.h"
+#include "base/first_include.h"
 #include "motion/motion_model_ca.h"
 #include "motion/motion_model_cv.h"
 
@@ -17,13 +17,7 @@ template <typename MM>
 class StateCovConverter<MM, MM, typename MM::value_type>
 {
 public:
-  static void convertFrom(typename MM::StateCov& dstCov, const typename MM::StateCov& srcCov)
-  {
-    if (&srcCov != &dstCov)
-    {
-      dstCov = srcCov;
-    }
-  }
+  static void convertFrom(typename MM::StateCov& dstCov, const typename MM::StateCov& srcCov);
 };
 
 template <typename FloatType>
@@ -33,51 +27,7 @@ class StateCovConverter<MotionModelCV<math::CovarianceMatrixFull, FloatType>,
 {
 public:
   static void convertFrom(typename MotionModelCV<math::CovarianceMatrixFull, FloatType>::StateCov&       dstCov,
-                          const typename MotionModelCA<math::CovarianceMatrixFull, FloatType>::StateCov& srcCov)
-  {
-    using DstType = MotionModelCV<math::CovarianceMatrixFull, FloatType>;
-    using SrcType = MotionModelCA<math::CovarianceMatrixFull, FloatType>;
-
-    static_assert(DstType::VX == DstType::X + 1);
-    static_assert(DstType::VY == DstType::Y + 1);
-    static_assert(SrcType::VX == SrcType::X + 1);
-    static_assert(SrcType::VY == SrcType::Y + 1);
-    // copy x,vx and its correlations
-    dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
-                             SrcType::NUM_STATE_VARIABLES,
-                             2,
-                             2,
-                             SrcType::X,
-                             SrcType::X,
-                             DstType::X,
-                             DstType::X>(srcCov);
-    // copy cross correlations between x,vx and y,vy
-    dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
-                             SrcType::NUM_STATE_VARIABLES,
-                             2,
-                             2,
-                             SrcType::X,
-                             SrcType::Y,
-                             DstType::X,
-                             DstType::Y>(srcCov);
-    dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
-                             SrcType::NUM_STATE_VARIABLES,
-                             2,
-                             2,
-                             SrcType::Y,
-                             SrcType::X,
-                             DstType::Y,
-                             DstType::X>(srcCov);
-    // copy y,vy and its correlations
-    dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
-                             SrcType::NUM_STATE_VARIABLES,
-                             2,
-                             2,
-                             SrcType::Y,
-                             SrcType::Y,
-                             DstType::Y,
-                             DstType::Y>(srcCov);
-  }
+                          const typename MotionModelCA<math::CovarianceMatrixFull, FloatType>::StateCov& srcCov);
 };
 
 template <typename FloatType>
@@ -87,23 +37,7 @@ class StateCovConverter<MotionModelCV<math::CovarianceMatrixFactored, FloatType>
 {
 public:
   static void convertFrom(typename MotionModelCV<math::CovarianceMatrixFactored, FloatType>::StateCov&       dstCov,
-                          const typename MotionModelCA<math::CovarianceMatrixFactored, FloatType>::StateCov& srcCov)
-  {
-    using DstType      = MotionModelCV<math::CovarianceMatrixFull, FloatType>;
-    using SrcType      = MotionModelCA<math::CovarianceMatrixFull, FloatType>;
-    constexpr auto one = static_cast<FloatType>(1.0);
-
-    // create a permutation matrix from SrcType to DstType
-    math::SquareMatrix<FloatType, SrcType::NUM_STATE_VARIABLES> A;
-    A.setZeros();
-    A(DstType::X, SrcType::X)   = one;
-    A(DstType::VX, SrcType::VX) = one;
-    A(DstType::Y, SrcType::Y)   = one;
-    A(DstType::VY, SrcType::VY) = one;
-
-    // fill dstCov with the resulting top left block
-    dstCov.template fill<SrcType::NUM_STATE_VARIABLES, DstType::NUM_STATE_VARIABLES>(srcCov.apaT(A));
-  }
+                          const typename MotionModelCA<math::CovarianceMatrixFactored, FloatType>::StateCov& srcCov);
 };
 
 template <typename FloatType>
@@ -113,53 +47,7 @@ class StateCovConverter<MotionModelCA<math::CovarianceMatrixFull, FloatType>,
 {
 public:
   static void convertFrom(typename MotionModelCA<math::CovarianceMatrixFull, FloatType>::StateCov&       dstCov,
-                          const typename MotionModelCV<math::CovarianceMatrixFull, FloatType>::StateCov& srcCov)
-  {
-    using DstType = MotionModelCA<math::CovarianceMatrixFull, FloatType>;
-    using SrcType = MotionModelCV<math::CovarianceMatrixFull, FloatType>;
-
-    static_assert(DstType::VX == DstType::X + 1);
-    static_assert(DstType::VY == DstType::Y + 1);
-    static_assert(SrcType::VX == SrcType::X + 1);
-    static_assert(SrcType::VY == SrcType::Y + 1);
-    // set ax,ay variance to 1.0
-    dstCov.setIdentity();
-    // copy x,vx and its correlations
-    dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
-                             SrcType::NUM_STATE_VARIABLES,
-                             2,
-                             2,
-                             SrcType::X,
-                             SrcType::X,
-                             DstType::X,
-                             DstType::X>(srcCov);
-    // copy cross correlations between x,vx and y,vy
-    dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
-                             SrcType::NUM_STATE_VARIABLES,
-                             2,
-                             2,
-                             SrcType::X,
-                             SrcType::Y,
-                             DstType::X,
-                             DstType::Y>(srcCov);
-    dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
-                             SrcType::NUM_STATE_VARIABLES,
-                             2,
-                             2,
-                             SrcType::Y,
-                             SrcType::X,
-                             DstType::Y,
-                             DstType::X>(srcCov);
-    // copy y,vy and its correlations
-    dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
-                             SrcType::NUM_STATE_VARIABLES,
-                             2,
-                             2,
-                             SrcType::Y,
-                             SrcType::Y,
-                             DstType::Y,
-                             DstType::Y>(srcCov);
-  }
+                          const typename MotionModelCV<math::CovarianceMatrixFull, FloatType>::StateCov& srcCov);
 };
 
 template <typename FloatType>
@@ -169,28 +57,7 @@ class StateCovConverter<MotionModelCA<math::CovarianceMatrixFactored, FloatType>
 {
 public:
   static void convertFrom(typename MotionModelCA<math::CovarianceMatrixFactored, FloatType>::StateCov&       dstCov,
-                          const typename MotionModelCV<math::CovarianceMatrixFactored, FloatType>::StateCov& srcCov)
-  {
-    using DstType      = MotionModelCA<math::CovarianceMatrixFull, FloatType>;
-    using SrcType      = MotionModelCV<math::CovarianceMatrixFull, FloatType>;
-    constexpr auto one = static_cast<FloatType>(1.0);
-
-    math::SquareMatrix<FloatType, DstType::NUM_STATE_VARIABLES> A;
-    A.setZeros();
-    A(DstType::X,  SrcType::X)  = one;
-    A(DstType::VX, SrcType::VX) = one;
-    A(DstType::Y,  SrcType::Y)  = one;
-    A(DstType::VY, SrcType::VY) = one;
-    
-    dstCov.setIdentity();
-    // copy CV into CA
-    dstCov.template fill<SrcType::NUM_STATE_VARIABLES, SrcType::NUM_STATE_VARIABLES>(srcCov);
-    // remap indeces by applying the permutation 
-    dstCov.apaT(A);
-    // set ax,ay to variance 1.0
-    dstCov.setDiagonal(DstType::AX, one);
-    dstCov.setDiagonal(DstType::AY, one);
-  }
+                          const typename MotionModelCV<math::CovarianceMatrixFactored, FloatType>::StateCov& srcCov);
 };
 
 } // namespace motion
