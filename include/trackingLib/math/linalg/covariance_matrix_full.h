@@ -31,6 +31,9 @@ public:
   /// \return CovarianceMatrixFull
   static auto Identity() -> CovarianceMatrixFull;
 
+  /// \brief Set Identity covariance
+  void setIdentity();
+
   /// \brief Access operator to the covariance value at (row, col)
   /// \param[in,out] row  The specified row
   /// \param[in,out] col  The specified column
@@ -56,6 +59,11 @@ public:
   /// \brief Calculate A*P*A'
   /// \param[in] A 
   auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFull;
+
+  /// \brief Set the variance at (idx,idx) and clears any correlations
+  /// \param[in] idx  Index in diagonal matrix
+  /// \param[in] val  The value to be set
+  void setVariance(const sint32 idx, const FloatType val);
 };
 
 template <typename FloatType, sint32 Size>
@@ -69,6 +77,12 @@ auto CovarianceMatrixFull<FloatType, Size>::Identity() -> CovarianceMatrixFull
 {
   CovarianceMatrixFull cov{SquareMatrix<FloatType, Size>::Identity()};
   return cov;
+}
+
+template <typename FloatType, sint32 Size>
+void CovarianceMatrixFull<FloatType, Size>::setIdentity()
+{
+  SquareMatrix<FloatType, Size>::setIdentity();
 }
 
 template <typename FloatType, sint32 Size>
@@ -93,6 +107,18 @@ template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFull
 {
   return (A * (*this) * A.transpose());
+}
+
+template <typename FloatType, sint32 Size>
+inline void CovarianceMatrixFull<FloatType, Size>::setVariance(const sint32 idx, const FloatType val)
+{
+  constexpr auto zero = static_cast<FloatType>(0.0);
+  for(sint32 j=0;j<Size;++j)
+  {
+    SquareMatrix<FloatType, Size>::operator()(idx, j) = zero;
+    SquareMatrix<FloatType, Size>::operator()(j, idx) = zero;
+  }
+  SquareMatrix<FloatType, Size>::operator()(idx, idx) = val;
 }
 
 } // namespace math

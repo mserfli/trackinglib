@@ -23,6 +23,10 @@ concept has_identity_static_member_func = requires {
   { std::declval<T>().Identity() } -> std::same_as<T>;
 };
 template<typename T>
+concept has_setIdentity_member_func = requires {
+  { std::declval<T>().setIdentity() };
+};
+template<typename T>
 concept has_inverse_member_func = requires {
   { std::declval<const T>().inverse() } -> std::same_as<T>;
 };
@@ -67,6 +71,7 @@ struct CovarianceMatrixIntf
 
 #if __cplusplus == 202002L
     static_assert(covariance::has_identity_static_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(covariance::has_setIdentity_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_inverse_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_round_brackets_const_op<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_round_brackets_const_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);

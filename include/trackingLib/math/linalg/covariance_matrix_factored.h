@@ -2,16 +2,18 @@
 #define F9044FD7_A3A8_43F4_BDD6_F43011384722
 
 #include "base/first_include.h"
+#include "base/atomic_types.h"
 #include "math/linalg/contracts/covariance_matrix_intf.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/square_matrix.h"
 #include "math/linalg/triangular_matrix.h"
 
 namespace tracking
 {
 namespace math
 {
-
+// TODO(matthias): add contract for apaT functions, fill, ...
 template <typename FloatType, sint32 Size>
 class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType, Size>>
 {
@@ -35,6 +37,9 @@ public:
   /// \return CovarianceMatrixFactored
   static auto Identity() -> CovarianceMatrixFactored;
 
+  /// \brief Set Identity covariance
+  void setIdentity();
+
   /// \brief Access operator to the covariance value at (row, col)
   /// \param[in,out] row  The specified row
   /// \param[in,out] col  The specified column
@@ -52,7 +57,7 @@ public:
   /// \brief
   /// \return true
   /// \return false
-  auto isInverse() const -> bool { return _isInverse; }
+  auto isInverse() const -> bool;
 
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A
@@ -61,6 +66,23 @@ public:
   /// \brief Calculate A*P*A'
   /// \param[in] A
   auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFactored;
+
+  /// \brief Set the variance at (idx,idx) and clears any correlations
+  /// \param[in] idx  Index in diagonal matrix
+  /// \param[in] val  The value to be set
+  void setVariance(const sint32 idx, const FloatType val);
+
+  /// \brief Fill the covariance with first N=SrcCount rows and cols of the other covariance
+  /// \tparam SrcSize   Size of the other covariance
+  /// \tparam SrcCount  Count rows/cols to copy from other
+  /// \param[in] other  The other matrix to copy from
+  template <sint32 SrcSize, sint32 SrcCount>
+  void fill(const CovarianceMatrixFactored<FloatType, SrcSize>& other);
+  
+  /// \brief Set the Diagonal matrix element to given value
+  /// \param[in] idx  Index in diagonal matrix
+  /// \param[in] val  The value to be set
+  void setDiagonal(const sint32 idx, const FloatType val);
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
@@ -97,6 +119,13 @@ auto CovarianceMatrixFactored<FloatType, Size>::Identity() -> CovarianceMatrixFa
 }
 
 template <typename FloatType, sint32 Size>
+void CovarianceMatrixFactored<FloatType, Size>::setIdentity()
+{
+  _u.setIdentity();
+  _d.setIdentity();
+}
+
+template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFactored<FloatType, Size>::operator()(sint32 row, sint32 col) const -> FloatType
 {
   // TODO(matthias): optimize by calculating only the requested covariance
@@ -127,13 +156,19 @@ inline auto CovarianceMatrixFactored<FloatType, Size>::inverse() const -> Covari
 }
 
 template <typename FloatType, sint32 Size>
+inline auto CovarianceMatrixFactored<FloatType, Size>::isInverse() const -> bool
+{
+  return _isInverse;
+}
+
+template <typename FloatType, sint32 Size>
 inline void CovarianceMatrixFactored<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A)
 {
   // M. S. Grewal and A. P. Andrews
   // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
   // Wiley, 2014.
   //
-  // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method 
+  // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
   assert(!_isInverse && "check if and what needs to be changed in case cov is inverse");
 
   auto PhiU = A * _u;
@@ -173,6 +208,30 @@ inline auto CovarianceMatrixFactored<FloatType, Size>::apaT(const SquareMatrix<F
   CovarianceMatrixFactored cov{*this};
   cov.apaT(A);
   return cov;
+}
+
+template <typename FloatType, sint32 Size>
+inline void CovarianceMatrixFactored<FloatType, Size>::setVariance(const sint32 idx, const FloatType val)
+{
+  auto A = SquareMatrix<FloatType, Size>::Identity();
+  A(idx,idx)=static_cast<FloatType>(0.0);
+  apaT(A);
+  setDiagonal(idx, val);
+}
+
+template <typename FloatType, sint32 Size>
+template <sint32 SrcSize, sint32 SrcCount>
+inline void CovarianceMatrixFactored<FloatType, Size>::fill(const CovarianceMatrixFactored<FloatType, SrcSize>& other)
+{
+  _u.template setBlock<SrcSize, SrcCount, 0, 0, 0, 0>(other._u);
+  _d.template setBlock<SrcSize, SrcCount, 0, 0>(other._d);
+  _isInverse = other._isInverse;
+}
+
+template <typename FloatType, sint32 Size>
+inline void CovarianceMatrixFactored<FloatType, Size>::setDiagonal(const sint32 idx, const FloatType val)
+{
+  _d[idx] = val;
 }
 
 } // namespace math
