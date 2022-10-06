@@ -32,13 +32,13 @@ template <typename FloatType, sint32 Rows, sint32 Cols>
 class Matrix: public contract::MatrixIntf<Matrix<FloatType, Rows, Cols>, Matrix>
 {
 public:
-  using transpose_type = Matrix<FloatType, Cols, Rows>;
-  using value_type = FloatType;
+  using transpose_type       = Matrix<FloatType, Cols, Rows>;
+  using value_type           = FloatType;
   static constexpr auto rows = Rows;
   static constexpr auto cols = Cols;
 
-  Matrix() = default;
-  Matrix(const Matrix&) = default;
+  Matrix()                  = default;
+  Matrix(const Matrix&)     = default;
   Matrix(Matrix&&) noexcept = default;
   auto operator=(const Matrix&) -> Matrix& = default;
   auto operator=(Matrix&&) noexcept -> Matrix& = default;

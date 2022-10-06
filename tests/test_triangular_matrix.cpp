@@ -12,7 +12,6 @@ template void tracking::math::TriangularMatrix<float32, 3, false>::setBlock<2, 2
     const tracking::math::TriangularMatrix<float32, 2, false>&);
 
 
-
 TEST(TriangularMatrix, initFromSquareMatrix_lower)
 {
   // clang-format off
@@ -191,9 +190,9 @@ TEST(TriangularMatrix, inverse_lower)
   // clang-format on
 
   // call UUT
-//  auto invMat = lowerMat.inverse();
+  //  auto invMat = lowerMat.inverse();
 
-//  EXPECT_EQ(expMat._data, invMat._data);
+  //  EXPECT_EQ(expMat._data, invMat._data);
 }
 
 TEST(TriangularMatrix, inverse_upper)
@@ -210,8 +209,8 @@ TEST(TriangularMatrix, inverse_upper)
   // clang-format on
 
   // call UUT
-//  auto invMat = upperMat.inverse();
+  //  auto invMat = upperMat.inverse();
 
-//  EXPECT_EQ(expMat._data, invMat._data);
+  //  EXPECT_EQ(expMat._data, invMat._data);
 }
 // NOLINTEND(modernize-use-trailing-return-type)

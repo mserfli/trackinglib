@@ -11,9 +11,9 @@ template class tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixF
 TEST(MotionModelCV, predict_fullCov)
 {
   using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
-  MM::StateVec vec({{10}, {2}, {0}, {0}});
-  MM::StateCov cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-  MM           mm{vec, cov};
+  MM::StateVec                      vec({{10}, {2}, {0}, {0}});
+  MM::StateCov                      cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+  MM                                mm{vec, cov};
   tracking::env::EgoMotion<float32> egoMotion{};
   egoMotion._displacementCog.vec[tracking::env::EgoMotion<float32>::DS_X] = 10.0F;
   tracking::filter::KalmanFilter<float32> kf;
@@ -26,9 +26,9 @@ TEST(MotionModelCV, predict_fullCov)
 TEST(MotionModelCV, predict_factoredCov)
 {
   using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
-  MM::StateVec vec({{10}, {2}, {0}, {0}});
-  MM::StateCov cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-  MM           mm{vec, cov};
+  MM::StateVec                            vec({{10}, {2}, {0}, {0}});
+  MM::StateCov                            cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+  MM                                      mm{vec, cov};
   tracking::env::EgoMotion<float32>       egoMotion;
   tracking::filter::KalmanFilter<float32> kf;
   mm.predict(1.0F, kf, egoMotion);

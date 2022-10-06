@@ -12,6 +12,13 @@ namespace motion
 {
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
+MotionModelCA<CovarianceMatrixType, FloatType>::MotionModelCA(const StateVec& vec, const StateCov& cov)
+    : super_extended_mm_type{vec, cov}
+    , super_generic_predict_type{}
+{
+}
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 void MotionModelCA<CovarianceMatrixType, FloatType>::predict(const FloatType                        dt,
                                                              const filter::KalmanFilter<FloatType>& filter,
                                                              const env::EgoMotion<FloatType>&       egoMotion)
@@ -128,7 +135,7 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::convertFrom(const MotionMod
   StateCovConverter<instance_type, other_type, FloatType>::convertFrom(this->getCov(), other.getCov());
 }
 
-}
-}
+} // namespace motion
+} // namespace tracking
 
 #endif // D2E08F36_A9FC_4D2E_9737_D64D5B314B9E

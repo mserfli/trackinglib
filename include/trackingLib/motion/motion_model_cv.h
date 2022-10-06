@@ -68,11 +68,10 @@ public:
   auto operator=(MotionModelCV&&) noexcept -> MotionModelCV& = default;
   ~MotionModelCV() final                                     = default;
 
-  explicit MotionModelCV(const StateVec& vec, const StateCov& cov)
-      : super_extended_mm_type{vec, cov}
-      , super_generic_predict_type{}
-  {
-  }
+  /// \brief Construct a new CA given the vector and the covariance matrix
+  /// \param[in] vec 
+  /// \param[in] cov 
+  explicit MotionModelCV(const StateVec& vec, const StateCov& cov);
 
   /// \brief Read access to x velocity
   /// \return FloatType
@@ -121,7 +120,7 @@ public:
   /// \param[in]  dt        The delta time from last state to predicted state
   static void computeG(ProcessNoiseMappingMatrix& G, const FloatType dt);
 
-  /// \brief Creates a CV model based on a CA model 
+  /// \brief Creates a CV model based on a CA model
   /// \param[in] other  The CA model
   void convertFrom(const MotionModelCA<CovarianceMatrixType, FloatType>& other);
 };

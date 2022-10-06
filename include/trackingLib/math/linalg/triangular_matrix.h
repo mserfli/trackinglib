@@ -17,9 +17,9 @@ class TriangularMatrix: public SquareMatrix<FloatType, Size>
 {
 public:
   // rule of 5 declarations
-  TriangularMatrix() = default;
+  TriangularMatrix()                              = default;
   TriangularMatrix(const TriangularMatrix& other) = default;
-  TriangularMatrix(TriangularMatrix&&) noexcept = default;
+  TriangularMatrix(TriangularMatrix&&) noexcept   = default;
   auto operator=(const TriangularMatrix&) -> TriangularMatrix& = default;
   auto operator=(TriangularMatrix&&) noexcept -> TriangularMatrix& = default;
 

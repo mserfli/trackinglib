@@ -29,10 +29,10 @@ struct InformationFilter
     // University at Buffalo, Department of Computer Science and Engineering, NY 14260
     // https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Z7LP12kAAAAJ&citation_for_view=Z7LP12kAAAAJ:_FxGoFyzp5QC
     auto invA = A.inverse();
-    auto M = invA.transpose() * Y * invA;
-    auto H = math::SquareMatrix<FloatType, DimX>::Identity() + M * (G * Q * G.transpose());
+    auto M    = invA.transpose() * Y * invA;
+    auto H    = math::SquareMatrix<FloatType, DimX>::Identity() + M * (G * Q * G.transpose());
     auto invH = H.inverse();
-    Y = invH * M;
+    Y         = invH * M;
   }
 
   // prediction for UD factored covariance

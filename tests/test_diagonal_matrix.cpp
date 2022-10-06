@@ -8,7 +8,7 @@ template void tracking::math::DiagonalMatrix<float32, 3>::setBlock<2, 2, 0, 0>(c
 
 TEST(DiagonalMatrix, setBlock_topLeft)
 {
-    // clang-format off
+  // clang-format off
     tracking::math::DiagonalMatrix<float32, 3> diagMat(
       {{1, 0, 0}, 
        {0, 1, 0}, 
@@ -21,7 +21,7 @@ TEST(DiagonalMatrix, setBlock_topLeft)
        {0, 3, 0}, 
        {0, 0, 1}});
   // clang-format on
-  
+
   // call UUT
   diagMat.setBlock<2, 2, 0, 0>(diagBlockMat);
 
@@ -30,7 +30,7 @@ TEST(DiagonalMatrix, setBlock_topLeft)
 
 TEST(DiagonalMatrix, setBlock_bottomRight)
 {
-    // clang-format off
+  // clang-format off
     tracking::math::DiagonalMatrix<float32, 3> diagMat(
       {{1, 0, 0}, 
        {0, 1, 0}, 
@@ -43,7 +43,7 @@ TEST(DiagonalMatrix, setBlock_bottomRight)
        {0, 2, 0}, 
        {0, 0, 3}});
   // clang-format on
-  
+
   // call UUT
   diagMat.setBlock<2, 2, 0, 1>(diagBlockMat);
 
@@ -52,7 +52,7 @@ TEST(DiagonalMatrix, setBlock_bottomRight)
 
 TEST(DiagonalMatrix, inverse)
 {
-    // clang-format off
+  // clang-format off
     const tracking::math::DiagonalMatrix<float32, 3> diagMat(
       {{1, 0, 0}, 
        {0, 2, 0}, 
@@ -71,7 +71,7 @@ TEST(DiagonalMatrix, inverse)
 
 TEST(DiagonalMatrix, inverse_inplace)
 {
-    // clang-format off
+  // clang-format off
     tracking::math::DiagonalMatrix<float32, 3> diagMat(
       {{1, 0, 0}, 
        {0, 2, 0}, 

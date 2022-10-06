@@ -2,8 +2,9 @@
 #define ADB29DD2_C5B0_4217_8728_B612EFF95F07
 
 #include "math/linalg/square_matrix.h"
-#include "math/linalg/triangular_matrix.h"
+
 #include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/triangular_matrix.h"
 
 namespace tracking
 {
@@ -102,7 +103,7 @@ inline auto SquareMatrix<FloatType, Size>::decomposeUDUT(TriangularMatrix<FloatT
       }
       if (i == j)
       {
-        D[j] = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
+        D[j]    = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
         U(j, j) = static_cast<FloatType>(1.0);
       }
       else

@@ -78,7 +78,7 @@ public:
   /// \param[in] other  The other matrix to copy from
   template <sint32 SrcSize, sint32 SrcCount>
   void fill(const CovarianceMatrixFactored<FloatType, SrcSize>& other);
-  
+
   /// \brief Set the Diagonal matrix element to given value
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
@@ -213,8 +213,8 @@ inline auto CovarianceMatrixFactored<FloatType, Size>::apaT(const SquareMatrix<F
 template <typename FloatType, sint32 Size>
 inline void CovarianceMatrixFactored<FloatType, Size>::setVariance(const sint32 idx, const FloatType val)
 {
-  auto A = SquareMatrix<FloatType, Size>::Identity();
-  A(idx,idx)=static_cast<FloatType>(0.0);
+  auto A      = SquareMatrix<FloatType, Size>::Identity();
+  A(idx, idx) = static_cast<FloatType>(0.0);
   apaT(A);
   setDiagonal(idx, val);
 }

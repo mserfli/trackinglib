@@ -12,6 +12,13 @@ namespace motion
 {
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
+MotionModelCV<CovarianceMatrixType, FloatType>::MotionModelCV(const StateVec& vec, const StateCov& cov)
+    : super_extended_mm_type{vec, cov}
+    , super_generic_predict_type{}
+{
+}
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 void MotionModelCV<CovarianceMatrixType, FloatType>::predict(const FloatType                        dt,
                                                              const filter::KalmanFilter<FloatType>& filter,
                                                              const env::EgoMotion<FloatType>&       egoMotion)

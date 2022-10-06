@@ -5,8 +5,8 @@
 #include "base/interface_contract.h"
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"
-#include <type_traits>
 #include <iterator> // not clear why this include is required
+#include <type_traits>
 
 namespace tracking
 {

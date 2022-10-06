@@ -14,7 +14,7 @@ TEST(MotionModelCA, predict_fullCov)
   MM::StateVec vec({{10}, {2}, {0}, {0}, {2}, {0.1}});
   MM::StateCov cov(
       {{5, 0, 0, 0, 0, 0}, {0, 1, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {0, 0, 0, 0, 0.1, 0}, {0, 0, 0, 0, 0, 1}});
-  MM mm{vec, cov};
+  MM                                mm{vec, cov};
   tracking::env::EgoMotion<float32> egoMotion{};
   egoMotion._displacementCog.vec[tracking::env::EgoMotion<float32>::DS_X] = 10.0F;
   tracking::filter::KalmanFilter<float32> kf;
@@ -30,7 +30,7 @@ TEST(MotionModelCA, predict_factoredCov)
   MM::StateVec vec({{10}, {2}, {0}, {0}, {2}, {0.1}});
   MM::StateCov cov(
       {{5, 0, 0, 0, 0, 0}, {0, 1, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {0, 0, 0, 0, 0.1, 0}, {0, 0, 0, 0, 0, 1}});
-  MM mm{vec, cov};
+  MM                                      mm{vec, cov};
   tracking::env::EgoMotion<float32>       egoMotion;
   tracking::filter::KalmanFilter<float32> kf;
   mm.predict(1.0F, kf, egoMotion);

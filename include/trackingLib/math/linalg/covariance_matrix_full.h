@@ -17,7 +17,7 @@ class CovarianceMatrixFull
     , public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>
 {
 public:
-  using value_type = FloatType;
+  using value_type   = FloatType;
   using compose_type = CovarianceMatrixFull;
 
   /// \brief Inherit Rule of 5 behavior from base class
@@ -53,11 +53,11 @@ public:
   auto inverse() const -> CovarianceMatrixFull;
 
   /// \brief Calculate A*P*A' inplace
-  /// \param[in] A 
+  /// \param[in] A
   void apaT(const SquareMatrix<FloatType, Size>& A);
 
   /// \brief Calculate A*P*A'
-  /// \param[in] A 
+  /// \param[in] A
   auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFull;
 
   /// \brief Set the variance at (idx,idx) and clears any correlations
@@ -113,7 +113,7 @@ template <typename FloatType, sint32 Size>
 inline void CovarianceMatrixFull<FloatType, Size>::setVariance(const sint32 idx, const FloatType val)
 {
   constexpr auto zero = static_cast<FloatType>(0.0);
-  for(sint32 j=0;j<Size;++j)
+  for (sint32 j = 0; j < Size; ++j)
   {
     SquareMatrix<FloatType, Size>::operator()(idx, j) = zero;
     SquareMatrix<FloatType, Size>::operator()(j, idx) = zero;

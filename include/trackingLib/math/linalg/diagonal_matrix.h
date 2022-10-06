@@ -14,9 +14,9 @@ class DiagonalMatrix: public SquareMatrix<FloatType, Size>
 {
 public:
   // rule of 5 declarations
-  DiagonalMatrix() = default;
+  DiagonalMatrix()                            = default;
   DiagonalMatrix(const DiagonalMatrix& other) = default;
-  DiagonalMatrix(DiagonalMatrix&&) noexcept = default;
+  DiagonalMatrix(DiagonalMatrix&&) noexcept   = default;
   auto operator=(const DiagonalMatrix&) -> DiagonalMatrix& = default;
   auto operator=(DiagonalMatrix&&) noexcept -> DiagonalMatrix& = default;
 

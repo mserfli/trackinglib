@@ -30,11 +30,11 @@ TEST(CovarianceMatrixFull, apaT)
   // call UUT
   cov.apaT(A);
 
-  for(sint32 i=0; i<4; ++i)
+  for (sint32 i = 0; i < 4; ++i)
   {
-    for(sint32 j=0;j<4; ++j)
+    for (sint32 j = 0; j < 4; ++j)
     {
-      EXPECT_FLOAT_EQ(expCov(i,j), cov(i,j));
+      EXPECT_FLOAT_EQ(expCov(i, j), cov(i, j));
     }
   }
 }
@@ -64,11 +64,11 @@ TEST(CovarianceMatrixFull, apaT_const)
   // call UUT
   auto res = cov.apaT(A);
 
-  for(sint32 i=0; i<4; ++i)
+  for (sint32 i = 0; i < 4; ++i)
   {
-    for(sint32 j=0;j<4; ++j)
+    for (sint32 j = 0; j < 4; ++j)
     {
-      EXPECT_FLOAT_EQ(expCov(i,j), res(i,j));
+      EXPECT_FLOAT_EQ(expCov(i, j), res(i, j));
     }
   }
 }

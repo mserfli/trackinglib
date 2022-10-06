@@ -54,8 +54,8 @@ auto main() -> int
     Vector<float32, 2>    v2{};
     Matrix<float32, 2, 2> m1{};
     Vector<float32, 2>    v3 = v1 - v2;
-    float32               a = v3 * v2;
-    v3 = m1 * v2;
+    float32               a  = v3 * v2;
+    v3                       = m1 * v2;
   }
 
   {

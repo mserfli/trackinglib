@@ -11,7 +11,9 @@ namespace generic
 {
 
 template <typename MotionModel, typename FloatType>
-inline void PredictCommon<MotionModel, FloatType>::run(Storage& data, const FloatType dt, const env::EgoMotion<FloatType>& egoMotion)
+inline void PredictCommon<MotionModel, FloatType>::run(Storage&                         data,
+                                                       const FloatType                  dt,
+                                                       const env::EgoMotion<FloatType>& egoMotion)
 {
   assert(dt >= static_cast<FloatType>(0.0));
   auto& underlying = static_cast<MotionModel&>(*this);

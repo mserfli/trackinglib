@@ -16,7 +16,7 @@ UseTab: Never
 
 BinPackArguments: false
 BinPackParameters: false
-AlignConsecutiveAssignments: false
+AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
 
 # https://zed0.co.uk/clang-format-configurator/
@@ -27,11 +27,13 @@ BreakInheritanceList: BeforeComma
 MaxEmptyLinesToKeep: '2'
 SpaceBeforeInheritanceColon: 'false'
 
-IncludeBlocks: Merge
+IncludeBlocks: Preserve
 IncludeCategories:
   - Regex: '^\".*first_include'
     Priority: -2
   - Regex: '^\".*test_config'
+    Priority: -1
+  - Regex: '.*gtest/.*'
     Priority: -1
   - Regex: '^\"'
     Priority: 1000

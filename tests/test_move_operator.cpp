@@ -28,7 +28,7 @@ struct ComplexType
     // std::cout << "operator=(const ComplexType& other)" << std::endl;
     if (this != &other)
     {
-      a = other.a;
+      a   = other.a;
       vec = other.vec;
     }
     return *this;
@@ -44,12 +44,12 @@ struct ComplexType
 
       // Copy the data pointer and its length from the
       // source object.
-      a = other.a;
+      a   = other.a;
       vec = other.vec;
 
       // Release the data pointer from the source object so that
       // the destructor does not free the memory multiple times.
-      other.a = 0;
+      other.a   = 0;
       other.vec = {};
     }
     return *this;
@@ -101,7 +101,7 @@ struct ComplexTypeWithPtr
 
       // Copy the data pointer and its length from the
       // source object.
-      a = other.a;
+      a   = other.a;
       vec = std::move(other.vec);
 
       // Release the data pointer from the source object so that
