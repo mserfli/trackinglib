@@ -17,11 +17,12 @@ namespace motion
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
 
+// forward declaration to avoid recursive inclusion
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 class MotionModelCV;
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-class MotionModelCA
+class MotionModelCA final
     : public ExtendedMotionModel<MotionModelCA<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 6>
     , public generic::Predict<MotionModelCA<CovarianceMatrixType, FloatType>, FloatType, CovarianceMatrixType>
 {
@@ -96,6 +97,10 @@ public:
                const filter::KalmanFilter<FloatType>& filter,
                const env::EgoMotion<FloatType>&       egoMotion) final;
 
+  /// \brief Creates a CA model based on a CV model
+  /// \param[in] other  The CV model
+  void convertFrom(const MotionModelCV<CovarianceMatrixType, FloatType>& other);
+
   /// \brief Compensates the state according to the known ego motion and calculates Ge and Go for compensation of the covariance
   /// \param[out] Ge        The propagated errors of the ego motion to the state space
   /// \param[out] Go        The transformation of the state caused by the ego motion
@@ -120,10 +125,6 @@ public:
   /// \param[out] G         The transformation of the process noise to the full state space
   /// \param[in]  dt        The delta time from last state to predicted state
   static void computeG(ProcessNoiseMappingMatrix& G, const FloatType dt);
-
-  /// \brief Creates a CA model based on a CV model
-  /// \param[in] other  The CV model
-  void convertFrom(const MotionModelCV<CovarianceMatrixType, FloatType>& other);
 };
 
 } // namespace motion

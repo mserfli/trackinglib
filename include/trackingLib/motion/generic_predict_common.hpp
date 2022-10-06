@@ -3,6 +3,8 @@
 
 #include "motion/generic_predict_common.h"
 
+#include "env/ego_motion.hpp"
+
 namespace tracking
 {
 namespace motion

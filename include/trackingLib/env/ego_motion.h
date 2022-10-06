@@ -72,39 +72,6 @@ TEST_REMOVE_PRIVATE:
   FloatType    _dt{};
 };
 
-template <typename FloatType>
-void EgoMotion<FloatType>::compensatePosition(FloatType&      posXNewEgo,
-                                              FloatType&      posYNewEgo,
-                                              const FloatType posXOldEgo,
-                                              const FloatType posYOldEgo) const
-{
-  // transfer to COG
-  Point2d posOldCog{posXOldEgo, posYOldEgo};
-  posOldCog.x() += _geometry.distCog2Ego;
-
-  // translate first
-  // compensate motion displacement
-  const Point2d displacement{_displacementCog.vec[DS_X], _displacementCog.vec[DS_Y]};
-  const Point2d translated = posOldCog - displacement;
-
-  // rotate according to deltaPsi
-  compensateDirection(posXNewEgo, posYNewEgo, translated.x(), translated.y());
-
-  // transfer from COG
-  posXNewEgo -= _geometry.distCog2Ego;
-}
-
-template <typename FloatType>
-void EgoMotion<FloatType>::compensateDirection(FloatType&      dxNewEgo,
-                                               FloatType&      dyNewEgo,
-                                               const FloatType dxOldEgo,
-                                               const FloatType dyOldEgo) const
-{
-  // rotate a vector (velocity or acceleration) according to deltaPsi
-  dxNewEgo = (_displacementCog.cosDeltaPsi * dxOldEgo) + (_displacementCog.sinDeltaPsi * dyOldEgo);
-  dyNewEgo = -(_displacementCog.sinDeltaPsi * dxOldEgo) + (_displacementCog.cosDeltaPsi * dyOldEgo);
-}
-
 } // namespace env
 } // namespace tracking
 
