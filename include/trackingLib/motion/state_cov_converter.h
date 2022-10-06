@@ -89,19 +89,20 @@ public:
   static void convertFrom(typename MotionModelCV<math::CovarianceMatrixFactored, FloatType>::StateCov&       dstCov,
                           const typename MotionModelCA<math::CovarianceMatrixFactored, FloatType>::StateCov& srcCov)
   {
-    //using DstType      = MotionModelCV<math::CovarianceMatrixFull, FloatType>;
-    //using SrcType      = MotionModelCA<math::CovarianceMatrixFull, FloatType>;
-    //constexpr auto one = static_cast<FloatType>(1.0);
-//
-    //math::SquareMatrix<FloatType, DstType::NUM_STATE_VARIABLES> A;
-    //A.setZeros();
-    //A(DstType::X, SrcType::X)   = one;
-    //A(DstType::VX, SrcType::VX) = one;
-    //A(DstType::Y, SrcType::Y)   = one;
-    //A(DstType::VY, SrcType::VY) = one;
-//
-    //auto resCov = srcCov.apaT(A);
-    //;//dstCov.setBlock<
+    using DstType      = MotionModelCV<math::CovarianceMatrixFull, FloatType>;
+    using SrcType      = MotionModelCA<math::CovarianceMatrixFull, FloatType>;
+    constexpr auto one = static_cast<FloatType>(1.0);
+
+    // create a permutation matrix from SrcType to DstType
+    math::SquareMatrix<FloatType, SrcType::NUM_STATE_VARIABLES> A;
+    A.setZeros();
+    A(DstType::X, SrcType::X)   = one;
+    A(DstType::VX, SrcType::VX) = one;
+    A(DstType::Y, SrcType::Y)   = one;
+    A(DstType::VY, SrcType::VY) = one;
+
+    // fill dstCov with the resulting top left block
+    dstCov.template fill<SrcType::NUM_STATE_VARIABLES, DstType::NUM_STATE_VARIABLES>(srcCov.apaT(A));
   }
 };
 
@@ -170,6 +171,25 @@ public:
   static void convertFrom(typename MotionModelCA<math::CovarianceMatrixFactored, FloatType>::StateCov&       dstCov,
                           const typename MotionModelCV<math::CovarianceMatrixFactored, FloatType>::StateCov& srcCov)
   {
+    using DstType      = MotionModelCA<math::CovarianceMatrixFull, FloatType>;
+    using SrcType      = MotionModelCV<math::CovarianceMatrixFull, FloatType>;
+    constexpr auto one = static_cast<FloatType>(1.0);
+
+    math::SquareMatrix<FloatType, DstType::NUM_STATE_VARIABLES> A;
+    A.setZeros();
+    A(DstType::X,  SrcType::X)  = one;
+    A(DstType::VX, SrcType::VX) = one;
+    A(DstType::Y,  SrcType::Y)  = one;
+    A(DstType::VY, SrcType::VY) = one;
+    
+    dstCov.setIdentity();
+    // copy CV into CA
+    dstCov.template fill<SrcType::NUM_STATE_VARIABLES, SrcType::NUM_STATE_VARIABLES>(srcCov);
+    // remap indeces by applying the permutation 
+    dstCov.apaT(A);
+    // set ax,ay to variance 1.0
+    dstCov.setDiagonal(DstType::AX, one);
+    dstCov.setDiagonal(DstType::AY, one);
   }
 };
 

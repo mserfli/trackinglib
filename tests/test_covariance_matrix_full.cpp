@@ -73,4 +73,31 @@ TEST(CovarianceMatrixFull, apaT_const)
   }
 }
 
+TEST(CovarianceMatrixFull, setVariance)
+{
+  // clang-format off
+  tracking::math::CovarianceMatrixFull<float32, 3> cov(
+    {{45,  76,  72},
+     {76, 132, 120},
+     {72, 120, 144}});
+
+  const tracking::math::CovarianceMatrixFull<float32, 3> expMat(
+    {{4,   0,   0},
+     {0, 132, 120},
+     {0, 120, 144}});
+
+  // call UUT
+  cov.setVariance(0,4);
+
+  // verify
+  const auto& fullCov = cov;
+  for(sint32 i=0; i<3; ++i)
+  {
+    for(sint32 j=0; j<3; ++j)
+    {
+      EXPECT_FLOAT_EQ(expMat(i,j), fullCov(i, j));
+    }
+  }
+}
+
 // NOLINTEND(modernize-use-trailing-return-type)
