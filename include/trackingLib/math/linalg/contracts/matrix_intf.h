@@ -5,6 +5,9 @@
 #include "base/interface_contract.h"
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"
+#if __cplusplus == 202002L
+#include <concepts>
+#endif
 #include <type_traits>
 
 namespace tracking

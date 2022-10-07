@@ -3,6 +3,7 @@
 
 #include "base/first_include.h"
 #include "math/linalg/square_matrix.hpp"
+#include <initializer_list>
 
 namespace tracking
 {

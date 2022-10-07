@@ -5,6 +5,7 @@
 #include "math/linalg/contracts/matrix_intf.h"
 #include <cmath>
 #include <iostream>
+#include <initializer_list>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
