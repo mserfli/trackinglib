@@ -29,12 +29,13 @@ TEST(MotionModelCV, predict_factoredCov)
   MM::StateVec                            vec({{10}, {2}, {0}, {0}});
   MM::StateCov                            cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
   MM                                      mm{vec, cov};
-  tracking::env::EgoMotion<float32>       egoMotion;
-  tracking::filter::KalmanFilter<float32> kf;
+  tracking::env::EgoMotion<float32>       egoMotion{};
+  tracking::filter::KalmanFilter<float32> kf{};
   mm.predict(1.0F, kf, egoMotion);
 
   mm._vec.print();
-  // mm._cov->print();
+  mm._cov._u.print();
+  mm._cov._d.print();
 }
 
 TEST(MotionModelCV, convertCA_fullCov)

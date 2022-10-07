@@ -3,10 +3,11 @@
 
 #include "base/first_include.h"
 #include "base/atomic_types.h"
+#include "math/linalg/agee_turner_rank1_update.hpp"
 #include "math/linalg/contracts/covariance_matrix_intf.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
-#include "math/linalg/modified_gram_schmidt.h"
+#include "math/linalg/matrix.h"
 #include "math/linalg/modified_gram_schmidt.hpp"
 #include "math/linalg/square_matrix.h"
 #include "math/linalg/triangular_matrix.h"
@@ -68,6 +69,21 @@ public:
   /// \brief Calculate A*P*A'
   /// \param[in] A
   auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFactored;
+
+  /// \brief Calculate A*P*A' + G*Q*G', also known as Thornton update
+  /// \tparam SizeQ
+  /// \param[in,out] Phi
+  /// \param[in,out] G
+  /// \param[in,out] Q
+  template <sint32 SizeQ>
+  void thornton(const SquareMatrix<FloatType, Size>&    Phi,
+                const Matrix<FloatType, Size, SizeQ>&   G,
+                const DiagonalMatrix<FloatType, SizeQ>& Q);
+
+  /// \brief Calculates P - c*x*x', also known as Agee Turner Rank-1 update
+  /// \param[in] c
+  /// \param[in] x
+  void rank1Update(const FloatType c, const Vector<FloatType, Size>& x);
 
   /// \brief Set the variance at (idx,idx) and clears any correlations
   /// \param[in] idx  Index in diagonal matrix
@@ -173,7 +189,7 @@ inline void CovarianceMatrixFactored<FloatType, Size>::apaT(const SquareMatrix<F
   }
   else
   {
-    math::ModifiedGramSchmidt<FloatType, Size>::run(_u, _d, A);
+    math::ModifiedGramSchmidt<FloatType, Size>::run(_u, _d, A, false);
   }
 }
 
@@ -184,6 +200,29 @@ inline auto CovarianceMatrixFactored<FloatType, Size>::apaT(const SquareMatrix<F
   CovarianceMatrixFactored cov{*this};
   cov.apaT(A);
   return cov;
+}
+
+template <typename FloatType, sint32 Size>
+template <sint32 SizeQ>
+inline void CovarianceMatrixFactored<FloatType, Size>::thornton(const SquareMatrix<FloatType, Size>&    Phi,
+                                                                const Matrix<FloatType, Size, SizeQ>&   G,
+                                                                const DiagonalMatrix<FloatType, SizeQ>& Q)
+{
+  math::ModifiedGramSchmidt<FloatType, Size>::run(_u, _d, Phi, G, Q);
+}
+
+template <typename FloatType, sint32 Size>
+inline void CovarianceMatrixFactored<FloatType, Size>::rank1Update(const FloatType c, const Vector<FloatType, Size>& x)
+{
+  if (_isInverse)
+  {
+    math::AgeeTurnerRank1Update<FloatType, Size>::run(_u, _d, c, x, true);
+    // TODO(matthias): do we need to reset _isInverse???
+  }
+  else
+  {
+    math::AgeeTurnerRank1Update<FloatType, Size>::run(_u, _d, c, x, false);
+  }
 }
 
 template <typename FloatType, sint32 Size>

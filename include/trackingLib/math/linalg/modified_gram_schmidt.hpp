@@ -11,8 +11,8 @@ namespace math
 template <typename FloatType, sint32 Size>
 void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size, false>& u,
                                                DiagonalMatrix<FloatType, Size>&          d,
-                                               const SquareMatrix<FloatType, Size>&      phi,
-                                               const bool transposeU)
+                                               const SquareMatrix<FloatType, Size>&      Phi,
+                                               const bool                                transposeU)
 {
   // M. S. Grewal and A. P. Andrews
   // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
@@ -20,7 +20,7 @@ void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size,
   //
   // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
 
-  auto PhiU = transposeU ? phi * u.transpose() : phi * u;
+  auto PhiU = transposeU ? Phi * u.transpose() : Phi * u;
   auto Din  = d;
   u.setIdentity();
   FloatType sigma;
@@ -45,6 +45,65 @@ void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size,
       for (sint32 k = 0; k < Size; ++k)
       {
         PhiU(j, k) -= u(j, i) * PhiU(i, k);
+      }
+    }
+  }
+}
+
+template <typename FloatType, sint32 Size>
+template <sint32 SizeQ>
+void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size, false>& u,
+                                               DiagonalMatrix<FloatType, Size>&          d,
+                                               const SquareMatrix<FloatType, Size>&      Phi,
+                                               const Matrix<FloatType, Size, SizeQ>&     G,
+                                               const DiagonalMatrix<FloatType, SizeQ>&   Q)
+{
+  // M. S. Grewal and A. P. Andrews
+  // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
+  // Wiley, 2014.
+  //
+  // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
+  // for the predictor update of the U-D factors of the covariance matrix
+  // of estimation uncertainty in Kalman filtering
+
+  auto PhiU = Phi * u;
+  auto Din  = d;
+  auto Gin  = G;
+  u.setIdentity();
+  FloatType sigma;
+  for (sint32 i = Size - 1; i >= 0; --i)
+  {
+    sigma = static_cast<FloatType>(0.0);
+    for (sint32 j = 0; j < Size; ++j)
+    {
+      sigma += (PhiU(i, j) * PhiU(i, j)) * Din(j, j);
+      if (j < SizeQ)
+      {
+        sigma += Gin(i, j) * Gin(i, j) * Q(j, j);
+      }
+    }
+    d(i, i) = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
+    for (sint32 j = 0; j < i; ++j)
+    {
+      sigma = static_cast<FloatType>(0.0);
+      for (sint32 k = 0; k < Size; ++k)
+      {
+        sigma += PhiU(i, k) * Din(k, k) * PhiU(j, k);
+      }
+      for (sint32 k = 0; k < SizeQ; ++k)
+      {
+        sigma += Gin(i, k) * Q(k, k) * Gin(j, k);
+      }
+
+      u(j, i) = sigma / d(i, i);
+
+      for (sint32 k = 0; k < Size; ++k)
+      {
+        PhiU(j, k) -= u(j, i) * PhiU(i, k);
+      }
+      for (sint32 k = 0; k < SizeQ; ++k)
+      {
+        Gin(j, k) -= u(j, i) * Gin(i, k);
       }
     }
   }

@@ -6,6 +6,7 @@
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/square_matrix.hpp"
+#include "math/linalg/vector.h"
 
 namespace tracking
 {
@@ -28,6 +29,7 @@ struct InformationFilter
     // GA Terejanu
     // University at Buffalo, Department of Computer Science and Engineering, NY 14260
     // https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Z7LP12kAAAAJ&citation_for_view=Z7LP12kAAAAJ:_FxGoFyzp5QC
+
     auto invA = A.inverse();
     auto M    = invA.transpose() * Y * invA;
     auto H    = math::SquareMatrix<FloatType, DimX>::Identity() + M * (G * Q * G.transpose());
@@ -37,15 +39,43 @@ struct InformationFilter
 
   // prediction for UD factored covariance
   template <sint32 DimX, sint32 DimQ>
-  static void predictCovariance(math::CovarianceMatrixFactored<FloatType, DimX>& P,
+  static void predictCovariance(math::CovarianceMatrixFactored<FloatType, DimX>& Y,
                                 const math::SquareMatrix<FloatType, DimX>&       A,
                                 const math::Matrix<FloatType, DimX, DimQ>&       G,
                                 const math::DiagonalMatrix<FloatType, DimQ>&     Q)
   {
-    // modifiedGramSchmidt
+    assert(Y.isInverse());
+    // Information Formulation of the UDU Kalman Filter
+    // Christopher D’Souza and Renato Zanetti
+    // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
+
+#if 1
+    auto P = Y.inverse();
+    P.thornton(A, G, Q);
+    Y = P.inverse();
+#else
+    // apply DimQ times the AgeeTurner Rank-1 update P = P - c*x*x'
+    // with ci=Gi'*Y*Gi+Q(i,i) is (1x1) and x=Y*Gi is (nx1)
+    math::Vector<FloatType, DimX> x;
+    math::Vector<FloatType, DimX> Gi;
+    for (sint32 i = 0; i < DimQ; ++i)
+    {
+      FloatType ci{Q[i]};
+      for (sint32 j = 0; j < DimX; ++j)
+      {
+        Gi[j] = G(j, i);
+      }
+      ci += Gi.transpose() * Y * Gi;
+      x = Y * Gi;
+      Y.rank1Update(ci, x);
+    }
+    // propagate factorization by A
+    Y.apaT(A);
+#endif
   }
 };
 
 } // namespace filter
 } // namespace tracking
+
 #endif // CD00E333_97EF_4391_B880_C543B45E2D3F

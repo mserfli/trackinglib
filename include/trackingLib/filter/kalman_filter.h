@@ -17,22 +17,22 @@ template <typename FloatType>
 struct KalmanFilter
 {
   template <sint32 DimX, sint32 DimQ>
-  static void predictCovariance(math::CovarianceMatrixFull<FloatType, DimX>& P,
-                                const math::SquareMatrix<FloatType, DimX>&   A,
-                                const math::Matrix<FloatType, DimX, DimQ>&   G,
-                                const math::DiagonalMatrix<FloatType, DimQ>& Q)
+  inline static void predictCovariance(math::CovarianceMatrixFull<FloatType, DimX>& P,
+                                       const math::SquareMatrix<FloatType, DimX>&   A,
+                                       const math::Matrix<FloatType, DimX, DimQ>&   G,
+                                       const math::DiagonalMatrix<FloatType, DimQ>& Q)
   {
     P = A * P * A.transpose() + G * Q * G.transpose();
   }
 
   // prediction for UD factored covariance
   template <sint32 DimX, sint32 DimQ>
-  static void predictCovariance(math::CovarianceMatrixFactored<FloatType, DimX>& P,
-                                const math::SquareMatrix<FloatType, DimX>&       A,
-                                const math::Matrix<FloatType, DimX, DimQ>&       G,
-                                const math::DiagonalMatrix<FloatType, DimQ>&     Q)
+  inline static void predictCovariance(math::CovarianceMatrixFactored<FloatType, DimX>& P,
+                                       const math::SquareMatrix<FloatType, DimX>&       A,
+                                       const math::Matrix<FloatType, DimX, DimQ>&       G,
+                                       const math::DiagonalMatrix<FloatType, DimQ>&     Q)
   {
-    // modifiedGramSchmidt
+    P.thornton(A, G, Q);
   }
 };
 
