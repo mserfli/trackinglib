@@ -52,6 +52,11 @@ public:
   /// \return CovarianceMatrixFull
   auto inverse() const -> CovarianceMatrixFull;
 
+  /// \brief
+  /// \return true
+  /// \return false
+  auto isInverse() const -> bool;
+
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A
   void apaT(const SquareMatrix<FloatType, Size>& A);
@@ -64,6 +69,12 @@ public:
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
   void setVariance(const sint32 idx, const FloatType val);
+
+  // clang-format off
+TEST_REMOVE_PRIVATE:
+  ; // workaround for correct indentation
+  // clang-format on
+  bool _isInverse{false};
 };
 
 template <typename FloatType, sint32 Size>
@@ -94,7 +105,15 @@ inline auto CovarianceMatrixFull<FloatType, Size>::operator()(sint32 row, sint32
 template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> CovarianceMatrixFull
 {
-  return SquareMatrix<FloatType, Size>::inverse();
+  CovarianceMatrixFull<FloatType, Size> cov(SquareMatrix<FloatType, Size>::inverse());
+  cov._isInverse = !_isInverse;
+  return cov;
+}
+
+template <typename FloatType, sint32 Size>
+inline auto CovarianceMatrixFull<FloatType, Size>::isInverse() const -> bool
+{
+  return _isInverse;
 }
 
 template <typename FloatType, sint32 Size>

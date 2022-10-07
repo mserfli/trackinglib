@@ -170,7 +170,7 @@ inline auto CovarianceMatrixFactored<FloatType, Size>::operator()() const -> Cov
 template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFactored<FloatType, Size>::inverse() const -> CovarianceMatrixFactored
 {
-  return CovarianceMatrixFactored{_u.inverse(), _d.inverse(), true};
+  return CovarianceMatrixFactored{_u.inverse(), _d.inverse(), !_isInverse};
 }
 
 template <typename FloatType, sint32 Size>
