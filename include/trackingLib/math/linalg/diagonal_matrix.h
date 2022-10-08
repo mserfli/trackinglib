@@ -67,6 +67,9 @@ public:
   /// \brief Calculates the inverse inplace
   void inverse();
 
+  /// \brief Checks for positive definite condition of the diagonal matrix (all elements > 0)
+  auto isPositiveDefinite() const -> bool;
+
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround to keep following idententation
@@ -153,12 +156,14 @@ inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_li
 template <typename FloatType, sint32 Size>
 inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) -> FloatType&
 {
+  assert(((0<=idx) && (idx<Size)) && "Index out of bounds");
   return this->operator()(idx, idx);
 }
 
 template <typename FloatType, sint32 Size>
 inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) const -> FloatType
 {
+  assert(((0<=idx) && (idx<Size)) && "Index out of bounds");
   return this->operator()(idx, idx);
 }
 
@@ -173,11 +178,22 @@ inline auto DiagonalMatrix<FloatType, Size>::inverse() const -> DiagonalMatrix
 template <typename FloatType, sint32 Size>
 inline void DiagonalMatrix<FloatType, Size>::inverse()
 {
-  // TODO(matthias): use range based for loop as soon as DiagonalMatrix is not anymore a SquareMatrix and is more like a Vector
   for (sint32 idx = 0; idx < Size; ++idx)
   {
+    assert((static_cast<FloatType>(0.0) < this->operator[](idx)) && "inverse not possible");
     this->operator[](idx) = static_cast<FloatType>(1.0) / this->operator[](idx);
   }
+}
+
+template <typename FloatType, sint32 Size>
+auto DiagonalMatrix<FloatType, Size>::isPositiveDefinite() const -> bool
+{
+  auto isValid = true;
+  for(auto idx=0; idx<Size; ++idx)
+  {
+    isValid = isValid && (static_cast<FloatType>(0.0) < this->operator[](idx));
+  }
+  return isValid;
 }
 
 } // namespace math

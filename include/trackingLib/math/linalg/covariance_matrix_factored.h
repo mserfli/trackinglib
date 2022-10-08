@@ -106,6 +106,7 @@ public:
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
+
   TriangularMatrix<FloatType, Size, false> _u{};
   DiagonalMatrix<FloatType, Size>          _d{};
   bool                                     _isInverse{false};
@@ -127,6 +128,8 @@ CovarianceMatrixFactored<FloatType, Size>::CovarianceMatrixFactored(const Triang
     , _d{d}
     , _isInverse(isInverse)
 {
+  assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
+  assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
 template <typename FloatType, sint32 Size>
@@ -191,6 +194,8 @@ inline void CovarianceMatrixFactored<FloatType, Size>::apaT(const SquareMatrix<F
   {
     math::ModifiedGramSchmidt<FloatType, Size>::run(_u, _d, A, false);
   }
+  assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
+  assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
 template <typename FloatType, sint32 Size>
@@ -209,6 +214,8 @@ inline void CovarianceMatrixFactored<FloatType, Size>::thornton(const SquareMatr
                                                                 const DiagonalMatrix<FloatType, SizeQ>& Q)
 {
   math::ModifiedGramSchmidt<FloatType, Size>::run(_u, _d, Phi, G, Q);
+  assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
+  assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
 template <typename FloatType, sint32 Size>
@@ -223,6 +230,8 @@ inline void CovarianceMatrixFactored<FloatType, Size>::rank1Update(const FloatTy
   {
     math::AgeeTurnerRank1Update<FloatType, Size>::run(_u, _d, c, x, false);
   }
+  assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
+  assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
 template <typename FloatType, sint32 Size>
@@ -232,6 +241,8 @@ inline void CovarianceMatrixFactored<FloatType, Size>::setVariance(const sint32 
   A(idx, idx) = static_cast<FloatType>(0.0);
   apaT(A);
   setDiagonal(idx, val);
+  assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
+  assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
 template <typename FloatType, sint32 Size>
@@ -241,11 +252,14 @@ inline void CovarianceMatrixFactored<FloatType, Size>::fill(const CovarianceMatr
   _u.template setBlock<SrcSize, SrcCount, 0, 0, 0, 0>(other._u);
   _d.template setBlock<SrcSize, SrcCount, 0, 0>(other._d);
   _isInverse = other._isInverse;
+  assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
+  assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
 template <typename FloatType, sint32 Size>
 inline void CovarianceMatrixFactored<FloatType, Size>::setDiagonal(const sint32 idx, const FloatType val)
 {
+  assert(val>static_cast<FloatType>(0.0) && "Expected variance value greater than 0.0");
   _d[idx] = val;
 }
 

@@ -70,6 +70,10 @@ public:
   /// \return TriangularMatrix
   auto inverse() const -> TriangularMatrix;
 
+  /// \brief Checks for Unit Upper condition 
+  /// \return true 
+  auto isUnitUpperTriangular() const -> bool;
+  
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround to keep following idententation
@@ -185,6 +189,17 @@ template <typename FloatType, sint32 Size, bool isLower>
 inline auto TriangularMatrix<FloatType, Size, isLower>::inverse() const -> TriangularMatrix
 {
   return TriangularMatrix(this->solve(SquareMatrix<FloatType, Size>::Identity()));
+}
+
+template <typename FloatType, sint32 Size, bool isLower>
+auto TriangularMatrix<FloatType, Size, isLower>::isUnitUpperTriangular() const -> bool
+{
+  auto isValid = true;
+  for(auto idx=0; idx<Size; ++idx)
+  {
+    isValid = isValid && (static_cast<FloatType>(1.0) == this->operator()(idx, idx));
+  }
+  return isValid;
 }
 
 } // namespace math

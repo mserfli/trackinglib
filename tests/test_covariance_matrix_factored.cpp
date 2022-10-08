@@ -12,13 +12,13 @@ TEST(CovarianceMatrixFactored, compose)
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
     {{1,2,3}, 
-     {0,4,5}, 
-     {0,0,6}}, {1, 2, 4});
+     {0,1,4}, 
+     {0,0,1}}, {1, 2, 4});
 
   const tracking::math::CovarianceMatrixFull<float32, 3> expMat(
-    {{45,  76,  72},
-     {76, 132, 120},
-     {72, 120, 144}});
+    {{45, 52, 12},
+     {52, 66, 16},
+     {12, 16,  4}});
   // clang-format on
 
   // call UUT
@@ -38,13 +38,13 @@ TEST(CovarianceMatrixFactored, composeInverse)
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
     {{1,2,3}, 
-     {0,4,5}, 
-     {0,0,6}}, {1, 2, 4}, true);
+     {0,1,4}, 
+     {0,0,1}}, {1, 2, 4}, true);
 
   const tracking::math::CovarianceMatrixFull<float32, 3> expMat(
-    {{1,  2,   3},
-     {2, 36,  46},
-     {3, 46, 203}});
+    {{1,  2,  3},
+     {2,  6, 14},
+     {3, 14, 45}});
   // clang-format on
 
   // call UUT
@@ -64,13 +64,13 @@ TEST(CovarianceMatrixFactored, inverse)
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
     {{1, 2, 3}, 
-     {0, 4, 5}, 
-     {0, 0, 6}}, {1, 2, 4});
+     {0, 1, 4}, 
+     {0, 0, 1}}, {1, 2, 4});
 
   const tracking::math::CovarianceMatrixFactored<float32, 3> expInvMat(
-    {{1, -0.5,  -0.083333333333333},
-     {0,  0.25, -0.208333333333333},
-     {0,  0,     0.166666666666667}}, {1, 0.5, 0.25});
+    {{1, -2,  5},
+     {0,  1, -4},
+     {0,  0,  1}}, {1, 0.5, 0.25});
   // clang-format on
 
   // call UUT
@@ -92,10 +92,10 @@ TEST(CovarianceMatrixFactored, calcCovarianceElement)
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
     {{1, 2, 3}, 
-     {0, 4, 5}, 
-     {0, 0, 6}}, {1, 2, 4});
+     {0, 1, 4}, 
+     {0, 0, 1}}, {1, 2, 4});
 
-  const float32 expCovElem = 120.0F;
+  const float32 expCovElem = 16.0F;
   // clang-format on
 
   // call UUT
@@ -233,16 +233,16 @@ TEST(CovarianceMatrixFactored, setVariance)
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
     {{1,2,3}, 
-     {0,4,5}, 
-     {0,0,6}}, {1, 2, 4}, false);
+     {0,1,4}, 
+     {0,0,1}}, {1, 2, 4}, false);
 
   const tracking::math::CovarianceMatrixFull<float32, 3> expMat(
-    {{4,   0,   0},
-     {0, 132, 120},
-     {0, 120, 144}});
+    {{2,  0,  0},
+     {0, 66, 16},
+     {0, 16,  4}});
 
   // call UUT
-  cov.setVariance(0,4);
+  cov.setVariance(0,2);
 
   // verify
   const auto fullCov = cov();
