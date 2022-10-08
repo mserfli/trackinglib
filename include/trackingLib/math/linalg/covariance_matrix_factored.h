@@ -102,6 +102,8 @@ public:
   /// \param[in] val  The value to be set
   void setDiagonal(const sint32 idx, const FloatType val);
 
+  void print() const { this->operator()().print(); }
+
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
@@ -161,11 +163,11 @@ inline auto CovarianceMatrixFactored<FloatType, Size>::operator()() const -> Cov
   CovarianceMatrixFull<FloatType, Size> cov{};
   if (_isInverse)
   {
-    cov = _u.transpose() * _d * _u;
+    cov = CovarianceMatrixFull<FloatType, Size>(_u.transpose() * _d * _u, _isInverse);
   }
   else
   {
-    cov = _u * _d * _u.transpose();
+    cov = CovarianceMatrixFull<FloatType, Size>(_u * _d * _u.transpose(), _isInverse);
   }
   return cov;
 }

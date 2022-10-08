@@ -18,6 +18,15 @@ SquareMatrix<FloatType, Size>::SquareMatrix(const Matrix<FloatType, Size, Size>&
 }
 
 template <typename FloatType, sint32 Size>
+inline auto SquareMatrix<FloatType, Size>::qrSolve(SquareMatrix<FloatType, Size>& x, const SquareMatrix<FloatType, Size>& b) const
+    -> bool
+{
+  Eigen::HouseholderQR<Eigen::Matrix<FloatType, Size, Size>> qr(this->_data);
+  x._data = qr.solve(b._data);
+  return true;
+}
+
+template <typename FloatType, sint32 Size>
 inline auto SquareMatrix<FloatType, Size>::decomposeLLT(TriangularMatrix<FloatType, Size, true>& L) const -> bool
 {
   const Eigen::LLT<Eigen::Matrix<FloatType, Size, Size>> llt(this->_data);
@@ -118,19 +127,9 @@ inline auto SquareMatrix<FloatType, Size>::decomposeUDUT(TriangularMatrix<FloatT
 template <typename FloatType, sint32 Size>
 inline auto SquareMatrix<FloatType, Size>::inverse() const -> SquareMatrix
 {
-  SquareMatrix                            inv{};
-  TriangularMatrix<FloatType, Size, true> L{};
-
-  // TODO(matthias): move implementation into solver class
-  auto isOk = decomposeLLT(L);
-  assert(isOk && "matrix not positive definite");
-
-  // L*(L'*Ainv) = eye(n,n)
-  // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
-  auto u = std::move(L.solve(SquareMatrix::Identity()));
-  // L'*Ainv = u     -> solve for Ainv using backward substitution
-  inv = std::move(L.transpose().solve(u));
-
+  SquareMatrix inv{};
+  auto isOk = qrSolve(inv, SquareMatrix::Identity());
+  assert(isOk);
   return inv;
 }
 

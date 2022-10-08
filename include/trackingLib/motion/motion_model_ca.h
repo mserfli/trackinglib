@@ -97,6 +97,10 @@ public:
                const filter::KalmanFilter<FloatType>& filter,
                const env::EgoMotion<FloatType>&       egoMotion) final;
 
+  void predict(const FloatType                        dt,
+               const filter::InformationFilter<FloatType>& filter,
+               const env::EgoMotion<FloatType>&       egoMotion) final {}
+
   /// \brief Creates a CA model based on a CV model
   /// \param[in] other  The CV model
   void convertFrom(const MotionModelCV<CovarianceMatrixType, FloatType>& other);

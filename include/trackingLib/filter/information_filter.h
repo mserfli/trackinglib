@@ -30,11 +30,19 @@ struct InformationFilter
     // University at Buffalo, Department of Computer Science and Engineering, NY 14260
     // https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Z7LP12kAAAAJ&citation_for_view=Z7LP12kAAAAJ:_FxGoFyzp5QC
 
+    Y.print();
+    A.print();
+    G.print();
+    Q.print();
+
     auto invA = A.inverse();
-    auto M    = invA.transpose() * Y * invA;
-    auto H    = math::SquareMatrix<FloatType, DimX>::Identity() + M * (G * Q * G.transpose());
-    auto invH = H.inverse();
-    Y         = invH * M;
+    auto M{Y};
+    M.apaT(invA);
+    // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric
+    const auto H =
+        math::SquareMatrix<FloatType, DimX>(math::SquareMatrix<FloatType, DimX>::Identity() + M * (G * Q * G.transpose()));
+    H.qrSolve(Y, M);
+    Y.print();
   }
 
   // prediction for UD factored covariance
@@ -49,11 +57,30 @@ struct InformationFilter
     // Christopher D’Souza and Renato Zanetti
     // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
 
-#if 1
+    Y.print();
+    A.print();
+    G.print();
+    Q.print();
+#if 0
     auto P = Y.inverse();
     P.thornton(A, G, Q);
     Y = P.inverse();
+    Y.print();  // close to CovarianceMatrixFull solution
 #else
+    {
+      const auto cov = Y();
+      const auto inv = math::CovarianceMatrixFull<FloatType, DimQ>((G.transpose() * cov * G) + Q.inverse()).inverse();
+      const auto tmp = cov * G;
+      auto res = math::CovarianceMatrixFull<FloatType, DimX>(cov - (tmp * inv) * tmp.transpose(), true);
+      res.print();
+      auto tmp2 = res;
+      res.apaT(A.inverse());
+      res.print(); // even closer to CovarianceMatrixFull solution, but without keeping the UDU structure
+      tmp2 -= res;
+      tmp2.print();
+
+    }
+
     // apply DimQ times the AgeeTurner Rank-1 update P = P - c*x*x'
     // with ci=Gi'*Y*Gi+Q(i,i) is (1x1) and x=Y*Gi is (nx1)
     math::Vector<FloatType, DimX> x;
@@ -65,12 +92,14 @@ struct InformationFilter
       {
         Gi[j] = G(j, i);
       }
-      ci += Gi.transpose() * Y * Gi;
-      x = Y * Gi;
+      x                 = Y() * Gi;
+      const auto scalar = Gi.transpose() * x;
+      ci += scalar(0, 0);
       Y.rank1Update(ci, x);
     }
-    // propagate factorization by A
-    Y.apaT(A);
+    // propagate factorization by inverse(A)
+    Y.apaT(A.inverse());
+    Y.print();
 #endif
   }
 };

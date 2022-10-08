@@ -57,6 +57,12 @@ public:
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
   void run(const FloatType dt, const filter::KalmanFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion);
+
+  /// \brief State prediction with ego motion compensation using an InformationFilter
+  /// \param[in] dt         The delta time from last state to predicted state
+  /// \param[in] filter     The filter instance
+  /// \param[in] egoMotion  The known egoMotion from last state to predicted state
+  void run(const FloatType dt, const filter::InformationFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion);
 };
 
 } // namespace generic

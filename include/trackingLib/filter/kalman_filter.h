@@ -22,7 +22,7 @@ struct KalmanFilter
                                        const math::Matrix<FloatType, DimX, DimQ>&   G,
                                        const math::DiagonalMatrix<FloatType, DimQ>& Q)
   {
-    P = A * P * A.transpose() + G * Q * G.transpose();
+    P = math::CovarianceMatrixFull<FloatType, DimX>(A * P * A.transpose() + G * Q * G.transpose());
   }
 
   // prediction for UD factored covariance

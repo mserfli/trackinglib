@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "filter/information_filter.h"
 #include "trackingLib/env/ego_motion.h"
 #include "trackingLib/motion/motion_model_cv.hpp"
 
@@ -15,12 +16,25 @@ TEST(MotionModelCV, predict_fullCov)
   MM::StateCov                      cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
   MM                                mm{vec, cov};
   tracking::env::EgoMotion<float32> egoMotion{};
-  egoMotion._displacementCog.vec[tracking::env::EgoMotion<float32>::DS_X] = 10.0F;
-  tracking::filter::KalmanFilter<float32> kf;
-  mm.predict(1.0F, kf, egoMotion);
+  //egoMotion._displacementCog.vec[tracking::env::EgoMotion<float32>::DS_X] = 10.0F;
+  tracking::filter::KalmanFilter<float32> filter{};
+  mm.predict(1.0F, filter, egoMotion);
 
   mm._vec.print();
   mm._cov.print();
+  mm._cov.inverse().print();
+
+// resulting covariance
+// 9.5     6     0     0
+//   6    11     0     0
+//   0     0 148.6  29.1
+//   0     0  29.1  14.1
+
+// resulting inverse covariance
+//   0.160584 -0.0875912          0          0
+// -0.0875912   0.138686          0          0
+//          0          0   0.011294 -0.0233089
+//          0          0 -0.0233089   0.119028
 }
 
 TEST(MotionModelCV, predict_factoredCov)
@@ -30,12 +44,48 @@ TEST(MotionModelCV, predict_factoredCov)
   MM::StateCov                            cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
   MM                                      mm{vec, cov};
   tracking::env::EgoMotion<float32>       egoMotion{};
-  tracking::filter::KalmanFilter<float32> kf{};
-  mm.predict(1.0F, kf, egoMotion);
+  tracking::filter::KalmanFilter<float32> filter{};
+  mm.predict(1.0F, filter, egoMotion);
 
   mm._vec.print();
   mm._cov._u.print();
   mm._cov._d.print();
+}
+
+TEST(MotionModelCV, predict_fullCov_informationFilter)
+{
+  using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
+  MM::StateVec                      vec({{10}, {2}, {0}, {0}});
+  MM::StateCov                      cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+  MM                                mm{vec, cov.inverse()};
+  tracking::env::EgoMotion<float32> egoMotion{};
+  tracking::filter::InformationFilter<float32> filter{};
+
+  mm._vec.print();
+  mm._cov.print();
+
+  mm.predict(1.0F, filter, egoMotion);
+
+  mm._vec.print();
+  mm._cov.print();
+}
+
+TEST(MotionModelCV, predict_factoredCov_informationFilter)
+{
+  using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
+  MM::StateVec                            vec({{10}, {2}, {0}, {0}});
+  MM::StateCov                            cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+  MM                                      mm{vec, cov.inverse()};
+  tracking::env::EgoMotion<float32>       egoMotion{};
+  tracking::filter::InformationFilter<float32> filter{};
+
+  mm._vec.print();
+  mm._cov().print();
+
+  mm.predict(1.0F, filter, egoMotion);
+
+  mm._vec.print();
+  mm._cov().print();
 }
 
 TEST(MotionModelCV, convertCA_fullCov)
@@ -43,7 +93,7 @@ TEST(MotionModelCV, convertCA_fullCov)
   // clang-format off
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFull, float32>;
-MMCA::StateVec vec({{10}, {2}, {0}, {0}, {2}, {0.1}});
+  MMCA::StateVec vec({{10}, {2}, {0}, {0}, {2}, {0.1}});
   MMCA::StateCov::compose_type cov({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},

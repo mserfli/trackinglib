@@ -27,6 +27,14 @@ void MotionModelCV<CovarianceMatrixType, FloatType>::predict(const FloatType    
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
+void MotionModelCV<CovarianceMatrixType, FloatType>::predict(const FloatType                             dt,
+                                                             const filter::InformationFilter<FloatType>& filter,
+                                                             const env::EgoMotion<FloatType>&            egoMotion)
+{
+  super_generic_predict_type::run(dt, filter, egoMotion);
+}
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 void MotionModelCV<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMotionMappingMatrix& Ge,
                                                                          StateMatrix&            Go,
                                                                          const EgoMotion&        egoMotion)

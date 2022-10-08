@@ -4,6 +4,7 @@
 #include "base/first_include.h"
 #include "env/ego_motion.h"
 #include "filter/kalman_filter.h"
+#include "filter/information_filter.h"
 #include "motion/state_mem.h"
 
 namespace tracking
@@ -35,6 +36,10 @@ public:
   virtual void predict(const FloatType                        dt,
                        const filter::KalmanFilter<FloatType>& filter, // TODO(matthias): decide between overloading or base class
                        const env::EgoMotion<FloatType>&       egoMotion) = 0;
+
+  virtual void predict(const FloatType                             dt,
+                       const filter::InformationFilter<FloatType>& filter,
+                       const env::EgoMotion<FloatType>&            egoMotion) = 0;
 
   // clang-format off
 TEST_REMOVE_PROTECTED:

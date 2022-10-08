@@ -83,7 +83,7 @@ auto main() -> int
   }
 
   {
-    CovarianceMatrixFull<float64, 3> cov{{1.8547, 1.3984, 1.2923}, {1.3984, 1.2222, 1.2328}, {1.2923, 1.2328, 1.3428}};
+    CovarianceMatrixFull<float64, 3> cov({{1.8547, 1.3984, 1.2923}, {1.3984, 1.2222, 1.2328}, {1.2923, 1.2328, 1.3428}});
     CovarianceMatrixFull<float64, 3> inv = cov.inverse();
     inv.print();
   }
