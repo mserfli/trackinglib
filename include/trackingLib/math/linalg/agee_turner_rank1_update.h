@@ -17,9 +17,8 @@ class AgeeTurnerRank1Update
 public:
   static void run(TriangularMatrix<FloatType, Size, false>& u,
                   DiagonalMatrix<FloatType, Size>&          d,
-                  const FloatType                           c,
-                  const Vector<FloatType, Size>&            x,
-                  const bool                                transposeU);
+                  FloatType                                 c,  //we need a copy internally
+                  Vector<FloatType, Size>                   x); //we need a copy internally
 };
 
 } // namespace math

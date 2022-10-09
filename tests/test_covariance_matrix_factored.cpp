@@ -240,6 +240,7 @@ TEST(CovarianceMatrixFactored, setVariance)
     {{2,  0,  0},
      {0, 66, 16},
      {0, 16,  4}});
+  // clang-format on
 
   // call UUT
   cov.setVariance(0,2);
@@ -251,6 +252,36 @@ TEST(CovarianceMatrixFactored, setVariance)
     for(sint32 j=0; j<3; ++j)
     {
       EXPECT_FLOAT_EQ(expMat(i,j), fullCov(i, j));
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, rank1Update)
+{
+    // clang-format off
+  tracking::math::CovarianceMatrixFactored<float32, 3> cov(
+    {{1,2,3}, 
+     {0,1,4}, 
+     {0,0,1}}, {1, 2, 4}, false);
+
+  tracking::math::Vector<float32, 3> x({1,2,3});
+
+  const tracking::math::CovarianceMatrixFactored<float32, 3> expCov(
+    {{1.000000000000000, 0.894009216589862, 1.588235294117647},
+     {                0, 1.000000000000000, 2.235294117647059},
+     {                0,                 0, 1.000000000000000}}, {3.654377880184332, 25.52941176470588, 8.5}, false);
+  // clang-format on
+  
+  // call UUT
+  cov.rank1Update(0.5, x);
+
+  // verify
+  for(sint32 i=0; i<3; ++i)
+  {
+    EXPECT_FLOAT_EQ(expCov._d[i], cov._d[i]);
+    for(sint32 j=i; j<3; ++j)
+    {
+      EXPECT_FLOAT_EQ(expCov._u(i,j), cov._u(i, j));
     }
   }
 }

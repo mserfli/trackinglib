@@ -224,15 +224,9 @@ inline void CovarianceMatrixFactored<FloatType, Size>::thornton(const SquareMatr
 template <typename FloatType, sint32 Size>
 inline void CovarianceMatrixFactored<FloatType, Size>::rank1Update(const FloatType c, const Vector<FloatType, Size>& x)
 {
-  if (_isInverse)
-  {
-    math::AgeeTurnerRank1Update<FloatType, Size>::run(_u, _d, c, x, true);
-    // TODO(matthias): do we need to reset _isInverse???
-  }
-  else
-  {
-    math::AgeeTurnerRank1Update<FloatType, Size>::run(_u, _d, c, x, false);
-  }
+  // TODO(matthias): needs adaption for inverse covariance
+  math::AgeeTurnerRank1Update<FloatType, Size>::run(_u, _d, c, x);
+
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }

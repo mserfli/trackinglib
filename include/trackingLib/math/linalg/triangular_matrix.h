@@ -70,6 +70,7 @@ public:
   /// \brief Calculates the inverse of the underlying matrix
   /// \return TriangularMatrix
   auto inverse() const -> TriangularMatrix;
+  // TODO(matthias): UnitUpper inplace inverse, Grewal Table 6.7 p.235
 
   /// \brief Checks for Unit Upper condition
   /// \return true

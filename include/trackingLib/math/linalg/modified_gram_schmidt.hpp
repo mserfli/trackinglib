@@ -20,7 +20,8 @@ void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size,
   //
   // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
 
-  auto PhiU = transposeU ? Phi * u.transpose() : Phi * u;
+  // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
+  auto PhiU = transposeU ? Phi * u.transpose() : Phi * u; 
   auto Din  = d;
   u.setIdentity();
   FloatType sigma;
@@ -66,6 +67,7 @@ void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size,
   // for the predictor update of the U-D factors of the covariance matrix
   // of estimation uncertainty in Kalman filtering
 
+  // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
   auto PhiU = Phi * u;
   auto Din  = d;
   auto Gin  = G;

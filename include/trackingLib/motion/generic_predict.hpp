@@ -79,7 +79,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run
   // operations
   static typename MotionModel::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
 
-  filter.predictCovariance(P, AGo, Gstar, Qstar);
+  filter.predictCovariance(P, AGo, data.G, data.Q);
 }
 
 template <typename MotionModel, typename FloatType>

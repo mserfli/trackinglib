@@ -1,7 +1,9 @@
-#include <gmock/gmock.h>
+#include "filter/kalman_filter.h"
+#include "gmock/gmock.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "trackingLib/env/ego_motion.h"
 #include "trackingLib/motion/motion_model_cv.hpp"
+#include <gmock/gmock.h>
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
 // instatiate all templates for full coverage report
@@ -36,78 +38,72 @@ public:
   }
 };
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType>
-void testKalmanPredict()
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
+          template <typename FloatType>
+          class FilterType,
+          typename FloatType>
+struct TestPredictCV
 {
-  tracking::env::EgoMotion<float32>       egoMotion{};
-  tracking::filter::KalmanFilter<float32> filter{};
-  using MM = tracking::motion::MotionModelCV<CovarianceMatrixType, float32>;
-  typename MM::StateVec vec({{10}, {2}, {0}, {0}});
-  typename MM::StateCov cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-  typename MM::StateVec expVec({{12}, {2}, {0}, {0}});
-  typename MM::StateCov expCov({{8.5, 6, 0, 0}, {6, 11, 0, 0}, {0, 0, 3.6, 5.1}, {0, 0, 5.1, 10.1}});
+  using MM = tracking::motion::MotionModelCV<CovarianceMatrixType, FloatType>;
 
-  // instantiate MM with mocked EgoMotion compensation
-  MotionModelNoEgoMotionMock<MM> mm{vec, cov};
-  mm.delegate();
-
-  // call UUT
-  mm.predict(1.0F, filter, egoMotion);
-
-  for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
+  static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const tracking::filter::KalmanFilter<FloatType>&)
   {
-    EXPECT_FLOAT_EQ(mm._vec[row], expVec[row]);
-    for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
+    // no change required
+  }
+
+  static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const tracking::filter::InformationFilter<FloatType>&)
+  {
+    cov = cov.inverse();
+    expCov = expCov.inverse();
+  }
+
+  static void run()
+  {
+    tracking::env::EgoMotion<FloatType> egoMotion{};
+    FilterType<FloatType>               filter{};
+    typename MM::StateVec vec{{{10}, {2}, {0}, {0}}};
+    typename MM::StateCov cov{{{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}}};
+    typename MM::StateVec expVec{{{12}, {2}, {0}, {0}}};
+    typename MM::StateCov expCov{{{8.5, 6, 0, 0}, {6, 11, 0, 0}, {0, 0, 3.6, 5.1}, {0, 0, 5.1, 10.1}}};
+    init(cov, expCov, filter);
+
+    // instantiate MM with mocked EgoMotion compensation
+    testing::NiceMock<MotionModelNoEgoMotionMock<MM>> mm{vec, cov};
+    mm.delegate();
+    EXPECT_CALL(mm, compensateEgoMotion);
+
+    // call UUT
+    mm.predict(static_cast<FloatType>(1.0), filter, egoMotion);
+
+    for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
-      EXPECT_FLOAT_EQ(mm._cov(row, col), expCov(row, col));
+      EXPECT_FLOAT_EQ(mm._vec[row], expVec[row]);
+      for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
+      {
+        EXPECT_FLOAT_EQ(mm._cov(row, col), expCov(row, col));
+      }
     }
   }
+};
+
+TEST(MotionModelCV, predict_kf_fullCov)
+{
+  TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::KalmanFilter, float64>::run();
 }
 
-TEST(MotionModelCV, predict_fullCov)
+TEST(MotionModelCV, predict_kf_factoredCov)
 {
-  testKalmanPredict<tracking::math::CovarianceMatrixFull>();
-}
-
-TEST(MotionModelCV, predict_factoredCov)
-{
-  testKalmanPredict<tracking::math::CovarianceMatrixFactored>();
+  TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::KalmanFilter, float64>::run();
 }
 
 TEST(MotionModelCV, predict_fullCov_informationFilter)
 {
-  using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
-  MM::StateVec                                 vec({{10}, {2}, {0}, {0}});
-  MM::StateCov                                 cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-  MM                                           mm{vec, cov.inverse()};
-  tracking::env::EgoMotion<float32>            egoMotion{};
-  tracking::filter::InformationFilter<float32> filter{};
-
-  mm._vec.print();
-  mm._cov.print();
-
-  mm.predict(1.0F, filter, egoMotion);
-
-  mm._vec.print();
-  mm._cov.print();
+  TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::InformationFilter, float64>::run();
 }
 
 TEST(MotionModelCV, predict_factoredCov_informationFilter)
 {
-  using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
-  MM::StateVec                                 vec({{10}, {2}, {0}, {0}});
-  MM::StateCov                                 cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-  MM                                           mm{vec, cov.inverse()};
-  tracking::env::EgoMotion<float32>            egoMotion{};
-  tracking::filter::InformationFilter<float32> filter{};
-
-  mm._vec.print();
-  mm._cov().print();
-
-  mm.predict(1.0F, filter, egoMotion);
-
-  mm._vec.print();
-  mm._cov().print();
+  TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::InformationFilter, float64>::run();
 }
 
 TEST(MotionModelCV, convertCA_fullCov)
