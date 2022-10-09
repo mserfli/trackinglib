@@ -1,5 +1,5 @@
-#include "gtest/gtest.h"
-#include "filter/information_filter.h"
+#include <gmock/gmock.h>
+#include "math/linalg/covariance_matrix_full.h"
 #include "trackingLib/env/ego_motion.h"
 #include "trackingLib/motion/motion_model_cv.hpp"
 
@@ -8,57 +8,79 @@
 template class tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
 template class tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
 
-// TODO(matthias): make this a typed test depending on CovarianceType
-TEST(MotionModelCV, predict_fullCov)
+template <typename MM>
+class MotionModelNoEgoMotionMock: public MM
 {
-  using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
-  MM::StateVec                      vec({{10}, {2}, {0}, {0}});
-  MM::StateCov                      cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-  MM                                mm{vec, cov};
-  tracking::env::EgoMotion<float32> egoMotion{};
-  //egoMotion._displacementCog.vec[tracking::env::EgoMotion<float32>::DS_X] = 10.0F;
+public:
+  using MM::MM;
+  MOCK_METHOD(void,
+              compensateEgoMotion,
+              (typename MM::EgoMotionMappingMatrix&,
+               typename MM::StateMatrix&,
+               const tracking::env::EgoMotion<typename MM::StateMatrix::value_type>&),
+              (override));
+  void mock_compensateEgoMotion(typename MM::EgoMotionMappingMatrix&,
+                                typename MM::StateMatrix& Go,
+                                const tracking::env::EgoMotion<typename MM::StateMatrix::value_type>&)
+  {
+    Go.setIdentity();
+  }
+  void delegate()
+  {
+    ON_CALL(*this, compensateEgoMotion)
+        .WillByDefault([this](typename MM::EgoMotionMappingMatrix&                                  Ge,
+                              typename MM::StateMatrix&                                             Go,
+                              const tracking::env::EgoMotion<typename MM::StateMatrix::value_type>& egoMotion) {
+          mock_compensateEgoMotion(Ge, Go, egoMotion);
+        });
+  }
+};
+
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType>
+void testKalmanPredict()
+{
+  tracking::env::EgoMotion<float32>       egoMotion{};
   tracking::filter::KalmanFilter<float32> filter{};
+  using MM = tracking::motion::MotionModelCV<CovarianceMatrixType, float32>;
+  typename MM::StateVec vec({{10}, {2}, {0}, {0}});
+  typename MM::StateCov cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+  typename MM::StateVec expVec({{12}, {2}, {0}, {0}});
+  typename MM::StateCov expCov({{8.5, 6, 0, 0}, {6, 11, 0, 0}, {0, 0, 3.6, 5.1}, {0, 0, 5.1, 10.1}});
+
+  // instantiate MM with mocked EgoMotion compensation
+  MotionModelNoEgoMotionMock<MM> mm{vec, cov};
+  mm.delegate();
+
+  // call UUT
   mm.predict(1.0F, filter, egoMotion);
 
-  mm._vec.print();
-  mm._cov.print();
-  mm._cov.inverse().print();
+  for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
+  {
+    EXPECT_FLOAT_EQ(mm._vec[row], expVec[row]);
+    for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
+    {
+      EXPECT_FLOAT_EQ(mm._cov(row, col), expCov(row, col));
+    }
+  }
+}
 
-// resulting covariance
-// 9.5     6     0     0
-//   6    11     0     0
-//   0     0 148.6  29.1
-//   0     0  29.1  14.1
-
-// resulting inverse covariance
-//   0.160584 -0.0875912          0          0
-// -0.0875912   0.138686          0          0
-//          0          0   0.011294 -0.0233089
-//          0          0 -0.0233089   0.119028
+TEST(MotionModelCV, predict_fullCov)
+{
+  testKalmanPredict<tracking::math::CovarianceMatrixFull>();
 }
 
 TEST(MotionModelCV, predict_factoredCov)
 {
-  using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
-  MM::StateVec                            vec({{10}, {2}, {0}, {0}});
-  MM::StateCov                            cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-  MM                                      mm{vec, cov};
-  tracking::env::EgoMotion<float32>       egoMotion{};
-  tracking::filter::KalmanFilter<float32> filter{};
-  mm.predict(1.0F, filter, egoMotion);
-
-  mm._vec.print();
-  mm._cov._u.print();
-  mm._cov._d.print();
+  testKalmanPredict<tracking::math::CovarianceMatrixFactored>();
 }
 
 TEST(MotionModelCV, predict_fullCov_informationFilter)
 {
   using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
-  MM::StateVec                      vec({{10}, {2}, {0}, {0}});
-  MM::StateCov                      cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-  MM                                mm{vec, cov.inverse()};
-  tracking::env::EgoMotion<float32> egoMotion{};
+  MM::StateVec                                 vec({{10}, {2}, {0}, {0}});
+  MM::StateCov                                 cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+  MM                                           mm{vec, cov.inverse()};
+  tracking::env::EgoMotion<float32>            egoMotion{};
   tracking::filter::InformationFilter<float32> filter{};
 
   mm._vec.print();
@@ -73,10 +95,10 @@ TEST(MotionModelCV, predict_fullCov_informationFilter)
 TEST(MotionModelCV, predict_factoredCov_informationFilter)
 {
   using MM = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
-  MM::StateVec                            vec({{10}, {2}, {0}, {0}});
-  MM::StateCov                            cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-  MM                                      mm{vec, cov.inverse()};
-  tracking::env::EgoMotion<float32>       egoMotion{};
+  MM::StateVec                                 vec({{10}, {2}, {0}, {0}});
+  MM::StateCov                                 cov({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+  MM                                           mm{vec, cov.inverse()};
+  tracking::env::EgoMotion<float32>            egoMotion{};
   tracking::filter::InformationFilter<float32> filter{};
 
   mm._vec.print();

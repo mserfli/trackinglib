@@ -23,7 +23,7 @@ template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
 class MotionModelCA;
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-class MotionModelCV final
+class MotionModelCV TEST_REMOVE_FINAL
     : public ExtendedMotionModel<MotionModelCV<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 4>
     , public generic::Predict<MotionModelCV<CovarianceMatrixType, FloatType>, FloatType, CovarianceMatrixType>
 {
@@ -67,7 +67,7 @@ public:
   MotionModelCV(MotionModelCV&&) noexcept = default;
   auto operator=(const MotionModelCV&) -> MotionModelCV& = default;
   auto operator=(MotionModelCV&&) noexcept -> MotionModelCV& = default;
-  virtual ~MotionModelCV() final                             = default;
+  virtual ~MotionModelCV() TEST_REMOVE_FINAL                 = default;
 
   /// \brief Construct a new CA given the vector and the covariance matrix
   /// \param[in] vec
@@ -108,7 +108,7 @@ public:
   /// \param[out] Ge        The propagated errors of the ego motion to the state space
   /// \param[out] Go        The transformation of the state caused by the ego motion
   /// \param[in]  egoMotion The known egoMotion from last state to predicted state
-  void compensateEgoMotion(EgoMotionMappingMatrix& Ge, StateMatrix& Go, const EgoMotion& egoMotion);
+  TEST_VIRTUAL void compensateEgoMotion(EgoMotionMappingMatrix& Ge, StateMatrix& Go, const EgoMotion& egoMotion);
 
   /// \brief Apply the state transition from k to k+1 defined by the process model
   /// \param[in] dt         The delta time from last state to predicted state

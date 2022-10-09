@@ -25,7 +25,7 @@ target_include_directories(
     ${TEST_BINARY}
     PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
-target_link_libraries(${TEST_BINARY} PUBLIC trackingLib::trackingLib gtest gtest_main pthread)
+target_link_libraries(${TEST_BINARY} PUBLIC trackingLib::trackingLib gmock gmock_main pthread)
 
 target_compile_features(${TEST_BINARY} PRIVATE cxx_std_11)
 

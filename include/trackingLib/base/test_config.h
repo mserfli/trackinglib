@@ -5,10 +5,12 @@
 #define TEST_REMOVE_PROTECTED public
 #define TEST_REMOVE_PRIVATE public
 #define TEST_VIRTUAL virtual
+#define TEST_REMOVE_FINAL
 #else
 #define TEST_REMOVE_PROTECTED protected
 #define TEST_REMOVE_PRIVATE private
 #define TEST_VIRTUAL
+#define TEST_REMOVE_FINAL final
 #endif
 
 #endif // B6EA1828_D8F3_4967_B32E_F0B8CF089573
