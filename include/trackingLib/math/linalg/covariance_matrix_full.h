@@ -21,43 +21,52 @@ public:
   using compose_type = CovarianceMatrixFull;
 
   //  rule of 5 declarations
-  CovarianceMatrixFull() = default;
-  CovarianceMatrixFull(const CovarianceMatrixFull& other)
-      : SquareMatrix<FloatType, Size>{other}
-      , contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>{}
-      , _isInverse{other._isInverse}
-  {
-  }
-  CovarianceMatrixFull(CovarianceMatrixFull&& other) noexcept
-      : SquareMatrix<FloatType, Size>{std::move(other)}
-      , contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>{}
-      , _isInverse{other._isInverse}
-  {
-    // make other unusable using placement new operator
-    new (&other) CovarianceMatrixFull<FloatType, Size>{};
-  }
-  auto operator=(const CovarianceMatrixFull& other) -> CovarianceMatrixFull&
-  {
-    if (this != &other)
-    {
-      SquareMatrix<FloatType, Size>::operator=(other);
-      _isInverse                             = other._isInverse;
-    }
-    return *this;
-  };
-  auto operator=(CovarianceMatrixFull&& other) noexcept -> CovarianceMatrixFull&
-  {
-    if (this != &other)
-    {
-      SquareMatrix<FloatType, Size>::operator=(std::move(other));
-      // init remaining data
-      _isInverse = other._isInverse;
+  CovarianceMatrixFull()                                = default;
+  CovarianceMatrixFull(const CovarianceMatrixFull&)     = default;
+  CovarianceMatrixFull(CovarianceMatrixFull&&) noexcept = default;
+  auto operator=(const CovarianceMatrixFull&) -> CovarianceMatrixFull& = default;
+  auto operator=(CovarianceMatrixFull&&) noexcept -> CovarianceMatrixFull& = default;
+  virtual ~CovarianceMatrixFull()                                          = default;
 
+
+  /*  CovarianceMatrixFull() = default;
+    CovarianceMatrixFull(const CovarianceMatrixFull& other)
+        : SquareMatrix<FloatType, Size>{other}
+        , contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>{}
+        , _isInverse{other._isInverse}
+    {
+    }
+    CovarianceMatrixFull(CovarianceMatrixFull&& other) noexcept
+        : SquareMatrix<FloatType, Size>{std::move(other)}
+        , contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>{}
+        , _isInverse{other._isInverse}
+    {
       // make other unusable using placement new operator
       new (&other) CovarianceMatrixFull<FloatType, Size>{};
     }
-    return *this;
-  }
+    auto operator=(const CovarianceMatrixFull& other) -> CovarianceMatrixFull&
+    {
+      if (this != &other)
+      {
+        SquareMatrix<FloatType, Size>::operator=(other);
+        _isInverse                             = other._isInverse;
+      }
+      return *this;
+    };
+    auto operator=(CovarianceMatrixFull&& other) noexcept -> CovarianceMatrixFull&
+    {
+      if (this != &other)
+      {
+        SquareMatrix<FloatType, Size>::operator=(std::move(other));
+        // init remaining data
+        _isInverse = other._isInverse;
+
+        // make other unusable using placement new operator
+        new (&other) CovarianceMatrixFull<FloatType, Size>{};
+      }
+      return *this;
+    }
+    ~CovarianceMatrixFull() = default; */
 
   /// \brief Construct a new Covariance Matrix Full< Float Type,  Size> object
   /// \param[in] other A base class object
@@ -120,6 +129,7 @@ CovarianceMatrixFull<FloatType, Size>::CovarianceMatrixFull(const SquareMatrix<F
     : SquareMatrix<FloatType, Size>{other}
     , _isInverse{isInverse}
 {
+  assert(this->isSymmetric() && "Constructed covariance not symmetric");
 }
 
 template <typename FloatType, sint32 Size>
@@ -152,9 +162,9 @@ inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> Covariance
 
   // L*(L'*Ainv) = eye(n,n)
   // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
-  auto u = std::move(L.solve(CovarianceMatrixFull::Identity()));
+  auto u = L.solve(CovarianceMatrixFull::Identity());
   // L'*Ainv = u     -> solve for Ainv using backward substitution
-  inv = CovarianceMatrixFull(std::move(L.transpose().solve(u)), !_isInverse);
+  inv = CovarianceMatrixFull(L.transpose().solve(u), !_isInverse);
 
   return inv;
 }
@@ -168,20 +178,29 @@ inline auto CovarianceMatrixFull<FloatType, Size>::isInverse() const -> bool
 template <typename FloatType, sint32 Size>
 inline void CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A)
 {
+  assert(this->isSymmetric() && "Covariance currently not symmetric");
   if (_isInverse)
   {
-    this->operator=(CovarianceMatrixFull(A.transpose() * this->operator*=(A), _isInverse));
+    SquareMatrix<FloatType, Size> res = A.transpose() * this->operator*=(A);
+    res+=res.transpose();
+    res*=static_cast<FloatType>(0.5);
+    this->operator=(CovarianceMatrixFull(res, _isInverse));
   }
   else
   {
-    this->operator=(CovarianceMatrixFull(A * this->operator*=(A.transpose()), _isInverse));
+    SquareMatrix<FloatType, Size> res = A * this->operator*=(A.transpose());
+    res+=res.transpose();
+    res*=static_cast<FloatType>(0.5);
+    this->operator=(CovarianceMatrixFull(res, _isInverse));
   }
 }
 
 template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFull
 {
-  return CovarianceMatrixFull(A * (*this) * A.transpose(), _isInverse);
+  auto copy(*this);
+  copy.apaT(A);
+  return copy;
 }
 
 template <typename FloatType, sint32 Size>

@@ -5,6 +5,7 @@
 
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/triangular_matrix.h"
+#include <limits>
 
 namespace tracking
 {
@@ -29,6 +30,7 @@ inline auto SquareMatrix<FloatType, Size>::qrSolve(SquareMatrix<FloatType, Size>
 template <typename FloatType, sint32 Size>
 inline auto SquareMatrix<FloatType, Size>::decomposeLLT(TriangularMatrix<FloatType, Size, true>& L) const -> bool
 {
+  assert(isSymmetric() && "Decomposition requires symmetric matrix");
   const Eigen::LLT<Eigen::Matrix<FloatType, Size, Size>> llt(this->_data);
 
   bool isOk = (llt.info() == Eigen::Success);
@@ -67,6 +69,7 @@ template <typename FloatType, sint32 Size>
 inline auto SquareMatrix<FloatType, Size>::decomposeLDLT(TriangularMatrix<FloatType, Size, true>& L,
                                                          DiagonalMatrix<FloatType, Size>&         D) const -> bool
 {
+  assert(isSymmetric() && "Decomposition requires symmetric matrix");
   const Eigen::SimplicialLDLT<Eigen::SparseMatrix<FloatType>, Eigen::Lower, Eigen::NaturalOrdering<int>> ldlt(
       this->_data.sparseView());
 
@@ -100,7 +103,8 @@ inline auto SquareMatrix<FloatType, Size>::decomposeUDUT(TriangularMatrix<FloatT
   // Performs modified Cholesky decomposition of symmetric positive-definite
   // matrix P (input).
 
-  auto P = static_cast<FloatType>(0.5) * (this->_data + this->_data.transpose());
+  assert(isSymmetric() && "Decomposition requires symmetric matrix");
+  const auto& P = this->_data;
   for (sint32 j = Size - 1; j >= 0; --j)
   {
     for (sint32 i = j; i >= 0; --i)
@@ -128,9 +132,27 @@ template <typename FloatType, sint32 Size>
 inline auto SquareMatrix<FloatType, Size>::inverse() const -> SquareMatrix
 {
   SquareMatrix inv{};
-  auto isOk = qrSolve(inv, SquareMatrix::Identity());
+  auto         isOk = qrSolve(inv, SquareMatrix::Identity());
   assert(isOk);
   return inv;
+}
+
+template <typename FloatType, sint32 Size>
+inline auto SquareMatrix<FloatType, Size>::isSymmetric() const -> bool
+{
+  //check all off diagonal elements
+  for (auto row = 1; row < Size; ++row)
+  {
+    for (auto col = row; col < Size; ++col)
+    {
+      auto absDiff = std::abs(this->_data(row,col) - this->_data(col,row));
+      if(absDiff > std::numeric_limits<FloatType>::epsilon())
+      {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 } // namespace math

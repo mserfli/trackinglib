@@ -66,7 +66,14 @@ public:
   /// \return SquareMatrix
   auto inverse() const -> SquareMatrix;
 
-  // TODO(matthias): add function to check symmetry required for all decompose functions
+  // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround for correct indentation
+  // clang-format on
+
+  /// \brief Check for symmetry of the matrix 
+  /// \return true
+  auto isSymmetric() const -> bool;
 };
 
 } // namespace math
