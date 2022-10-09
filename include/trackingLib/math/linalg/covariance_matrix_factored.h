@@ -30,6 +30,7 @@ public:
   CovarianceMatrixFactored(CovarianceMatrixFactored&&) noexcept = default;
   auto operator=(const CovarianceMatrixFactored&) -> CovarianceMatrixFactored& = default;
   auto operator=(CovarianceMatrixFactored&&) noexcept -> CovarianceMatrixFactored& = default;
+  virtual ~CovarianceMatrixFactored()                                              = default;
 
   explicit CovarianceMatrixFactored(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
   explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType, Size, false>& u,
@@ -128,7 +129,7 @@ CovarianceMatrixFactored<FloatType, Size>::CovarianceMatrixFactored(const Triang
                                                                     const bool                                      isInverse)
     : _u{u}
     , _d{d}
-    , _isInverse(isInverse)
+    , _isInverse{isInverse}
 {
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
@@ -261,7 +262,7 @@ inline void CovarianceMatrixFactored<FloatType, Size>::fill(const CovarianceMatr
 template <typename FloatType, sint32 Size>
 inline void CovarianceMatrixFactored<FloatType, Size>::setDiagonal(const sint32 idx, const FloatType val)
 {
-  assert(val>static_cast<FloatType>(0.0) && "Expected variance value greater than 0.0");
+  assert(val > static_cast<FloatType>(0.0) && "Expected variance value greater than 0.0");
   _d[idx] = val;
 }
 

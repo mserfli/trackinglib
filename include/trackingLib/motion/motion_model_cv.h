@@ -67,11 +67,11 @@ public:
   MotionModelCV(MotionModelCV&&) noexcept = default;
   auto operator=(const MotionModelCV&) -> MotionModelCV& = default;
   auto operator=(MotionModelCV&&) noexcept -> MotionModelCV& = default;
-  ~MotionModelCV() final                                     = default;
+  virtual ~MotionModelCV() final                             = default;
 
   /// \brief Construct a new CA given the vector and the covariance matrix
-  /// \param[in] vec 
-  /// \param[in] cov 
+  /// \param[in] vec
+  /// \param[in] cov
   explicit MotionModelCV(const StateVec& vec, const StateCov& cov);
 
   /// \brief Read access to x velocity
@@ -96,9 +96,9 @@ public:
                const filter::KalmanFilter<FloatType>& filter,
                const env::EgoMotion<FloatType>&       egoMotion) final;
 
-  void predict(const FloatType                        dt,
+  void predict(const FloatType                             dt,
                const filter::InformationFilter<FloatType>& filter,
-               const env::EgoMotion<FloatType>&       egoMotion) final;
+               const env::EgoMotion<FloatType>&            egoMotion) final;
 
   /// \brief Creates a CV model based on a CA model
   /// \param[in] other  The CA model

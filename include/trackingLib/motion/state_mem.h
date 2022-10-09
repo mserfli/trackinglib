@@ -34,7 +34,7 @@ public:
   StateMem(StateMem&&) noexcept   = default;
   auto operator=(const StateMem& other) -> StateMem& = default;
   auto operator=(StateMem&&) noexcept -> StateMem& = default;
-  ~StateMem()                                      = default;
+  virtual ~StateMem()                              = default;
 
   explicit StateMem(const StateVec& vec, const StateCov& cov)
       : _vec{vec}

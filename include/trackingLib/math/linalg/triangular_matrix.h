@@ -23,6 +23,7 @@ public:
   TriangularMatrix(TriangularMatrix&&) noexcept   = default;
   auto operator=(const TriangularMatrix&) -> TriangularMatrix& = default;
   auto operator=(TriangularMatrix&&) noexcept -> TriangularMatrix& = default;
+  virtual ~TriangularMatrix()                                      = default;
 
   /// \brief Construct a new Triangular Matrix object
   /// \param[in] other
@@ -70,10 +71,10 @@ public:
   /// \return TriangularMatrix
   auto inverse() const -> TriangularMatrix;
 
-  /// \brief Checks for Unit Upper condition 
-  /// \return true 
+  /// \brief Checks for Unit Upper condition
+  /// \return true
   auto isUnitUpperTriangular() const -> bool;
-  
+
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround to keep following idententation
@@ -195,7 +196,7 @@ template <typename FloatType, sint32 Size, bool isLower>
 auto TriangularMatrix<FloatType, Size, isLower>::isUnitUpperTriangular() const -> bool
 {
   auto isValid = true;
-  for(auto idx=0; idx<Size; ++idx)
+  for (auto idx = 0; idx < Size; ++idx)
   {
     isValid = isValid && (static_cast<FloatType>(1.0) == this->operator()(idx, idx));
   }

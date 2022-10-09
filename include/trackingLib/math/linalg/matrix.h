@@ -43,6 +43,7 @@ public:
   Matrix(Matrix&&) noexcept = default;
   auto operator=(const Matrix&) -> Matrix& = default;
   auto operator=(Matrix&&) noexcept -> Matrix& = default;
+  virtual ~Matrix()                            = default;
 
   /// \brief Construct a new Matrix object given initializer list
   /// \param[in] list  An initializer list describing list of matrix rows

@@ -20,6 +20,7 @@ public:
   DiagonalMatrix(DiagonalMatrix&&) noexcept   = default;
   auto operator=(const DiagonalMatrix&) -> DiagonalMatrix& = default;
   auto operator=(DiagonalMatrix&&) noexcept -> DiagonalMatrix& = default;
+  virtual ~DiagonalMatrix()                                    = default;
 
   /// \brief Construct a new Diagonal Matrix object
   /// \param[in] other
@@ -156,14 +157,14 @@ inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_li
 template <typename FloatType, sint32 Size>
 inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) -> FloatType&
 {
-  assert(((0<=idx) && (idx<Size)) && "Index out of bounds");
+  assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
   return this->operator()(idx, idx);
 }
 
 template <typename FloatType, sint32 Size>
 inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) const -> FloatType
 {
-  assert(((0<=idx) && (idx<Size)) && "Index out of bounds");
+  assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
   return this->operator()(idx, idx);
 }
 
@@ -189,7 +190,7 @@ template <typename FloatType, sint32 Size>
 auto DiagonalMatrix<FloatType, Size>::isPositiveDefinite() const -> bool
 {
   auto isValid = true;
-  for(auto idx=0; idx<Size; ++idx)
+  for (auto idx = 0; idx < Size; ++idx)
   {
     isValid = isValid && (static_cast<FloatType>(0.0) < this->operator[](idx));
   }
