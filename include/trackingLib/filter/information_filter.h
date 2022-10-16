@@ -57,16 +57,18 @@ struct InformationFilter
     math::Vector<FloatType, DimX> Gi;
     for (sint32 i = 0; i < DimQ; ++i)
     {
-      FloatType ci{1/Q[i]};
+      const auto fullY = Y();
       for (sint32 j = 0; j < DimX; ++j)
       {
         Gi[j] = G(j, i);
       }
-      x                 = Y() * Gi;
+      x = fullY * Gi;
+      
+      FloatType ci{1/Q[i]};
       const auto scalar = Gi.transpose() * x;
-      ci += scalar(0, 0);
+      ci = -1/(ci + scalar(0, 0));
 
-      Y.rank1Update(-1/ci, x);
+      Y.rank1Update(ci, x);
     }
     // propagate factorization by inverse(A)
     Y.apaT(A.inverse().transpose());

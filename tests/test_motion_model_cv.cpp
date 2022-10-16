@@ -86,12 +86,12 @@ struct TestPredictCV
   }
 };
 
-TEST(MotionModelCV, predict_kf_fullCov)
+TEST(MotionModelCV, predict_fullCov_kalmanFilter)
 {
   TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::KalmanFilter, float64>::run();
 }
 
-TEST(MotionModelCV, predict_kf_factoredCov)
+TEST(MotionModelCV, predict_factoredCov_kalmanFilter)
 {
   TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::KalmanFilter, float64>::run();
 }
