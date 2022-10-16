@@ -126,9 +126,6 @@ TEST(MotionModelCV, convertCA_fullCov)
   // call UUT
   mm_cv.convertFrom(mm_ca);
   
-  mm_ca._cov.print();
-  mm_cv._cov.print();
-
   // verify
   EXPECT_FLOAT_EQ(mm_ca._vec[MMCA::X],  mm_cv._vec[MMCV::X]);
   EXPECT_FLOAT_EQ(mm_ca._vec[MMCA::VX], mm_cv._vec[MMCV::VX]);

@@ -99,7 +99,7 @@ inline void Rank1Update<FloatType, Size>::run(TriangularMatrix<FloatType, Size, 
       x[j] = p[j];
       for (auto r = j + 1; r < Size; ++r)
       {
-        l(r, j) += beta * x[r];
+        l(r, j) -= beta * x[r];
         x[r] += p[j] * l_(r, j);
       }
       c_ = c;
