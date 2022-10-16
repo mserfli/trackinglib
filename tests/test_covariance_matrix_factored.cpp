@@ -256,7 +256,7 @@ TEST(CovarianceMatrixFactored, setVariance)
   }
 }
 
-TEST(CovarianceMatrixFactored, rank1Update)
+TEST(CovarianceMatrixFactored, rank1Update_upper)
 {
     // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
@@ -276,6 +276,37 @@ TEST(CovarianceMatrixFactored, rank1Update)
   cov.rank1Update(0.5, x);
 
   // verify
+  for(sint32 i=0; i<3; ++i)
+  {
+    EXPECT_FLOAT_EQ(expCov._d[i], cov._d[i]);
+    for(sint32 j=i; j<3; ++j)
+    {
+      EXPECT_FLOAT_EQ(expCov._u(i,j), cov._u(i, j));
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, rank1Update_upper_inverse)
+{
+    // clang-format off
+  tracking::math::CovarianceMatrixFactored<float32, 3> cov(
+    {{1,2,3}, 
+     {0,1,4}, 
+     {0,0,1}}, {1, 2, 4}, true);
+
+  tracking::math::Vector<float32, 3> x({3,2,1});
+
+  const tracking::math::CovarianceMatrixFactored<float32, 3> expCov(
+    {{1.000000000000000, 0.909090909090909, 0.818181818181818}, 
+     {                0, 1.000000000000000, 3.157894736842105}, 
+     {                0,                 0, 1.000000000000000}}, {5.5, 3.454545454545455, 7.368421052631579}, true);
+  // clang-format on
+  
+  // call UUT
+  cov.rank1Update(0.5, x);
+
+  // verify
+  EXPECT_FLOAT_EQ(expCov._isInverse, cov._isInverse);
   for(sint32 i=0; i<3; ++i)
   {
     EXPECT_FLOAT_EQ(expCov._d[i], cov._d[i]);

@@ -3,7 +3,7 @@
 
 #include "base/first_include.h"
 #include "base/atomic_types.h"
-#include "math/linalg/agee_turner_rank1_update.hpp"
+#include "math/linalg/rank1_update.hpp"
 #include "math/linalg/contracts/covariance_matrix_intf.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
@@ -224,8 +224,17 @@ inline void CovarianceMatrixFactored<FloatType, Size>::thornton(const SquareMatr
 template <typename FloatType, sint32 Size>
 inline void CovarianceMatrixFactored<FloatType, Size>::rank1Update(const FloatType c, const Vector<FloatType, Size>& x)
 {
-  // TODO(matthias): needs adaption for inverse covariance
-  math::AgeeTurnerRank1Update<FloatType, Size>::run(_u, _d, c, x);
+  if (_isInverse)
+  {
+    // TODO(matthias): find a solution without transposing and copying the matrix
+    TriangularMatrix<FloatType, Size, true> l = _u.transpose();
+    math::Rank1Update<FloatType, Size>::run(l, _d, c, x);
+    _u = l.transpose();
+  }
+  else
+  {
+    math::Rank1Update<FloatType, Size>::run(_u, _d, c, x);
+  }
 
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");

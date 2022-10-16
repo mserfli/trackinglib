@@ -51,6 +51,20 @@ public:
   /// \param[in] list  An initializer list describing a full square matrix
   auto operator=(const std::initializer_list<std::initializer_list<FloatType>>& list) -> DiagonalMatrix&;
 
+  template <sint32 Cols>
+  auto operator*(const Matrix<FloatType, Size, Cols>& mat) -> Matrix<FloatType, Size, Cols>
+  {
+    auto temp(mat);
+    for (auto row = 0; row < Size; ++row)
+    {
+      for (auto col = 0; col < Cols; ++col)
+      {
+        temp(row, col) *= this->operator[](col);
+      }
+    }
+    return temp;
+  }
+
   /// \brief Element access to a scalar diagonal value
   /// \param[in] idx  Row/Col index of the element
   /// \return FloatType&  Reference to the scalar diagonal value
