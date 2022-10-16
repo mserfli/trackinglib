@@ -12,10 +12,15 @@ namespace math
 {
 
 template <typename FloatType, sint32 Size>
-class AgeeTurnerRank1Update
+class Rank1Update
 {
 public:
   static void run(TriangularMatrix<FloatType, Size, false>& u,
+                  DiagonalMatrix<FloatType, Size>&          d,
+                  FloatType                                 c,  //we need a copy internally
+                  Vector<FloatType, Size>                   x); //we need a copy internally
+  
+  static void run(TriangularMatrix<FloatType, Size, true>&  l,
                   DiagonalMatrix<FloatType, Size>&          d,
                   FloatType                                 c,  //we need a copy internally
                   Vector<FloatType, Size>                   x); //we need a copy internally

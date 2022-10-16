@@ -17,6 +17,7 @@ target_sources(${TEST_BINARY} PRIVATE
     test_diagonal_matrix.cpp
     test_covariance_matrix_factored.cpp
     test_covariance_matrix_full.cpp
+    test_rank1_update.cpp
     test_state_mem.cpp
     test_motion_model_cv.cpp
     test_motion_model_ca.cpp
