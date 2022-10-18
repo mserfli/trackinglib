@@ -22,7 +22,7 @@ template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
 class MotionModelCV;
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-class MotionModelCA final
+class MotionModelCA
     : public ExtendedMotionModel<MotionModelCA<CovarianceMatrixType, FloatType>, CovarianceMatrixType, FloatType, 6>
     , public generic::Predict<MotionModelCA<CovarianceMatrixType, FloatType>, FloatType, CovarianceMatrixType>
 {
@@ -68,7 +68,7 @@ public:
   MotionModelCA(MotionModelCA&&) noexcept = default;
   auto operator=(const MotionModelCA&) -> MotionModelCA& = default;
   auto operator=(MotionModelCA&&) noexcept -> MotionModelCA& = default;
-  virtual ~MotionModelCA() final                             = default;
+  virtual ~MotionModelCA()                                   = default;
 
   /// \brief Construct a new CA given the vector and the covariance matrix
   /// \param[in] vec
@@ -99,9 +99,7 @@ public:
 
   void predict(const FloatType                             dt,
                const filter::InformationFilter<FloatType>& filter,
-               const env::EgoMotion<FloatType>&            egoMotion) final
-  {
-  }
+               const env::EgoMotion<FloatType>&            egoMotion) final;
 
   /// \brief Creates a CA model based on a CV model
   /// \param[in] other  The CV model
@@ -111,7 +109,7 @@ public:
   /// \param[out] Ge        The propagated errors of the ego motion to the state space
   /// \param[out] Go        The transformation of the state caused by the ego motion
   /// \param[in]  egoMotion The known egoMotion from last state to predicted state
-  void compensateEgoMotion(EgoMotionMappingMatrix& Ge, StateMatrix& Go, const EgoMotion& egoMotion);
+  TEST_VIRTUAL void compensateEgoMotion(EgoMotionMappingMatrix& Ge, StateMatrix& Go, const EgoMotion& egoMotion);
 
   /// \brief Apply the state transition from k to k+1 defined by the process model
   /// \param[in] dt         The delta time from last state to predicted state
