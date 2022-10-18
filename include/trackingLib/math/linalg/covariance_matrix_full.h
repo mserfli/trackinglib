@@ -164,7 +164,8 @@ inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> Covariance
   // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
   auto u = L.solve(CovarianceMatrixFull::Identity());
   // L'*Ainv = u     -> solve for Ainv using backward substitution
-  inv = CovarianceMatrixFull(L.transpose().solve(u), !_isInverse);
+  auto s=L.transpose().solve(u);
+  inv = CovarianceMatrixFull(static_cast<FloatType>(0.5)*(s+s.transpose()), !_isInverse);
 
   return inv;
 }

@@ -1,42 +1,12 @@
-#include "filter/kalman_filter.h"
 #include "gmock/gmock.h"
-#include "math/linalg/covariance_matrix_full.h"
-#include "trackingLib/env/ego_motion.h"
+
+#include "mocks/motion_model_no_ego_motion.h"
 #include "trackingLib/motion/motion_model_cv.hpp"
-#include <gmock/gmock.h>
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
 // instatiate all templates for full coverage report
 template class tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
 template class tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
-
-template <typename MM>
-class MotionModelNoEgoMotionMock: public MM
-{
-public:
-  using MM::MM;
-  MOCK_METHOD(void,
-              compensateEgoMotion,
-              (typename MM::EgoMotionMappingMatrix&,
-               typename MM::StateMatrix&,
-               const tracking::env::EgoMotion<typename MM::StateMatrix::value_type>&),
-              (override));
-  void mock_compensateEgoMotion(typename MM::EgoMotionMappingMatrix&,
-                                typename MM::StateMatrix& Go,
-                                const tracking::env::EgoMotion<typename MM::StateMatrix::value_type>&)
-  {
-    Go.setIdentity();
-  }
-  void delegate()
-  {
-    ON_CALL(*this, compensateEgoMotion)
-        .WillByDefault([this](typename MM::EgoMotionMappingMatrix&                                  Ge,
-                              typename MM::StateMatrix&                                             Go,
-                              const tracking::env::EgoMotion<typename MM::StateMatrix::value_type>& egoMotion) {
-          mock_compensateEgoMotion(Ge, Go, egoMotion);
-        });
-  }
-};
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
           template <typename FloatType>
@@ -51,9 +21,11 @@ struct TestPredictCV
     // no change required
   }
 
-  static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const tracking::filter::InformationFilter<FloatType>&)
+  static void init(typename MM::StateCov& cov,
+                   typename MM::StateCov& expCov,
+                   const tracking::filter::InformationFilter<FloatType>&)
   {
-    cov = cov.inverse();
+    cov    = cov.inverse();
     expCov = expCov.inverse();
   }
 
@@ -61,6 +33,7 @@ struct TestPredictCV
   {
     tracking::env::EgoMotion<FloatType> egoMotion{};
     FilterType<FloatType>               filter{};
+
     typename MM::StateVec vec{{{10}, {2}, {0}, {0}}};
     typename MM::StateCov cov{{{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}}};
     typename MM::StateVec expVec{{{12}, {2}, {0}, {0}}};
@@ -68,7 +41,7 @@ struct TestPredictCV
     init(cov, expCov, filter);
 
     // instantiate MM with mocked EgoMotion compensation
-    testing::NiceMock<MotionModelNoEgoMotionMock<MM>> mm{vec, cov};
+    testing::NiceMock<test::MotionModelNoEgoMotionMock<MM>> mm{vec, cov};
     mm.delegate();
     EXPECT_CALL(mm, compensateEgoMotion);
 
