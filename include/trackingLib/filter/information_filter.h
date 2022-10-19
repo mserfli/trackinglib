@@ -51,8 +51,13 @@ struct InformationFilter
     // Christopher D’Souza and Renato Zanetti
     // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
 
+    // TODO(matthias): optimize those precalculations
+
+    auto invA = A.inverse();
+    auto G_=invA*G;
+
     // apply DimQ times the AgeeTurner Rank-1 update P = P - c*x*x'
-    // with ci=inv(Gi'*Y*Gi+inv(Q(i,i))) is (1x1) and x=Y*Gi is (nx1)
+    // with Gi=inv(A)*G(:,i) and ci=inv(Gi'*Y*Gi+inv(Q(i,i))) is (1x1) and x=Y*Gi is (nx1)
     math::Vector<FloatType, DimX> x;
     math::Vector<FloatType, DimX> Gi;
     for (sint32 i = 0; i < DimQ; ++i)
@@ -60,7 +65,7 @@ struct InformationFilter
       const auto fullY = Y();
       for (sint32 j = 0; j < DimX; ++j)
       {
-        Gi[j] = G(j, i);
+        Gi[j] = G_(j, i);
       }
       x = fullY * Gi;
       
@@ -71,7 +76,7 @@ struct InformationFilter
       Y.rank1Update(ci, x);
     }
     // propagate factorization by inverse(A)
-    Y.apaT(A.inverse().transpose());
+    Y.apaT(invA.transpose());
   }
 };
 
