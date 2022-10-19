@@ -1,6 +1,7 @@
 #ifndef BE754B97_D814_4E55_A9C2_6A546BC5361A
 #define BE754B97_D814_4E55_A9C2_6A546BC5361A
 
+#include "gmock/gmock.h"
 #include "trackingLib/env/ego_motion.h"
 
 namespace test

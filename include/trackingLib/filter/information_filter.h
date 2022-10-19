@@ -5,6 +5,8 @@
 #include "math/linalg/covariance_matrix_factored.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/matrix_column_view.h"
+#include "math/linalg/square_matrix.h"
 #include "math/linalg/square_matrix.hpp"
 #include "math/linalg/vector.h"
 
@@ -51,29 +53,21 @@ struct InformationFilter
     // Christopher D’Souza and Renato Zanetti
     // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
 
-    // TODO(matthias): optimize those precalculations
-
-    auto invA = A.inverse();
-    auto G_=invA*G;
+    const auto invA     = A.inverse();
+    const auto invAMulG = invA * G;
 
     // apply DimQ times the AgeeTurner Rank-1 update P = P - c*x*x'
     // with Gi=inv(A)*G(:,i) and ci=inv(Gi'*Y*Gi+inv(Q(i,i))) is (1x1) and x=Y*Gi is (nx1)
-    math::Vector<FloatType, DimX> x;
+    FloatType                     ci;
+    math::Vector<FloatType, DimX> xi;
     math::Vector<FloatType, DimX> Gi;
     for (sint32 i = 0; i < DimQ; ++i)
     {
-      const auto fullY = Y();
-      for (sint32 j = 0; j < DimX; ++j)
-      {
-        Gi[j] = G_(j, i);
-      }
-      x = fullY * Gi;
-      
-      FloatType ci{1/Q[i]};
-      const auto scalar = Gi.transpose() * x;
-      ci = -1/(ci + scalar(0, 0));
-
-      Y.rank1Update(ci, x);
+      const math::MatrixColumnView<FloatType, DimX, DimQ> Gi{invAMulG, i};
+      const auto fullY{Y()};
+      xi = fullY * Gi;
+      ci = -1 / (1 / Q[i] + Gi * xi);
+      Y.rank1Update(ci, xi);
     }
     // propagate factorization by inverse(A)
     Y.apaT(invA.transpose());
