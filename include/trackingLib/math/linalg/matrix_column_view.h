@@ -2,7 +2,6 @@
 #define ACBE61FE_A7AF_40EC_A62C_B94049A80274
 
 #include "base/first_include.h"
-#include "base/atomic_types.h"
 #include "math/linalg/matrix.h"
 #include "math/linalg/vector.h"
 
@@ -15,7 +14,7 @@ class MatrixColumnView
 {
 public:
   explicit MatrixColumnView(const Matrix<FloatType, Rows, Cols>& matrix, const sint32 col);
-  auto operator[](const sint32 idx) const -> FloatType { return _matrix(idx, _col); }
+  auto operator[](const sint32 idx) const -> FloatType;
   auto operator*(const Vector<FloatType, Rows>& other) const -> FloatType;
 
 private:
@@ -31,13 +30,19 @@ MatrixColumnView<FloatType, Rows, Cols>::MatrixColumnView(const Matrix<FloatType
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
+auto MatrixColumnView<FloatType, Rows, Cols>::operator[](const sint32 idx) const -> FloatType
+{
+  return _matrix(idx, _col);
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
 auto MatrixColumnView<FloatType, Rows, Cols>::operator*(const Vector<FloatType, Rows>& other) const -> FloatType
 {
   // calc dot product
   FloatType result{};
-  for(auto row=0;row<Rows; ++row)
+  for (auto row = 0; row < Rows; ++row)
   {
-    result += _matrix(row,_col) * other[row];
+    result += _matrix(row, _col) * other[row];
   }
   return result;
 }
