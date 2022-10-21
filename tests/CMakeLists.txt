@@ -13,6 +13,8 @@ add_executable(${TEST_BINARY})
 target_sources(${TEST_BINARY} PRIVATE
     test.cpp
     test_point2d.cpp
+    test_matrix_column_view.cpp
+    test_matrix_row_view.cpp
     test_triangular_matrix.cpp
     test_diagonal_matrix.cpp
     test_covariance_matrix_factored.cpp
