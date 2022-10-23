@@ -10,10 +10,13 @@ namespace tracking
 namespace math
 {
 
+template <typename FloatType, sint32 Rows, sint32 Cols>
+class MatrixRowView;
+
 /// \brief A column view on a Matrix object providing arithmetic operations
-/// \tparam FloatType 
-/// \tparam Rows 
-/// \tparam Cols 
+/// \tparam FloatType
+/// \tparam Rows
+/// \tparam Cols
 template <typename FloatType, sint32 Rows, sint32 Cols>
 class MatrixColumnView final
 {
@@ -22,11 +25,11 @@ public:
   /// \param[in] matrix    the viewed matrix
   /// \param[in] col       the selected column of matrix
   /// \param[in] rowBegin  optional begin row, default=0
-  /// \param[in] rowCount  optional number of rows, default=Rows
+  /// \param[in] rowEnd    optional end row, default=Rows-1
   explicit MatrixColumnView(const Matrix<FloatType, Rows, Cols>& matrix,
                             const sint32                         col,
                             const sint32                         rowBegin = 0,
-                            const sint32                         rowCount = Rows);
+                            const sint32                         rowEnd = Rows-1);
 
   /// \brief Read access to specific index of the column view
   /// \param[in] idx  index in range [0, rowCount]
@@ -35,7 +38,7 @@ public:
 
   /// \brief Dot product between the viewed column and another column vector
   /// \tparam Rows2
-  /// \param[in] other
+  /// \param[in] other  A vector
   /// \return FloatType
   template <sint32 Rows2>
   auto operator*(const Vector<FloatType, Rows2>& other) const -> FloatType;
@@ -51,59 +54,31 @@ private:
   const sint32                         _rowCount;
 };
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
-MatrixColumnView<FloatType, Rows, Cols>::MatrixColumnView(const Matrix<FloatType, Rows, Cols>& matrix,
-                                                          const sint32                         col,
-                                                          const sint32                         rowBegin,
-                                                          const sint32                         rowCount)
-    : _matrix{matrix}
-    , _col{col}
-    , _rowBegin{rowBegin}
-    , _rowCount{rowCount}
-{
-  assert(rowBegin + rowCount <= Rows);
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto MatrixColumnView<FloatType, Rows, Cols>::operator[](const sint32 idx) const -> FloatType
-{
-  assert(idx < _rowCount);
-  const auto row = _rowBegin + idx;
-  return _matrix(row, _col);
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-template <sint32 Rows2>
-inline auto MatrixColumnView<FloatType, Rows, Cols>::operator*(const Vector<FloatType, Rows2>& other) const -> FloatType
-{
-  static_assert(Rows2 <= Rows);
-  assert(Rows2 == _rowCount);
-  // calc dot product
-  FloatType result{};
-  for (auto row = 0; row < Rows2; ++row)
-  {
-    result += this->operator[](row) * other[row];
-  }
-  return result;
-}
-
+/// \brief Matrix multiplication from left: Mat * ColView = Vector
+/// \tparam FloatType 
+/// \tparam Rows 
+/// \tparam Cols 
+/// \tparam Rows2 
+/// \tparam Cols2 
+/// \param[in] mat       A matrix
+/// \param[in] colView   A matrix column view
+/// \return Vector<FloatType, Rows> 
 template <typename FloatType, sint32 Rows, sint32 Cols, sint32 Rows2, sint32 Cols2>
-inline auto operator*(const Matrix<FloatType, Rows, Cols>& mat, const MatrixColumnView<FloatType, Rows2, Cols2>& colView)
-    -> Vector<FloatType, Rows>
-{
-  static_assert(Cols <= Rows2);
-  assert(Cols == colView.getRowCount());
+auto operator*(const Matrix<FloatType, Rows, Cols>& mat, const MatrixColumnView<FloatType, Rows2, Cols2>& colView)
+    -> Vector<FloatType, Rows>;
 
-  Vector<FloatType, Rows> result{};
-  for (auto row = 0; row < Rows; ++row)
-  {
-    for (auto col = 0; col < Cols; ++col)
-    {
-      result[row] += mat(row, col) * colView[col];
-    }
-  }
-  return result;
-}
+/// \brief Dot product between matrix row view and matrix column view: RowView * ColView = Scalar
+/// \tparam FloatType 
+/// \tparam Rows 
+/// \tparam Cols 
+/// \tparam Rows2 
+/// \tparam Cols2 
+/// \param[in] rowView  A matrix row view
+/// \param[in] colView  A matrix column view
+/// \return Vector<FloatType, Rows> 
+template <typename FloatType, sint32 Rows, sint32 Cols, sint32 Rows2, sint32 Cols2>
+auto operator*(const MatrixRowView<FloatType, Rows, Cols>& rowView, const MatrixColumnView<FloatType, Rows2, Cols2>& colView)
+    -> Vector<FloatType, Rows>;
 
 } // namespace math
 } // namespace tracking
