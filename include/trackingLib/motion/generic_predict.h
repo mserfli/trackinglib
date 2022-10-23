@@ -5,9 +5,7 @@
 #include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
-#include "motion/generic_predict_common.hpp"
-#include "motion/state_mem.h"
-
+#include "motion/generic_predict_common.h"
 
 namespace tracking
 {

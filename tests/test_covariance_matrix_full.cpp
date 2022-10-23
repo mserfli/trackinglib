@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/covariance_matrix_full.h"
+#include "trackingLib/math/linalg/covariance_matrix_full.hpp"
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
 // instatiate all templates for full coverage report

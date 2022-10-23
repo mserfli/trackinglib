@@ -5,6 +5,7 @@
 
 #include "motion/state_cov_converter.hpp"
 #include "motion/state_vec_converter.hpp"
+#include "motion/generic_predict.hpp"
 
 namespace tracking
 {

@@ -2,7 +2,6 @@
 #define D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 
 #include "base/first_include.h"
-#include "math/linalg/matrix.h"
 #include "math/linalg/vector.h"
 #include "motion/contracts/state_mem_intf.h"
 

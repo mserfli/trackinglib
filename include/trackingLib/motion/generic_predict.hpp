@@ -3,6 +3,9 @@
 
 #include "motion/generic_predict.h"
 
+#include "filter/information_filter.hpp"
+#include "filter/kalman_filter.hpp"
+#include "motion/generic_predict_common.hpp"
 #include "math/linalg/square_matrix.h"
 
 namespace tracking

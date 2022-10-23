@@ -1,6 +1,6 @@
 #include "gmock/gmock.h"
 
-#include "mocks/motion_model_no_ego_motion.h"
+#include "mocks/motion_model_no_ego_motion.hpp"
 #include "trackingLib/motion/motion_model_cv.hpp"
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)

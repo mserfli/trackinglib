@@ -14,26 +14,21 @@ namespace filter
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
 template <typename FloatType>
-struct KalmanFilter
+class KalmanFilter
 {
+public:
   template <sint32 DimX, sint32 DimQ>
   inline static void predictCovariance(math::CovarianceMatrixFull<FloatType, DimX>& P,
                                        const math::SquareMatrix<FloatType, DimX>&   A,
                                        const math::Matrix<FloatType, DimX, DimQ>&   G,
-                                       const math::DiagonalMatrix<FloatType, DimQ>& Q)
-  {
-    P = math::CovarianceMatrixFull<FloatType, DimX>(A * P * A.transpose() + G * Q * G.transpose());
-  }
+                                       const math::DiagonalMatrix<FloatType, DimQ>& Q);
 
   // prediction for UD factored covariance
   template <sint32 DimX, sint32 DimQ>
   inline static void predictCovariance(math::CovarianceMatrixFactored<FloatType, DimX>& P,
                                        const math::SquareMatrix<FloatType, DimX>&       A,
                                        const math::Matrix<FloatType, DimX, DimQ>&       G,
-                                       const math::DiagonalMatrix<FloatType, DimQ>&     Q)
-  {
-    P.thornton(A, G, Q);
-  }
+                                       const math::DiagonalMatrix<FloatType, DimQ>&     Q);
 };
 
 } // namespace filter

@@ -6,8 +6,9 @@
 #include "math/linalg/covariance_matrix_factored.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/matrix.h"
-#include "motion/generic_predict.hpp"
+#include "motion/generic_predict.h"
 #include "motion/imotion_model.h"
+
 
 namespace tracking
 {
