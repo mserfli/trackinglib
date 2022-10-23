@@ -1,12 +1,12 @@
 #include "gtest/gtest.h"
 #include "trackingLib/math/linalg/diagonal_matrix.hpp"
 
-// NOLINTBEGIN(modernize-use-trailing-return-type)
+
 // instatiate all templates for full coverage report
 template class tracking::math::DiagonalMatrix<float32, 3>;
 template void tracking::math::DiagonalMatrix<float32, 3>::setBlock<2, 2, 0, 0>(const DiagonalMatrix<float32, 2>&);
 
-TEST(DiagonalMatrix, setBlock_topLeft)
+TEST(DiagonalMatrix, setBlock_topLeft) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -28,7 +28,7 @@ TEST(DiagonalMatrix, setBlock_topLeft)
   EXPECT_EQ(expMat._data, diagMat._data);
 }
 
-TEST(DiagonalMatrix, setBlock_bottomRight)
+TEST(DiagonalMatrix, setBlock_bottomRight) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -50,7 +50,7 @@ TEST(DiagonalMatrix, setBlock_bottomRight)
   EXPECT_EQ(expMat._data, diagMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_vec)
+TEST(DiagonalMatrix, op_mul_vec) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -69,7 +69,7 @@ TEST(DiagonalMatrix, op_mul_vec)
   EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_mat)
+TEST(DiagonalMatrix, op_mul_mat) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -92,7 +92,7 @@ TEST(DiagonalMatrix, op_mul_mat)
   EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_lowerTria)
+TEST(DiagonalMatrix, op_mul_lowerTria) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -115,7 +115,7 @@ TEST(DiagonalMatrix, op_mul_lowerTria)
   EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_upperTria)
+TEST(DiagonalMatrix, op_mul_upperTria) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -138,7 +138,7 @@ TEST(DiagonalMatrix, op_mul_upperTria)
   EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_diag)
+TEST(DiagonalMatrix, op_mul_diag) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -161,7 +161,7 @@ TEST(DiagonalMatrix, op_mul_diag)
   EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_diag_inplace)
+TEST(DiagonalMatrix, op_mul_diag_inplace) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -184,7 +184,7 @@ TEST(DiagonalMatrix, op_mul_diag_inplace)
   EXPECT_EQ(expMat._data, diagMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_scal)
+TEST(DiagonalMatrix, op_mul_scal) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -204,7 +204,7 @@ TEST(DiagonalMatrix, op_mul_scal)
   EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_scal_inplace)
+TEST(DiagonalMatrix, op_mul_scal_inplace) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -224,7 +224,7 @@ TEST(DiagonalMatrix, op_mul_scal_inplace)
   EXPECT_EQ(expMat._data, diagMat._data);
 }
 
-TEST(DiagonalMatrix, inverse)
+TEST(DiagonalMatrix, inverse) // NOLINT
 {
   // clang-format off
   const tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -243,7 +243,7 @@ TEST(DiagonalMatrix, inverse)
   EXPECT_EQ(expMat._data, invMat._data);
 }
 
-TEST(DiagonalMatrix, inverse_inplace)
+TEST(DiagonalMatrix, inverse_inplace) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -261,4 +261,4 @@ TEST(DiagonalMatrix, inverse_inplace)
 
   EXPECT_EQ(expMat._data, diagMat._data);
 }
-// NOLINTEND(modernize-use-trailing-return-type)
+

@@ -3,7 +3,7 @@
 #include "trackingLib/math/linalg/matrix_column_view.hpp"
 #include "trackingLib/math/linalg/vector.hpp"
 
-TEST(MatrixColumnView, mul_lhs)
+TEST(MatrixColumnView, mul_lhs) // NOLINT
 {
   // testing Matrix * MatrixColumnView
   const tracking::math::Matrix<float32, 3, 3>           lhs{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
@@ -17,7 +17,7 @@ TEST(MatrixColumnView, mul_lhs)
   EXPECT_FLOAT_EQ(res[2], 7 * 3 + 8 * 6 + 9 * 9);
 }
 
-TEST(MatrixColumnView, mul_lhs_ranged)
+TEST(MatrixColumnView, mul_lhs_ranged) // NOLINT
 {
   // testing Matrix * MatrixColumnView
   const tracking::math::Matrix<float32, 3, 3>           mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
@@ -32,7 +32,7 @@ TEST(MatrixColumnView, mul_lhs_ranged)
   EXPECT_FLOAT_EQ(res[2], 5 * 6 + 6 * 9);
 }
 
-TEST(MatrixColumnView, mul_rhs)
+TEST(MatrixColumnView, mul_rhs) // NOLINT
 {
   // testing MatrixColumnView * Vector
   const tracking::math::Matrix<float32, 4, 3>           mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}};
@@ -45,7 +45,7 @@ TEST(MatrixColumnView, mul_rhs)
   EXPECT_FLOAT_EQ(res, 3 * 1 + 6 * 2 + 9 * 3 + 12 * 4);
 }
 
-TEST(MatrixColumnView, mul_rhs_ranged)
+TEST(MatrixColumnView, mul_rhs_ranged) // NOLINT
 {
   // testing MatrixColumnView * Vector
   const tracking::math::Matrix<float32, 4, 3>           mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}};

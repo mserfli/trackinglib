@@ -3,7 +3,7 @@
 #include "mocks/motion_model_no_ego_motion.hpp"
 #include "trackingLib/motion/motion_model_cv.hpp"
 
-// NOLINTBEGIN(modernize-use-trailing-return-type)
+
 // instatiate all templates for full coverage report
 template class tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
 template class tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
@@ -59,27 +59,27 @@ struct TestPredictCV
   }
 };
 
-TEST(MotionModelCV, predict_fullCov_kalmanFilter)
+TEST(MotionModelCV, predict_fullCov_kalmanFilter) // NOLINT
 {
   TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::KalmanFilter, float64>::run();
 }
 
-TEST(MotionModelCV, predict_factoredCov_kalmanFilter)
+TEST(MotionModelCV, predict_factoredCov_kalmanFilter) // NOLINT
 {
   TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::KalmanFilter, float64>::run();
 }
 
-TEST(MotionModelCV, predict_fullCov_informationFilter)
+TEST(MotionModelCV, predict_fullCov_informationFilter) // NOLINT
 {
   TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::InformationFilter, float64>::run();
 }
 
-TEST(MotionModelCV, predict_factoredCov_informationFilter)
+TEST(MotionModelCV, predict_factoredCov_informationFilter) // NOLINT
 {
   TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::InformationFilter, float64>::run();
 }
 
-TEST(MotionModelCV, convertCA_fullCov)
+TEST(MotionModelCV, convertCA_fullCov) // NOLINT
 {
   // clang-format off
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
@@ -125,7 +125,7 @@ TEST(MotionModelCV, convertCA_fullCov)
   // clang-format on}
 }
 
-TEST(MotionModelCV, convertCA_facCov)
+TEST(MotionModelCV, convertCA_facCov) // NOLINT
 {
   // clang-format off
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
@@ -172,4 +172,4 @@ TEST(MotionModelCV, convertCA_facCov)
 }
 
 
-// NOLINTEND(modernize-use-trailing-return-type)
+

@@ -1,11 +1,11 @@
 #include "gtest/gtest.h"
 #include "trackingLib/math/linalg/covariance_matrix_full.hpp"
 
-// NOLINTBEGIN(modernize-use-trailing-return-type)
+
 // instatiate all templates for full coverage report
 template class tracking::math::CovarianceMatrixFull<float32, 3>;
 
-TEST(CovarianceMatrixFull, apaT)
+TEST(CovarianceMatrixFull, apaT) // NOLINT
 {
   // clang-format off
   tracking::math::CovarianceMatrixFull<float64, 4> cov(
@@ -39,7 +39,7 @@ TEST(CovarianceMatrixFull, apaT)
   }
 }
 
-TEST(CovarianceMatrixFull, apaT_const)
+TEST(CovarianceMatrixFull, apaT_const) // NOLINT
 {
   // clang-format off
   const tracking::math::CovarianceMatrixFull<float64, 4> cov(
@@ -73,7 +73,7 @@ TEST(CovarianceMatrixFull, apaT_const)
   }
 }
 
-TEST(CovarianceMatrixFull, setVariance)
+TEST(CovarianceMatrixFull, setVariance) // NOLINT
 {
   // clang-format off
   tracking::math::CovarianceMatrixFull<float32, 3> cov(
@@ -100,4 +100,4 @@ TEST(CovarianceMatrixFull, setVariance)
   }
 }
 
-// NOLINTEND(modernize-use-trailing-return-type)
+

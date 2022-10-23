@@ -2,7 +2,7 @@
 
 #include "trackingLib/math/linalg/square_matrix.hpp"
 
-TEST(SquareMatrix, decomposeLDLT)
+TEST(SquareMatrix, decomposeLDLT) // NOLINT
 {
   // clang-format off
   tracking::math::SquareMatrix<float32, 6> cov({

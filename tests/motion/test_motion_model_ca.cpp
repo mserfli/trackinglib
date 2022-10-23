@@ -3,7 +3,7 @@
 #include "mocks/motion_model_no_ego_motion.hpp"
 #include "trackingLib/motion/motion_model_ca.hpp"
 
-// NOLINTBEGIN(modernize-use-trailing-return-type)
+
 // instatiate all templates for full coverage report
 template class tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFull, float32>;
 template class tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFactored, float32>;
@@ -75,27 +75,27 @@ struct TestPredictCA
   }
 };
 
-TEST(MotionModelCA, predict_fullCov_kalmanFilter)
+TEST(MotionModelCA, predict_fullCov_kalmanFilter) // NOLINT
 {
   TestPredictCA<tracking::math::CovarianceMatrixFull, tracking::filter::KalmanFilter, float64>::run();
 }
 
-TEST(MotionModelCA, predict_factoredCov_kalmanFilter)
+TEST(MotionModelCA, predict_factoredCov_kalmanFilter) // NOLINT
 {
   TestPredictCA<tracking::math::CovarianceMatrixFactored, tracking::filter::KalmanFilter, float64>::run();
 }
 
-TEST(MotionModelCA, predict_fullCov_informationFilter)
+TEST(MotionModelCA, predict_fullCov_informationFilter) // NOLINT
 {
   TestPredictCA<tracking::math::CovarianceMatrixFull, tracking::filter::InformationFilter, float64>::run();
 }
 
-TEST(MotionModelCA, predict_factoredCov_informationFilter)
+TEST(MotionModelCA, predict_factoredCov_informationFilter) // NOLINT
 {
   TestPredictCA<tracking::math::CovarianceMatrixFactored, tracking::filter::InformationFilter, float64>::run();
 }
 
-TEST(MotionModelCA, convertCV_fullCov)
+TEST(MotionModelCA, convertCV_fullCov) // NOLINT
 {
   // clang-format off
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFull, float32>;
@@ -159,7 +159,7 @@ TEST(MotionModelCA, convertCV_fullCov)
   // clang-format on}
 }
 
-TEST(MotionModelCA, convertCV_facCov)
+TEST(MotionModelCA, convertCV_facCov) // NOLINT
 {
   // clang-format off
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFactored, float32>;
@@ -223,4 +223,4 @@ TEST(MotionModelCA, convertCV_facCov)
   // clang-format on
 }
 
-// NOLINTEND(modernize-use-trailing-return-type)
+

@@ -1,11 +1,11 @@
 #include "gtest/gtest.h"
 #include "trackingLib/math/linalg/covariance_matrix_factored.hpp"
 
-// NOLINTBEGIN(modernize-use-trailing-return-type)
+
 // instatiate all templates for full coverage report
 template class tracking::math::CovarianceMatrixFactored<float32, 3>;
 
-TEST(CovarianceMatrixFactored, compose)
+TEST(CovarianceMatrixFactored, compose) // NOLINT
 {
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
@@ -31,7 +31,7 @@ TEST(CovarianceMatrixFactored, compose)
   }
 }
 
-TEST(CovarianceMatrixFactored, composeInverse)
+TEST(CovarianceMatrixFactored, composeInverse) // NOLINT
 {
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
@@ -57,7 +57,7 @@ TEST(CovarianceMatrixFactored, composeInverse)
   }
 }
 
-TEST(CovarianceMatrixFactored, inverse)
+TEST(CovarianceMatrixFactored, inverse) // NOLINT
 {
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
@@ -85,7 +85,7 @@ TEST(CovarianceMatrixFactored, inverse)
   }
 }
 
-TEST(CovarianceMatrixFactored, calcCovarianceElement)
+TEST(CovarianceMatrixFactored, calcCovarianceElement) // NOLINT
 {
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
@@ -103,7 +103,7 @@ TEST(CovarianceMatrixFactored, calcCovarianceElement)
   EXPECT_EQ(res, expCovElem);
 }
 
-TEST(CovarianceMatrixFactored, apaT)
+TEST(CovarianceMatrixFactored, apaT) // NOLINT
 {
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float64, 4> cov(
@@ -144,7 +144,7 @@ TEST(CovarianceMatrixFactored, apaT)
   }
 }
 
-TEST(CovarianceMatrixFactored, apaT_const)
+TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
 {
   // clang-format off
   const tracking::math::CovarianceMatrixFactored<float64, 4> cov(
@@ -185,7 +185,7 @@ TEST(CovarianceMatrixFactored, apaT_const)
   }
 }
 
-TEST(CovarianceMatrixFactored, apaT_isInverse)
+TEST(CovarianceMatrixFactored, apaT_isInverse) // NOLINT
 {
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float64, 4> cov(
@@ -226,7 +226,7 @@ TEST(CovarianceMatrixFactored, apaT_isInverse)
   }
 }
 
-TEST(CovarianceMatrixFactored, setVariance)
+TEST(CovarianceMatrixFactored, setVariance) // NOLINT
 {
   // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
@@ -254,7 +254,7 @@ TEST(CovarianceMatrixFactored, setVariance)
   }
 }
 
-TEST(CovarianceMatrixFactored, rank1Update_upper)
+TEST(CovarianceMatrixFactored, rank1Update_upper) // NOLINT
 {
     // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
@@ -284,7 +284,7 @@ TEST(CovarianceMatrixFactored, rank1Update_upper)
   }
 }
 
-TEST(CovarianceMatrixFactored, rank1Update_upper_inverse)
+TEST(CovarianceMatrixFactored, rank1Update_upper_inverse) // NOLINT
 {
     // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
@@ -315,4 +315,4 @@ TEST(CovarianceMatrixFactored, rank1Update_upper_inverse)
   }
 }
 
-// NOLINTEND(modernize-use-trailing-return-type)
+

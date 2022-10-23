@@ -2,7 +2,7 @@
 #include "trackingLib/math/linalg/square_matrix.hpp"
 #include "trackingLib/math/linalg/triangular_matrix.hpp"
 
-// NOLINTBEGIN(modernize-use-trailing-return-type)
+
 // instatiate all templates for full coverage report
 template class tracking::math::TriangularMatrix<float32, 3, true>;
 template class tracking::math::TriangularMatrix<float32, 3, false>;
@@ -12,7 +12,7 @@ template void tracking::math::TriangularMatrix<float32, 3, false>::setBlock<2, 2
     const tracking::math::TriangularMatrix<float32, 2, false>&);
 
 
-TEST(TriangularMatrix, initFromSquareMatrix_lower)
+TEST(TriangularMatrix, initFromSquareMatrix_lower) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, true> expMat(
@@ -29,7 +29,7 @@ TEST(TriangularMatrix, initFromSquareMatrix_lower)
   EXPECT_EQ(expMat._data, lowerTriaMat._data);
 }
 
-TEST(TriangularMatrix, initFromSquareMatrix_upper)
+TEST(TriangularMatrix, initFromSquareMatrix_upper) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, false> expMat(
@@ -44,7 +44,7 @@ TEST(TriangularMatrix, initFromSquareMatrix_upper)
   EXPECT_EQ(expMat._data, lowerTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_lowerTopLeft)
+TEST(TriangularMatrix, setBlock_lowerTopLeft) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, true> lowerTriaMat(
@@ -66,7 +66,7 @@ TEST(TriangularMatrix, setBlock_lowerTopLeft)
   EXPECT_EQ(expMat._data, lowerTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_lowerBottomLeft)
+TEST(TriangularMatrix, setBlock_lowerBottomLeft) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, true> lowerTriaMat(
@@ -88,7 +88,7 @@ TEST(TriangularMatrix, setBlock_lowerBottomLeft)
   EXPECT_EQ(expMat._data, lowerTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_lowerBottomRight)
+TEST(TriangularMatrix, setBlock_lowerBottomRight) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, true> lowerTriaMat(
@@ -110,7 +110,7 @@ TEST(TriangularMatrix, setBlock_lowerBottomRight)
   EXPECT_EQ(expMat._data, lowerTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_upperTopLeft)
+TEST(TriangularMatrix, setBlock_upperTopLeft) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, false> upperTriaMat(
@@ -132,7 +132,7 @@ TEST(TriangularMatrix, setBlock_upperTopLeft)
   EXPECT_EQ(expMat._data, upperTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_upperTopRight)
+TEST(TriangularMatrix, setBlock_upperTopRight) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, false> upperTriaMat(
@@ -154,7 +154,7 @@ TEST(TriangularMatrix, setBlock_upperTopRight)
   EXPECT_EQ(expMat._data, upperTriaMat._data);
 }
 
-TEST(TriangularMatrix, setBlock_upperBottomRight)
+TEST(TriangularMatrix, setBlock_upperBottomRight) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, false> upperTriaMat(
@@ -176,7 +176,7 @@ TEST(TriangularMatrix, setBlock_upperBottomRight)
   EXPECT_EQ(expMat._data, upperTriaMat._data);
 }
 
-TEST(TriangularMatrix, inverse_lower)
+TEST(TriangularMatrix, inverse_lower) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, true> lowerMat(
@@ -195,7 +195,7 @@ TEST(TriangularMatrix, inverse_lower)
   //  EXPECT_EQ(expMat._data, invMat._data);
 }
 
-TEST(TriangularMatrix, inverse_upper)
+TEST(TriangularMatrix, inverse_upper) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<float32, 3, false> upperMat(
@@ -213,4 +213,4 @@ TEST(TriangularMatrix, inverse_upper)
 
   //  EXPECT_EQ(expMat._data, invMat._data);
 }
-// NOLINTEND(modernize-use-trailing-return-type)
+

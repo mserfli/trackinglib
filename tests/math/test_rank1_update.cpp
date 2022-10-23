@@ -2,7 +2,7 @@
 #include "trackingLib/math/linalg/rank1_update.hpp"
 
 
-TEST(Rank1Update, udu_update)
+TEST(Rank1Update, udu_update) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<double, 4, false> U(
@@ -41,7 +41,7 @@ TEST(Rank1Update, udu_update)
   }
 }
 
-TEST(Rank1Update, ldl_update)
+TEST(Rank1Update, ldl_update) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<double, 4, true> L(
@@ -80,7 +80,7 @@ TEST(Rank1Update, ldl_update)
   }
 }
 
-TEST(Rank1Update, ldl_downdate)
+TEST(Rank1Update, ldl_downdate) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<double, 4, true> L(
@@ -119,7 +119,7 @@ TEST(Rank1Update, ldl_downdate)
   }
 }
 
-TEST(Rank1Update, ldl_downdate_belowEpsilon)
+TEST(Rank1Update, ldl_downdate_belowEpsilon) // NOLINT
 {
   // clang-format off
   tracking::math::TriangularMatrix<double, 4, true> L(
