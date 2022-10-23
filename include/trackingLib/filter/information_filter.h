@@ -61,10 +61,11 @@ struct InformationFilter
     FloatType                     ci;
     math::Vector<FloatType, DimX> xi;
     math::Vector<FloatType, DimX> Gi;
+    using ColView = math::MatrixColumnView<FloatType, DimX, DimQ>;
     for (sint32 i = 0; i < DimQ; ++i)
     {
-      const math::MatrixColumnView<FloatType, DimX, DimQ> Gi{invAMulG, i};
-      const auto                                          fullY{Y()};
+      const ColView Gi{invAMulG, i};
+      const auto    fullY{Y()};
       xi = fullY * Gi;
       ci = -1 / (1 / Q[i] + Gi * xi);
       Y.rank1Update(ci, xi);

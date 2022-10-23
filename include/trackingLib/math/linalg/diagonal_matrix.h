@@ -2,7 +2,7 @@
 #define EDCA948E_6A98_4AF3_8A01_916736E1577B
 
 #include "base/first_include.h"
-#include "math/linalg/square_matrix.hpp"
+#include "math/linalg/square_matrix.h"
 #include <initializer_list>
 
 namespace tracking
@@ -51,19 +51,30 @@ public:
   /// \param[in] list  An initializer list describing a full square matrix
   auto operator=(const std::initializer_list<std::initializer_list<FloatType>>& list) -> DiagonalMatrix&;
 
+  /// \brief Multiplication with generic matrix: D * Matrix
+  /// \tparam Cols
+  /// \param[in] mat
+  /// \return Matrix<FloatType, Size, Cols>
   template <sint32 Cols>
-  auto operator*(const Matrix<FloatType, Size, Cols>& mat) -> Matrix<FloatType, Size, Cols>
-  {
-    auto temp(mat);
-    for (auto row = 0; row < Size; ++row)
-    {
-      for (auto col = 0; col < Cols; ++col)
-      {
-        temp(row, col) *= this->operator[](col);
-      }
-    }
-    return temp;
-  }
+  auto operator*(const Matrix<FloatType, Size, Cols>& mat) -> Matrix<FloatType, Size, Cols>;
+
+  /// \brief Multiplication with triangular matrix: D * Matrix
+  /// \tparam isLower 
+  /// \param[in] mat  A triangular matrix
+  /// \return TriangularMatrix<FloatType, Size, isLower> 
+  template <bool isLower>
+  auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) -> TriangularMatrix<FloatType, Size, isLower>;
+
+  /// \brief Multiplication with diagonal matrix: D * Matrix
+  /// \param[in] mat  A diagonal matrix
+  /// \return DiagonalMatrix<FloatType, Size> 
+  auto operator*(const DiagonalMatrix& mat) -> DiagonalMatrix;
+
+  /// \brief Multiplication with scalar: D * scalar
+  /// \param[in] scalar  A scalar value
+  /// \return DiagonalMatrix<FloatType, Size> 
+  auto operator*(const FloatType scalar) -> DiagonalMatrix;
+
 
   /// \brief Element access to a scalar diagonal value
   /// \param[in] idx  Row/Col index of the element
@@ -96,120 +107,22 @@ TEST_REMOVE_PRIVATE:
   using SquareMatrix<FloatType, Size>::setBlock;
 };
 
-template <typename FloatType, sint32 Size>
-DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const SquareMatrix<FloatType, Size>& other)
-    : SquareMatrix<FloatType, Size>{}
+template <typename FloatType, sint32 Size, sint32 Rows>
+auto operator*(const Matrix<FloatType, Rows, Size>& mat, const DiagonalMatrix<FloatType, Size>& diag)
+    -> Matrix<FloatType, Rows, Size>
 {
-  // copy diagonal elements from other
-  for (sint32 idx = 0; idx < Size; ++idx)
+  // each column is multiplied by the corresponding diagonal column element
+  auto result(mat);
+  for (auto col = 0; col < Size; ++col)
   {
-    SquareMatrix<FloatType, Size>::operator()(idx, idx) = other(idx, idx);
-  }
-}
-
-template <typename FloatType, sint32 Size>
-DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const std::initializer_list<FloatType>& list)
-    : SquareMatrix<FloatType, Size>{}
-{
-  assert((list.size() == Size) && "Mismatching size of intializer list");
-
-  // fill diagonal elements
-  sint32 idx = 0;
-  for (auto val : list)
-  {
-    this->operator[](idx++) = val;
-  }
-}
-
-template <typename FloatType, sint32 Size>
-DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const std::initializer_list<std::initializer_list<FloatType>>& list)
-    : SquareMatrix<FloatType, Size>{list}
-{
-  // zero anti-diagonal elements
-  for (sint32 row = 0; row < Size; ++row)
-  {
-    for (sint32 col = row + 1; col < Size; ++col)
+    for (auto row = 0; row < Rows; ++row)
     {
-      this->operator()(row, col) = static_cast<FloatType>(0.0);
-      this->operator()(col, row) = static_cast<FloatType>(0.0);
+      result(row, col) *= diag[col];
     }
   }
+  return result;
 }
 
-template <typename FloatType, sint32 Size>
-template <sint32 SrcSize, sint32 SrcCount, sint32 SrcIdxBeg, sint32 DstIdxBeg>
-void DiagonalMatrix<FloatType, Size>::setBlock(const DiagonalMatrix<FloatType, SrcSize>& block)
-{
-  static_assert(SrcCount > 1, "use scalar access operator for block copy size == 1");
-  static_assert(SrcIdxBeg + SrcCount <= SrcSize, "copy to many rows from src");
-
-  static_assert(DstIdxBeg + SrcCount <= Size, "copy to many rows to dst");
-
-  sint32 dstIdx = DstIdxBeg;
-  for (auto srcIdx = SrcIdxBeg; srcIdx < SrcIdxBeg + SrcCount; ++srcIdx)
-  {
-    this->operator[](dstIdx) = block[srcIdx];
-    ++dstIdx;
-  }
-}
-
-template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_list<FloatType>& list) -> DiagonalMatrix&
-{
-  *this = DiagonalMatrix(list);
-  return *this;
-}
-
-template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_list<std::initializer_list<FloatType>>& list)
-    -> DiagonalMatrix&
-{
-  *this = DiagonalMatrix(list);
-  return *this;
-}
-
-template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) -> FloatType&
-{
-  assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
-  return this->operator()(idx, idx);
-}
-
-template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) const -> FloatType
-{
-  assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
-  return this->operator()(idx, idx);
-}
-
-template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::inverse() const -> DiagonalMatrix
-{
-  DiagonalMatrix tmp{*this};
-  tmp.inverse();
-  return tmp;
-}
-
-template <typename FloatType, sint32 Size>
-inline void DiagonalMatrix<FloatType, Size>::inverse()
-{
-  for (sint32 idx = 0; idx < Size; ++idx)
-  {
-    assert((static_cast<FloatType>(0.0) < this->operator[](idx)) && "inverse not possible");
-    this->operator[](idx) = static_cast<FloatType>(1.0) / this->operator[](idx);
-  }
-}
-
-template <typename FloatType, sint32 Size>
-auto DiagonalMatrix<FloatType, Size>::isPositiveDefinite() const -> bool
-{
-  auto isValid = true;
-  for (auto idx = 0; idx < Size; ++idx)
-  {
-    isValid = isValid && (static_cast<FloatType>(0.0) < this->operator[](idx));
-  }
-  return isValid;
-}
 
 } // namespace math
 } // namespace tracking

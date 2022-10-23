@@ -1,13 +1,13 @@
 #include "gtest/gtest.h"
 
-#include "trackingLib/math/linalg/matrix_column_view.h"
-#include "trackingLib/math/linalg/vector.h"
+#include "trackingLib/math/linalg/matrix_column_view.hpp"
+#include "trackingLib/math/linalg/vector.hpp"
 
 TEST(MatrixColumnView, mul_lhs)
 {
   // testing Matrix * MatrixColumnView
   const tracking::math::Matrix<float32, 3, 3>           lhs{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
-  const tracking::math::MatrixColumnView<float32, 3, 3> colView(lhs, 2, 0, 3);
+  const tracking::math::MatrixColumnView<float32, 3, 3> colView(lhs, 2, 0, 2);
 
   // call UUT
   auto res = lhs * colView;
@@ -37,7 +37,7 @@ TEST(MatrixColumnView, mul_rhs)
   // testing MatrixColumnView * Vector
   const tracking::math::Matrix<float32, 4, 3>           mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}};
   const tracking::math::Vector<float32, 4>              rhs{{1, 2, 3, 4}};
-  const tracking::math::MatrixColumnView<float32, 4, 3> colView(mat, 2, 0, 4);
+  const tracking::math::MatrixColumnView<float32, 4, 3> colView(mat, 2, 0, 3);
 
   // call UUT
   auto res = colView * rhs;

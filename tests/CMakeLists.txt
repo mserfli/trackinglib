@@ -15,6 +15,7 @@ target_sources(${TEST_BINARY} PRIVATE
     test_point2d.cpp
     test_matrix_column_view.cpp
     test_matrix_row_view.cpp
+    test_square_matrix.cpp
     test_triangular_matrix.cpp
     test_diagonal_matrix.cpp
     test_covariance_matrix_factored.cpp

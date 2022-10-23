@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/rank1_update.h"
+#include "trackingLib/math/linalg/rank1_update.hpp"
 
 
 TEST(Rank1Update, udu_update)

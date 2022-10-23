@@ -65,68 +65,6 @@ TEST_REMOVE_PRIVATE:
   using Matrix<FloatType, Size, 1>::operator();
 };
 
-template <typename FloatType, sint32 Size>
-Vector<FloatType, Size>::Vector(const Matrix<FloatType, Size, 1>& other)
-    : Matrix<FloatType, Size, 1>{other}
-{
-}
-
-template <typename FloatType, sint32 Size>
-template <sint32 Row>
-static inline auto Vector<FloatType, Size>::unitVector() -> Vector<FloatType, Size>
-{
-  auto tmp(Vector<FloatType, Size>::zero());
-  tmp[Row] = static_cast<FloatType>(1.0);
-  return tmp;
-}
-
-template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType, Size>::operator[](sint32 idx) const -> FloatType
-{
-  return this->operator()(idx, 0);
-}
-
-template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType, Size>::operator[](sint32 idx) -> FloatType&
-{
-  return this->operator()(idx, 0);
-}
-
-template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType, Size>::operator*(const Vector<FloatType, Size>& other) const -> FloatType
-{
-  const Matrix<FloatType, 1, 1> temp{this->transpose() * other};
-  return temp(0, 0);
-}
-
-template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType, Size>::normSq() const -> FloatType
-{
-  return this->operator*(*this);
-}
-
-template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType, Size>::norm() const -> FloatType
-{
-  return std::sqrt(normSq());
-}
-
-template <typename FloatType, sint32 Size>
-inline void Vector<FloatType, Size>::normalize()
-{
-  auto  length = norm();
-  this->operator/=(length);
-}
-
-template <typename FloatType, sint32 Size>
-inline auto Vector<FloatType, Size>::normalize() const -> Vector<FloatType, Size>
-{
-  Vector<FloatType, Size> tmp(*this);
-  tmp.normalize();
-  return tmp;
-}
-
-
 } // namespace math
 } // namespace tracking
 
