@@ -1,10 +1,86 @@
 #include "gtest/gtest.h"
 #include "trackingLib/math/linalg/diagonal_matrix.hpp"
+#include <limits>
 
+TEST(DiagonalMatrix, ctor_default) // NOLINT
+{
+  // clang-format off
+  const tracking::math::DiagonalMatrix<float32, 3> expMat(
+    {{0, 0, 0}, 
+     {0, 0, 0}, 
+     {0, 0, 0}});
+  // clang-format on
 
-// instatiate all templates for full coverage report
-template class tracking::math::DiagonalMatrix<float32, 3>;
-template void tracking::math::DiagonalMatrix<float32, 3>::setBlock<2, 2, 0, 0>(const DiagonalMatrix<float32, 2>&);
+  // call UUT
+  const tracking::math::DiagonalMatrix<float32, 3> diagMat{}; 
+
+  EXPECT_EQ(expMat._data, diagMat._data);
+}
+
+TEST(DiagonalMatrix, ctor_square) // NOLINT
+{
+  // clang-format off
+  const tracking::math::SquareMatrix<float32, 3> mat(
+    {{1, 2, 3}, 
+     {4, 5, 6}, 
+     {7, 8, 9}});
+  const tracking::math::DiagonalMatrix<float32, 3> expMat(
+    {{1, 0, 0}, 
+     {0, 5, 0}, 
+     {0, 0, 9}});
+  // clang-format on
+
+  // call UUT
+  const tracking::math::DiagonalMatrix<float32, 3> diagMat{mat}; 
+
+  EXPECT_EQ(expMat._data, diagMat._data);
+}
+
+TEST(DiagonalMatrix, ctor_list) // NOLINT
+{
+  // clang-format off
+  const tracking::math::DiagonalMatrix<float32, 3> expMat(
+    {{1, 0, 0}, 
+     {0, 5, 0}, 
+     {0, 0, 9}});
+  // clang-format on
+
+  // call UUT
+  const tracking::math::DiagonalMatrix<float32, 3> diagMat{1, 5, 9}; 
+
+  EXPECT_EQ(expMat._data, diagMat._data);
+}
+
+TEST(DiagonalMatrix, Identity) // NOLINT
+{
+  // clang-format off
+  const tracking::math::DiagonalMatrix<float32, 3> expMat(
+    {{1, 0, 0}, 
+     {0, 1, 0}, 
+     {0, 0, 1}});
+  // clang-format on
+
+  // call UUT
+  auto diagMat{tracking::math::DiagonalMatrix<float32, 3>::Identity()};
+
+  EXPECT_EQ(expMat._data, diagMat._data);
+}
+
+TEST(DiagonalMatrix, setIdentity) // NOLINT
+{
+  // clang-format off
+  tracking::math::DiagonalMatrix<float32, 3> diagMat{}; 
+  const tracking::math::DiagonalMatrix<float32, 3> expMat(
+    {{1, 0, 0}, 
+     {0, 1, 0}, 
+     {0, 0, 1}});
+  // clang-format on
+
+  // call UUT
+  diagMat.setIdentity();
+
+  EXPECT_EQ(expMat._data, diagMat._data);
+}
 
 TEST(DiagonalMatrix, setBlock_topLeft) // NOLINT
 {
@@ -50,7 +126,45 @@ TEST(DiagonalMatrix, setBlock_bottomRight) // NOLINT
   EXPECT_EQ(expMat._data, diagMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_vec) // NOLINT
+TEST(DiagonalMatrix, inverse) // NOLINT
+{
+  // clang-format off
+  const tracking::math::DiagonalMatrix<float32, 3> diagMat(
+    {{1, 0, 0}, 
+     {0, 2, 0}, 
+     {0, 0, 4}});
+  const tracking::math::DiagonalMatrix<float32, 3> expMat(
+    {{1, 0,   0}, 
+     {0, 0.5, 0}, 
+     {0, 0,   0.25}});
+  // clang-format on
+
+  // call UUT
+  auto invMat = diagMat.inverse();
+
+  EXPECT_EQ(expMat._data, invMat._data);
+}
+
+TEST(DiagonalMatrix, inverse_inplace) // NOLINT
+{
+  // clang-format off
+  tracking::math::DiagonalMatrix<float32, 3> diagMat(
+    {{1, 0, 0}, 
+     {0, 2, 0}, 
+     {0, 0, 4}});
+  const tracking::math::DiagonalMatrix<float32, 3> expMat(
+    {{1, 0,   0}, 
+     {0, 0.5, 0}, 
+     {0, 0,   0.25}});
+  // clang-format on
+
+  // call UUT
+  diagMat.inverse();
+
+  EXPECT_EQ(expMat._data, diagMat._data);
+}
+
+TEST(DiagonalMatrix, op_mul_rhs_vec) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -69,7 +183,7 @@ TEST(DiagonalMatrix, op_mul_vec) // NOLINT
   EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_mat) // NOLINT
+TEST(DiagonalMatrix, op_mul_rhs_mat) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -92,7 +206,30 @@ TEST(DiagonalMatrix, op_mul_mat) // NOLINT
   EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_lowerTria) // NOLINT
+TEST(DiagonalMatrix, op_mul_lhs_mat) // NOLINT
+{
+  // clang-format off
+  tracking::math::DiagonalMatrix<float32, 3> diagMat(
+    {{1, 0, 0}, 
+     {0, 2, 0}, 
+     {0, 0, 3}});
+  const tracking::math::Matrix<float32, 3, 3> mat(
+    {{1, 2, 3}, 
+     {4, 5, 6}, 
+     {7, 8, 9}});
+  const tracking::math::Matrix<float32, 3, 3> expMat(
+    {{1,  4,  9}, 
+     {4, 10, 18}, 
+     {7, 16, 27}});
+  // clang-format on
+
+  // call UUT
+  auto resMat = mat * diagMat;
+
+  EXPECT_EQ(expMat._data, resMat._data);
+}
+
+TEST(DiagonalMatrix, op_mul_rhs_lowerTria) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -115,7 +252,30 @@ TEST(DiagonalMatrix, op_mul_lowerTria) // NOLINT
   EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(DiagonalMatrix, op_mul_upperTria) // NOLINT
+TEST(DiagonalMatrix, op_mul_lhs_lowerTria) // NOLINT
+{
+  // clang-format off
+  tracking::math::DiagonalMatrix<float32, 3> diagMat(
+    {{1, 0, 0}, 
+     {0, 2, 0}, 
+     {0, 0, 3}});
+  const tracking::math::TriangularMatrix<float32, 3, true> mat(
+    {{1,  0,  0}, 
+     {4,  5,  0}, 
+     {6,  7,  8}});
+  const tracking::math::Matrix<float32, 3, 3> expMat(
+    {{ 1,  0,  0}, 
+     { 4, 10,  0}, 
+     { 6, 14, 24}});
+  // clang-format on
+
+  // call UUT
+  auto resMat = mat * diagMat;
+
+  EXPECT_EQ(expMat._data, resMat._data);
+}
+
+TEST(DiagonalMatrix, op_mul_rhs_upperTria) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
@@ -134,6 +294,29 @@ TEST(DiagonalMatrix, op_mul_upperTria) // NOLINT
 
   // call UUT
   auto resMat = diagMat * mat;
+
+  EXPECT_EQ(expMat._data, resMat._data);
+}
+
+TEST(DiagonalMatrix, op_mul_lhs_upperTria) // NOLINT
+{
+  // clang-format off
+  tracking::math::DiagonalMatrix<float32, 3> diagMat(
+    {{1, 0, 0}, 
+     {0, 2, 0}, 
+     {0, 0, 3}});
+  const tracking::math::TriangularMatrix<float32, 3, false> mat(
+    {{1,  2,  3}, 
+     {0,  5,  6}, 
+     {0,  0,  8}});
+  const tracking::math::Matrix<float32, 3, 3> expMat(
+    {{ 1,  4,  9}, 
+     { 0, 10, 18}, 
+     { 0,  0, 24}});
+  // clang-format on
+
+  // call UUT
+  auto resMat = mat * diagMat;
 
   EXPECT_EQ(expMat._data, resMat._data);
 }
@@ -224,41 +407,47 @@ TEST(DiagonalMatrix, op_mul_scal_inplace) // NOLINT
   EXPECT_EQ(expMat._data, diagMat._data);
 }
 
-TEST(DiagonalMatrix, inverse) // NOLINT
+TEST(DiagonalMatrix, isPositiveDefinite_true) // NOLINT
 {
+  auto val=std::numeric_limits<float32>::min();
   // clang-format off
-  const tracking::math::DiagonalMatrix<float32, 3> diagMat(
-    {{1, 0, 0}, 
-     {0, 2, 0}, 
-     {0, 0, 4}});
-  const tracking::math::DiagonalMatrix<float32, 3> expMat(
-    {{1, 0,   0}, 
-     {0, 0.5, 0}, 
-     {0, 0,   0.25}});
+  tracking::math::DiagonalMatrix<float32, 3> diagMat(
+    {{val,   0,   0}, 
+     {  0, val,   0}, 
+     {  0,   0, val}});
   // clang-format on
 
   // call UUT
-  auto invMat = diagMat.inverse();
+  auto result = diagMat.isPositiveDefinite();
 
-  EXPECT_EQ(expMat._data, invMat._data);
+  EXPECT_TRUE(result);
 }
 
-TEST(DiagonalMatrix, inverse_inplace) // NOLINT
+TEST(DiagonalMatrix, isPositiveDefinite_false) // NOLINT
+{
+  auto val=std::numeric_limits<float32>::min();
+  // clang-format off
+  tracking::math::DiagonalMatrix<float32, 3> diagMat(
+    {{val,   0,   0}, 
+     {  0,   0,   0}, 
+     {  0,   0, val}});
+  // clang-format on
+
+  // call UUT
+  auto result = diagMat.isPositiveDefinite();
+
+  EXPECT_FALSE(result);
+}
+
+TEST(DiagonalMatrix, print) // NOLINT
 {
   // clang-format off
   tracking::math::DiagonalMatrix<float32, 3> diagMat(
     {{1, 0, 0}, 
      {0, 2, 0}, 
-     {0, 0, 4}});
-  const tracking::math::DiagonalMatrix<float32, 3> expMat(
-    {{1, 0,   0}, 
-     {0, 0.5, 0}, 
-     {0, 0,   0.25}});
+     {0, 0, 3}});
   // clang-format on
 
   // call UUT
-  diagMat.inverse();
-
-  EXPECT_EQ(expMat._data, diagMat._data);
+  diagMat.print();
 }
-

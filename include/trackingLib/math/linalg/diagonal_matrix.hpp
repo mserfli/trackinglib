@@ -3,6 +3,7 @@
 
 #include "math/linalg/diagonal_matrix.h"
 
+#include "math/linalg/square_matrix.hpp"
 #include "math/linalg/triangular_matrix.hpp"
 #include "math/linalg/vector.hpp"
 
@@ -228,6 +229,60 @@ inline auto DiagonalMatrix<FloatType, Size>::isPositiveDefinite() const -> bool
     isValid = isValid && (static_cast<FloatType>(0.0) < _data[idx]);
   }
   return isValid;
+}
+
+template <typename FloatType, sint32 Size>
+inline void DiagonalMatrix<FloatType, Size>::print() const
+{
+  const SquareMatrix<FloatType, Size> diag{*this};
+  diag.print();
+}
+
+// ------ non-member functions ---------------------------------------------------------------------------------------------------
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+auto operator*(const Matrix<FloatType, Rows, Cols>& mat, const DiagonalMatrix<FloatType, Cols>& diag)
+    -> Matrix<FloatType, Rows, Cols>
+{
+  // each column is multiplied by the corresponding diagonal column element
+  auto result{mat};
+  for (auto col = 0; col < Cols; ++col)
+  {
+    for (auto row = 0; row < Rows; ++row)
+    {
+      result(row, col) *= diag[col];
+    }
+  }
+  return result;
+}
+
+template <typename FloatType, sint32 Size, bool isLower>
+auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat, const DiagonalMatrix<FloatType, Size>& diag)
+    -> TriangularMatrix<FloatType, Size, isLower>
+{
+  // each column is multiplied by the corresponding diagonal column element
+  auto result{mat};
+  if (isLower)
+  {
+    for (auto col = 0; col < Size; ++col)
+    {
+      for (auto row = col; row < Size; ++row)
+      {
+        result(row, col) *= diag[col];
+      }
+    }
+  }
+  else
+  {
+    for (auto col = 0; col < Size; ++col)
+    {
+      for (auto row = 0; row <= col; ++row)
+      {
+        result(row, col) *= diag[col];
+      }
+    }
+  }
+  return result;
 }
 
 } // namespace math

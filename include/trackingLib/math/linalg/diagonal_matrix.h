@@ -2,18 +2,28 @@
 #define EDCA948E_6A98_4AF3_8A01_916736E1577B
 
 #include "base/first_include.h"
-#include "math/linalg/vector.h"
-#include "math/linalg/square_matrix.h"
-#include "math/linalg/triangular_matrix.h"
 #include <initializer_list>
 
 namespace tracking
 {
 namespace math
 {
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+class Matrix; // LCOV_EXCL_LINE
+
+template <typename FloatType, sint32 Size>
+class SquareMatrix; // LCOV_EXCL_LINE
+
+template <typename FloatType, sint32 Size, bool isLower>
+class TriangularMatrix; // LCOV_EXCL_LINE
+
+template <typename FloatType, sint32 Size>
+class Vector; // LCOV_EXCL_LINE
+
 // TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
-class DiagonalMatrix
+class DiagonalMatrix final
 {
 public:
   // rule of 5 declarations
@@ -22,7 +32,6 @@ public:
   DiagonalMatrix(DiagonalMatrix&&) noexcept   = default;
   auto operator=(const DiagonalMatrix&) -> DiagonalMatrix& = default;
   auto operator=(DiagonalMatrix&&) noexcept -> DiagonalMatrix& = default;
-  virtual ~DiagonalMatrix()                                    = default;
 
   /// \brief Construct a new Diagonal Matrix object
   /// \param[in] other
@@ -54,11 +63,12 @@ public:
 
   /// \brief Assign a new DiagonalMatrix object given initializer list
   /// \param[in] list  An initializer list describing the diagonal elements
-  auto operator=(const std::initializer_list<FloatType>& list) -> DiagonalMatrix&;
+  auto operator=(const std::initializer_list<FloatType>& list) -> DiagonalMatrix&; // TODO(matthias): do we really need this
 
   /// \brief Assign a new DiagonalMatrix object given initializer list
   /// \param[in] list  An initializer list describing a full square matrix
-  auto operator=(const std::initializer_list<std::initializer_list<FloatType>>& list) -> DiagonalMatrix&;
+  auto operator=(const std::initializer_list<std::initializer_list<FloatType>>& list)
+      -> DiagonalMatrix&; // TODO(matthias): do we really need this
 
   /// \brief Multiplication with generic matrix: D * Matrix
   /// \tparam Cols
@@ -68,30 +78,30 @@ public:
   auto operator*(const Matrix<FloatType, Size, Cols>& mat) const -> Matrix<FloatType, Size, Cols>;
 
   /// \brief Multiplication with triangular matrix: D * Matrix
-  /// \tparam isLower 
+  /// \tparam isLower
   /// \param[in] mat  A triangular matrix
-  /// \return TriangularMatrix<FloatType, Size, isLower> 
+  /// \return TriangularMatrix<FloatType, Size, isLower>
   template <bool isLower>
   auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) const -> TriangularMatrix<FloatType, Size, isLower>;
 
   /// \brief Multiplication with diagonal matrix: D * Matrix
   /// \param[in] mat  A diagonal matrix
-  /// \return DiagonalMatrix<FloatType, Size> 
+  /// \return DiagonalMatrix<FloatType, Size>
   auto operator*(const DiagonalMatrix& mat) const -> DiagonalMatrix;
 
   /// \brief Multiplication with scalar: D * scalar
   /// \param[in] scalar  A scalar value
-  /// \return DiagonalMatrix<FloatType, Size> 
+  /// \return DiagonalMatrix<FloatType, Size>
   auto operator*(const FloatType scalar) const -> DiagonalMatrix;
 
   /// \brief Inplace Multiplication with diagonal matrix: D * Matrix
   /// \param[in] mat  A diagonal matrix
-  /// \return DiagonalMatrix<FloatType, Size> 
+  /// \return DiagonalMatrix<FloatType, Size>
   auto operator*=(const DiagonalMatrix& mat) -> DiagonalMatrix&;
 
   /// \brief Inplace Multiplication with scalar: D * scalar
   /// \param[in] scalar  A scalar value
-  /// \return DiagonalMatrix<FloatType, Size> 
+  /// \return DiagonalMatrix<FloatType, Size>
   auto operator*=(const FloatType scalar) -> DiagonalMatrix&;
 
   /// \brief Element access to a scalar diagonal value
@@ -112,30 +122,25 @@ public:
   void inverse();
 
   /// \brief Checks for positive definite condition of the diagonal matrix (all elements > 0)
-  auto isPositiveDefinite() const -> bool;
+  [[nodiscard]] auto isPositiveDefinite() const -> bool;
+
+  /// \brief Print the matrix
+  void print() const;
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround to keep following idententation
-
+  // clang-format on
   Vector<FloatType, Size> _data{};
 };
 
-template <typename FloatType, sint32 Size, sint32 Rows>
-auto operator*(const Matrix<FloatType, Rows, Size>& mat, const DiagonalMatrix<FloatType, Size>& diag)
-    -> Matrix<FloatType, Rows, Size>
-{
-  // each column is multiplied by the corresponding diagonal column element
-  auto result(mat);
-  for (auto col = 0; col < Size; ++col)
-  {
-    for (auto row = 0; row < Rows; ++row)
-    {
-      result(row, col) *= diag[col];
-    }
-  }
-  return result;
-}
+template <typename FloatType, sint32 Rows, sint32 Cols>
+auto operator*(const Matrix<FloatType, Rows, Cols>& mat, const DiagonalMatrix<FloatType, Cols>& diag)
+    -> Matrix<FloatType, Rows, Cols>;
+
+template <typename FloatType, sint32 Size, bool isLower>
+auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat, const DiagonalMatrix<FloatType, Size>& diag)
+    -> TriangularMatrix<FloatType, Size, isLower>;
 
 
 } // namespace math

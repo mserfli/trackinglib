@@ -3,7 +3,7 @@
 
 #include "math/linalg/square_matrix.h"
 
-#include "math/linalg/diagonal_matrix.hpp"
+#include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/matrix_column_view.hpp"
 #include "math/linalg/matrix_row_view.hpp"
 #include "math/linalg/matrix_view.hpp"
@@ -20,6 +20,15 @@ template <typename FloatType, sint32 Size>
 SquareMatrix<FloatType, Size>::SquareMatrix(const Matrix<FloatType, Size, Size>& other)
     : Matrix<FloatType, Size, Size>{other}
 {
+}
+
+template <typename FloatType, sint32 Size>
+SquareMatrix<FloatType, Size>::SquareMatrix(const DiagonalMatrix<FloatType, Size>& other)
+{
+  for (auto idx = 0; idx < Size; ++idx)
+  {
+    this->operator()(idx, idx) = other[idx];
+  }
 }
 
 template <typename FloatType, sint32 Size>
@@ -112,7 +121,7 @@ inline auto SquareMatrix<FloatType, Size>::decomposeLDLT(TriangularMatrix<FloatT
         D[j] = v[j];
         if (j < Size)
         {
-          const MatrixView<FloatType, Size, Size> blockL(L, j + 1, 1, Size - 1, j - 1);
+          const MatrixView<FloatType, Size, Size>       blockL(L, j + 1, 1, Size - 1, j - 1);
           const MatrixColumnView<FloatType, Size, Size> src(*this, j, j + 1, Size - 1);
           auto                                          beta = (src - (blockL * colV)) / v[j];
           for (auto k = j + 1; k < Size; ++k)

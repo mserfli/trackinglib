@@ -30,6 +30,10 @@ public:
   /// \param[in] other A base class object
   SquareMatrix(const Matrix<FloatType, Size, Size>& other); // NOLINT(google-explicit-constructor)
 
+  /// \brief Construct a new Square Matrix object
+  /// \param[in] other A diagonal matrix
+  SquareMatrix(const DiagonalMatrix<FloatType, Size>& other); // NOLINT(google-explicit-constructor)
+
   /// \brief Set internal matrix to the Identity matrix
   void setIdentity();
 
@@ -73,7 +77,7 @@ TEST_REMOVE_PROTECTED:
 
   /// \brief Check for symmetry of the matrix 
   /// \return true
-  auto isSymmetric() const -> bool;
+  [[nodiscard]] auto isSymmetric() const -> bool;
 };
 
 } // namespace math
