@@ -63,6 +63,8 @@ public:
   auto operator*=(FloatType scalar) -> Matrix&;
   auto operator/=(FloatType scalar) -> Matrix&;
 
+  auto operator==(const Matrix& other) const -> bool;
+
   void        setZeros();
   static auto Zeros() -> Matrix;
 
@@ -173,6 +175,12 @@ inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scalar) -> Matri
   assert(std::abs(scalar) > static_cast<FloatType>(0.0));
   _data /= scalar;
   return *this;
+}
+
+template <typename FloatType, sint32 Rows, sint32 Cols>
+inline auto Matrix<FloatType, Rows, Cols>::operator==(const Matrix& other) const -> bool
+{
+  return _data == other._data;
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>

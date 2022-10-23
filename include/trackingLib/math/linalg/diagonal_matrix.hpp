@@ -3,6 +3,9 @@
 
 #include "math/linalg/diagonal_matrix.h"
 
+#include "math/linalg/triangular_matrix.hpp"
+#include "math/linalg/vector.hpp"
+
 namespace tracking
 {
 namespace math
@@ -10,18 +13,16 @@ namespace math
 
 template <typename FloatType, sint32 Size>
 inline DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const SquareMatrix<FloatType, Size>& other)
-    : SquareMatrix<FloatType, Size>{}
 {
   // copy diagonal elements from other
   for (sint32 idx = 0; idx < Size; ++idx)
   {
-    SquareMatrix<FloatType, Size>::operator()(idx, idx) = other(idx, idx);
+    _data[idx] = other(idx, idx);
   }
 }
 
 template <typename FloatType, sint32 Size>
 inline DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const std::initializer_list<FloatType>& list)
-    : SquareMatrix<FloatType, Size>{}
 {
   assert((list.size() == Size) && "Mismatching size of intializer list");
 
@@ -29,23 +30,40 @@ inline DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const std::initializer_li
   sint32 idx = 0;
   for (auto val : list)
   {
-    this->operator[](idx++) = val;
+    _data[idx++] = val;
   }
 }
 
 template <typename FloatType, sint32 Size>
 inline DiagonalMatrix<FloatType, Size>::DiagonalMatrix(const std::initializer_list<std::initializer_list<FloatType>>& list)
-    : SquareMatrix<FloatType, Size>{list}
 {
-  // zero anti-diagonal elements
-  for (sint32 row = 0; row < Size; ++row)
+  assert((list.size() == Size) && "Mismatching size of intializer list");
+
+  // copy diagonal elements from list
+  sint32 idx = 0;
+  for (const auto& rowList : list)
   {
-    for (sint32 col = row + 1; col < Size; ++col)
-    {
-      this->operator()(row, col) = static_cast<FloatType>(0.0);
-      this->operator()(col, row) = static_cast<FloatType>(0.0);
-    }
+    assert((rowList.size() == Size) && "Mismatching size of intializer list");
+    _data[idx] = *(rowList.begin() + idx);
+    ++idx;
   }
+}
+
+template <typename FloatType, sint32 Size>
+inline void DiagonalMatrix<FloatType, Size>::setIdentity()
+{
+  for (sint32 idx = 0; idx < Size; ++idx)
+  {
+    _data[idx] = static_cast<FloatType>(1.0);
+  }
+}
+
+template <typename FloatType, sint32 Size>
+inline static auto DiagonalMatrix<FloatType, Size>::Identity() -> DiagonalMatrix
+{
+  DiagonalMatrix diag;
+  diag.setIdentity();
+  return diag;
 }
 
 template <typename FloatType, sint32 Size>
@@ -60,8 +78,7 @@ inline void DiagonalMatrix<FloatType, Size>::setBlock(const DiagonalMatrix<Float
   sint32 dstIdx = DstIdxBeg;
   for (auto srcIdx = SrcIdxBeg; srcIdx < SrcIdxBeg + SrcCount; ++srcIdx)
   {
-    this->operator[](dstIdx) = block[srcIdx];
-    ++dstIdx;
+    _data[dstIdx++] = block[srcIdx];
   }
 }
 
@@ -82,15 +99,17 @@ inline auto DiagonalMatrix<FloatType, Size>::operator=(const std::initializer_li
 
 template <typename FloatType, sint32 Size>
 template <sint32 Cols>
-inline auto DiagonalMatrix<FloatType, Size>::operator*(const Matrix<FloatType, Size, Cols>& mat) -> Matrix<FloatType, Size, Cols>
+inline auto DiagonalMatrix<FloatType, Size>::operator*(const Matrix<FloatType, Size, Cols>& mat) const
+    -> Matrix<FloatType, Size, Cols>
 {
   // each row is multiplied by the corresponding diagonal row element
-  auto result{mat};
+  Matrix<FloatType, Size, Cols> result{mat};
   for (auto row = 0; row < Size; ++row)
   {
+    const FloatType val = _data[row];
     for (auto col = 0; col < Cols; ++col)
     {
-      result(row, col) *= this->operator[](col);
+      result(row, col) *= val;
     }
   }
   return result;
@@ -98,7 +117,7 @@ inline auto DiagonalMatrix<FloatType, Size>::operator*(const Matrix<FloatType, S
 
 template <typename FloatType, sint32 Size>
 template <bool isLower>
-inline auto DiagonalMatrix<FloatType, Size>::operator*(const TriangularMatrix<FloatType, Size, isLower>& mat)
+inline auto DiagonalMatrix<FloatType, Size>::operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) const
     -> TriangularMatrix<FloatType, Size, isLower>
 {
   // each row is multiplied by the corresponding diagonal row element
@@ -107,9 +126,10 @@ inline auto DiagonalMatrix<FloatType, Size>::operator*(const TriangularMatrix<Fl
   {
     for (auto row = 0; row < Size; ++row)
     {
+      const FloatType val = _data[row];
       for (auto col = 0; col <= row; ++col)
       {
-        result(row, col) *= this->operator[](col);
+        result(row, col) *= val;
       }
     }
   }
@@ -117,9 +137,10 @@ inline auto DiagonalMatrix<FloatType, Size>::operator*(const TriangularMatrix<Fl
   {
     for (auto row = 0; row < Size; ++row)
     {
+      const FloatType val = _data[row];
       for (auto col = row; col < Size; ++col)
       {
-        result(row, col) *= this->operator[](col);
+        result(row, col) *= val;
       }
     }
   }
@@ -127,41 +148,57 @@ inline auto DiagonalMatrix<FloatType, Size>::operator*(const TriangularMatrix<Fl
 }
 
 template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::operator*(const DiagonalMatrix& mat) -> DiagonalMatrix
+inline auto DiagonalMatrix<FloatType, Size>::operator*(const DiagonalMatrix& mat) const -> DiagonalMatrix
 {
-  // element-wise multiplication of the elements on both diagonals
+  // copy *this
   auto result{*this};
-  for (auto idx = 0; idx < Size; ++idx)
-  {
-    result[idx] *= mat[idx];
-  }
+  result *= mat;
   return result;
 }
 
 template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::operator*(const FloatType scalar) -> DiagonalMatrix
+inline auto DiagonalMatrix<FloatType, Size>::operator*(const FloatType scalar) const -> DiagonalMatrix
+{
+  // copy *this
+  auto result{*this};
+  result *= scalar;
+  return result;
+}
+
+template <typename FloatType, sint32 Size>
+inline auto DiagonalMatrix<FloatType, Size>::operator*=(const DiagonalMatrix& mat) -> DiagonalMatrix&
 {
   // element-wise multiplication of the elements on both diagonals
-  auto result{*this};
   for (auto idx = 0; idx < Size; ++idx)
   {
-    result[idx] *= scalar;
+    _data[idx] *= mat[idx];
   }
-  return result;
+  return *this;
+}
+
+template <typename FloatType, sint32 Size>
+inline auto DiagonalMatrix<FloatType, Size>::operator*=(const FloatType scalar) -> DiagonalMatrix&
+{
+  // element-wise multiplication of the elements on both diagonals
+  for (auto idx = 0; idx < Size; ++idx)
+  {
+    _data[idx] *= scalar;
+  }
+  return *this;
 }
 
 template <typename FloatType, sint32 Size>
 inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) -> FloatType&
 {
   assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
-  return this->operator()(idx, idx);
+  return _data[idx];
 }
 
 template <typename FloatType, sint32 Size>
 inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) const -> FloatType
 {
   assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
-  return this->operator()(idx, idx);
+  return _data[idx];
 }
 
 template <typename FloatType, sint32 Size>
@@ -178,7 +215,7 @@ inline void DiagonalMatrix<FloatType, Size>::inverse()
   for (sint32 idx = 0; idx < Size; ++idx)
   {
     assert((static_cast<FloatType>(0.0) < this->operator[](idx)) && "inverse not possible");
-    this->operator[](idx) = static_cast<FloatType>(1.0) / this->operator[](idx);
+    _data[idx] = static_cast<FloatType>(1.0) / _data[idx];
   }
 }
 
@@ -188,7 +225,7 @@ inline auto DiagonalMatrix<FloatType, Size>::isPositiveDefinite() const -> bool
   auto isValid = true;
   for (auto idx = 0; idx < Size; ++idx)
   {
-    isValid = isValid && (static_cast<FloatType>(0.0) < this->operator[](idx));
+    isValid = isValid && (static_cast<FloatType>(0.0) < _data[idx]);
   }
   return isValid;
 }

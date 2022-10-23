@@ -2,7 +2,9 @@
 #define EDCA948E_6A98_4AF3_8A01_916736E1577B
 
 #include "base/first_include.h"
+#include "math/linalg/vector.h"
 #include "math/linalg/square_matrix.h"
+#include "math/linalg/triangular_matrix.h"
 #include <initializer_list>
 
 namespace tracking
@@ -11,7 +13,7 @@ namespace math
 {
 // TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
-class DiagonalMatrix: public SquareMatrix<FloatType, Size>
+class DiagonalMatrix
 {
 public:
   // rule of 5 declarations
@@ -33,6 +35,13 @@ public:
   /// \brief Construct a new DiagonalMatrix object given initializer list
   /// \param[in] list  An initializer list describing a full square matrix
   DiagonalMatrix(const std::initializer_list<std::initializer_list<FloatType>>& list);
+
+  /// \brief Set internal matrix to the Identity matrix
+  void setIdentity();
+
+  /// \brief Construct an Identity matrix
+  /// \return DiagonalMatrix  Resulting identity matrix
+  static auto Identity() -> DiagonalMatrix;
 
   /// \brief Set a diagonal block matrix at given position
   /// \tparam SrcSize    Size of the source block
@@ -56,25 +65,34 @@ public:
   /// \param[in] mat
   /// \return Matrix<FloatType, Size, Cols>
   template <sint32 Cols>
-  auto operator*(const Matrix<FloatType, Size, Cols>& mat) -> Matrix<FloatType, Size, Cols>;
+  auto operator*(const Matrix<FloatType, Size, Cols>& mat) const -> Matrix<FloatType, Size, Cols>;
 
   /// \brief Multiplication with triangular matrix: D * Matrix
   /// \tparam isLower 
   /// \param[in] mat  A triangular matrix
   /// \return TriangularMatrix<FloatType, Size, isLower> 
   template <bool isLower>
-  auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) -> TriangularMatrix<FloatType, Size, isLower>;
+  auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) const -> TriangularMatrix<FloatType, Size, isLower>;
 
   /// \brief Multiplication with diagonal matrix: D * Matrix
   /// \param[in] mat  A diagonal matrix
   /// \return DiagonalMatrix<FloatType, Size> 
-  auto operator*(const DiagonalMatrix& mat) -> DiagonalMatrix;
+  auto operator*(const DiagonalMatrix& mat) const -> DiagonalMatrix;
 
   /// \brief Multiplication with scalar: D * scalar
   /// \param[in] scalar  A scalar value
   /// \return DiagonalMatrix<FloatType, Size> 
-  auto operator*(const FloatType scalar) -> DiagonalMatrix;
+  auto operator*(const FloatType scalar) const -> DiagonalMatrix;
 
+  /// \brief Inplace Multiplication with diagonal matrix: D * Matrix
+  /// \param[in] mat  A diagonal matrix
+  /// \return DiagonalMatrix<FloatType, Size> 
+  auto operator*=(const DiagonalMatrix& mat) -> DiagonalMatrix&;
+
+  /// \brief Inplace Multiplication with scalar: D * scalar
+  /// \param[in] scalar  A scalar value
+  /// \return DiagonalMatrix<FloatType, Size> 
+  auto operator*=(const FloatType scalar) -> DiagonalMatrix&;
 
   /// \brief Element access to a scalar diagonal value
   /// \param[in] idx  Row/Col index of the element
@@ -99,12 +117,8 @@ public:
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround to keep following idententation
-  // clang-format on
-  /// \brief hide inherited operator() to prevent accessing off-diagonal elements
-  using SquareMatrix<FloatType, Size>::operator();
 
-  /// \brief hide inherited setBlock function
-  using SquareMatrix<FloatType, Size>::setBlock;
+  Vector<FloatType, Size> _data{};
 };
 
 template <typename FloatType, sint32 Size, sint32 Rows>

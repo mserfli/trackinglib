@@ -30,18 +30,18 @@ void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size,
     sigma = static_cast<FloatType>(0.0);
     for (sint32 j = 0; j < Size; ++j)
     {
-      sigma += (PhiU(i, j) * PhiU(i, j)) * Din(j, j);
+      sigma += (PhiU(i, j) * PhiU(i, j)) * Din[j];
     }
-    d(i, i) = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
+    d[i] = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
     for (sint32 j = 0; j < i; ++j)
     {
       sigma = static_cast<FloatType>(0.0);
       for (sint32 k = 0; k < Size; ++k)
       {
-        sigma += PhiU(i, k) * Din(k, k) * PhiU(j, k);
+        sigma += PhiU(i, k) * Din[k] * PhiU(j, k);
       }
 
-      u(j, i) = sigma / d(i, i);
+      u(j, i) = sigma / d[i];
 
       for (sint32 k = 0; k < Size; ++k)
       {
@@ -78,26 +78,26 @@ void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size,
     sigma = static_cast<FloatType>(0.0);
     for (sint32 j = 0; j < Size; ++j)
     {
-      sigma += (PhiU(i, j) * PhiU(i, j)) * Din(j, j);
+      sigma += (PhiU(i, j) * PhiU(i, j)) * Din[j];
       if (j < SizeQ)
       {
-        sigma += Gin(i, j) * Gin(i, j) * Q(j, j);
+        sigma += Gin(i, j) * Gin(i, j) * Q[j];
       }
     }
-    d(i, i) = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
+    d[i] = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
     for (sint32 j = 0; j < i; ++j)
     {
       sigma = static_cast<FloatType>(0.0);
       for (sint32 k = 0; k < Size; ++k)
       {
-        sigma += PhiU(i, k) * Din(k, k) * PhiU(j, k);
+        sigma += PhiU(i, k) * Din[k] * PhiU(j, k);
       }
       for (sint32 k = 0; k < SizeQ; ++k)
       {
-        sigma += Gin(i, k) * Q(k, k) * Gin(j, k);
+        sigma += Gin(i, k) * Q[k] * Gin(j, k);
       }
 
-      u(j, i) = sigma / d(i, i);
+      u(j, i) = sigma / d[i];
 
       for (sint32 k = 0; k < Size; ++k)
       {
