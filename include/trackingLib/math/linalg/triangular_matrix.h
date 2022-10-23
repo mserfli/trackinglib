@@ -10,11 +10,17 @@ namespace tracking
 namespace math
 {
 
+template <typename FloatType, sint32 Rows, sint32 Cols>
+class Matrix; // LCOV_EXCL_LINE
+
+template <typename FloatType, sint32 Size>
+class DiagonalMatrix; // LCOV_EXCL_LINE
+
 // TODO(matthias): add interface contract
 // TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
 // TODO(matthias): use own memory optimized to required number of elements
 template <typename FloatType, sint32 Size, bool isLower>
-class TriangularMatrix: public SquareMatrix<FloatType, Size>
+class TriangularMatrix final: public SquareMatrix<FloatType, Size>
 {
 public:
   // rule of 5 declarations
@@ -23,7 +29,7 @@ public:
   TriangularMatrix(TriangularMatrix&&) noexcept   = default;
   auto operator=(const TriangularMatrix&) -> TriangularMatrix& = default;
   auto operator=(TriangularMatrix&&) noexcept -> TriangularMatrix& = default;
-  virtual ~TriangularMatrix()                                      = default;
+  ~TriangularMatrix()                                              = default;
 
   /// \brief Construct a new Triangular Matrix object
   /// \param[in] other
@@ -43,6 +49,38 @@ public:
   /// \param[in] block   Source block matrix to copy from
   template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
   void setBlock(const TriangularMatrix<FloatType, SrcSize, isLower>& block);
+
+  /// \brief Multiplication with generic matrix: Tria * Matrix
+  /// \tparam Cols
+  /// \param[in] mat
+  /// \return Matrix<FloatType, Size, Cols>
+  template <sint32 Cols>
+  auto operator*(const Matrix<FloatType, Size, Cols>& mat) const -> Matrix<FloatType, Size, Cols>;
+
+  /// \brief Multiplication with triangular matrix: Tria * Matrix
+  /// \param[in] mat  A triangular matrix
+  /// \return TriangularMatrix<FloatType, Size, isLower>
+  auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) const -> TriangularMatrix;
+
+  /// \brief Multiplication with triangular matrix: Tria * Matrix
+  /// \param[in] mat  A triangular matrix
+  /// \return SquareMatrix<FloatType, Size>
+  auto operator*(const TriangularMatrix<FloatType, Size, !isLower>& mat) const -> SquareMatrix<FloatType, Size>;
+
+  /// \brief Multiplication with diagonal matrix: Tria * Matrix
+  /// \param[in] diag  A diagonal matrix
+  /// \return TriangularMatrix<FloatType, Size, isLower>
+  auto operator*(const DiagonalMatrix<FloatType, Size>& diag) const -> TriangularMatrix;
+
+  /// \brief Multiplication with scalar: Tria * scalar
+  /// \param[in] scalar  A scalar value
+  /// \return TriangularMatrix<FloatType, Size, isLower>
+  auto operator*(const FloatType scalar) const -> TriangularMatrix;
+
+  /// \brief Inplace Multiplication with scalar: Tria * scalar
+  /// \param[in] scalar  A scalar value
+  /// \return TriangularMatrix<FloatType, Size, isLower>&
+  auto operator*=(const FloatType scalar) -> TriangularMatrix&;
 
   /// \brief Element read-only access to a scalar triangular value
   /// \param[in] row  Row index of the element
@@ -74,7 +112,7 @@ public:
 
   /// \brief Checks for Unit Upper condition
   /// \return true
-  auto isUnitUpperTriangular() const -> bool;
+  [[nodiscard]] auto isUnitUpperTriangular() const -> bool;
 
   // clang-format off
 TEST_REMOVE_PRIVATE:

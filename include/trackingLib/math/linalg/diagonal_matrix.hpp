@@ -256,35 +256,6 @@ auto operator*(const Matrix<FloatType, Rows, Cols>& mat, const DiagonalMatrix<Fl
   return result;
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
-auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat, const DiagonalMatrix<FloatType, Size>& diag)
-    -> TriangularMatrix<FloatType, Size, isLower>
-{
-  // each column is multiplied by the corresponding diagonal column element
-  auto result{mat};
-  if (isLower)
-  {
-    for (auto col = 0; col < Size; ++col)
-    {
-      for (auto row = col; row < Size; ++row)
-      {
-        result(row, col) *= diag[col];
-      }
-    }
-  }
-  else
-  {
-    for (auto col = 0; col < Size; ++col)
-    {
-      for (auto row = 0; row <= col; ++row)
-      {
-        result(row, col) *= diag[col];
-      }
-    }
-  }
-  return result;
-}
-
 } // namespace math
 } // namespace tracking
 

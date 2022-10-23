@@ -96,12 +96,12 @@ public:
 
   /// \brief Inplace Multiplication with diagonal matrix: D * Matrix
   /// \param[in] mat  A diagonal matrix
-  /// \return DiagonalMatrix<FloatType, Size>
+  /// \return DiagonalMatrix<FloatType, Size>&
   auto operator*=(const DiagonalMatrix& mat) -> DiagonalMatrix&;
 
   /// \brief Inplace Multiplication with scalar: D * scalar
   /// \param[in] scalar  A scalar value
-  /// \return DiagonalMatrix<FloatType, Size>
+  /// \return DiagonalMatrix<FloatType, Size>&
   auto operator*=(const FloatType scalar) -> DiagonalMatrix&;
 
   /// \brief Element access to a scalar diagonal value
@@ -137,11 +137,6 @@ TEST_REMOVE_PRIVATE:
 template <typename FloatType, sint32 Rows, sint32 Cols>
 auto operator*(const Matrix<FloatType, Rows, Cols>& mat, const DiagonalMatrix<FloatType, Cols>& diag)
     -> Matrix<FloatType, Rows, Cols>;
-
-template <typename FloatType, sint32 Size, bool isLower>
-auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat, const DiagonalMatrix<FloatType, Size>& diag)
-    -> TriangularMatrix<FloatType, Size, isLower>;
-
 
 } // namespace math
 } // namespace tracking
