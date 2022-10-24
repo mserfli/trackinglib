@@ -33,19 +33,9 @@ inline TriangularMatrix<FloatType, Size, isLower>::TriangularMatrix(const Square
 template <typename FloatType, sint32 Size, bool isLower>
 inline TriangularMatrix<FloatType, Size, isLower>::TriangularMatrix(
     const std::initializer_list<std::initializer_list<FloatType>>& list)
-    : SquareMatrix<FloatType, Size>{list}
+    : SquareMatrix<FloatType, Size>{ TriangularMatrix{ SquareMatrix<FloatType, Size>{list} } }
 {
-  // zero off-triangular elements
-  for (sint32 row = 0; row < Size; ++row)
-  {
-    for (sint32 col = row + 1; col < Size; ++col)
-    {
-      const sint32 rowIdx = !isLower ? col : row;
-      const sint32 colIdx = !isLower ? row : col;
-
-      SquareMatrix<FloatType, Size>::operator()(rowIdx, colIdx) = static_cast<FloatType>(0.0);
-    }
-  }
+  // reuse existing ctor from SquareMatrix to prevent code duplication
 }
 
 template <typename FloatType, sint32 Size, bool isLower>
@@ -159,7 +149,7 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Triangul
 {
   // implementation prevents if in inner loop: j<=k
   SquareMatrix<FloatType, Size> other{mat};
-  return this->operator*(other);
+  return this->                 operator*(other);
 }
 
 template <typename FloatType, sint32 Size, bool isLower>
@@ -275,7 +265,6 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::isUnitUpperTriangular() 
   }
   return isValid;
 }
-
 
 } // namespace math
 } // namespace tracking
