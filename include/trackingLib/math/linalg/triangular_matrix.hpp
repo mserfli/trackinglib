@@ -1,6 +1,7 @@
 #ifndef E4D3E13A_DB2E_427E_BA99_4F251275B082
 #define E4D3E13A_DB2E_427E_BA99_4F251275B082
 
+#include "math/linalg/square_matrix.h"
 #include "math/linalg/triangular_matrix.h"
 
 #include "math/linalg/diagonal_matrix.hpp"
@@ -84,18 +85,81 @@ template <sint32 Cols>
 inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Matrix<FloatType, Size, Cols>& mat) const
     -> Matrix<FloatType, Size, Cols>
 {
+  Matrix<FloatType, Size, Cols> result{};
+  if (isLower)
+  {
+#pragma omp parallel for private(i, j, k) shared(A, B, C)
+    for (auto i = 0; i < Size; ++i)
+    {
+      for (auto k = 0; k <= i; ++k)
+      {
+        for (auto j = 0; j < Cols; ++j)
+        {
+          result(i, j) += this->operator()(i, k) * mat(k, j);
+        }
+      }
+    }
+  }
+  else
+  {
+#pragma omp parallel for private(i, j, k) shared(A, B, C)
+    for (auto i = 0; i < Size; ++i)
+    {
+      for (auto k = i; k < Size; ++k)
+      {
+        for (auto j = 0; j < Cols; ++j)
+        {
+          result(i, j) += this->operator()(i, k) * mat(k, j);
+        }
+      }
+    }
+  }
+  return result;
 }
 
 template <typename FloatType, sint32 Size, bool isLower>
 inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) const
     -> TriangularMatrix
 {
+  TriangularMatrix result{};
+  if (isLower)
+  {
+#pragma omp parallel for private(i, j, k) shared(A, B, C)
+    for (auto i = 0; i < Size; ++i)
+    {
+      for (auto k = 0; k <= i; ++k)
+      {
+        for (auto j = 0; j <= k; ++j)
+        {
+          result(i, j) += this->operator()(i, k) * mat(k, j);
+        }
+      }
+    }
+  }
+  else
+  {
+#pragma omp parallel for private(i, j, k) shared(A, B, C)
+    for (auto i = 0; i < Size; ++i)
+    {
+      for (auto k = i; k < Size; ++k)
+      {
+        for (auto j = k; j < Size; ++j)
+        {
+          result(i, j) += this->operator()(i, k) * mat(k, j);
+        }
+      }
+    }
+  }
+  return result;
 }
 
 template <typename FloatType, sint32 Size, bool isLower>
 inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const TriangularMatrix<FloatType, Size, !isLower>& mat) const
     -> SquareMatrix<FloatType, Size>
 {
+  // implementation prevents if in inner loop: j<=k
+  SquareMatrix<FloatType, Size> other{mat};
+  return this->operator*(other);
 }
 
 template <typename FloatType, sint32 Size, bool isLower>

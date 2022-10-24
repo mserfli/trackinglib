@@ -13,7 +13,7 @@ TEST(TriangularMatrix, ctor_default) // NOLINT
   // clang-format on
 
   // call UUT
-  const tracking::math::TriangularMatrix<float32, 3, false> triuMat{}; 
+  const tracking::math::TriangularMatrix<float32, 3, false> triuMat{};
 
   EXPECT_EQ(expMat._data, triuMat._data);
 }
@@ -32,7 +32,7 @@ TEST(TriangularMatrix, ctor_triu) // NOLINT
   // clang-format on
 
   // call UUT
-  const tracking::math::TriangularMatrix<float32, 3, false> triuMat{mat}; 
+  const tracking::math::TriangularMatrix<float32, 3, false> triuMat{mat};
 
   EXPECT_EQ(expMat._data, triuMat._data);
 }
@@ -51,7 +51,7 @@ TEST(TriangularMatrix, ctor_square) // NOLINT
   // clang-format on
 
   // call UUT
-  const tracking::math::TriangularMatrix<float32, 3, false> triuMat{mat}; 
+  const tracking::math::TriangularMatrix<float32, 3, false> triuMat{mat};
 
   EXPECT_EQ(expMat._data, triuMat._data);
 }
@@ -232,19 +232,119 @@ TEST(TriangularMatrix, setBlock_upperBottomRight) // NOLINT
   EXPECT_EQ(expMat._data, triuMat._data);
 }
 
-TEST(TriangularMatrix, op_mul_rhs_mat) // NOLINT
+TEST(TriangularMatrix, op_mul_rhs_mat_lower) // NOLINT
 {
+  // clang-format off
+  const tracking::math::TriangularMatrix<float32, 3, true> trilMat(
+    {{1,  0,  0}, 
+     {4,  5,  0}, 
+     {6,  7,  8}});
+  const tracking::math::Matrix<float32, 3, 4> mat(
+    {{1,  2,  3,  4}, 
+     {5,  6,  7,  8}, 
+     {9, 10, 11, 12}});
+  const tracking::math::Matrix<float32, 3, 4> expMat(
+    {{  1,   2,   3,   4}, 
+     { 29,  38,  47,  56}, 
+     {113, 134, 155, 176}});
+  // clang-format on
 
+  // call UUT
+  auto resMat = trilMat * mat;
+
+  EXPECT_EQ(expMat._data, resMat._data);
 }
 
-TEST(TriangularMatrix, op_mul_rhs_tria_same) // NOLINT
+TEST(TriangularMatrix, op_mul_rhs_mat_upper) // NOLINT
 {
+  // clang-format off
+  const tracking::math::TriangularMatrix<float32, 3, false> triuMat(
+    {{1,  4,  6}, 
+     {0,  5,  7}, 
+     {0,  0,  8}});
+  const tracking::math::Matrix<float32, 3, 4> mat(
+    {{1,  2,  3,  4}, 
+     {5,  6,  7,  8}, 
+     {9, 10, 11, 12}});
+  const tracking::math::Matrix<float32, 3, 4> expMat(
+    {{75,  86,  97, 108}, 
+     {88, 100, 112, 124}, 
+     {72,  80,  88,  96}});
+  // clang-format on
 
+  // call UUT
+  auto resMat = triuMat * mat;
+
+  EXPECT_EQ(expMat._data, resMat._data);
+}
+
+TEST(TriangularMatrix, op_mul_rhs_lower_both) // NOLINT
+{
+  // clang-format off
+  const tracking::math::TriangularMatrix<float32, 3, true> trilMat(
+    {{1,  0,  0}, 
+     {4,  5,  0}, 
+     {6,  7,  8}});
+  const tracking::math::TriangularMatrix<float32, 3, true> trilMat2(
+    {{8,  0,  0}, 
+     {7,  5,  0}, 
+     {6,  4,  1}});
+  const tracking::math::TriangularMatrix<float32, 3, true> expMat(
+    {{  8,  0, 0}, 
+     { 67, 25, 0}, 
+     {145, 67, 8}});
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat * trilMat2;
+
+  EXPECT_EQ(expMat._data, resMat._data);
+}
+
+TEST(TriangularMatrix, op_mul_rhs_upper_both) // NOLINT
+{
+  // clang-format off
+  const tracking::math::TriangularMatrix<float32, 3, false> triuMat(
+    {{1,  4,  6}, 
+     {0,  5,  7}, 
+     {0,  0,  8}});
+  const tracking::math::TriangularMatrix<float32, 3, false> triuMat2(
+    {{8,  7,  6}, 
+     {0,  5,  4}, 
+     {0,  0,  1}});
+  const tracking::math::TriangularMatrix<float32, 3, false> expMat(
+    {{8, 27, 28}, 
+     {0, 25, 27}, 
+     {0,  0,  8}});
+  // clang-format on
+
+  // call UUT
+  auto resMat = triuMat * triuMat2;
+
+  EXPECT_EQ(expMat._data, resMat._data);
 }
 
 TEST(TriangularMatrix, op_mul_rhs_tria_opposite) // NOLINT
 {
+  // clang-format off
+  const tracking::math::TriangularMatrix<float32, 3, true> trilMat(
+    {{1,  0,  0}, 
+     {4,  5,  0}, 
+     {6,  7,  8}});
+  const tracking::math::TriangularMatrix<float32, 3, false> triuMat(
+    {{8,  7,  6}, 
+     {0,  5,  4}, 
+     {0,  0,  1}});
+  const tracking::math::SquareMatrix<float32, 3> expMat(
+    {{ 8,  7,  6}, 
+     {32, 53, 44}, 
+     {48, 77, 72}});
+  // clang-format on
 
+  // call UUT
+  auto resMat = trilMat * triuMat;
+
+  EXPECT_EQ(expMat._data, resMat._data);
 }
 
 TEST(TriangularMatrix, op_mul_rhs_diag_lower) // NOLINT
@@ -369,11 +469,11 @@ TEST(TriangularMatrix, inverse_lower) // NOLINT
   // call UUT
   auto invMat = trilMat.inverse();
 
-  for(auto row=0;row<3;++row)
+  for (auto row = 0; row < 3; ++row)
   {
-    for(auto col=0;col<=row;++col)
+    for (auto col = 0; col <= row; ++col)
     {
-      EXPECT_FLOAT_EQ(expMat(row,col), invMat(row,col));
+      EXPECT_FLOAT_EQ(expMat(row, col), invMat(row, col));
     }
   }
 }
@@ -394,11 +494,11 @@ TEST(TriangularMatrix, inverse_upper) // NOLINT
   // call UUT
   auto invMat = triuMat.inverse();
 
-  for(auto row=0;row<3;++row)
+  for (auto row = 0; row < 3; ++row)
   {
-    for(auto col=row;col<3;++col)
+    for (auto col = row; col < 3; ++col)
     {
-      EXPECT_FLOAT_EQ(expMat(row,col), invMat(row,col));
+      EXPECT_FLOAT_EQ(expMat(row, col), invMat(row, col));
     }
   }
 }
