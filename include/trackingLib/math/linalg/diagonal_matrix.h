@@ -23,7 +23,7 @@ class Vector; // LCOV_EXCL_LINE
 
 // TODO(matthias): add interface contract
 template <typename FloatType, sint32 Size>
-class DiagonalMatrix final
+class DiagonalMatrix TEST_REMOVE_FINAL
 {
 public:
   // rule of 5 declarations

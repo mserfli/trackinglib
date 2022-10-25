@@ -18,7 +18,7 @@ class MatrixColumnView;
 /// \tparam Rows
 /// \tparam Cols
 template <typename FloatType, sint32 Rows, sint32 Cols>
-class MatrixRowView final
+class MatrixRowView TEST_REMOVE_FINAL
 {
 public:
   /// \brief Construct a new Matrix Row View object

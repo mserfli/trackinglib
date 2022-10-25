@@ -20,7 +20,7 @@ class DiagonalMatrix; // LCOV_EXCL_LINE
 // TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
 // TODO(matthias): use own memory optimized to required number of elements
 template <typename FloatType, sint32 Size, bool isLower>
-class TriangularMatrix final: public SquareMatrix<FloatType, Size>
+class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<FloatType, Size>
 {
 public:
   // rule of 5 declarations
