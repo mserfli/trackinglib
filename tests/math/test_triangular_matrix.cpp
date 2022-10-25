@@ -522,6 +522,64 @@ TEST(TriangularMatrix, transpose_upper) // NOLINT
   EXPECT_EQ(expMat._data, trilMat._data);
 }
 
+TEST(TriangularMatrix, solve_lower) // NOLINT
+{
+  // clang-format off
+  const tracking::math::TriangularMatrix<float32, 3, true> trilMat(
+    {{1,  0,  0}, 
+     {4,  5,  0}, 
+     {6,  7,  8}});
+  const tracking::math::Matrix<float32, 3, 4> bMat(
+    {{1,  2,  3,  4}, 
+     {5,  6,  7,  8}, 
+     {9, 10, 11, 12}});
+  const tracking::math::Matrix<float32, 3, 4> expMat(
+    {{1.0,  2.0,  3.0,  4.0}, 
+     {0.2, -0.4, -1.0, -1.6}, 
+     {0.2,  0.1,  0.0, -0.1}});
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat.solve(bMat);
+
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = row; col < 4; ++col)
+    {
+      EXPECT_FLOAT_EQ(expMat(row, col), resMat(row, col));
+    }
+  }
+}
+
+TEST(TriangularMatrix, solve_upper) // NOLINT
+{
+  // clang-format off
+  const tracking::math::TriangularMatrix<float32, 3, false> triuMat(
+    {{1, 4, 6}, 
+     {0, 5, 7}, 
+     {0, 0, 8}});
+  const tracking::math::Matrix<float32, 3, 4> bMat(
+    {{1,  2,  3,  4}, 
+     {5,  6,  7,  8}, 
+     {9, 10, 11, 12}});
+  const tracking::math::Matrix<float32, 3, 4> expMat(
+    {{-3.450, -3.30, -3.150, -3.00}, 
+     {-0.575, -0.55, -0.525, -0.50}, 
+     { 1.125,  1.25,  1.375,  1.50}});
+  // clang-format on
+
+  // call UUT
+  auto resMat = triuMat.solve(bMat);
+
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = row; col < 4; ++col)
+    {
+      EXPECT_FLOAT_EQ(expMat(row, col), resMat(row, col));
+    }
+  }
+}
+
 TEST(TriangularMatrix, isUnitUpperTriangular_false) // NOLINT
 {
   // clang-format off
