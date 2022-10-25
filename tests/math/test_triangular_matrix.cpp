@@ -2,6 +2,7 @@
 #include "math/linalg/matrix.h"
 #include "trackingLib/math/linalg/square_matrix.hpp"
 #include "trackingLib/math/linalg/triangular_matrix.hpp"
+#include "trackingLib/math/linalg/diagonal_matrix.hpp"
 
 TEST(TriangularMatrix, ctor_default) // NOLINT
 {

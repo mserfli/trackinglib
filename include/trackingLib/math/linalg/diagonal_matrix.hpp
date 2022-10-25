@@ -189,20 +189,6 @@ inline auto DiagonalMatrix<FloatType, Size>::operator*=(const FloatType scalar) 
 }
 
 template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) -> FloatType&
-{
-  assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
-  return _data[idx];
-}
-
-template <typename FloatType, sint32 Size>
-inline auto DiagonalMatrix<FloatType, Size>::operator[](const sint32 idx) const -> FloatType
-{
-  assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
-  return _data[idx];
-}
-
-template <typename FloatType, sint32 Size>
 inline auto DiagonalMatrix<FloatType, Size>::inverse() const -> DiagonalMatrix
 {
   DiagonalMatrix tmp{*this};

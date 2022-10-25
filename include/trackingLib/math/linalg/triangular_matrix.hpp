@@ -1,10 +1,10 @@
 #ifndef E4D3E13A_DB2E_427E_BA99_4F251275B082
 #define E4D3E13A_DB2E_427E_BA99_4F251275B082
 
-#include "math/linalg/square_matrix.h"
 #include "math/linalg/triangular_matrix.h"
 
-#include "math/linalg/diagonal_matrix.hpp"
+#include "math/linalg/square_matrix.h"
+#include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/matrix.h"
 
 namespace tracking
@@ -33,7 +33,7 @@ inline TriangularMatrix<FloatType, Size, isLower>::TriangularMatrix(const Square
 template <typename FloatType, sint32 Size, bool isLower>
 inline TriangularMatrix<FloatType, Size, isLower>::TriangularMatrix(
     const std::initializer_list<std::initializer_list<FloatType>>& list)
-    : SquareMatrix<FloatType, Size>{ TriangularMatrix{ SquareMatrix<FloatType, Size>{list} } }
+    : SquareMatrix<FloatType, Size>{TriangularMatrix{SquareMatrix<FloatType, Size>{list}}}
 {
   // reuse existing ctor from SquareMatrix to prevent code duplication
 }
@@ -105,7 +105,7 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Matrix<F
     }
   }
   return result;
-}
+} // LCOV_EXCL_LINE
 
 template <typename FloatType, sint32 Size, bool isLower>
 inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) const
@@ -150,7 +150,7 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Triangul
   // implementation prevents if in inner loop: j<=k
   SquareMatrix<FloatType, Size> other{mat};
   return this->                 operator*(other);
-}
+} // LCOV_EXCL_LINE
 
 template <typename FloatType, sint32 Size, bool isLower>
 inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const DiagonalMatrix<FloatType, Size>& diag) const
@@ -179,7 +179,7 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Diagonal
     }
   }
   return result;
-}
+} // LCOV_EXCL_LINE
 
 template <typename FloatType, sint32 Size, bool isLower>
 inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const FloatType scalar) const -> TriangularMatrix
@@ -235,17 +235,44 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::transpose() const -> Tri
 {
   // TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
   return TriangularMatrix<FloatType, Size, !isLower>(SquareMatrix<FloatType, Size>::transpose());
-}
+} // LCOV_EXCL_LINE
 
 template <typename FloatType, sint32 Size, bool isLower>
 template <sint32 Cols>
 inline auto TriangularMatrix<FloatType, Size, isLower>::solve(const Matrix<FloatType, Size, Cols>& b) const
     -> Matrix<FloatType, Size, Cols>
 {
-  Matrix<FloatType, Size, Cols> x;
-  constexpr auto                UpLoType = isLower ? Eigen::Lower : Eigen::Upper;
-  // depending on UpLoType .solve does a forward/backward substitution
-  x._data = this->_data.template triangularView<UpLoType>().solve(b._data);
+  Matrix<FloatType, Size, Cols> x{};
+  if (isLower) // LCOV_EXCL_LINE
+  {
+    for (auto k = 0; k < Cols; ++k)
+    { // LCOV_EXCL_LINE
+      for (auto row = 0; row < Size; ++row)
+      {
+        FloatType sum{};
+        for (auto col = 0; col < row; ++col)
+        {
+          sum += this->operator()(row, col) * x(col, k);
+        }
+        x(row, k) = (b(row, k) - sum) / this->operator()(row, row);
+      }
+    }
+  }
+  else // LCOV_EXCL_LINE
+  {    // LCOV_EXCL_LINE
+    for (auto k = 0; k < Cols; ++k)
+    { // LCOV_EXCL_LINE
+      for (auto row = Size - 1; row >= 0; --row)
+      { // LCOV_EXCL_LINE
+        FloatType sum{};
+        for (auto col = Size - 1; col > row; --col)
+        {
+          sum += this->operator()(row, col) * x(col, k);
+        }
+        x(row, k) = (b(row, k) - sum) / this->operator()(row, row);
+      }
+    }
+  }
   return x;
 }
 
@@ -253,7 +280,7 @@ template <typename FloatType, sint32 Size, bool isLower>
 inline auto TriangularMatrix<FloatType, Size, isLower>::inverse() const -> TriangularMatrix
 {
   return TriangularMatrix(this->solve(SquareMatrix<FloatType, Size>::Identity()));
-}
+} // LCOV_EXCL_LINE
 
 template <typename FloatType, sint32 Size, bool isLower>
 inline auto TriangularMatrix<FloatType, Size, isLower>::isUnitUpperTriangular() const -> bool
@@ -265,6 +292,7 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::isUnitUpperTriangular() 
   }
   return isValid;
 }
+
 
 } // namespace math
 } // namespace tracking

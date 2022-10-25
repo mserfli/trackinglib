@@ -107,12 +107,20 @@ public:
   /// \brief Element access to a scalar diagonal value
   /// \param[in] idx  Row/Col index of the element
   /// \return FloatType&  Reference to the scalar diagonal value
-  auto operator[](const sint32 idx) -> FloatType&;
+  auto operator[](const sint32 idx) -> FloatType&
+  { // implemented here to solve cyclic includes
+    assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
+    return _data[idx];
+  }
 
   /// \brief Element read-only access to a scalar diagonal value
   /// \param[in] idx  Row/Col index of the element
   /// \return FloatType  Scalar diagonal value
-  auto operator[](const sint32 idx) const -> FloatType;
+  auto operator[](const sint32 idx) const -> FloatType
+  { // implemented here to solve cyclic includes
+    assert(((0 <= idx) && (idx < Size)) && "Index out of bounds");
+    return _data[idx];
+  }
 
   /// \brief Calculates the inverse
   /// \return DiagonalMatrix<FloatType, Size>
