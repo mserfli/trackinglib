@@ -60,10 +60,6 @@ struct TestPredictCA
     // call UUT
     mm.predict(static_cast<FloatType>(1.0), filter, egoMotion);
 
-    mm._vec.print();
-    mm._cov.print();
-    expCov.print();
-
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
       //EXPECT_FLOAT_EQ(mm._vec[row], expVec[row]);
