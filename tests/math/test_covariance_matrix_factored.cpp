@@ -85,23 +85,38 @@ TEST(CovarianceMatrixFactored, inverse) // NOLINT
   }
 }
 
-TEST(CovarianceMatrixFactored, calcCovarianceElement) // NOLINT
+struct CovarianceMatrixFactoredWithParams: public testing::TestWithParam<std::tuple<bool, int, int>>
 {
+  void SetUp() final
+  {
+    _cov     = std::get<0>(GetParam()) ? _covIn.inverse() : _covIn;
+    _covFull = _cov();
+  }
+
   // clang-format off
-  tracking::math::CovarianceMatrixFactored<float32, 3> cov(
+  tracking::math::CovarianceMatrixFactored<float32, 3> _covIn{
     {{1, 2, 3}, 
      {0, 1, 4}, 
-     {0, 0, 1}}, {1, 2, 4});
+     {0, 0, 1}}, {1, 2, 4}};
 
-  const float32 expCovElem = 16.0F;
+  tracking::math::CovarianceMatrixFactored<float32, 3> _cov{};
+  tracking::math::CovarianceMatrixFull<float32, 3> _covFull{};
   // clang-format on
+};
+
+TEST_P(CovarianceMatrixFactoredWithParams, calcCovarianceElement) // NOLINT
+{
+  const auto [isInverse, row, col] = GetParam(); // structured binding since C++17
 
   // call UUT
-  auto res = cov(1, 2);
+  auto res = _cov(row, col);
 
-  EXPECT_EQ(res, cov(2, 1));
-  EXPECT_EQ(res, expCovElem);
+  EXPECT_EQ(res, _covFull(row, col));
 }
+
+INSTANTIATE_TEST_CASE_P(CovarianceMatrixFactored,
+                        CovarianceMatrixFactoredWithParams,
+                        ::testing::Combine(::testing::Values(false, true), ::testing::Range(0, 3), ::testing::Range(0, 3)));
 
 TEST(CovarianceMatrixFactored, apaT) // NOLINT
 {
@@ -241,22 +256,22 @@ TEST(CovarianceMatrixFactored, setVariance) // NOLINT
   // clang-format on
 
   // call UUT
-  cov.setVariance(0,2);
+  cov.setVariance(0, 2);
 
   // verify
   const auto fullCov = cov();
-  for(sint32 i=0; i<3; ++i)
+  for (sint32 i = 0; i < 3; ++i)
   {
-    for(sint32 j=0; j<3; ++j)
+    for (sint32 j = 0; j < 3; ++j)
     {
-      EXPECT_FLOAT_EQ(expMat(i,j), fullCov(i, j));
+      EXPECT_FLOAT_EQ(expMat(i, j), fullCov(i, j));
     }
   }
 }
 
 TEST(CovarianceMatrixFactored, rank1Update_upper) // NOLINT
 {
-    // clang-format off
+  // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
     {{1,2,3}, 
      {0,1,4}, 
@@ -269,24 +284,24 @@ TEST(CovarianceMatrixFactored, rank1Update_upper) // NOLINT
      {                0, 1.000000000000000, 2.235294117647059},
      {                0,                 0, 1.000000000000000}}, {3.654377880184332, 25.52941176470588, 8.5}, false);
   // clang-format on
-  
+
   // call UUT
   cov.rank1Update(0.5, x);
 
   // verify
-  for(sint32 i=0; i<3; ++i)
+  for (sint32 i = 0; i < 3; ++i)
   {
     EXPECT_FLOAT_EQ(expCov._d[i], cov._d[i]);
-    for(sint32 j=i; j<3; ++j)
+    for (sint32 j = i; j < 3; ++j)
     {
-      EXPECT_FLOAT_EQ(expCov._u(i,j), cov._u(i, j));
+      EXPECT_FLOAT_EQ(expCov._u(i, j), cov._u(i, j));
     }
   }
 }
 
 TEST(CovarianceMatrixFactored, rank1Update_upper_inverse) // NOLINT
 {
-    // clang-format off
+  // clang-format off
   tracking::math::CovarianceMatrixFactored<float32, 3> cov(
     {{1,2,3}, 
      {0,1,4}, 
@@ -299,20 +314,18 @@ TEST(CovarianceMatrixFactored, rank1Update_upper_inverse) // NOLINT
      {                0, 1.000000000000000, 3.157894736842105}, 
      {                0,                 0, 1.000000000000000}}, {5.5, 3.454545454545455, 7.368421052631579}, true);
   // clang-format on
-  
+
   // call UUT
   cov.rank1Update(0.5, x);
 
   // verify
   EXPECT_FLOAT_EQ(expCov._isInverse, cov._isInverse);
-  for(sint32 i=0; i<3; ++i)
+  for (sint32 i = 0; i < 3; ++i)
   {
     EXPECT_FLOAT_EQ(expCov._d[i], cov._d[i]);
-    for(sint32 j=i; j<3; ++j)
+    for (sint32 j = i; j < 3; ++j)
     {
-      EXPECT_FLOAT_EQ(expCov._u(i,j), cov._u(i, j));
+      EXPECT_FLOAT_EQ(expCov._u(i, j), cov._u(i, j));
     }
   }
 }
-
-

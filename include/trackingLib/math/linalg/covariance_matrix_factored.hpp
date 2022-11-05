@@ -6,10 +6,13 @@
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.hpp"
 #include "math/linalg/matrix.h"
+#include "math/linalg/matrix_column_view.h"
+#include "math/linalg/matrix_row_view.h"
 #include "math/linalg/modified_gram_schmidt.hpp"
 #include "math/linalg/rank1_update.hpp"
 #include "math/linalg/square_matrix.hpp"
 #include "math/linalg/triangular_matrix.hpp"
+#include <type_traits>
 
 namespace tracking
 {
@@ -53,10 +56,38 @@ void CovarianceMatrixFactored<FloatType, Size>::setIdentity()
 template <typename FloatType, sint32 Size>
 inline auto CovarianceMatrixFactored<FloatType, Size>::operator()(sint32 row, sint32 col) const -> FloatType
 {
-  // TODO(matthias): optimize by calculating only the requested covariance
-  // element
-  auto tmp = this->operator()();
-  return tmp(row, col);
+  // cov(row,col) == cov(col,row), so we swap row and col if row > col
+  if (row > col)
+  {
+    std::swap(row, col);
+  }
+
+  FloatType result{};
+  if (_isInverse)
+  { // calc row, col element of _u.transpose() * _d * _u
+    // calc relevant elements of d*u to be lhs multiplied with uT(col::, col)==u(col, col::)
+    Vector<FloatType, Size> du{};
+    for (auto i = 0; i <= row; ++i)
+    {
+      du[i] = _d[i] * _u(i, col);
+    }
+    MatrixColumnView<FloatType, Size, 1> duView{du, 0, 0, row};
+    MatrixColumnView<FloatType, Size, Size> uTView{_u, row, 0, row};
+    result = uTView * duView;
+  }
+  else
+  { // calc row, col element of _u * _d * _u.transpose()
+    // calc relevant elements of u*d to be rhs multiplied with uT(col::, col)==u(col, col::)
+    Vector<FloatType, Size> ud{};
+    for (auto i = col; i < Size; ++i)
+    {
+      ud[i] = _u(row, i) * _d[i];
+    }
+    MatrixColumnView<FloatType, Size, 1> udView{ud, 0, col, Size-1};
+    MatrixRowView<FloatType, Size, Size> uTView{_u, col, col, Size-1};
+    result = uTView * udView; // calc the scalar product of ud*uT on relevant elements
+  }
+  return result;
 }
 
 template <typename FloatType, sint32 Size>
