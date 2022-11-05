@@ -83,7 +83,6 @@ inline auto SquareMatrix<FloatType, Size>::decomposeLDLT(TriangularMatrix<FloatT
                                                          DiagonalMatrix<FloatType, Size>&         D) const -> bool
 {
   assert(isSymmetric() && "Decomposition requires symmetric matrix");
-#if 1
   const Eigen::SimplicialLDLT<Eigen::SparseMatrix<FloatType>, Eigen::Lower, Eigen::NaturalOrdering<int>> ldlt(
       this->_data.sparseView());
 
@@ -105,61 +104,6 @@ inline auto SquareMatrix<FloatType, Size>::decomposeLDLT(TriangularMatrix<FloatT
     }
   }
   return isOk;
-#else
-  L.setIdentity();
-  math::Vector<FloatType, Size> v{};
-  for (auto j = 0; j < Size; ++j)
-  {
-    if (j > 0)
-    {
-      for (auto i = 0; i < j; ++i)
-      {
-        v[i] = L(j, i) * D[i]; // multiply element by element
-        const MatrixRowView    rowL(L, j, 0, j - 1);
-        const MatrixColumnView colV(v, 0, 0, j - 1);
-        v[j] = this->          operator()(j, j) - rowL * colV;
-        D[j] = v[j];
-        if (j < Size)
-        {
-          const MatrixView<FloatType, Size, Size>       blockL(L, j + 1, 1, Size - 1, j - 1);
-          const MatrixColumnView<FloatType, Size, Size> src(*this, j, j + 1, Size - 1);
-          auto                                          beta = (src - (blockL * colV)) / v[j];
-          for (auto k = j + 1; k < Size; ++k)
-          {
-            L(k, j) = beta[k];
-          }
-        }
-      }
-    }
-    else
-    {
-    }
-  }
-
-  // L=zeros(n,n);
-  // for j=1:n,
-  //   if (j > 1),
-  //     v(1:j-1)=L(j,1:j-1).*d(1:j-1);
-  //     v(j)=A(j,j)-L(j,1:j-1)*v(1:j-1)';
-  //     d(j)=v(j);
-  //     if (j < n),
-  //       L(j+1:n,j)=(A(j+1:n,j)-L(j+1:n,1:j-1)*v(1:j-1)')/v(j);
-  //     end;
-  //   else
-  //     v(1)=A(1,1);
-  //     d(1)=v(1);
-  //     L(2:n,1)=A(2:n,1)/v(1);
-  //   end;
-  // end;
-  // %
-  // %  Put d into a matrix.
-  // %
-  // D=diag(d);
-  // %
-  // %  Put ones on the diagonal of L.
-  // %
-  // L=L+eye(n);
-#endif
 }
 
 template <typename FloatType, sint32 Size>
