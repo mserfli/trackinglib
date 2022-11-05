@@ -68,6 +68,7 @@ public:
 
   /// \brief Calculates the inverse based on Cholesky factorization
   /// \return SquareMatrix
+  // TODO(matthias): use std::expected or sth similar as result type
   auto inverse() const -> SquareMatrix;
 
   // clang-format off

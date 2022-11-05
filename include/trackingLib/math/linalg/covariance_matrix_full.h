@@ -10,7 +10,6 @@ namespace tracking
 namespace math
 {
 
-// TODO(matthias): add contract for apaT functions
 template <typename FloatType, sint32 Size>
 class CovarianceMatrixFull
     : public SquareMatrix<FloatType, Size>
@@ -19,6 +18,7 @@ class CovarianceMatrixFull
 public:
   using value_type   = FloatType;
   using compose_type = CovarianceMatrixFull;
+  static constexpr auto dim = Size;
 
   //  rule of 5 declarations
   CovarianceMatrixFull()                                = default;
@@ -61,7 +61,7 @@ public:
   /// \brief
   /// \return true
   /// \return false
-  auto isInverse() const -> bool;
+  [[nodiscard]] auto isInverse() const -> bool;
 
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A

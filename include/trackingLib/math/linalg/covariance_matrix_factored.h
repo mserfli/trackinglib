@@ -22,6 +22,7 @@ class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<Covariance
 public:
   using value_type   = FloatType;
   using compose_type = CovarianceMatrixFull<FloatType, Size>;
+  static constexpr auto dim = Size;
 
   // rule of 5 declarations
   CovarianceMatrixFactored()                                    = default;
@@ -60,29 +61,30 @@ public:
   /// \brief
   /// \return true
   /// \return false
-  auto isInverse() const -> bool;
+  [[nodiscard]] auto isInverse() const -> bool;
 
   /// \brief Calculate A*P*A' inplace
-  /// \param[in] A
+  /// \param[in] A   A square matrix which is transforming P in same space
   void apaT(const SquareMatrix<FloatType, Size>& A);
 
   /// \brief Calculate A*P*A'
-  /// \param[in] A
+  /// \param[in] A   A square matrix which is transforming P in same space
+  /// \return Calculation result as new covariance matrix
   auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFactored;
 
-  /// \brief Calculate A*P*A' + G*Q*G', also known as Thornton update
+  /// \brief Calculate Phi*P*Phi' + G*Q*G', also known as Thornton update
   /// \tparam SizeQ
-  /// \param[in,out] Phi
-  /// \param[in,out] G
-  /// \param[in,out] Q
+  /// \param[in] Phi  A square matrix which is transforming P in same space
+  /// \param[in] G    A matrix to transform Q into matrix equally sized to Phi
+  /// \param[in] Q    A diagonal matrix
   template <sint32 SizeQ>
   void thornton(const SquareMatrix<FloatType, Size>&    Phi,
                 const Matrix<FloatType, Size, SizeQ>&   G,
                 const DiagonalMatrix<FloatType, SizeQ>& Q);
 
-  /// \brief Calculates P - c*x*x', also known as Agee Turner Rank-1 update
-  /// \param[in] c
-  /// \param[in] x
+  /// \brief Calculates P + c*x*x', also known as Agee Turner Rank-1 update
+  /// \param[in] c  Signed scalar, c<0: downdate, c>0 update
+  /// \param[in] x  A vector defining the outer product x*x' to update the matrix 
   void rank1Update(const FloatType c, const Vector<FloatType, Size>& x);
 
   /// \brief Set the variance at (idx,idx) and clears any correlations
