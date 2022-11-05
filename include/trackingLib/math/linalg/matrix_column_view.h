@@ -10,9 +10,6 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
-class MatrixRowView;
-
 /// \brief A column view on a Matrix object providing arithmetic operations
 /// \tparam FloatType
 /// \tparam Rows
@@ -43,9 +40,17 @@ public:
   template <sint32 Rows2>
   auto operator*(const Vector<FloatType, Rows2>& other) const -> FloatType;
 
+  /// \brief Dot product between the viewed column and another viewed column
+  /// \tparam Rows2
+  /// \tparam Cols2
+  /// \param[in] other  A vector
+  /// \return FloatType
+  template <sint32 Rows2, sint32 Cols2>
+  auto operator*(const MatrixColumnView<FloatType, Rows2, Cols2>& other) const -> FloatType;
+
   /// \brief Get the number of rows in the column view
   /// \return sint32
-  auto getRowCount() const -> sint32 { return _rowCount; }
+  [[nodiscard]] auto getRowCount() const -> sint32 { return _rowCount; }
 
 private:
   const Matrix<FloatType, Rows, Cols>& _matrix;
@@ -65,19 +70,6 @@ private:
 /// \return Vector<FloatType, Rows> 
 template <typename FloatType, sint32 Rows, sint32 Cols, sint32 Rows2, sint32 Cols2>
 auto operator*(const Matrix<FloatType, Rows, Cols>& mat, const MatrixColumnView<FloatType, Rows2, Cols2>& colView)
-    -> Vector<FloatType, Rows>;
-
-/// \brief Dot product between matrix row view and matrix column view: RowView * ColView = Scalar
-/// \tparam FloatType 
-/// \tparam Rows 
-/// \tparam Cols 
-/// \tparam Rows2 
-/// \tparam Cols2 
-/// \param[in] rowView  A matrix row view
-/// \param[in] colView  A matrix column view
-/// \return Vector<FloatType, Rows> 
-template <typename FloatType, sint32 Rows, sint32 Cols, sint32 Rows2, sint32 Cols2>
-auto operator*(const MatrixRowView<FloatType, Rows, Cols>& rowView, const MatrixColumnView<FloatType, Rows2, Cols2>& colView)
     -> Vector<FloatType, Rows>;
 
 } // namespace math

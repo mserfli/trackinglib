@@ -3,32 +3,6 @@
 #include "trackingLib/math/linalg/matrix_row_view.hpp"
 #include "trackingLib/math/linalg/vector.hpp"
 
-TEST(MatrixRowView, mul_lhs) // NOLINT
-{
-  // testing Vector * MatrixRowView
-  const tracking::math::Matrix<float32, 3, 3>        mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
-  const tracking::math::MatrixRowView<float32, 3, 3> rowView(mat, 2, 0, 2);
-  const tracking::math::Vector<float32, 3>           lhs{{1, 2, 3}};
-
-  // call UUT
-  auto res = lhs * rowView;
-
-  EXPECT_FLOAT_EQ(res, 1 * 7 + 2 * 8 + 3 * 9);
-}
-
-TEST(MatrixRowView, mul_lhs_ranged) // NOLINT
-{
-  // testing Vector * MatrixRowView
-  const tracking::math::Matrix<float32, 3, 3>        mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
-  const tracking::math::MatrixRowView<float32, 3, 3> rowView(mat, 2, 1, 2);
-  const tracking::math::Vector<float32, 2>           lhs{{1, 2}};
-
-  // call UUT
-  auto res = lhs * rowView;
-
-  EXPECT_FLOAT_EQ(res, 1 * 8 + 2 * 9);
-}
-
 TEST(MatrixRowView, mul_rhs) // NOLINT
 {
   // testing MatrixRowView * Matrix

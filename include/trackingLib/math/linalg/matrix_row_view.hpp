@@ -61,19 +61,4 @@ inline auto tracking::math::MatrixRowView<FloatType, Rows, Cols>::operator*(
   return result;
 }
 
-template <typename FloatType, sint32 Rows, sint32 Rows2, sint32 Cols2>
-inline auto tracking::math::operator*(const Vector<FloatType, Rows>& vec, const MatrixRowView<FloatType, Rows2, Cols2>& rowView)
-    -> FloatType
-{
-  static_assert(Rows <= Cols2);
-  assert(Rows == rowView.getColCount());
-  // calc dot product
-  FloatType result{};
-  for (auto row = 0; row < Rows; ++row)
-  {
-    result += vec[row] * rowView[row];
-  }
-  return result;
-}
-
 #endif // E2428903_D53A_4EC7_89B5_8C772C073887

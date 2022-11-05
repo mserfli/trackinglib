@@ -41,6 +41,21 @@ inline auto tracking::math::MatrixColumnView<FloatType, Rows, Cols>::operator*(c
   return result;
 }
 
+template <typename FloatType, sint32 Rows, sint32 Cols>
+template <sint32 Rows2, sint32 Cols2>
+inline auto tracking::math::MatrixColumnView<FloatType, Rows, Cols>::operator*(const MatrixColumnView<FloatType, Rows2, Cols2>& other) const -> FloatType
+{
+  assert(other.getRowCount() == _rowCount);
+  // calc dot product
+  FloatType result{};
+  for (auto row = 0; row < _rowCount; ++row)
+  {
+    result += this->operator[](row) * other[row];
+  }
+  return result;
+
+}
+
 template <typename FloatType, sint32 Rows, sint32 Cols, sint32 Rows2, sint32 Cols2>
 inline auto tracking::math::operator*(const Matrix<FloatType, Rows, Cols>&             mat,
                                       const MatrixColumnView<FloatType, Rows2, Cols2>& colView) -> Vector<FloatType, Rows>

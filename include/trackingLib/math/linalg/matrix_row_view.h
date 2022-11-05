@@ -54,7 +54,7 @@ public:
 
   /// \brief Get the number of cols in the row view
   /// \return sint32
-  auto getColCount() const -> sint32 { return _colCount; }
+  [[nodiscard]] auto getColCount() const -> sint32 { return _colCount; }
 
 private:
   const Matrix<FloatType, Rows, Cols>& _matrix;
@@ -62,17 +62,6 @@ private:
   const sint32                         _colBegin;
   const sint32                         _colCount;
 };
-
-/// \brief Dot product between vector and a matrix row view: Vector * RowView = Scalar
-/// \tparam FloatType
-/// \tparam Rows
-/// \tparam Rows2
-/// \tparam Cols2
-/// \param[in] vec  A vector
-/// \param[in] rowView  A matrix row view
-/// \return FloatType
-template <typename FloatType, sint32 Rows, sint32 Rows2, sint32 Cols2>
-auto operator*(const Vector<FloatType, Rows>& vec, const MatrixRowView<FloatType, Rows2, Cols2>& rowView) -> FloatType;
 
 } // namespace math
 } // namespace tracking

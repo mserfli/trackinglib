@@ -57,3 +57,17 @@ TEST(MatrixColumnView, mul_rhs_ranged) // NOLINT
 
   EXPECT_FLOAT_EQ(res, 6 * 1 + 9 * 2);
 }
+
+TEST(MatrixColumnView, mul_rhsview) // NOLINT
+{
+  // testing MatrixColumnView * MatrixColumnView
+  const tracking::math::Matrix<float32, 4, 3>           mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}};
+  const tracking::math::Vector<float32, 4>              rhs{{1, 2, 3, 4}};
+  const tracking::math::MatrixColumnView<float32, 4, 3> colView(mat, 2, 1, 2);
+  const tracking::math::MatrixColumnView<float32, 4, 1> rhsView(rhs, 0, 1, 2);
+
+  // call UUT
+  auto res = colView * rhsView;
+
+  EXPECT_FLOAT_EQ(res, 6 * 2 + 9 * 3);
+}
