@@ -72,7 +72,7 @@ TEST(CovarianceMatrixFactored, inverse) // NOLINT
   // clang-format on
 
   // call UUT
-  auto inv = cov.inverse();
+  auto inv = cov.inverse().value();
 
   EXPECT_TRUE(inv._isInverse);
   for (sint32 i = 0; i < 3; ++i)
@@ -89,7 +89,7 @@ struct CovarianceMatrixFactoredWithParams: public testing::TestWithParam<std::tu
 {
   void SetUp() final
   {
-    _cov     = std::get<0>(GetParam()) ? _covIn.inverse() : _covIn;
+    _cov     = std::get<0>(GetParam()) ? _covIn.inverse().value() : _covIn;
     _covFull = _cov();
   }
 

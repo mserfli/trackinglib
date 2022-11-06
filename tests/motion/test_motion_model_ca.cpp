@@ -25,8 +25,8 @@ struct TestPredictCA
                    typename MM::StateCov& expCov,
                    const tracking::filter::InformationFilter<FloatType>&)
   {
-    cov    = cov.inverse();
-    expCov = expCov.inverse();
+    cov    = cov.inverse().value();
+    expCov = expCov.inverse().value();
   }
 
   static void run()

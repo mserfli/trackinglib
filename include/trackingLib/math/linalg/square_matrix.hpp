@@ -41,27 +41,31 @@ inline auto SquareMatrix<FloatType, Size>::qrSolve(SquareMatrix<FloatType, Size>
 }
 
 template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::decomposeLLT(TriangularMatrix<FloatType, Size, true>& L) const -> bool
+inline auto SquareMatrix<FloatType, Size>::decomposeLLT() const -> tl::expected<TriangularMatrix<FloatType, Size, true>, Errors>
 {
-  assert(isSymmetric() && "Decomposition requires symmetric matrix");
-  const Eigen::LLT<Eigen::Matrix<FloatType, Size, Size>> llt(this->_data);
-
-  bool isOk = (llt.info() == Eigen::Success);
-  if (isOk)
+  if (isSymmetric())
   {
-    L.setZeros();
-    const auto& internalL = llt.matrixL();
-    // copy lower triangular elements of internal matrix
-    for (sint32 col = 0; col < Size; ++col)
+    const Eigen::LLT<Eigen::Matrix<FloatType, Size, Size>> llt(this->_data);
+
+    if (llt.info() == Eigen::Success)
     {
-      L(col, col) = internalL(col, col);
-      for (sint32 row = col + 1; row < Size; ++row)
+      TriangularMatrix<FloatType, Size, true> L{};
+      L.setZeros();
+      const auto& internalL = llt.matrixL();
+      // copy lower triangular elements of internal matrix
+      for (sint32 col = 0; col < Size; ++col)
       {
-        L(row, col) = internalL(row, col);
+        L(col, col) = internalL(col, col);
+        for (sint32 row = col + 1; row < Size; ++row)
+        {
+          L(row, col) = internalL(row, col);
+        }
       }
+      return L;
     }
+    return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
   }
-  return isOk;
+  return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
 }
 
 template <typename FloatType, sint32 Size>

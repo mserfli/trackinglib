@@ -3,6 +3,7 @@
 
 #include "math/linalg/covariance_matrix_full.h"
 
+#include "math/linalg/errors.h"
 #include "math/linalg/square_matrix.hpp"
 #include "math/linalg/triangular_matrix.hpp"
 
@@ -39,22 +40,20 @@ inline auto CovarianceMatrixFull<FloatType, Size>::operator()(sint32 row, sint32
 }
 
 template <typename FloatType, sint32 Size>
-inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> CovarianceMatrixFull
+inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
 {
-  CovarianceMatrixFull                    inv{};
-  TriangularMatrix<FloatType, Size, true> L{};
-
-  auto isOk = SquareMatrix<FloatType, Size>::decomposeLLT(L);
-  assert(isOk && "matrix not positive definite");
-
-  // L*(L'*Ainv) = eye(n,n)
-  // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
-  auto u = L.solve(CovarianceMatrixFull::Identity());
-  // L'*Ainv = u     -> solve for Ainv using backward substitution
-  auto s=L.transpose().solve(u);
-  inv = CovarianceMatrixFull(static_cast<FloatType>(0.5)*(s+s.transpose()), !_isInverse);
-
-  return inv;
+  const auto retVal = SquareMatrix<FloatType, Size>::decomposeLLT();
+  if (retVal.has_value())
+  {
+    const auto& L = *retVal;
+    // L*(L'*Ainv) = eye(n,n)
+    // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
+    auto u = L.solve(CovarianceMatrixFull::Identity());
+    // L'*Ainv = u     -> solve for Ainv using backward substitution
+    auto s = L.transpose().solve(u);
+    return CovarianceMatrixFull(static_cast<FloatType>(0.5) * (s + s.transpose()), !_isInverse);
+  }
+  return tl::unexpected<Errors>{retVal.error()};
 }
 
 template <typename FloatType, sint32 Size>
@@ -70,15 +69,15 @@ inline void CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<Float
   if (_isInverse)
   {
     SquareMatrix<FloatType, Size> res = A.transpose() * this->operator*=(A);
-    res+=res.transpose();
-    res*=static_cast<FloatType>(0.5);
+    res += res.transpose();
+    res *= static_cast<FloatType>(0.5);
     this->operator=(CovarianceMatrixFull(res, _isInverse));
   }
   else
   {
     SquareMatrix<FloatType, Size> res = A * this->operator*=(A.transpose());
-    res+=res.transpose();
-    res*=static_cast<FloatType>(0.5);
+    res += res.transpose();
+    res *= static_cast<FloatType>(0.5);
     this->operator=(CovarianceMatrixFull(res, _isInverse));
   }
 }

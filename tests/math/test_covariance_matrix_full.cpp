@@ -5,6 +5,27 @@
 // instatiate all templates for full coverage report
 template class tracking::math::CovarianceMatrixFull<float32, 3>;
 
+TEST(CovarianceMatrixFull, compose) // NOLINT
+{
+  // clang-format off
+  const tracking::math::CovarianceMatrixFull<float32, 3> cov(
+    {{45, 52, 12},
+     {52, 66, 16},
+     {12, 16,  4}});
+  // clang-format on
+
+  // call UUT
+  auto composed = cov();
+
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    for (sint32 j = 0; j < 3; ++j)
+    {
+      EXPECT_EQ(cov(i, j), composed(i, j));
+    }
+  }
+}
+
 TEST(CovarianceMatrixFull, apaT) // NOLINT
 {
   // clang-format off

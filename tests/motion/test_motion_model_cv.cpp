@@ -25,8 +25,8 @@ struct TestPredictCV
                    typename MM::StateCov& expCov,
                    const tracking::filter::InformationFilter<FloatType>&)
   {
-    cov    = cov.inverse();
-    expCov = expCov.inverse();
+    cov    = cov.inverse().value();
+    expCov = expCov.inverse().value();
   }
 
   static void run()
@@ -170,6 +170,3 @@ TEST(MotionModelCV, convertCA_facCov) // NOLINT
   EXPECT_FLOAT_EQ(caFull(MMCA::VY, MMCA::VY), cvFull(MMCV::VY, MMCV::VY));
   // clang-format on
 }
-
-
-

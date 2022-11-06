@@ -2,6 +2,7 @@
 #define BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08
 
 #include "base/first_include.h"
+#include "math/linalg/errors.h"
 #include "math/linalg/matrix.h"
 #include <limits>
 
@@ -44,11 +45,9 @@ public:
   auto qrSolve(SquareMatrix<FloatType, Size>& x, const SquareMatrix<FloatType, Size>& b) const -> bool;
 
   /// \brief Decompose internal matrix into L*L' using standard Cholesky factorization
-  /// \param[out] L  Calculated lower triangular matrix
-  /// \return true   if calculation was successful
+  /// \return tl::expected<TriangularMatrix<FloatType, Size, true>, Errors> 
   /// \precondition internal matrix is symmetric and positive definite
-  // TODO(matthias): use std::expected or sth similar as result type
-  auto decomposeLLT(TriangularMatrix<FloatType, Size, true>& L) const -> bool;
+  auto decomposeLLT() const -> tl::expected<TriangularMatrix<FloatType, Size, true>, Errors>;
 
   /// \brief Decompose internal matrix into L*D*L' using rational Cholesky factorization
   /// \param[out] L  Calculated lower triangular matrix
@@ -76,7 +75,7 @@ TEST_REMOVE_PROTECTED:
   ; // workaround for correct indentation
   // clang-format on
 
-  /// \brief Check for symmetry of the matrix 
+  /// \brief Check for symmetry of the matrix
   /// \return true
   [[nodiscard]] auto isSymmetric() const -> bool;
 };

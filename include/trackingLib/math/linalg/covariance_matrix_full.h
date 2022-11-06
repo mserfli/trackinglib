@@ -54,10 +54,10 @@ public:
   }
 
   /// \brief Calculates the inverse based on Cholesky decomposition
-  /// \return CovarianceMatrixFull
-  auto inverse() const -> CovarianceMatrixFull;
+  /// \return tl::expected<CovarianceMatrixFull, Errors> 
+  auto inverse() const -> tl::expected<CovarianceMatrixFull, Errors>;
 
-  /// \brief
+  /// \brief Checks inverse status
   /// \return true
   /// \return false
   [[nodiscard]] auto isInverse() const -> bool;

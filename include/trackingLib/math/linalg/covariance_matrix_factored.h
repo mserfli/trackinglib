@@ -55,10 +55,10 @@ public:
   auto operator()() const -> CovarianceMatrixFull<FloatType, Size>;
 
   /// \brief Calculates the inverse
-  /// \return CovarianceMatrixFactored
-  auto inverse() const -> CovarianceMatrixFactored;
-
-  /// \brief
+  /// \return tl::expected<CovarianceMatrixFactored, Errors> 
+  auto inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>;
+ 
+  /// \brief Checks inverse status
   /// \return true
   /// \return false
   [[nodiscard]] auto isInverse() const -> bool;

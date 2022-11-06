@@ -35,7 +35,7 @@ concept has_setVariance_member_func = requires {
 };
 template<typename T>
 concept has_inverse_member_func = requires {
-  { std::declval<const T>().inverse() } -> std::same_as<T>;
+  { std::declval<const T>().inverse() } -> std::same_as<tl::expected<T, Errors>>;
 };
 template<typename T>
 concept has_isInverse_member_func = requires {
