@@ -55,7 +55,7 @@ concept has_print_member_func = requires {
 };
 template<typename T>
 concept has_round_brackets_op = requires {
-  { std::declval<T>().operator()() } -> std::same_as<T&>;
+  { std::declval<T>().operator()() } -> std::convertible_to<typename T::compose_type&>;
 };
 template<typename T>
 concept has_round_brackets_const_op = requires {
