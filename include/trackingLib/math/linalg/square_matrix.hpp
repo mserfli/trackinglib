@@ -47,12 +47,10 @@ inline auto SquareMatrix<FloatType, Size>::Identity() -> SquareMatrix
 }
 
 template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::qrSolve(SquareMatrix<FloatType, Size>& x, const SquareMatrix<FloatType, Size>& b) const
-    -> bool
+inline void SquareMatrix<FloatType, Size>::qrSolve(SquareMatrix<FloatType, Size>& x, const SquareMatrix<FloatType, Size>& b) const
 {
   Eigen::HouseholderQR<Eigen::Matrix<FloatType, Size, Size>> qr(this->_data);
   x._data = qr.solve(b._data);
-  return true;
 }
 
 template <typename FloatType, sint32 Size>
@@ -160,8 +158,7 @@ template <typename FloatType, sint32 Size>
 inline auto SquareMatrix<FloatType, Size>::inverse() const -> SquareMatrix
 {
   SquareMatrix inv{};
-  auto         isOk = qrSolve(inv, SquareMatrix::Identity());
-  assert(isOk);
+  qrSolve(inv, SquareMatrix::Identity());
   return inv;
 }
 

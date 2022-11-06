@@ -42,7 +42,10 @@ public:
   /// \return SquareMatrix  Resulting identity matrix
   static auto Identity() -> SquareMatrix;
 
-  auto qrSolve(SquareMatrix<FloatType, Size>& x, const SquareMatrix<FloatType, Size>& b) const -> bool;
+  /// \brief Solve A * x = b using QR decomposition 
+  /// \param[out] x  Solution x
+  /// \param[in]  b  Result vector/matrix of A * x
+  void qrSolve(SquareMatrix<FloatType, Size>& x, const SquareMatrix<FloatType, Size>& b) const;
 
   /// \brief Decompose internal matrix into L*L' using standard Cholesky factorization
   /// \return tl::expected<TriangularMatrix<FloatType, Size, true>, Errors> 
@@ -61,7 +64,6 @@ public:
 
   /// \brief Calculates the inverse based on Cholesky factorization
   /// \return SquareMatrix
-  // TODO(matthias): use std::expected or sth similar as result type
   auto inverse() const -> SquareMatrix;
 
   // clang-format off
