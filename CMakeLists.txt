@@ -77,10 +77,10 @@ include(GNUInstallDirs)
 target_include_directories(
     ${PROJECT_NAME}
     INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}>
-              $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+           $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_14)
 
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
 

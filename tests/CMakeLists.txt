@@ -31,6 +31,6 @@ target_include_directories(
 )
 target_link_libraries(${TEST_BINARY} PUBLIC trackingLib::trackingLib gmock gmock_main pthread)
 
-target_compile_features(${TEST_BINARY} PRIVATE cxx_std_11)
+target_compile_features(${TEST_BINARY} PRIVATE cxx_std_20)
 
 gtest_discover_tests(${TEST_BINARY})

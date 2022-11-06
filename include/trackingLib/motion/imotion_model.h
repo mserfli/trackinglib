@@ -71,12 +71,6 @@ public:
   ExtendedMotionModel()          = default;
   virtual ~ExtendedMotionModel() = default;
 
-  explicit ExtendedMotionModel(const StateVec& vec, const StateCov& cov)
-      : IMotionModel<FloatType>{}
-      , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}
-  {
-  }
-
   /// \brief Read access to x position
   /// \return FloatType
   auto getX() const -> FloatType final { return this->operator[](MotionModel::X); }
@@ -95,6 +89,20 @@ TEST_REMOVE_PROTECTED:
   ExtendedMotionModel(ExtendedMotionModel&&) noexcept   = default;
   auto operator=(const ExtendedMotionModel& other) -> ExtendedMotionModel& = default;
   auto operator=(ExtendedMotionModel&&) noexcept -> ExtendedMotionModel& = default;
+
+  // clang-format off
+TEST_REMOVE_PRIVATE:
+  ; // workaround to keep following idententation
+  // clang-format on
+
+  /// \brief Testing: Construct a new Extended Motion Model object
+  /// \param[in] vec 
+  /// \param[in] cov 
+  explicit ExtendedMotionModel(const StateVec& vec, const StateCov& cov)
+      : IMotionModel<FloatType>{}
+      , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}
+  {
+  }
 };
 
 } // namespace motion

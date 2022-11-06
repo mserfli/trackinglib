@@ -35,12 +35,6 @@ public:
   auto operator=(StateMem&&) noexcept -> StateMem& = default;
   virtual ~StateMem()                              = default;
 
-  explicit StateMem(const StateVec& vec, const StateCov& cov)
-      : _vec{vec}
-      , _cov{cov}
-  {
-  }
-
   /// \brief Read access to full state vector
   /// \return const StateVec&
   auto getVec() const -> ConstStateVec& { return _vec; }
@@ -82,6 +76,15 @@ TEST_REMOVE_PROTECTED:
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
+
+  /// \brief Testing: Construct a new State Mem object
+  /// \param[in] vec 
+  /// \param[in] cov 
+  explicit StateMem(const StateVec& vec, const StateCov& cov)
+      : _vec{vec}
+      , _cov{cov}
+  {
+  }
 
   /// \brief State vector
   StateVec _vec{StateVec::Zeros()};
