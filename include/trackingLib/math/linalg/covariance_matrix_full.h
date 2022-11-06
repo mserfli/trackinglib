@@ -47,10 +47,9 @@ public:
   auto operator()(sint32 row, sint32 col) const -> FloatType;
 
   /// \brief Creates the "composed" covariance, although no composition is needed
-  /// \return CovarianceMatrixFull
-  auto operator()() const -> CovarianceMatrixFull
+  /// \return const CovarianceMatrixFull& 
+  auto operator()() const -> const CovarianceMatrixFull&
   {
-    assert(0 && "avoid calling this function.");
     return *this;
   }
 

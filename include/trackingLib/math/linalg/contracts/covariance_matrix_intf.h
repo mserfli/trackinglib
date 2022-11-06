@@ -59,7 +59,7 @@ concept has_round_brackets_op = requires {
 };
 template<typename T>
 concept has_round_brackets_const_op = requires {
-  { std::declval<const T>().operator()() } -> std::same_as<typename T::compose_type>;
+  { std::declval<const T>().operator()() } -> std::convertible_to<typename T::compose_type>; // allow const reference as well as plain type
 };
 template<typename T>
 concept has_round_brackets_const_op_int_int = requires {
