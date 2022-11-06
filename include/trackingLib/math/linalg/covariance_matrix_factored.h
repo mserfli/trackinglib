@@ -32,7 +32,10 @@ public:
   auto operator=(CovarianceMatrixFactored&&) noexcept -> CovarianceMatrixFactored& = default;
   virtual ~CovarianceMatrixFactored()                                              = default;
 
-  explicit CovarianceMatrixFactored(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
+  /// \brief Construct a new Covariance Matrix Factored object
+  /// \param[in] u   Unit upper triangular matrix
+  /// \param[in] d   Diagonal matrix
+  /// \param[in] isInverse  inverse status flag
   explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType, Size, false>& u,
                                     const DiagonalMatrix<FloatType, Size>&          d,
                                     const bool                                      isInverse = false);
@@ -110,6 +113,11 @@ public:
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
+
+  /// \brief Testing: Construct a new Covariance Matrix Factored object
+  /// \param[in] other 
+  /// \param[in] isInverse 
+  explicit CovarianceMatrixFactored(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
 
   TriangularMatrix<FloatType, Size, false> _u{};
   DiagonalMatrix<FloatType, Size>          _d{};

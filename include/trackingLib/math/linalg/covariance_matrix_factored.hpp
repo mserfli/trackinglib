@@ -23,7 +23,13 @@ template <typename FloatType, sint32 Size>
 CovarianceMatrixFactored<FloatType, Size>::CovarianceMatrixFactored(const SquareMatrix<FloatType, Size>& other,
                                                                     const bool                           isInverse)
 {
-  other.decomposeUDUT(_u, _d);
+  auto retVal = other.decomposeUDUT();
+  assert(retVal.has_value());
+
+  auto [u, d] = retVal.value_or(
+      std::make_pair(TriangularMatrix<FloatType, Size, false>::Identity(), DiagonalMatrix<FloatType, Size>::Identity()));
+  _u         = u;
+  _d         = d;
   _isInverse = isInverse;
 }
 
@@ -71,7 +77,7 @@ inline auto CovarianceMatrixFactored<FloatType, Size>::operator()(sint32 row, si
     {
       du[i] = _d[i] * _u(i, col);
     }
-    MatrixColumnView<FloatType, Size, 1> duView{du, 0, 0, row};
+    MatrixColumnView<FloatType, Size, 1>    duView{du, 0, 0, row};
     MatrixColumnView<FloatType, Size, Size> uTView{_u, row, 0, row};
     result = uTView * duView;
   }
@@ -83,8 +89,8 @@ inline auto CovarianceMatrixFactored<FloatType, Size>::operator()(sint32 row, si
     {
       ud[i] = _u(row, i) * _d[i];
     }
-    MatrixColumnView<FloatType, Size, 1> udView{ud, 0, col, Size-1};
-    MatrixRowView<FloatType, Size, Size> uTView{_u, col, col, Size-1};
+    MatrixColumnView<FloatType, Size, 1> udView{ud, 0, col, Size - 1};
+    MatrixRowView<FloatType, Size, Size> uTView{_u, col, col, Size - 1};
     result = uTView * udView; // calc the scalar product of ud*uT on relevant elements
   }
   return result;

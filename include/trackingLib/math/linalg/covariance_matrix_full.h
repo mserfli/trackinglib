@@ -28,11 +28,6 @@ public:
   auto operator=(CovarianceMatrixFull&&) noexcept -> CovarianceMatrixFull& = default;
   virtual ~CovarianceMatrixFull()                                          = default;
 
-  /// \brief Construct a new Covariance Matrix Full< Float Type,  Size> object
-  /// \param[in] other A base class object
-  /// \param[in,out] isInverse
-  explicit CovarianceMatrixFull(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
-
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFull
   static auto Identity() -> CovarianceMatrixFull;
@@ -79,6 +74,11 @@ public:
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
+
+  /// \brief Testing: Construct a new Covariance Matrix Full< Float Type,  Size> object
+  /// \param[in] other A base class object
+  /// \param[in] isInverse
+  explicit CovarianceMatrixFull(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
 
   bool _isInverse{false};
 };

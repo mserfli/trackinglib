@@ -89,7 +89,7 @@ target_include_directories(
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_14)
 
-target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
+target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen expected)
 
 add_subdirectory(examples)
 add_subdirectory(python)

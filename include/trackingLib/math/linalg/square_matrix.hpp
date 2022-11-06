@@ -10,6 +10,7 @@
 #include "math/linalg/triangular_matrix.hpp"
 #include "math/linalg/vector.hpp"
 #include <limits>
+#include <utility>
 
 namespace tracking
 {
@@ -29,6 +30,20 @@ SquareMatrix<FloatType, Size>::SquareMatrix(const DiagonalMatrix<FloatType, Size
   {
     this->operator()(idx, idx) = other[idx];
   }
+}
+
+template <typename FloatType, sint32 Size>
+inline void SquareMatrix<FloatType, Size>::setIdentity()
+{
+  this->_data.setIdentity();
+}
+
+template <typename FloatType, sint32 Size>
+inline auto SquareMatrix<FloatType, Size>::Identity() -> SquareMatrix
+{
+  SquareMatrix tmp;
+  tmp.setIdentity();
+  return tmp;
 }
 
 template <typename FloatType, sint32 Size>
@@ -69,50 +84,41 @@ inline auto SquareMatrix<FloatType, Size>::decomposeLLT() const -> tl::expected<
 }
 
 template <typename FloatType, sint32 Size>
-inline void SquareMatrix<FloatType, Size>::setIdentity()
+inline auto SquareMatrix<FloatType, Size>::decomposeLDLT() const
+    -> tl::expected<std::pair<TriangularMatrix<FloatType, Size, true>, DiagonalMatrix<FloatType, Size>>, Errors>
 {
-  this->_data.setIdentity();
-}
-
-template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::Identity() -> SquareMatrix
-{
-  SquareMatrix tmp;
-  tmp.setIdentity();
-  return tmp;
-}
-
-template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::decomposeLDLT(TriangularMatrix<FloatType, Size, true>& L,
-                                                         DiagonalMatrix<FloatType, Size>&         D) const -> bool
-{
-  assert(isSymmetric() && "Decomposition requires symmetric matrix");
-  const Eigen::SimplicialLDLT<Eigen::SparseMatrix<FloatType>, Eigen::Lower, Eigen::NaturalOrdering<int>> ldlt(
-      this->_data.sparseView());
-
-  bool isOk(ldlt.info() == Eigen::Success);
-  if (isOk)
+  if (isSymmetric())
   {
-    L.setIdentity();
+    const Eigen::SimplicialLDLT<Eigen::SparseMatrix<FloatType>, Eigen::Lower, Eigen::NaturalOrdering<int>> ldlt(
+        this->_data.sparseView());
 
-    const auto  internalL = Eigen::SparseMatrix<FloatType>(ldlt.matrixL());
-    const auto& internalD = ldlt.vectorD();
-    // copy strict lower triangular and diagonal elements of internal matrix
-    for (sint32 col = 0; col < Size; ++col)
+    if (ldlt.info() == Eigen::Success)
     {
-      D[col] = internalD[col];
-      for (sint32 row = col + 1; row < Size; ++row)
+      TriangularMatrix<FloatType, Size, true> L{};
+      DiagonalMatrix<FloatType, Size>         D{};
+      L.setIdentity();
+
+      const auto  internalL = Eigen::SparseMatrix<FloatType>(ldlt.matrixL());
+      const auto& internalD = ldlt.vectorD();
+      // copy strict lower triangular and diagonal elements of internal matrix
+      for (sint32 col = 0; col < Size; ++col)
       {
-        L(row, col) = internalL.coeff(row, col);
+        D[col] = internalD[col];
+        for (sint32 row = col + 1; row < Size; ++row)
+        {
+          L(row, col) = internalL.coeff(row, col);
+        }
       }
+      return std::make_pair(L, D);
     }
+    return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
   }
-  return isOk;
+  return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
 }
 
 template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::decomposeUDUT(TriangularMatrix<FloatType, Size, false>& U,
-                                                         DiagonalMatrix<FloatType, Size>&          D) const -> bool
+inline auto SquareMatrix<FloatType, Size>::decomposeUDUT() const
+    -> tl::expected<std::pair<TriangularMatrix<FloatType, Size, false>, DiagonalMatrix<FloatType, Size>>, Errors>
 {
   // Grewal & Andrews, Kalman Filtering Theory and Practice Using MATLAB, 4th
   // Edition, Wiley, 2014.
@@ -120,29 +126,34 @@ inline auto SquareMatrix<FloatType, Size>::decomposeUDUT(TriangularMatrix<FloatT
   // Performs modified Cholesky decomposition of symmetric positive-definite
   // matrix P (input).
 
-  assert(isSymmetric() && "Decomposition requires symmetric matrix");
-  const auto& P = this->_data;
-  for (sint32 j = Size - 1; j >= 0; --j)
+  if (isSymmetric())
   {
-    for (sint32 i = j; i >= 0; --i)
+    const auto& P = this->_data;
+    TriangularMatrix<FloatType, Size, false> U{};
+    DiagonalMatrix<FloatType, Size> D{};
+    for (sint32 j = Size - 1; j >= 0; --j)
     {
-      auto sigma = P(i, j);
-      for (sint32 k = j + 1; k < Size; ++k)
+      for (sint32 i = j; i >= 0; --i)
       {
-        sigma -= U(i, k) * D[k] * U(j, k);
-      }
-      if (i == j)
-      {
-        D[j]    = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
-        U(j, j) = static_cast<FloatType>(1.0);
-      }
-      else
-      {
-        U(i, j) = sigma / D[j];
+        auto sigma = P(i, j);
+        for (sint32 k = j + 1; k < Size; ++k)
+        {
+          sigma -= U(i, k) * D[k] * U(j, k);
+        }
+        if (i == j)
+        {
+          D[j]    = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
+          U(j, j) = static_cast<FloatType>(1.0);
+        }
+        else
+        {
+          U(i, j) = sigma / D[j];
+        }
       }
     }
+    return std::make_pair(U, D);
   }
-  return true;
+  return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
 }
 
 template <typename FloatType, sint32 Size>

@@ -50,20 +50,14 @@ public:
   auto decomposeLLT() const -> tl::expected<TriangularMatrix<FloatType, Size, true>, Errors>;
 
   /// \brief Decompose internal matrix into L*D*L' using rational Cholesky factorization
-  /// \param[out] L  Calculated lower triangular matrix
-  /// \param[out] D  Calculated diagonal matrix
-  /// \return true   if calculation was successful
+  /// \return tl::expected<std::pair<TriangularMatrix<FloatType, Size, true>, DiagonalMatrix<FloatType, Size>>, Errors> 
   /// \precondition internal matrix is symmetric and positive semi definite
-  // TODO(matthias): use std::expected or sth similar as result type
-  auto decomposeLDLT(TriangularMatrix<FloatType, Size, true>& L, DiagonalMatrix<FloatType, Size>& D) const -> bool;
+  auto decomposeLDLT() const -> tl::expected<std::pair<TriangularMatrix<FloatType, Size, true>, DiagonalMatrix<FloatType, Size>>, Errors>;
 
   /// \brief Decompose internal matrix into U*D*U' using rational Cholesky factorization
-  /// \param[out] U  Calculated upper triangular matrix
-  /// \param[out] D  Calculated diagonal matrix
-  /// \return true   if calculation was successful
+  /// \return tl::expected<std::pair<TriangularMatrix<FloatType, Size, false>, DiagonalMatrix<FloatType, Size>>, Errors> 
   /// \precondition internal matrix is symmetric and positive semi definite
-  // TODO(matthias): use std::expected or sth similar as result type
-  auto decomposeUDUT(TriangularMatrix<FloatType, Size, false>& U, DiagonalMatrix<FloatType, Size>& D) const -> bool;
+  auto decomposeUDUT() const -> tl::expected<std::pair<TriangularMatrix<FloatType, Size, false>, DiagonalMatrix<FloatType, Size>>, Errors>;
 
   /// \brief Calculates the inverse based on Cholesky factorization
   /// \return SquareMatrix
