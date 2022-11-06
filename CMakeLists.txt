@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.24)
 
 project(trackingLib 
         VERSION 0.1.0
@@ -40,18 +40,25 @@ FetchContent_Declare (
     GIT_PROGRESS TRUE 
 )
 
-set(EIGEN_BUILD_DOC OFF)
-# note: To disable eigen tests,
-# you should put this code in a add_subdirectory to avoid to change
-# BUILD_TESTING for your own project too since variables are directory
-# scoped
-set(BUILD_TESTING OFF)
-set(EIGEN_BUILD_PKGCONFIG OFF)
+FetchContent_Declare (
+    expected
+    GIT_REPOSITORY https://github.com/TartanLlama/expected.git
+    GIT_TAG v1.0.0
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE 
+)
+
+option(EIGEN_BUILD_DOC OFF)
+option(BUILD_TESTING OFF)
+option(EIGEN_BUILD_PKGCONFIG OFF)
+option(EXPECTED_ENABLE_TESTS OFF)
+option(PYBIND11_TEST OFF)
 
 FetchContent_MakeAvailable (
     googletest
     Eigen
     pybind11
+    expected
 )
 
 # activate code coverage
