@@ -1,30 +1,50 @@
-#include "base/first_include.h"
-#include "env/ego_motion.h"
-#include "filter/kalman_filter.h"
-#include "math/linalg/covariance_matrix_factored.h"
-#include "math/linalg/covariance_matrix_full.h"
-#include "motion/motion_model_cv.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#include <Eigen/Cholesky>
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/OrderingMethods>
+#include <Eigen/SparseCholesky>
+#pragma clang diagnostic pop
 
-using tracking::env::EgoMotion;
-using tracking::filter::KalmanFilter;
-using tracking::math::CovarianceMatrixFactored;
-using tracking::math::CovarianceMatrixFull;
-using tracking::motion::IMotionModel;
-using tracking::motion::MotionModelCV;
+#include <iostream>
 
 auto main() -> int
 {
-  std::array<std::unique_ptr<const IMotionModel<float32>>, 3> mmVec;
-  for (auto& it : mmVec)
-  {
-    it.reset(new MotionModelCV<CovarianceMatrixFull, float32>);
-  }
+  // implement CA information filter predict step using Eigen
+  Eigen::MatrixXd P{
+      {{5, 0, 0, 0, 0, 0}, {0, 1, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {0, 0, 0, 0, 0.1, 0}, {0, 0, 0, 0, 0, 1}}};
+  Eigen::LDLT<Eigen::MatrixXd> ldlt(P.inverse());
 
-  MotionModelCV<CovarianceMatrixFull, float32>     mm0{};
-  MotionModelCV<CovarianceMatrixFactored, float32> mm1{};
-  EgoMotion<float32>                               egoMotion;
-  KalmanFilter<float32>                            kf;
-  mm0.predict(1.0F, kf, egoMotion);
-  mm1.predict(1.0F, kf, egoMotion);
+  Eigen::Matrix<double, 6, 6> A{{{1, 1, 0.5, 0, 0, 0},
+                                 {0, 1, 1, 0, 0, 0},
+                                 {0, 0, 1, 0, 0, 0},
+                                 {0, 0, 0, 1, 1, 0.5},
+                                 {0, 0, 0, 0, 1, 1},
+                                 {0, 0, 0, 0, 0, 1}}};
+
+  Eigen::Matrix<double, 6, 2> G{{{0.5, 0}, {1, 0}, {1, 0}, {0, 0.5}, {0, 1}, {0, 1}}};
+
+  Eigen::Matrix<double, 2, 2> Q{{{100, 0}, {0, 100}}};
+
+  auto invA = A.inverse().eval();
+  std::cout << invA << std::endl;
+  auto G_ = (invA*G).eval();
+  for (auto colIdx = 0; colIdx < G.cols(); ++colIdx)
+  {
+    auto g = G_.col(colIdx);
+    std::cout << g << std::endl;
+    auto Yc = ldlt.reconstructedMatrix().eval();
+    std::cout << Yc << std::endl;
+    auto c = 1 / ((g.transpose() * Yc * g) + 1 / Q(colIdx, colIdx));
+    std::cout << c << std::endl;
+    auto x = sqrt(c) * (Yc * g).eval();
+    std::cout << x << std::endl;
+    ldlt.rankUpdate(x, -1);
+    std::cout << ldlt.reconstructedMatrix().eval() << std::endl;
+  }
+  auto result = (invA.transpose() * ldlt.reconstructedMatrix() * invA).eval();
+  std::cout << result << std::endl;
+
   return 0;
 }

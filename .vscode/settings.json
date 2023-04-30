@@ -133,4 +133,8 @@
     "doxdocgen.generic.commandSuggestionAddPrefix": false,
     
     "cmake.configureOnOpen": true,
+    "lldb.displayFormat": "auto",
+    "lldb.showDisassembly": "auto",
+    "lldb.dereferencePointers": true,
+    "lldb.consoleMode": "commands",
   }

@@ -57,6 +57,7 @@ public:
   auto operator+=(const Matrix& other) -> Matrix&;
   auto operator-=(const Matrix& other) -> Matrix&;
 
+  /// Compliant to AUTOSAR C++14, A8-4-8: Output parameters shall not be used
   template <sint32 Cols2>
   auto operator*=(const Matrix<FloatType, Cols, Cols2>& other) -> Matrix<FloatType, Rows, Cols2>;
 

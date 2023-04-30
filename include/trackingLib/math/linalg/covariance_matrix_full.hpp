@@ -68,6 +68,7 @@ inline void CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<Float
   assert(this->isSymmetric() && "Covariance currently not symmetric");
   if (_isInverse)
   {
+    // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
     SquareMatrix<FloatType, Size> res = A.transpose() * this->operator*=(A);
     res += res.transpose();
     res *= static_cast<FloatType>(0.5);
@@ -75,6 +76,7 @@ inline void CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<Float
   }
   else
   {
+    // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
     SquareMatrix<FloatType, Size> res = A * this->operator*=(A.transpose());
     res += res.transpose();
     res *= static_cast<FloatType>(0.5);
