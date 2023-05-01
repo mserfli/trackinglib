@@ -32,15 +32,15 @@ class Matrix: public contract::MatrixIntf<Matrix<ValueType_, Rows_, Cols_, IsRow
 {
 public:
   /// \brief Type of the transposed matrix without changing the memory layout
-  using transpose_type             = Matrix<ValueType_, Cols_, Rows_, !IsRowMajor_>;
+  using transpose_type = Matrix<ValueType_, Cols_, Rows_, !IsRowMajor_>;
   /// \brief Type of the transposed matrix with fixed row major memory layout
   using transpose_type_row_major   = Matrix<ValueType_, Cols_, Rows_, true>;
-  using value_type                 = ValueType_; ///< element type
-  static constexpr auto Rows       = Rows_; ///< number of rows
-  static constexpr auto Cols       = Cols_; ///< number of cols
+  using value_type                 = ValueType_;                  ///< element type
+  static constexpr auto Rows       = Rows_;                       ///< number of rows
+  static constexpr auto Cols       = Cols_;                       ///< number of cols
   static constexpr auto RowsInMem  = IsRowMajor_ ? Rows_ : Cols_; ///< number of rows in memory
   static constexpr auto ColsInMem  = IsRowMajor_ ? Cols_ : Rows_; ///< number of cols in memory
-  static constexpr auto IsRowMajor = IsRowMajor_; ///< memory layout of the matrix
+  static constexpr auto IsRowMajor = IsRowMajor_;                 ///< memory layout of the matrix
 
   /// \brief Matrix specific errors
   enum class Errors
@@ -80,21 +80,21 @@ public:
   /// \param[in] col  column of the element to read
   /// \return tl::expected<ValueType_, Errors>   either the value at (row,col) or an Error descriptor
   auto operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>;
-  
+
   /// \brief Element modify access
   /// \param[in] row  row of the element to modify
   /// \param[in] col  column of the element to modify
   /// \return tl::expected<std::reference_wrapper<ValueType_>, Errors>   either the reference at (row,col) or an Error descriptor
   auto operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
   // <---
-  
+
   //////////////////////////////////////////////////
   // comparison operators  --->
   /// \brief Comparison to equal matrix type
   /// \param[in] other  matrix of equal type
   /// \return true   if all elements are equal
   auto operator==(const Matrix& other) const -> bool;
-  
+
   /// \brief Comparison to matrix of equal size but opposite memory layout
   /// \param[in] other  matrix with opposite memory layout
   /// \return true   if all elements are equal
@@ -118,37 +118,68 @@ public:
 
   //////////////////////////////////////////////////
   // arithmentic operators --->
+  /// \brief Calculates Self + Other
+  /// \tparam MajorOrder_  memory layout of other matrix
+  /// \param[in] other  matrix of equal size
+  /// \return Matrix   result of Self + Other
   template <bool MajorOrder_>
   auto operator+(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
 
+  /// \brief Calculates Self - Other
+  /// \tparam MajorOrder_  memory layout of other matrix
+  /// \param[in] other  matrix of equal size
+  /// \return Matrix   result of Self - Other
   template <bool MajorOrder_>
   auto operator-(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
 
+  /// \brief Calculates Self * scalar
+  /// \param[in] scalar  a scalar value
+  /// \return Matrix   result of Self * scalar
   auto operator*(ValueType_ scalar) const -> Matrix;
 
+  /// \brief Calculates Self / scalar for integral matrices
+  /// \tparam IntType
+  /// \param[in] scalar  a scalar value
+  /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
   template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
   auto operator/(IntType scalar) const -> tl::expected<Matrix, Errors>;
 
+  /// \brief Calculates Self / scalar for floating-point matrices
+  /// \tparam IntType
+  /// \param[in] scalar  a scalar value
+  /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
   template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
   auto operator/(FloatType scalar) const -> tl::expected<Matrix, Errors>;
 
-  /// \brief Matrix multiplication
+  /// \brief Calculates matrix multiplication Self * Other
   /// \tparam Cols2_
   /// \tparam IsRowMajor2_
-  /// \param[in,out] other
+  /// \param[in] other
   /// \return Matrix<ValueType_, Rows_, Cols2_, IsRowMajor_>
   template <sint32 Cols2_, bool IsRowMajor2_>
   auto operator*(const Matrix<ValueType_, Cols_, Cols2_, IsRowMajor2_>& other) const
       -> Matrix<ValueType_, Rows_, Cols2_, IsRowMajor_>;
   // <---
 
+  //////////////////////////////////////////////////
   // other operations --->
+  /// \brief Print the matrix to stdout
   void print() const;
+
+  /// \brief Sets all elements to zero
   void setZeros();
+
+  /// \brief Sets all elements to one
   void setOnes();
+
+  /// \brief Fast transpose without changing the layout
+  /// \return const transpose_type&   const reference to same data as Self, but differently interpreted
   auto transpose() const -> const transpose_type&;
+
+  /// \brief Fast transpose without changing the layout
+  /// \return transpose_type&   reference to same data as Self, but differently interpreted
   auto transpose() -> transpose_type&;
- 
+
   /// \brief Set a block matrix at given position
   /// \tparam SrcRowSize_      Rows of the source block
   /// \tparam SrcColSize_      Cols of the source block
@@ -166,7 +197,7 @@ public:
             sint32 SrcColCount_,
             sint32 SrcRowBeg_,
             sint32 SrcColBeg_,
-            bool SrcIsRowMajor_,
+            bool   SrcIsRowMajor_,
             sint32 DstRowBeg_,
             sint32 DstColBeg_>
   void setBlock(const Matrix<ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_>& block);
@@ -175,14 +206,31 @@ public:
   // clang-format off
 TEST_REMOVE_PROTECTED:
   ; // workaround for correct indentation
-  // clang-format on
-  using Storage = std::array<ValueType_, static_cast<sint32>(Rows* Cols)>;
-  auto data() const -> const Storage& { return _data; }
+  // clang-format on 
+  using Storage = std::array<ValueType_, static_cast<sint32>(Rows* Cols)>; ///< type of the internal storage
+  
+  //////////////////////////////////////////////////
+  // access operators  --->
+  /// \brief  Read-only access to the internal data
+  /// \return const Storage& 
+  auto data() const -> const Storage& { return _data; } 
+
+  /// \brief Modify access to the internal data
+  /// \return Storage& 
   auto data() -> Storage& { return _data; }
-
+  
+  /// \brief Unsafe element read-only access
+  /// \param[in] row  row of the element to read
+  /// \param[in] col  column of the element to read
+  /// \return ValueType_   the value at (row,col)
   auto at_unsafe(sint32 row, sint32 col) const -> ValueType_;
-  auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
 
+  /// \brief Unsafe element modify access
+  /// \param[in] row  row of the element to read
+  /// \param[in] col  column of the element to read
+  /// \return ValueType_   the value at (row,col)
+  auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
+  // <---
 #if 0
   template <typename U, sint32 Rows, sint32 Cols>
   friend class Matrix; // needed to access member data() in operator*=
@@ -200,8 +248,18 @@ TEST_REMOVE_PRIVATE:
   template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
   void inplace_mul_by_inverse_factor_unsafe(FloatType scalar);
 
-  Storage _data{};
+  Storage _data{}; ///< internal data to store the matrix
 };
+
+//////////////////////////////////////////////////
+// non member operations  --->
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+static auto operator*(ValueType_ scalar, Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+{
+  return mat * scalar;
+}
+// <---
 
 } // namespace math
 } // namespace tracking

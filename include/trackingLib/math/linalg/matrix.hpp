@@ -70,6 +70,8 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::print() const
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_
 {
+  assert((0 <= row) && (row < Rows_));
+  assert((0 <= col) && (col < Cols_));
   if (!IsRowMajor)
   {
     std::swap(row, col);
@@ -80,6 +82,8 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row,
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) -> ValueType_&
 {
+  assert((0 <= row) && (row < Rows_));
+  assert((0 <= col) && (col < Cols_));
   if (!IsRowMajor)
   {
     std::swap(row, col);
