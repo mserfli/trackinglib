@@ -4,13 +4,14 @@
 
 #define TEST_MATRIX_WITH_VISUAL_INSPECTION(X) // X.print()
 
-// helper class to support typed tests which wraps the IsRowMajor param into a type
+/// \brief helper class to support typed tests which wraps the IsRowMajor param into a type
 template <bool IsRowMajor_>
 struct MatrixStorageType
 {
   static constexpr auto IsRowMajor = IsRowMajor_;
 };
 
+/// \brief Generic Matrix test class templatized by MatrixStorageType
 template <typename MatrixStorageType>
 class GTestMatrix: public ::testing::Test
 {
@@ -18,10 +19,18 @@ public:
   void SetUp() final;
 
 protected:
-  using IntMatType   = tracking::math::Matrix<sint32, 2, 3, MatrixStorageType::IsRowMajor>;
-  using FloatMatType = tracking::math::Matrix<float32, 2, 3, MatrixStorageType::IsRowMajor>;
-  IntMatType   _testIntMat{};
-  FloatMatType _testFloatMat{};
+  using IntMatType                   = tracking::math::Matrix<sint32, 2, 3, MatrixStorageType::IsRowMajor>;
+  using IntMatTypeTranspMemLayout    = tracking::math::Matrix<sint32, 2, 3, !MatrixStorageType::IsRowMajor>;
+  using IntMatMulType                = tracking::math::Matrix<sint32, 3, 4, MatrixStorageType::IsRowMajor>;
+  using IntMatMulTypeTranspMemLayout = tracking::math::Matrix<sint32, 3, 4, !MatrixStorageType::IsRowMajor>;
+  using IntMatMulResultType          = tracking::math::Matrix<sint32, 2, 4, MatrixStorageType::IsRowMajor>;
+  using FloatMatType                 = tracking::math::Matrix<float32, 2, 3, MatrixStorageType::IsRowMajor>;
+  IntMatType                   _testIntMat{};
+  IntMatTypeTranspMemLayout    _testIntMatTransposed{};
+  IntMatMulType                _testIntMatMul{};
+  IntMatMulTypeTranspMemLayout _testIntMatMulTransposed{};
+  IntMatMulResultType          _testIntMatMulResult{};
+  FloatMatType                 _testFloatMat{};
 
   void test_ctor_initializerList_Success();
 
@@ -31,7 +40,7 @@ protected:
     T                      mat{_testIntMat};
     typename T::value_type retVal = -1;
     // call UUT
-    retVal = mat.at_unsafe(T::RowsOut - 1, T::ColsOut - 1);
+    retVal = mat.at_unsafe(T::Rows - 1, T::Cols - 1);
 
     EXPECT_EQ(retVal, 5);
   }
@@ -41,7 +50,7 @@ protected:
   {
     T mat{_testIntMat};
     // call UUT
-    auto retVal = mat(T::RowsOut, 0);
+    auto retVal = mat(T::Rows, 0);
 
     EXPECT_FALSE(retVal.has_value());
     EXPECT_EQ(retVal.error(), T::Errors::INVALID_ACCESS_ROW);
@@ -52,7 +61,7 @@ protected:
   {
     T mat{_testIntMat};
     // call UUT
-    auto retVal = mat(0, T::ColsOut);
+    auto retVal = mat(0, T::Cols);
 
     EXPECT_FALSE(retVal.has_value());
     EXPECT_EQ(retVal.error(), T::Errors::INVALID_ACCESS_COL);
@@ -63,13 +72,40 @@ protected:
   {
     T mat{_testIntMat};
     // call UUT
-    auto retVal = mat(T::RowsOut - 1, T::ColsOut - 1);
+    auto retVal = mat(T::Rows - 1, T::Cols - 1);
 
     EXPECT_TRUE(retVal.has_value());
     EXPECT_EQ(retVal, 5);
   }
 
-  void test_op_plus_unary_Success()
+  template <bool SameMajorOrder>
+  void test_op_eq_Success();
+
+  template <>
+  void test_op_eq_Success<true>()
+  {
+    IntMatType       mat{_testIntMat};
+    const IntMatType other{_testIntMat};
+
+    // call UUT
+    auto isEqual = (mat == other);
+
+    EXPECT_TRUE(isEqual);
+  }
+
+  template <>
+  void test_op_eq_Success<false>()
+  {
+    const IntMatType                mat{_testIntMat};
+    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
+
+    // call UUT
+    auto isEqual = (mat == other);
+
+    EXPECT_TRUE(isEqual);
+  }
+
+  void test_op_plus_inplace_Success()
   {
     IntMatType       mat{_testIntMat};
     const IntMatType other{_testIntMat};
@@ -83,7 +119,40 @@ protected:
     }
   }
 
-  void test_op_minus_unary_Success()
+  template <bool SameMajorOrder>
+  void test_op_plus_Success();
+
+  template <>
+  void test_op_plus_Success<true>()
+  {
+    const IntMatType mat{_testIntMat};
+    const IntMatType other{_testIntMat};
+
+    // call UUT
+    auto res = mat + other;
+
+    for (auto idx = 0; idx < res._data.size(); ++idx)
+    {
+      EXPECT_EQ(res._data[idx], 2 * _testIntMat._data[idx]);
+    }
+  }
+
+  template <>
+  void test_op_plus_Success<false>()
+  {
+    const IntMatType                mat{_testIntMat};
+    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
+
+    // call UUT
+    auto res = mat + other;
+
+    for (auto idx = 0; idx < res._data.size(); ++idx)
+    {
+      EXPECT_EQ(res._data[idx], 2 * _testIntMat._data[idx]);
+    }
+  }
+
+  void test_op_minus_inplace_Success()
   {
     IntMatType       mat{_testIntMat};
     const IntMatType other{_testIntMat};
@@ -97,7 +166,40 @@ protected:
     }
   }
 
-  void test_op_mul_scalar_unary_Success()
+  template <bool SameMajorOrder>
+  void test_op_minus_Success();
+
+  template <>
+  void test_op_minus_Success<true>()
+  {
+    const IntMatType mat{_testIntMat};
+    const IntMatType other{_testIntMat};
+
+    // call UUT
+    auto res = mat - other;
+
+    for (auto idx = 0; idx < res._data.size(); ++idx)
+    {
+      EXPECT_EQ(res._data[idx], 0);
+    }
+  }
+
+  template <>
+  void test_op_minus_Success<false>()
+  {
+    const IntMatType                mat{_testIntMat};
+    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
+
+    // call UUT
+    auto res = mat - other;
+
+    for (auto idx = 0; idx < res._data.size(); ++idx)
+    {
+      EXPECT_EQ(res._data[idx], 0);
+    }
+  }
+
+  void test_op_mul_scalar_inplace_Success()
   {
     IntMatType mat{_testIntMat};
 
@@ -110,7 +212,7 @@ protected:
     }
   }
 
-  void test_op_div_scalar_unary_IntSuccess()
+  void test_op_div_scalar_inplace_IntSuccess()
   {
     IntMatType mat{_testIntMat};
 
@@ -123,7 +225,7 @@ protected:
     }
   }
 
-  void test_op_div_scalar_unary_FloatSuccess()
+  void test_op_div_scalar_inplace_FloatSuccess()
   {
     FloatMatType mat{_testFloatMat};
 
@@ -136,30 +238,33 @@ protected:
     }
   }
 
-  void test_op_div_scalar_unary_IntFailDivByZero()
+  void test_op_div_scalar_IntFailDivByZero()
   {
     IntMatType mat{_testIntMat};
 
     // call UUT
-#ifdef NDEBUG
-    auto res = mat.operator/=(0);
+    auto res = mat / 0;
     EXPECT_EQ(res.error(), IntMatType::Errors::DIV_BY_ZERO);
-#else
-    EXPECT_DEATH({ auto res = mat.operator/=(0); }, "");
-#endif
   }
 
-  void test_op_div_scalar_unary_FloatFailDivByZero()
+  void test_op_div_scalar_FloatFailDivByZero()
   {
     FloatMatType mat{_testFloatMat};
 
     // call UUT
-#ifdef NDEBUG
-    auto res = mat.operator/=(0.0F);
+    auto res = mat / 0.0F;
     EXPECT_EQ(res.error(), FloatMatType::Errors::DIV_BY_ZERO);
-#else
-    EXPECT_DEATH({ auto res = mat.operator/=(0.0F); }, "");
-#endif
+  }
+
+  void test_op_mul_mat_Success() 
+  { 
+    IntMatType mat1{_testIntMat}; 
+    IntMatMulType mat2{_testIntMatMul};
+
+    // call UUT
+    auto res = mat1 * mat2;
+
+    EXPECT_TRUE(res==_testIntMatMulResult);
   }
 
   template <typename T>
@@ -177,11 +282,11 @@ protected:
     // call UUT
     auto& matT = mat.transpose();
 
-    EXPECT_TRUE(matT.RowsOut == expMat.RowsOut);
-    EXPECT_TRUE(matT.ColsOut == expMat.ColsOut);
-    for (auto row = 0; row < expMat.RowsOut; ++row)
+    EXPECT_TRUE(matT.Rows == expMat.Rows);
+    EXPECT_TRUE(matT.Cols == expMat.Cols);
+    for (auto row = 0; row < expMat.Rows; ++row)
     {
-      for (auto col = 0; col < expMat.ColsOut; ++col)
+      for (auto col = 0; col < expMat.Cols; ++col)
       {
         EXPECT_EQ(matT.at_unsafe(row, col), expMat.at_unsafe(row, col));
       }
@@ -189,6 +294,7 @@ protected:
   }
 };
 
+/// \brief template specialization of SetUp initializing the members for RowMajor memory layout
 template <>
 void GTestMatrix<MatrixStorageType<true>>::SetUp()
 {
@@ -197,6 +303,26 @@ void GTestMatrix<MatrixStorageType<true>>::SetUp()
     {0, 1, 2,},
     {3, 4, 5,},
   });
+  _testIntMatTransposed = IntMatTypeTranspMemLayout({
+    {0, 3,},
+    {1, 4,},
+    {2, 5,},
+  });
+  _testIntMatMul = IntMatMulType({
+    {0,  1,  2,  3,},
+    {4,  5,  6,  7,},
+    {8,  9, 10, 11,},
+  });
+  _testIntMatMulTransposed = IntMatMulTypeTranspMemLayout({
+    {0,  4,  8,},
+    {1,  5,  9,},
+    {2,  6, 10,},
+    {3,  7, 11,},
+  });
+  _testIntMatMulResult = IntMatMulResultType({
+    {20, 23, 26, 29,},
+    {56, 68, 80, 92,},
+  });
   _testFloatMat = FloatMatType({
     {0, 1, 2,},
     {3, 4, 5,},
@@ -204,6 +330,7 @@ void GTestMatrix<MatrixStorageType<true>>::SetUp()
   // clang-format on
 }
 
+/// \brief template specialization of CTOR test with initializer list for RowMajor memory layout
 template <>
 void GTestMatrix<MatrixStorageType<true>>::test_ctor_initializerList_Success()
 {
@@ -220,6 +347,7 @@ void GTestMatrix<MatrixStorageType<true>>::test_ctor_initializerList_Success()
   TEST_MATRIX_WITH_VISUAL_INSPECTION(mat);
 }
 
+/// \brief template specialization of SetUp initializing the members for ColumnMajor memory layout
 template <>
 void GTestMatrix<MatrixStorageType<false>>::SetUp()
 {
@@ -229,6 +357,27 @@ void GTestMatrix<MatrixStorageType<false>>::SetUp()
     {1, 4,},
     {2, 5,},
   });
+  _testIntMatTransposed = IntMatTypeTranspMemLayout({
+    {0, 1, 2,},
+    {3, 4, 5,},
+  });
+  _testIntMatMul = IntMatMulType({
+    {0,  4,  8,},
+    {1,  5,  9,},
+    {2,  6, 10,},
+    {3,  7, 11,},
+  });
+  _testIntMatMulTransposed = IntMatMulTypeTranspMemLayout({
+    {0,  1,  2,  3,},
+    {4,  5,  6,  7,},
+    {8,  9, 10, 11,},
+  });
+  _testIntMatMulResult = IntMatMulResultType({
+    {20, 56,},
+    {23, 68,},
+    {26, 80,},
+    {29, 92,},  
+  });
   _testFloatMat = FloatMatType({
     {0, 3,},
     {1, 4,},
@@ -237,6 +386,7 @@ void GTestMatrix<MatrixStorageType<false>>::SetUp()
   // clang-format on
 }
 
+/// \brief template specialization of CTOR test with initializer list for ColumnMajor memory layout
 template <>
 void GTestMatrix<MatrixStorageType<false>>::test_ctor_initializerList_Success()
 {
@@ -289,31 +439,42 @@ TYPED_TEST(GTestMatrix, op_at__Success) // NOLINT
   GTestMatrix<TypeParam>::template test_op_at_Success<const typename GTestMatrix<TypeParam>::IntMatType>();
 }
 
+TYPED_TEST(GTestMatrix, op_eq__Success) // NOLINT
+{
+  GTestMatrix<TypeParam>::template test_op_eq_Success<true>();
+  GTestMatrix<TypeParam>::template test_op_eq_Success<false>();
+}
+
 TYPED_TEST(GTestMatrix, op_plus__Success) // NOLINT
 {
-  GTestMatrix<TypeParam>::test_op_plus_unary_Success();
+  GTestMatrix<TypeParam>::test_op_plus_inplace_Success();
+  GTestMatrix<TypeParam>::template test_op_plus_Success<true>();
+  GTestMatrix<TypeParam>::template test_op_plus_Success<false>();
 }
 
 TYPED_TEST(GTestMatrix, op_minus__Success) // NOLINT
 {
-  GTestMatrix<TypeParam>::test_op_minus_unary_Success();
+  GTestMatrix<TypeParam>::test_op_minus_inplace_Success();
+  GTestMatrix<TypeParam>::template test_op_minus_Success<true>();
+  GTestMatrix<TypeParam>::template test_op_minus_Success<false>();
 }
 
 TYPED_TEST(GTestMatrix, op_mul__Success) // NOLINT
 {
-  GTestMatrix<TypeParam>::test_op_mul_scalar_unary_Success();
+  GTestMatrix<TypeParam>::test_op_mul_scalar_inplace_Success();
+  GTestMatrix<TypeParam>::test_op_mul_mat_Success();
 }
 
 TYPED_TEST(GTestMatrix, op_div__FailDivByZero) // NOLINT
 {
-  GTestMatrix<TypeParam>::test_op_div_scalar_unary_IntFailDivByZero();
-  GTestMatrix<TypeParam>::test_op_div_scalar_unary_FloatFailDivByZero();
+  GTestMatrix<TypeParam>::test_op_div_scalar_IntFailDivByZero();
+  GTestMatrix<TypeParam>::test_op_div_scalar_FloatFailDivByZero();
 }
 
 TYPED_TEST(GTestMatrix, op_div__Success) // NOLINT
 {
-  GTestMatrix<TypeParam>::test_op_div_scalar_unary_IntSuccess();
-  GTestMatrix<TypeParam>::test_op_div_scalar_unary_FloatSuccess();
+  GTestMatrix<TypeParam>::test_op_div_scalar_inplace_IntSuccess();
+  GTestMatrix<TypeParam>::test_op_div_scalar_inplace_FloatSuccess();
 }
 
 TYPED_TEST(GTestMatrix, transpose__Success) // NOLINT
@@ -321,30 +482,3 @@ TYPED_TEST(GTestMatrix, transpose__Success) // NOLINT
   GTestMatrix<TypeParam>::template test_transpose_Success<typename GTestMatrix<TypeParam>::IntMatType>();
   GTestMatrix<TypeParam>::template test_transpose_Success<const typename GTestMatrix<TypeParam>::IntMatType>();
 }
-
-
-#if 0
-
-
-TEST(Matrix, op_equal__Success) // NOLINT
-{
-  using MatType = tracking::math::Matrix<float32, 2, 3>;
-  // clang-format off
-  MatType matA({
-    {0, 1, 2,},
-    {3, 4, 5,},
-  });
-  MatType matB({
-    {0, 1, 2,},
-    {3, 4, 5,},
-  });
-  // clang-format on
-
-  // call UUT
-  auto res = (matA == matB);
-
-  EXPECT_TRUE(res);
-}
-
-
-#endif

@@ -5,6 +5,7 @@
 #include "base/interface_contract.h"
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"
+#include <limits>
 #if __cplusplus == 202002L
 #include <concepts>
 #endif
@@ -48,7 +49,7 @@ template<typename T>
 concept has_round_brackets_op_int_int = requires {
   { std::declval<T>().operator()(std::declval<int>(), std::declval<int>()) } -> std::same_as<typename T::value_type&>;
 };
-template<typename T, template<typename FloatType_, sint32 Rows_, sint32 Cols_> class ClassName, sint32 Cols2>
+template<typename T, template<typename ValueType_, sint32 Rows_, sint32 Cols_> class ClassName, sint32 Cols2>
 concept has_mul_assign_op = requires {
   { std::declval<T>().operator*=(std::declval<ClassName<typename T::value_type, T::cols, Cols2>>()) } 
   -> std::same_as<ClassName<typename T::value_type, T::rows, Cols2>>;
@@ -60,7 +61,7 @@ concept has_mul_assign_op = requires {
 using namespace tracking::base::contract;
 #endif
 
-template <typename ImplType, template <typename FloatType_, sint32 Rows_, sint32 Cols_> class ClassName>
+template <typename ImplType, template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_> class ClassName>
 struct MatrixIntf
     : public base::contract::RequireCopyIntf<ImplType>
     , public base::contract::RequireMoveIntf<ImplType>
@@ -70,8 +71,11 @@ struct MatrixIntf
       , base::contract::RequireMoveIntf<ImplType>()
 
   {
-    static_assert(std::is_floating_point<typename ImplType::value_type>());
-
+    static_assert(std::is_floating_point<typename ImplType::value_type>() || std::is_integral<typename ImplType::value_type>());
+    static_assert(ImplType::Rows > 0);
+    static_assert(ImplType::Cols > 0);
+    
+#if 0
 #if __cplusplus == 202002L
     static_assert(matrix::has_setOnes_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(matrix::has_ones_static_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
@@ -84,6 +88,7 @@ struct MatrixIntf
 #else
     static_assert(has_member_func_setZeros<ImplType>::value, ERR_MSG_MISSING_FUNCTION);
     static_assert(has_member_func_setOnes<ImplType>::value, ERR_MSG_MISSING_FUNCTION);
+#endif
 #endif
   }
 
