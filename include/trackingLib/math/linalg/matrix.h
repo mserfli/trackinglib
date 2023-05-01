@@ -17,7 +17,6 @@ namespace math
 template <typename ValueType, sint32 Size, bool isLower>
 class TriangularMatrix;
 
-// TODO(matthias): add doxygen
 // TODO(matthias): add support for external memory
 // TODO(matthias): add template params to support coord transformations (inFrame e.g. EGO_k_1, outFrame, power -> 2 for covs)
 /// Compliant to AUTOSAR C++14, A8-4-8: Output parameters shall not be used, making use of RVO and NRVO
@@ -95,7 +94,7 @@ public:
   /// \return true   if all elements are equal
   auto operator==(const Matrix& other) const -> bool;
 
-  /// \brief Comparison to matrix of equal size but opposite memory layout
+  /// \brief Comparison to matrix of equal size, but opposite memory layout
   /// \param[in] other  matrix with opposite memory layout
   /// \return true   if all elements are equal
   auto operator==(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
@@ -103,15 +102,33 @@ public:
 
   //////////////////////////////////////////////////
   // arithmetic assignment operators  --->
+  /// \brief Calculates Self = Self + Other
+  /// \param[in] other  matrix of equal size
   void operator+=(const Matrix& other);
+
+  /// \brief Calculates Self = Self + Other
+  /// \param[in] other  matrix of equal size, but opposite memory layout
   void operator+=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other);
+
+  /// \brief Calculates Self = Self - Other
+  /// \param[in] other  matrix of equal size
   void operator-=(const Matrix& other);
+
+  /// \brief Calculates Self = Self - Other
+  /// \param[in] other  matrix of equal size, but opposite memory layout
   void operator-=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other);
+
+  /// \brief Calculates Self = Self * scalar
+  /// \param[in] scalar   scalar value
   void operator*=(ValueType_ scalar);
 
+  /// \brief Calculates Self = Self / scalar for integral matrices
+  /// \param[in] scalar   integral scalar value
   template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
   void operator/=(IntType scalar);
 
+  /// \brief Calculates Self = Self / scalar for floating-point matrices
+  /// \param[in] scalar   floating-point scalar value
   template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
   void operator/=(FloatType scalar);
   // <---
@@ -254,6 +271,14 @@ TEST_REMOVE_PRIVATE:
 //////////////////////////////////////////////////
 // non member operations  --->
 
+/// \brief Calculates Scalar * Matrix
+/// \tparam ValueType_ 
+/// \tparam Rows_ 
+/// \tparam Cols_ 
+/// \tparam IsRowMajor_ 
+/// \param[in] scalar 
+/// \param[in] mat 
+/// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_> 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 static auto operator*(ValueType_ scalar, Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
