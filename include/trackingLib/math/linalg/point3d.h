@@ -11,102 +11,100 @@ namespace math
 
 // TODO(matthias): add upcast from Point2d
 // TODO(matthias): add interface contract
-template <typename FloatType>
-class Point3d: public Vector<FloatType, 3>
+template <typename ValueType_>
+class Point3d: public Vector<ValueType_, 3>
 {
 public:
-  /// \brief Inherit Rule of 5 behavior from base class
-  using Vector<FloatType, 3>::Vector;
+  using Vector = Vector<ValueType_, 3>; ///< type of the parent class
 
-  /// \brief Construct a new Point 3d< Float Type> object
-  /// \param[in] other A base class object
-  Point3d(const Vector<FloatType, 3>& other); // NOLINT(google-explicit-constructor)
+  // unhide ctor of base class to allow implicit call in derived default ctors
+  using Vector::Vector;
 
   /// \brief Construct a new Point 3d< Float Type> object
   /// \param[in] x  Value for x
   /// \param[in] y  Value for y
-  Point3d(const FloatType x, const FloatType y, const FloatType z);
+  /// \param[in] z  Value for z
+  static auto FromValues(const ValueType_ x, const ValueType_ y, const ValueType_ z) -> Point3d;
 
   /// \brief Read access to x value
-  /// \return FloatType
-  auto x() const -> FloatType;
+  /// \return ValueType_
+  auto x() const -> ValueType_;
 
   /// \brief Read access to y value
-  /// \return FloatType
-  auto y() const -> FloatType;
+  /// \return ValueType_
+  auto y() const -> ValueType_;
 
   /// \brief Read access to z value
-  /// \return FloatType
-  auto z() const -> FloatType;
+  /// \return ValueType_
+  auto z() const -> ValueType_;
 
   /// \brief Write access to x value
-  /// \return FloatType
-  auto x() -> FloatType&;
+  /// \return ValueType_
+  auto x() -> ValueType_&;
 
   /// \brief Write access to y value
-  /// \return FloatType
-  auto y() -> FloatType&;
+  /// \return ValueType_
+  auto y() -> ValueType_&;
 
   /// \brief Write access to z value
-  /// \return FloatType
-  auto z() -> FloatType&;
+  /// \return ValueType_
+  auto z() -> ValueType_&;
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
 
+  /// \brief Construct a new Point 3d< Float Type> object
+  /// \param[in] other A base class object
+  explicit Point3d(const Vector& other) : Vector{other} {}
+
   /// \brief hide inherited operator[] to prevent wrong access
-  using Vector<FloatType, 3>::operator[];
+  using Vector::operator[];
 };
 
-template <typename FloatType>
-Point3d<FloatType>::Point3d(const Vector<FloatType, 3>& other)
-    : Vector<FloatType, 3>{other}
+template <typename ValueType_>
+static inline auto Point3d<ValueType_>::FromValues(const ValueType_ x, const ValueType_ y, const ValueType_ z) -> Point3d
 {
+  Point3d tmp{};
+  tmp.x() = x;
+  tmp.y() = y;
+  tmp.z() = z;
+  return tmp;
 }
 
-template <typename FloatType>
-Point3d<FloatType>::Point3d(const FloatType x, const FloatType y, const FloatType z)
-    : Vector<FloatType, 3>()
-{
-  this->x() = x;
-  this->y() = y;
-  this->z() = z;
-}
-
-template <typename FloatType>
-inline auto Point3d<FloatType>::x() const -> FloatType
+template <typename ValueType_>
+inline auto Point3d<ValueType_>::x() const -> ValueType_
 {
   return this->operator[](0);
 }
 
-template <typename FloatType>
-inline auto Point3d<FloatType>::y() const -> FloatType
+template <typename ValueType_>
+inline auto Point3d<ValueType_>::y() const -> ValueType_
 {
   return this->operator[](1);
 }
 
-template <typename FloatType>
-inline auto Point3d<FloatType>::z() const -> FloatType
+template <typename ValueType_>
+inline auto Point3d<ValueType_>::z() const -> ValueType_
 {
   return this->operator[](2);
 }
 
-template <typename FloatType>
-inline auto Point3d<FloatType>::x() -> FloatType&
+template <typename ValueType_>
+inline auto Point3d<ValueType_>::x() -> ValueType_&
 {
   return this->operator[](0);
 }
 
-template <typename FloatType>
-inline auto Point3d<FloatType>::y() -> FloatType&
+template <typename ValueType_>
+inline auto Point3d<ValueType_>::y() -> ValueType_&
 {
   return this->operator[](1);
 }
 
-template <typename FloatType>
-inline auto Point3d<FloatType>::z() -> FloatType&
+template <typename ValueType_>
+inline auto Point3d<ValueType_>::z() -> ValueType_&
 {
   return this->operator[](2);
 }

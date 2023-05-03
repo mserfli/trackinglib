@@ -61,7 +61,7 @@ public:
   // additional constructors  --->
   /// \brief Construct a new Matrix object with given initializer list representing the memory layout of the matrix
   /// \param[in] list  An initializer list describing the memory layout of the matrix
-  Matrix(const std::initializer_list<std::initializer_list<ValueType_>>& list);
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
 
   /// \brief Construct a Zero matrix
   /// \return Zero matrix
@@ -73,7 +73,7 @@ public:
   // <---
 
   //////////////////////////////////////////////////
-  // access operators  ---
+  // access operators  --->
   /// \brief Element read-only access
   /// \param[in] row  row of the element to read
   /// \param[in] col  column of the element to read

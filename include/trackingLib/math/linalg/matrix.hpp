@@ -12,17 +12,20 @@ namespace tracking::math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Matrix(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::FromList(
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix
 {
   assert(list.size() == RowsInMem);
   assert(list.begin()->size() == ColsInMem);
 
-  auto iter = data().begin();
+  Matrix tmp;
+  auto iter = tmp.data().begin();
   for (const auto& row : list)
   {
     std::copy(row.begin(), row.end(), iter);
     iter += row.size();
   }
+  return tmp;
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
@@ -32,7 +35,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setZeros()
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Zeros() -> Matrix
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Zeros() -> Matrix
 {
   Matrix tmp;
   tmp.setZeros();
@@ -46,7 +49,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setOnes()
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Ones() -> Matrix
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Ones() -> Matrix
 {
   Matrix tmp;
   tmp.setOnes();
@@ -310,7 +313,7 @@ template <sint32 SrcRowSize_,
           bool   SrcIsRowMajor_,
           sint32 DstRowBeg_,
           sint32 DstColBeg_>
-void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setBlock(
+inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setBlock(
     const Matrix<ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_>& block)
 {
   static_assert((SrcRowCount_ > 1) && (SrcColCount_ > 1), "use scalar access operator for block copy size == 1");

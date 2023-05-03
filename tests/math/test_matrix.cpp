@@ -273,7 +273,8 @@ protected:
   {
     T mat{_testIntMat};
     // clang-format off
-    typename T::transpose_type_row_major expMat({
+    using ExpMatType = typename T::transpose_type_row_major;
+    auto expMat = ExpMatType::FromList({
       {0, 3,},
       {1, 4,},
       {2, 5,},
@@ -300,31 +301,31 @@ template <>
 void GTestMatrix<MatrixStorageType<true>>::SetUp()
 {
   // clang-format off
-  _testIntMat = IntMatType({
+  _testIntMat = IntMatType::FromList({
     {0, 1, 2,},
     {3, 4, 5,},
   });
-  _testIntMatTransposed = IntMatTypeTranspMemLayout({
+  _testIntMatTransposed = IntMatTypeTranspMemLayout::FromList({
     {0, 3,},
     {1, 4,},
     {2, 5,},
   });
-  _testIntMatMul = IntMatMulType({
+  _testIntMatMul = IntMatMulType::FromList({
     {0,  1,  2,  3,},
     {4,  5,  6,  7,},
     {8,  9, 10, 11,},
   });
-  _testIntMatMulTransposed = IntMatMulTypeTranspMemLayout({
+  _testIntMatMulTransposed = IntMatMulTypeTranspMemLayout::FromList({
     {0,  4,  8,},
     {1,  5,  9,},
     {2,  6, 10,},
     {3,  7, 11,},
   });
-  _testIntMatMulResult = IntMatMulResultType({
+  _testIntMatMulResult = IntMatMulResultType::FromList({
     {20, 23, 26, 29,},
     {56, 68, 80, 92,},
   });
-  _testFloatMat = FloatMatType({
+  _testFloatMat = FloatMatType::FromList({
     {0, 1, 2,},
     {3, 4, 5,},
   });
@@ -337,7 +338,7 @@ void GTestMatrix<MatrixStorageType<true>>::test_ctor_initializerList_Success()
 {
   // clang-format off
   // call UUT
-  const IntMatType mat({
+  const auto mat = IntMatType::FromList({
     {0, 1, 2,},
     {3, 4, 5,},
   });
@@ -353,33 +354,33 @@ template <>
 void GTestMatrix<MatrixStorageType<false>>::SetUp()
 {
   // clang-format off
-  _testIntMat = IntMatType({
+  _testIntMat = IntMatType::FromList({
     {0, 3,},
     {1, 4,},
     {2, 5,},
   });
-  _testIntMatTransposed = IntMatTypeTranspMemLayout({
+  _testIntMatTransposed = IntMatTypeTranspMemLayout::FromList({
     {0, 1, 2,},
     {3, 4, 5,},
   });
-  _testIntMatMul = IntMatMulType({
+  _testIntMatMul = IntMatMulType::FromList({
     {0,  4,  8,},
     {1,  5,  9,},
     {2,  6, 10,},
     {3,  7, 11,},
   });
-  _testIntMatMulTransposed = IntMatMulTypeTranspMemLayout({
+  _testIntMatMulTransposed = IntMatMulTypeTranspMemLayout::FromList({
     {0,  1,  2,  3,},
     {4,  5,  6,  7,},
     {8,  9, 10, 11,},
   });
-  _testIntMatMulResult = IntMatMulResultType({
+  _testIntMatMulResult = IntMatMulResultType::FromList({
     {20, 56,},
     {23, 68,},
     {26, 80,},
     {29, 92,},  
   });
-  _testFloatMat = FloatMatType({
+  _testFloatMat = FloatMatType::FromList({
     {0, 3,},
     {1, 4,},
     {2, 5,},
@@ -393,7 +394,7 @@ void GTestMatrix<MatrixStorageType<false>>::test_ctor_initializerList_Success()
 {
   // clang-format off
   // call UUT
-  const IntMatType mat({
+  const auto mat = IntMatType::FromList({
     {0, 3,},
     {1, 4,},
     {2, 5,},
