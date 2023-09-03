@@ -100,11 +100,11 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator()(sint32 row
 {
   if (!(row >= 0 && row < Rows))
   {
-    return tl::unexpected<Errors>{Errors::INVALID_ACCESS_ROW};
+    return tl::unexpected<Errors>{Errors::invalid_access_row};
   }
   if (!(col >= 0 && col < Cols))
   {
-    return tl::unexpected<Errors>{Errors::INVALID_ACCESS_COL};
+    return tl::unexpected<Errors>{Errors::invalid_access_col};
   }
   return at_unsafe(row, col);
 }
@@ -115,11 +115,11 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator()(sint32 row
 {
   if (!(row >= 0 && row < Rows))
   {
-    return tl::unexpected<Errors>{Errors::INVALID_ACCESS_ROW};
+    return tl::unexpected<Errors>{Errors::invalid_access_row};
   }
   if (!(col >= 0 && col < Cols))
   {
-    return tl::unexpected<Errors>{Errors::INVALID_ACCESS_COL};
+    return tl::unexpected<Errors>{Errors::invalid_access_col};
   }
   return at_unsafe(row, col);
 }
@@ -253,7 +253,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(IntType sca
     res.inplace_div_by_int_unsafe(scalar);
     return res;
   }
-  return tl::unexpected<Errors>{Errors::DIV_BY_ZERO};
+  return tl::unexpected<Errors>{Errors::divide_by_zero};
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
@@ -266,7 +266,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(FloatType s
     res.inplace_mul_by_inverse_factor_unsafe(scalar);
     return res;
   }
-  return tl::unexpected<Errors>{Errors::DIV_BY_ZERO};
+  return tl::unexpected<Errors>{Errors::divide_by_zero};
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>

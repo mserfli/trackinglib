@@ -53,7 +53,7 @@ protected:
     auto retVal = mat(T::Rows, 0);
 
     EXPECT_FALSE(retVal.has_value());
-    EXPECT_EQ(retVal.error(), T::Errors::INVALID_ACCESS_ROW);
+    EXPECT_EQ(retVal.error(), tracking::math::Errors::invalid_access_row);
   }
 
   template <typename T>
@@ -64,7 +64,7 @@ protected:
     auto retVal = mat(0, T::Cols);
 
     EXPECT_FALSE(retVal.has_value());
-    EXPECT_EQ(retVal.error(), T::Errors::INVALID_ACCESS_COL);
+    EXPECT_EQ(retVal.error(), tracking::math::Errors::invalid_access_col);
   }
 
   template <typename T>
@@ -245,7 +245,7 @@ protected:
 
     // call UUT
     auto res = mat / 0;
-    EXPECT_EQ(res.error(), IntMatType::Errors::DIV_BY_ZERO);
+    EXPECT_EQ(res.error(), tracking::math::Errors::divide_by_zero);
   }
 
   void test_op_div_scalar_FloatFailDivByZero()
@@ -254,7 +254,7 @@ protected:
 
     // call UUT
     auto res = mat / 0.0F;
-    EXPECT_EQ(res.error(), FloatMatType::Errors::DIV_BY_ZERO);
+    EXPECT_EQ(res.error(), tracking::math::Errors::divide_by_zero);
   }
 
   void test_op_mul_mat_Success() 
@@ -415,6 +415,35 @@ TYPED_TEST_SUITE(GTestMatrix, Implementations);
 TYPED_TEST(GTestMatrix, ctor_initializerList__Success) // NOLINT
 {
   GTestMatrix<TypeParam>::test_ctor_initializerList_Success();
+}
+
+TYPED_TEST(GTestMatrix, ctor_rvalue__Success) //NOLINT
+{
+  auto ones = GTestMatrix<TypeParam>::IntMatType::Ones();
+
+  // call UUT
+  const auto mat = typename GTestMatrix<TypeParam>::IntMatType(std::move(ones));
+
+  const typename GTestMatrix<TypeParam>::IntMatType::Storage expStorage{1, 1, 1, 1, 1, 1};
+  EXPECT_EQ(mat._data, expStorage);
+}
+
+TYPED_TEST(GTestMatrix, ctor_Zeros__Success) //NOLINT
+{
+  // call UUT
+  const auto mat = GTestMatrix<TypeParam>::IntMatType::Zeros();
+
+  const typename GTestMatrix<TypeParam>::IntMatType::Storage expStorage{0, 0, 0, 0, 0, 0};
+  EXPECT_EQ(mat._data, expStorage);
+}
+
+TYPED_TEST(GTestMatrix, ctor_Ones__Success) //NOLINT
+{
+  // call UUT
+  const auto mat = GTestMatrix<TypeParam>::IntMatType::Ones();
+
+  const typename GTestMatrix<TypeParam>::IntMatType::Storage expStorage{1, 1, 1, 1, 1, 1};
+  EXPECT_EQ(mat._data, expStorage);
 }
 
 TYPED_TEST(GTestMatrix, at_unsafe__Success) // NOLINT

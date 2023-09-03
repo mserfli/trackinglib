@@ -3,6 +3,7 @@
 
 #include "base/first_include.h"
 #include "math/linalg/contracts/matrix_intf.h"
+#include "math/linalg/errors.h"
 #include <array>
 #include <initializer_list>
 #include <iostream>
@@ -40,14 +41,6 @@ public:
   static constexpr auto RowsInMem  = IsRowMajor_ ? Rows_ : Cols_; ///< number of rows in memory
   static constexpr auto ColsInMem  = IsRowMajor_ ? Cols_ : Rows_; ///< number of cols in memory
   static constexpr auto IsRowMajor = IsRowMajor_;                 ///< memory layout of the matrix
-
-  /// \brief Matrix specific errors
-  enum class Errors
-  {
-    INVALID_ACCESS_ROW,
-    INVALID_ACCESS_COL,
-    DIV_BY_ZERO
-  };
 
   // rule of 5 declarations
   Matrix()                  = default;
