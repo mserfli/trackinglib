@@ -12,80 +12,80 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline TriangularMatrix<FloatType, Size, isLower>::TriangularMatrix(const SquareMatrix<FloatType, Size>& other)
-    : SquareMatrix<FloatType, Size>{}
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline TriangularMatrix<ValueType_, Size_, IsLower_>::TriangularMatrix(const SquareMatrix& other)
+    : SquareMatrix{}
 {
   // copy triangular elements from other
-  for (sint32 row = 0; row < Size; ++row)
+  for (sint32 row = 0; row < Size_; ++row)
   {
-    this->operator()(row, row) = other(row, row);
-    for (sint32 col = row + 1; col < Size; ++col)
+    this->at_unsafe(row, row) = other.at_unsafe(row, row);
+    for (sint32 col = row + 1; col < Size_; ++col)
     {
-      const sint32 rowIdx = isLower ? col : row;
-      const sint32 colIdx = isLower ? row : col;
+      const sint32 rowIdx = IsLower_ ? col : row;
+      const sint32 colIdx = IsLower_ ? row : col;
 
-      this->operator()(rowIdx, colIdx) = other(rowIdx, colIdx);
+      this->at_unsafe(rowIdx, colIdx) = other.at_unsafe(rowIdx, colIdx);
     }
   }
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline TriangularMatrix<FloatType, Size, isLower>::TriangularMatrix(
-    const std::initializer_list<std::initializer_list<FloatType>>& list)
-    : SquareMatrix<FloatType, Size>{TriangularMatrix{SquareMatrix<FloatType, Size>{list}}}
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline TriangularMatrix<ValueType_, Size_, IsLower_>::TriangularMatrix(
+    const std::initializer_list<std::initializer_list<ValueType_>>& list)
+    : SquareMatrix{TriangularMatrix{SquareMatrix{list}}}
 {
   // reuse existing ctor from SquareMatrix to prevent code duplication
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
+template <typename ValueType_, sint32 Size_, bool IsLower_>
 template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
-inline void TriangularMatrix<FloatType, Size, isLower>::setBlock(const TriangularMatrix<FloatType, SrcSize, isLower>& block)
+inline void TriangularMatrix<ValueType_, Size_, IsLower_>::setBlock(const TriangularMatrix& block)
 {
   static_assert(SrcCount > 1, "use scalar access operator for block copy size == 1");
   static_assert(SrcRowBeg + SrcCount <= SrcSize, "copy to many rows from src");
   static_assert(SrcColBeg + SrcCount <= SrcSize, "copy to many cols from src");
 
-  static_assert(DstRowBeg + SrcCount <= Size, "copy to many rows to dst");
-  static_assert(DstColBeg + SrcCount <= Size, "copy to many cols to dst");
+  static_assert(DstRowBeg + SrcCount <= Size_, "copy to many rows to dst");
+  static_assert(DstColBeg + SrcCount <= Size_, "copy to many cols to dst");
 
-  constexpr bool checkSrcAccess = isLower ? SrcRowBeg >= SrcColBeg : SrcRowBeg <= SrcColBeg;
+  constexpr bool checkSrcAccess = IsLower_ ? SrcRowBeg >= SrcColBeg : SrcRowBeg <= SrcColBeg;
   static_assert(checkSrcAccess, "accessing off diagonal part of src triangular matrix");
-  constexpr bool checkDstAccess = isLower ? DstRowBeg >= DstColBeg : DstRowBeg <= DstColBeg;
+  constexpr bool checkDstAccess = IsLower_ ? DstRowBeg >= DstColBeg : DstRowBeg <= DstColBeg;
   static_assert(checkDstAccess, "accessing off diagonal part of dst triangular matrix");
 
   for (sint32 row = 0; row < SrcCount; ++row)
   {
     for (sint32 col = 0; col <= row; ++col)
     {
-      if (isLower) // will be optimized out because isLower can be deduced at compile time
+      if (IsLower_) // will be optimized out because isLower can be deduced at compile time
       {
-        this->operator()(DstRowBeg + row, DstColBeg + col) = block(SrcRowBeg + row, SrcColBeg + col);
+        this->at_unsafe(DstRowBeg + row, DstColBeg + col) = block(SrcRowBeg + row, SrcColBeg + col);
       }
       else
       {
-        this->operator()(DstRowBeg + col, DstColBeg + row) = block(SrcRowBeg + col, SrcColBeg + row);
+        this->at_unsafe(DstRowBeg + col, DstColBeg + row) = block(SrcRowBeg + col, SrcColBeg + row);
       }
     }
   }
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
-template <sint32 Cols>
-inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Matrix<FloatType, Size, Cols>& mat) const
-    -> Matrix<FloatType, Size, Cols>
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+template <sint32 Cols_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& mat) const
+    -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>
 {
-  Matrix<FloatType, Size, Cols> result{};
-  if (isLower)
+  Matrix<ValueType_, Size_, Cols_, IsRowMajor_> result{};
+  if (IsLower_)
   {
 #pragma omp parallel for private(i, j, k) shared(A, B, C)
-    for (auto i = 0; i < Size; ++i)
+    for (auto i = 0; i < Size_; ++i)
     {
       for (auto k = 0; k <= i; ++k)
       {
-        for (auto j = 0; j < Cols; ++j)
+        for (auto j = 0; j < Cols_; ++j)
         {
-          result(i, j) += this->operator()(i, k) * mat(k, j);
+          result.at_unsafe(i, j) += this->at_unsafe(i, k) * mat.at_unsafe(k, j);
         }
       }
     }
@@ -93,13 +93,13 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Matrix<F
   else
   {
 #pragma omp parallel for private(i, j, k) shared(A, B, C)
-    for (auto i = 0; i < Size; ++i)
+    for (auto i = 0; i < Size_; ++i)
     {
-      for (auto k = i; k < Size; ++k)
+      for (auto k = i; k < Size_; ++k)
       {
-        for (auto j = 0; j < Cols; ++j)
+        for (auto j = 0; j < Cols_; ++j)
         {
-          result(i, j) += this->operator()(i, k) * mat(k, j);
+          result.at_unsafe(i, j) += this->at_unsafe(i, k) * mat.at_unsafe(k, j);
         }
       }
     }
@@ -107,21 +107,21 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Matrix<F
   return result;
 } // LCOV_EXCL_LINE
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) const
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const TriangularMatrix& mat) const
     -> TriangularMatrix
 {
   TriangularMatrix result{};
-  if (isLower)
+  if (IsLower_)
   {
 #pragma omp parallel for private(i, j, k) shared(A, B, C)
-    for (auto i = 0; i < Size; ++i)
+    for (auto i = 0; i < Size_; ++i)
     {
       for (auto k = 0; k <= i; ++k)
       {
         for (auto j = 0; j <= k; ++j)
         {
-          result(i, j) += this->operator()(i, k) * mat(k, j);
+          result.at_unsafe(i, j) += this->at_unsafe(i, k) * mat.at_unsafe(k, j);
         }
       }
     }
@@ -129,13 +129,13 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Triangul
   else
   {
 #pragma omp parallel for private(i, j, k) shared(A, B, C)
-    for (auto i = 0; i < Size; ++i)
+    for (auto i = 0; i < Size_; ++i)
     {
-      for (auto k = i; k < Size; ++k)
+      for (auto k = i; k < Size_; ++k)
       {
-        for (auto j = k; j < Size; ++j)
+        for (auto j = k; j < Size_; ++j)
         {
-          result(i, j) += this->operator()(i, k) * mat(k, j);
+          result.at_unsafe(i, j) += this->at_unsafe(i, k) * mat.at_unsafe(k, j);
         }
       }
     }
@@ -143,152 +143,171 @@ inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const Triangul
   return result;
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const TriangularMatrix<FloatType, Size, !isLower>& mat) const
-    -> SquareMatrix<FloatType, Size>
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_>& mat) const
+    -> SquareMatrix
 {
-  // implementation prevents if in inner loop: j<=k
-  SquareMatrix<FloatType, Size> other{mat};
-  return this->                 operator*(other);
+  SquareMatrix other{mat};
+  return this->operator*(other);
 } // LCOV_EXCL_LINE
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const DiagonalMatrix<FloatType, Size>& diag) const
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const DiagonalMatrix<ValueType_, Size_>& diag) const
     -> TriangularMatrix
 {
   // each column is multiplied by the corresponding diagonal column element
   auto result{*this};
-  if (isLower)
+  if (IsLower_)
   {
-    for (auto col = 0; col < Size; ++col)
+    for (auto col = 0; col < Size_; ++col)
     {
-      for (auto row = col; row < Size; ++row)
+      for (auto row = col; row < Size_; ++row)
       {
-        result(row, col) *= diag[col];
+        result.at_unsafe(row, col) *= diag.at_unsafe(col);
       }
     }
   }
   else
   {
-    for (auto col = 0; col < Size; ++col)
+    for (auto col = 0; col < Size_; ++col)
     {
       for (auto row = 0; row <= col; ++row)
       {
-        result(row, col) *= diag[col];
+        result.at_unsafe(row, col) *= diag.at_unsafe(col);
       }
     }
   }
   return result;
 } // LCOV_EXCL_LINE
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::operator*(const FloatType scalar) const -> TriangularMatrix
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const ValueType_ scalar) const -> TriangularMatrix
 {
   auto result{*this};
   result *= scalar;
   return result;
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::operator*=(const FloatType scalar) -> TriangularMatrix&
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*=(const ValueType_ scalar) -> TriangularMatrix&
 {
   // TODO(matthias): can be optimized as soon as elements are stored in array instead of a SquareMatrix
-  if (isLower)
+  if (IsLower_)
   {
-    for (sint32 row = 0; row < Size; ++row)
+    for (sint32 row = 0; row < Size_; ++row)
     {
       for (sint32 col = 0; col <= row; ++col)
       {
-        this->operator()(row, col) *= scalar;
+        this->at_unsafe(row, col) *= scalar;
       }
     }
   }
   else
   {
-    for (sint32 row = 0; row < Size; ++row)
+    for (sint32 row = 0; row < Size_; ++row)
     {
-      for (sint32 col = row; col < Size; ++col)
+      for (sint32 col = row; col < Size_; ++col)
       {
-        this->operator()(row, col) *= scalar;
+        this->at_unsafe(row, col) *= scalar;
       }
     }
   }
   return *this;
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::operator()(sint32 row, sint32 col) const -> FloatType
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>
 {
-  assert((isLower ? row >= col : row <= col) && "accessing off-triangular elements");
-  return SquareMatrix<FloatType, Size>::operator()(row, col);
+  if (!((IsLower_ && (row>=col)) || (!IsLower_ && (row<=col))))
+  {
+    return tl::unexpected<Errors>{Errors::invalid_access_idx};
+  }
+  return SquareMatrix::operator()(row, col);
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::operator()(sint32 row, sint32 col) -> FloatType&
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>
 {
-  assert((isLower ? row >= col : row <= col) && "accessing off-triangular elements");
-  return SquareMatrix<FloatType, Size>::operator()(row, col);
+  if (!((IsLower_ && (row>=col)) || (!IsLower_ && (row<=col))))
+  {
+    return tl::unexpected<Errors>{Errors::invalid_access_idx};
+  }
+  return SquareMatrix::operator()(row, col);
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::transpose() const -> TriangularMatrix<FloatType, Size, !isLower>
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_
+{
+  assert((IsLower_ ? row >= col : row <= col) && "accessing off-triangular elements");
+  return SquareMatrix::at_unsafe(row, col);
+}
+
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::at_unsafe(sint32 row, sint32 col) -> ValueType_&
+{
+  assert((IsLower_ ? row >= col : row <= col) && "accessing off-triangular elements");
+  return SquareMatrix::at_unsafe(row, col);
+}
+
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::transpose() const -> TriangularMatrix<ValueType_, Size_, !IsLower_>
 {
   // TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
-  return TriangularMatrix<FloatType, Size, !isLower>(SquareMatrix<FloatType, Size>::transpose());
+  return TriangularMatrix<ValueType_, Size_, !IsLower_>{SquareMatrix::transpose()};
 } // LCOV_EXCL_LINE
 
-template <typename FloatType, sint32 Size, bool isLower>
-template <sint32 Cols>
-inline auto TriangularMatrix<FloatType, Size, isLower>::solve(const Matrix<FloatType, Size, Cols>& b) const
-    -> Matrix<FloatType, Size, Cols>
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+template <sint32 Cols_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::solve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& b) const
+    -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>
 {
-  Matrix<FloatType, Size, Cols> x{};
-  if (isLower) // LCOV_EXCL_LINE
+  Matrix<ValueType_, Size_, Cols_, IsRowMajor_> x{};
+  if (IsLower_) // LCOV_EXCL_LINE
   {
-    for (auto k = 0; k < Cols; ++k)
+    for (auto k = 0; k < Cols_; ++k)
     { // LCOV_EXCL_LINE
-      for (auto row = 0; row < Size; ++row)
+      for (auto row = 0; row < Size_; ++row)
       {
-        FloatType sum{};
+        ValueType_ sum{};
         for (auto col = 0; col < row; ++col)
         {
-          sum += this->operator()(row, col) * x(col, k);
+          sum += this->at_unsafe(row, col) * x.at_unsafe(col, k);
         }
-        x(row, k) = (b(row, k) - sum) / this->operator()(row, row);
+        x.at_unsafe(row, k) = (b.at_unsafe(row, k) - sum) / this->at_unsafe(row, row);
       }
     }
   }
   else // LCOV_EXCL_LINE
   {    // LCOV_EXCL_LINE
-    for (auto k = 0; k < Cols; ++k)
+    for (auto k = 0; k < Cols_; ++k)
     { // LCOV_EXCL_LINE
-      for (auto row = Size - 1; row >= 0; --row)
+      for (auto row = Size_ - 1; row >= 0; --row)
       { // LCOV_EXCL_LINE
-        FloatType sum{};
-        for (auto col = Size - 1; col > row; --col)
+        ValueType_ sum{};
+        for (auto col = Size_ - 1; col > row; --col)
         {
-          sum += this->operator()(row, col) * x(col, k);
+          sum += this->at_unsafe(row, col) * x.at_unsafe(col, k);
         }
-        x(row, k) = (b(row, k) - sum) / this->operator()(row, row);
+        x.at_unsafe(row, k) = (b.at_unsafe(row, k) - sum) / this->at_unsafe(row, row);
       }
     }
   }
   return x;
 }
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::inverse() const -> TriangularMatrix
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::inverse() const -> TriangularMatrix
 {
-  return TriangularMatrix(this->solve(SquareMatrix<FloatType, Size>::Identity()));
+  return TriangularMatrix{this->solve(SquareMatrix::Identity())};
 } // LCOV_EXCL_LINE
 
-template <typename FloatType, sint32 Size, bool isLower>
-inline auto TriangularMatrix<FloatType, Size, isLower>::isUnitUpperTriangular() const -> bool
+template <typename ValueType_, sint32 Size_, bool IsLower_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::isUnitUpperTriangular() const -> bool
 {
   auto isValid = true;
-  for (auto idx = 0; idx < Size; ++idx)
+  for (auto idx = 0; idx < Size_; ++idx)
   {
-    isValid = isValid && (static_cast<FloatType>(1.0) == this->operator()(idx, idx));
+    isValid = isValid && (static_cast<ValueType_>(1.0) == this->at_unsafe(idx, idx));
   }
   return isValid;
 }

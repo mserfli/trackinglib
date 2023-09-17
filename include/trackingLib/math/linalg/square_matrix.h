@@ -5,6 +5,7 @@
 #include "math/linalg/errors.h"
 #include "math/linalg/matrix.h"
 #include <limits>
+#include <utility>
 
 namespace tracking
 {
@@ -12,28 +13,36 @@ namespace math
 {
 
 // forward declaration to prevent cyclic includes
-template <typename FloatType, sint32 Size, bool isLower>
+template <typename ValueType_, sint32 Size_, bool IsLower_>
 class TriangularMatrix;
 
 // forward declaration to prevent cyclic includes
-template <typename FloatType, sint32 Size>
+template <typename ValueType_, sint32 Size_>
 class DiagonalMatrix;
 
 // TODO(matthias): add interface contract
-template <typename FloatType, sint32 Size>
-class SquareMatrix: public Matrix<FloatType, Size, Size>
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+class SquareMatrix: public Matrix<ValueType_, Size_, Size_, IsRowMajor_>
 {
 public:
-  /// \brief Inherit Rule of 5 behavior from base class
-  using Matrix<FloatType, Size, Size>::Matrix;
+  using Matrix = Matrix<ValueType_, Size_, Size_, IsRowMajor_>; ///< type of the parent class
 
-  /// \brief Construct a new Square Matrix< Float Type,  Size> object
+  // unhide ctor of base class to allow implicit call in derived default ctors
+  using Matrix::Matrix;
+
+  //////////////////////////////////////////////////
+  // additional constructors  --->
+    /// \brief Construct a new Square Matrix< Float Type,  Size_> object
   /// \param[in] other A base class object
-  SquareMatrix(const Matrix<FloatType, Size, Size>& other); // NOLINT(google-explicit-constructor)
+  explicit SquareMatrix(const Matrix& other) : Matrix{other} {}
 
   /// \brief Construct a new Square Matrix object
   /// \param[in] other A diagonal matrix
-  SquareMatrix(const DiagonalMatrix<FloatType, Size>& other); // NOLINT(google-explicit-constructor)
+  SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other); // NOLINT(google-explicit-constructor)
+
+  /// \brief Construct a new Square Matrix object with given initializer list representing the memory layout of the matrix
+  /// \param[in] list  An initializer list describing the memory layout of the matrix
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix;
 
   /// \brief Set internal matrix to the Identity matrix
   void setIdentity();
@@ -42,25 +51,28 @@ public:
   /// \return SquareMatrix  Resulting identity matrix
   static auto Identity() -> SquareMatrix;
 
-  /// \brief Solve A * x = b using QR decomposition 
-  /// \param[out] x  Solution x
-  /// \param[in]  b  Result vector/matrix of A * x
-  void qrSolve(SquareMatrix<FloatType, Size>& x, const SquareMatrix<FloatType, Size>& b) const;
+  auto householderQR() const -> std::pair<SquareMatrix, SquareMatrix>;
 
+  /// \brief Solve A * x = b using QR decomposition 
+  /// \param[in]  b  Result vector/matrix of A * x
+  /// \return SquareMatrix x
+  auto qrSolve(const SquareMatrix& b) const -> SquareMatrix;
+
+#if 0
   /// \brief Decompose internal matrix into L*L' using standard Cholesky factorization
-  /// \return tl::expected<TriangularMatrix<FloatType, Size, true>, Errors> 
+  /// \return tl::expected<TriangularMatrix<ValueType_, Size_, true>, Errors> 
   /// \precondition internal matrix is symmetric and positive definite
-  auto decomposeLLT() const -> tl::expected<TriangularMatrix<FloatType, Size, true>, Errors>;
+  auto decomposeLLT() const -> tl::expected<TriangularMatrix<ValueType_, Size_, true>, Errors>;
 
   /// \brief Decompose internal matrix into L*D*L' using rational Cholesky factorization
-  /// \return tl::expected<std::pair<TriangularMatrix<FloatType, Size, true>, DiagonalMatrix<FloatType, Size>>, Errors> 
+  /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true>, DiagonalMatrix<ValueType_, Size_>>, Errors> 
   /// \precondition internal matrix is symmetric and positive semi definite
-  auto decomposeLDLT() const -> tl::expected<std::pair<TriangularMatrix<FloatType, Size, true>, DiagonalMatrix<FloatType, Size>>, Errors>;
-
+  auto decomposeLDLT() const -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true>, DiagonalMatrix<ValueType_, Size_>>, Errors>;
+#endif
   /// \brief Decompose internal matrix into U*D*U' using rational Cholesky factorization
-  /// \return tl::expected<std::pair<TriangularMatrix<FloatType, Size, false>, DiagonalMatrix<FloatType, Size>>, Errors> 
+  /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false>, DiagonalMatrix<ValueType_, Size_>>, Errors> 
   /// \precondition internal matrix is symmetric and positive semi definite
-  auto decomposeUDUT() const -> tl::expected<std::pair<TriangularMatrix<FloatType, Size, false>, DiagonalMatrix<FloatType, Size>>, Errors>;
+  auto decomposeUDUT() const -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false>, DiagonalMatrix<ValueType_, Size_>>, Errors>;
 
   /// \brief Calculates the inverse based on Cholesky factorization
   /// \return SquareMatrix

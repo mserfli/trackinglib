@@ -5,7 +5,7 @@
 TEST(DiagonalMatrix, ctor_default) // NOLINT
 {
   // clang-format off
-  const tracking::math::DiagonalMatrix<float32, 3> expMat(
+  const auto expMat = tracking::math::DiagonalMatrix<float32, 3>::FromList(
     {{0, 0, 0}, 
      {0, 0, 0}, 
      {0, 0, 0}});
@@ -20,11 +20,11 @@ TEST(DiagonalMatrix, ctor_default) // NOLINT
 TEST(DiagonalMatrix, ctor_square) // NOLINT
 {
   // clang-format off
-  const tracking::math::SquareMatrix<float32, 3> mat(
+  const auto mat = tracking::math::SquareMatrix<float32, 3, true>::FromList(
     {{1, 2, 3}, 
      {4, 5, 6}, 
      {7, 8, 9}});
-  const tracking::math::DiagonalMatrix<float32, 3> expMat(
+  const auto expMat = tracking::math::DiagonalMatrix<float32, 3>::FromList(
     {{1, 0, 0}, 
      {0, 5, 0}, 
      {0, 0, 9}});

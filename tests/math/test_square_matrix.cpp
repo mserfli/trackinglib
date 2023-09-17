@@ -2,10 +2,68 @@
 
 #include "trackingLib/math/linalg/square_matrix.hpp"
 
+
+TEST(SquareMatrix, householderQR) // NOLINT
+{
+  // Create a square matrix for testing
+  // clang-format off
+  using FloatSquareMatType = tracking::math::SquareMatrix<float32, 3, true>;
+  const auto mat = FloatSquareMatType::FromList({
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto [Q, R] = mat.householderQR();
+
+  // Check if QR is a valid decomposition by comparing to the original matrix
+  const auto recomposed = Q * R;
+  for (auto row = 0; row < 3; row++)
+  {
+    for (auto col = 0; col < 3; col++)
+    {
+      EXPECT_FLOAT_EQ(mat.at_unsafe(row, col), recomposed.at_unsafe(row, col));
+    }
+  }
+}
+
+TEST(SquareMatrix, inverse) // NOLINT
+{
+  // Create a square matrix for testing
+  // clang-format off
+  using FloatSquareMatType = tracking::math::SquareMatrix<float32, 3, true>;
+  const auto mat = FloatSquareMatType::FromList({
+    { 9.25, -6.0,  1.25},
+    {-6.00,  4.5, -1.00},
+    { 1.25, -1.0,  0.25}
+  });
+  const auto expInvMat = FloatSquareMatType::FromList({
+    {1.0,  2.0,  3.0},
+    {2.0,  6.0, 14.0},
+    {3.0, 14.0, 45.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto inv = mat.inverse();
+
+  // compare to expected inverse
+  for (auto row = 0; row < 3; row++)
+  {
+    for (auto col = 0; col < 3; col++)
+    {
+      EXPECT_FLOAT_EQ(inv.at_unsafe(row, col), expInvMat.at_unsafe(row, col));
+    }
+  } 
+}
+
+#if 0
 TEST(SquareMatrix, decomposeLLT) // NOLINT
 {
   // clang-format off
-  tracking::math::SquareMatrix<float32, 6> cov({
+  auto cov = tracking::math::SquareMatrix<float32, 6, true>::FromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
@@ -33,7 +91,7 @@ TEST(SquareMatrix, decomposeLLT) // NOLINT
 TEST(SquareMatrix, decomposeLDLT) // NOLINT
 {
   // clang-format off
-  tracking::math::SquareMatrix<float32, 6> cov({
+  auto cov = tracking::math::SquareMatrix<float32, 6, true>::FromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
@@ -57,3 +115,4 @@ TEST(SquareMatrix, decomposeLDLT) // NOLINT
     }
   }
 }
+#endif

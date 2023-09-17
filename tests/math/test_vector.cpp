@@ -24,6 +24,30 @@ TEST(Vector, UnitVector__Success) // NOLINT
   EXPECT_EQ(a, res);
 }
 
+TEST(Vector, test_op_at_Success) // NOLINT
+{
+  using VecType = tracking::math::Vector<sint32, 4>;
+  auto a = VecType::FromList({1,2,3,4});
+  
+  // call UUT
+  auto retVal = a[VecType::Rows-1];
+
+  EXPECT_TRUE(retVal.has_value());
+  EXPECT_EQ(retVal, 4);
+}
+
+TEST(Vector, test_op_at_const_Success) // NOLINT
+{
+  using VecType = tracking::math::Vector<sint32, 4>;
+  const auto a = VecType::FromList({1,2,3,4});
+  
+  // call UUT
+  auto retVal = a[VecType::Rows-1];
+
+  EXPECT_TRUE(retVal.has_value());
+  EXPECT_EQ(retVal, 4);
+}
+
 TEST(Vector, op_dot__Success) // NOLINT
 {
   using VecType = tracking::math::Vector<sint32, 4>;
@@ -61,11 +85,11 @@ TEST(Vector, op_norm__Success) // NOLINT
 TEST(Vector, op_normalize__Success) // NOLINT
 {
   using VecType = tracking::math::Vector<float32, 2>;
-  auto a = VecType::FromList({3,4});
+  const auto a = VecType::FromList({3,4});
   const auto b = VecType::FromList({3/5.0,4/5.0});
   
   // call UUT
-  a.normalize();
+  const auto res = a.normalize();
 
-  EXPECT_EQ(a, b);
+  EXPECT_EQ(res, b);
 }

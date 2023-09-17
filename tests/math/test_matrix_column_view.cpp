@@ -6,68 +6,137 @@
 TEST(MatrixColumnView, mul_lhs) // NOLINT
 {
   // testing Matrix * MatrixColumnView
-  const tracking::math::Matrix<float32, 3, 3>           lhs{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
-  const tracking::math::MatrixColumnView<float32, 3, 3> colView(lhs, 2, 0, 2);
+  using IntMatType = tracking::math::Matrix<sint32, 3, 3, true>;
+  // clang-format off
+  const auto mat{IntMatType::FromList({
+    {1, 2, 3}, 
+    {4, 5, 6}, 
+    {7, 8, 9}
+  })};
+  // clang-format on
+  // the column view
+  const tracking::math::MatrixColumnView<sint32, 3, 3, true> colView(mat, 2, 0, 2);
+
+  // a lhs matrix
+  const auto lhs = mat;
+
+  // calc expected result
+  tracking::math::Matrix<sint32, 3, 1, true> col;
+  col.setBlock<3, 3, 3, 1, 0, 2, true, 0, 0>(mat);
+  const auto resExp = lhs * col;
 
   // call UUT
   auto res = lhs * colView;
 
-  EXPECT_FLOAT_EQ(res[0], 1 * 3 + 2 * 6 + 3 * 9);
-  EXPECT_FLOAT_EQ(res[1], 4 * 3 + 5 * 6 + 6 * 9);
-  EXPECT_FLOAT_EQ(res[2], 7 * 3 + 8 * 6 + 9 * 9);
+  EXPECT_EQ(res, resExp);
 }
 
 TEST(MatrixColumnView, mul_lhs_ranged) // NOLINT
 {
   // testing Matrix * MatrixColumnView
-  const tracking::math::Matrix<float32, 3, 3>           mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
-  const tracking::math::MatrixColumnView<float32, 3, 3> colView(mat, 2, 1, 2);
-  const tracking::math::Matrix<float32, 3, 2>           lhs{{{1, 2}, {3, 4}, {5, 6}}};
+  using IntMatType = tracking::math::Matrix<sint32, 3, 3, true>;
+  // clang-format off
+  const auto mat{IntMatType::FromList({
+    {1, 2, 3}, 
+    {4, 5, 6}, 
+    {7, 8, 9}
+  })};
+  // clang-format on
+  // the column view
+  const tracking::math::MatrixColumnView<sint32, 3, 3, true> colView(mat, 2, 1, 2);
+
+  // a lhs matrix
+  using IntMatType2 = tracking::math::Matrix<sint32, 3, 2, true>;
+  const auto lhs{IntMatType2::FromList({{1, 2}, {3, 4}, {5, 6}})};
+
+  // calc expected result
+  tracking::math::Matrix<sint32, 2, 1, true> col;
+  col.setBlock<3, 3, 2, 1, 1, 2, true, 0, 0>(mat);
+  const auto resExp = lhs * col;
 
   // call UUT
   auto res = lhs * colView;
 
-  EXPECT_FLOAT_EQ(res[0], 1 * 6 + 2 * 9);
-  EXPECT_FLOAT_EQ(res[1], 3 * 6 + 4 * 9);
-  EXPECT_FLOAT_EQ(res[2], 5 * 6 + 6 * 9);
+  EXPECT_EQ(res, resExp);
 }
 
 TEST(MatrixColumnView, mul_rhs) // NOLINT
 {
   // testing MatrixColumnView * Vector
-  const tracking::math::Matrix<float32, 4, 3>           mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}};
-  const tracking::math::Vector<float32, 4>              rhs{{1, 2, 3, 4}};
-  const tracking::math::MatrixColumnView<float32, 4, 3> colView(mat, 2, 0, 3);
+  using IntMatType = tracking::math::Matrix<sint32, 4, 3, true>;
+  // clang-format off
+  const auto mat{IntMatType::FromList({
+    { 1,  2,  3}, 
+    { 4,  5,  6}, 
+    { 7,  8,  9}, 
+    {10, 11, 12}
+  })};
+  // clang-format on
+  const auto rhs{tracking::math::Vector<sint32, 4>::FromList({1, 2, 3, 4})};  
+  const tracking::math::MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 0, 3);
+
+  // calc expected result
+  tracking::math::Matrix<sint32, 4, 1, true> col;
+  col.setBlock<4, 3, 4, 1, 0, 2, true, 0, 0>(mat);
+  const auto resExp = (col.transpose() * rhs)(0,0);
 
   // call UUT
   auto res = colView * rhs;
 
-  EXPECT_FLOAT_EQ(res, 3 * 1 + 6 * 2 + 9 * 3 + 12 * 4);
+  EXPECT_EQ(res, resExp);
 }
 
 TEST(MatrixColumnView, mul_rhs_ranged) // NOLINT
 {
   // testing MatrixColumnView * Vector
-  const tracking::math::Matrix<float32, 4, 3>           mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}};
-  const tracking::math::Vector<float32, 2>              rhs{{1, 2}};
-  const tracking::math::MatrixColumnView<float32, 4, 3> colView(mat, 2, 1, 2);
+  using IntMatType = tracking::math::Matrix<sint32, 4, 3, true>;
+  // clang-format off
+  const auto mat{IntMatType::FromList({
+    { 1,  2,  3}, 
+    { 4,  5,  6}, 
+    { 7,  8,  9}, 
+    {10, 11, 12}
+  })};
+  // clang-format on
+  const auto rhs{tracking::math::Vector<sint32, 2>::FromList({1, 2})};  
+  const tracking::math::MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 1, 2);
+
+  // calc expected result
+  tracking::math::Matrix<sint32, 2, 1, true> col;
+  col.setBlock<4, 3, 2, 1, 1, 2, true, 0, 0>(mat);
+  const auto resExp = (col.transpose() * rhs)(0,0);
 
   // call UUT
   auto res = colView * rhs;
 
-  EXPECT_FLOAT_EQ(res, 6 * 1 + 9 * 2);
+  EXPECT_EQ(res, resExp);
 }
 
 TEST(MatrixColumnView, mul_rhsview) // NOLINT
 {
   // testing MatrixColumnView * MatrixColumnView
-  const tracking::math::Matrix<float32, 4, 3>           mat{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}};
-  const tracking::math::Vector<float32, 4>              rhs{{1, 2, 3, 4}};
-  const tracking::math::MatrixColumnView<float32, 4, 3> colView(mat, 2, 1, 2);
-  const tracking::math::MatrixColumnView<float32, 4, 1> rhsView(rhs, 0, 1, 2);
+  using IntMatType = tracking::math::Matrix<sint32, 4, 3, true>;
+  // clang-format off
+  const auto mat{IntMatType::FromList({
+    { 1,  2,  3}, 
+    { 4,  5,  6}, 
+    { 7,  8,  9}, 
+    {10, 11, 12}
+  })};
+  // clang-format on
+  const auto rhs{tracking::math::Vector<sint32, 4>::FromList({1, 2, 3, 4})};
+  const tracking::math::MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 1, 2);
+  const tracking::math::MatrixColumnView<sint32, 4, 1, true> rhsView(rhs, 0, 1, 2);
+
+  // calc expected result
+  tracking::math::Matrix<sint32, 2, 1, true> col1;
+  col1.setBlock<4, 3, 2, 1, 1, 2, true, 0, 0>(mat);
+  tracking::math::Matrix<sint32, 2, 1, true> col2;
+  col2.setBlock<4, 1, 2, 1, 1, 0, true, 0, 0>(rhs);
+  const auto resExp = (col1.transpose() * col2)(0,0);
 
   // call UUT
   auto res = colView * rhsView;
 
-  EXPECT_FLOAT_EQ(res, 6 * 2 + 9 * 3);
+  EXPECT_EQ(res, resExp);
 }

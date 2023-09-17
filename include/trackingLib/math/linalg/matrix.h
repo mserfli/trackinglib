@@ -4,10 +4,12 @@
 #include "base/first_include.h"
 #include "math/linalg/contracts/matrix_intf.h"
 #include "math/linalg/errors.h"
+#include <algorithm>
 #include <array>
 #include <initializer_list>
 #include <iostream>
 #include <type_traits>
+#include <utility>
 
 namespace tracking
 {
@@ -182,6 +184,18 @@ public:
   /// \brief Sets all elements to one
   void setOnes();
 
+  /// \brief Get min value of the matrix
+  /// \return min value
+  auto min() const -> ValueType_ { return *std::min_element(data().begin(), data().end()); }
+
+  /// \brief Get max value of the matrix
+  /// \return max value
+  auto max() const -> ValueType_ { return *std::max_element(data().begin(), data().end()); }
+
+  /// \brief Get min and max value of the matrix
+  /// \return pair of min, max value
+  auto minmax() const -> std::pair<ValueType_, ValueType_>;
+
   /// \brief Fast transpose without changing the layout
   /// \return const transpose_type&   const reference to same data as Self, but differently interpreted
   auto transpose() const -> const transpose_type&;
@@ -211,24 +225,30 @@ public:
             sint32 DstRowBeg_,
             sint32 DstColBeg_>
   void setBlock(const Matrix<ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_>& block);
+
+  /// \brief Set a block matrix at given position
+  /// \tparam SrcRowSize_      Rows of the source block
+  /// \tparam SrcColSize_      Cols of the source block
+  /// \tparam SrcIsRowMajor_   Memory layout of source
+  /// \param srcRowCount       Number of rows to copy from source
+  /// \param srcColCount       Number of cols to copy from source
+  /// \param srcRowBeg         Begin row index in source
+  /// \param srcColBeg         Begin col index in source
+  /// \param dstRowBeg         Begin row index in dest
+  /// \param dstColBeg         Begin col index in dest
+  /// \param[in] block         Source block matrix to copy from
+  template <sint32 SrcRowSize_, sint32 SrcColSize_, bool SrcIsRowMajor_>
+  void setBlock(const sint32 srcRowCount,
+                const sint32 srcColCount,
+                const sint32 srcRowBeg,
+                const sint32 srcColBeg,
+                const sint32 dstRowBeg,
+                const sint32 dstColBeg,
+                const Matrix<ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_>& block);
   // <---
 
-  // clang-format off
-TEST_REMOVE_PROTECTED:
-  ; // workaround for correct indentation
-  // clang-format on 
-  using Storage = std::array<ValueType_, static_cast<sint32>(Rows* Cols)>; ///< type of the internal storage
-  
   //////////////////////////////////////////////////
-  // access operators  --->
-  /// \brief  Read-only access to the internal data
-  /// \return const Storage& 
-  auto data() const -> const Storage& { return _data; } 
-
-  /// \brief Modify access to the internal data
-  /// \return Storage& 
-  auto data() -> Storage& { return _data; }
-  
+  // unsafe access operators  --->
   /// \brief Unsafe element read-only access
   /// \param[in] row  row of the element to read
   /// \param[in] col  column of the element to read
@@ -241,9 +261,25 @@ TEST_REMOVE_PROTECTED:
   /// \return ValueType_   the value at (row,col)
   auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
   // <---
+
+protected:
+  using Storage = std::array<ValueType_, static_cast<sint32>(Rows* Cols)>; ///< type of the internal storage
+  
+  //////////////////////////////////////////////////
+  // access operators  --->
+  /// \brief  Read-only access to the internal data
+  /// \return const Storage& 
+  auto data() const -> const Storage& { return _data; } 
+
+  /// \brief Modify access to the internal data
+  /// \return Storage& 
+  auto data() -> Storage& { return _data; }
+  // <---
+  
 #if 0
-  template <typename U, sint32 Rows, sint32 Cols>
-  friend class Matrix; // needed to access member data() in operator*=
+  // needed to access protected member function from passed parameters of type Matrix
+  template <typename U, sint32 Rows, sint32 Cols, bool IsRowMajor>
+  friend class Matrix; 
 
   template <typename U, sint32 Size, bool isLower>
   friend class TriangularMatrix; // needed to access member data() in solve()
@@ -265,15 +301,16 @@ TEST_REMOVE_PRIVATE:
 // non member operations  --->
 
 /// \brief Calculates Scalar * Matrix
-/// \tparam ValueType_ 
-/// \tparam Rows_ 
-/// \tparam Cols_ 
-/// \tparam IsRowMajor_ 
-/// \param[in] scalar 
-/// \param[in] mat 
-/// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_> 
+/// \tparam ValueType_
+/// \tparam Rows_
+/// \tparam Cols_
+/// \tparam IsRowMajor_
+/// \param[in] scalar
+/// \param[in] mat
+/// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-static auto operator*(ValueType_ scalar, Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+static auto operator*(ValueType_ scalar, Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat)
+    -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
   return mat * scalar;
 }

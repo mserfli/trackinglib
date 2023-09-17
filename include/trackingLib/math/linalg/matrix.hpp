@@ -19,7 +19,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::FromList(
   assert(list.begin()->size() == ColsInMem);
 
   Matrix tmp;
-  auto iter = tmp.data().begin();
+  auto   iter = tmp.data().begin();
   for (const auto& row : list)
   {
     std::copy(row.begin(), row.end(), iter);
@@ -292,6 +292,13 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::minmax() const -> std::pair<ValueType_, ValueType_>
+{
+  const auto [min, max] = std::minmax_element(data().begin(), data().end());
+  return std::pair(*min, *max);
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose() const -> const transpose_type&
 {
   return reinterpret_cast<const transpose_type&>(*this);
@@ -316,7 +323,6 @@ template <sint32 SrcRowSize_,
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setBlock(
     const Matrix<ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_>& block)
 {
-  static_assert((SrcRowCount_ > 1) && (SrcColCount_ > 1), "use scalar access operator for block copy size == 1");
   static_assert(SrcRowBeg_ + SrcRowCount_ <= SrcRowSize_, "copy to many rows from src");
   static_assert(SrcColBeg_ + SrcColCount_ <= SrcColSize_, "copy to many cols from src");
 
@@ -328,6 +334,32 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setBlock(
     for (sint32 col = 0; col < SrcColCount_; ++col)
     {
       this->at_unsafe(DstRowBeg_ + row, DstColBeg_ + col) = block.at_unsafe(SrcRowBeg_ + row, SrcColBeg_ + col);
+    }
+  }
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <sint32 SrcRowSize_, sint32 SrcColSize_, bool SrcIsRowMajor_>
+inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setBlock(
+    const sint32                                                        srcRowCount,
+    const sint32                                                        srcColCount,
+    const sint32                                                        srcRowBeg,
+    const sint32                                                        srcColBeg,
+    const sint32                                                        dstRowBeg,
+    const sint32                                                        dstColBeg,
+    const Matrix<ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_>& block)
+{
+  assert((srcRowBeg + srcRowCount <= SrcRowSize_) && "copy to many rows from src");
+  assert((srcColBeg + srcColCount <= SrcColSize_) && "copy to many cols from src");
+
+  assert((dstRowBeg + srcRowCount <= Rows_) && "copy to many rows to dst");
+  assert((dstColBeg + srcColCount <= Cols_) && "copy to many cols to dst");
+
+  for (sint32 row = 0; row < srcRowCount; ++row)
+  {
+    for (sint32 col = 0; col < srcColCount; ++col)
+    {
+      this->at_unsafe(dstRowBeg + row, dstColBeg + col) = block.at_unsafe(srcRowBeg + row, srcColBeg + col);
     }
   }
 }

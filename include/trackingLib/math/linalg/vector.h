@@ -11,9 +11,12 @@ namespace tracking
 namespace math
 {
 
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+class MatrixColumnView;
+
 // TODO(matthias): add interface contract
 template <typename ValueType_, sint32 Size_>
-class Vector: public Matrix<ValueType_, Size_, 1, true>
+class Vector: public Matrix<ValueType_, Size_, 1, true> // LCOV_EXCL_LINE
 {
 public:
   using Matrix = Matrix<ValueType_, Size_, 1, true>; ///< type of the parent class
@@ -23,6 +26,10 @@ public:
   
   //////////////////////////////////////////////////
   // additional constructors  --->
+  /// \brief Constructor that takes a MatrixColumnView
+  template<sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+  static auto FromMatrixColumnView(const MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>& colView) -> Vector;
+
   /// \brief Construct a new Matrix object with given initializer list representing the memory layout of the matrix
   /// \param[in] list  An initializer list describing the memory layout of the matrix
   static auto FromList(const std::initializer_list<ValueType_>& list) -> Vector;
@@ -47,12 +54,12 @@ public:
   /// \brief Element read-only access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_  Scalar vector value
-  auto operator[](sint32 idx) const -> tl::expected<ValueType_, typename Matrix::Errors>;
+  auto operator[](sint32 idx) const -> tl::expected<ValueType_, Errors>;
 
   /// \brief Element access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_&  Reference to the scalar vector value
-  auto operator[](sint32 idx) -> tl::expected<std::reference_wrapper<ValueType_>, typename Matrix::Errors>;
+  auto operator[](sint32 idx) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
   // <---
 
   //////////////////////////////////////////////////
@@ -69,7 +76,7 @@ public:
   /// \return ValueType_
   auto normSq() const -> ValueType_;
 
-  /// \brief L1 norm (aka vector length)
+  /// \brief L2 norm (aka vector length)
   /// \return ValueType_
   template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
   auto norm() const -> ValueType_;
@@ -84,13 +91,8 @@ public:
   auto normalize() const -> Vector;
   // <---
 
-  // clang-format off
-TEST_REMOVE_PROTECTED:
-  ; // workaround for correct indentation
-  // clang-format on
-
   //////////////////////////////////////////////////
-  // access operators  --->
+  // unsafe access operators  --->
   /// \brief Element read-only access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_  Scalar vector value
@@ -102,9 +104,7 @@ TEST_REMOVE_PROTECTED:
   auto at_unsafe(sint32 idx) -> ValueType_& { return Matrix::at_unsafe(idx, 0); }
   // <---
 
-  // clang-format off
-TEST_REMOVE_PROTECTED:
-  ; // workaround for correct indentation
+private:
   /// \brief Private ctor to convert a Matrix object into a Vector
   /// \param[in] other A base class object
   explicit Vector(const Matrix& other) : Matrix{other} {}
@@ -113,15 +113,26 @@ TEST_REMOVE_PROTECTED:
   using Matrix::Zeros;
   using Matrix::Ones;
   using Matrix::operator();
-  using Matrix::setBlock;
+  using Matrix::at_unsafe;
 };
 
-
+#if 0
 template <typename ValueType_, sint32 Size_>
 auto operator*(const Matrix<ValueType_, Size_, 1, true>& m, const Vector<ValueType_, Size_>& v) -> ValueType_
 {
   return v * Vector<ValueType_, Size_>{m};
 }
+#endif
+
+template<typename ValueType_>
+class Vector<ValueType_, 1> : public Matrix<ValueType_, 1, 1, true> // LCOV_EXCL_LINE
+{
+public:
+  /// \brief L2 norm (aka vector length)
+  /// \return ValueType_
+  template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
+  auto norm() const -> ValueType_;
+};
 
 } // namespace math
 } // namespace tracking
