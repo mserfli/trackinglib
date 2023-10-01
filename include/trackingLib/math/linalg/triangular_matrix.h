@@ -17,16 +17,18 @@ template <typename ValueType_, sint32 Size_>
 class DiagonalMatrix; // LCOV_EXCL_LINE
 
 // TODO(matthias): add interface contract
-// TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
 // TODO(matthias): use own memory optimized to required number of elements
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, true>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_>
 {
 public:
-  using SquareMatrix = SquareMatrix<ValueType_, Size_, true>; ///< type of the parent class
+  using SquareMatrix = SquareMatrix<ValueType_, Size_, IsRowMajor_>; ///< type of the parent class
 
   // unhide ctor of base class to allow implicit call in derived default ctors
   using SquareMatrix::SquareMatrix;
+
+  /// \brief Type of the transposed matrix without changing the memory layout
+  using transpose_type = TriangularMatrix<ValueType_, Size_, !IsLower_, !IsRowMajor_>;
 
   /// \brief Construct a new Triangular Matrix object
   /// \param[in] other
@@ -34,7 +36,7 @@ public:
 
   /// \brief Move construct a new Triangular Matrix object
   /// \param[in] other
-  explicit TriangularMatrix(const SquareMatrix&& other) : SquareMatrix{std::move(other)} {};
+  explicit TriangularMatrix(SquareMatrix&& other) noexcept : SquareMatrix{std::forward<SquareMatrix>(other)} {};
 
   /// \brief Construct a new TriangularMatrix object given initializer list
   /// \param[in] list  An initializer list describing a full square matrix
@@ -53,11 +55,11 @@ public:
 
   /// \brief Multiplication with generic matrix: Tria * Matrix
   /// \tparam Cols_
-  /// \tparam IsRowMajor_  
+  /// \tparam IsRowMajor2_  
   /// \param[in] mat
-  /// \return Matrix<ValueType_, Size_, Cols_, IsRowMajor_>
-  template <sint32 Cols_, bool IsRowMajor_>
-  auto operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& mat) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>;
+  /// \return Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
+  template <sint32 Cols_, bool IsRowMajor2_>
+  auto operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& mat) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>;
 
   /// \brief Multiplication with triangular matrix: Tria * Matrix
   /// \param[in] mat  A triangular matrix
@@ -67,7 +69,7 @@ public:
   /// \brief Multiplication with triangular matrix: Tria * Matrix
   /// \param[in] mat  A triangular matrix
   /// \return SquareMatrix<FloatType, Size>
-  auto operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_>& mat) const -> SquareMatrix;
+  auto operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_,IsRowMajor_>& mat) const -> SquareMatrix;
 
   /// \brief Multiplication with diagonal matrix: Tria * Matrix
   /// \param[in] diag  A diagonal matrix
@@ -97,16 +99,16 @@ public:
   auto operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
 
   /// \brief Calculate the transposed matrix
-  /// \return TriangularMatrix<FloatType, Size, !isLower>
-  auto transpose() const -> TriangularMatrix<ValueType_, Size_, !IsLower_>;
+  /// \return transpose_type
+  auto transpose() const -> transpose_type;
 
   /// \brief Solver for A*x=b based on Cholesky decomposition of A
   /// \tparam Cols_  Number of columns in the rhs variable b
-  /// \tparam IsRowMajor_
+  /// \tparam IsRowMajor2_
   /// \param[in] b  Matrix describing the rhs of the equation A*x=b
-  /// \return Matrix<FloatType, Size, Cols> describing x
-  template <sint32 Cols_, bool IsRowMajor_>
-  auto solve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& b) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>;
+  /// \return Matrix<FloatType, Size, Cols, IsRowMajor2_> describing x
+  template <sint32 Cols_, bool IsRowMajor2_>
+  auto solve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>;
 
   /// \brief Calculates the inverse of the underlying matrix
   /// \return TriangularMatrix
@@ -133,11 +135,7 @@ public:
   auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
   // <---
 
-  // clang-format off
-TEST_REMOVE_PRIVATE:
-  ; // workaround to keep following idententation
-  // clang-format on
-
+private:
   /// \brief hide inherited transpose function
   using SquareMatrix::transpose;
 

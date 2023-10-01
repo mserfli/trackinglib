@@ -17,7 +17,7 @@ namespace math
 {
 
 // forward declaration to prevent cyclic includes
-template <typename ValueType, sint32 Size, bool isLower>
+template <typename ValueType, sint32 Size, bool isLower, bool IsRowMajor_>
 class TriangularMatrix;
 
 // TODO(matthias): add support for external memory

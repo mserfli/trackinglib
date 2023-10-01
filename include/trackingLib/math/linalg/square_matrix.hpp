@@ -12,6 +12,7 @@
 #include "math/linalg/triangular_matrix.hpp"
 #include "math/linalg/vector.h"
 #include "math/linalg/vector.hpp"
+#include <cmath>
 #include <iterator>
 #include <limits>
 #include <utility>
@@ -48,14 +49,16 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::Identity() -> SquareMa
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix& b) const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix& b) const
+    -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
 {
   const auto [Q, R] = householderQR();
-  return static_cast<SquareMatrix<ValueType_, Size_, !IsRowMajor_>>(R.solve(Q.transpose()*b));
+  return static_cast<SquareMatrix<ValueType_, Size_, !IsRowMajor_>>(R.solve(Q.transpose() * b));
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false>>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const
+    -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>>
 {
   // implementation based on https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf
 
@@ -66,7 +69,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const 
   SquareMatrix R{*this};
 
   // scale to reduce numerical issues
-  const auto [min,max] = R.minmax();
+  const auto [min, max]  = R.minmax();
   const auto scaleFactor = std::abs(min) > std::abs(max) ? min : max;
   R /= scaleFactor;
 
@@ -115,40 +118,47 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const 
       }
     }
   }
-  auto triuR = TriangularMatrix<ValueType_, Size_, false>{std::move(R)};
+  auto triuR = TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>{std::move(R)};
   triuR *= scaleFactor;
   return std::make_pair(std::move(Q), std::move(triuR));
 }
 
-#if 0
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const -> tl::expected<TriangularMatrix<ValueType_, Size_, true>, Matrix::Errors>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
+    -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>
 {
   if (isSymmetric())
   {
-    const Eigen::LLT<Eigen::Matrix<FloatType, Size, Size>> llt(this->_data);
-
-    if (llt.info() == Eigen::Success)
+    if (hasStrictlyPositiveDiagonalElems())
     {
-      TriangularMatrix<FloatType, Size, true> L{};
-      L.setZeros();
-      const auto& internalL = llt.matrixL();
-      // copy lower triangular elements of internal matrix
-      for (sint32 col = 0; col < Size; ++col)
+      TriangularMatrix<ValueType_, Size_, true, IsRowMajor_> L{};
+      for (auto j = 0; j < Size_; ++j)
       {
-        L(col, col) = internalL(col, col);
-        for (sint32 row = col + 1; row < Size; ++row)
+        ValueType_ sum = this->at_unsafe(j, j);
+        for (auto k = 0; k < j; ++k)
         {
-          L(row, col) = internalL(row, col);
+          sum -= L.at_unsafe(j, k) * L.at_unsafe(j, k);
+        }
+        L.at_unsafe(j, j) = std::sqrt(sum);
+
+        for (auto i = j + 1; i < Size_; ++i)
+        {
+          sum = this->at_unsafe(i, j);
+          for (auto k = 0; k < j; ++k)
+          {
+            sum -= L.at_unsafe(i, k) * L.at_unsafe(j, k);
+          }
+          L.at_unsafe(i, j) = sum / L.at_unsafe(j, j);
         }
       }
-      return L;
+      return std::move(L);
     }
     return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
   }
   return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
 }
 
+#if 0
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLDLT() const
     -> tl::expected<std::pair<TriangularMatrix<FloatType, Size, true>, DiagonalMatrix<FloatType, Size>>, Errors>
@@ -185,7 +195,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLDLT() const
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const
-    -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false>, DiagonalMatrix<ValueType_, Size_>>, Errors>
+    -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>, Errors>
 {
   // Grewal & Andrews, Kalman Filtering Theory and Practice Using MATLAB, 4th
   // Edition, Wiley, 2014.
@@ -196,7 +206,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const
   if (isSymmetric())
   {
     const auto&                                P = this->_data;
-    TriangularMatrix<ValueType_, Size_, false> U{};
+    TriangularMatrix<ValueType_, Size_, false, IsRowMajor_> U{};
     DiagonalMatrix<ValueType_, Size_>          D{};
     for (sint32 j = Size_ - 1; j >= 0; --j)
     {
@@ -218,7 +228,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const
         }
       }
     }
-    return std::make_pair(U, D);
+    return std::make_pair(std::move(U), std::move(D));
   }
   return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
 }
@@ -237,7 +247,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric() const ->
   {
     for (auto col = row; col < Size_; ++col)
     {
-      auto absDiff = std::abs(this->_data(row, col) - this->_data(col, row));
+      auto absDiff = std::abs(this->at_unsafe(row, col) - this->at_unsafe(col, row));
       if (absDiff > std::numeric_limits<ValueType_>::epsilon())
       {
         return false;
@@ -245,6 +255,18 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric() const ->
     }
   }
   return true;
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::hasStrictlyPositiveDiagonalElems() const -> bool
+{
+  sint32 j{0};
+  // check all diagonal elements
+  while ((j < Size_) && (this->at_unsafe(j, j) > static_cast<ValueType_>(0)))
+  {
+    ++j;
+  }
+  return j == Size_;
 }
 
 } // namespace tracking::math

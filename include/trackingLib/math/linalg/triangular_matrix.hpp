@@ -12,8 +12,8 @@ namespace tracking
 namespace math
 {
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline TriangularMatrix<ValueType_, Size_, IsLower_>::TriangularMatrix(const SquareMatrix& other)
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMatrix(const SquareMatrix& other)
     : SquareMatrix{}
 {
   // copy triangular elements from other
@@ -30,17 +30,17 @@ inline TriangularMatrix<ValueType_, Size_, IsLower_>::TriangularMatrix(const Squ
   }
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline TriangularMatrix<ValueType_, Size_, IsLower_>::TriangularMatrix(
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMatrix(
     const std::initializer_list<std::initializer_list<ValueType_>>& list)
     : SquareMatrix{TriangularMatrix{SquareMatrix{list}}}
 {
   // reuse existing ctor from SquareMatrix to prevent code duplication
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
-inline void TriangularMatrix<ValueType_, Size_, IsLower_>::setBlock(const TriangularMatrix& block)
+inline void TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::setBlock(const TriangularMatrix& block)
 {
   static_assert(SrcCount > 1, "use scalar access operator for block copy size == 1");
   static_assert(SrcRowBeg + SrcCount <= SrcSize, "copy to many rows from src");
@@ -70,12 +70,12 @@ inline void TriangularMatrix<ValueType_, Size_, IsLower_>::setBlock(const Triang
   }
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-template <sint32 Cols_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& mat) const
-    -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+template <sint32 Cols_, bool IsRowMajor2_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& mat) const
+    -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
 {
-  Matrix<ValueType_, Size_, Cols_, IsRowMajor_> result{};
+  Matrix<ValueType_, Size_, Cols_, IsRowMajor2_> result{};
   if (IsLower_)
   {
 #pragma omp parallel for private(i, j, k) shared(A, B, C)
@@ -107,8 +107,8 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const Matri
   return result;
 } // LCOV_EXCL_LINE
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const TriangularMatrix& mat) const
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const TriangularMatrix& mat) const
     -> TriangularMatrix
 {
   TriangularMatrix result{};
@@ -143,16 +143,16 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const Trian
   return result;
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_>& mat) const
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const
     -> SquareMatrix
 {
   SquareMatrix other{mat};
   return this->operator*(other);
 } // LCOV_EXCL_LINE
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const DiagonalMatrix<ValueType_, Size_>& diag) const
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const DiagonalMatrix<ValueType_, Size_>& diag) const
     -> TriangularMatrix
 {
   // each column is multiplied by the corresponding diagonal column element
@@ -180,16 +180,16 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const Diago
   return result;
 } // LCOV_EXCL_LINE
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*(const ValueType_ scalar) const -> TriangularMatrix
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const ValueType_ scalar) const -> TriangularMatrix
 {
   auto result{*this};
   result *= scalar;
   return result;
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*=(const ValueType_ scalar) -> TriangularMatrix&
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*=(const ValueType_ scalar) -> TriangularMatrix&
 {
   // TODO(matthias): can be optimized as soon as elements are stored in array instead of a SquareMatrix
   if (IsLower_)
@@ -215,8 +215,8 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator*=(const Valu
   return *this;
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>
 {
   if (!((IsLower_ && (row>=col)) || (!IsLower_ && (row<=col))))
   {
@@ -225,8 +225,8 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator()(sint32 row
   return SquareMatrix::operator()(row, col);
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>
 {
   if (!((IsLower_ && (row>=col)) || (!IsLower_ && (row<=col))))
   {
@@ -235,33 +235,33 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::operator()(sint32 row
   return SquareMatrix::operator()(row, col);
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_
 {
   assert((IsLower_ ? row >= col : row <= col) && "accessing off-triangular elements");
   return SquareMatrix::at_unsafe(row, col);
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::at_unsafe(sint32 row, sint32 col) -> ValueType_&
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) -> ValueType_&
 {
   assert((IsLower_ ? row >= col : row <= col) && "accessing off-triangular elements");
   return SquareMatrix::at_unsafe(row, col);
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::transpose() const -> TriangularMatrix<ValueType_, Size_, !IsLower_>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::transpose() const -> transpose_type
 {
-  // TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
-  return TriangularMatrix<ValueType_, Size_, !IsLower_>{SquareMatrix::transpose()};
+  auto copy{*this};
+  return reinterpret_cast<transpose_type&&>(std::move(copy));
 } // LCOV_EXCL_LINE
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-template <sint32 Cols_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::solve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& b) const
-    -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+template <sint32 Cols_, bool IsRowMajor2_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const
+    -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
 {
-  Matrix<ValueType_, Size_, Cols_, IsRowMajor_> x{};
+  Matrix<ValueType_, Size_, Cols_, IsRowMajor2_> x{};
   if (IsLower_) // LCOV_EXCL_LINE
   {
     for (auto k = 0; k < Cols_; ++k)
@@ -295,14 +295,14 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::solve(const Matrix<Va
   return x;
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::inverse() const -> TriangularMatrix
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::inverse() const -> TriangularMatrix
 {
   return TriangularMatrix{this->solve(SquareMatrix::Identity())};
 } // LCOV_EXCL_LINE
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_>::isUnitUpperTriangular() const -> bool
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::isUnitUpperTriangular() const -> bool
 {
   auto isValid = true;
   for (auto idx = 0; idx < Size_; ++idx)

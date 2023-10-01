@@ -13,7 +13,7 @@ namespace math
 {
 
 // forward declaration to prevent cyclic includes
-template <typename ValueType_, sint32 Size_, bool IsLower_>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 class TriangularMatrix;
 
 // forward declaration to prevent cyclic includes
@@ -38,7 +38,7 @@ public:
 
   /// \brief Move construct a new Square Matrix< Float Type,  Size_> object
   /// \param[in] other A base class object
-  explicit SquareMatrix(const Matrix&& other) : Matrix{std::move(other)} {}
+  explicit SquareMatrix(Matrix&& other) noexcept : Matrix{std::forward<Matrix>(other)} {}
 
   /// \brief Construct a new Square Matrix object
   /// \param[in] other A diagonal matrix
@@ -57,28 +57,28 @@ public:
 
   /// \brief Decompose internal matrix into Q*R
   /// \return [Q,R] = pair<SquareMatrix, TriangularMatrix>
-  auto householderQR() const -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false>>;
+  auto householderQR() const -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>>;
 
   /// \brief Solve A * x = b using QR decomposition 
   /// \param[in]  b  Result vector/matrix of A * x
   /// \return SquareMatrix x
   auto qrSolve(const SquareMatrix& b) const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
-#if 0
   /// \brief Decompose internal matrix into L*L' using standard Cholesky factorization
-  /// \return tl::expected<TriangularMatrix<ValueType_, Size_, true>, Errors> 
+  /// \return tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors> 
   /// \precondition internal matrix is symmetric and positive definite
-  auto decomposeLLT() const -> tl::expected<TriangularMatrix<ValueType_, Size_, true>, Errors>;
+  auto decomposeLLT() const -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>;
 
+#if 0
   /// \brief Decompose internal matrix into L*D*L' using rational Cholesky factorization
   /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true>, DiagonalMatrix<ValueType_, Size_>>, Errors> 
   /// \precondition internal matrix is symmetric and positive semi definite
   auto decomposeLDLT() const -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true>, DiagonalMatrix<ValueType_, Size_>>, Errors>;
 #endif
   /// \brief Decompose internal matrix into U*D*U' using rational Cholesky factorization
-  /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false>, DiagonalMatrix<ValueType_, Size_>>, Errors> 
+  /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>, Errors> 
   /// \precondition internal matrix is symmetric and positive semi definite
-  auto decomposeUDUT() const -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false>, DiagonalMatrix<ValueType_, Size_>>, Errors>;
+  auto decomposeUDUT() const -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>, Errors>;
 
   /// \brief Calculates the inverse based on QR factorization
   /// \return SquareMatrix with toggled IsRowMajor
@@ -92,6 +92,10 @@ TEST_REMOVE_PROTECTED:
   /// \brief Check for symmetry of the matrix
   /// \return true
   [[nodiscard]] auto isSymmetric() const -> bool;
+
+  /// \brief Check whether the diagonal elements of the matrix are strictly positive
+  /// \return true
+  [[nodiscard]] auto hasStrictlyPositiveDiagonalElems() const -> bool;
 };
 
 } // namespace math

@@ -16,7 +16,7 @@ class Matrix; // LCOV_EXCL_LINE
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 class SquareMatrix; // LCOV_EXCL_LINE
 
-template <typename ValueType_, sint32 Size_, bool IsLower_>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 class TriangularMatrix; // LCOV_EXCL_LINE
 
 template <typename ValueType_, sint32 Size_>
@@ -83,11 +83,12 @@ public:
   auto operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& mat) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>;
 
   /// \brief Multiplication with triangular matrix: D * Matrix
-  /// \tparam isLower
+  /// \tparam isLower_
+  /// \tparam isRowMajor_
   /// \param[in] mat  A triangular matrix
-  /// \return TriangularMatrix<ValueType_, Size_, isLower>
-  template <bool IsLower_>
-  auto operator*(const TriangularMatrix<ValueType_, Size_, IsLower_>& mat) const -> TriangularMatrix<ValueType_, Size_, IsLower_>;
+  /// \return TriangularMatrix<ValueType_, Size_, isLower_, isRowMajor_>
+  template <bool IsLower_, bool IsRowMajor_>
+  auto operator*(const TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>& mat) const -> TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>;
 
   /// \brief Multiplication with diagonal matrix: D * Matrix
   /// \param[in] mat  A diagonal matrix

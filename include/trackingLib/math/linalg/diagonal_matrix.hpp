@@ -119,9 +119,9 @@ inline auto DiagonalMatrix<ValueType_, Size_>::operator*(const Matrix<ValueType_
 }
 
 template <typename ValueType_, sint32 Size_>
-template <bool IsLower_>
-inline auto DiagonalMatrix<ValueType_, Size_>::operator*(const TriangularMatrix<ValueType_, Size_, IsLower_>& mat) const
-    -> TriangularMatrix<ValueType_, Size_, IsLower_>
+template <bool IsLower_, bool IsRowMajor_>
+inline auto DiagonalMatrix<ValueType_, Size_>::operator*(const TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>& mat) const
+    -> TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>
 {
   // each row is multiplied by the corresponding diagonal row element
   auto result{mat};

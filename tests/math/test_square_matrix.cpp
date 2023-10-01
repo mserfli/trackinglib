@@ -59,7 +59,6 @@ TEST(SquareMatrix, inverse) // NOLINT
   } 
 }
 
-#if 0
 TEST(SquareMatrix, decomposeLLT) // NOLINT
 {
   // clang-format off
@@ -77,17 +76,19 @@ TEST(SquareMatrix, decomposeLLT) // NOLINT
   auto retVal = cov.decomposeLLT();
 
   EXPECT_TRUE(retVal.has_value());
-  auto L = retVal.value();
-  auto recomposed = L * L.transpose();
+  const auto& L = retVal.value();
+
+  const auto recomposed = L * L.transpose();
   for (auto row = 0; row < 6; row++)
   {
     for (auto col = 0; col < 6; col++)
     {
-      EXPECT_FLOAT_EQ(cov(row,col), recomposed(row,col));
+      EXPECT_FLOAT_EQ(cov.at_unsafe(row,col), recomposed.at_unsafe(row,col));
     }
   }
 }
 
+#if 0
 TEST(SquareMatrix, decomposeLDLT) // NOLINT
 {
   // clang-format off
