@@ -3,9 +3,9 @@
 
 #include "math/linalg/triangular_matrix.h"
 
-#include "math/linalg/square_matrix.h"
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/matrix.h"
+#include "math/linalg/square_matrix.h"
 
 namespace tracking
 {
@@ -72,8 +72,8 @@ inline void TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::setBlock
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 template <sint32 Cols_, bool IsRowMajor2_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& mat) const
-    -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(
+    const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& mat) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
 {
   Matrix<ValueType_, Size_, Cols_, IsRowMajor2_> result{};
   if (IsLower_)
@@ -144,16 +144,16 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const
-    -> SquareMatrix
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(
+    const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> SquareMatrix
 {
   SquareMatrix other{mat};
   return this->operator*(other);
 } // LCOV_EXCL_LINE
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const DiagonalMatrix<ValueType_, Size_>& diag) const
-    -> TriangularMatrix
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(
+    const DiagonalMatrix<ValueType_, Size_>& diag) const -> TriangularMatrix
 {
   // each column is multiplied by the corresponding diagonal column element
   auto result{*this};
@@ -181,7 +181,8 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
 } // LCOV_EXCL_LINE
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const ValueType_ scalar) const -> TriangularMatrix
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const ValueType_ scalar) const
+    -> TriangularMatrix
 {
   auto result{*this};
   result *= scalar;
@@ -216,9 +217,10 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator()(sint32 row, sint32 col) const
+    -> tl::expected<ValueType_, Errors>
 {
-  if (!((IsLower_ && (row>=col)) || (!IsLower_ && (row<=col))))
+  if (!((IsLower_ && (row >= col)) || (!IsLower_ && (row <= col))))
   {
     return tl::unexpected<Errors>{Errors::invalid_access_idx};
   }
@@ -226,9 +228,10 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator()(sint32 row, sint32 col)
+    -> tl::expected<std::reference_wrapper<ValueType_>, Errors>
 {
-  if (!((IsLower_ && (row>=col)) || (!IsLower_ && (row<=col))))
+  if (!((IsLower_ && (row >= col)) || (!IsLower_ && (row <= col))))
   {
     return tl::unexpected<Errors>{Errors::invalid_access_idx};
   }
@@ -258,8 +261,8 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::transpos
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 template <sint32 Cols_, bool IsRowMajor2_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const
-    -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
+    const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
 {
   Matrix<ValueType_, Size_, Cols_, IsRowMajor2_> x{};
   if (IsLower_) // LCOV_EXCL_LINE

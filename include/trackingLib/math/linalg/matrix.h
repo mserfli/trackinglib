@@ -238,12 +238,12 @@ public:
   /// \param dstColBeg         Begin col index in dest
   /// \param[in] block         Source block matrix to copy from
   template <sint32 SrcRowSize_, sint32 SrcColSize_, bool SrcIsRowMajor_>
-  void setBlock(const sint32 srcRowCount,
-                const sint32 srcColCount,
-                const sint32 srcRowBeg,
-                const sint32 srcColBeg,
-                const sint32 dstRowBeg,
-                const sint32 dstColBeg,
+  void setBlock(const sint32                                                        srcRowCount,
+                const sint32                                                        srcColCount,
+                const sint32                                                        srcRowBeg,
+                const sint32                                                        srcColBeg,
+                const sint32                                                        dstRowBeg,
+                const sint32                                                        dstColBeg,
                 const Matrix<ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_>& block);
   // <---
 
@@ -264,18 +264,18 @@ public:
 
 protected:
   using Storage = std::array<ValueType_, static_cast<sint32>(Rows* Cols)>; ///< type of the internal storage
-  
+
   //////////////////////////////////////////////////
   // access operators  --->
   /// \brief  Read-only access to the internal data
-  /// \return const Storage& 
-  auto data() const -> const Storage& { return _data; } 
+  /// \return const Storage&
+  auto data() const -> const Storage& { return _data; }
 
   /// \brief Modify access to the internal data
-  /// \return Storage& 
+  /// \return Storage&
   auto data() -> Storage& { return _data; }
   // <---
-  
+
 #if 0
   // needed to access protected member function from passed parameters of type Matrix
   template <typename U, sint32 Rows, sint32 Cols, bool IsRowMajor>

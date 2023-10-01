@@ -205,9 +205,9 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const
 
   if (isSymmetric())
   {
-    const auto&                                P = this->_data;
+    const auto&                                             P = this->_data;
     TriangularMatrix<ValueType_, Size_, false, IsRowMajor_> U{};
-    DiagonalMatrix<ValueType_, Size_>          D{};
+    DiagonalMatrix<ValueType_, Size_>                       D{};
     for (sint32 j = Size_ - 1; j >= 0; --j)
     {
       for (sint32 i = j; i >= 0; --i)
