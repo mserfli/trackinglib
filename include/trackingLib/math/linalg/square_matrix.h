@@ -36,6 +36,10 @@ public:
   /// \param[in] other A base class object
   explicit SquareMatrix(const Matrix& other) : Matrix{other} {}
 
+  /// \brief Move construct a new Square Matrix< Float Type,  Size_> object
+  /// \param[in] other A base class object
+  explicit SquareMatrix(const Matrix&& other) : Matrix{std::move(other)} {}
+
   /// \brief Construct a new Square Matrix object
   /// \param[in] other A diagonal matrix
   SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other); // NOLINT(google-explicit-constructor)
@@ -51,12 +55,14 @@ public:
   /// \return SquareMatrix  Resulting identity matrix
   static auto Identity() -> SquareMatrix;
 
-  auto householderQR() const -> std::pair<SquareMatrix, SquareMatrix>;
+  /// \brief Decompose internal matrix into Q*R
+  /// \return [Q,R] = pair<SquareMatrix, TriangularMatrix>
+  auto householderQR() const -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false>>;
 
   /// \brief Solve A * x = b using QR decomposition 
   /// \param[in]  b  Result vector/matrix of A * x
   /// \return SquareMatrix x
-  auto qrSolve(const SquareMatrix& b) const -> SquareMatrix;
+  auto qrSolve(const SquareMatrix& b) const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
 #if 0
   /// \brief Decompose internal matrix into L*L' using standard Cholesky factorization
@@ -74,9 +80,9 @@ public:
   /// \precondition internal matrix is symmetric and positive semi definite
   auto decomposeUDUT() const -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false>, DiagonalMatrix<ValueType_, Size_>>, Errors>;
 
-  /// \brief Calculates the inverse based on Cholesky factorization
-  /// \return SquareMatrix
-  auto inverse() const -> SquareMatrix;
+  /// \brief Calculates the inverse based on QR factorization
+  /// \return SquareMatrix with toggled IsRowMajor
+  auto inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
   // clang-format off
 TEST_REMOVE_PROTECTED:

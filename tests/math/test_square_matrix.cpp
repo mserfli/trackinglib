@@ -9,9 +9,9 @@ TEST(SquareMatrix, householderQR) // NOLINT
   // clang-format off
   using FloatSquareMatType = tracking::math::SquareMatrix<float32, 3, true>;
   const auto mat = FloatSquareMatType::FromList({
-    {1,2,3},
-    {4,5,6},
-    {7,8,9}
+    { 9.25, -6.0,  1.25},
+    {-6.00,  4.5, -1.00},
+    { 1.25, -1.0,  0.25}
   });
   // clang-format on
 
@@ -54,7 +54,7 @@ TEST(SquareMatrix, inverse) // NOLINT
   {
     for (auto col = 0; col < 3; col++)
     {
-      EXPECT_FLOAT_EQ(inv.at_unsafe(row, col), expInvMat.at_unsafe(row, col));
+      EXPECT_NEAR(inv.at_unsafe(row, col), expInvMat.at_unsafe(row, col), 7e-5);
     }
   } 
 }

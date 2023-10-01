@@ -32,6 +32,10 @@ public:
   /// \param[in] other
   explicit TriangularMatrix(const SquareMatrix& other);
 
+  /// \brief Move construct a new Triangular Matrix object
+  /// \param[in] other
+  explicit TriangularMatrix(const SquareMatrix&& other) : SquareMatrix{std::move(other)} {};
+
   /// \brief Construct a new TriangularMatrix object given initializer list
   /// \param[in] list  An initializer list describing a full square matrix
   TriangularMatrix(const std::initializer_list<std::initializer_list<ValueType_>>& list);
@@ -107,6 +111,7 @@ public:
   /// \brief Calculates the inverse of the underlying matrix
   /// \return TriangularMatrix
   auto inverse() const -> TriangularMatrix;
+  
   // TODO(matthias): UnitUpper inplace inverse, Grewal Table 6.7 p.235
 
   /// \brief Checks for Unit Upper condition

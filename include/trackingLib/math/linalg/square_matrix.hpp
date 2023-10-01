@@ -48,17 +48,14 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::Identity() -> SquareMa
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix& b) const -> SquareMatrix
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix& b) const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
 {
-  // Eigen::HouseholderQR<Eigen::Matrix<ValueType_, Size_, Size_>> qr(this->_data);
-  // x._data = qr.solve(b._data);
   const auto [Q, R] = householderQR();
-  const auto Triu   = TriangularMatrix<ValueType_, Size_, false>{R};
-  return static_cast<SquareMatrix>(Triu.solve(b));
+  return static_cast<SquareMatrix<ValueType_, Size_, !IsRowMajor_>>(R.solve(Q.transpose()*b));
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const -> std::pair<SquareMatrix, SquareMatrix>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false>>
 {
   // implementation based on https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf
 
@@ -69,7 +66,8 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const 
   SquareMatrix R{*this};
 
   // scale to reduce numerical issues
-  const auto scaleFactor = R.max();
+  const auto [min,max] = R.minmax();
+  const auto scaleFactor = std::abs(min) > std::abs(max) ? min : max;
   R /= scaleFactor;
 
   using ColumnVector = Vector<ValueType_, Size_>;
@@ -86,10 +84,10 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const 
 
     const ValueType_ normx = w.norm();
     // Determines the sign of the j-th diagonal element of R.
-    const ValueType_ s =
+    const ValueType_ sign =
         (R.at_unsafe(j, j) < static_cast<ValueType_>(0)) ? static_cast<ValueType_>(1) : static_cast<ValueType_>(-1);
-    const ValueType_ u1  = R.at_unsafe(j, j) - s * normx;
-    const ValueType_ tau = -s * u1 / normx; // Computes the parameter tau for the Householder transformation.
+    const ValueType_ u1  = R.at_unsafe(j, j) - sign * normx;
+    const ValueType_ tau = -sign * u1 / normx; // Computes the parameter tau for the Householder transformation.
 
     w /= u1;                                       // Computes the Householder vector w.
     w.at_unsafe(j)   = static_cast<ValueType_>(1); // Sets the j-th row of w to 1 for convenience.
@@ -117,8 +115,9 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const 
       }
     }
   }
-  R *= scaleFactor;
-  return std::make_pair(Q, R);
+  auto triuR = TriangularMatrix<ValueType_, Size_, false>{std::move(R)};
+  triuR *= scaleFactor;
+  return std::make_pair(std::move(Q), std::move(triuR));
 }
 
 #if 0
@@ -225,7 +224,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::inverse() const -> SquareMatrix
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
 {
   return qrSolve(SquareMatrix::Identity());
 }
