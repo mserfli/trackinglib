@@ -248,6 +248,19 @@ protected:
     EXPECT_EQ(res.error(), tracking::math::Errors::divide_by_zero);
   }
 
+  void test_op_div_scalar_IntSuccess()
+  {
+    IntMatType mat{_testIntMat};
+
+    // call UUT
+    auto res = mat / 2;
+
+    for (auto idx = 0; idx < _testIntMat._data.size(); ++idx)
+    {
+      EXPECT_EQ(res.value()._data[idx], _testIntMat._data[idx] / 2);
+    }
+  }
+
   void test_op_div_scalar_FloatFailDivByZero()
   {
     FloatMatType mat{_testFloatMat};
@@ -255,6 +268,19 @@ protected:
     // call UUT
     auto res = mat / 0.0F;
     EXPECT_EQ(res.error(), tracking::math::Errors::divide_by_zero);
+  }
+
+  void test_op_div_scalar_FloatSuccess()
+  {
+    FloatMatType mat{_testFloatMat};
+
+    // call UUT
+    auto res = mat / 2.0F;
+    
+    for (auto idx = 0; idx < _testFloatMat._data.size(); ++idx)
+    {
+      EXPECT_EQ(res.value()._data[idx], _testFloatMat._data[idx] / 2.0F);
+    }
   }
 
   void test_op_mul_mat_Success() 
@@ -505,7 +531,9 @@ TYPED_TEST(GTestMatrix, op_div__FailDivByZero) // NOLINT
 TYPED_TEST(GTestMatrix, op_div__Success) // NOLINT
 {
   GTestMatrix<TypeParam>::test_op_div_scalar_inplace_IntSuccess();
+  GTestMatrix<TypeParam>::test_op_div_scalar_IntSuccess();
   GTestMatrix<TypeParam>::test_op_div_scalar_inplace_FloatSuccess();
+  GTestMatrix<TypeParam>::test_op_div_scalar_FloatSuccess();
 }
 
 TYPED_TEST(GTestMatrix, transpose__Success) // NOLINT

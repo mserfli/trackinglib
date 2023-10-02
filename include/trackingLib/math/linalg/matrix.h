@@ -262,7 +262,7 @@ public:
   auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
   // <---
 
-protected:
+TEST_REMOVE_PROTECTED:
   using Storage = std::array<ValueType_, static_cast<sint32>(Rows* Cols)>; ///< type of the internal storage
 
   //////////////////////////////////////////////////
@@ -276,7 +276,10 @@ protected:
   auto data() -> Storage& { return _data; }
   // <---
 
-private:
+TEST_REMOVE_PRIVATE:
+  template<typename TestValueType_, sint32 TestRows_, sint32 TestCols_, bool TestIsRowMajor_>
+  friend class TestMatrix;
+
   template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
   void inplace_div_by_int_unsafe(IntType scalar);
 

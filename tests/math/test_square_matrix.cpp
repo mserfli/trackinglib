@@ -88,6 +88,36 @@ TEST(SquareMatrix, decomposeLLT) // NOLINT
   }
 }
 
+TEST(SquareMatrix, decomposeLLT_NotSymmetric_ExpectError) // NOLINT
+{
+  // clang-format off
+  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+    {10, -4},
+    {-3, 13},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLLT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
+TEST(SquareMatrix, decomposeLLT_SymmetricNotPositiveDefinite_ExpectError) // NOLINT
+{
+  // clang-format off
+  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+    {10, -3},
+    {-3, -13},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLLT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
 TEST(SquareMatrix, decomposeLDLT) // NOLINT
 {
   // clang-format off
@@ -114,4 +144,34 @@ TEST(SquareMatrix, decomposeLDLT) // NOLINT
       EXPECT_FLOAT_EQ(cov.at_unsafe(row,col), recomposed.at_unsafe(row,col));
     }
   }
+}
+
+TEST(SquareMatrix, decomposeLDLT_NotSymmetric_ExpectError) // NOLINT
+{
+  // clang-format off
+  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+    {10, -4},
+    {-3, 13},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLDLT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
+TEST(SquareMatrix, decomposeLDLT_SymmetricNotPositiveDefinite_ExpectError) // NOLINT
+{
+  // clang-format off
+  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+    {10, -3},
+    {-3, -13},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLDLT();
+
+  EXPECT_FALSE(retVal.has_value());
 }
