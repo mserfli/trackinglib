@@ -246,9 +246,9 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric() const -> bool
 {
   // check all off diagonal elements
-  for (auto row = 1; row < Size_; ++row)
+  for (auto row = 0; row < Size_; ++row)
   {
-    for (auto col = row; col < Size_; ++col)
+    for (auto col = row + 1; col < Size_; ++col)
     {
       const auto absDiff = std::abs(this->at_unsafe(row, col) - this->at_unsafe(col, row));
       if (absDiff > std::numeric_limits<ValueType_>::epsilon())
