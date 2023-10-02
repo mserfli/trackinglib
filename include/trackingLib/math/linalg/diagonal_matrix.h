@@ -24,7 +24,7 @@ class Vector; // LCOV_EXCL_LINE
 
 // TODO(matthias): add interface contract
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL
+class DiagonalMatrix TEST_REMOVE_FINAL // LCOV_EXCL_LINE
 {
 public:
   // rule of 5 declarations
@@ -160,10 +160,7 @@ public:
   auto at_unsafe(sint32 idx) -> ValueType_& { return _data.at_unsafe(idx); }
   // <---
 
-  // clang-format off
-TEST_REMOVE_PRIVATE:
-  ; // workaround to keep following idententation
-  // clang-format on
+private:
   Vector<ValueType_, Size_> _data{};
 };
 

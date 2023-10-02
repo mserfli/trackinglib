@@ -88,7 +88,6 @@ TEST(SquareMatrix, decomposeLLT) // NOLINT
   }
 }
 
-#if 0
 TEST(SquareMatrix, decomposeLDLT) // NOLINT
 {
   // clang-format off
@@ -106,14 +105,13 @@ TEST(SquareMatrix, decomposeLDLT) // NOLINT
   auto retVal = cov.decomposeLDLT();
 
   EXPECT_TRUE(retVal.has_value());
-  auto [L, D] = retVal.value();
-  auto recomposed = L * D * L.transpose();
+  const auto [L, D] = retVal.value();
+  const auto recomposed = (L * D) * L.transpose();
   for (auto row = 0; row < 6; row++)
   {
     for (auto col = 0; col < 6; col++)
     {
-      EXPECT_FLOAT_EQ(cov(row,col), recomposed(row,col));
+      EXPECT_FLOAT_EQ(cov.at_unsafe(row,col), recomposed.at_unsafe(row,col));
     }
   }
 }
-#endif

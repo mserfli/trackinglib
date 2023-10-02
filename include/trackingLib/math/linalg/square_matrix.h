@@ -14,7 +14,7 @@ namespace math
 
 // forward declaration to prevent cyclic includes
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-class TriangularMatrix;
+class TriangularMatrix; // LCOV_EXCL_LINE
 
 // forward declaration to prevent cyclic includes
 template <typename ValueType_, sint32 Size_>
@@ -22,7 +22,7 @@ class DiagonalMatrix;
 
 // TODO(matthias): add interface contract
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-class SquareMatrix: public Matrix<ValueType_, Size_, Size_, IsRowMajor_>
+class SquareMatrix: public Matrix<ValueType_, Size_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
 {
 public:
   using Matrix = Matrix<ValueType_, Size_, Size_, IsRowMajor_>; ///< type of the parent class
@@ -75,12 +75,13 @@ public:
   /// \precondition internal matrix is symmetric and positive definite
   auto decomposeLLT() const -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>;
 
-#if 0
   /// \brief Decompose internal matrix into L*D*L' using rational Cholesky factorization
-  /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true>, DiagonalMatrix<ValueType_, Size_>>, Errors> 
-  /// \precondition internal matrix is symmetric and positive semi definite
-  auto decomposeLDLT() const -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true>, DiagonalMatrix<ValueType_, Size_>>, Errors>;
-#endif
+  /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
+  /// Errors> \precondition internal matrix is symmetric and positive semi definite
+  auto decomposeLDLT() const
+      -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
+                      Errors>;
+
   /// \brief Decompose internal matrix into U*D*U' using rational Cholesky factorization
   /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
   /// Errors> \precondition internal matrix is symmetric and positive semi definite
@@ -92,11 +93,7 @@ public:
   /// \return SquareMatrix with toggled IsRowMajor
   auto inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
-  // clang-format off
-TEST_REMOVE_PROTECTED:
-  ; // workaround for correct indentation
-  // clang-format on
-
+private:
   /// \brief Check for symmetry of the matrix
   /// \return true
   [[nodiscard]] auto isSymmetric() const -> bool;

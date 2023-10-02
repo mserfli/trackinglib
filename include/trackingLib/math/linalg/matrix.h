@@ -276,18 +276,7 @@ protected:
   auto data() -> Storage& { return _data; }
   // <---
 
-#if 0
-  // needed to access protected member function from passed parameters of type Matrix
-  template <typename U, sint32 Rows, sint32 Cols, bool IsRowMajor>
-  friend class Matrix; 
-
-  template <typename U, sint32 Size, bool isLower>
-  friend class TriangularMatrix; // needed to access member data() in solve()
-#endif
-  // clang-format off
-TEST_REMOVE_PRIVATE:
-  ; // workaround for correct indentation
-  // clang-format on
+private:
   template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
   void inplace_div_by_int_unsafe(IntType scalar);
 

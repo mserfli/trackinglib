@@ -19,7 +19,7 @@ class DiagonalMatrix; // LCOV_EXCL_LINE
 // TODO(matthias): add interface contract
 // TODO(matthias): use own memory optimized to required number of elements
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_>
+class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
 {
 public:
   using SquareMatrix = SquareMatrix<ValueType_, Size_, IsRowMajor_>; ///< type of the parent class
