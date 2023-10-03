@@ -43,7 +43,7 @@ inline auto MatrixRowView<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(
   {
     for (auto row = 0; row < Rows2_; ++row)
     {
-      result(0, col) += at_unsafe(row) * other(row, col);
+      result.at_unsafe(0, col) += at_unsafe(row) * other.at_unsafe(row, col);
     }
   }
   return result;

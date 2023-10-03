@@ -50,6 +50,8 @@ public:
   template <sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
   auto operator*(const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const -> ValueType_;
 
+  // TODO(matthias): add columnView * rowView resulting in a new Matrix
+
   /// \brief Get the number of rows in the column view
   /// \return sint32
   [[nodiscard]] auto getRowCount() const -> sint32 { return _rowCount; }
