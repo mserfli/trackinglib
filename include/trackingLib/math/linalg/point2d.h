@@ -48,7 +48,10 @@ TEST_REMOVE_PRIVATE:
 
   /// \brief Construct a new Point 2d< Float Type> object
   /// \param[in] other A base class object
-  explicit Point2d(const Vector& other) : Vector{other} {}
+  explicit Point2d(const Vector& other)
+      : Vector{other}
+  {
+  }
 
   /// \brief hide inherited operator[] to prevent wrong access
   using Vector::operator[];

@@ -16,8 +16,8 @@ class CovarianceMatrixFull
     , public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>
 {
 public:
-  using value_type   = FloatType;
-  using compose_type = CovarianceMatrixFull;
+  using value_type          = FloatType;
+  using compose_type        = CovarianceMatrixFull;
   static constexpr auto dim = Size;
 
   //  rule of 5 declarations
@@ -42,14 +42,11 @@ public:
   auto operator()(sint32 row, sint32 col) const -> FloatType;
 
   /// \brief Creates the "composed" covariance, although no composition is needed
-  /// \return const CovarianceMatrixFull& 
-  auto operator()() const -> const CovarianceMatrixFull&
-  {
-    return *this;
-  }
+  /// \return const CovarianceMatrixFull&
+  auto operator()() const -> const CovarianceMatrixFull& { return *this; }
 
   /// \brief Calculates the inverse based on Cholesky decomposition
-  /// \return tl::expected<CovarianceMatrixFull, Errors> 
+  /// \return tl::expected<CovarianceMatrixFull, Errors>
   auto inverse() const -> tl::expected<CovarianceMatrixFull, Errors>;
 
   /// \brief Checks inverse status

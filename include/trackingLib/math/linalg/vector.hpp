@@ -104,8 +104,8 @@ template <typename ValueType_, sint32 Size_>
 template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
 inline void Vector<ValueType_, Size_>::normalize()
 {
-  const auto  length = norm();
-  this->operator/=(length);
+  const auto length = norm();
+  this->     operator/=(length);
 }
 
 template <typename ValueType_, sint32 Size_>

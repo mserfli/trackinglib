@@ -57,7 +57,10 @@ TEST_REMOVE_PRIVATE:
 
   /// \brief Construct a new Point 3d< Float Type> object
   /// \param[in] other A base class object
-  explicit Point3d(const Vector& other) : Vector{other} {}
+  explicit Point3d(const Vector& other)
+      : Vector{other}
+  {
+  }
 
   /// \brief hide inherited operator[] to prevent wrong access
   using Vector::operator[];

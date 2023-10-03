@@ -41,7 +41,7 @@ public:
   /// \brief Construct a new Diagonal Matrix object
   /// \tparam IsRowMajor_
   /// \param[in] other
-  template<bool IsRowMajor_>
+  template <bool IsRowMajor_>
   static auto FromMatrix(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& other) -> DiagonalMatrix;
 
   /// \brief Construct a new DiagonalMatrix object given initializer list
@@ -88,7 +88,8 @@ public:
   /// \param[in] mat  A triangular matrix
   /// \return TriangularMatrix<ValueType_, Size_, isLower_, isRowMajor_>
   template <bool IsLower_, bool IsRowMajor_>
-  auto operator*(const TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>& mat) const -> TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>;
+  auto operator*(const TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>& mat) const
+      -> TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>;
 
   /// \brief Multiplication with diagonal matrix: D * Matrix
   /// \param[in] mat  A diagonal matrix

@@ -21,7 +21,7 @@ void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size,
   // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
 
   // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
-  auto PhiU = transposeU ? Phi * u.transpose() : Phi * u; 
+  auto PhiU = transposeU ? Phi * u.transpose() : Phi * u;
   auto Din  = d;
   u.setIdentity();
   FloatType sigma;

@@ -20,19 +20,19 @@ public:
   /// \param[in,out] u
   /// \param[in,out] d
   /// \param[in]     Phi
-  /// \param[in,out] transposeU 
+  /// \param[in,out] transposeU
   static void run(TriangularMatrix<FloatType, Size, false>& u,
                   DiagonalMatrix<FloatType, Size>&          d,
                   const SquareMatrix<FloatType, Size>&      Phi,
                   const bool                                transposeU);
 
   /// \brief Solve inplace Phi*UDU'*Phi' + G*Q*G' on u, d matrices
-  /// \tparam SizeQ 
-  /// \param[in,out] u 
-  /// \param[in,out] d 
-  /// \param[in,out] Phi 
-  /// \param[in,out] G 
-  /// \param[in,out] Q 
+  /// \tparam SizeQ
+  /// \param[in,out] u
+  /// \param[in,out] d
+  /// \param[in,out] Phi
+  /// \param[in,out] G
+  /// \param[in,out] Q
   template <sint32 SizeQ>
   static void run(TriangularMatrix<FloatType, Size, false>& u,
                   DiagonalMatrix<FloatType, Size>&          d,

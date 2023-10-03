@@ -20,8 +20,8 @@ template <typename FloatType, sint32 Size>
 class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType, Size>>
 {
 public:
-  using value_type   = FloatType;
-  using compose_type = CovarianceMatrixFull<FloatType, Size>;
+  using value_type          = FloatType;
+  using compose_type        = CovarianceMatrixFull<FloatType, Size>;
   static constexpr auto dim = Size;
 
   // rule of 5 declarations
@@ -58,9 +58,9 @@ public:
   auto operator()() const -> CovarianceMatrixFull<FloatType, Size>;
 
   /// \brief Calculates the inverse
-  /// \return tl::expected<CovarianceMatrixFactored, Errors> 
+  /// \return tl::expected<CovarianceMatrixFactored, Errors>
   auto inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>;
- 
+
   /// \brief Checks inverse status
   /// \return true
   /// \return false
@@ -87,7 +87,7 @@ public:
 
   /// \brief Calculates P + c*x*x', also known as Agee Turner Rank-1 update
   /// \param[in] c  Signed scalar, c<0: downdate, c>0 update
-  /// \param[in] x  A vector defining the outer product x*x' to update the matrix 
+  /// \param[in] x  A vector defining the outer product x*x' to update the matrix
   void rank1Update(const FloatType c, const Vector<FloatType, Size>& x);
 
   /// \brief Set the variance at (idx,idx) and clears any correlations
@@ -115,8 +115,8 @@ TEST_REMOVE_PRIVATE:
   // clang-format on
 
   /// \brief Testing: Construct a new Covariance Matrix Factored object
-  /// \param[in] other 
-  /// \param[in] isInverse 
+  /// \param[in] other
+  /// \param[in] isInverse
   explicit CovarianceMatrixFactored(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
 
   TriangularMatrix<FloatType, Size, false> _u{};

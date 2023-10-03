@@ -23,11 +23,11 @@ public:
 
   // unhide ctor of base class to allow implicit call in derived default ctors
   using Matrix::Matrix;
-  
+
   //////////////////////////////////////////////////
   // additional constructors  --->
   /// \brief Constructor that takes a MatrixColumnView
-  template<sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+  template <sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
   static auto FromMatrixColumnView(const MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>& colView) -> Vector;
 
   /// \brief Construct a new Matrix object with given initializer list representing the memory layout of the matrix
@@ -107,11 +107,14 @@ public:
 private:
   /// \brief Private ctor to convert a Matrix object into a Vector
   /// \param[in] other A base class object
-  explicit Vector(const Matrix& other) : Matrix{other} {}
+  explicit Vector(const Matrix& other)
+      : Matrix{other}
+  {
+  }
   // clang-format on
 
-  using Matrix::Zeros;
   using Matrix::Ones;
+  using Matrix::Zeros;
   using Matrix::operator();
   using Matrix::at_unsafe;
 };
@@ -124,8 +127,8 @@ auto operator*(const Matrix<ValueType_, Size_, 1, true>& m, const Vector<ValueTy
 }
 #endif
 
-template<typename ValueType_>
-class Vector<ValueType_, 1> : public Matrix<ValueType_, 1, 1, true> // LCOV_EXCL_LINE
+template <typename ValueType_>
+class Vector<ValueType_, 1>: public Matrix<ValueType_, 1, 1, true> // LCOV_EXCL_LINE
 {
 public:
   /// \brief L2 norm (aka vector length)

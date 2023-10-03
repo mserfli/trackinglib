@@ -74,7 +74,7 @@ struct MatrixIntf
     static_assert(std::is_floating_point<typename ImplType::value_type>() || std::is_integral<typename ImplType::value_type>());
     static_assert(ImplType::Rows > 0);
     static_assert(ImplType::Cols > 0);
-    
+
 #if 0
 #if __cplusplus == 202002L
     static_assert(matrix::has_setOnes_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);

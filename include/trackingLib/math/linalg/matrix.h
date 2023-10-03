@@ -262,7 +262,10 @@ public:
   auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
   // <---
 
+  // clang-format off
 TEST_REMOVE_PROTECTED:
+  ; // workaround for correct indentation
+  // clang-format on
   using Storage = std::array<ValueType_, static_cast<sint32>(Rows* Cols)>; ///< type of the internal storage
 
   //////////////////////////////////////////////////
@@ -276,10 +279,10 @@ TEST_REMOVE_PROTECTED:
   auto data() -> Storage& { return _data; }
   // <---
 
+  // clang-format off
 TEST_REMOVE_PRIVATE:
-  template<typename TestValueType_, sint32 TestRows_, sint32 TestCols_, bool TestIsRowMajor_>
-  friend class TestMatrix;
-
+  ; // workaround for correct indentation
+  // clang-format on
   template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
   void inplace_div_by_int_unsafe(IntType scalar);
 

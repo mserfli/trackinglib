@@ -68,7 +68,7 @@ inline void MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>::print() con
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_, sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
-inline auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat,
+inline auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&              mat,
                       const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& colView) -> Vector<ValueType_, Rows_>
 {
   static_assert(Cols_ <= Rows2_);
