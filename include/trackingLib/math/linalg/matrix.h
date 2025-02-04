@@ -2,6 +2,7 @@
 #define FDEAAACC_9EF1_4C87_94DC_2FA494822664
 
 #include "base/first_include.h"
+#include "math/linalg/matrix_types.h"
 #include "math/linalg/contracts/matrix_intf.h"
 #include "math/linalg/errors.h"
 #include <algorithm>

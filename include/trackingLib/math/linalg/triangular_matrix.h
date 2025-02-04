@@ -37,11 +37,12 @@ public:
   /// \brief Move construct a new Triangular Matrix object
   /// \param[in] other
   explicit TriangularMatrix(SquareMatrix&& other) noexcept
-      : SquareMatrix{std::forward<SquareMatrix>(other)} {};
+      : SquareMatrix{std::forward<SquareMatrix>(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts
 
-  /// \brief Construct a new TriangularMatrix object given initializer list
-  /// \param[in] list  An initializer list describing a full square matrix
-  TriangularMatrix(const std::initializer_list<std::initializer_list<ValueType_>>& list);
+  /// \brief Construct a new Triangular Matrix object with given initializer list representing the memory layout of the matrix
+  /// \param[in] list  An initializer list describing the memory layout of the matrix
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix;
+
 
   /// \brief Set a lower/upper triangular block matrix at given position
   /// \tparam SrcSize    Size of the source block
@@ -52,7 +53,9 @@ public:
   /// \tparam DstColBeg  Begin col index in dest
   /// \param[in] block   Source block matrix to copy from
   template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
-  void setBlock(const TriangularMatrix& block);
+  void setBlock(const TriangularMatrix<ValueType_, SrcSize, IsLower_, IsRowMajor_>& block);
+
+  // TODO(matthias): add setBlock with params defined at runtime
 
   /// \brief Multiplication with generic matrix: Tria * Matrix
   /// \tparam Cols_
