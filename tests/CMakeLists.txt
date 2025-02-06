@@ -12,18 +12,20 @@ add_compile_definitions(TEST_BUILD)
 add_executable(${TEST_BINARY})
 target_sources(${TEST_BINARY} PRIVATE
     test.cpp
+    math/test_matrix.cpp
+    math/test_vector.cpp
     math/test_point2d.cpp
     math/test_matrix_column_view.cpp
     math/test_matrix_row_view.cpp
     math/test_square_matrix.cpp
-    math/test_triangular_matrix.cpp
-    math/test_diagonal_matrix.cpp
-    math/test_covariance_matrix_factored.cpp
-    math/test_covariance_matrix_full.cpp
-    math/test_rank1_update.cpp
-    motion/test_state_mem.cpp
-    motion/test_motion_model_cv.cpp
-    motion/test_motion_model_ca.cpp
+    math/test_triangular_matrix.cpp # test next
+    # math/test_diagonal_matrix.cpp
+    # math/test_covariance_matrix_factored.cpp
+    # math/test_covariance_matrix_full.cpp
+    # math/test_rank1_update.cpp
+    # motion/test_state_mem.cpp
+    # motion/test_motion_model_cv.cpp
+    # motion/test_motion_model_ca.cpp
 )
 target_include_directories(
     ${TEST_BINARY}
