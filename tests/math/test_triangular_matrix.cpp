@@ -40,7 +40,13 @@ TEST(TriangularMatrix, ctor_triu) // NOLINT
   // call UUT
   const TriangularMatrix triuMat{mat};
 
-  EXPECT_EQ(expMat._data, triuMat._data);
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = row; col < 3; ++col)
+    {
+      EXPECT_FLOAT_EQ(expMat.at_unsafe(row, col), triuMat.at_unsafe(row, col));
+    }
+  }
 }
 
 TEST(TriangularMatrix, ctor_square) // NOLINT
@@ -403,18 +409,23 @@ TEST(TriangularMatrix, op_mul_rhs_tria_opposite) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_diag_lower) // NOLINT
 {
   // clang-format off
-  const tracking::math::TriangularMatrix<float32, 3, true> trilMat(
-    {{1,  0,  0}, 
-     {4,  5,  0}, 
-     {6,  7,  8}});
-  const tracking::math::DiagonalMatrix<float32, 3> diagMat(
-    {{1, 0, 0}, 
-     {0, 2, 0}, 
-     {0, 0, 3}});
-  const tracking::math::Matrix<float32, 3, 3> expMat(
-    {{ 1,  0,  0}, 
-     { 4, 10,  0}, 
-     { 6, 14, 24}});
+  using LowerTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, true, true>;
+  using DiagonalMatrix3 = tracking::math::DiagonalMatrix<float32, 3>;
+  const auto trilMat = LowerTriangularMatrix3::FromList({
+    {1,  0,  0}, 
+    {4,  5,  0}, 
+    {6,  7,  8}
+  });
+  const auto diagMat = DiagonalMatrix3::FromList({
+    {1, 0, 0}, 
+    {0, 2, 0}, 
+    {0, 0, 3}
+  });
+  const auto expMat = LowerTriangularMatrix3::FromList({
+    {1,  0,  0}, 
+    {4, 10,  0}, 
+    {6, 14, 24}
+  });
   // clang-format on
 
   // call UUT
@@ -426,18 +437,23 @@ TEST(TriangularMatrix, op_mul_rhs_diag_lower) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_diag_upper) // NOLINT
 {
   // clang-format off
-  const tracking::math::TriangularMatrix<float32, 3, false> triuMat(
-    {{1,  2,  3}, 
-     {0,  5,  6}, 
-     {0,  0,  8}});
-  const tracking::math::DiagonalMatrix<float32, 3> diagMat(
-    {{1, 0, 0}, 
-     {0, 2, 0}, 
-     {0, 0, 3}});
-  const tracking::math::Matrix<float32, 3, 3> expMat(
-    {{ 1,  4,  9}, 
-     { 0, 10, 18}, 
-     { 0,  0, 24}});
+  using UpperTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, false, true>;
+  using DiagonalMatrix3 = tracking::math::DiagonalMatrix<float32, 3>;
+  const auto triuMat = UpperTriangularMatrix3::FromList({
+    {1,  2,  3}, 
+    {0,  5,  6}, 
+    {0,  0,  8}
+  });
+  const auto diagMat = DiagonalMatrix3::FromList({
+    {1, 0, 0}, 
+    {0, 2, 0}, 
+    {0, 0, 3}
+  });
+  const auto expMat = UpperTriangularMatrix3::FromList({
+    {1,  4,  9}, 
+    {0, 10, 18}, 
+    {0,  0, 24}
+  });
   // clang-format on
 
   // call UUT
@@ -449,15 +465,18 @@ TEST(TriangularMatrix, op_mul_rhs_diag_upper) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_scal) // NOLINT
 {
   // clang-format off
-  const tracking::math::TriangularMatrix<float32, 3, false> triuMat(
-    {{1,  2,  3}, 
-     {0,  5,  6}, 
-     {0,  0,  8}});
+  using UpperTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, false, true>;
+  const auto triuMat = UpperTriangularMatrix3::FromList({
+    {1,  2,  3}, 
+    {0,  5,  6}, 
+    {0,  0,  8}
+  });
   const float32 scalar = 3;
-  const tracking::math::Matrix<float32, 3, 3> expMat(
-    {{ 3,  6,  9}, 
-     { 0, 15, 18}, 
-     { 0,  0, 24}});
+  const auto expMat = UpperTriangularMatrix3::FromList({
+    {3,  6,  9}, 
+    {0, 15, 18}, 
+    {0,  0, 24}
+  });
   // clang-format on
 
   // call UUT
@@ -469,15 +488,18 @@ TEST(TriangularMatrix, op_mul_rhs_scal) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_scal_upper_inplace) // NOLINT
 {
   // clang-format off
-  tracking::math::TriangularMatrix<float32, 3, false> triuMat(
-    {{1,  2,  3}, 
-     {0,  4,  5}, 
-     {0,  0,  6}});
+  using UpperTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, false, true>;
+  auto triuMat = UpperTriangularMatrix3::FromList({
+    {1,  2,  3}, 
+    {0,  4,  5}, 
+    {0,  0,  6}
+  });
   const float32 scalar = 3;
-  const tracking::math::Matrix<float32, 3, 3> expMat(
-    {{ 3,  6,  9}, 
-     { 0, 12, 15}, 
-     { 0,  0, 18}});
+  const auto expMat = UpperTriangularMatrix3::FromList({
+    {3,  6,  9}, 
+    {0, 12, 15}, 
+    {0,  0, 18}
+  });
   // clang-format on
 
   // call UUT
@@ -489,15 +511,18 @@ TEST(TriangularMatrix, op_mul_rhs_scal_upper_inplace) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_scal_lower_inplace) // NOLINT
 {
   // clang-format off
-  tracking::math::TriangularMatrix<float32, 3, true> trilMat(
-    {{1,  0,  0}, 
-     {2,  3,  0}, 
-     {4,  5,  6}});
+  using LowerTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, true, true>;
+  auto trilMat = LowerTriangularMatrix3::FromList({
+    {1,  0,  0}, 
+    {2,  3,  0}, 
+    {4,  5,  6}
+  });
   const float32 scalar = 3;
-  const tracking::math::Matrix<float32, 3, 3> expMat(
-    {{ 3,  0,  0}, 
-     { 6,  9,  0}, 
-     {12, 15, 18}});
+  const auto expMat = LowerTriangularMatrix3::FromList({
+    {3,  0,  0}, 
+    {6,  9,  0}, 
+    {12, 15, 18}
+  });
   // clang-format on
 
   // call UUT
@@ -509,39 +534,39 @@ TEST(TriangularMatrix, op_mul_rhs_scal_lower_inplace) // NOLINT
 TEST(TriangularMatrix, inverse_lower) // NOLINT
 {
   // clang-format off
-  tracking::math::TriangularMatrix<float32, 3, true> trilMat(
-    {{1, 0, 0}, 
-     {2, 4, 0}, 
-     {3, 5, 6}});
-  const tracking::math::TriangularMatrix<float32, 3, true> expMat(
-    {{ 1.000000000000000,                  0,                 0},
-     {-0.500000000000000,  0.250000000000000,                 0},
-     {-0.083333333333333, -0.208333333333333, 0.166666666666667}});
+  using LowerTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, true, true>;
+  const auto trilMat = LowerTriangularMatrix3::FromList({
+    {1,  0,  0}, 
+    {2,  4,  0}, 
+    {3,  5,  6}
+  });
+  const auto expMat = LowerTriangularMatrix3::FromList({
+    { 1.000000000000000,                  0,                 0},
+    {-0.500000000000000,  0.250000000000000,                 0},
+    {-0.083333333333333, -0.208333333333333, 0.166666666666667}
+  });
   // clang-format on
 
   // call UUT
   auto invMat = trilMat.inverse();
 
-  for (auto row = 0; row < 3; ++row)
-  {
-    for (auto col = 0; col <= row; ++col)
-    {
-      EXPECT_FLOAT_EQ(expMat(row, col), invMat(row, col));
-    }
-  }
+  EXPECT_EQ(expMat._data, invMat._data);
 }
 
 TEST(TriangularMatrix, inverse_upper) // NOLINT
 {
   // clang-format off
-  tracking::math::TriangularMatrix<float32, 3, false> triuMat(
-    {{1, 2, 3}, 
-     {0, 4, 5}, 
-     {0, 0, 6}});
-  const tracking::math::TriangularMatrix<float32, 3, false> expMat(
-    {{1, -0.5,  -0.083333333333333},
-     {0,  0.25, -0.208333333333333},
-     {0,  0,     0.166666666666667}});
+  using UpperTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, false, true>;
+  const auto triuMat = UpperTriangularMatrix3::FromList({
+    {1,  2,  3}, 
+    {0,  4,  5}, 
+    {0,  0,  6}
+  });
+  const auto expMat = UpperTriangularMatrix3::FromList({
+    {1.000000000000000, -0.500000000000000, -0.083333333333333},
+    {0,                 0.250000000000000, -0.208333333333333},
+    {0,                 0,                 0.166666666666667}
+  });
   // clang-format on
 
   // call UUT
@@ -551,7 +576,7 @@ TEST(TriangularMatrix, inverse_upper) // NOLINT
   {
     for (auto col = row; col < 3; ++col)
     {
-      EXPECT_FLOAT_EQ(expMat(row, col), invMat(row, col));
+      EXPECT_FLOAT_EQ(expMat.at_unsafe(row, col), invMat.at_unsafe(row, col));
     }
   }
 }
@@ -559,37 +584,51 @@ TEST(TriangularMatrix, inverse_upper) // NOLINT
 TEST(TriangularMatrix, transpose_upper) // NOLINT
 {
   // clang-format off
-  tracking::math::TriangularMatrix<float32, 3, false> triuMat(
-    {{1, 2, 3}, 
-     {0, 4, 5}, 
-     {0, 0, 6}});
-  const tracking::math::TriangularMatrix<float32, 3, true> expMat(
-    {{1, 0, 0}, 
-     {2, 4, 0}, 
-     {3, 5, 6}});
+  using UpperTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, false, true>;
+  const auto triuMat = UpperTriangularMatrix3::FromList({
+    {1,  2,  3}, 
+    {0,  4,  5}, 
+    {0,  0,  6}
+  });
+  using LowerTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, true, true>;
+  const LowerTriangularMatrix3 expMat = LowerTriangularMatrix3::FromList({
+    {1, 0, 0}, 
+    {2, 4, 0}, 
+    {3, 5, 6}
+  });
   // clang-format on
 
   // call UUT
   auto trilMat = triuMat.transpose();
 
-  EXPECT_EQ(expMat._data, trilMat._data);
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = 0; col <= row; ++col)
+    {
+      EXPECT_FLOAT_EQ(expMat.at_unsafe(row, col), trilMat.at_unsafe(row, col));
+    }
+  }
 }
 
 TEST(TriangularMatrix, solve_lower) // NOLINT
 {
   // clang-format off
-  const tracking::math::TriangularMatrix<float32, 3, true> trilMat(
-    {{1,  0,  0}, 
-     {4,  5,  0}, 
-     {6,  7,  8}});
-  const tracking::math::Matrix<float32, 3, 4> bMat(
-    {{1,  2,  3,  4}, 
-     {5,  6,  7,  8}, 
-     {9, 10, 11, 12}});
-  const tracking::math::Matrix<float32, 3, 4> expMat(
-    {{1.0,  2.0,  3.0,  4.0}, 
-     {0.2, -0.4, -1.0, -1.6}, 
-     {0.2,  0.1,  0.0, -0.1}});
+  using LowerTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, true, true>;
+  const auto trilMat = LowerTriangularMatrix3::FromList({
+    {1,  0,  0}, 
+    {4,  5,  0}, 
+    {6,  7,  8}
+  });
+  const auto bMat = tracking::math::Matrix<float32, 3, 4, true>::FromList({
+    {1,  2,  3,  4}, 
+    {5,  6,  7,  8}, 
+    {9, 10, 11, 12}
+  });
+  const auto expMat = tracking::math::Matrix<float32, 3, 4, true>::FromList({
+    {1.0,  2.0,  3.0,  4.0}, 
+    {0.2, -0.4, -1.0, -1.6}, 
+    {0.2,  0.1,  0.0, -0.1}
+  });
   // clang-format on
 
   // call UUT
@@ -599,7 +638,7 @@ TEST(TriangularMatrix, solve_lower) // NOLINT
   {
     for (auto col = row; col < 4; ++col)
     {
-      EXPECT_FLOAT_EQ(expMat(row, col), resMat(row, col));
+      EXPECT_FLOAT_EQ(expMat.at_unsafe(row, col), resMat.at_unsafe(row, col));
     }
   }
 }
@@ -607,18 +646,22 @@ TEST(TriangularMatrix, solve_lower) // NOLINT
 TEST(TriangularMatrix, solve_upper) // NOLINT
 {
   // clang-format off
-  const tracking::math::TriangularMatrix<float32, 3, false> triuMat(
-    {{1, 4, 6}, 
-     {0, 5, 7}, 
-     {0, 0, 8}});
-  const tracking::math::Matrix<float32, 3, 4> bMat(
-    {{1,  2,  3,  4}, 
-     {5,  6,  7,  8}, 
-     {9, 10, 11, 12}});
-  const tracking::math::Matrix<float32, 3, 4> expMat(
-    {{-3.450, -3.30, -3.150, -3.00}, 
-     {-0.575, -0.55, -0.525, -0.50}, 
-     { 1.125,  1.25,  1.375,  1.50}});
+  using UpperTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, false, true>;
+  const auto triuMat = UpperTriangularMatrix3::FromList({
+    {1,  4,  6}, 
+    {0,  5,  7}, 
+    {0,  0,  8}
+  });
+  const auto bMat = tracking::math::Matrix<float32, 3, 4, true>::FromList({
+    {1,  2,  3,  4}, 
+    {5,  6,  7,  8}, 
+    {9, 10, 11, 12}
+  });
+  const auto expMat = tracking::math::Matrix<float32, 3, 4, true>::FromList({
+    {-3.450, -3.30, -3.150, -3.00}, 
+    {-0.575, -0.55, -0.525, -0.50}, 
+    { 1.125,  1.25,  1.375,  1.50}
+  });
   // clang-format on
 
   // call UUT
@@ -628,7 +671,7 @@ TEST(TriangularMatrix, solve_upper) // NOLINT
   {
     for (auto col = row; col < 4; ++col)
     {
-      EXPECT_FLOAT_EQ(expMat(row, col), resMat(row, col));
+      EXPECT_FLOAT_EQ(expMat.at_unsafe(row, col), resMat.at_unsafe(row, col));
     }
   }
 }
@@ -636,10 +679,12 @@ TEST(TriangularMatrix, solve_upper) // NOLINT
 TEST(TriangularMatrix, isUnitUpperTriangular_false) // NOLINT
 {
   // clang-format off
-  tracking::math::TriangularMatrix<float32, 3, false> triuMat(
-    {{1, 2, 3}, 
-     {0, 1.01, 5}, 
-     {0, 0, 0.9999999}});
+  using UpperTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, false, true>;
+  const auto triuMat = UpperTriangularMatrix3::FromList({
+    {1, 2, 3}, 
+    {0, 1.01, 5}, 
+    {0, 0, 0.9999999}
+  });
   // clang-format on
 
   // call UUT
@@ -651,10 +696,12 @@ TEST(TriangularMatrix, isUnitUpperTriangular_false) // NOLINT
 TEST(TriangularMatrix, isUnitUpperTriangular_true) // NOLINT
 {
   // clang-format off
-  tracking::math::TriangularMatrix<float32, 3, false> triuMat(
-    {{1, 2, 3}, 
-     {0, 1, 5}, 
-     {0, 0, 1}});
+  using UpperTriangularMatrix3 = tracking::math::TriangularMatrix<float32, 3, false, true>;
+  const auto triuMat = UpperTriangularMatrix3::FromList({
+    {1, 2, 3}, 
+    {0, 1, 5}, 
+    {0, 0, 1}
+  });
   // clang-format on
 
   // call UUT

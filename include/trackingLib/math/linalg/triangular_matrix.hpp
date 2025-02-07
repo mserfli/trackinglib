@@ -60,11 +60,11 @@ inline void TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::setBlock
     {
       if (IsLower_) // will be optimized out because isLower can be deduced at compile time
       {
-        this->at_unsafe(DstRowBeg + row, DstColBeg + col) = block(SrcRowBeg + row, SrcColBeg + col);
+        this->at_unsafe(DstRowBeg + row, DstColBeg + col) = block.at_unsafe(SrcRowBeg + row, SrcColBeg + col);
       }
       else
       {
-        this->at_unsafe(DstRowBeg + col, DstColBeg + row) = block(SrcRowBeg + col, SrcColBeg + row);
+        this->at_unsafe(DstRowBeg + col, DstColBeg + row) = block.at_unsafe(SrcRowBeg + col, SrcColBeg + row);
       }
     }
   }
@@ -148,7 +148,7 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
     const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> SquareMatrix
 {
   SquareMatrix other{mat};
-  return this->operator*(other);
+  return SquareMatrix{this->operator*(other)};
 } // LCOV_EXCL_LINE
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
