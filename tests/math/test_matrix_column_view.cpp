@@ -72,13 +72,13 @@ TEST(MatrixColumnView, mul_rhs) // NOLINT
     {10, 11, 12}
   })};
   // clang-format on
-  const auto rhs{tracking::math::Vector<sint32, 4>::FromList({1, 2, 3, 4})};  
+  const auto                                                 rhs{tracking::math::Vector<sint32, 4>::FromList({1, 2, 3, 4})};
   const tracking::math::MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 0, 3);
 
   // calc expected result
   tracking::math::Matrix<sint32, 4, 1, true> col;
   col.setBlock<4, 3, 4, 1, 0, 2, true, 0, 0>(mat);
-  const auto resExp = (col.transpose() * rhs)(0,0);
+  const auto resExp = (col.transpose() * rhs).at_unsafe(0, 0);
 
   // call UUT
   auto res = colView * rhs;
@@ -98,13 +98,13 @@ TEST(MatrixColumnView, mul_rhs_ranged) // NOLINT
     {10, 11, 12}
   })};
   // clang-format on
-  const auto rhs{tracking::math::Vector<sint32, 2>::FromList({1, 2})};  
+  const auto                                                 rhs{tracking::math::Vector<sint32, 2>::FromList({1, 2})};
   const tracking::math::MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 1, 2);
 
   // calc expected result
   tracking::math::Matrix<sint32, 2, 1, true> col;
   col.setBlock<4, 3, 2, 1, 1, 2, true, 0, 0>(mat);
-  const auto resExp = (col.transpose() * rhs)(0,0);
+  const auto resExp = (col.transpose() * rhs).at_unsafe(0, 0);
 
   // call UUT
   auto res = colView * rhs;
@@ -124,7 +124,7 @@ TEST(MatrixColumnView, mul_rhsview) // NOLINT
     {10, 11, 12}
   })};
   // clang-format on
-  const auto rhs{tracking::math::Vector<sint32, 4>::FromList({1, 2, 3, 4})};
+  const auto                                                 rhs{tracking::math::Vector<sint32, 4>::FromList({1, 2, 3, 4})};
   const tracking::math::MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 1, 2);
   const tracking::math::MatrixColumnView<sint32, 4, 1, true> rhsView(rhs, 0, 1, 2);
 
@@ -133,7 +133,7 @@ TEST(MatrixColumnView, mul_rhsview) // NOLINT
   col1.setBlock<4, 3, 2, 1, 1, 2, true, 0, 0>(mat);
   tracking::math::Matrix<sint32, 2, 1, true> col2;
   col2.setBlock<4, 1, 2, 1, 1, 0, true, 0, 0>(rhs);
-  const auto resExp = (col1.transpose() * col2)(0,0);
+  const auto resExp = (col1.transpose() * col2).at_unsafe(0, 0);
 
   // call UUT
   auto res = colView * rhsView;
