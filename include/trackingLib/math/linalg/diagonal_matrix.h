@@ -28,10 +28,10 @@ class DiagonalMatrix TEST_REMOVE_FINAL // LCOV_EXCL_LINE
 {
 public:
   // rule of 5 declarations
-  DiagonalMatrix()                            = default;
-  DiagonalMatrix(const DiagonalMatrix& other) = default;
-  DiagonalMatrix(DiagonalMatrix&&) noexcept   = default;
-  auto operator=(const DiagonalMatrix&) -> DiagonalMatrix& = default;
+  DiagonalMatrix()                                             = default;
+  DiagonalMatrix(const DiagonalMatrix& other)                  = default;
+  DiagonalMatrix(DiagonalMatrix&&) noexcept                    = default;
+  auto operator=(const DiagonalMatrix&) -> DiagonalMatrix&     = default;
   auto operator=(DiagonalMatrix&&) noexcept -> DiagonalMatrix& = default;
 
   /// \brief Construct an Identity matrix
@@ -161,13 +161,16 @@ public:
   auto at_unsafe(sint32 idx) -> ValueType_& { return _data.at_unsafe(idx); }
   // <---
 
-private:
+  // clang-format off
+TEST_REMOVE_PRIVATE:
+  ; // workaround for correct indentation
+  // clang-format on
   Vector<ValueType_, Size_> _data{};
 };
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat, const DiagonalMatrix<ValueType_, Cols_>& diag)
-    -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>;
+auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat,
+               const DiagonalMatrix<ValueType_, Cols_>&             diag) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>;
 
 } // namespace math
 } // namespace tracking

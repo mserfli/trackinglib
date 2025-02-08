@@ -18,8 +18,8 @@ target_sources(${TEST_BINARY} PRIVATE
     math/test_matrix_column_view.cpp
     math/test_matrix_row_view.cpp
     math/test_square_matrix.cpp
-    math/test_triangular_matrix.cpp # test next
-    # math/test_diagonal_matrix.cpp
+    math/test_triangular_matrix.cpp
+    math/test_diagonal_matrix.cpp
     # math/test_covariance_matrix_factored.cpp
     # math/test_covariance_matrix_full.cpp
     # math/test_rank1_update.cpp

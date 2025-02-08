@@ -51,7 +51,8 @@ template <typename ValueType_, sint32 Size_>
 static auto inline DiagonalMatrix<ValueType_, Size_>::FromList(
     const std::initializer_list<std::initializer_list<ValueType_>>& list) -> DiagonalMatrix
 {
-  assert((list.size() == Size_) && "Mismatching size of intializer list");
+  assert(list.size() == Size_);
+  assert(list.begin()->size() == Size_);
 
   DiagonalMatrix diag{};
   // copy diagonal elements from list
@@ -62,6 +63,7 @@ static auto inline DiagonalMatrix<ValueType_, Size_>::FromList(
     diag.at_unsafe(idx) = *(rowList.begin() + idx);
     ++idx;
   }
+  return diag;
 }
 
 template <typename ValueType_, sint32 Size_>
@@ -133,7 +135,7 @@ inline auto DiagonalMatrix<ValueType_, Size_>::operator*(const TriangularMatrix<
       const ValueType_ val = _data.at_unsafe(row);
       for (auto col = 0; col <= row; ++col)
       {
-        result(row, col) *= val;
+        result.at_unsafe(row, col) *= val;
       }
     }
   }
@@ -144,7 +146,7 @@ inline auto DiagonalMatrix<ValueType_, Size_>::operator*(const TriangularMatrix<
       const ValueType_ val = _data.at_unsafe(row);
       for (auto col = row; col < Size_; ++col)
       {
-        result(row, col) *= val;
+        result.at_unsafe(row, col) *= val;
       }
     }
   }
@@ -204,7 +206,7 @@ inline void DiagonalMatrix<ValueType_, Size_>::inverse()
 {
   for (sint32 idx = 0; idx < Size_; ++idx)
   {
-    assert((static_cast<ValueType_>(0) < this->operator[](idx)) && "inverse not possible");
+    assert((static_cast<ValueType_>(0) < this->at_unsafe(idx)) && "inverse not possible");
     _data.at_unsafe(idx) = static_cast<ValueType_>(1) / _data.at_unsafe(idx);
   }
 }
@@ -230,8 +232,8 @@ inline void DiagonalMatrix<ValueType_, Size_>::print() const
 // ------ non-member functions ---------------------------------------------------------------------------------------------------
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat, const DiagonalMatrix<ValueType_, Cols_>& diag)
-    -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat,
+               const DiagonalMatrix<ValueType_, Cols_>&             diag) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
   // each column is multiplied by the corresponding diagonal column element
   auto result{mat};
