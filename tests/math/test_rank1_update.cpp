@@ -2,9 +2,9 @@
 #include "math/linalg/vector.h"
 #include "trackingLib/math/linalg/rank1_update.hpp"
 
-using UpperTriangularMatrix = tracking::math::TriangularMatrix<double, 4, false, true>;
-using LowerTriangularMatrix = tracking::math::TriangularMatrix<double, 4, true, true>;
-using DiagonalMatrix        = tracking::math::DiagonalMatrix<double, 4>;
+using UpperTriangularMatrix = tracking::math::TriangularMatrix<float64, 4, false, true>;
+using LowerTriangularMatrix = tracking::math::TriangularMatrix<float64, 4, true, true>;
+using DiagonalMatrix        = tracking::math::DiagonalMatrix<float64, 4>;
 
 TEST(Rank1Update, udu_update) // NOLINT
 {
@@ -18,7 +18,7 @@ TEST(Rank1Update, udu_update) // NOLINT
   auto D = DiagonalMatrix::FromList({
   1.744764006421280e+00, 2.623463785299294e-01, 1.298863681833844e+00, 5.511441032938980e-02
   });
-  const auto w = tracking::math::Vector<double, 4>::FromList({
+  const auto w = tracking::math::Vector<float64, 4>::FromList({
     3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01
   });
   const auto sigma = 3.0;
@@ -35,7 +35,7 @@ TEST(Rank1Update, udu_update) // NOLINT
   // clang-format on
 
   // call UUT
-  tracking::math::Rank1Update<double, 4, true>::run(U, D, sigma, w);
+  tracking::math::Rank1Update<float64, 4, true>::run(U, D, sigma, w);
 
   for (auto row = 0; row < 4; ++row)
   {
@@ -59,7 +59,7 @@ TEST(Rank1Update, ldl_update) // NOLINT
   auto D = DiagonalMatrix::FromList({
       1.744764006421280e+00, 2.623463785299294e-01, 1.298863681833844e+00, 5.511441032938980e-02
   });
-  const auto w = tracking::math::Vector<double, 4>::FromList({
+  const auto w = tracking::math::Vector<float64, 4>::FromList({
     3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01
   });
   const auto sigma = 3.0;
@@ -76,7 +76,7 @@ TEST(Rank1Update, ldl_update) // NOLINT
   // clang-format on
 
   // call UUT
-  tracking::math::Rank1Update<double, 4, true>::run(L, D, sigma, w);
+  tracking::math::Rank1Update<float64, 4, true>::run(L, D, sigma, w);
 
   for (auto row = 0; row < 4; ++row)
   {
@@ -100,7 +100,7 @@ TEST(Rank1Update, ldl_downdate) // NOLINT
   auto D = DiagonalMatrix::FromList({
     2.184725700773844, 0.424415494704770, 1.703921082760869, 0.238675924218862
   });
-  const auto w = tracking::math::Vector<double, 4>::FromList({
+  const auto w = tracking::math::Vector<float64, 4>::FromList({
     3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01
   });
   const auto sigma = 3.0;
@@ -117,7 +117,7 @@ TEST(Rank1Update, ldl_downdate) // NOLINT
   // clang-format on
 
   // call UUT
-  tracking::math::Rank1Update<double, 4, true>::run(L, D, -sigma, w);
+  tracking::math::Rank1Update<float64, 4, true>::run(L, D, -sigma, w);
 
   for (auto row = 0; row < 4; ++row)
   {
@@ -141,7 +141,7 @@ TEST(Rank1Update, ldl_downdate_belowEpsilon) // NOLINT
   auto D = DiagonalMatrix::FromList({
     2.184725700773844, 0.424415494704770, 1.703921082760869, 0.238675924218862
   });
-  const auto w = tracking::math::Vector<double, 4>::FromList({
+  const auto w = tracking::math::Vector<float64, 4>::FromList({
     3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01
   });
   const auto sigma = 20.0;
@@ -158,7 +158,7 @@ TEST(Rank1Update, ldl_downdate_belowEpsilon) // NOLINT
   // clang-format on
 
   // call UUT
-  tracking::math::Rank1Update<double, 4, true>::run(L, D, -sigma, w);
+  tracking::math::Rank1Update<float64, 4, true>::run(L, D, -sigma, w);
 
   for (auto row = 0; row < 4; ++row)
   {
