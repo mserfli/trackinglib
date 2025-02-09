@@ -11,19 +11,19 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType, sint32 Size>
+template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
 class Rank1Update
 {
 public:
-  static void run(TriangularMatrix<FloatType, Size, false>& u,
-                  DiagonalMatrix<FloatType, Size>&          d,
-                  FloatType                                 c, // we need a copy internally
-                  Vector<FloatType, Size>                   x);                  // we need a copy internally
+  static void run(TriangularMatrix<FloatType_, Size_, false, IsRowMajor_>& u,
+                  DiagonalMatrix<FloatType_, Size_>&                       d,
+                  FloatType_                                               c, // we need a copy internally
+                  Vector<FloatType_, Size_>                                x);                               // we need a copy internally
 
-  static void run(TriangularMatrix<FloatType, Size, true>& l,
-                  DiagonalMatrix<FloatType, Size>&         d,
-                  FloatType                                c, // we need a copy internally
-                  Vector<FloatType, Size>                  x);                 // we need a copy internally
+  static void run(TriangularMatrix<FloatType_, Size_, true, IsRowMajor_>& l,
+                  DiagonalMatrix<FloatType_, Size_>&                      d,
+                  FloatType_                                              c, // we need a copy internally
+                  Vector<FloatType_, Size_>                               x);                              // we need a copy internally
 };
 
 } // namespace math

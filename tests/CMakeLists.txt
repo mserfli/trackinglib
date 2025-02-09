@@ -20,9 +20,9 @@ target_sources(${TEST_BINARY} PRIVATE
     math/test_square_matrix.cpp
     math/test_triangular_matrix.cpp
     math/test_diagonal_matrix.cpp
-    # math/test_covariance_matrix_factored.cpp
+    math/test_rank1_update.cpp
     # math/test_covariance_matrix_full.cpp
-    # math/test_rank1_update.cpp
+    # math/test_covariance_matrix_factored.cpp
     # motion/test_state_mem.cpp
     # motion/test_motion_model_cv.cpp
     # motion/test_motion_model_ca.cpp

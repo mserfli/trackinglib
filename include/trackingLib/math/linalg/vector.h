@@ -26,6 +26,20 @@ public:
 
   //////////////////////////////////////////////////
   // additional constructors  --->
+  /// \brief Construct a new Vector<ValueType_, Size_> object
+  /// \param[in] other A base class object
+  explicit Vector(const Matrix& other)
+      : Matrix{other}
+  {
+  }
+
+  /// \brief Move construct a new Vector<ValueType_, Size_> object
+  /// \param[in] other A base class object
+  explicit Vector(Matrix&& other) noexcept
+      : Matrix{std::forward<Matrix>(other)}
+  {
+  }
+
   /// \brief Constructor that takes a MatrixColumnView
   template <sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
   static auto FromMatrixColumnView(const MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>& colView) -> Vector;
@@ -105,14 +119,6 @@ public:
   // <---
 
 private:
-  /// \brief Private ctor to convert a Matrix object into a Vector
-  /// \param[in] other A base class object
-  explicit Vector(const Matrix& other)
-      : Matrix{other}
-  {
-  }
-  // clang-format on
-
   using Matrix::Ones;
   using Matrix::Zeros;
   using Matrix::operator();
