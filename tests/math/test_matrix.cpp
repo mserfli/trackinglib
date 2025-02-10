@@ -81,30 +81,6 @@ protected:
   template <bool SameMajorOrder>
   void test_op_eq_Success();
 
-  template <>
-  void test_op_eq_Success<true>()
-  {
-    IntMatType       mat{_testIntMat};
-    const IntMatType other{_testIntMat};
-
-    // call UUT
-    auto isEqual = (mat == other);
-
-    EXPECT_TRUE(isEqual);
-  }
-
-  template <>
-  void test_op_eq_Success<false>()
-  {
-    const IntMatType                mat{_testIntMat};
-    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
-
-    // call UUT
-    auto isEqual = (mat == other);
-
-    EXPECT_TRUE(isEqual);
-  }
-
   void test_op_plus_inplace_Success()
   {
     IntMatType       mat{_testIntMat};
@@ -122,36 +98,6 @@ protected:
   template <bool SameMajorOrder>
   void test_op_plus_Success();
 
-  template <>
-  void test_op_plus_Success<true>()
-  {
-    const IntMatType mat{_testIntMat};
-    const IntMatType other{_testIntMat};
-
-    // call UUT
-    auto res = mat + other;
-
-    for (auto idx = 0; idx < res._data.size(); ++idx)
-    {
-      EXPECT_EQ(res._data[idx], 2 * _testIntMat._data[idx]);
-    }
-  }
-
-  template <>
-  void test_op_plus_Success<false>()
-  {
-    const IntMatType                mat{_testIntMat};
-    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
-
-    // call UUT
-    auto res = mat + other;
-
-    for (auto idx = 0; idx < res._data.size(); ++idx)
-    {
-      EXPECT_EQ(res._data[idx], 2 * _testIntMat._data[idx]);
-    }
-  }
-
   void test_op_minus_inplace_Success()
   {
     IntMatType       mat{_testIntMat};
@@ -168,36 +114,6 @@ protected:
 
   template <bool SameMajorOrder>
   void test_op_minus_Success();
-
-  template <>
-  void test_op_minus_Success<true>()
-  {
-    const IntMatType mat{_testIntMat};
-    const IntMatType other{_testIntMat};
-
-    // call UUT
-    auto res = mat - other;
-
-    for (auto idx = 0; idx < res._data.size(); ++idx)
-    {
-      EXPECT_EQ(res._data[idx], 0);
-    }
-  }
-
-  template <>
-  void test_op_minus_Success<false>()
-  {
-    const IntMatType                mat{_testIntMat};
-    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
-
-    // call UUT
-    auto res = mat - other;
-
-    for (auto idx = 0; idx < res._data.size(); ++idx)
-    {
-      EXPECT_EQ(res._data[idx], 0);
-    }
-  }
 
   void test_op_mul_scalar_Success()
   {
@@ -276,22 +192,22 @@ protected:
 
     // call UUT
     auto res = mat / 2.0F;
-    
+
     for (auto idx = 0; idx < _testFloatMat._data.size(); ++idx)
     {
       EXPECT_EQ(res.value()._data[idx], _testFloatMat._data[idx] / 2.0F);
     }
   }
 
-  void test_op_mul_mat_Success() 
-  { 
-    IntMatType mat1{_testIntMat}; 
+  void test_op_mul_mat_Success()
+  {
+    IntMatType    mat1{_testIntMat};
     IntMatMulType mat2{_testIntMatMul};
 
     // call UUT
     auto res = mat1 * mat2;
 
-    EXPECT_TRUE(res==_testIntMatMulResult);
+    EXPECT_TRUE(res == _testIntMatMulResult);
   }
 
   template <typename T>
@@ -321,6 +237,96 @@ protected:
     }
   }
 };
+
+template <typename MatrixStorageType>
+template <bool SameMajorOrder>
+void GTestMatrix<MatrixStorageType>::test_op_plus_Success()
+{
+  if constexpr (SameMajorOrder)
+  {
+    const IntMatType mat{_testIntMat};
+    const IntMatType other{_testIntMat};
+
+    // call UUT
+    auto res = mat + other;
+
+    for (auto idx = 0; idx < res._data.size(); ++idx)
+    {
+      EXPECT_EQ(res._data[idx], 2 * _testIntMat._data[idx]);
+    }
+  }
+  else
+  {
+    const IntMatType                mat{_testIntMat};
+    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
+
+    // call UUT
+    auto res = mat + other;
+
+    for (auto idx = 0; idx < res._data.size(); ++idx)
+    {
+      EXPECT_EQ(res._data[idx], 2 * _testIntMat._data[idx]);
+    }
+  }
+}
+
+template <typename MatrixStorageType>
+template <bool SameMajorOrder>
+void GTestMatrix<MatrixStorageType>::test_op_eq_Success()
+{
+  if constexpr (SameMajorOrder)
+  {
+    IntMatType       mat{_testIntMat};
+    const IntMatType other{_testIntMat};
+
+    // call UUT
+    auto isEqual = (mat == other);
+
+    EXPECT_TRUE(isEqual);
+  }
+  else
+  {
+    const IntMatType                mat{_testIntMat};
+    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
+
+    // call UUT
+    auto isEqual = (mat == other);
+
+    EXPECT_TRUE(isEqual);
+  }
+}
+
+template <typename MatrixStorageType>
+template <bool SameMajorOrder>
+void GTestMatrix<MatrixStorageType>::test_op_minus_Success()
+{
+  if constexpr (SameMajorOrder)
+  {
+    const IntMatType mat{_testIntMat};
+    const IntMatType other{_testIntMat};
+
+    // call UUT
+    auto res = mat - other;
+
+    for (auto idx = 0; idx < res._data.size(); ++idx)
+    {
+      EXPECT_EQ(res._data[idx], 0);
+    }
+  }
+  else
+  {
+    const IntMatType                mat{_testIntMat};
+    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
+
+    // call UUT
+    auto res = mat - other;
+
+    for (auto idx = 0; idx < res._data.size(); ++idx)
+    {
+      EXPECT_EQ(res._data[idx], 0);
+    }
+  }
+}
 
 /// \brief template specialization of SetUp initializing the members for RowMajor memory layout
 template <>
@@ -443,7 +449,7 @@ TYPED_TEST(GTestMatrix, ctor_initializerList__Success) // NOLINT
   GTestMatrix<TypeParam>::test_ctor_initializerList_Success();
 }
 
-TYPED_TEST(GTestMatrix, ctor_rvalue__Success) //NOLINT
+TYPED_TEST(GTestMatrix, ctor_rvalue__Success) // NOLINT
 {
   auto ones = GTestMatrix<TypeParam>::IntMatType::Ones();
 
@@ -454,7 +460,7 @@ TYPED_TEST(GTestMatrix, ctor_rvalue__Success) //NOLINT
   EXPECT_EQ(mat._data, expStorage);
 }
 
-TYPED_TEST(GTestMatrix, ctor_Zeros__Success) //NOLINT
+TYPED_TEST(GTestMatrix, ctor_Zeros__Success) // NOLINT
 {
   // call UUT
   const auto mat = GTestMatrix<TypeParam>::IntMatType::Zeros();
@@ -463,7 +469,7 @@ TYPED_TEST(GTestMatrix, ctor_Zeros__Success) //NOLINT
   EXPECT_EQ(mat._data, expStorage);
 }
 
-TYPED_TEST(GTestMatrix, ctor_Ones__Success) //NOLINT
+TYPED_TEST(GTestMatrix, ctor_Ones__Success) // NOLINT
 {
   // call UUT
   const auto mat = GTestMatrix<TypeParam>::IntMatType::Ones();

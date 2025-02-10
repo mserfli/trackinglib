@@ -87,7 +87,7 @@ target_include_directories(
            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_14)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen expected)
 

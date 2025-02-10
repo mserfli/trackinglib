@@ -89,8 +89,8 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row,
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator()(sint32 row, sint32 col) const
-    -> tl::expected<ValueType_, Errors>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator()(sint32 row,
+                                                                      sint32 col) const -> tl::expected<ValueType_, Errors>
 {
   if (!(row >= 0 && row < Rows))
   {
@@ -286,10 +286,10 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::minmax() const -> std::pair<ValueType_, ValueType_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::minmax() const -> std::tuple<ValueType_, ValueType_>
 {
   const auto [min, max] = std::minmax_element(data().begin(), data().end());
-  return std::pair(*min, *max);
+  return std::make_tuple(*min, *max);
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
@@ -373,7 +373,7 @@ template <typename FloatType, typename std::enable_if_t<std::is_floating_point<F
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_mul_by_inverse_factor_unsafe(FloatType scalar)
 {
   const FloatType factor = 1 / scalar;
-  this->          operator*=(factor);
+  this->operator*=(factor);
 }
 
 } // namespace tracking::math

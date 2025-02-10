@@ -58,7 +58,7 @@ TEST_REMOVE_PRIVATE:
 };
 
 template <typename ValueType_>
-static inline auto Point2d<ValueType_>::FromValues(const ValueType_ x, const ValueType_ y) -> Point2d
+inline auto Point2d<ValueType_>::FromValues(const ValueType_ x, const ValueType_ y) -> Point2d
 {
   Point2d tmp{};
   tmp.x() = x;

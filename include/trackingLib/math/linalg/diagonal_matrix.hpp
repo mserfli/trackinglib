@@ -11,7 +11,7 @@ namespace tracking::math
 {
 
 template <typename ValueType_, sint32 Size_>
-inline static auto DiagonalMatrix<ValueType_, Size_>::Identity() -> DiagonalMatrix
+inline auto DiagonalMatrix<ValueType_, Size_>::Identity() -> DiagonalMatrix
 {
   DiagonalMatrix diag{};
   diag.setIdentity();
@@ -20,7 +20,7 @@ inline static auto DiagonalMatrix<ValueType_, Size_>::Identity() -> DiagonalMatr
 
 template <typename ValueType_, sint32 Size_>
 template <bool IsRowMajor_>
-static auto inline DiagonalMatrix<ValueType_, Size_>::FromMatrix(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& other)
+inline auto DiagonalMatrix<ValueType_, Size_>::FromMatrix(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& other)
     -> DiagonalMatrix
 {
   DiagonalMatrix diag{};
@@ -33,7 +33,7 @@ static auto inline DiagonalMatrix<ValueType_, Size_>::FromMatrix(const SquareMat
 }
 
 template <typename ValueType_, sint32 Size_>
-static auto inline DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix
+inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix
 {
   assert((list.size() == Size_) && "Mismatching size of intializer list");
 
@@ -48,8 +48,8 @@ static auto inline DiagonalMatrix<ValueType_, Size_>::FromList(const std::initia
 }
 
 template <typename ValueType_, sint32 Size_>
-static auto inline DiagonalMatrix<ValueType_, Size_>::FromList(
-    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> DiagonalMatrix
+inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+    -> DiagonalMatrix
 {
   assert(list.size() == Size_);
   assert(list.begin()->size() == Size_);

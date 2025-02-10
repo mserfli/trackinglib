@@ -2,13 +2,14 @@
 #define FDEAAACC_9EF1_4C87_94DC_2FA494822664
 
 #include "base/first_include.h"
-#include "math/linalg/matrix_types.h"
 #include "math/linalg/contracts/matrix_intf.h"
 #include "math/linalg/errors.h"
+#include "math/linalg/matrix_types.h"
 #include <algorithm>
 #include <array>
 #include <initializer_list>
 #include <iostream>
+#include <tuple>
 #include <type_traits>
 #include <utility>
 
@@ -46,10 +47,10 @@ public:
   static constexpr auto IsRowMajor = IsRowMajor_;                 ///< memory layout of the matrix
 
   // rule of 5 declarations
-  Matrix()                  = default;
-  Matrix(const Matrix&)     = default;
-  Matrix(Matrix&&) noexcept = default;
-  auto operator=(const Matrix&) -> Matrix& = default;
+  Matrix()                                     = default;
+  Matrix(const Matrix&)                        = default;
+  Matrix(Matrix&&) noexcept                    = default;
+  auto operator=(const Matrix&) -> Matrix&     = default;
   auto operator=(Matrix&&) noexcept -> Matrix& = default;
   virtual ~Matrix()                            = default;
 
@@ -194,8 +195,8 @@ public:
   auto max() const -> ValueType_ { return *std::max_element(data().begin(), data().end()); }
 
   /// \brief Get min and max value of the matrix
-  /// \return pair of min, max value
-  auto minmax() const -> std::pair<ValueType_, ValueType_>;
+  /// \return tuple of min, max value
+  auto minmax() const -> std::tuple<ValueType_, ValueType_>;
 
   /// \brief Fast transpose without changing the layout
   /// \return const transpose_type&   const reference to same data as Self, but differently interpreted
@@ -305,8 +306,8 @@ TEST_REMOVE_PRIVATE:
 /// \param[in] mat
 /// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-static auto operator*(ValueType_ scalar, Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat)
-    -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+static auto operator*(ValueType_                                     scalar,
+                      Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
   return mat * scalar;
 }
