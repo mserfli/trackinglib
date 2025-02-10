@@ -19,4 +19,16 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     ca-certificates \
     python3 \
     python3-dev \
+    perl \
+    locales \
+    libjson-xs-perl \
     lcov
+
+# Set locale to German
+RUN locale-gen de_DE.UTF-8
+ENV LANG=de_DE.UTF-8
+ENV LANGUAGE=de_DE:de
+ENV LC_ALL=de_DE.UTF-8
+
+# Install additional Perl modules
+RUN cpan JSON::XS
