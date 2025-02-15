@@ -6,6 +6,7 @@
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"
 #include "math/linalg/square_matrix.h"
+
 #if __cplusplus == 202002L
 #include <concepts>
 #endif
@@ -43,11 +44,11 @@ concept has_isInverse_member_func = requires {
 };
 template<typename T>
 concept has_apaT_member_func = requires {
-  { std::declval<const T>().apaT(std::declval<SquareMatrix<typename T::value_type, T::dim>>()) } -> std::same_as<T>;
+  { std::declval<const T>().apaT(std::declval<SquareMatrix<typename T::value_type, T::dim, T::row_major>>()) } -> std::same_as<T>;
 };
 template<typename T>
 concept has_apaT_inplace_member_func = requires {
-  { std::declval<T>().apaT(std::declval<SquareMatrix<typename T::value_type, T::dim>>()) } -> std::same_as<void>;
+  { std::declval<T>().apaT(std::declval<SquareMatrix<typename T::value_type, T::dim, T::row_major>>()) } -> std::same_as<void>;
 };
 template<typename T>
 concept has_print_member_func = requires {
