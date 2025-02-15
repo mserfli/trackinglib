@@ -152,12 +152,25 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matr
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other)
 {
-  for (auto row = 0; row < Rows; ++row)
+  if (this->data() != other.data())
   {
-    for (auto col = 0; col < Cols; ++col)
+    for (auto row = 0; row < Rows; ++row)
     {
-      auto& val = at_unsafe(row, col);
-      val += other.at_unsafe(row, col);
+      for (auto col = 0; col < Cols; ++col)
+      {
+        at_unsafe(row, col) += other.at_unsafe(row, col);
+      }
+    }
+  }
+  else
+  {
+    const auto copy{other};
+    for (auto row = 0; row < Rows; ++row)
+    {
+      for (auto col = 0; col < Cols; ++col)
+      {
+        at_unsafe(row, col) += copy.at_unsafe(row, col);
+      }
     }
   }
 }

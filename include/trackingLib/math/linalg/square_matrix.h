@@ -54,12 +54,12 @@ public:
   /// \param[in] list  An initializer list describing the memory layout of the matrix
   static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix;
 
-  /// \brief Set internal matrix to the Identity matrix
-  void setIdentity();
-
   /// \brief Construct an Identity matrix
   /// \return SquareMatrix  Resulting identity matrix
   static auto Identity() -> SquareMatrix;
+
+  /// \brief Set internal matrix to the Identity matrix
+  void setIdentity();
 
   /// \brief Decompose internal matrix into Q*R
   /// \return [Q,R] = pair<SquareMatrix, TriangularMatrix>
@@ -93,7 +93,7 @@ public:
   /// \return SquareMatrix with toggled IsRowMajor
   auto inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
-private:
+protected:
   /// \brief Check for symmetry of the matrix
   /// \return true
   [[nodiscard]] auto isSymmetric() const -> bool;

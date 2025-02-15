@@ -8,7 +8,7 @@
 #include "math/linalg/diagonal_matrix.hpp"
 #include "math/linalg/matrix_column_view.hpp"
 #include "math/linalg/matrix_row_view.hpp"
-//#include "math/linalg/matrix_view.hpp"
+// #include "math/linalg/matrix_view.hpp"
 #include "math/linalg/triangular_matrix.h"
 #include "math/linalg/triangular_matrix.hpp"
 #include "math/linalg/vector.h"

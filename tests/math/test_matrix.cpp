@@ -25,12 +25,14 @@ protected:
   using IntMatMulTypeTranspMemLayout = tracking::math::Matrix<sint32, 3, 4, !MatrixStorageType::IsRowMajor>;
   using IntMatMulResultType          = tracking::math::Matrix<sint32, 2, 4, MatrixStorageType::IsRowMajor>;
   using FloatMatType                 = tracking::math::Matrix<float32, 2, 3, MatrixStorageType::IsRowMajor>;
+  using SquareIntMatType             = tracking::math::Matrix<sint32, 3, 3, MatrixStorageType::IsRowMajor>;
   IntMatType                   _testIntMat{};
   IntMatTypeTranspMemLayout    _testIntMatTransposed{};
   IntMatMulType                _testIntMatMul{};
   IntMatMulTypeTranspMemLayout _testIntMatMulTransposed{};
   IntMatMulResultType          _testIntMatMulResult{};
   FloatMatType                 _testFloatMat{};
+  SquareIntMatType             _testSquareIntMat{};
 
   void test_ctor_initializerList_Success();
 
@@ -81,36 +83,17 @@ protected:
   template <bool SameMajorOrder>
   void test_op_eq_Success();
 
-  void test_op_plus_inplace_Success()
-  {
-    IntMatType       mat{_testIntMat};
-    const IntMatType other{_testIntMat};
+  template <bool SameMajorOrder>
+  void test_op_plus_inplace_Success();
 
-    // call UUT
-    mat += other;
-
-    for (auto idx = 0; idx < _testIntMat._data.size(); ++idx)
-    {
-      EXPECT_EQ(mat._data[idx], 2 * _testIntMat._data[idx]);
-    }
-  }
+  template <bool SameMajorOrder>
+  void test_op_plus_transpose_inplace_Success();
 
   template <bool SameMajorOrder>
   void test_op_plus_Success();
 
-  void test_op_minus_inplace_Success()
-  {
-    IntMatType       mat{_testIntMat};
-    const IntMatType other{_testIntMat};
-
-    // call UUT
-    mat -= other;
-
-    for (auto val : mat._data)
-    {
-      EXPECT_EQ(val, 0);
-    }
-  }
+  template <bool SameMajorOrder>
+  void test_op_minus_inplace_Success();
 
   template <bool SameMajorOrder>
   void test_op_minus_Success();
@@ -240,6 +223,32 @@ protected:
 
 template <typename MatrixStorageType>
 template <bool SameMajorOrder>
+void GTestMatrix<MatrixStorageType>::test_op_eq_Success()
+{
+  if constexpr (SameMajorOrder)
+  {
+    IntMatType       mat{_testIntMat};
+    const IntMatType other{_testIntMat};
+
+    // call UUT
+    auto isEqual = (mat == other);
+
+    EXPECT_TRUE(isEqual);
+  }
+  else
+  {
+    const IntMatType                mat{_testIntMat};
+    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
+
+    // call UUT
+    auto isEqual = (mat == other);
+
+    EXPECT_TRUE(isEqual);
+  }
+}
+
+template <typename MatrixStorageType>
+template <bool SameMajorOrder>
 void GTestMatrix<MatrixStorageType>::test_op_plus_Success()
 {
   if constexpr (SameMajorOrder)
@@ -272,7 +281,7 @@ void GTestMatrix<MatrixStorageType>::test_op_plus_Success()
 
 template <typename MatrixStorageType>
 template <bool SameMajorOrder>
-void GTestMatrix<MatrixStorageType>::test_op_eq_Success()
+void GTestMatrix<MatrixStorageType>::test_op_plus_inplace_Success()
 {
   if constexpr (SameMajorOrder)
   {
@@ -280,19 +289,82 @@ void GTestMatrix<MatrixStorageType>::test_op_eq_Success()
     const IntMatType other{_testIntMat};
 
     // call UUT
-    auto isEqual = (mat == other);
+    mat += other;
 
-    EXPECT_TRUE(isEqual);
+    for (auto idx = 0; idx < _testIntMat._data.size(); ++idx)
+    {
+      EXPECT_EQ(mat._data[idx], 2 * _testIntMat._data[idx]);
+    }
   }
   else
   {
-    const IntMatType                mat{_testIntMat};
+    IntMatType                      mat{_testIntMat};
     const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
 
     // call UUT
-    auto isEqual = (mat == other);
+    mat += other;
 
-    EXPECT_TRUE(isEqual);
+    for (auto idx = 0; idx < _testIntMat._data.size(); ++idx)
+    {
+      EXPECT_EQ(mat._data[idx], 2 * _testIntMat._data[idx]);
+    }
+  }
+}
+
+template <typename MatrixStorageType>
+template <bool SameMajorOrder>
+void GTestMatrix<MatrixStorageType>::test_op_plus_transpose_inplace_Success()
+{
+  const SquareIntMatType other{_testSquareIntMat};
+  const auto             expMat = SquareIntMatType::FromList({
+      {0, 4, 8},
+      {4, 8, 12},
+      {8, 12, 16},
+  });
+
+  {
+    SquareIntMatType mat{_testSquareIntMat};
+    // call UUT
+    mat += mat.transpose();
+    EXPECT_EQ(mat._data, expMat._data);
+  }
+  {
+    SquareIntMatType mat{_testSquareIntMat};
+    // call UUT
+    mat += other.transpose();
+    EXPECT_EQ(mat._data, expMat._data);
+  }
+}
+
+template <typename MatrixStorageType>
+template <bool SameMajorOrder>
+void GTestMatrix<MatrixStorageType>::test_op_minus_inplace_Success()
+{
+  if (SameMajorOrder)
+  {
+    IntMatType       mat{_testIntMat};
+    const IntMatType other{_testIntMat};
+
+    // call UUT
+    mat -= other;
+
+    for (auto val : mat._data)
+    {
+      EXPECT_EQ(val, 0);
+    }
+  }
+  else
+  {
+    IntMatType                      mat{_testIntMat};
+    const IntMatTypeTranspMemLayout other{_testIntMatTransposed};
+
+    // call UUT
+    mat -= other;
+
+    for (auto val : mat._data)
+    {
+      EXPECT_EQ(val, 0);
+    }
   }
 }
 
@@ -361,6 +433,11 @@ void GTestMatrix<MatrixStorageType<true>>::SetUp()
     {0, 1, 2,},
     {3, 4, 5,},
   });
+  _testSquareIntMat = SquareIntMatType::FromList({
+    {0, 1, 2,},
+    {3, 4, 5,},
+    {6, 7, 8,},
+  });
   // clang-format on
 }
 
@@ -416,6 +493,11 @@ void GTestMatrix<MatrixStorageType<false>>::SetUp()
     {0, 3,},
     {1, 4,},
     {2, 5,},
+  });
+  _testSquareIntMat = SquareIntMatType::FromList({
+    {0, 1, 2,},
+    {3, 4, 5,},
+    {6, 7, 8,},
   });
   // clang-format on
 }
@@ -510,14 +592,16 @@ TYPED_TEST(GTestMatrix, op_eq__Success) // NOLINT
 
 TYPED_TEST(GTestMatrix, op_plus__Success) // NOLINT
 {
-  GTestMatrix<TypeParam>::test_op_plus_inplace_Success();
+  GTestMatrix<TypeParam>::template test_op_plus_inplace_Success<true>();
+  GTestMatrix<TypeParam>::template test_op_plus_inplace_Success<false>();
   GTestMatrix<TypeParam>::template test_op_plus_Success<true>();
   GTestMatrix<TypeParam>::template test_op_plus_Success<false>();
 }
 
 TYPED_TEST(GTestMatrix, op_minus__Success) // NOLINT
 {
-  GTestMatrix<TypeParam>::test_op_minus_inplace_Success();
+  GTestMatrix<TypeParam>::template test_op_minus_inplace_Success<true>();
+  GTestMatrix<TypeParam>::template test_op_minus_inplace_Success<false>();
   GTestMatrix<TypeParam>::template test_op_minus_Success<true>();
   GTestMatrix<TypeParam>::template test_op_minus_Success<false>();
 }
@@ -546,4 +630,10 @@ TYPED_TEST(GTestMatrix, transpose__Success) // NOLINT
 {
   GTestMatrix<TypeParam>::template test_transpose_Success<typename GTestMatrix<TypeParam>::IntMatType>();
   GTestMatrix<TypeParam>::template test_transpose_Success<const typename GTestMatrix<TypeParam>::IntMatType>();
+}
+
+TYPED_TEST(GTestMatrix, op_plus_transpose_inplace__Success) // NOLINT
+{
+  GTestMatrix<TypeParam>::template test_op_plus_transpose_inplace_Success<true>();
+  GTestMatrix<TypeParam>::template test_op_plus_transpose_inplace_Success<false>();
 }

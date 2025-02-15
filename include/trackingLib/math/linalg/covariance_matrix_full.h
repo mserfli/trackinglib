@@ -10,36 +10,55 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType, sint32 Size>
-class CovarianceMatrixFull
-    : public SquareMatrix<FloatType, Size>
-    , public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>
+template <typename FloatType_, sint32 Size_, bool IsRowMajor_ = true>
+class CovarianceMatrixFull: public SquareMatrix<FloatType_, Size_, IsRowMajor_>
+//, public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>>
 {
 public:
-  using value_type          = FloatType;
-  using compose_type        = CovarianceMatrixFull;
-  static constexpr auto dim = Size;
+  using SquareMatrix = SquareMatrix<FloatType_, Size_, IsRowMajor_>; ///< type of the parent class
 
-  //  rule of 5 declarations
-  CovarianceMatrixFull()                                = default;
-  CovarianceMatrixFull(const CovarianceMatrixFull&)     = default;
-  CovarianceMatrixFull(CovarianceMatrixFull&&) noexcept = default;
-  auto operator=(const CovarianceMatrixFull&) -> CovarianceMatrixFull& = default;
-  auto operator=(CovarianceMatrixFull&&) noexcept -> CovarianceMatrixFull& = default;
-  virtual ~CovarianceMatrixFull()                                          = default;
+  // unhide ctor of base class to allow implicit call in derived default ctors
+  using SquareMatrix::SquareMatrix;
+
+  using value_type                = FloatType_;
+  using compose_type              = CovarianceMatrixFull;
+  static constexpr auto dim       = Size_;
+  static constexpr auto row_major = IsRowMajor_;
+
+  //////////////////////////////////////////////////
+  // additional constructors  --->
+  /// \brief Construct a new Covariance Matrix Full< Float Type,  Size_> object
+  /// \param[in] other A base class object
+  explicit CovarianceMatrixFull(const SquareMatrix& other)
+      : SquareMatrix{other}
+  {
+    // assert(this->isSymmetric() && "Constructed covariance not symmetric");
+  }
+
+  /// \brief Move construct a new Covariance Matrix Full< Float Type,  Size_> object
+  /// \param[in] other A base class object
+  explicit CovarianceMatrixFull(SquareMatrix&& other) noexcept
+      : SquareMatrix{std::forward<SquareMatrix>(other)}
+  {
+    assert(this->isSymmetric() && "Constructed covariance not symmetric");
+  }
+
+  /// \brief Construct a new Covariance Matrix Full object with given initializer list representing the memory layout of the
+  /// matrix \param[in] list  An initializer list describing the memory layout of the matrix
+  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> CovarianceMatrixFull
+  {
+    return CovarianceMatrixFull{SquareMatrix::FromList(list)};
+  }
 
   /// \brief Construct an Identity matrix
-  /// \return CovarianceMatrixFull
-  static auto Identity() -> CovarianceMatrixFull;
+  /// \return CovarianceMatrixFull  Resulting identity matrix
+  static auto Identity() -> CovarianceMatrixFull { return CovarianceMatrixFull{SquareMatrix::Identity()}; }
 
-  /// \brief Set Identity covariance
-  void setIdentity();
+  /// \brief Set internal matrix to the Identity matrix
+  void setIdentity() { SquareMatrix::setIdentity(); }
 
   /// \brief Access operator to the covariance value at (row, col)
-  /// \param[in,out] row  The specified row
-  /// \param[in,out] col  The specified column
-  /// \return FloatType
-  auto operator()(sint32 row, sint32 col) const -> FloatType;
+  using SquareMatrix::operator();
 
   /// \brief Creates the "composed" covariance, although no composition is needed
   /// \return const CovarianceMatrixFull&
@@ -52,32 +71,23 @@ public:
   /// \brief Checks inverse status
   /// \return true
   /// \return false
-  [[nodiscard]] auto isInverse() const -> bool;
+  [[nodiscard]] auto isInverse() const -> bool { return _isInverse; }
 
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A
-  void apaT(const SquareMatrix<FloatType, Size>& A);
+  void apaT(const SquareMatrix& A);
 
   /// \brief Calculate A*P*A'
   /// \param[in] A
-  auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFull;
+  auto apaT(const SquareMatrix& A) const -> CovarianceMatrixFull;
 
   /// \brief Set the variance at (idx,idx) and clears any correlations
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
-  void setVariance(const sint32 idx, const FloatType val);
+  void setVariance(const sint32 idx, const FloatType_ val);
 
-  // clang-format off
-TEST_REMOVE_PRIVATE:
-  ; // workaround for correct indentation
-  // clang-format on
-
-  /// \brief Testing: Construct a new Covariance Matrix Full< Float Type,  Size> object
-  /// \param[in] other A base class object
-  /// \param[in] isInverse
-  explicit CovarianceMatrixFull(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
-
-  bool _isInverse{false};
+private:
+  static constexpr bool _isInverse{false};
 };
 
 } // namespace math
