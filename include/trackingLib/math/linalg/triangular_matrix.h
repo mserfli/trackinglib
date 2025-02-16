@@ -43,6 +43,9 @@ public:
   /// \param[in] list  An initializer list describing the memory layout of the matrix
   static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix;
 
+  /// \brief Construct an Identity matrix
+  /// \return TriangularMatrix  Resulting identity matrix
+  static auto Identity() -> TriangularMatrix { return TriangularMatrix{SquareMatrix::Identity()}; }
 
   /// \brief Set a lower/upper triangular block matrix at given position
   /// \tparam SrcSize    Size of the source block

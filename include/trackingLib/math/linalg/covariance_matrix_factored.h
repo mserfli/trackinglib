@@ -16,19 +16,19 @@ namespace tracking
 namespace math
 {
 // TODO(matthias): add contract for apaT functions, fill, ...
-template <typename FloatType, sint32 Size>
-class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType, Size>>
+template <typename FloatType_, sint32 Size_>
+class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType_, Size_>>
 {
 public:
-  using value_type          = FloatType;
-  using compose_type        = CovarianceMatrixFull<FloatType, Size>;
-  static constexpr auto dim = Size;
+  using value_type          = FloatType_;
+  using compose_type        = CovarianceMatrixFull<FloatType_, Size_>;
+  static constexpr auto dim = Size_;
 
   // rule of 5 declarations
-  CovarianceMatrixFactored()                                    = default;
-  CovarianceMatrixFactored(const CovarianceMatrixFactored&)     = default;
-  CovarianceMatrixFactored(CovarianceMatrixFactored&&) noexcept = default;
-  auto operator=(const CovarianceMatrixFactored&) -> CovarianceMatrixFactored& = default;
+  CovarianceMatrixFactored()                                                       = default;
+  CovarianceMatrixFactored(const CovarianceMatrixFactored&)                        = default;
+  CovarianceMatrixFactored(CovarianceMatrixFactored&&) noexcept                    = default;
+  auto operator=(const CovarianceMatrixFactored&) -> CovarianceMatrixFactored&     = default;
   auto operator=(CovarianceMatrixFactored&&) noexcept -> CovarianceMatrixFactored& = default;
   virtual ~CovarianceMatrixFactored()                                              = default;
 
@@ -36,9 +36,15 @@ public:
   /// \param[in] u   Unit upper triangular matrix
   /// \param[in] d   Diagonal matrix
   /// \param[in] isInverse  inverse status flag
-  explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType, Size, false>& u,
-                                    const DiagonalMatrix<FloatType, Size>&          d,
-                                    const bool                                      isInverse = false);
+  explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType_, Size_, false, true>& u,
+                                    const DiagonalMatrix<FloatType_, Size_>&                d,
+                                    const bool                                              isInverse = false);
+
+  /// \brief Construct a new Covariance Matrix Factored object with initializer list representing the memory layout of the matrix
+  // \param[in] u  An initializer list describing the memory layout of the unit upper triangular matrix
+  // \param[in] d  An initializer list describing the memory layout of the diagonal matrix
+  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& u,
+                       const std::initializer_list<value_type>&                        d) -> CovarianceMatrixFactored;
 
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFactored
@@ -51,11 +57,11 @@ public:
   /// \param[in,out] row  The specified row
   /// \param[in,out] col  The specified column
   /// \return FloatType
-  auto operator()(sint32 row, sint32 col) const -> FloatType;
+  auto operator()(sint32 row, sint32 col) const -> FloatType_;
 
   /// \brief Creates the composed covariance
   /// \return CovarianceMatrixFull<FloatType, Size>
-  auto operator()() const -> CovarianceMatrixFull<FloatType, Size>;
+  auto operator()() const -> CovarianceMatrixFull<FloatType_, Size_>;
 
   /// \brief Calculates the inverse
   /// \return tl::expected<CovarianceMatrixFactored, Errors>
@@ -68,44 +74,44 @@ public:
 
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A   A square matrix which is transforming P in same space
-  void apaT(const SquareMatrix<FloatType, Size>& A);
+  void apaT(const SquareMatrix<FloatType_, Size_, true>& A);
 
   /// \brief Calculate A*P*A'
   /// \param[in] A   A square matrix which is transforming P in same space
   /// \return Calculation result as new covariance matrix
-  auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFactored;
+  auto apaT(const SquareMatrix<FloatType_, Size_, true>& A) const -> CovarianceMatrixFactored;
 
   /// \brief Calculate Phi*P*Phi' + G*Q*G', also known as Thornton update
   /// \tparam SizeQ
   /// \param[in] Phi  A square matrix which is transforming P in same space
   /// \param[in] G    A matrix to transform Q into matrix equally sized to Phi
   /// \param[in] Q    A diagonal matrix
-  template <sint32 SizeQ>
-  void thornton(const SquareMatrix<FloatType, Size>&    Phi,
-                const Matrix<FloatType, Size, SizeQ>&   G,
-                const DiagonalMatrix<FloatType, SizeQ>& Q);
+  template <sint32 SizeQ_>
+  void thornton(const SquareMatrix<FloatType_, Size_, true>&   Phi,
+                const Matrix<FloatType_, Size_, SizeQ_, true>& G,
+                const DiagonalMatrix<FloatType_, SizeQ_>&      Q);
 
   /// \brief Calculates P + c*x*x', also known as Agee Turner Rank-1 update
   /// \param[in] c  Signed scalar, c<0: downdate, c>0 update
   /// \param[in] x  A vector defining the outer product x*x' to update the matrix
-  void rank1Update(const FloatType c, const Vector<FloatType, Size>& x);
+  void rank1Update(const FloatType_ c, const Vector<FloatType_, Size_>& x);
 
   /// \brief Set the variance at (idx,idx) and clears any correlations
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
-  void setVariance(const sint32 idx, const FloatType val);
+  void setVariance(const sint32 idx, const FloatType_ val);
 
   /// \brief Fill the covariance with first N=SrcCount rows and cols of the other covariance
   /// \tparam SrcSize   Size of the other covariance
   /// \tparam SrcCount  Count rows/cols to copy from other
   /// \param[in] other  The other matrix to copy from
-  template <sint32 SrcSize, sint32 SrcCount>
-  void fill(const CovarianceMatrixFactored<FloatType, SrcSize>& other);
+  template <sint32 SrcSize_, sint32 SrcCount_>
+  void fill(const CovarianceMatrixFactored<FloatType_, SrcSize_>& other);
 
   /// \brief Set the Diagonal matrix element to given value
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
-  void setDiagonal(const sint32 idx, const FloatType val);
+  void setDiagonal(const sint32 idx, const FloatType_ val);
 
   void print() const { this->operator()().print(); }
 
@@ -117,11 +123,11 @@ TEST_REMOVE_PRIVATE:
   /// \brief Testing: Construct a new Covariance Matrix Factored object
   /// \param[in] other
   /// \param[in] isInverse
-  explicit CovarianceMatrixFactored(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
+  explicit CovarianceMatrixFactored(const SquareMatrix<FloatType_, Size_, true>& other, const bool isInverse = false);
 
-  TriangularMatrix<FloatType, Size, false> _u{};
-  DiagonalMatrix<FloatType, Size>          _d{};
-  bool                                     _isInverse{false};
+  TriangularMatrix<FloatType_, Size_, false, true> _u{};
+  DiagonalMatrix<FloatType_, Size_>                _d{};
+  bool                                             _isInverse{false};
 };
 
 } // namespace math

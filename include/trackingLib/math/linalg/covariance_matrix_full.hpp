@@ -29,7 +29,7 @@ inline auto CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>::inverse() cons
     // symmetrize
     s.operator+=(s.transpose());
     s *= static_cast<FloatType_>(0.5);
-    return CovarianceMatrixFull(s);
+    return CovarianceMatrixFull{s};
   }
   return tl::unexpected<Errors>{retVal.error()};
 }
@@ -44,7 +44,7 @@ inline void CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>::apaT(const Squ
   // symmetrize
   res += res.transpose();
   res *= static_cast<FloatType_>(0.5);
-  this->operator=(CovarianceMatrixFull(res));
+  this->operator=(CovarianceMatrixFull{res});
 }
 
 template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
