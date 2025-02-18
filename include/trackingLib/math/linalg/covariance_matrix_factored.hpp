@@ -8,7 +8,7 @@
 #include "math/linalg/matrix.h"
 #include "math/linalg/matrix_column_view.h"
 #include "math/linalg/matrix_row_view.h"
-// #include "math/linalg/modified_gram_schmidt.hpp"
+#include "math/linalg/modified_gram_schmidt.hpp"
 #include "math/linalg/rank1_update.hpp"
 #include "math/linalg/square_matrix.hpp"
 #include "math/linalg/triangular_matrix.hpp"
@@ -47,10 +47,11 @@ CovarianceMatrixFactored<FloatType_, Size_>::CovarianceMatrixFactored(const Tria
 
 template <typename FloatType_, sint32 Size_>
 auto CovarianceMatrixFactored<FloatType_, Size_>::FromList(const std::initializer_list<std::initializer_list<value_type>>& u,
-                                                           const std::initializer_list<value_type>& d) -> CovarianceMatrixFactored
+                                                           const std::initializer_list<value_type>&                        d,
+                                                           const bool isInverse) -> CovarianceMatrixFactored
 {
-  CovarianceMatrixFactored cov{TriangularMatrix<FloatType_, Size_, false, true>::FromList(u),
-                               DiagonalMatrix<FloatType_, Size_>::FromList(d)};
+  CovarianceMatrixFactored cov{
+      TriangularMatrix<FloatType_, Size_, false, true>::FromList(u), DiagonalMatrix<FloatType_, Size_>::FromList(d), isInverse};
   return cov;
 }
 
@@ -129,7 +130,6 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::isInverse() const -> bo
   return _isInverse;
 }
 
-#if 0
 template <typename FloatType_, sint32 Size_>
 inline void CovarianceMatrixFactored<FloatType_, Size_>::apaT(const SquareMatrix<FloatType_, Size_, true>& A)
 {
@@ -157,9 +157,9 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::apaT(const SquareMatrix
 
 template <typename FloatType_, sint32 Size_>
 template <sint32 SizeQ_>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::thornton(const SquareMatrix<FloatType_, Size_, true>& Phi,
-                                                                  const Matrix<FloatType_, Size_, SizeQ_>&     G,
-                                                                  const DiagonalMatrix<FloatType_, SizeQ_>&    Q)
+inline void CovarianceMatrixFactored<FloatType_, Size_>::thornton(const SquareMatrix<FloatType_, Size_, true>&   Phi,
+                                                                  const Matrix<FloatType_, Size_, SizeQ_, true>& G,
+                                                                  const DiagonalMatrix<FloatType_, SizeQ_>&      Q)
 {
   math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, Phi, G, Q);
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
@@ -172,13 +172,13 @@ inline void CovarianceMatrixFactored<FloatType_, Size_>::rank1Update(const Float
   if (_isInverse)
   {
     // TODO(matthias): find a solution without transposing and copying the matrix
-    typename TriangularMatrix<FloatType_, Size_, false, true>::transpose_type l(_u.transpose());
-    math::Rank1Update<FloatType_, Size_, true>::run(l, _d, c, x);
-    _u = l.transpose();
+    typename TriangularMatrix<FloatType_, Size_, false, true>::transpose_type l{_u.transpose()};
+    math::Rank1Update<FloatType_, Size_, false>::run(l, _d, c, x);
+    _u = std::move(l.transpose());
   }
   else
   {
-    math::Rank1Update<FloatType_, Size_>::run(_u, _d, c, x);
+    math::Rank1Update<FloatType_, Size_, true>::run(_u, _d, c, x);
   }
 
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
@@ -186,10 +186,10 @@ inline void CovarianceMatrixFactored<FloatType_, Size_>::rank1Update(const Float
 }
 
 template <typename FloatType_, sint32 Size_>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::setVariance(const sint32 idx, const FloatType val)
+inline void CovarianceMatrixFactored<FloatType_, Size_>::setVariance(const sint32 idx, const FloatType_ val)
 {
-  auto A      = SquareMatrix<FloatType, Size>::Identity();
-  A(idx, idx) = static_cast<FloatType>(0.0);
+  auto A                = SquareMatrix<FloatType_, Size_, true>::Identity();
+  A.at_unsafe(idx, idx) = static_cast<FloatType_>(0.0);
   apaT(A);
   setDiagonal(idx, val);
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
@@ -197,23 +197,22 @@ inline void CovarianceMatrixFactored<FloatType_, Size_>::setVariance(const sint3
 }
 
 template <typename FloatType_, sint32 Size_>
-template <sint32 SrcSize, sint32 SrcCount>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::fill(const CovarianceMatrixFactored<FloatType, SrcSize>& other)
+template <sint32 SrcSize_, sint32 SrcCount_>
+inline void CovarianceMatrixFactored<FloatType_, Size_>::fill(const CovarianceMatrixFactored<FloatType_, SrcSize_>& other)
 {
-  _u.template setBlock<SrcSize, SrcCount, 0, 0, 0, 0>(other._u);
-  _d.template setBlock<SrcSize, SrcCount, 0, 0>(other._d);
+  _u.template setBlock<SrcSize_, SrcCount_, 0, 0, 0, 0>(other._u);
+  _d.template setBlock<SrcSize_, SrcCount_, 0, 0>(other._d);
   _isInverse = other._isInverse;
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
 template <typename FloatType_, sint32 Size_>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::setDiagonal(const sint32 idx, const FloatType val)
+inline void CovarianceMatrixFactored<FloatType_, Size_>::setDiagonal(const sint32 idx, const FloatType_ val)
 {
-  assert(val > static_cast<FloatType>(0.0) && "Expected variance value greater than 0.0");
-  _d[idx] = val;
+  assert(val > static_cast<FloatType_>(0.0) && "Expected variance value greater than 0.0");
+  _d.at_unsafe(idx) = val;
 }
-#endif
 } // namespace math
 } // namespace tracking
 

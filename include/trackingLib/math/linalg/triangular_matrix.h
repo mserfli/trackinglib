@@ -106,9 +106,13 @@ public:
   /// \return FloatType&  Reference to the scalar triangular value
   auto operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
 
-  /// \brief Calculate the transposed matrix
-  /// \return transpose_type
-  auto transpose() const -> transpose_type;
+  /// \brief Calculate the transposed matrix without changing the layout
+  /// \return const transpose_type&   const reference to same data as Self, but differently interpreted
+  auto transpose() const -> const transpose_type&;
+
+  /// \brief Calculate the transposed matrix without changing the layout
+  /// \return transpose_type&   reference to same data as Self, but differently interpreted
+  auto transpose() -> transpose_type&;
 
   /// \brief Solver for A*x=b based on Cholesky decomposition of A
   /// \tparam Cols_  Number of columns in the rhs variable b

@@ -17,7 +17,7 @@ namespace math
 {
 // TODO(matthias): add contract for apaT functions, fill, ...
 template <typename FloatType_, sint32 Size_>
-class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType_, Size_>>
+class CovarianceMatrixFactored //: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType_, Size_>>
 {
 public:
   using value_type          = FloatType_;
@@ -41,10 +41,12 @@ public:
                                     const bool                                              isInverse = false);
 
   /// \brief Construct a new Covariance Matrix Factored object with initializer list representing the memory layout of the matrix
-  // \param[in] u  An initializer list describing the memory layout of the unit upper triangular matrix
-  // \param[in] d  An initializer list describing the memory layout of the diagonal matrix
+  /// \param[in] u  An initializer list describing the memory layout of the unit upper triangular matrix
+  /// \param[in] d  An initializer list describing the memory layout of the diagonal matrix
+  /// \param[in] isInverse  inverse status flag
   static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& u,
-                       const std::initializer_list<value_type>&                        d) -> CovarianceMatrixFactored;
+                       const std::initializer_list<value_type>&                        d,
+                       const bool isInverse = false) -> CovarianceMatrixFactored;
 
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFactored

@@ -12,7 +12,7 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType, sint32 Size>
+template <typename FloatType_, sint32 Size_>
 class ModifiedGramSchmidt
 {
 public:
@@ -21,10 +21,10 @@ public:
   /// \param[in,out] d
   /// \param[in]     Phi
   /// \param[in,out] transposeU
-  static void run(TriangularMatrix<FloatType, Size, false>& u,
-                  DiagonalMatrix<FloatType, Size>&          d,
-                  const SquareMatrix<FloatType, Size>&      Phi,
-                  const bool                                transposeU);
+  static void run(TriangularMatrix<FloatType_, Size_, false, true>& u,
+                  DiagonalMatrix<FloatType_, Size_>&                d,
+                  const SquareMatrix<FloatType_, Size_, true>&      Phi,
+                  const bool                                        transposeU);
 
   /// \brief Solve inplace Phi*UDU'*Phi' + G*Q*G' on u, d matrices
   /// \tparam SizeQ
@@ -33,12 +33,12 @@ public:
   /// \param[in,out] Phi
   /// \param[in,out] G
   /// \param[in,out] Q
-  template <sint32 SizeQ>
-  static void run(TriangularMatrix<FloatType, Size, false>& u,
-                  DiagonalMatrix<FloatType, Size>&          d,
-                  const SquareMatrix<FloatType, Size>&      Phi,
-                  const Matrix<FloatType, Size, SizeQ>&     G,
-                  const DiagonalMatrix<FloatType, SizeQ>&   Q);
+  template <sint32 SizeQ_>
+  static void run(TriangularMatrix<FloatType_, Size_, false, true>& u,
+                  DiagonalMatrix<FloatType_, Size_>&                d,
+                  const SquareMatrix<FloatType_, Size_, true>&      Phi,
+                  const Matrix<FloatType_, Size_, SizeQ_, true>&    G,
+                  const DiagonalMatrix<FloatType_, SizeQ_>&         Q);
 };
 
 } // namespace math

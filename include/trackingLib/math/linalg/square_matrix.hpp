@@ -208,26 +208,26 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const
 
   if (isSymmetric())
   {
-    const auto&                                             P = this->_data;
+    const auto&                                             P = *this;
     TriangularMatrix<ValueType_, Size_, false, IsRowMajor_> U{};
     DiagonalMatrix<ValueType_, Size_>                       D{};
     for (sint32 j = Size_ - 1; j >= 0; --j)
     {
       for (sint32 i = j; i >= 0; --i)
       {
-        auto sigma = P(i, j);
+        auto sigma = P.at_unsafe(i, j);
         for (sint32 k = j + 1; k < Size_; ++k)
         {
-          sigma -= U(i, k) * D[k] * U(j, k);
+          sigma -= U.at_unsafe(i, k) * D.at_unsafe(k) * U.at_unsafe(j, k);
         }
         if (i == j)
         {
-          D[j]    = std::max(sigma, std::numeric_limits<ValueType_>::epsilon());
-          U(j, j) = static_cast<ValueType_>(1.0);
+          D.at_unsafe(j)    = std::max(sigma, std::numeric_limits<ValueType_>::epsilon());
+          U.at_unsafe(j, j) = static_cast<ValueType_>(1.0);
         }
         else
         {
-          U(i, j) = sigma / D[j];
+          U.at_unsafe(i, j) = sigma / D.at_unsafe(j);
         }
       }
     }

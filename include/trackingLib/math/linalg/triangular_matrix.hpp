@@ -253,11 +253,16 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::at_unsaf
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::transpose() const -> transpose_type
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::transpose() const -> const transpose_type&
 {
-  auto copy{*this};
-  return reinterpret_cast<transpose_type&&>(std::move(copy));
-} // LCOV_EXCL_LINE
+  return reinterpret_cast<const transpose_type&>(*this);
+}
+
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::transpose() -> transpose_type&
+{
+  return reinterpret_cast<transpose_type&>(*this);
+}
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 template <sint32 Cols_, bool IsRowMajor2_>

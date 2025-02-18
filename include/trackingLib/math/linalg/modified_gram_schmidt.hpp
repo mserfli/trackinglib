@@ -8,11 +8,11 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType, sint32 Size>
-void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size, false>& u,
-                                               DiagonalMatrix<FloatType, Size>&          d,
-                                               const SquareMatrix<FloatType, Size>&      Phi,
-                                               const bool                                transposeU)
+template <typename FloatType_, sint32 Size_>
+void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, false, true>& u,
+                                                 DiagonalMatrix<FloatType_, Size_>&                d,
+                                                 const SquareMatrix<FloatType_, Size_, true>&      Phi,
+                                                 const bool                                        transposeU)
 {
   // M. S. Grewal and A. P. Andrews
   // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
@@ -24,40 +24,40 @@ void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size,
   auto PhiU = transposeU ? Phi * u.transpose() : Phi * u;
   auto Din  = d;
   u.setIdentity();
-  FloatType sigma;
-  for (sint32 i = Size - 1; i >= 0; --i)
+  FloatType_ sigma;
+  for (sint32 i = Size_ - 1; i >= 0; --i)
   {
-    sigma = static_cast<FloatType>(0.0);
-    for (sint32 j = 0; j < Size; ++j)
+    sigma = static_cast<FloatType_>(0.0);
+    for (sint32 j = 0; j < Size_; ++j)
     {
-      sigma += (PhiU(i, j) * PhiU(i, j)) * Din[j];
+      sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);
     }
-    d[i] = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
+    d.at_unsafe(i) = std::max(sigma, std::numeric_limits<FloatType_>::epsilon());
     for (sint32 j = 0; j < i; ++j)
     {
-      sigma = static_cast<FloatType>(0.0);
-      for (sint32 k = 0; k < Size; ++k)
+      sigma = static_cast<FloatType_>(0.0);
+      for (sint32 k = 0; k < Size_; ++k)
       {
-        sigma += PhiU(i, k) * Din[k] * PhiU(j, k);
+        sigma += PhiU.at_unsafe(i, k) * Din.at_unsafe(k) * PhiU.at_unsafe(j, k);
       }
 
-      u(j, i) = sigma / d[i];
+      u.at_unsafe(j, i) = sigma / d.at_unsafe(i);
 
-      for (sint32 k = 0; k < Size; ++k)
+      for (sint32 k = 0; k < Size_; ++k)
       {
-        PhiU(j, k) -= u(j, i) * PhiU(i, k);
+        PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);
       }
     }
   }
 }
 
-template <typename FloatType, sint32 Size>
-template <sint32 SizeQ>
-void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size, false>& u,
-                                               DiagonalMatrix<FloatType, Size>&          d,
-                                               const SquareMatrix<FloatType, Size>&      Phi,
-                                               const Matrix<FloatType, Size, SizeQ>&     G,
-                                               const DiagonalMatrix<FloatType, SizeQ>&   Q)
+template <typename FloatType_, sint32 Size_>
+template <sint32 SizeQ_>
+void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, false, true>& u,
+                                                 DiagonalMatrix<FloatType_, Size_>&                d,
+                                                 const SquareMatrix<FloatType_, Size_, true>&      Phi,
+                                                 const Matrix<FloatType_, Size_, SizeQ_, true>&    G,
+                                                 const DiagonalMatrix<FloatType_, SizeQ_>&         Q)
 {
   // M. S. Grewal and A. P. Andrews
   // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
@@ -72,40 +72,40 @@ void ModifiedGramSchmidt<FloatType, Size>::run(TriangularMatrix<FloatType, Size,
   auto Din  = d;
   auto Gin  = G;
   u.setIdentity();
-  FloatType sigma;
-  for (sint32 i = Size - 1; i >= 0; --i)
+  FloatType_ sigma;
+  for (sint32 i = Size_ - 1; i >= 0; --i)
   {
-    sigma = static_cast<FloatType>(0.0);
-    for (sint32 j = 0; j < Size; ++j)
+    sigma = static_cast<FloatType_>(0.0);
+    for (sint32 j = 0; j < Size_; ++j)
     {
-      sigma += (PhiU(i, j) * PhiU(i, j)) * Din[j];
-      if (j < SizeQ)
+      sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);
+      if (j < SizeQ_)
       {
-        sigma += Gin(i, j) * Gin(i, j) * Q[j];
+        sigma += Gin.at_unsafe(i, j) * Gin.at_unsafe(i, j) * Q.at_unsafe(j);
       }
     }
-    d[i] = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
+    d.at_unsafe(i) = std::max(sigma, std::numeric_limits<FloatType_>::epsilon());
     for (sint32 j = 0; j < i; ++j)
     {
-      sigma = static_cast<FloatType>(0.0);
-      for (sint32 k = 0; k < Size; ++k)
+      sigma = static_cast<FloatType_>(0.0);
+      for (sint32 k = 0; k < Size_; ++k)
       {
-        sigma += PhiU(i, k) * Din[k] * PhiU(j, k);
+        sigma += PhiU.at_unsafe(i, k) * Din.at_unsafe(k) * PhiU.at_unsafe(j, k);
       }
-      for (sint32 k = 0; k < SizeQ; ++k)
+      for (sint32 k = 0; k < SizeQ_; ++k)
       {
-        sigma += Gin(i, k) * Q[k] * Gin(j, k);
+        sigma += Gin.at_unsafe(i, k) * Q.at_unsafe(k) * Gin.at_unsafe(j, k);
       }
 
-      u(j, i) = sigma / d[i];
+      u.at_unsafe(j, i) = sigma / d.at_unsafe(i);
 
-      for (sint32 k = 0; k < Size; ++k)
+      for (sint32 k = 0; k < Size_; ++k)
       {
-        PhiU(j, k) -= u(j, i) * PhiU(i, k);
+        PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);
       }
-      for (sint32 k = 0; k < SizeQ; ++k)
+      for (sint32 k = 0; k < SizeQ_; ++k)
       {
-        Gin(j, k) -= u(j, i) * Gin(i, k);
+        Gin.at_unsafe(j, k) -= u.at_unsafe(j, i) * Gin.at_unsafe(i, k);
       }
     }
   }
