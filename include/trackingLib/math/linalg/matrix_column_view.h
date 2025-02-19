@@ -15,7 +15,7 @@ namespace math
 /// \tparam Rows_
 /// \tparam Cols_
 /// \tparam IsRowMajor_
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_ = true>
 class MatrixColumnView TEST_REMOVE_FINAL
 {
 public:

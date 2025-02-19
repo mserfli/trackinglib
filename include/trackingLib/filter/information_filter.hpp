@@ -18,12 +18,12 @@ namespace tracking
 namespace filter
 {
 
-template <typename FloatType>
-template <sint32 DimX, sint32 DimQ>
-static void InformationFilter<FloatType>::predictCovariance(math::CovarianceMatrixFull<FloatType, DimX>& Y,
-                                                            const math::SquareMatrix<FloatType, DimX>&   A,
-                                                            const math::Matrix<FloatType, DimX, DimQ>&   G,
-                                                            const math::DiagonalMatrix<FloatType, DimQ>& Q)
+template <typename FloatType_>
+template <sint32 DimX_, sint32 DimQ_>
+void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull<FloatType_, DimX_>& Y,
+                                                      const math::SquareMatrix<FloatType_, DimX_>&   A,
+                                                      const math::Matrix<FloatType_, DimX_, DimQ_>&  G,
+                                                      const math::DiagonalMatrix<FloatType_, DimQ_>& Q)
 {
   assert(Y.isInverse());
   // Discrete kalman filter tutorial
@@ -36,16 +36,16 @@ static void InformationFilter<FloatType>::predictCovariance(math::CovarianceMatr
   M.apaT(invA);
   // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric
   const auto H =
-      math::SquareMatrix<FloatType, DimX>(math::SquareMatrix<FloatType, DimX>::Identity() + M * (G * Q * G.transpose()));
+      math::SquareMatrix<FloatType_, DimX_>(math::SquareMatrix<FloatType_, DimX_>::Identity() + M * (G * Q * G.transpose()));
   H.qrSolve(Y, M);
 }
 
-template <typename FloatType>
-template <sint32 DimX, sint32 DimQ>
-static void InformationFilter<FloatType>::predictCovariance(math::CovarianceMatrixFactored<FloatType, DimX>& Y,
-                                                            const math::SquareMatrix<FloatType, DimX>&       A,
-                                                            const math::Matrix<FloatType, DimX, DimQ>&       G,
-                                                            const math::DiagonalMatrix<FloatType, DimQ>&     Q)
+template <typename FloatType_>
+template <sint32 DimX_, sint32 DimQ_>
+void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFactored<FloatType_, DimX_>& Y,
+                                                      const math::SquareMatrix<FloatType_, DimX_>&       A,
+                                                      const math::Matrix<FloatType_, DimX_, DimQ_>&      G,
+                                                      const math::DiagonalMatrix<FloatType_, DimQ_>&     Q)
 {
   assert(Y.isInverse());
   // Information Formulation of the UDU Kalman Filter
@@ -57,11 +57,11 @@ static void InformationFilter<FloatType>::predictCovariance(math::CovarianceMatr
 
   // apply DimQ times the AgeeTurner Rank-1 update P = P - c*x*x'
   // with Gi=inv(A)*G(:,i) and ci=inv(Gi'*Y*Gi+inv(Q(i,i))) is (1x1) and x=Y*Gi is (nx1)
-  FloatType                     ci;
-  math::Vector<FloatType, DimX> xi;
-  math::Vector<FloatType, DimX> Gi;
-  using ColView = math::MatrixColumnView<FloatType, DimX, DimQ>;
-  for (sint32 i = 0; i < DimQ; ++i)
+  FloatType_                      ci;
+  math::Vector<FloatType_, DimX_> xi;
+  math::Vector<FloatType_, DimX_> Gi;
+  using ColView = math::MatrixColumnView<FloatType_, DimX_, DimQ_>;
+  for (sint32 i = 0; i < DimQ_; ++i)
   {
     const ColView Gi{invAMulG, i};
     const auto    fullY{Y()};

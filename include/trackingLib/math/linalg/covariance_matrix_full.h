@@ -10,20 +10,19 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType_, sint32 Size_, bool IsRowMajor_ = true>
-class CovarianceMatrixFull: public SquareMatrix<FloatType_, Size_, IsRowMajor_>
+template <typename FloatType_, sint32 Size_>
+class CovarianceMatrixFull: public SquareMatrix<FloatType_, Size_, true>
 //, public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>>
 {
 public:
-  using SquareMatrix = SquareMatrix<FloatType_, Size_, IsRowMajor_>; ///< type of the parent class
+  using SquareMatrix = SquareMatrix<FloatType_, Size_, true>; ///< type of the parent class
 
   // unhide ctor of base class to allow implicit call in derived default ctors
   using SquareMatrix::SquareMatrix;
 
-  using value_type                = FloatType_;
-  using compose_type              = CovarianceMatrixFull;
-  static constexpr auto dim       = Size_;
-  static constexpr auto row_major = IsRowMajor_;
+  using value_type          = FloatType_;
+  using compose_type        = CovarianceMatrixFull;
+  static constexpr auto dim = Size_;
 
   //////////////////////////////////////////////////
   // additional constructors  --->
@@ -32,7 +31,7 @@ public:
   explicit CovarianceMatrixFull(const SquareMatrix& other)
       : SquareMatrix{other}
   {
-    // assert(this->isSymmetric() && "Constructed covariance not symmetric");
+    assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
   /// \brief Move construct a new Covariance Matrix Full< Float Type,  Size_> object
@@ -44,7 +43,8 @@ public:
   }
 
   /// \brief Construct a new Covariance Matrix Full object with given initializer list representing the memory layout of the
-  /// matrix \param[in] list  An initializer list describing the memory layout of the matrix
+  /// matrix
+  /// \param[in] list  An initializer list describing the memory layout of the matrix
   static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> CovarianceMatrixFull
   {
     return CovarianceMatrixFull{SquareMatrix::FromList(list)};

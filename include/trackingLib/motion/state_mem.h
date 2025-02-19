@@ -17,23 +17,23 @@ namespace motion
 /// \tparam CovarianceMatrixType  Used covariance matrix type
 /// \tparam FloatType             Used floating point type
 /// \tparam Size                  State dimension
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType, sint32 Size>
-class StateMem: public contract::StateMemIntf<StateMem<CovarianceMatrixType, FloatType, Size>>
+template <template <typename FloatType_, sint32 Size_> class CovarianceMatrixType, typename FloatType_, sint32 Size_>
+class StateMem: public contract::StateMemIntf<StateMem<CovarianceMatrixType, FloatType_, Size_>>
 {
 public:
-  using value_type    = FloatType;
-  using StateVec      = math::Vector<FloatType, Size>;
-  using ConstStateVec = const math::Vector<FloatType, Size>;
-  using StateCov      = CovarianceMatrixType<FloatType, Size>;
-  using ConstStateCov = const CovarianceMatrixType<FloatType, Size>;
+  using value_type    = FloatType_;
+  using StateVec      = math::Vector<FloatType_, Size_>;
+  using ConstStateVec = const math::Vector<FloatType_, Size_>;
+  using StateCov      = CovarianceMatrixType<FloatType_, Size_>;
+  using ConstStateCov = const CovarianceMatrixType<FloatType_, Size_>;
 
   // rule of 5 declarations
-  StateMem()                      = default;
-  StateMem(const StateMem& other) = default;
-  StateMem(StateMem&&) noexcept   = default;
+  StateMem()                                         = default;
+  StateMem(const StateMem& other)                    = default;
+  StateMem(StateMem&&) noexcept                      = default;
   auto operator=(const StateMem& other) -> StateMem& = default;
-  auto operator=(StateMem&&) noexcept -> StateMem& = default;
-  virtual ~StateMem()                              = default;
+  auto operator=(StateMem&&) noexcept -> StateMem&   = default;
+  virtual ~StateMem()                                = default;
 
   /// \brief Read access to full state vector
   /// \return const StateVec&
@@ -46,13 +46,13 @@ public:
   /// \brief Read access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return const FloatType&
-  auto operator[](const sint32 idx) const -> FloatType { return _vec[idx]; }
+  auto operator[](const sint32 idx) const -> FloatType_ { return _vec.at_unsafe(idx); }
 
   /// \brief Read access to indexed element of the state covariance matrix
   /// \param[in,out] row  Row index in the state covariance matrix
   /// \param[in,out] col  Col index in the state covariance matrix
   /// \return FloatType
-  auto operator()(const sint32 row, const sint32 col) const -> FloatType { return _cov(row, col); }
+  auto operator()(const sint32 row, const sint32 col) const -> FloatType_ { return _cov.at_unsafe(row, col); }
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
@@ -70,7 +70,7 @@ TEST_REMOVE_PROTECTED:
   /// \brief Write access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return FloatType&
-  auto operator[](const sint32 idx) -> FloatType& { return _vec[idx]; }
+  auto operator[](const sint32 idx) -> FloatType_& { return _vec.at_unsafe(idx); }
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
@@ -78,8 +78,8 @@ TEST_REMOVE_PRIVATE:
   // clang-format on
 
   /// \brief Testing: Construct a new State Mem object
-  /// \param[in] vec 
-  /// \param[in] cov 
+  /// \param[in] vec
+  /// \param[in] cov
   explicit StateMem(const StateVec& vec, const StateCov& cov)
       : _vec{vec}
       , _cov{cov}

@@ -18,7 +18,7 @@ class DiagonalMatrix; // LCOV_EXCL_LINE
 
 // TODO(matthias): add interface contract
 // TODO(matthias): use own memory optimized to required number of elements
-template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_ = true>
 class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
 {
 public:

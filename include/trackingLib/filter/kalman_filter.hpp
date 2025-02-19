@@ -14,24 +14,24 @@ namespace tracking
 namespace filter
 {
 
-template <typename FloatType>
-template <sint32 DimX, sint32 DimQ>
-inline static void KalmanFilter<FloatType>::predictCovariance(math::CovarianceMatrixFull<FloatType, DimX>& P,
-                                                              const math::SquareMatrix<FloatType, DimX>&   A,
-                                                              const math::Matrix<FloatType, DimX, DimQ>&   G,
-                                                              const math::DiagonalMatrix<FloatType, DimQ>& Q)
+template <typename FloatType_>
+template <sint32 DimX_, sint32 DimQ_>
+inline void KalmanFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull<FloatType_, DimX_>& P,
+                                                        const math::SquareMatrix<FloatType_, DimX_>&   A,
+                                                        const math::Matrix<FloatType_, DimX_, DimQ_>&  G,
+                                                        const math::DiagonalMatrix<FloatType_, DimQ_>& Q)
 {
-  P = math::CovarianceMatrixFull<FloatType, DimX>{A * P * A.transpose() + G * Q * G.transpose()};
+  P = math::CovarianceMatrixFull<FloatType_, DimX_>{A * P * A.transpose() + G * Q * G.transpose()};
   P += P.transpose();
-  P *= static_cast<FloatType>(0.5);
+  P *= static_cast<FloatType_>(0.5);
 }
 
-template <typename FloatType>
-template <sint32 DimX, sint32 DimQ>
-inline static void KalmanFilter<FloatType>::predictCovariance(math::CovarianceMatrixFactored<FloatType, DimX>& P,
-                                                              const math::SquareMatrix<FloatType, DimX>&       A,
-                                                              const math::Matrix<FloatType, DimX, DimQ>&       G,
-                                                              const math::DiagonalMatrix<FloatType, DimQ>&     Q)
+template <typename FloatType_>
+template <sint32 DimX_, sint32 DimQ_>
+inline void KalmanFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFactored<FloatType_, DimX_>& P,
+                                                        const math::SquareMatrix<FloatType_, DimX_>&       A,
+                                                        const math::Matrix<FloatType_, DimX_, DimQ_>&      G,
+                                                        const math::DiagonalMatrix<FloatType_, DimQ_>&     Q)
 {
   P.thornton(A, G, Q);
 }

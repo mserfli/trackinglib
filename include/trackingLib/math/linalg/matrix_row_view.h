@@ -18,7 +18,7 @@ class MatrixColumnView;
 /// \tparam Rows_
 /// \tparam Cols_
 /// \tparam IsRowMajor_
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_ = true>
 class MatrixRowView TEST_REMOVE_FINAL
 {
 public:

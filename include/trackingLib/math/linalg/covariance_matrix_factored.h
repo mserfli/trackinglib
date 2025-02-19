@@ -58,8 +58,8 @@ public:
   /// \brief Access operator to the covariance value at (row, col)
   /// \param[in,out] row  The specified row
   /// \param[in,out] col  The specified column
-  /// \return FloatType
-  auto operator()(sint32 row, sint32 col) const -> FloatType_;
+  /// \return tl::expected<ValueType_, Errors>   either the value at (row,col) or an Error descriptor
+  auto operator()(sint32 row, sint32 col) const -> tl::expected<value_type, Errors>;
 
   /// \brief Creates the composed covariance
   /// \return CovarianceMatrixFull<FloatType, Size>
@@ -116,6 +116,14 @@ public:
   void setDiagonal(const sint32 idx, const FloatType_ val);
 
   void print() const { this->operator()().print(); }
+
+  //////////////////////////////////////////////////
+  // unsafe access operators  --->
+  /// \brief Unsafe element read-only access
+  /// \param[in] row  row of the element to read
+  /// \param[in] col  column of the element to read
+  /// \return ValueType_   the value at (row,col)
+  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -> FloatType_;
 
   // clang-format off
 TEST_REMOVE_PRIVATE:

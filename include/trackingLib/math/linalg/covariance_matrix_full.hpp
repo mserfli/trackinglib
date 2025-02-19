@@ -13,8 +13,8 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
-inline auto CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
+template <typename FloatType_, sint32 Size_>
+inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
 {
   const auto retVal = SquareMatrix::decomposeLLT();
   if (retVal.has_value())
@@ -34,8 +34,8 @@ inline auto CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>::inverse() cons
   return tl::unexpected<Errors>{retVal.error()};
 }
 
-template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
-inline void CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>::apaT(const SquareMatrix& A)
+template <typename FloatType_, sint32 Size_>
+inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const SquareMatrix& A)
 {
   assert(this->isSymmetric() && "Covariance currently not symmetric");
   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
@@ -47,16 +47,16 @@ inline void CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>::apaT(const Squ
   this->operator=(CovarianceMatrixFull{res});
 }
 
-template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
-inline auto CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>::apaT(const SquareMatrix& A) const -> CovarianceMatrixFull
+template <typename FloatType_, sint32 Size_>
+inline auto CovarianceMatrixFull<FloatType_, Size_>::apaT(const SquareMatrix& A) const -> CovarianceMatrixFull
 {
   auto copy(*this);
   copy.apaT(A);
   return copy;
 }
 
-template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
-inline void CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>::setVariance(const sint32 idx, const FloatType_ val)
+template <typename FloatType_, sint32 Size_>
+inline void CovarianceMatrixFull<FloatType_, Size_>::setVariance(const sint32 idx, const FloatType_ val)
 {
   constexpr auto zero = static_cast<FloatType_>(0.0);
   for (sint32 j = 0; j < Size_; ++j)

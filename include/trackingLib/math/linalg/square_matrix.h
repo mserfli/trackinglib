@@ -21,7 +21,7 @@ template <typename ValueType_, sint32 Size_>
 class DiagonalMatrix;
 
 // TODO(matthias): add interface contract
-template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_ = true>
 class SquareMatrix: public Matrix<ValueType_, Size_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
 {
 public:

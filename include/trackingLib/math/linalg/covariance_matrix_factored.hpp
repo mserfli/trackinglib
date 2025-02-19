@@ -71,7 +71,23 @@ void CovarianceMatrixFactored<FloatType_, Size_>::setIdentity()
 }
 
 template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()(sint32 row, sint32 col) const -> FloatType_
+inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()(sint32 row,
+                                                                    sint32 col) const -> tl::expected<value_type, Errors>
+{
+  if (!(row >= 0 && row < dim))
+  {
+    return tl::unexpected<Errors>{Errors::invalid_access_row};
+  }
+  if (!(col >= 0 && col < dim))
+  {
+    return tl::unexpected<Errors>{Errors::invalid_access_col};
+  }
+
+  return at_unsafe(row, col);
+}
+
+template <typename FloatType_, sint32 Size_>
+inline auto CovarianceMatrixFactored<FloatType_, Size_>::at_unsafe(sint32 row, sint32 col) const -> FloatType_
 {
   // cov(row,col) == cov(col,row), so we swap row and col if row > col
   if (row > col)

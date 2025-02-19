@@ -15,22 +15,22 @@ namespace filter
 
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
-template <typename FloatType>
+template <typename FloatType_>
 class InformationFilter
 {
 public:
-  template <sint32 DimX, sint32 DimQ>
-  static void predictCovariance(math::CovarianceMatrixFull<FloatType, DimX>& Y,
-                                const math::SquareMatrix<FloatType, DimX>&   A,
-                                const math::Matrix<FloatType, DimX, DimQ>&   G,
-                                const math::DiagonalMatrix<FloatType, DimQ>& Q);
+  template <sint32 DimX_, sint32 DimQ_>
+  static void predictCovariance(math::CovarianceMatrixFull<FloatType_, DimX_>& Y,
+                                const math::SquareMatrix<FloatType_, DimX_>&   A,
+                                const math::Matrix<FloatType_, DimX_, DimQ_>&  G,
+                                const math::DiagonalMatrix<FloatType_, DimQ_>& Q);
 
   // prediction for UD factored covariance
-  template <sint32 DimX, sint32 DimQ>
-  static void predictCovariance(math::CovarianceMatrixFactored<FloatType, DimX>& Y,
-                                const math::SquareMatrix<FloatType, DimX>&       A,
-                                const math::Matrix<FloatType, DimX, DimQ>&       G,
-                                const math::DiagonalMatrix<FloatType, DimQ>&     Q);
+  template <sint32 DimX_, sint32 DimQ_>
+  static void predictCovariance(math::CovarianceMatrixFactored<FloatType_, DimX_>& Y,
+                                const math::SquareMatrix<FloatType_, DimX_>&       A,
+                                const math::Matrix<FloatType_, DimX_, DimQ_>&      G,
+                                const math::DiagonalMatrix<FloatType_, DimQ_>&     Q);
 };
 
 } // namespace filter

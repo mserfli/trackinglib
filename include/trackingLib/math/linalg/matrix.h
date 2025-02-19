@@ -31,7 +31,7 @@ class TriangularMatrix;
 /// \tparam Rows_        number of rows
 /// \tparam Cols_        number of cols
 /// \tparam IsRowMajor_  memory layout of the matrix
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_ = true>
 class Matrix: public contract::MatrixIntf<Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>, Matrix>
 {
 public:
