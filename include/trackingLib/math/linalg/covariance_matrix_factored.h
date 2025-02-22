@@ -1,9 +1,9 @@
 #ifndef F9044FD7_A3A8_43F4_BDD6_F43011384722
 #define F9044FD7_A3A8_43F4_BDD6_F43011384722
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "base/atomic_types.h"
-#include "math/linalg/contracts/covariance_matrix_intf.h"
+#include "math/linalg/contracts/covariance_matrix_intf.h" // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/matrix.h"
@@ -130,10 +130,11 @@ TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
 
-  /// \brief Testing: Construct a new Covariance Matrix Factored object
-  /// \param[in] other
-  /// \param[in] isInverse
-  explicit CovarianceMatrixFactored(const SquareMatrix<FloatType_, Size_, true>& other, const bool isInverse = false);
+  /// \brief Construct a new Covariance Matrix Factored object with given initializer list representing a full covariance matrix
+  /// \param[in] list  An initializer list describing a full covariance matrix
+  /// \param[in] isInverse  inverse status flag
+  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list,
+                       const bool isInverse = false) -> CovarianceMatrixFactored;
 
   TriangularMatrix<FloatType_, Size_, false, true> _u{};
   DiagonalMatrix<FloatType_, Size_>                _d{};

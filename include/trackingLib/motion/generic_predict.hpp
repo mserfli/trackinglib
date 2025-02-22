@@ -3,10 +3,10 @@
 
 #include "motion/generic_predict.h"
 
-#include "filter/information_filter.hpp"
-#include "filter/kalman_filter.hpp"
-#include "motion/generic_predict_common.hpp"
-#include "math/linalg/square_matrix.h"
+#include "filter/information_filter.hpp"     // IWYU pragma: keep
+#include "filter/kalman_filter.hpp"          // IWYU pragma: keep
+#include "math/linalg/square_matrix.h"       // IWYU pragma: keep
+#include "motion/generic_predict_common.hpp" // IWYU pragma: keep
 
 namespace tracking
 {
@@ -72,7 +72,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& P          = underlying.getCov();
 
-  static typename MotionModel::StateMatrix AGo = data.A * data.Go;
+  static auto AGo = typename MotionModel::StateMatrix{data.A * data.Go};
 
   // TODO(matthias): complete calculations of the factored predict
 
@@ -95,7 +95,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& P          = underlying.getCov();
 
-  static typename MotionModel::StateMatrix AGo = data.A * data.Go;
+  static auto AGo = typename MotionModel::StateMatrix{data.A * data.Go};
 
   // TODO(matthias): complete calculations of the factored predict
 

@@ -1,7 +1,7 @@
 #ifndef D190DD96_01E1_4A50_8090_B1337EB3B42E
 #define D190DD96_01E1_4A50_8090_B1337EB3B42E
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/vector.h"
 
 namespace tracking
@@ -20,7 +20,21 @@ public:
   // unhide ctor of base class to allow implicit call in derived default ctors
   using Vector::Vector;
 
-  /// \brief Construct a new Point 3d< Float Type> object
+  /// \brief Construct a new Point 3d<ValueType_> object
+  /// \param[in] other A base class object
+  explicit Point3d(const Vector& other)
+      : Vector{other}
+  {
+  }
+
+  /// \brief Move construct a new Point 3d<ValueType_> object
+  /// \param[in] other A base class object
+  explicit Point3d(Vector&& other) noexcept
+      : Vector{std::forward<Vector>(other)}
+  {
+  }
+
+  /// \brief Construct a new Point 3d<ValueType_> object
   /// \param[in] x  Value for x
   /// \param[in] y  Value for y
   /// \param[in] z  Value for z
@@ -55,15 +69,8 @@ TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
 
-  /// \brief Construct a new Point 3d< Float Type> object
-  /// \param[in] other A base class object
-  explicit Point3d(const Vector& other)
-      : Vector{other}
-  {
-  }
-
-  /// \brief hide inherited operator[] to prevent wrong access
-  using Vector::operator[];
+  /// \brief hide inherited at_unsafe to prevent wrong access
+  using Vector::at_unsafe;
 };
 
 template <typename ValueType_>
@@ -79,37 +86,37 @@ static inline auto Point3d<ValueType_>::FromValues(const ValueType_ x, const Val
 template <typename ValueType_>
 inline auto Point3d<ValueType_>::x() const -> ValueType_
 {
-  return this->operator[](0);
+  return this->at_unsafe(0);
 }
 
 template <typename ValueType_>
 inline auto Point3d<ValueType_>::y() const -> ValueType_
 {
-  return this->operator[](1);
+  return this->at_unsafe(1);
 }
 
 template <typename ValueType_>
 inline auto Point3d<ValueType_>::z() const -> ValueType_
 {
-  return this->operator[](2);
+  return this->at_unsafe(2);
 }
 
 template <typename ValueType_>
 inline auto Point3d<ValueType_>::x() -> ValueType_&
 {
-  return this->operator[](0);
+  return this->at_unsafe(0);
 }
 
 template <typename ValueType_>
 inline auto Point3d<ValueType_>::y() -> ValueType_&
 {
-  return this->operator[](1);
+  return this->at_unsafe(1);
 }
 
 template <typename ValueType_>
 inline auto Point3d<ValueType_>::z() -> ValueType_&
 {
-  return this->operator[](2);
+  return this->at_unsafe(2);
 }
 
 } // namespace math

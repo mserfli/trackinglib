@@ -1,8 +1,8 @@
 #ifndef DD2B2494_7486_42BA_84E2_32308E26DBBC
 #define DD2B2494_7486_42BA_84E2_32308E26DBBC
 
-#include "base/first_include.h"
-#include "math/linalg/contracts/covariance_matrix_intf.h"
+#include "base/first_include.h"                           // IWYU pragma: keep
+#include "math/linalg/contracts/covariance_matrix_intf.h" // IWYU pragma: keep
 #include "math/linalg/square_matrix.h"
 
 namespace tracking
@@ -75,11 +75,13 @@ public:
 
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A
-  void apaT(const SquareMatrix& A);
+  template <bool IsRowMajor_>
+  void apaT(const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A);
 
   /// \brief Calculate A*P*A'
   /// \param[in] A
-  auto apaT(const SquareMatrix& A) const -> CovarianceMatrixFull;
+  template <bool IsRowMajor_>
+  auto apaT(const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull;
 
   /// \brief Set the variance at (idx,idx) and clears any correlations
   /// \param[in] idx  Index in diagonal matrix

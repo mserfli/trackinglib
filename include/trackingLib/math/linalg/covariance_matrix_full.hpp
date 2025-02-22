@@ -5,8 +5,8 @@
 
 #include "math/linalg/errors.h"
 #include "math/linalg/square_matrix.h"
-#include "math/linalg/square_matrix.hpp"
-#include "math/linalg/triangular_matrix.hpp"
+#include "math/linalg/square_matrix.hpp"     // IWYU pragma: keep
+#include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
 
 namespace tracking
 {
@@ -35,20 +35,35 @@ inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expe
 }
 
 template <typename FloatType_, sint32 Size_>
-inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const SquareMatrix& A)
+template <bool IsRowMajor_>
+inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A)
 {
   assert(this->isSymmetric() && "Covariance currently not symmetric");
   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
-  const auto paT = this->operator*(A.transpose());
-  auto       res = A.operator*(paT);
-  // symmetrize
-  res += res.transpose();
-  res *= static_cast<FloatType_>(0.5);
-  this->operator=(CovarianceMatrixFull{res});
+  if (IsRowMajor_)
+  {
+    const auto paT = this->operator*(A.transpose());
+    auto       res = A.operator*(paT);
+    // symmetrize
+    res += res.transpose();
+    res *= static_cast<FloatType_>(0.5);
+    this->operator=(CovarianceMatrixFull{res});
+  }
+  else
+  {
+    const auto paT = this->operator*(A.transpose());
+    auto       res = A.operator*(paT);
+    // symmetrize
+    res += res.transpose();
+    res *= static_cast<FloatType_>(0.5);
+    this->operator=(CovarianceMatrixFull{res});
+  }
 }
 
 template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFull<FloatType_, Size_>::apaT(const SquareMatrix& A) const -> CovarianceMatrixFull
+template <bool IsRowMajor_>
+inline auto CovarianceMatrixFull<FloatType_, Size_>::apaT(
+    const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull
 {
   auto copy(*this);
   copy.apaT(A);

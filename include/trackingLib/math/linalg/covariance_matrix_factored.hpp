@@ -4,34 +4,19 @@
 #include "math/linalg/covariance_matrix_factored.h"
 
 #include "math/linalg/covariance_matrix_full.h"
-#include "math/linalg/diagonal_matrix.hpp"
+#include "math/linalg/diagonal_matrix.hpp" // IWYU pragma: keep
 #include "math/linalg/matrix.h"
 #include "math/linalg/matrix_column_view.h"
 #include "math/linalg/matrix_row_view.h"
-#include "math/linalg/modified_gram_schmidt.hpp"
-#include "math/linalg/rank1_update.hpp"
-#include "math/linalg/square_matrix.hpp"
-#include "math/linalg/triangular_matrix.hpp"
-#include <type_traits>
+#include "math/linalg/modified_gram_schmidt.hpp" // IWYU pragma: keep
+#include "math/linalg/rank1_update.hpp"          // IWYU pragma: keep
+#include "math/linalg/square_matrix.hpp"         // IWYU pragma: keep
+#include "math/linalg/triangular_matrix.hpp"     // IWYU pragma: keep
 
 namespace tracking
 {
 namespace math
 {
-
-template <typename FloatType_, sint32 Size_>
-CovarianceMatrixFactored<FloatType_, Size_>::CovarianceMatrixFactored(const SquareMatrix<FloatType_, Size_, true>& other,
-                                                                      const bool                                   isInverse)
-{
-  auto retVal = other.decomposeUDUT();
-  assert(retVal.has_value());
-
-  auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix<FloatType_, Size_, false, true>::Identity(),
-                                               DiagonalMatrix<FloatType_, Size_>::Identity()));
-  _u          = u;
-  _d          = d;
-  _isInverse  = isInverse;
-}
 
 template <typename FloatType_, sint32 Size_>
 CovarianceMatrixFactored<FloatType_, Size_>::CovarianceMatrixFactored(const TriangularMatrix<FloatType_, Size_, false, true>& u,
@@ -54,6 +39,20 @@ auto CovarianceMatrixFactored<FloatType_, Size_>::FromList(const std::initialize
       TriangularMatrix<FloatType_, Size_, false, true>::FromList(u), DiagonalMatrix<FloatType_, Size_>::FromList(d), isInverse};
   return cov;
 }
+
+template <typename FloatType_, sint32 Size_>
+auto CovarianceMatrixFactored<FloatType_, Size_>::FromList(const std::initializer_list<std::initializer_list<value_type>>& list,
+                                                           const bool isInverse) -> CovarianceMatrixFactored
+{
+  auto other  = compose_type::SquareMatrix::FromList(list);
+  auto retVal = other.decomposeUDUT();
+  assert(retVal.has_value());
+
+  auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix<FloatType_, Size_, false, true>::Identity(),
+                                               DiagonalMatrix<FloatType_, Size_>::Identity()));
+  return CovarianceMatrixFactored{u, d, isInverse};
+}
+
 
 template <typename FloatType_, sint32 Size_>
 auto CovarianceMatrixFactored<FloatType_, Size_>::Identity() -> CovarianceMatrixFactored

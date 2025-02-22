@@ -1,20 +1,18 @@
 #ifndef ADB29DD2_C5B0_4217_8728_B612EFF95F07
 #define ADB29DD2_C5B0_4217_8728_B612EFF95F07
 
-#include "gtest/gtest.h"
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/square_matrix.h"
 
-#include "math/linalg/diagonal_matrix.hpp"
-#include "math/linalg/matrix_column_view.hpp"
-#include "math/linalg/matrix_row_view.hpp"
+#include "math/linalg/diagonal_matrix.hpp"    // IWYU pragma: keep
+#include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
+#include "math/linalg/matrix_row_view.hpp"    // IWYU pragma: keep
 // #include "math/linalg/matrix_view.hpp"
 #include "math/linalg/triangular_matrix.h"
-#include "math/linalg/triangular_matrix.hpp"
+#include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
 #include "math/linalg/vector.h"
-#include "math/linalg/vector.hpp"
+#include "math/linalg/vector.hpp" // IWYU pragma: keep
 #include <cmath>
-#include <iterator>
 #include <limits>
 #include <utility>
 

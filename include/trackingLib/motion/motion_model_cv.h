@@ -1,12 +1,12 @@
 #ifndef FA800472_29A5_4B6F_90A0_4283A0D513D6
 #define FA800472_29A5_4B6F_90A0_4283A0D513D6
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "env/ego_motion.h"
-#include "math/linalg/covariance_matrix_factored.h"
-#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/covariance_matrix_factored.h" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_full.h"     // IWYU pragma: keep
 #include "math/linalg/matrix.h"
-#include "motion/generic_predict.hpp"
+#include "motion/generic_predict.hpp" // IWYU pragma: keep
 #include "motion/imotion_model.h"
 
 
@@ -62,10 +62,10 @@ public:
   using AugmentedProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
 
   // rule of 5 declarations
-  MotionModelCV()                         = default;
-  MotionModelCV(const MotionModelCV&)     = default;
-  MotionModelCV(MotionModelCV&&) noexcept = default;
-  auto operator=(const MotionModelCV&) -> MotionModelCV& = default;
+  MotionModelCV()                                            = default;
+  MotionModelCV(const MotionModelCV&)                        = default;
+  MotionModelCV(MotionModelCV&&) noexcept                    = default;
+  auto operator=(const MotionModelCV&) -> MotionModelCV&     = default;
   auto operator=(MotionModelCV&&) noexcept -> MotionModelCV& = default;
   virtual ~MotionModelCV() TEST_REMOVE_FINAL                 = default;
 

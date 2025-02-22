@@ -1,8 +1,8 @@
 #ifndef CE10BDD8_6874_4771_89BA_D153438C3E01
 #define CE10BDD8_6874_4771_89BA_D153438C3E01
 
-#include "base/first_include.h"
-#include "base/test_config.h"
+#include "base/first_include.h" // IWYU pragma: keep
+#include "base/test_config.h"   // IWYU pragma: keep
 #include "base/atomic_types.h"
 #include "math/linalg/matrix.h"
 
@@ -118,7 +118,7 @@ public:
   auto at_unsafe(sint32 idx) -> ValueType_& { return Matrix::at_unsafe(idx, 0); }
   // <---
 
-private:
+protected:
   using Matrix::Ones;
   using Matrix::Zeros;
   using Matrix::operator();

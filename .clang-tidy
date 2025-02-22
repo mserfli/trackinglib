@@ -15,7 +15,8 @@
 ---
 # Configure clang-tidy for this project.
 
-# Disabled:
+Disabled:
+  -readability-simplify-boolean-expr
 #  -google-readability-namespace-comments the *_CLIENT_NS is a macro, and
 #   clang-tidy fails to match it against the initial value.
 Checks: >
@@ -39,6 +40,7 @@ Checks: >
   -readability-named-parameter,
   -readability-braces-around-statements,
   -readability-magic-numbers
+
 
 # Turn all the warnings from the checks above into errors.
 WarningsAsErrors: "*"
