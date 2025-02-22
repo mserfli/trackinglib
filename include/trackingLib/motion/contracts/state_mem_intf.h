@@ -1,7 +1,7 @@
 #ifndef D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47
 #define D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "base/interface_contract.h"
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"

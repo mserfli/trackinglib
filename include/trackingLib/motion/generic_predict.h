@@ -1,7 +1,7 @@
 #ifndef CFE4ADAC_CBD6_4488_B120_96D9FBE6C1A5
 #define CFE4ADAC_CBD6_4488_B120_96D9FBE6C1A5
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"

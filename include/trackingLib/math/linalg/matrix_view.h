@@ -1,16 +1,16 @@
 #ifndef EE3A9F55_5D25_4810_82B7_406BD09800A1
 #define EE3A9F55_5D25_4810_82B7_406BD09800A1
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/matrix.h"
-#include "math/linalg/vector.h"
+#include "math/linalg/vector.h" // IWYU pragma: keep
 
 namespace tracking
 {
 namespace math
 {
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 class MatrixColumnView;
 
 template <typename FloatType, sint32 Rows, sint32 Cols, bool ExtMem = true>
@@ -98,8 +98,8 @@ auto operator-(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a, const Matr
     -> MatrixView<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB), false>;
 
 template <typename FloatType, sint32 RowsA, sint32 ColsA, bool ExtMemA, sint32 RowsB, sint32 ColsB, bool ExtMemB>
-auto operator*(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a, const MatrixView<FloatType, RowsB, ColsB, ExtMemB>& b)
-    -> MatrixView<FloatType, RowsA, ColsB, false>;
+auto operator*(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a,
+               const MatrixView<FloatType, RowsB, ColsB, ExtMemB>& b) -> MatrixView<FloatType, RowsA, ColsB, false>;
 
 
 } // namespace math

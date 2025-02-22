@@ -1,7 +1,7 @@
 #ifndef EDCA948E_6A98_4AF3_8A01_916736E1577B
 #define EDCA948E_6A98_4AF3_8A01_916736E1577B
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/errors.h"
 #include <initializer_list>
 

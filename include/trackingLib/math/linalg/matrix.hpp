@@ -5,6 +5,7 @@
 #include "tl/expected.hpp"
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <limits>
 #include <type_traits>
 
@@ -313,6 +314,12 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose() const -> 
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose() -> transpose_type&
+{
+  return reinterpret_cast<transpose_type&>(*this);
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose_rvalue() && -> transpose_type
 {
   return reinterpret_cast<transpose_type&>(*this);
 }

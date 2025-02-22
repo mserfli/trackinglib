@@ -1,7 +1,7 @@
 #ifndef EAB4F7E8_4154_4054_AA4E_CFE8C4C007EA
 #define EAB4F7E8_4154_4054_AA4E_CFE8C4C007EA
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/matrix.h"
 #include "math/linalg/square_matrix.h"

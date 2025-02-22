@@ -1,6 +1,6 @@
 #ifndef C6D60071_4D88_4051_8725_F1EE1EEF5460
 #define C6D60071_4D88_4051_8725_F1EE1EEF5460
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 
 #endif // C6D60071_4D88_4051_8725_F1EE1EEF5460

@@ -1,7 +1,7 @@
 #ifndef C50A72AB_25E1_45C6_93E5_6607B9D345E3
 #define C50A72AB_25E1_45C6_93E5_6607B9D345E3
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "base/interface_contract.h"
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"

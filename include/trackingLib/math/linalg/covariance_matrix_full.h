@@ -42,6 +42,22 @@ public:
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
+  /// \brief Construct a new Covariance Matrix Full< Float Type,  Size_> object from a transposed SquareMatrix
+  /// \param[in] other A transposed base class object
+  explicit CovarianceMatrixFull(const SquareMatrix::transpose_type& other)
+      : SquareMatrix{other.transpose()}
+  {
+    assert(this->isSymmetric() && "Constructed covariance not symmetric");
+  }
+
+  /// \brief Move construct a new Covariance Matrix Full< Float Type,  Size_> object from a transposed SquareMatrix
+  /// \param[in] other A transposed base class object
+  explicit CovarianceMatrixFull(SquareMatrix::transpose_type&& other) noexcept
+      : SquareMatrix{std::move(other).transpose_rvalue()}
+  {
+    assert(this->isSymmetric() && "Constructed covariance not symmetric");
+  }
+
   /// \brief Construct a new Covariance Matrix Full object with given initializer list representing the memory layout of the
   /// matrix
   /// \param[in] list  An initializer list describing the memory layout of the matrix

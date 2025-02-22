@@ -40,24 +40,12 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
 {
   assert(this->isSymmetric() && "Covariance currently not symmetric");
   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
-  if (IsRowMajor_)
-  {
-    const auto paT = this->operator*(A.transpose());
-    auto       res = A.operator*(paT);
-    // symmetrize
-    res += res.transpose();
-    res *= static_cast<FloatType_>(0.5);
-    this->operator=(CovarianceMatrixFull{res});
-  }
-  else
-  {
-    const auto paT = this->operator*(A.transpose());
-    auto       res = A.operator*(paT);
-    // symmetrize
-    res += res.transpose();
-    res *= static_cast<FloatType_>(0.5);
-    this->operator=(CovarianceMatrixFull{res});
-  }
+  const auto paT = this->operator*(A.transpose());
+  auto       res = A.operator*(paT);
+  // symmetrize
+  res += res.transpose();
+  res *= static_cast<FloatType_>(0.5);
+  *this = CovarianceMatrixFull{res};
 }
 
 template <typename FloatType_, sint32 Size_>

@@ -1,7 +1,7 @@
 #ifndef ACBE61FE_A7AF_40EC_A62C_B94049A80274
 #define ACBE61FE_A7AF_40EC_A62C_B94049A80274
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/matrix.h"
 #include "math/linalg/vector.h"
 

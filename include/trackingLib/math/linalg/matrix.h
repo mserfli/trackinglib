@@ -1,17 +1,15 @@
 #ifndef FDEAAACC_9EF1_4C87_94DC_2FA494822664
 #define FDEAAACC_9EF1_4C87_94DC_2FA494822664
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/contracts/matrix_intf.h"
 #include "math/linalg/errors.h"
-#include "math/linalg/matrix_types.h"
+#include "math/linalg/matrix_types.h" // IWYU pragma: keep
 #include <algorithm>
 #include <array>
 #include <initializer_list>
-#include <iostream>
 #include <tuple>
 #include <type_traits>
-#include <utility>
 
 namespace tracking
 {
@@ -205,6 +203,10 @@ public:
   /// \brief Fast transpose without changing the layout
   /// \return transpose_type&   reference to same data as Self, but differently interpreted
   auto transpose() -> transpose_type&;
+
+  /// \brief Fast transpose without changing the layout
+  /// \return transpose_type   rvalue to same data as Self, but differently interpreted
+  auto transpose_rvalue() && -> transpose_type;
 
   /// \brief Set a block matrix at given position
   /// \tparam SrcRowSize_      Rows of the source block

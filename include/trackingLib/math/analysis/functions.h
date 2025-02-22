@@ -1,8 +1,7 @@
 #ifndef B8E086B0_F27F_43B8_9748_96B243918772
 #define B8E086B0_F27F_43B8_9748_96B243918772
 
-#include "base/first_include.h"
-#include "base/atomic_types.h"
+#include "base/first_include.h" // IWYU pragma: keep
 
 namespace tracking
 {

@@ -73,25 +73,25 @@ inline auto Point2d<ValueType_>::FromValues(const ValueType_ x, const ValueType_
 template <typename ValueType_>
 inline auto Point2d<ValueType_>::x() const -> ValueType_
 {
-  return this->at_unsafe(0);
+  return Vector::at_unsafe(0);
 }
 
 template <typename ValueType_>
 inline auto Point2d<ValueType_>::y() const -> ValueType_
 {
-  return this->at_unsafe(1);
+  return Vector::at_unsafe(1);
 }
 
 template <typename ValueType_>
 inline auto Point2d<ValueType_>::x() -> ValueType_&
 {
-  return this->at_unsafe(0);
+  return Vector::at_unsafe(0);
 }
 
 template <typename ValueType_>
 inline auto Point2d<ValueType_>::y() -> ValueType_&
 {
-  return this->at_unsafe(1);
+  return Vector::at_unsafe(1);
 }
 
 } // namespace math

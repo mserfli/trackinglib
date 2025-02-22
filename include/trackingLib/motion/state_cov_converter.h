@@ -1,7 +1,7 @@
 #ifndef C29F4260_CDA5_4C57_8700_E478EBEC6295
 #define C29F4260_CDA5_4C57_8700_E478EBEC6295
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "motion/motion_model_ca.h"
 #include "motion/motion_model_cv.h"
 

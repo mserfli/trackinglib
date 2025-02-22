@@ -1,7 +1,7 @@
 #ifndef A45AF6CD_F19E_48A5_92B4_D7A86498C01A
 #define A45AF6CD_F19E_48A5_92B4_D7A86498C01A
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/matrix.h"
 #include "math/linalg/vector.h"
 

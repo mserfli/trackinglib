@@ -1,10 +1,10 @@
 #ifndef EB85CC72_56D5_4D88_89CF_98C6580F5B61
 #define EB85CC72_56D5_4D88_89CF_98C6580F5B61
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "env/ego_motion.h"
-#include "math/linalg/covariance_matrix_factored.h"
-#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/covariance_matrix_factored.h" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_full.h" // IWYU pragma: keep
 #include "math/linalg/matrix.h"
 #include "motion/generic_predict.h"
 #include "motion/imotion_model.h"

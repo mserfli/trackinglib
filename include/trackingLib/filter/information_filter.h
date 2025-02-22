@@ -1,7 +1,7 @@
 #ifndef CD00E333_97EF_4391_B880_C543B45E2D3F
 #define CD00E333_97EF_4391_B880_C543B45E2D3F
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_factored.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"

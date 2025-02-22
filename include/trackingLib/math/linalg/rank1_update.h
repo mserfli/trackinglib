@@ -1,7 +1,7 @@
 #ifndef E23E9AC4_E199_4264_B0DB_0DE4B42F3447
 #define E23E9AC4_E199_4264_B0DB_0DE4B42F3447
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/triangular_matrix.h"
 #include "math/linalg/vector.h"

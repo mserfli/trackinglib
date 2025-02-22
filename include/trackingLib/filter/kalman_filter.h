@@ -1,7 +1,7 @@
 #ifndef DA0115C7_88CB_4774_A6A3_54764AF1BF9D
 #define DA0115C7_88CB_4774_A6A3_54764AF1BF9D
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_factored.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"

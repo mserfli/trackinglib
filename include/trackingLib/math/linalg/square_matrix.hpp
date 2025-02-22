@@ -1,7 +1,6 @@
 #ifndef ADB29DD2_C5B0_4217_8728_B612EFF95F07
 #define ADB29DD2_C5B0_4217_8728_B612EFF95F07
 
-#include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/square_matrix.h"
 
 #include "math/linalg/diagonal_matrix.hpp"    // IWYU pragma: keep

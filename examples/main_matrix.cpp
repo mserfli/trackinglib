@@ -1,4 +1,4 @@
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/matrix.h"

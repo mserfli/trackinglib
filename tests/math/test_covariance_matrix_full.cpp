@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/covariance_matrix_full.hpp"
+#include "trackingLib/math/linalg/covariance_matrix_full.hpp" // IWYU pragma: keep
 
 
 // instatiate all templates for full coverage report

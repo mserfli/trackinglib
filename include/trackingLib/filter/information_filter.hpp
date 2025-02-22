@@ -6,8 +6,7 @@
 #include "math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_full.hpp"     // IWYU pragma: keep
 #include "math/linalg/diagonal_matrix.hpp"            // IWYU pragma: keep
-#include "math/linalg/matrix.h"
-#include "math/linalg/square_matrix.hpp" // IWYU pragma: keep
+#include "math/linalg/square_matrix.hpp"              // IWYU pragma: keep
 
 #include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
 #include "math/linalg/vector.hpp"             // IWYU pragma: keep
@@ -37,7 +36,7 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
   // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric
   const auto H =
       math::SquareMatrix<FloatType_, DimX_>(math::SquareMatrix<FloatType_, DimX_>::Identity() + M * (G * Q * G.transpose()));
-  H.qrSolve(Y, M);
+  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(H.qrSolve(M))};
 }
 
 template <typename FloatType_>
@@ -60,17 +59,17 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
   FloatType_                      ci;
   math::Vector<FloatType_, DimX_> xi;
   math::Vector<FloatType_, DimX_> Gi;
-  using ColView = math::MatrixColumnView<FloatType_, DimX_, DimQ_>;
+  using ColView = math::MatrixColumnView<FloatType_, DimX_, DimQ_, false>;
   for (sint32 i = 0; i < DimQ_; ++i)
   {
     const ColView Gi{invAMulG, i};
     const auto    fullY{Y()};
     xi = fullY * Gi;
-    ci = -1 / (1 / Q[i] + Gi * xi);
+    ci = -1 / (1 / Q.at_unsafe(i) + Gi * xi);
     Y.rank1Update(ci, xi);
   }
   // propagate factorization by inverse(A)
-  Y.apaT(invA.transpose());
+  Y.apaT(math::SquareMatrix<FloatType_, DimX_, true>{invA.transpose()});
 }
 
 } // namespace filter
