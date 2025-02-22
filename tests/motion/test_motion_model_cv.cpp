@@ -1,6 +1,7 @@
 #include "gmock/gmock.h"
 
-#include "mocks/motion_model_no_ego_motion.hpp"
+#include "mocks/motion_model_no_ego_motion.hpp"   // IWYU pragma: keep
+#include "trackingLib/motion/motion_model_ca.hpp" // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
 
 

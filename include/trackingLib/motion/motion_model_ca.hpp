@@ -3,9 +3,9 @@
 
 #include "motion/motion_model_ca.h"
 
-#include "motion/state_cov_converter.hpp"
+#include "motion/generic_predict.hpp"     // IWYU pragma: keep
+#include "motion/state_cov_converter.hpp" // IWYU pragma: keep
 #include "motion/state_vec_converter.hpp"
-#include "motion/generic_predict.hpp"
 
 namespace tracking
 {
@@ -49,37 +49,37 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
 
   const FloatType sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
   const FloatType cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
-  const FloatType deltaXEgo      = egoMotion.getDisplacementCog().vec[EgoMotion::DS_X];
-  const FloatType deltaYEgo      = egoMotion.getDisplacementCog().vec[EgoMotion::DS_Y];
+  const FloatType deltaXEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotion::DS_X);
+  const FloatType deltaYEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotion::DS_Y);
   const FloatType distCog2Ego    = egoMotion.getGeometry().distCog2Ego;
 
   Go.setZeros();
-  Go(X, X)   = cosDeltaPsiEgo;
-  Go(X, Y)   = sinDeltaPsiEgo;
-  Go(Y, X)   = -sinDeltaPsiEgo;
-  Go(Y, Y)   = cosDeltaPsiEgo;
-  Go(VX, VX) = cosDeltaPsiEgo;
-  Go(VX, VY) = sinDeltaPsiEgo;
-  Go(VY, VX) = -sinDeltaPsiEgo;
-  Go(VY, VY) = cosDeltaPsiEgo;
-  Go(AX, AX) = cosDeltaPsiEgo;
-  Go(AX, AY) = sinDeltaPsiEgo;
-  Go(AY, AX) = -sinDeltaPsiEgo;
-  Go(AY, AY) = cosDeltaPsiEgo;
+  Go.at_unsafe(X, X)   = cosDeltaPsiEgo;
+  Go.at_unsafe(X, Y)   = sinDeltaPsiEgo;
+  Go.at_unsafe(Y, X)   = -sinDeltaPsiEgo;
+  Go.at_unsafe(Y, Y)   = cosDeltaPsiEgo;
+  Go.at_unsafe(VX, VX) = cosDeltaPsiEgo;
+  Go.at_unsafe(VX, VY) = sinDeltaPsiEgo;
+  Go.at_unsafe(VY, VX) = -sinDeltaPsiEgo;
+  Go.at_unsafe(VY, VY) = cosDeltaPsiEgo;
+  Go.at_unsafe(AX, AX) = cosDeltaPsiEgo;
+  Go.at_unsafe(AX, AY) = sinDeltaPsiEgo;
+  Go.at_unsafe(AY, AX) = -sinDeltaPsiEgo;
+  Go.at_unsafe(AY, AY) = cosDeltaPsiEgo;
 
   const FloatType x0 = -deltaYEgo + y;
   const FloatType x1 = deltaXEgo - distCog2Ego - x;
   Ge.setZeros();
-  Ge(X, EgoMotion::DS_X)    = -cosDeltaPsiEgo;
-  Ge(X, EgoMotion::DS_Y)    = -sinDeltaPsiEgo;
-  Ge(X, EgoMotion::DS_PSI)  = (x0 * cosDeltaPsiEgo) + (x1 * sinDeltaPsiEgo);
-  Ge(Y, EgoMotion::DS_X)    = sinDeltaPsiEgo;
-  Ge(Y, EgoMotion::DS_Y)    = cosDeltaPsiEgo;
-  Ge(Y, EgoMotion::DS_PSI)  = -(x0 * sinDeltaPsiEgo) + (x1 * cosDeltaPsiEgo);
-  Ge(VX, EgoMotion::DS_PSI) = -(vx * sinDeltaPsiEgo) + (vy * cosDeltaPsiEgo);
-  Ge(VY, EgoMotion::DS_PSI) = -(vx * cosDeltaPsiEgo) - (vy * sinDeltaPsiEgo);
-  Ge(AX, EgoMotion::DS_PSI) = -(ax * sinDeltaPsiEgo) + (ay * cosDeltaPsiEgo);
-  Ge(AY, EgoMotion::DS_PSI) = -(ax * cosDeltaPsiEgo) - (ay * sinDeltaPsiEgo);
+  Ge.at_unsafe(X, EgoMotion::DS_X)    = -cosDeltaPsiEgo;
+  Ge.at_unsafe(X, EgoMotion::DS_Y)    = -sinDeltaPsiEgo;
+  Ge.at_unsafe(X, EgoMotion::DS_PSI)  = (x0 * cosDeltaPsiEgo) + (x1 * sinDeltaPsiEgo);
+  Ge.at_unsafe(Y, EgoMotion::DS_X)    = sinDeltaPsiEgo;
+  Ge.at_unsafe(Y, EgoMotion::DS_Y)    = cosDeltaPsiEgo;
+  Ge.at_unsafe(Y, EgoMotion::DS_PSI)  = -(x0 * sinDeltaPsiEgo) + (x1 * cosDeltaPsiEgo);
+  Ge.at_unsafe(VX, EgoMotion::DS_PSI) = -(vx * sinDeltaPsiEgo) + (vy * cosDeltaPsiEgo);
+  Ge.at_unsafe(VY, EgoMotion::DS_PSI) = -(vx * cosDeltaPsiEgo) - (vy * sinDeltaPsiEgo);
+  Ge.at_unsafe(AX, EgoMotion::DS_PSI) = -(ax * sinDeltaPsiEgo) + (ay * cosDeltaPsiEgo);
+  Ge.at_unsafe(AY, EgoMotion::DS_PSI) = -(ax * cosDeltaPsiEgo) - (ay * sinDeltaPsiEgo);
 
   // translate and rotate position
   egoMotion.compensatePosition(x, y, x, y);
@@ -94,10 +94,10 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::applyProcessModel(const Flo
   const StateVec& stateVec = this->getVec();
   const auto      halfDtSq = static_cast<FloatType>(0.5) * dt * dt;
 
-  this->operator[](StateDef::X) += dt * stateVec[StateDef::VX] + halfDtSq * stateVec[StateDef::AX];
-  this->operator[](StateDef::Y) += dt * stateVec[StateDef::VY] + halfDtSq * stateVec[StateDef::AY];
-  this->operator[](StateDef::VX) += dt * stateVec[StateDef::AX];
-  this->operator[](StateDef::VY) += dt * stateVec[StateDef::AY];
+  this->operator[](StateDef::X) += dt * stateVec.at_unsafe(StateDef::VX) + halfDtSq * stateVec.at_unsafe(StateDef::AX);
+  this->operator[](StateDef::Y) += dt * stateVec.at_unsafe(StateDef::VY) + halfDtSq * stateVec.at_unsafe(StateDef::AY);
+  this->operator[](StateDef::VX) += dt * stateVec.at_unsafe(StateDef::AX);
+  this->operator[](StateDef::VY) += dt * stateVec.at_unsafe(StateDef::AY);
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
@@ -106,13 +106,13 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::computeA(StateMatrix& A, co
   const auto halfDtSq = static_cast<FloatType>(0.5) * dt * dt;
 
   A.setIdentity();
-  A(StateDef::X, StateDef::AX)  = halfDtSq;
-  A(StateDef::X, StateDef::VX)  = dt;
-  A(StateDef::VX, StateDef::AX) = dt;
+  A.at_unsafe(StateDef::X, StateDef::AX)  = halfDtSq;
+  A.at_unsafe(StateDef::X, StateDef::VX)  = dt;
+  A.at_unsafe(StateDef::VX, StateDef::AX) = dt;
 
-  A(StateDef::Y, StateDef::AY)  = halfDtSq;
-  A(StateDef::Y, StateDef::VY)  = dt;
-  A(StateDef::VY, StateDef::AY) = dt;
+  A.at_unsafe(StateDef::Y, StateDef::AY)  = halfDtSq;
+  A.at_unsafe(StateDef::Y, StateDef::VY)  = dt;
+  A.at_unsafe(StateDef::VY, StateDef::AY) = dt;
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
@@ -128,12 +128,12 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::computeG(ProcessNoiseMappin
   const FloatType halfDeltaTimePow2 = static_cast<FloatType>(0.5) * dt * dt;
 
   G.setZeros();
-  G(X, Q_AX)  = halfDeltaTimePow2;
-  G(VX, Q_AX) = dt;
-  G(AX, Q_AX) = static_cast<FloatType>(1.0);
-  G(Y, Q_AY)  = halfDeltaTimePow2;
-  G(VY, Q_AY) = dt;
-  G(AY, Q_AY) = static_cast<FloatType>(1.0);
+  G.at_unsafe(X, Q_AX)  = halfDeltaTimePow2;
+  G.at_unsafe(VX, Q_AX) = dt;
+  G.at_unsafe(AX, Q_AX) = static_cast<FloatType>(1.0);
+  G.at_unsafe(Y, Q_AY)  = halfDeltaTimePow2;
+  G.at_unsafe(VY, Q_AY) = dt;
+  G.at_unsafe(AY, Q_AY) = static_cast<FloatType>(1.0);
 }
 
 template <template <typename FloatType_, sint32 Size_> class CovarianceMatrixType, typename FloatType>

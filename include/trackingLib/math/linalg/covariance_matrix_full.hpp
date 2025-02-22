@@ -29,7 +29,9 @@ inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expe
     // symmetrize
     s.operator+=(s.transpose());
     s *= static_cast<FloatType_>(0.5);
-    return CovarianceMatrixFull{s};
+    auto inv       = CovarianceMatrixFull{s};
+    inv._isInverse = !_isInverse;
+    return inv;
   }
   return tl::unexpected<Errors>{retVal.error()};
 }

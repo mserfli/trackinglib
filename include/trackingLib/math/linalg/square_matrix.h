@@ -31,14 +31,14 @@ public:
 
   //////////////////////////////////////////////////
   // additional constructors  --->
-  /// \brief Construct a new Square Matrix< Float Type,  Size_> object
+  /// \brief Construct a new Square Matrix<FloatType_, Size_> object
   /// \param[in] other A base class object
   explicit SquareMatrix(const Matrix& other)
       : Matrix{other}
   {
   }
 
-  /// \brief Move construct a new Square Matrix< Float Type,  Size_> object
+  /// \brief Move construct a new Square Matrix<FloatType_, Size_> object
   /// \param[in] other A base class object
   explicit SquareMatrix(Matrix&& other) noexcept
       : Matrix{std::forward<Matrix>(other)}

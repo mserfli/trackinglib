@@ -105,7 +105,7 @@ public:
   void setVariance(const sint32 idx, const FloatType_ val);
 
 private:
-  static constexpr bool _isInverse{false};
+  bool _isInverse{false};
 };
 
 } // namespace math

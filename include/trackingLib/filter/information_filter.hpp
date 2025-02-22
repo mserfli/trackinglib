@@ -37,6 +37,7 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
   const auto H =
       math::SquareMatrix<FloatType_, DimX_>(math::SquareMatrix<FloatType_, DimX_>::Identity() + M * (G * Q * G.transpose()));
   Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(H.qrSolve(M))};
+  assert(Y.isInverse());
 }
 
 template <typename FloatType_>
