@@ -27,7 +27,7 @@ inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expe
     auto s = L.transpose().solve(u);
 
     // symmetrize
-    s.operator+=(s.transpose());
+    s += s.transpose();
     s *= static_cast<FloatType_>(0.5);
     auto inv       = CovarianceMatrixFull{s};
     inv._isInverse = !_isInverse;
@@ -42,12 +42,24 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
 {
   assert(this->isSymmetric() && "Covariance currently not symmetric");
   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
-  const auto paT = this->operator*(A.transpose());
-  auto       res = A.operator*(paT);
-  // symmetrize
-  res += res.transpose();
-  res *= static_cast<FloatType_>(0.5);
-  *this = CovarianceMatrixFull{res};
+  if (_isInverse)
+  {
+    const auto pa  = this->operator*(A);
+    auto       res = A.transpose().operator*(pa);
+    // symmetrize
+    res += res.transpose();
+    res *= static_cast<FloatType_>(0.5);
+    *this = CovarianceMatrixFull{res};
+  }
+  else
+  {
+    const auto paT = this->operator*(A.transpose());
+    auto       res = A.operator*(paT);
+    // symmetrize
+    res += res.transpose();
+    res *= static_cast<FloatType_>(0.5);
+    *this = CovarianceMatrixFull{res};
+  }
 }
 
 template <typename FloatType_, sint32 Size_>

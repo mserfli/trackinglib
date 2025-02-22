@@ -36,8 +36,12 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
   // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric
   const auto H =
       math::SquareMatrix<FloatType_, DimX_>(math::SquareMatrix<FloatType_, DimX_>::Identity() + M * (G * Q * G.transpose()));
-  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(H.qrSolve(M))};
-  assert(Y.isInverse());
+  auto s = H.qrSolve(M);
+  // symmetrize
+  s += s.transpose();
+  s *= static_cast<FloatType_>(0.5);
+  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(s)};
+  // assert(Y.isInverse());
 }
 
 template <typename FloatType_>

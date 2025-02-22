@@ -104,7 +104,7 @@ public:
   /// \param[in] val  The value to be set
   void setVariance(const sint32 idx, const FloatType_ val);
 
-private:
+  // private:
   bool _isInverse{false};
 };
 
