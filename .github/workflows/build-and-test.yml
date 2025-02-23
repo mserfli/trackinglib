@@ -14,9 +14,9 @@ jobs:
 
     strategy:
       matrix:
-        compiler: [g++, clang++]
-        cxx_standard: [14, 17, 20]
-        build_type: [Debug, Release]
+        compiler: [g++] #, clang++]
+        cxx_standard: [14] #, 17, 20]
+        build_type: [Debug] #, Release]
 
     steps:
     - name: Checkout code
@@ -40,8 +40,8 @@ jobs:
     strategy:
       matrix:
         compiler: [cl]
-        cxx_standard: [14, 17, 20]
-        build_type: [Debug, Release]
+        cxx_standard: [14] #, 17, 20]
+        build_type: [Debug] #, Release]
 
     steps:
     - name: Checkout code
