@@ -12,22 +12,13 @@ namespace tracking
 {
 namespace math
 {
-
 template <typename FloatType_, sint32 Size_>
+template <bool IsRowMajor_>
 void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, false, true>& u,
                                                  DiagonalMatrix<FloatType_, Size_>&                d,
-                                                 const SquareMatrix<FloatType_, Size_, true>&      Phi,
-                                                 const bool                                        transposeU)
+                                                 SquareMatrix<FloatType_, Size_, IsRowMajor_>&     PhiU)
 {
-  // M. S. Grewal and A. P. Andrews
-  // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
-  // Wiley, 2014.
-  //
-  // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
-
-  // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
-  auto PhiU = transposeU ? Phi * u.transpose() : Phi * u;
-  auto Din  = d;
+  auto Din = d;
   u.setIdentity();
   FloatType_ sigma;
   for (sint32 i = Size_ - 1; i >= 0; --i)
@@ -53,6 +44,33 @@ void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Si
         PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);
       }
     }
+  }
+}
+
+template <typename FloatType_, sint32 Size_>
+void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, false, true>& u,
+                                                 DiagonalMatrix<FloatType_, Size_>&                d,
+                                                 const SquareMatrix<FloatType_, Size_, true>&      Phi,
+                                                 const bool                                        isInverse)
+{
+  // M. S. Grewal and A. P. Andrews
+  // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
+  // Wiley, 2014.
+  //
+  // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
+  // isInverse = false: Phi*UDU'*Phi'
+  // isInverse = true: inv(Phi)'*U'DU*inv(Phi)
+
+  // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
+  if (isInverse)
+  {
+    auto PhiU = SquareMatrix<FloatType_, Size_, false>{Phi.inverse().transpose() * u.transpose()};
+    run(u, d, PhiU);
+  }
+  else
+  {
+    auto PhiU = SquareMatrix<FloatType_, Size_, true>{Phi * u};
+    run(u, d, PhiU);
   }
 }
 

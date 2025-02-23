@@ -150,14 +150,7 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::isInverse() const -> bo
 template <typename FloatType_, sint32 Size_>
 inline void CovarianceMatrixFactored<FloatType_, Size_>::apaT(const SquareMatrix<FloatType_, Size_, true>& A)
 {
-  if (_isInverse)
-  {
-    math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A, _isInverse);
-  }
-  else
-  {
-    math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A, _isInverse);
-  }
+  math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A, _isInverse);
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
@@ -196,7 +189,6 @@ inline void CovarianceMatrixFactored<FloatType_, Size_>::rank1Update(const Float
   {
     math::Rank1Update<FloatType_, Size_, true>::run(_u, _d, c, x);
   }
-
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }

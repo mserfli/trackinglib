@@ -27,6 +27,8 @@ struct TestPredictCA
   {
     cov    = cov.inverse().value();
     expCov = expCov.inverse().value();
+    assert(cov.isInverse());
+    assert(expCov.isInverse());
   }
 
   static void run()
@@ -61,7 +63,7 @@ struct TestPredictCA
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
-      // EXPECT_FLOAT_EQ(mm._vec[row], expVec[row]);
+      EXPECT_FLOAT_EQ(mm._vec.at_unsafe(row), expVec.at_unsafe(row));
       for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
       {
         EXPECT_FLOAT_EQ(mm._cov.at_unsafe(row, col), expCov.at_unsafe(row, col));

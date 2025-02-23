@@ -25,11 +25,11 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(con
 
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& P          = underlying.getCov();
-  assert(!P.isInverse() && "Covariance may not represent the inverse covariance");
+  assert(!P.isInverse() && "Covariance may not represent an inverse covariance!");
   // TODO(matthias): use static allocation like http://blackforrest-embedded.de/2019/09/26/a-templated-static-allocator/
   // apply ego motion compensation on P
-  P = typename MotionModel::StateCov(typename MotionModel::StateCov::SquareMatrix{(data.Go * P * data.Go.transpose()) +
-                                     (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose())});
+  P = typename MotionModel::StateCov(typename MotionModel::StateCov::SquareMatrix{
+      (data.Go * P * data.Go.transpose()) + (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose())});
 
   filter.predictCovariance(P, data.A, data.G, data.Q);
 }
@@ -44,7 +44,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(con
 
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& Y          = underlying.getCov();
-  assert(Y.isInverse() && "Covariance has to represent the inverse covariance");
+  assert(Y.isInverse() && "Covariance has to represent an inverse covariance!");
 #if 0    
     // TODO(matthias): ego motion compensation is quite complicated here, maybe neglect influence of Ge*Pe*Ge'
     // reconstruct P which might cause issues because P becomes extremly large
@@ -71,6 +71,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run
 
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& P          = underlying.getCov();
+  assert(!P.isInverse() && "Covariance may not represent an inverse covariance!");
 
   static auto AGo = typename MotionModel::StateMatrix{data.A * data.Go};
 
@@ -93,7 +94,8 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run
   PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
   auto& underlying = static_cast<MotionModel&>(*this);
-  auto& P          = underlying.getCov();
+  auto& Y          = underlying.getCov();
+  assert(Y.isInverse() && "Covariance has to represent an inverse covariance!");
 
   static auto AGo = typename MotionModel::StateMatrix{data.A * data.Go};
 
@@ -106,7 +108,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run
   static typename MotionModel::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
 
   // filter.predictCovariance(P, AGo, Gstar, Qstar);
-  filter.predictCovariance(P, AGo, data.G, data.Q);
+  filter.predictCovariance(Y, AGo, data.G, data.Q);
 }
 
 } // namespace generic
