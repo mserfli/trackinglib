@@ -8,7 +8,9 @@
 #include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
 #include "math/linalg/vector.hpp"            // IWYU pragma: keep
 
-namespace tracking::math
+namespace tracking
+{
+namespace math
 {
 
 template <typename ValueType_, sint32 Size_>
@@ -248,6 +250,7 @@ auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat,
   return result;
 }
 
-} // namespace tracking::math
+} // namespace math
+} // namespace tracking
 
 #endif // BA34774A_D1AA_44D4_BAD2_1845716F4E58

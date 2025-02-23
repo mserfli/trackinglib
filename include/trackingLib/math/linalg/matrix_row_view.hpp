@@ -8,7 +8,9 @@
 #include "math/linalg/vector.hpp"             // IWYU pragma: keep
 
 
-namespace tracking::math
+namespace tracking
+{
+namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
@@ -77,6 +79,7 @@ inline void MatrixRowView<ValueType_, Rows_, Cols_, IsRowMajor_>::print() const
   std::cout << "\n" << std::endl;
 }
 
-} // namespace tracking::math
+} // namespace math
+} // namespace tracking
 
 #endif // E2428903_D53A_4EC7_89B5_8C772C073887

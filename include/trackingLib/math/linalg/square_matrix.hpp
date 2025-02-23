@@ -11,7 +11,9 @@
 #include <cmath>                              // sqrt
 #include <limits>
 
-namespace tracking::math
+namespace tracking
+{
+namespace math
 {
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
@@ -265,6 +267,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::hasStrictlyPositiveDia
   return j == Size_;
 }
 
-} // namespace tracking::math
+} // namespace math
+} // namespace tracking
 
 #endif // ADB29DD2_C5B0_4217_8728_B612EFF95F07

@@ -9,7 +9,9 @@
 #include <limits>
 #include <type_traits>
 
-namespace tracking::math
+namespace tracking
+{
+namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
@@ -396,5 +398,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_mul_by_invers
   this->operator*=(factor);
 }
 
-} // namespace tracking::math
+} // namespace math
+} // namespace tracking
+
 #endif // E4BF6CCD_1BFD_497E_A5CD_75BCD8DD1ED3

@@ -6,7 +6,9 @@
 #include "math/linalg/matrix.hpp" // IWYU pragma: keep
 #include "math/linalg/vector.hpp" // IWYU pragma: keep
 
-namespace tracking::math
+namespace tracking
+{
+namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
@@ -88,6 +90,7 @@ inline auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&      
   return result;
 }
 
-} // namespace tracking::math
+} // namespace math
+} // namespace tracking
 
 #endif // DAD67FEF_0E47_455C_AC3E_CE31BDC7EE3F
