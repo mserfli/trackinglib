@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
-
-#include "trackingLib/math/linalg/matrix_column_view.hpp"
-#include "trackingLib/math/linalg/vector.hpp"
+#include "trackingLib/math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
 
 TEST(MatrixColumnView, mul_lhs) // NOLINT
 {

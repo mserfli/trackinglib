@@ -3,7 +3,10 @@
 
 #include "math/linalg/matrix_row_view.h"
 
-#include "math/linalg/matrix_column_view.hpp"
+#include "math/linalg/matrix.hpp"             // IWYU pragma: keep
+#include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
+#include "math/linalg/vector.hpp"             // IWYU pragma: keep
+
 
 namespace tracking::math
 {

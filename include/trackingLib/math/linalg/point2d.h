@@ -2,7 +2,7 @@
 #define FFCF1757_A52C_4BEF_BFD6_2475D08B37C6
 
 #include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/vector.h"
+#include "math/linalg/vector.h" // IWYU pragma: keep
 
 namespace tracking
 {

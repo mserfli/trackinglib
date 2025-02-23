@@ -2,15 +2,24 @@
 #define EAB4F7E8_4154_4054_AA4E_CFE8C4C007EA
 
 #include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/diagonal_matrix.h"
-#include "math/linalg/matrix.h"
-#include "math/linalg/square_matrix.h"
-#include "math/linalg/triangular_matrix.h"
 
 namespace tracking
 {
 namespace math
 {
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+class Matrix; // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+class SquareMatrix; // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+class TriangularMatrix; // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_>
+class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
+
 
 template <typename FloatType_, sint32 Size_>
 class ModifiedGramSchmidt

@@ -54,7 +54,7 @@ public:
   /// \brief Construct a new Covariance Matrix Full<FloatType_, Size_> object from a transposed SquareMatrix
   /// \param[in] other A transposed base class object
   /// \param[in] isInverse Boolean indicating if the matrix is an inverse covariance matrix
-  explicit CovarianceMatrixFull(const SquareMatrix::transpose_type& other, bool isInverse = false)
+  explicit CovarianceMatrixFull(const typename SquareMatrix::transpose_type& other, bool isInverse = false)
       : SquareMatrix{other.transpose()}
       , _isInverse{isInverse}
   {
@@ -64,7 +64,7 @@ public:
   /// \brief Move construct a new Covariance Matrix Full<FloatType_, Size_> object from a transposed SquareMatrix
   /// \param[in] other A transposed base class object
   /// \param[in] isInverse Boolean indicating if the matrix is an inverse covariance matrix
-  explicit CovarianceMatrixFull(SquareMatrix::transpose_type&& other, bool isInverse = false) noexcept
+  explicit CovarianceMatrixFull(typename SquareMatrix::transpose_type&& other, bool isInverse = false) noexcept
       : SquareMatrix{std::move(other).transpose_rvalue()}
       , _isInverse{isInverse}
   {

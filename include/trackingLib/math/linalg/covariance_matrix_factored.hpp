@@ -3,15 +3,15 @@
 
 #include "math/linalg/covariance_matrix_factored.h"
 
-#include "math/linalg/covariance_matrix_full.h"
-#include "math/linalg/diagonal_matrix.hpp" // IWYU pragma: keep
-#include "math/linalg/matrix.h"
-#include "math/linalg/matrix_column_view.h"
-#include "math/linalg/matrix_row_view.h"
-#include "math/linalg/modified_gram_schmidt.hpp" // IWYU pragma: keep
-#include "math/linalg/rank1_update.hpp"          // IWYU pragma: keep
-#include "math/linalg/square_matrix.hpp"         // IWYU pragma: keep
-#include "math/linalg/triangular_matrix.hpp"     // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_full.hpp" // IWYU pragma: keep
+#include "math/linalg/diagonal_matrix.hpp"        // IWYU pragma: keep
+#include "math/linalg/matrix.hpp"                 // IWYU pragma: keep
+#include "math/linalg/matrix_column_view.hpp"     // IWYU pragma: keep
+#include "math/linalg/matrix_row_view.hpp"        // IWYU pragma: keep
+#include "math/linalg/modified_gram_schmidt.hpp"  // IWYU pragma: keep
+#include "math/linalg/rank1_update.hpp"           // IWYU pragma: keep
+#include "math/linalg/square_matrix.hpp"          // IWYU pragma: keep
+#include "math/linalg/triangular_matrix.hpp"      // IWYU pragma: keep
 
 namespace tracking
 {

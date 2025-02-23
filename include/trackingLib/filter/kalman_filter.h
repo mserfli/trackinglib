@@ -5,6 +5,7 @@
 #include "math/linalg/covariance_matrix_factored.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/square_matrix.h"
 
 namespace tracking
 {

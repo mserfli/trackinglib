@@ -6,9 +6,9 @@ project(trackingLib
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 
-# if(NOT CMAKE_BUILD_TYPE)
-set(CMAKE_BUILD_TYPE Debug)
-# endif()
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,13 +28,13 @@ FetchContent_Declare (
     GIT_PROGRESS TRUE 
 )
 
-# FetchContent_Declare (
-#     Eigen
-#     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-#     GIT_TAG 3.4
-#     GIT_SHALLOW TRUE
-#     GIT_PROGRESS TRUE 
-# )
+FetchContent_Declare (
+    Eigen
+    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+    GIT_TAG 3.4
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE 
+)
 
 FetchContent_Declare (
     pybind11
@@ -52,15 +52,15 @@ FetchContent_Declare (
     GIT_PROGRESS TRUE 
 )
 
-# option(EIGEN_BUILD_DOC OFF)
-# option(EIGEN_BUILD_PKGCONFIG OFF)
+option(EIGEN_BUILD_DOC OFF)
+option(EIGEN_BUILD_PKGCONFIG OFF)
 option(BUILD_TESTING OFF)
 option(EXPECTED_ENABLE_TESTS OFF)
 option(PYBIND11_TEST OFF)
 
 FetchContent_MakeAvailable (
     googletest
-#    Eigen
+    Eigen
     pybind11
     expected
 )
@@ -93,12 +93,19 @@ target_include_directories(
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_14)
 
-# target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen expected)
-target_link_libraries(${PROJECT_NAME} INTERFACE expected)
+target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen expected)
 
-# add_subdirectory(examples)
+add_subdirectory(examples)
 # add_subdirectory(python)
 add_subdirectory(tests)
+
+# Export Eigen target
+install(
+    EXPORT Eigen3Targets
+    FILE Eigen3Targets.cmake
+    NAMESPACE Eigen3::
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/eigen3/cmake
+)
 
 # locations are provided by GNUInstallDirs
 install(

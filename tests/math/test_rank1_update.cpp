@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
-#include "math/linalg/vector.h"
-#include "trackingLib/math/linalg/rank1_update.hpp"
+#include "trackingLib/math/linalg/rank1_update.hpp" // IWYU pragma: keep
 
 using UpperTriangularMatrix = tracking::math::TriangularMatrix<float64, 4, false, true>;
 using LowerTriangularMatrix = tracking::math::TriangularMatrix<float64, 4, true, true>;

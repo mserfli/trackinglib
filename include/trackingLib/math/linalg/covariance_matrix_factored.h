@@ -1,20 +1,32 @@
 #ifndef F9044FD7_A3A8_43F4_BDD6_F43011384722
 #define F9044FD7_A3A8_43F4_BDD6_F43011384722
 
-#include "base/first_include.h" // IWYU pragma: keep
-#include "base/atomic_types.h"
+#include "base/first_include.h"                           // IWYU pragma: keep
 #include "math/linalg/contracts/covariance_matrix_intf.h" // IWYU pragma: keep
-#include "math/linalg/covariance_matrix_full.h"
-#include "math/linalg/diagonal_matrix.h"
-#include "math/linalg/matrix.h"
-#include "math/linalg/square_matrix.h"
-#include "math/linalg/triangular_matrix.h"
-#include "math/linalg/vector.h"
 
 namespace tracking
 {
 namespace math
 {
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+class Matrix; // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_>
+class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+class SquareMatrix; // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+class TriangularMatrix; // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_>
+class Vector; // LCOV_EXCL_LINE
+
+template <typename FloatType_, sint32 Size_>
+class CovarianceMatrixFull; // LCOV_EXCL_LINE
+
 // TODO(matthias): add contract for apaT functions, fill, ...
 template <typename FloatType_, sint32 Size_>
 class CovarianceMatrixFactored //: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType_, Size_>>

@@ -4,7 +4,6 @@
 #include "math/linalg/covariance_matrix_full.h"
 
 #include "math/linalg/errors.h"
-#include "math/linalg/square_matrix.h"
 #include "math/linalg/square_matrix.hpp"     // IWYU pragma: keep
 #include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
 

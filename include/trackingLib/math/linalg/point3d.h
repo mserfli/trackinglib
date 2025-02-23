@@ -2,7 +2,7 @@
 #define D190DD96_01E1_4A50_8090_B1337EB3B42E
 
 #include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/vector.h"
+#include "math/linalg/vector.h" // IWYU pragma: keep
 
 namespace tracking
 {

@@ -2,9 +2,9 @@
 #define BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08
 
 #include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/errors.h"
-#include "math/linalg/matrix.h"
-#include <utility>
+#include "math/linalg/errors.h" // IWYU pragma: keep
+#include "math/linalg/matrix.h" // IWYU pragma: keep
+#include <utility>              // std::pair
 
 namespace tracking
 {
@@ -17,7 +17,7 @@ class TriangularMatrix; // LCOV_EXCL_LINE
 
 // forward declaration to prevent cyclic includes
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix;
+class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
 
 // TODO(matthias): add interface contract
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_ = true>
@@ -47,14 +47,14 @@ public:
 
   /// \brief Construct a new Square Matrix<FloatType_, Size from transposed base class object
   /// \param[in] other A transposed base class object
-  explicit SquareMatrix(const Matrix::transpose_type& other)
+  explicit SquareMatrix(const typename Matrix::transpose_type& other)
       : Matrix{other.transpose()}
   {
   }
 
   /// \brief Move construct a new Square Matrix<FloatType_, Size from transposed base class object
   /// \param[in] other A transposed base class object
-  explicit SquareMatrix(Matrix::transpose_type&& other) noexcept
+  explicit SquareMatrix(typename Matrix::transpose_type&& other) noexcept
       : Matrix{std::move(other.transpose())}
   {
   }

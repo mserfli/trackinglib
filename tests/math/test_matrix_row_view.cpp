@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
-
-#include "trackingLib/math/linalg/matrix_row_view.hpp"
-#include "trackingLib/math/linalg/vector.hpp"
+#include "trackingLib/math/linalg/matrix_row_view.hpp" // IWYU pragma: keep
 
 TEST(MatrixRowView, mul_rhs) // NOLINT
 {
@@ -96,5 +94,5 @@ TEST(MatrixRowView, dot_colView) // NOLINT
   // call UUT
   auto res = rowView * colView;
 
-  EXPECT_EQ(res, resExp.at_unsafe(0,0));
+  EXPECT_EQ(res, resExp.at_unsafe(0, 0));
 }

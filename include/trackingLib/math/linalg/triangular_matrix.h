@@ -1,9 +1,8 @@
 #ifndef BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 #define BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 
-#include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/square_matrix.h"
-#include <initializer_list>
+#include "base/first_include.h"        // IWYU pragma: keep
+#include "math/linalg/square_matrix.h" // IWYU pragma: keep
 
 namespace tracking
 {
@@ -14,7 +13,7 @@ template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 class Matrix; // LCOV_EXCL_LINE
 
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix; // LCOV_EXCL_LINE
+class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
 
 // TODO(matthias): add interface contract
 // TODO(matthias): use own memory optimized to required number of elements

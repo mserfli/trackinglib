@@ -6,14 +6,10 @@
 #include "math/linalg/diagonal_matrix.hpp"    // IWYU pragma: keep
 #include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
 #include "math/linalg/matrix_row_view.hpp"    // IWYU pragma: keep
-// #include "math/linalg/matrix_view.hpp"
-#include "math/linalg/triangular_matrix.h"
-#include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
-#include "math/linalg/vector.h"
-#include "math/linalg/vector.hpp" // IWYU pragma: keep
-#include <cmath>
+#include "math/linalg/triangular_matrix.hpp"  // IWYU pragma: keep
+#include "math/linalg/vector.hpp"             // IWYU pragma: keep
+#include <cmath>                              // sqrt
 #include <limits>
-#include <utility>
 
 namespace tracking::math
 {

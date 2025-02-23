@@ -3,11 +3,11 @@
 
 #include "filter/kalman_filter.h"
 
-#include "math/linalg/covariance_matrix_factored.hpp"
-#include "math/linalg/covariance_matrix_full.hpp"
-#include "math/linalg/diagonal_matrix.hpp"
-#include "math/linalg/matrix.h"
-#include "math/linalg/square_matrix.hpp"
+#include "math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_full.hpp"     // IWYU pragma: keep
+#include "math/linalg/diagonal_matrix.hpp"            // IWYU pragma: keep
+#include "math/linalg/matrix.hpp"                     // IWYU pragma: keep
+#include "math/linalg/square_matrix.hpp"              // IWYU pragma: keep
 
 namespace tracking
 {

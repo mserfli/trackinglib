@@ -2,8 +2,8 @@
 #define A45AF6CD_F19E_48A5_92B4_D7A86498C01A
 
 #include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/matrix.h"
-#include "math/linalg/vector.h"
+#include "math/linalg/matrix.h" // IWYU pragma: keep
+#include "math/linalg/vector.h" // IWYU pragma: keep
 
 namespace tracking
 {
@@ -11,7 +11,7 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class MatrixColumnView;
+class MatrixColumnView TEST_REMOVE_FINAL;
 
 /// \brief A row view on a Matrix object providing arithmetic operations
 /// \tparam ValueType_

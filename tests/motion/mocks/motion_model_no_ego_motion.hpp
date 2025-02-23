@@ -3,7 +3,6 @@
 
 #include "gmock/gmock.h"
 #include "trackingLib/env/ego_motion.h"
-#include "trackingLib/math/linalg/square_matrix.hpp"
 
 namespace test
 {

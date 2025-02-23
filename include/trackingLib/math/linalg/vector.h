@@ -2,9 +2,7 @@
 #define CE10BDD8_6874_4771_89BA_D153438C3E01
 
 #include "base/first_include.h" // IWYU pragma: keep
-#include "base/test_config.h"   // IWYU pragma: keep
-#include "base/atomic_types.h"
-#include "math/linalg/matrix.h"
+#include "math/linalg/matrix.h" // IWYU pragma: keep
 
 namespace tracking
 {
@@ -12,7 +10,7 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class MatrixColumnView;
+class MatrixColumnView TEST_REMOVE_FINAL;
 
 // TODO(matthias): add interface contract
 template <typename ValueType_, sint32 Size_>

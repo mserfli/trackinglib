@@ -3,6 +3,8 @@
 
 #include "math/linalg/diagonal_matrix.h"
 
+#include "math/linalg/matrix.hpp"            // IWYU pragma: keep
+#include "math/linalg/square_matrix.hpp"     // IWYU pragma: keep
 #include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
 #include "math/linalg/vector.hpp"            // IWYU pragma: keep
 

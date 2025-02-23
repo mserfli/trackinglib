@@ -1,12 +1,15 @@
 #ifndef FE49A15E_40AF_485A_A47C_F00025FCB4E2
 #define FE49A15E_40AF_485A_A47C_F00025FCB4E2
 
-#include "base/atomic_types.h"
-#include "math/linalg/matrix.hpp"
 #include "math/linalg/vector.h"
-#include <cmath>
 
-namespace tracking::math
+#include "math/linalg/matrix.hpp"             // IWYU pragma: keep
+#include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
+#include <cmath>                              // for sqrt
+
+namespace tracking
+{
+namespace math
 {
 
 template <typename ValueType_, sint32 Size_>
@@ -105,7 +108,7 @@ template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
 inline void Vector<ValueType_, Size_>::normalize()
 {
   const auto length = norm();
-  this->     operator/=(length);
+  this->operator/=(length);
 }
 
 template <typename ValueType_, sint32 Size_>
@@ -117,6 +120,7 @@ inline auto Vector<ValueType_, Size_>::normalize() const -> Vector
   return tmp;
 }
 
-} // namespace tracking::math
+} // namespace math
+} // namespace tracking
 
 #endif // FE49A15E_40AF_485A_A47C_F00025FCB4E2

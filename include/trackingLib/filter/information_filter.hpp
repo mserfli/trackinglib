@@ -6,10 +6,9 @@
 #include "math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_full.hpp"     // IWYU pragma: keep
 #include "math/linalg/diagonal_matrix.hpp"            // IWYU pragma: keep
+#include "math/linalg/matrix_column_view.hpp"         // IWYU pragma: keep
 #include "math/linalg/square_matrix.hpp"              // IWYU pragma: keep
-
-#include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
-#include "math/linalg/vector.hpp"             // IWYU pragma: keep
+#include "math/linalg/vector.hpp"                     // IWYU pragma: keep
 
 
 namespace tracking
@@ -41,7 +40,7 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
   s += s.transpose();
   s *= static_cast<FloatType_>(0.5);
   Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(s)};
-  // assert(Y.isInverse());
+  assert(Y.isInverse());
 }
 
 template <typename FloatType_>
@@ -75,6 +74,7 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
   }
   // propagate factorization by inverse(A)
   Y.apaT(math::SquareMatrix<FloatType_, DimX_, true>{invA.transpose()});
+  assert(Y.isInverse());
 }
 
 } // namespace filter

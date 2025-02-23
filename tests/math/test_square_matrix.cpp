@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
-
-#include "trackingLib/math/linalg/square_matrix.hpp"
-
+#include "trackingLib/math/linalg/square_matrix.hpp" // IWYU pragma: keep
 
 TEST(SquareMatrix, householderQR) // NOLINT
 {
@@ -56,7 +54,7 @@ TEST(SquareMatrix, inverse) // NOLINT
     {
       EXPECT_NEAR(inv.at_unsafe(row, col), expInvMat.at_unsafe(row, col), 7e-5);
     }
-  } 
+  }
 }
 
 TEST(SquareMatrix, decomposeLLT) // NOLINT
@@ -83,7 +81,7 @@ TEST(SquareMatrix, decomposeLLT) // NOLINT
   {
     for (auto col = 0; col < 6; col++)
     {
-      EXPECT_FLOAT_EQ(cov.at_unsafe(row,col), recomposed.at_unsafe(row,col));
+      EXPECT_FLOAT_EQ(cov.at_unsafe(row, col), recomposed.at_unsafe(row, col));
     }
   }
 }
@@ -135,13 +133,13 @@ TEST(SquareMatrix, decomposeLDLT) // NOLINT
   auto retVal = cov.decomposeLDLT();
 
   EXPECT_TRUE(retVal.has_value());
-  const auto [L, D] = retVal.value();
+  const auto [L, D]     = retVal.value();
   const auto recomposed = (L * D) * L.transpose();
   for (auto row = 0; row < 6; row++)
   {
     for (auto col = 0; col < 6; col++)
     {
-      EXPECT_FLOAT_EQ(cov.at_unsafe(row,col), recomposed.at_unsafe(row,col));
+      EXPECT_FLOAT_EQ(cov.at_unsafe(row, col), recomposed.at_unsafe(row, col));
     }
   }
 }

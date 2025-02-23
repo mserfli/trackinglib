@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
-#include "math/linalg/matrix.h"
-#include "trackingLib/math/linalg/diagonal_matrix.hpp"
-#include "trackingLib/math/linalg/triangular_matrix.hpp"
+#include "trackingLib/math/linalg/diagonal_matrix.hpp" // IWYU pragma: keep
 #include <limits>
 
 TEST(DiagonalMatrix, ctor_default) // NOLINT

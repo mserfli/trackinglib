@@ -7,7 +7,6 @@
 #include "math/linalg/matrix_types.h" // IWYU pragma: keep
 #include <algorithm>
 #include <array>
-#include <initializer_list>
 #include <tuple>
 #include <type_traits>
 
@@ -15,10 +14,6 @@ namespace tracking
 {
 namespace math
 {
-
-// forward declaration to prevent cyclic includes
-template <typename ValueType, sint32 Size, bool isLower, bool IsRowMajor_>
-class TriangularMatrix;
 
 // TODO(matthias): add support for external memory
 // TODO(matthias): add template params to support coord transformations (inFrame e.g. EGO_k_1, outFrame, power -> 2 for covs)

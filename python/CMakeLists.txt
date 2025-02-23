@@ -12,7 +12,7 @@ pybind11_add_module(${PY_MODULE_NAME} main.cpp)
 # define (VERSION_INFO) here.
 target_compile_definitions(${PY_MODULE_NAME} PRIVATE VERSION_INFO=${MODULE_VERSION_INFO})
 
-target_compile_features(${PY_MODULE_NAME} PRIVATE cxx_std_20)
+target_compile_features(${PY_MODULE_NAME} PRIVATE cxx_std_14)
 
 target_include_directories(
   ${PY_MODULE_NAME}

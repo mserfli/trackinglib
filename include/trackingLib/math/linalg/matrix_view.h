@@ -11,13 +11,12 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class MatrixColumnView;
+class MatrixColumnView TEST_REMOVE_FINAL;
 
 template <typename FloatType, sint32 Rows, sint32 Cols, bool ExtMem = true>
 class MatrixView TEST_REMOVE_FINAL
 {
 };
-
 
 /// \brief A sub matrix view on a Matrix object providing arithmetic operations
 /// \tparam FloatType

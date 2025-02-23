@@ -4,11 +4,10 @@
 #include "math/linalg/rank1_update.h"
 
 #include "math/analysis/functions.h"
-#include "math/linalg/diagonal_matrix.hpp"
-#include "math/linalg/square_matrix.hpp"
-#include "math/linalg/triangular_matrix.hpp"
+#include "math/linalg/diagonal_matrix.hpp"   // IWYU pragma: keep
+#include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
+#include "math/linalg/vector.hpp"            // IWYU pragma: keep
 #include <limits>
-#include <type_traits>
 
 namespace tracking
 {

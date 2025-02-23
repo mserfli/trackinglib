@@ -3,7 +3,6 @@
 
 #include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/errors.h"
-#include <initializer_list>
 
 namespace tracking
 {

@@ -2,14 +2,20 @@
 #define E23E9AC4_E199_4264_B0DB_0DE4B42F3447
 
 #include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/diagonal_matrix.h"
-#include "math/linalg/triangular_matrix.h"
-#include "math/linalg/vector.h"
 
 namespace tracking
 {
 namespace math
 {
+
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+class TriangularMatrix; // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_>
+class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_>
+class Vector; // LCOV_EXCL_LINE
 
 template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
 class Rank1Update

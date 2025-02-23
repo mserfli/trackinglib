@@ -3,9 +3,9 @@
 
 #include "math/linalg/triangular_matrix.h"
 
-#include "math/linalg/diagonal_matrix.h"
-#include "math/linalg/matrix.h"
-#include "math/linalg/square_matrix.h"
+#include "math/linalg/diagonal_matrix.hpp" // IWYU pragma: keep
+#include "math/linalg/matrix.hpp"          // IWYU pragma: keep
+#include "math/linalg/square_matrix.hpp"   // IWYU pragma: keep
 
 namespace tracking
 {

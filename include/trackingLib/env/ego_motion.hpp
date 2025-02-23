@@ -3,6 +3,9 @@
 
 #include "env/ego_motion.h"
 
+#include "math/linalg/covariance_matrix_full.hpp" // IWYU pragma: keep
+#include "math/linalg/vector.hpp"                 // IWYU pragma: keep
+
 namespace tracking
 {
 namespace env

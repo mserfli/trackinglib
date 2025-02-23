@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/matrix.hpp"
-#include <type_traits>
+#include "trackingLib/math/linalg/matrix.hpp" // IWYU pragma: keep
 
 #define TEST_MATRIX_WITH_VISUAL_INSPECTION(X) // X.print()
 
