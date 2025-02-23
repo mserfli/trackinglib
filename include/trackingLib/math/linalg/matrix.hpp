@@ -145,8 +145,9 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator==(
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matrix& other)
 {
-  const auto& otherData = other.data();
-  for (sint32 idx = 0; idx < data().size(); ++idx)
+  const auto&  otherData = other.data();
+  const sint32 size      = data().size();
+  for (sint32 idx = 0; idx < size; ++idx)
   {
     data()[idx] += otherData[idx];
   }
@@ -181,8 +182,9 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matr
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-=(const Matrix& other)
 {
-  const auto& otherData = other.data();
-  for (sint32 idx = 0; idx < data().size(); ++idx)
+  const auto&  otherData = other.data();
+  const sint32 size      = data().size();
+  for (sint32 idx = 0; idx < size; ++idx)
   {
     data()[idx] -= otherData[idx];
   }

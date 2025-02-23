@@ -140,9 +140,9 @@ TEST_P(CovarianceMatrixFactoredWithParams, calcCovarianceElement) // NOLINT
   EXPECT_EQ(res, _covFull(row, col));
 }
 
-INSTANTIATE_TEST_CASE_P(CovarianceMatrixFactored,
-                        CovarianceMatrixFactoredWithParams,
-                        ::testing::Combine(::testing::Values(false, true), ::testing::Range(0, 3), ::testing::Range(0, 3)));
+INSTANTIATE_TEST_SUITE_P(CovarianceMatrixFactored,
+                         CovarianceMatrixFactoredWithParams,
+                         ::testing::Combine(::testing::Values(false, true), ::testing::Range(0, 3), ::testing::Range(0, 3)));
 
 TEST(CovarianceMatrixFactored, apaT) // NOLINT
 {

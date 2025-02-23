@@ -17,7 +17,7 @@ struct TestPredictCV
 {
   using MM = tracking::motion::MotionModelCV<CovarianceMatrixType, FloatType>;
 
-  static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const tracking::filter::KalmanFilter<FloatType>&)
+  static void init(typename MM::StateCov&, typename MM::StateCov&, const tracking::filter::KalmanFilter<FloatType>&)
   {
     // no change required
   }
@@ -37,9 +37,9 @@ struct TestPredictCV
     tracking::env::EgoMotion<FloatType> egoMotion{};
     FilterType<FloatType>               filter{};
 
-    auto vec    = MM::StateVec::FromList({{10}, {2}, {0}, {0}});
+    auto vec    = MM::StateVec::FromList({10, 2, 0, 0});
     auto cov    = MM::StateCov::FromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-    auto expVec = MM::StateVec::FromList({{12}, {2}, {0}, {0}});
+    auto expVec = MM::StateVec::FromList({12, 2, 0, 0});
     auto expCov = MM::StateCov::FromList({{8.5, 6, 0, 0}, {6, 11, 0, 0}, {0, 0, 3.6, 5.1}, {0, 0, 5.1, 10.1}});
     init(cov, expCov, filter);
 
@@ -87,7 +87,7 @@ TEST(MotionModelCV, convertCA_fullCov) // NOLINT
   // clang-format off
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFull, float32>;
-  auto vec = MMCA::StateVec::FromList({{10}, {2}, {0}, {0}, {2}, {0.1}});
+  auto vec = MMCA::StateVec::FromList({10, 2, 0, 0, 2, 0.1});
   auto cov = MMCA::StateCov::FromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
@@ -133,7 +133,7 @@ TEST(MotionModelCV, convertCA_facCov) // NOLINT
   // clang-format off
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFactored, float32>;
-  auto vec = MMCA::StateVec::FromList({{10}, {2}, {0}, {0}, {2}, {0.1}});
+  auto vec = MMCA::StateVec::FromList({10, 2, 0, 0, 2, 0.1});
   auto cov = MMCA::StateCov::FromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},

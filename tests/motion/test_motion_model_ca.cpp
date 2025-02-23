@@ -16,7 +16,7 @@ struct TestPredictCA
 {
   using MM = tracking::motion::MotionModelCA<CovarianceMatrixType, FloatType>;
 
-  static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const tracking::filter::KalmanFilter<FloatType>&)
+  static void init(typename MM::StateCov&, typename MM::StateCov&, const tracking::filter::KalmanFilter<FloatType>&)
   {
     // no change required
   }
@@ -36,7 +36,7 @@ struct TestPredictCA
     tracking::env::EgoMotion<FloatType> egoMotion{};
     FilterType<FloatType>               filter{};
 
-    auto vec = MM::StateVec::FromList({{10}, {2}, {2}, {0}, {0}, {0.1}});
+    auto vec = MM::StateVec::FromList({10, 2, 2, 0, 0, 0.1});
     auto cov = MM::StateCov::FromList({{5, 0, 0, 0, 0, 0},
                                        {0, 1, 0, 0, 0, 0},
                                        {0, 0, 1, 0, 0, 0},
@@ -44,7 +44,7 @@ struct TestPredictCA
                                        {0, 0, 0, 0, 0.1, 0},
                                        {0, 0, 0, 0, 0, 1}});
 
-    auto expVec = MM::StateVec::FromList({{13}, {4}, {2}, {0.05}, {0.1}, {0.1}});
+    auto expVec = MM::StateVec::FromList({13, 4, 2, 0.05, 0.1, 0.1});
     auto expCov = MM::StateCov::FromList({{31.25, 51.5, 50.5, 0, 0, 0},
                                           {51.5, 102, 101, 0, 0, 0},
                                           {50.5, 101, 101, 0, 0, 0},
@@ -97,7 +97,7 @@ TEST(MotionModelCA, convertCV_fullCov) // NOLINT
   // clang-format off
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFull, float32>;
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
-  auto vec = MMCV::StateVec::FromList({{10}, {2}, {0}, {2}});
+  auto vec = MMCV::StateVec::FromList({10, 2, 0, 2});
   auto cov = MMCV::StateCov::FromList({
     {10.9911,   -3.3077,    5.0849,   -0.4707},
     {-3.3077,   13.7164,   -1.1132,    0.3277},
@@ -161,7 +161,7 @@ TEST(MotionModelCA, convertCV_facCov) // NOLINT
   // clang-format off
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFactored, float32>;
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
-  auto vec = MMCV::StateVec::FromList({{10}, {2}, {0}, {2}});
+  auto vec = MMCV::StateVec::FromList({10, 2, 0, 2});
   auto cov = MMCV::StateCov::FromList({
     {10.9911,   -3.3077,    5.0849,   -0.4707},
     {-3.3077,   13.7164,   -1.1132,    0.3277},

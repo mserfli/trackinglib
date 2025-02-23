@@ -57,8 +57,9 @@ public:
   using EgoMotion              = env::EgoMotion<FloatType>;
   using EgoMotionMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, EgoMotion::DS_NUM_VARIABLES>;
 
-  static constexpr sint32 NUM_AUG_PROC_NOISE_VARIABLES = NUM_PROC_NOISE_VARIABLES + EgoMotion::DS_NUM_VARIABLES;
-  using AugmentedProcessNoiseDiagMatrix                = math::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
+  static constexpr sint32 NUM_AUG_PROC_NOISE_VARIABLES =
+      NUM_PROC_NOISE_VARIABLES + static_cast<sint32>(EgoMotion::DS_NUM_VARIABLES);
+  using AugmentedProcessNoiseDiagMatrix    = math::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
   using AugmentedProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
 
   // rule of 5 declarations

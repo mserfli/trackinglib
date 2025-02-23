@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "base/atomic_types.h"
 #include "trackingLib/math/linalg/matrix.hpp" // IWYU pragma: keep
 
 #define TEST_MATRIX_WITH_VISUAL_INSPECTION(X) // X.print()
@@ -105,7 +106,8 @@ protected:
     // call UUT
     res = 2 * mat;
 
-    for (auto idx = 0; idx < _testIntMat._data.size(); ++idx)
+    const sint32 size = _testIntMat._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(res._data[idx], 2 * _testIntMat._data[idx]);
     }
@@ -118,7 +120,8 @@ protected:
     // call UUT
     mat /= 2;
 
-    for (auto idx = 0; idx < _testIntMat._data.size(); ++idx)
+    const sint32 size = _testIntMat._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(mat._data[idx], _testIntMat._data[idx] / 2);
     }
@@ -131,7 +134,8 @@ protected:
     // call UUT
     mat /= 2.0F;
 
-    for (auto idx = 0; idx < _testFloatMat._data.size(); ++idx)
+    const sint32 size = _testFloatMat._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(mat._data[idx], _testFloatMat._data[idx] / 2.0F);
     }
@@ -153,7 +157,8 @@ protected:
     // call UUT
     auto res = mat / 2;
 
-    for (auto idx = 0; idx < _testIntMat._data.size(); ++idx)
+    const sint32 size = _testIntMat._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(res.value()._data[idx], _testIntMat._data[idx] / 2);
     }
@@ -175,7 +180,8 @@ protected:
     // call UUT
     auto res = mat / 2.0F;
 
-    for (auto idx = 0; idx < _testFloatMat._data.size(); ++idx)
+    const sint32 size = _testFloatMat._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(res.value()._data[idx], _testFloatMat._data[idx] / 2.0F);
     }
@@ -258,7 +264,8 @@ void GTestMatrix<MatrixStorageType>::test_op_plus_Success()
     // call UUT
     auto res = mat + other;
 
-    for (auto idx = 0; idx < res._data.size(); ++idx)
+    const sint32 size = res._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(res._data[idx], 2 * _testIntMat._data[idx]);
     }
@@ -271,7 +278,8 @@ void GTestMatrix<MatrixStorageType>::test_op_plus_Success()
     // call UUT
     auto res = mat + other;
 
-    for (auto idx = 0; idx < res._data.size(); ++idx)
+    const sint32 size = res._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(res._data[idx], 2 * _testIntMat._data[idx]);
     }
@@ -290,7 +298,8 @@ void GTestMatrix<MatrixStorageType>::test_op_plus_inplace_Success()
     // call UUT
     mat += other;
 
-    for (auto idx = 0; idx < _testIntMat._data.size(); ++idx)
+    const sint32 size = _testIntMat._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(mat._data[idx], 2 * _testIntMat._data[idx]);
     }
@@ -303,7 +312,8 @@ void GTestMatrix<MatrixStorageType>::test_op_plus_inplace_Success()
     // call UUT
     mat += other;
 
-    for (auto idx = 0; idx < _testIntMat._data.size(); ++idx)
+    const sint32 size = _testIntMat._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(mat._data[idx], 2 * _testIntMat._data[idx]);
     }
@@ -379,7 +389,8 @@ void GTestMatrix<MatrixStorageType>::test_op_minus_Success()
     // call UUT
     auto res = mat - other;
 
-    for (auto idx = 0; idx < res._data.size(); ++idx)
+    const sint32 size = res._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(res._data[idx], 0);
     }
@@ -392,7 +403,8 @@ void GTestMatrix<MatrixStorageType>::test_op_minus_Success()
     // call UUT
     auto res = mat - other;
 
-    for (auto idx = 0; idx < res._data.size(); ++idx)
+    const sint32 size = res._data.size();
+    for (auto idx = 0; idx < size; ++idx)
     {
       EXPECT_EQ(res._data[idx], 0);
     }

@@ -24,7 +24,7 @@ struct helper<T, 1>
 template <class T>
 struct helper<T, 0>
 {
-  static constexpr T pow(const T x) { return 1; }
+  static constexpr T pow(const T) { return 1; }
 };
 } // namespace detail
 
