@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.24)
 
 project(trackingLib 
-        VERSION 0.1.0
+        VERSION 0.2.0
 )
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
-endif()
-
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
 
 set(CMAKE_CXX_FLAGS "-w")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
@@ -90,8 +90,6 @@ target_include_directories(
     INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}>
            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
-
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_14)
 
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen expected)
 

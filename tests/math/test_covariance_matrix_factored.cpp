@@ -220,7 +220,7 @@ TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
   }
 }
 
-#if 0 // TODO fix this if required
+#if 0 // TODO fix this if required, apaT with inverse is used in MMCV and MMCA tests with success
 TEST(CovarianceMatrixFactored, apaT_isInverse) // NOLINT
 {
   // clang-format off
