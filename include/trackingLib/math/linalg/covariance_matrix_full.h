@@ -45,7 +45,7 @@ public:
   /// \param[in] other A base class object
   /// \param[in] isInverse Boolean indicating if the matrix is an inverse covariance matrix
   explicit CovarianceMatrixFull(SquareMatrix&& other, bool isInverse = false) noexcept
-      : SquareMatrix{std::forward<SquareMatrix>(other)}
+      : SquareMatrix{std::move(other)}
       , _isInverse{isInverse}
   {
     assert(this->isSymmetric() && "Constructed covariance not symmetric");

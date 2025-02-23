@@ -37,7 +37,7 @@ public:
   /// \brief Move construct a new Triangular Matrix object
   /// \param[in] other
   explicit TriangularMatrix(SquareMatrix&& other) noexcept
-      : SquareMatrix{std::forward<SquareMatrix>(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts
+      : SquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts
 
   /// \brief Construct a new Triangular Matrix object with given initializer list representing the memory layout of the matrix
   /// \param[in] list  An initializer list describing the memory layout of the matrix

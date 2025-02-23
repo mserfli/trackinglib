@@ -29,7 +29,7 @@ inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expe
     // symmetrize
     s += s.transpose();
     s *= static_cast<FloatType_>(0.5);
-    return CovarianceMatrixFull{SquareMatrix{s}, !_isInverse};
+    return CovarianceMatrixFull{SquareMatrix{std::move(s)}, !_isInverse};
   }
   return tl::unexpected<Errors>{retVal.error()};
 }
@@ -47,7 +47,7 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
     // symmetrize
     res += res.transpose();
     res *= static_cast<FloatType_>(0.5);
-    *this = CovarianceMatrixFull{SquareMatrix{res}, _isInverse};
+    *this = CovarianceMatrixFull{SquareMatrix{std::move(res)}, _isInverse};
   }
   else
   {
@@ -56,7 +56,7 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
     // symmetrize
     res += res.transpose();
     res *= static_cast<FloatType_>(0.5);
-    *this = CovarianceMatrixFull{SquareMatrix{res}, _isInverse};
+    *this = CovarianceMatrixFull{SquareMatrix{std::move(res)}, _isInverse};
   }
 }
 

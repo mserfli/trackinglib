@@ -41,17 +41,21 @@ public:
   /// \brief Move construct a new Square Matrix<FloatType_, Size_> object
   /// \param[in] other A base class object
   explicit SquareMatrix(Matrix&& other) noexcept
-      : Matrix{std::forward<Matrix>(other)}
+      : Matrix{std::move(other)}
   {
   }
 
+  /// \brief Construct a new Square Matrix<FloatType_, Size from transposed base class object
+  /// \param[in] other A transposed base class object
   explicit SquareMatrix(const Matrix::transpose_type& other)
       : Matrix{other.transpose()}
   {
   }
 
+  /// \brief Move construct a new Square Matrix<FloatType_, Size from transposed base class object
+  /// \param[in] other A transposed base class object
   explicit SquareMatrix(Matrix::transpose_type&& other) noexcept
-      : Matrix{other.transpose()}
+      : Matrix{std::move(other.transpose())}
   {
   }
 

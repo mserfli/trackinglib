@@ -36,7 +36,7 @@ public:
   /// \brief Move construct a new Vector<ValueType_, Size_> object
   /// \param[in] other A base class object
   explicit Vector(Matrix&& other) noexcept
-      : Matrix{std::forward<Matrix>(other)}
+      : Matrix{std::move(other)}
   {
   }
 

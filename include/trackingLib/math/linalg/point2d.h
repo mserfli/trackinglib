@@ -30,7 +30,7 @@ public:
   /// \brief Move construct a new Point 2d<ValueType_> object
   /// \param[in] other A base class object
   explicit Point2d(Vector&& other) noexcept
-      : Vector{std::forward<Vector>(other)}
+      : Vector{std::move(other)}
   {
   }
 

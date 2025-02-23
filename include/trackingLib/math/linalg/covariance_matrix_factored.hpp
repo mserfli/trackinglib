@@ -50,7 +50,7 @@ auto CovarianceMatrixFactored<FloatType_, Size_>::FromList(const std::initialize
 
   auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix<FloatType_, Size_, false, true>::Identity(),
                                                DiagonalMatrix<FloatType_, Size_>::Identity()));
-  return CovarianceMatrixFactored{u, d, isInverse};
+  return CovarianceMatrixFactored{std::move(u), std::move(d), isInverse};
 }
 
 
@@ -136,7 +136,7 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()() const -> c
 template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFactored<FloatType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>
 {
-  return CovarianceMatrixFactored{_u.inverse(), _d.inverse(), !_isInverse};
+  return CovarianceMatrixFactored{std::move(_u.inverse()), std::move(_d.inverse()), !_isInverse};
 }
 
 template <typename FloatType_, sint32 Size_>
