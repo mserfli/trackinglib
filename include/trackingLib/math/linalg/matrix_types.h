@@ -1,7 +1,9 @@
 #ifndef D686C5CF_1160_4EDD_9688_B367417D1623
 #define D686C5CF_1160_4EDD_9688_B367417D1623
 
-namespace tracking::math
+namespace tracking
+{
+namespace math
 {
 
 enum class RowColumnOrder
@@ -16,6 +18,7 @@ enum class UpLoType
   UpperTria
 };
 
-} // namespace tracking::math
+} // namespace math
+} // namespace tracking
 
 #endif // D686C5CF_1160_4EDD_9688_B367417D1623
