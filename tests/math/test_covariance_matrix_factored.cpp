@@ -16,12 +16,13 @@ TEST(CovarianceMatrixFactored, compose) // NOLINT
   const auto expMat = tracking::math::CovarianceMatrixFull<float32, 3>::FromList({
     {45, 52, 12},
     {52, 66, 16},
-    {12, 16,  4}});
+    {12, 16,  4}}, false);
   // clang-format on
 
   // call UUT
   const auto composed = cov();
 
+  EXPECT_EQ(expMat.isInverse(), composed.isInverse());
   EXPECT_EQ(expMat._data, composed._data);
 }
 
@@ -36,35 +37,78 @@ TEST(CovarianceMatrixFactored, composeInverse) // NOLINT
   const auto expMat = tracking::math::CovarianceMatrixFull<float32, 3>::FromList({
     {1,  2,  3},
     {2,  6, 14},
-    {3, 14, 45}});
+    {3, 14, 45}}, true);
   // clang-format on
 
   // call UUT
   const auto composed = cov();
 
+  EXPECT_EQ(expMat.isInverse(), composed.isInverse());
   EXPECT_EQ(expMat._data, composed._data);
 }
 
-TEST(CovarianceMatrixFactored, inverse) // NOLINT
+TEST(CovarianceMatrixFactored, inverse_forward) // NOLINT
 {
   // clang-format off
   auto cov = tracking::math::CovarianceMatrixFactored<float32, 3>::FromList({
     {1,2,3}, 
     {0,1,4}, 
     {0,0,1}}, {1, 2, 4}, false);
+  const auto expFullCov = tracking::math::CovarianceMatrixFull<float32, 3>::FromList({
+    {45, 52, 12},
+    {52, 66, 16},
+    {12, 16,  4}}, false);
 
-  const auto expInvMat = tracking::math::CovarianceMatrixFactored<float32, 3>::FromList({
+  const auto expInvCov = tracking::math::CovarianceMatrixFactored<float32, 3>::FromList({
     {1, -2,  5},
     {0,  1, -4},
     {0,  0,  1}}, {1, 0.5, 0.25}, true);
+  const auto expInvFullCov = tracking::math::CovarianceMatrixFull<float32, 3>::FromList({
+    { 1.0,  -2.0,  5.00},
+    {-2.0,   4.5,-12.00},
+    { 5.0, -12.0, 33.25}}, true);
   // clang-format on
+  EXPECT_EQ(expFullCov._data, cov()._data);
+  EXPECT_EQ(expInvFullCov._data, expInvCov()._data);
 
   // call UUT
   const auto inv = cov.inverse().value();
 
-  EXPECT_EQ(expInvMat._isInverse, inv._isInverse);
-  EXPECT_EQ(expInvMat._d._data, inv._d._data);
-  EXPECT_EQ(expInvMat._u._data, inv._u._data);
+  EXPECT_EQ(expInvCov._isInverse, inv._isInverse);
+  EXPECT_EQ(expInvCov._d._data, inv._d._data);
+  EXPECT_EQ(expInvCov._u._data, inv._u._data);
+}
+
+TEST(CovarianceMatrixFactored, inverse_reverse) // NOLINT
+{
+  // clang-format off
+  auto covInv = tracking::math::CovarianceMatrixFactored<float32, 3>::FromList({
+    {1, -2,  5},
+    {0,  1, -4},
+    {0,  0,  1}}, {1, 0.5, 0.25}, true);
+  const auto expInvFullCov = tracking::math::CovarianceMatrixFull<float32, 3>::FromList({
+    { 1.0,  -2.0,  5.00},
+    {-2.0,   4.5,-12.00},
+    { 5.0, -12.0, 33.25}}, true);
+  
+  const auto expCov = tracking::math::CovarianceMatrixFactored<float32, 3>::FromList({
+    {1,2,3}, 
+    {0,1,4}, 
+    {0,0,1}}, {1, 2, 4}, false);
+  const auto expFullCov = tracking::math::CovarianceMatrixFull<float32, 3>::FromList({
+    {45, 52, 12},
+    {52, 66, 16},
+    {12, 16,  4}}, false);
+  // clang-format on
+  EXPECT_EQ(expFullCov._data, expCov()._data);
+  EXPECT_EQ(expInvFullCov._data, covInv()._data);
+
+  // call UUT
+  const auto inv = covInv.inverse().value();
+
+  EXPECT_EQ(expCov._isInverse, inv._isInverse);
+  EXPECT_EQ(expCov._d._data, inv._d._data);
+  EXPECT_EQ(expCov._u._data, inv._u._data);
 }
 
 struct CovarianceMatrixFactoredWithParams: public testing::TestWithParam<std::tuple<bool, int, int>>
@@ -197,7 +241,11 @@ TEST(CovarianceMatrixFactored, apaT_isInverse) // NOLINT
     {                0,   1.000000000000000,   0.624099130640616,  -0.333255704893914},
     {                0,                   0,   1.000000000000000,  -0.091095026530443},
     {                0,                   0,                   0,   1.000000000000000}}, 
-    { 7.582773346076761e-03,   1.347104272627535e-01,   1.977801653097217e+00,   5.680269981493145e-01}, false);
+    { 7.582773346076761e-03,   1.347104272627535e-01,   1.977801653097217e+00,   5.680269981493145e-01}, true);
+   auto expFullCov = cov();
+   expFullCov.print();
+   expFullCov.apaT(A);
+   expFullCov.print();
   // clang-format on
 
   // call UUT
@@ -210,6 +258,7 @@ TEST(CovarianceMatrixFactored, apaT_isInverse) // NOLINT
     for (sint32 j = i; j < 4; ++j)
     {
       EXPECT_FLOAT_EQ(expCov._u.at_unsafe(i, j), cov._u.at_unsafe(i, j));
+      EXPECT_FLOAT_EQ(expCov.at_unsafe(i, j), expFullCov.at_unsafe(i, j));
     }
   }
 }

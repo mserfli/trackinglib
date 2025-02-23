@@ -106,11 +106,11 @@ public:
   /// \return SquareMatrix with toggled IsRowMajor
   auto inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
-protected:
   /// \brief Check for symmetry of the matrix
   /// \return true
   [[nodiscard]] auto isSymmetric() const -> bool;
 
+protected:
   /// \brief Check whether the diagonal elements of the matrix are strictly positive
   /// \return true
   [[nodiscard]] auto hasStrictlyPositiveDiagonalElems() const -> bool;

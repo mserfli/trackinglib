@@ -41,8 +41,10 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
   if (_isInverse)
   {
-    const auto pa  = this->operator*(A);
-    auto       res = A.transpose().operator*(pa);
+    // when the covariance matrix is an inverse covariance matrix Y=inv(P), the calculation is Y = Ainv'*Y*Ainv
+    const auto invA = A.inverse();
+    const auto pa   = this->operator*(invA);
+    auto       res  = invA.transpose().operator*(pa);
     // symmetrize
     res += res.transpose();
     res *= static_cast<FloatType_>(0.5);
@@ -50,6 +52,7 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
   }
   else
   {
+    // for normal covariance matrix P, the calculation is P = A*P*A'
     const auto paT = this->operator*(A.transpose());
     auto       res = A.operator*(paT);
     // symmetrize

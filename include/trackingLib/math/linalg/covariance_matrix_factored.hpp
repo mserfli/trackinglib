@@ -129,8 +129,10 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()() const -> c
   {
     return compose_type{typename compose_type::SquareMatrix{_u.transpose() * _d * _u}, _isInverse};
   }
-  const auto uduT = _u * _d * _u.transpose();
-  return compose_type{typename compose_type::SquareMatrix{uduT.transpose()}, _isInverse};
+  else
+  {
+    return compose_type{typename compose_type::SquareMatrix{_u * _d * _u.transpose()}, _isInverse};
+  }
 }
 
 template <typename FloatType_, sint32 Size_>
@@ -150,12 +152,11 @@ inline void CovarianceMatrixFactored<FloatType_, Size_>::apaT(const SquareMatrix
 {
   if (_isInverse)
   {
-    math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A, true);
-    _isInverse = false; // reset internal isInverse flag
+    math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A, _isInverse);
   }
   else
   {
-    math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A, false);
+    math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A, _isInverse);
   }
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");

@@ -125,6 +125,47 @@ TEST(CovarianceMatrixFull, inverse_const) // NOLINT
   }
 }
 
+TEST(CovarianceMatrixFull, apaT_equality)
+{
+  // clang-format off
+  const auto cov = tracking::math::CovarianceMatrixFull<float64, 4>::FromList({
+    { 7.095005365385164,  -2.002405585706988,   3.186228227810577,  -1.796274062161563},
+    {-2.002405585706988,   1.993403311363277,  -1.262526372481200,   0.223417952190492},
+    { 3.186228227810577,  -1.262526372481200,   1.638799986245814,  -0.810174937419070},
+    {-1.796274062161563,   0.223417952190492,  -0.810174937419070,   0.821337656508534}
+  });
+  const auto A = tracking::math::SquareMatrix<float64, 4, true>::FromList({
+    {6.240853754330984e-01,   3.581644763169872e-01,   5.385448223130755e-01,   6.122387805324014e-01},
+    {9.666405567486658e-04,   9.261665823497265e-01,   5.262033279133882e-02,   4.022802305927367e-01},
+    {4.208940256150708e-01,   9.768163860098072e-01,   3.480474524537769e-01,   9.884169020892678e-01},
+    {9.687082960197513e-01,   1.310361955580941e-01,   4.530398432949093e-01,   5.183403919872129e-01}
+  });
+  // clang-format on
+
+  // A*P*A' = inv(inv(A)'*inv(P)*inv(A))
+  const auto invCov = cov.inverse().value();
+  EXPECT_TRUE(invCov.isInverse());
+
+  const auto invA = A.inverse();
+  // calc apaT
+  const auto apaT = cov.apaT(A);
+  EXPECT_FALSE(cov.isInverse());
+
+  // calc inv(inv(A)'*inv(P)*inv(A))
+  const auto apaT_ = invCov.apaT(A).inverse().value();
+  EXPECT_FALSE(apaT_.isInverse());
+  // tracking::math::SquareMatrix<float64, 4, true>{invA.transpose() * invCov * invA}.inverse();
+
+  // verify
+  for (auto row = 0; row < 4; row++)
+  {
+    for (auto col = 0; col < 4; col++)
+    {
+      EXPECT_FLOAT_EQ(apaT.at_unsafe(row, col), apaT_.at_unsafe(row, col));
+    }
+  }
+}
+
 TEST(CovarianceMatrixFull, setVariance) // NOLINT
 {
   // clang-format off

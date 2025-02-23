@@ -86,15 +86,15 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const
     const ValueType_ u1  = R.at_unsafe(j, j) - sign * normx;
     const ValueType_ tau = -sign * u1 / normx; // Computes the parameter tau for the Householder transformation.
 
-    w /= u1;                                       // Computes the Householder vector w.
-    w.at_unsafe(j)   = static_cast<ValueType_>(1); // Sets the j-th row of w to 1 for convenience.
-    const auto wView = MatrixColumnView(w, 0, j);  // create view starting in j-th row
+    w /= u1;                                                                  // Computes the Householder vector w.
+    w.at_unsafe(j)   = static_cast<ValueType_>(1);                            // Sets the j-th row of w to 1 for convenience.
+    const auto wView = MatrixColumnView<ValueType_, Size_, 1, true>(w, 0, j); // create view starting in j-th row
 
     // Update R using the Householder transformation
     for (auto i = j; i < Size_; ++i) // cols
     {
       // R(j:end, i) = R(j:end, i) - tau * w * (w' * R(j:end, i));
-      const auto tau_dotRw = tau * (MatrixColumnView(R, i, j) * wView);
+      const auto tau_dotRw = tau * (MatrixColumnView<ValueType_, Size_, Size_, IsRowMajor_>(R, i, j) * wView);
       for (auto k = j; k < Size_; ++k) // rows
       {
         R.at_unsafe(k, i) -= tau_dotRw * wView.at_unsafe(k - j);
@@ -105,7 +105,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const
     for (auto i = 0; i < Size_; ++i) // rows
     {
       // Q(i,j:end) = Q(i,j:end) - tau * (Q(i,j:end) * w) * w';
-      const auto tau_dotQw = tau * (MatrixRowView(Q, i, j) * wView);
+      const auto tau_dotQw = tau * (MatrixRowView<ValueType_, Size_, Size_, IsRowMajor_>(Q, i, j) * wView);
       for (auto k = j; k < Size_; ++k) // cols
       {
         Q.at_unsafe(i, k) -= tau_dotQw * wView.at_unsafe(k - j);
