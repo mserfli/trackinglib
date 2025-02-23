@@ -2,11 +2,14 @@ cmake_minimum_required(VERSION 3.24)
 
 set(TEST_BINARY "testRunner")
 
-setup_target_for_coverage_lcov(
-          NAME lcov
-          EXECUTABLE ${TEST_BINARY}
-          BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
-          EXCLUDE "/Users/matthias/miniforge3/*" "/Library/*" "/usr/include/*" "build/*" "_deps/*" "examples/*" "python/*" "tests/*")
+if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    setup_target_for_coverage_lcov(
+        NAME lcov
+        EXECUTABLE ${TEST_BINARY}
+        BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        EXCLUDE "/Users/matthias/miniforge3/*" "/Library/*" "/usr/include/*" "build/*" "_deps/*" "examples/*" "python/*" "tests/*"
+    )
+endif()
 
 add_compile_definitions(TEST_BUILD)
 add_executable(${TEST_BINARY})
