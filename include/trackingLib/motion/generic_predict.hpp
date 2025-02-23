@@ -28,8 +28,8 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(con
   assert(!P.isInverse() && "Covariance may not represent the inverse covariance");
   // TODO(matthias): use static allocation like http://blackforrest-embedded.de/2019/09/26/a-templated-static-allocator/
   // apply ego motion compensation on P
-  P = typename MotionModel::StateCov((data.Go * P * data.Go.transpose()) +
-                                     (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose()));
+  P = typename MotionModel::StateCov(typename MotionModel::StateCov::SquareMatrix{(data.Go * P * data.Go.transpose()) +
+                                     (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose())});
 
   filter.predictCovariance(P, data.A, data.G, data.Q);
 }

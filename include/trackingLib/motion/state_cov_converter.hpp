@@ -120,6 +120,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::X,
                            SrcType::X,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::X,
                            DstType::X>(srcCov);
   // copy cross correlations between x,vx and y,vy
@@ -129,6 +130,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::X,
                            SrcType::Y,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::X,
                            DstType::Y>(srcCov);
   dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
@@ -137,6 +139,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::Y,
                            SrcType::X,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::Y,
                            DstType::X>(srcCov);
   // copy y,vy and its correlations
@@ -146,6 +149,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::Y,
                            SrcType::Y,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::Y,
                            DstType::Y>(srcCov);
 }

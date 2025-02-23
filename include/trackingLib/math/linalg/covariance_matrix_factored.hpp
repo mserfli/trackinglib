@@ -123,14 +123,14 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::at_unsafe(sint32 row, s
 }
 
 template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()() const -> CovarianceMatrixFull<FloatType_, Size_>
+inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()() const -> compose_type
 {
   if (_isInverse)
   {
-    return CovarianceMatrixFull<FloatType_, Size_>{_u.transpose() * _d * _u};
+    return compose_type{typename compose_type::SquareMatrix{_u.transpose() * _d * _u}, _isInverse};
   }
   const auto uduT = _u * _d * _u.transpose();
-  return CovarianceMatrixFull<FloatType_, Size_>{uduT.transpose()};
+  return compose_type{typename compose_type::SquareMatrix{uduT.transpose()}, _isInverse};
 }
 
 template <typename FloatType_, sint32 Size_>

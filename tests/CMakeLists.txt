@@ -25,7 +25,7 @@ target_sources(${TEST_BINARY} PRIVATE
     math/test_covariance_matrix_factored.cpp
     motion/test_state_mem.cpp
     motion/test_motion_model_cv.cpp
-    # motion/test_motion_model_ca.cpp
+    motion/test_motion_model_ca.cpp
 )
 target_include_directories(
     ${TEST_BINARY}

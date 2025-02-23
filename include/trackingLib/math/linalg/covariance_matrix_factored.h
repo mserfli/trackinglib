@@ -62,8 +62,8 @@ public:
   auto operator()(sint32 row, sint32 col) const -> tl::expected<value_type, Errors>;
 
   /// \brief Creates the composed covariance
-  /// \return CovarianceMatrixFull<FloatType, Size>
-  auto operator()() const -> CovarianceMatrixFull<FloatType_, Size_>;
+  /// \return compose_type
+  auto operator()() const -> compose_type;
 
   /// \brief Calculates the inverse
   /// \return tl::expected<CovarianceMatrixFactored, Errors>

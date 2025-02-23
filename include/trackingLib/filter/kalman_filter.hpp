@@ -21,9 +21,8 @@ inline void KalmanFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFu
                                                         const math::Matrix<FloatType_, DimX_, DimQ_>&  G,
                                                         const math::DiagonalMatrix<FloatType_, DimQ_>& Q)
 {
-  P = math::CovarianceMatrixFull<FloatType_, DimX_>{A * P * A.transpose() + G * Q * G.transpose()};
-  P += P.transpose();
-  P *= static_cast<FloatType_>(0.5);
+  P = math::CovarianceMatrixFull<FloatType_, DimX_>{
+      typename math::CovarianceMatrixFull<FloatType_, DimX_>::SquareMatrix{A * P * A.transpose() + G * Q * G.transpose()}};
 }
 
 template <typename FloatType_>

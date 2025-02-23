@@ -45,6 +45,16 @@ public:
   {
   }
 
+  explicit SquareMatrix(const Matrix::transpose_type& other)
+      : Matrix{other.transpose()}
+  {
+  }
+
+  explicit SquareMatrix(Matrix::transpose_type&& other) noexcept
+      : Matrix{other.transpose()}
+  {
+  }
+
   /// \brief Construct a new Square Matrix object
   /// \param[in] other A diagonal matrix
   SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other); // NOLINT(google-explicit-constructor)
