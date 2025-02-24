@@ -13,37 +13,44 @@ namespace tracking
 namespace math
 {
 template <typename FloatType_, sint32 Size_>
-template <bool IsRowMajor_>
-void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, false, true>& u,
-                                                 DiagonalMatrix<FloatType_, Size_>&                d,
-                                                 SquareMatrix<FloatType_, Size_, IsRowMajor_>&     PhiU)
+template <bool IsRegular_>
+void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, !IsRegular_, IsRegular_>& u,
+                                                 DiagonalMatrix<FloatType_, Size_>&                            d,
+                                                 SquareMatrix<FloatType_, Size_, IsRegular_>&                  PhiU)
 {
   auto Din = d;
   u.setIdentity();
   FloatType_ sigma;
-  for (sint32 i = Size_ - 1; i >= 0; --i)
+  if constexpr (IsRegular_)
   {
-    sigma = static_cast<FloatType_>(0.0);
-    for (sint32 j = 0; j < Size_; ++j)
-    {
-      sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);
-    }
-    d.at_unsafe(i) = std::max(sigma, std::numeric_limits<FloatType_>::epsilon());
-    for (sint32 j = 0; j < i; ++j)
+    for (sint32 i = Size_ - 1; i >= 0; --i)
     {
       sigma = static_cast<FloatType_>(0.0);
-      for (sint32 k = 0; k < Size_; ++k)
+      for (sint32 j = 0; j < Size_; ++j)
       {
-        sigma += PhiU.at_unsafe(i, k) * Din.at_unsafe(k) * PhiU.at_unsafe(j, k);
+        sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);
       }
-
-      u.at_unsafe(j, i) = sigma / d.at_unsafe(i);
-
-      for (sint32 k = 0; k < Size_; ++k)
+      d.at_unsafe(i) = std::max(sigma, std::numeric_limits<FloatType_>::epsilon());
+      for (sint32 j = 0; j < i; ++j)
       {
-        PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);
+        sigma = static_cast<FloatType_>(0.0);
+        for (sint32 k = 0; k < Size_; ++k)
+        {
+          sigma += PhiU.at_unsafe(i, k) * Din.at_unsafe(k) * PhiU.at_unsafe(j, k);
+        }
+
+        u.at_unsafe(j, i) = sigma / d.at_unsafe(i);
+
+        for (sint32 k = 0; k < Size_; ++k)
+        {
+          PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);
+        }
       }
     }
+  }
+  else
+  {
+    // fill this section with the code from the other branch
   }
 }
 
@@ -64,13 +71,13 @@ void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Si
   // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
   if (isInverse)
   {
-    auto PhiU = SquareMatrix<FloatType_, Size_, false>{Phi.inverse().transpose() * u.transpose()};
-    run(u, d, PhiU);
+    auto PhiU = SquareMatrix<FloatType_, Size_, false>{Phi.inverse() * u.transpose()};
+    run<false>(u.transpose(), d, PhiU);
   }
   else
   {
     auto PhiU = SquareMatrix<FloatType_, Size_, true>{Phi * u};
-    run(u, d, PhiU);
+    run<true>(u, d, PhiU);
   }
 }
 
