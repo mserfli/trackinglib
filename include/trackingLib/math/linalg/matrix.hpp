@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <iomanip>
 #include <iostream>
 #include <limits>
 #include <type_traits>
@@ -66,7 +67,14 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::print() const
   {
     for (auto col = 0; col < Cols; ++col)
     {
-      std::cout << at_unsafe(row, col) << ", ";
+      if (std::is_floating_point<ValueType_>::value)
+      {
+        std::cout << std::fixed << std::setprecision(20) << std::showpos << std::setw(25) << at_unsafe(row, col) << ", ";
+      }
+      else
+      {
+        std::cout << at_unsafe(row, col) << ", ";
+      }
     }
     std::cout << "\n";
   }
