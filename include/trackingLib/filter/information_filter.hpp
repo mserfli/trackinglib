@@ -49,7 +49,6 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
                                                       const math::Matrix<FloatType_, DimX_, DimQ_>&      G,
                                                       const math::DiagonalMatrix<FloatType_, DimQ_>&     Q)
 {
-  assert(Y.isInverse());
   // Information Formulation of the UDU Kalman Filter
   // Christopher D’Souza and Renato Zanetti
   // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
@@ -71,8 +70,7 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
     Y.rank1Update(ci, xi);
   }
   // propagate factorization by inverse(A)
-  Y.apaT(math::SquareMatrix<FloatType_, DimX_, true>{A});
-  assert(Y.isInverse());
+  Y.apaT(A);
 }
 
 } // namespace filter

@@ -50,10 +50,9 @@ public:
                   const DiagonalMatrix<FloatType_, SizeQ_>&         Q);
 
 private:
-  template <bool IsRegular_>
-  static void run(TriangularMatrix<FloatType_, Size_, !IsRegular_, IsRegular_>& u,
-                  DiagonalMatrix<FloatType_, Size_>&                            d,
-                  SquareMatrix<FloatType_, Size_, IsRegular_>&                  PhiU);
+  static void run(TriangularMatrix<FloatType_, Size_, false, true>& u,
+                  DiagonalMatrix<FloatType_, Size_>&                d,
+                  SquareMatrix<FloatType_, Size_, true>&            PhiU);
 };
 
 } // namespace math

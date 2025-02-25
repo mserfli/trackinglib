@@ -220,7 +220,6 @@ TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
   }
 }
 
-#if 0 // TODO fix this if required, apaT with inverse is used in MMCV and MMCA tests with success
 TEST(CovarianceMatrixFactored, apaT_isInverse) // NOLINT
 {
   // clang-format off
@@ -242,24 +241,58 @@ TEST(CovarianceMatrixFactored, apaT_isInverse) // NOLINT
     {                 0,  1.000000000000000, -0.795242475304584, -0.577831504240967},
     {                 0,                  0,  1.000000000000000,  1.592855170983499},
     {                 0,                  0,                  0,  1.000000000000000}}, 
-    { 2.624634236385219e-01, 2.558923282408059e-01, 1.210848205583995e+02, 9.986429171171181e+00}, true);
+    { 2.624634236385219e-01, 2.558923282408059e-01, 1.210848205583995e+02, 9.986429171171181e+00}, false);
   // clang-format on
 
   // call UUT
   cov.apaT(A);
 
-  // EXPECT_EQ(expCov._isInverse, cov._isInverse);
+  EXPECT_EQ(expCov._isInverse, cov._isInverse);
   for (sint32 i = 0; i < 4; ++i)
   {
     EXPECT_FLOAT_EQ(expCov._d.at_unsafe(i), cov._d.at_unsafe(i));
     for (sint32 j = i; j < 4; ++j)
     {
       EXPECT_FLOAT_EQ(expCov._u.at_unsafe(i, j), cov._u.at_unsafe(i, j));
-      // EXPECT_FLOAT_EQ(expCov().at_unsafe(i, j), expFullCov.at_unsafe(i, j));
     }
   }
 }
-#endif
+
+TEST(CovarianceMatrixFactored, apaT_isInverse1)
+{
+  // clang-format off
+  auto covFacY = tracking::math::CovarianceMatrixFactored<float64, 3>::FromList({
+    {1.000000000000000, -0.648648648648648,  0.135135135135135},
+    {                0,  1.000000000000000, -0.311111111111111},
+    {                0,                  0,  1.000000000000000}},
+    {9.249999999999954, 0.608108108108108, 0.022222222222222}, true);
+  const auto A = tracking::math::SquareMatrix<float64, 3, true>::FromList({
+    {0.9134, 0.4383, 0.9843},
+    {0.3140, 0.2390, 0.8879},
+    {0.3272, 0.7246, 0.3357}
+  });
+  const auto expCovFacY = tracking::math::CovarianceMatrixFactored<float64, 3>::FromList({
+  {1.000000000000000, -0.820553982475759, -1.274981898692578},
+  {                0,  1.000000000000000,  0.939087364604389},
+  {                0,                  0,  1.000000000000000}},
+  {1.546539545875213e-02, 3.376695039940283e+00, 2.921054996958666e+01}, false);
+  // clang-format on
+
+  // call UUT
+  covFacY.apaT(A);
+
+  covFacY.print();
+
+  EXPECT_EQ(expCovFacY._isInverse, covFacY._isInverse);
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    EXPECT_FLOAT_EQ(expCovFacY._d.at_unsafe(i), covFacY._d.at_unsafe(i));
+    for (sint32 j = i; j < 3; ++j)
+    {
+      EXPECT_FLOAT_EQ(expCovFacY._u.at_unsafe(i, j), covFacY._u.at_unsafe(i, j));
+    }
+  }
+}
 
 TEST(CovarianceMatrixFactored, rank1Update_upper) // NOLINT
 {

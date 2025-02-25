@@ -13,44 +13,36 @@ namespace tracking
 namespace math
 {
 template <typename FloatType_, sint32 Size_>
-template <bool IsRegular_>
-void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, !IsRegular_, IsRegular_>& u,
-                                                 DiagonalMatrix<FloatType_, Size_>&                            d,
-                                                 SquareMatrix<FloatType_, Size_, IsRegular_>&                  PhiU)
+void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, false, true>& u,
+                                                 DiagonalMatrix<FloatType_, Size_>&                d,
+                                                 SquareMatrix<FloatType_, Size_, true>&            PhiU)
 {
   auto Din = d;
   u.setIdentity();
   FloatType_ sigma;
-  if constexpr (IsRegular_)
+  for (sint32 i = Size_ - 1; i >= 0; --i)
   {
-    for (sint32 i = Size_ - 1; i >= 0; --i)
+    sigma = static_cast<FloatType_>(0.0);
+    for (sint32 j = 0; j < Size_; ++j)
+    {
+      sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);
+    }
+    d.at_unsafe(i) = std::max(sigma, std::numeric_limits<FloatType_>::epsilon());
+    for (sint32 j = 0; j < i; ++j)
     {
       sigma = static_cast<FloatType_>(0.0);
-      for (sint32 j = 0; j < Size_; ++j)
+      for (sint32 k = 0; k < Size_; ++k)
       {
-        sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);
+        sigma += PhiU.at_unsafe(i, k) * Din.at_unsafe(k) * PhiU.at_unsafe(j, k);
       }
-      d.at_unsafe(i) = std::max(sigma, std::numeric_limits<FloatType_>::epsilon());
-      for (sint32 j = 0; j < i; ++j)
+
+      u.at_unsafe(j, i) = sigma / d.at_unsafe(i);
+
+      for (sint32 k = 0; k < Size_; ++k)
       {
-        sigma = static_cast<FloatType_>(0.0);
-        for (sint32 k = 0; k < Size_; ++k)
-        {
-          sigma += PhiU.at_unsafe(i, k) * Din.at_unsafe(k) * PhiU.at_unsafe(j, k);
-        }
-
-        u.at_unsafe(j, i) = sigma / d.at_unsafe(i);
-
-        for (sint32 k = 0; k < Size_; ++k)
-        {
-          PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);
-        }
+        PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);
       }
     }
-  }
-  else
-  {
-    // fill this section with the code from the other branch
   }
 }
 
@@ -65,19 +57,21 @@ void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Si
   // Wiley, 2014.
   //
   // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
-  // isInverse = false: Phi*UDU'*Phi'
-  // isInverse = true: inv(Phi)'*U'DU*inv(Phi)
-
   // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
   if (isInverse)
   {
-    auto PhiU = SquareMatrix<FloatType_, Size_, false>{Phi.inverse() * u.transpose()};
-    run<false>(u.transpose(), d, PhiU);
+    // for isInverse = true this calculates the updated factorization U'DU after the transformation (inv(Phi)'*U')*D*(U*inv(Phi))
+    const auto invPhi  = Phi.inverse();
+    auto       invPhiU = SquareMatrix<FloatType_, Size_, true>{invPhi.transpose() * u.transpose()};
+    // u is not read, but fully overwritten; invPhiU is read and updated
+    run(u, d, invPhiU);
   }
   else
   {
+    // for isInverse = false this calculates the updated factorization UDU' after the transformation Phi*UDU'*Phi'
     auto PhiU = SquareMatrix<FloatType_, Size_, true>{Phi * u};
-    run<true>(u, d, PhiU);
+    // u is not read, but fully overwritten; invPhiU is read and updated
+    run(u, d, PhiU);
   }
 }
 

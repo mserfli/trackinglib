@@ -98,22 +98,19 @@ TEST(CovarianceMatrixFull, apaT_const) // NOLINT
 TEST(CovarianceMatrixFull, apaT_isInverse)
 {
   // clang-format off
-  auto cov = tracking::math::CovarianceMatrixFull<float64, 4>::FromList({
-    {  0.692626242247276,  0.261934708701878,  1.166729080031276, -1.514780850314375},
-    {  0.261934708701878,  0.738191180504970, -0.352055020272011, -0.398998599551224},
-    {  1.166729080031276, -0.352055020272011,  3.789604943239297, -3.595660274445659},
-    { -1.514780850314375, -0.398998599551224, -3.595660274445659,  4.998439219537921}}, true);
-  const auto A = tracking::math::SquareMatrix<float64, 4, true>::FromList({
-    {6.240853754330984e-01,   3.581644763169872e-01,   5.385448223130755e-01,   6.122387805324014e-01},
-    {9.666405567486658e-04,   9.261665823497265e-01,   5.262033279133882e-02,   4.022802305927367e-01},
-    {4.208940256150708e-01,   9.768163860098072e-01,   3.480474524537769e-01,   9.884169020892678e-01},
-    {9.687082960197513e-01,   1.310361955580941e-01,   4.530398432949093e-01,   5.183403919872129e-01}
+  auto cov = tracking::math::CovarianceMatrixFull<float64, 3>::FromList({
+    { 9.25, -6.0,  1.25},
+    {-6.00,  4.5, -1.00},
+    { 1.25, -1.0,  0.25}}, true);
+  const auto A = tracking::math::SquareMatrix<float64, 3, true>::FromList({
+    {0.9134, 0.4383, 0.9843},
+    {0.3140, 0.2390, 0.8879},
+    {0.3272, 0.7246, 0.3357}
   });
-  const auto expCov = tracking::math::CovarianceMatrixFull<float64, 4>::FromList({
-    {  1.452900157040397e+02,  9.045515387066084e+01, -1.370116012665833e+02, -2.663985705871189e+01},
-    {  9.045515387066084e+01,  8.016557700507353e+01, -1.054833208009154e+02, -5.770473389973715e+00},
-    { -1.370116012665833e+02, -1.054833208009154e+02,  1.464222647771200e+02,  1.590693534496048e+01},
-    { -2.663985705871189e+01, -5.770473389973715e+00,  1.590693534496048e+01,  9.986429171171187e+00}}, true);
+  const auto expCov = tracking::math::CovarianceMatrixFull<float64, 3>::FromList({
+    { 49.77307600317180, -37.74511846770778, -37.24292246207821},
+    {-37.74511846770778,  29.13704318879686,  27.43125838958411},
+    {-37.24292246207821,  27.43125838958410,  29.21054996958682}}, true);
   // clang-format on
 
   // call UUT
@@ -121,9 +118,9 @@ TEST(CovarianceMatrixFull, apaT_isInverse)
 
   // verify
   EXPECT_EQ(expCov.isInverse(), cov.isInverse());
-  for (auto row = 0; row < 4; row++)
+  for (auto row = 0; row < 3; row++)
   {
-    for (auto col = 0; col < 4; col++)
+    for (auto col = 0; col < 3; col++)
     {
       EXPECT_FLOAT_EQ(expCov.at_unsafe(row, col), cov.at_unsafe(row, col));
     }

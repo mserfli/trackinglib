@@ -151,6 +151,11 @@ template <typename FloatType_, sint32 Size_>
 inline void CovarianceMatrixFactored<FloatType_, Size_>::apaT(const SquareMatrix<FloatType_, Size_, true>& A)
 {
   math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A, _isInverse);
+  if (_isInverse)
+  {
+    // reset the inverse flag
+    _isInverse = false;
+  }
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
