@@ -107,17 +107,18 @@ TEST(CovarianceMatrixFull, apaT_isInverse)
     {0.3140, 0.2390, 0.8879},
     {0.3272, 0.7246, 0.3357}
   });
-  const auto expCov = tracking::math::CovarianceMatrixFull<float64, 3>::FromList({
+  const auto expCov = tracking::math::SquareMatrix<float64, 3>::FromList({
     { 49.77307600317180, -37.74511846770778, -37.24292246207821},
     {-37.74511846770778,  29.13704318879686,  27.43125838958411},
-    {-37.24292246207821,  27.43125838958410,  29.21054996958682}}, true);
+    {-37.24292246207821,  27.43125838958410,  29.21054996958682}
+  }); // we use SquareMatrix as the result is not perfectly symmetric
   // clang-format on
 
   // call UUT
   cov.apaT(A);
 
   // verify
-  EXPECT_EQ(expCov.isInverse(), cov.isInverse());
+  EXPECT_TRUE(cov.isInverse());
   for (auto row = 0; row < 3; row++)
   {
     for (auto col = 0; col < 3; col++)

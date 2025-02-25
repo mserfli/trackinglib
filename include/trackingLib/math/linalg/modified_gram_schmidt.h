@@ -25,15 +25,13 @@ template <typename FloatType_, sint32 Size_>
 class ModifiedGramSchmidt
 {
 public:
-  /// \brief Solve inplace Phi*UDU'*Phi' on u, d matrices, or inv(Phi)*U'DU*inv(Phi)' for isInverse==true
+  /// \brief Solve inplace Phi*UDU'*Phi' on u, d matrices
   /// \param[in,out] u
   /// \param[in,out] d
-  /// \param[in]     Phi
-  /// \param[in,out] isInverse
+  /// \param[in]     PhiU // product of Phi and U
   static void run(TriangularMatrix<FloatType_, Size_, false, true>& u,
                   DiagonalMatrix<FloatType_, Size_>&                d,
-                  const SquareMatrix<FloatType_, Size_, true>&      Phi,
-                  const bool                                        isInverse);
+                  SquareMatrix<FloatType_, Size_, true>&&           PhiU);
 
   /// \brief Solve inplace Phi*UDU'*Phi' + G*Q*G' on u, d matrices
   /// \tparam SizeQ
@@ -48,11 +46,6 @@ public:
                   const SquareMatrix<FloatType_, Size_, true>&      Phi,
                   const Matrix<FloatType_, Size_, SizeQ_, true>&    G,
                   const DiagonalMatrix<FloatType_, SizeQ_>&         Q);
-
-private:
-  static void run(TriangularMatrix<FloatType_, Size_, false, true>& u,
-                  DiagonalMatrix<FloatType_, Size_>&                d,
-                  SquareMatrix<FloatType_, Size_, true>&            PhiU);
 };
 
 } // namespace math

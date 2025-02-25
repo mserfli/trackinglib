@@ -127,11 +127,19 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()() const -> c
 {
   if (_isInverse)
   {
-    return compose_type{typename compose_type::SquareMatrix{_u.transpose() * _d * _u}, _isInverse};
+    auto s = typename compose_type::SquareMatrix{_u.transpose() * _d * _u};
+    // symmetrize
+    s += s.transpose();
+    s *= static_cast<FloatType_>(0.5);
+    return compose_type{std::move(s), _isInverse};
   }
   else
   {
-    return compose_type{typename compose_type::SquareMatrix{_u * _d * _u.transpose()}, _isInverse};
+    auto s = typename compose_type::SquareMatrix{_u * _d * _u.transpose()};
+    // symmetrize
+    s += s.transpose();
+    s *= static_cast<FloatType_>(0.5);
+    return compose_type{std::move(s), _isInverse};
   }
 }
 
@@ -150,11 +158,22 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::isInverse() const -> bo
 template <typename FloatType_, sint32 Size_>
 inline void CovarianceMatrixFactored<FloatType_, Size_>::apaT(const SquareMatrix<FloatType_, Size_, true>& A)
 {
-  math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A, _isInverse);
+  // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
   if (_isInverse)
   {
-    // reset the inverse flag
+    const auto invPhi  = A.inverse();
+    auto       invPhiU = SquareMatrix<FloatType_, Size_, true>{invPhi.transpose() * _u.transpose()};
+    // cov = U'DU
+    // _u is not read, but fully overwritten; invPhiU is read and updated
+    math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, std::move(invPhiU));
+    // cov = UDU'
     _isInverse = false;
+  }
+  else
+  {
+    auto PhiU = SquareMatrix<FloatType_, Size_, true>{A * _u};
+    // _u is not read, but fully overwritten; PhiU is read and updated
+    math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, std::move(PhiU));
   }
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");

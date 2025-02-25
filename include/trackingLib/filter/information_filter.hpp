@@ -23,14 +23,13 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
                                                       const math::Matrix<FloatType_, DimX_, DimQ_>&  G,
                                                       const math::DiagonalMatrix<FloatType_, DimQ_>& Q)
 {
-  assert(Y.isInverse());
   // Discrete kalman filter tutorial
   // GA Terejanu
   // University at Buffalo, Department of Computer Science and Engineering, NY 14260
   // https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Z7LP12kAAAAJ&citation_for_view=Z7LP12kAAAAJ:_FxGoFyzp5QC
 
   auto M{Y};
-  M.apaT(A); // implementation of apaT automatically handles the inverse covariance case
+  M.apaT(A); // implementation of apaT handles automatically the inverse covariance case
   // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric
   const auto H =
       math::SquareMatrix<FloatType_, DimX_>(math::SquareMatrix<FloatType_, DimX_>::Identity() + M * (G * Q * G.transpose()));
@@ -39,7 +38,6 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
   s += s.transpose();
   s *= static_cast<FloatType_>(0.5);
   Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(s), true};
-  assert(Y.isInverse());
 }
 
 template <typename FloatType_>
@@ -69,8 +67,8 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
     ci = -1 / (1 / Q.at_unsafe(i) + Gi * xi);
     Y.rank1Update(ci, xi);
   }
-  // propagate factorization by inverse(A)
-  Y.apaT(A);
+  // propagate factorization by A
+  Y.apaT(A); // implementation of apaT handles automatically the inverse covariance case
 }
 
 } // namespace filter

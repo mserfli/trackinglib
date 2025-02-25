@@ -15,8 +15,13 @@ namespace math
 template <typename FloatType_, sint32 Size_>
 void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, false, true>& u,
                                                  DiagonalMatrix<FloatType_, Size_>&                d,
-                                                 SquareMatrix<FloatType_, Size_, true>&            PhiU)
+                                                 SquareMatrix<FloatType_, Size_, true>&&           PhiU)
 {
+  // M. S. Grewal and A. P. Andrews
+  // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
+  // Wiley, 2014.
+  //
+  // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
   auto Din = d;
   u.setIdentity();
   FloatType_ sigma;
@@ -43,35 +48,6 @@ void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Si
         PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);
       }
     }
-  }
-}
-
-template <typename FloatType_, sint32 Size_>
-void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, false, true>& u,
-                                                 DiagonalMatrix<FloatType_, Size_>&                d,
-                                                 const SquareMatrix<FloatType_, Size_, true>&      Phi,
-                                                 const bool                                        isInverse)
-{
-  // M. S. Grewal and A. P. Andrews
-  // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
-  // Wiley, 2014.
-  //
-  // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
-  // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
-  if (isInverse)
-  {
-    // for isInverse = true this calculates the updated factorization U'DU after the transformation (inv(Phi)'*U')*D*(U*inv(Phi))
-    const auto invPhi  = Phi.inverse();
-    auto       invPhiU = SquareMatrix<FloatType_, Size_, true>{invPhi.transpose() * u.transpose()};
-    // u is not read, but fully overwritten; invPhiU is read and updated
-    run(u, d, invPhiU);
-  }
-  else
-  {
-    // for isInverse = false this calculates the updated factorization UDU' after the transformation Phi*UDU'*Phi'
-    auto PhiU = SquareMatrix<FloatType_, Size_, true>{Phi * u};
-    // u is not read, but fully overwritten; invPhiU is read and updated
-    run(u, d, PhiU);
   }
 }
 
