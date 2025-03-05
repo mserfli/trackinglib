@@ -28,10 +28,10 @@ public:
   /// \brief Solve inplace Phi*UDU'*Phi' on u, d matrices
   /// \param[in,out] u
   /// \param[in,out] d
-  /// \param[in]     PhiU // product of Phi and U
+  /// \param[in]     Phi
   static void run(TriangularMatrix<FloatType_, Size_, false, true>& u,
                   DiagonalMatrix<FloatType_, Size_>&                d,
-                  SquareMatrix<FloatType_, Size_, true>&&           PhiU);
+                  const SquareMatrix<FloatType_, Size_, true>&      Phi);
 
   /// \brief Solve inplace Phi*UDU'*Phi' + G*Q*G' on u, d matrices
   /// \tparam SizeQ

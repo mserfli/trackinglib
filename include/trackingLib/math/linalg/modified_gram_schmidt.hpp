@@ -15,14 +15,16 @@ namespace math
 template <typename FloatType_, sint32 Size_>
 void ModifiedGramSchmidt<FloatType_, Size_>::run(TriangularMatrix<FloatType_, Size_, false, true>& u,
                                                  DiagonalMatrix<FloatType_, Size_>&                d,
-                                                 SquareMatrix<FloatType_, Size_, true>&&           PhiU)
+                                                 const SquareMatrix<FloatType_, Size_, true>&      Phi)
 {
   // M. S. Grewal and A. P. Andrews
   // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
   // Wiley, 2014.
   //
   // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
-  auto Din = d;
+  // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
+  auto PhiU = Phi * u;
+  auto Din  = d;
   u.setIdentity();
   FloatType_ sigma;
   for (sint32 i = Size_ - 1; i >= 0; --i)

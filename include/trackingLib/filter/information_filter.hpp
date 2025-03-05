@@ -27,9 +27,10 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
   // GA Terejanu
   // University at Buffalo, Department of Computer Science and Engineering, NY 14260
   // https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Z7LP12kAAAAJ&citation_for_view=Z7LP12kAAAAJ:_FxGoFyzp5QC
-
   auto M{Y};
-  M.apaT(A); // implementation of apaT handles automatically the inverse covariance case
+  // calc M = invA'*Y*invA as Y is the inverse of P
+  const math::SquareMatrix<FloatType_, DimX_, false> invA = A.inverse();
+  M.apaT(math::SquareMatrix<FloatType_, DimX_, true>{invA.transpose()});
   // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric
   const auto H =
       math::SquareMatrix<FloatType_, DimX_>(math::SquareMatrix<FloatType_, DimX_>::Identity() + M * (G * Q * G.transpose()));
@@ -37,7 +38,7 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
   // symmetrize
   s += s.transpose();
   s *= static_cast<FloatType_>(0.5);
-  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(s), true};
+  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(s)};
 }
 
 template <typename FloatType_>
@@ -51,8 +52,8 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
   // Christopher D’Souza and Renato Zanetti
   // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
 
-  const auto invA     = A.inverse();
-  const auto invAMulG = invA * G;
+  const math::SquareMatrix<FloatType_, DimX_, false>  invA     = A.inverse();
+  const math::Matrix<FloatType_, DimX_, DimQ_, false> invAMulG = invA * G;
 
   // apply DimQ times the AgeeTurner Rank-1 update P = P - c*x*x'
   // with Gi=inv(A)*G(:,i) and ci=inv(Gi'*Y*Gi+inv(Q(i,i))) is (1x1) and x=Y*Gi is (nx1)

@@ -28,8 +28,6 @@ struct TestPredictCV
   {
     cov    = cov.inverse().value();
     expCov = expCov.inverse().value();
-    assert(cov.isInverse());
-    assert(expCov.isInverse());
   }
 
   static void run()
@@ -37,18 +35,26 @@ struct TestPredictCV
     tracking::env::EgoMotion<FloatType> egoMotion{};
     FilterType<FloatType>               filter{};
 
-    auto vec    = MM::StateVec::FromList({10, 2, 0, 0});
-    auto cov    = MM::StateCov::FromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-    auto expVec = MM::StateVec::FromList({12, 2, 0, 0});
-    auto expCov = MM::StateCov::FromList({{8.5, 6, 0, 0}, {6, 11, 0, 0}, {0, 0, 3.6, 5.1}, {0, 0, 5.1, 10.1}});
+    auto vec = MM::StateVec::FromList({10, 2, 0, 0});
+    auto cov = MM::StateCov::FromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+    // auto expVec = MM::StateVec::FromList({12, 2, 0, 0});
+    // auto expCov = MM::StateCov::FromList({{8.5, 6, 0, 0}, {6, 11, 0, 0}, {0, 0, 3.6, 5.1}, {0, 0, 5.1, 10.1}});
+    auto expVec = MM::StateVec::FromList({16, 2, 0, 0});
+    auto expCov = MM::StateCov::FromList({{+101.50, +48.0, +0.00000000000000000000, +0.00000000000000000000},
+                                          {+48.00, +31.0, +0.00000000000000000000, +0.00000000000000000000},
+                                          {+0.00, +0.0, +89.39999999999999147349, +45.29999999999999715783},
+                                          {+0.00, +0.0, +45.29999999999999715783, +30.10000000000000142109}});
+
     init(cov, expCov, filter);
 
     // instantiate MM with mocked EgoMotion compensation
     testing::NiceMock<test::MotionModelNoEgoMotionMock<MM>> mm{vec, cov};
     mm.delegate();
-    EXPECT_CALL(mm, compensateEgoMotion);
+    EXPECT_CALL(mm, compensateEgoMotion).Times(3);
 
     // call UUT
+    mm.predict(static_cast<FloatType>(1.0), filter, egoMotion);
+    mm.predict(static_cast<FloatType>(1.0), filter, egoMotion);
     mm.predict(static_cast<FloatType>(1.0), filter, egoMotion);
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)

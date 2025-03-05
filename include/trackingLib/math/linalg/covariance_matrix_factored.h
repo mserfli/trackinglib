@@ -47,18 +47,14 @@ public:
   /// \brief Construct a new Covariance Matrix Factored object
   /// \param[in] u   Unit upper triangular matrix
   /// \param[in] d   Diagonal matrix
-  /// \param[in] isInverse  inverse status flag
   explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType_, Size_, false, true>& u,
-                                    const DiagonalMatrix<FloatType_, Size_>&                d,
-                                    const bool                                              isInverse = false);
+                                    const DiagonalMatrix<FloatType_, Size_>&                d);
 
   /// \brief Construct a new Covariance Matrix Factored object with initializer list representing the memory layout of the matrix
   /// \param[in] u  An initializer list describing the memory layout of the unit upper triangular matrix
   /// \param[in] d  An initializer list describing the memory layout of the diagonal matrix
-  /// \param[in] isInverse  inverse status flag
   static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& u,
-                       const std::initializer_list<value_type>&                        d,
-                       const bool isInverse = false) -> CovarianceMatrixFactored;
+                       const std::initializer_list<value_type>&                        d) -> CovarianceMatrixFactored;
 
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFactored
@@ -81,19 +77,16 @@ public:
   /// \return tl::expected<CovarianceMatrixFactored, Errors>
   auto inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>;
 
-  /// \brief Checks inverse status
-  /// \return true
-  /// \return false
-  [[nodiscard]] auto isInverse() const -> bool;
-
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A   A square matrix which is transforming P in same space
-  void apaT(const SquareMatrix<FloatType_, Size_, true>& A);
+  template <bool IsRowMajor_>
+  void apaT(const SquareMatrix<FloatType_, Size_, IsRowMajor_>& A);
 
   /// \brief Calculate A*P*A'
   /// \param[in] A   A square matrix which is transforming P in same space
   /// \return Calculation result as new covariance matrix
-  auto apaT(const SquareMatrix<FloatType_, Size_, true>& A) const -> CovarianceMatrixFactored;
+  template <bool IsRowMajor_>
+  auto apaT(const SquareMatrix<FloatType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFactored;
 
   /// \brief Calculate Phi*P*Phi' + G*Q*G', also known as Thornton update
   /// \tparam SizeQ
@@ -144,13 +137,10 @@ TEST_REMOVE_PRIVATE:
 
   /// \brief Construct a new Covariance Matrix Factored object with given initializer list representing a full covariance matrix
   /// \param[in] list  An initializer list describing a full covariance matrix
-  /// \param[in] isInverse  inverse status flag
-  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list,
-                       const bool isInverse = false) -> CovarianceMatrixFactored;
+  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> CovarianceMatrixFactored;
 
   TriangularMatrix<FloatType_, Size_, false, true> _u{};
   DiagonalMatrix<FloatType_, Size_>                _d{};
-  bool                                             _isInverse{false};
 };
 
 } // namespace math

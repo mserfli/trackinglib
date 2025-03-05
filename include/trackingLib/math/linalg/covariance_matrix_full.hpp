@@ -28,7 +28,7 @@ inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expe
     // symmetrize
     s += s.transpose();
     s *= static_cast<FloatType_>(0.5);
-    return CovarianceMatrixFull{SquareMatrix{std::move(s)}, !_isInverse};
+    return CovarianceMatrixFull{SquareMatrix{std::move(s)}};
   }
   return tl::unexpected<Errors>{retVal.error()};
 }
@@ -39,27 +39,13 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
 {
   assert(this->isSymmetric() && "Covariance currently not symmetric");
   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
-  if (_isInverse)
-  {
-    // when the covariance matrix is an inverse covariance matrix Y=inv(P), the calculation is Y = Ainv'*Y*Ainv
-    const auto invA = A.inverse();
-    const auto pa   = this->operator*(invA);
-    auto       res  = invA.transpose().operator*(pa);
-    // symmetrize
-    res += res.transpose();
-    res *= static_cast<FloatType_>(0.5);
-    *this = CovarianceMatrixFull{SquareMatrix{std::move(res)}, _isInverse};
-  }
-  else
-  {
-    // for normal covariance matrix P, the calculation is P = A*P*A'
-    const auto paT = this->operator*(A.transpose());
-    auto       res = A.operator*(paT);
-    // symmetrize
-    res += res.transpose();
-    res *= static_cast<FloatType_>(0.5);
-    *this = CovarianceMatrixFull{SquareMatrix{std::move(res)}, _isInverse};
-  }
+  // for normal covariance matrix P, the calculation is P = A*P*A'
+  const auto paT = this->operator*(A.transpose());
+  auto       res = A.operator*(paT);
+  // symmetrize
+  res += res.transpose();
+  res *= static_cast<FloatType_>(0.5);
+  *this = CovarianceMatrixFull{SquareMatrix{std::move(res)}};
 }
 
 template <typename FloatType_, sint32 Size_>

@@ -95,39 +95,6 @@ TEST(CovarianceMatrixFull, apaT_const) // NOLINT
   }
 }
 
-TEST(CovarianceMatrixFull, apaT_isInverse)
-{
-  // clang-format off
-  auto cov = tracking::math::CovarianceMatrixFull<float64, 3>::FromList({
-    { 9.25, -6.0,  1.25},
-    {-6.00,  4.5, -1.00},
-    { 1.25, -1.0,  0.25}}, true);
-  const auto A = tracking::math::SquareMatrix<float64, 3, true>::FromList({
-    {0.9134, 0.4383, 0.9843},
-    {0.3140, 0.2390, 0.8879},
-    {0.3272, 0.7246, 0.3357}
-  });
-  const auto expCov = tracking::math::SquareMatrix<float64, 3>::FromList({
-    { 49.77307600317180, -37.74511846770778, -37.24292246207821},
-    {-37.74511846770778,  29.13704318879686,  27.43125838958411},
-    {-37.24292246207821,  27.43125838958410,  29.21054996958682}
-  }); // we use SquareMatrix as the result is not perfectly symmetric
-  // clang-format on
-
-  // call UUT
-  cov.apaT(A);
-
-  // verify
-  EXPECT_TRUE(cov.isInverse());
-  for (auto row = 0; row < 3; row++)
-  {
-    for (auto col = 0; col < 3; col++)
-    {
-      EXPECT_FLOAT_EQ(expCov.at_unsafe(row, col), cov.at_unsafe(row, col));
-    }
-  }
-}
-
 TEST(CovarianceMatrixFull, apaT_equality)
 {
   // clang-format off
@@ -147,17 +114,13 @@ TEST(CovarianceMatrixFull, apaT_equality)
 
   // A*P*A' = inv(inv(A)'*inv(P)*inv(A))
   const auto invCov = cov.inverse().value();
-  EXPECT_TRUE(invCov.isInverse());
 
-  const auto invA = A.inverse();
+  const tracking::math::SquareMatrix<float64, 4, false> invA = A.inverse();
   // calc apaT
   const auto apaT = cov.apaT(A);
-  EXPECT_FALSE(cov.isInverse());
 
   // calc inv(inv(A)'*inv(P)*inv(A))
-  const auto apaT_ = invCov.apaT(A).inverse().value();
-  EXPECT_FALSE(apaT_.isInverse());
-  // tracking::math::SquareMatrix<float64, 4, true>{invA.transpose() * invCov * invA}.inverse();
+  const auto apaT_ = invCov.apaT(tracking::math::SquareMatrix<float64, 4, true>{invA.transpose()}).inverse().value();
 
   // verify
   for (auto row = 0; row < 4; row++)

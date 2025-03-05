@@ -27,8 +27,6 @@ struct TestPredictCA
   {
     cov    = cov.inverse().value();
     expCov = expCov.inverse().value();
-    assert(cov.isInverse());
-    assert(expCov.isInverse());
   }
 
   static void run()

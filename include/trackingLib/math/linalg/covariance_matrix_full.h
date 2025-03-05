@@ -33,40 +33,32 @@ public:
   // additional constructors  --->
   /// \brief Construct a new Covariance Matrix Full<FloatType_, Size_> object
   /// \param[in] other A base class object
-  /// \param[in] isInverse Boolean indicating if the matrix is an inverse covariance matrix
-  explicit CovarianceMatrixFull(const SquareMatrix& other, bool isInverse = false)
+  explicit CovarianceMatrixFull(const SquareMatrix& other)
       : SquareMatrix{other}
-      , _isInverse{isInverse}
   {
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
   /// \brief Move construct a new Covariance Matrix Full<FloatType_, Size_> object
   /// \param[in] other A base class object
-  /// \param[in] isInverse Boolean indicating if the matrix is an inverse covariance matrix
-  explicit CovarianceMatrixFull(SquareMatrix&& other, bool isInverse = false) noexcept
+  explicit CovarianceMatrixFull(SquareMatrix&& other) noexcept
       : SquareMatrix{std::move(other)}
-      , _isInverse{isInverse}
   {
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
   /// \brief Construct a new Covariance Matrix Full<FloatType_, Size_> object from a transposed SquareMatrix
   /// \param[in] other A transposed base class object
-  /// \param[in] isInverse Boolean indicating if the matrix is an inverse covariance matrix
-  explicit CovarianceMatrixFull(const typename SquareMatrix::transpose_type& other, bool isInverse = false)
+  explicit CovarianceMatrixFull(const typename SquareMatrix::transpose_type& other)
       : SquareMatrix{other.transpose()}
-      , _isInverse{isInverse}
   {
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
   /// \brief Move construct a new Covariance Matrix Full<FloatType_, Size_> object from a transposed SquareMatrix
   /// \param[in] other A transposed base class object
-  /// \param[in] isInverse Boolean indicating if the matrix is an inverse covariance matrix
-  explicit CovarianceMatrixFull(typename SquareMatrix::transpose_type&& other, bool isInverse = false) noexcept
+  explicit CovarianceMatrixFull(typename SquareMatrix::transpose_type&& other) noexcept
       : SquareMatrix{std::move(other).transpose_rvalue()}
-      , _isInverse{isInverse}
   {
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
@@ -74,11 +66,9 @@ public:
   /// \brief Construct a new Covariance Matrix Full object with given initializer list representing the memory layout of the
   /// matrix
   /// \param[in] list  An initializer list describing the memory layout of the matrix
-  /// \param[in] isInverse Boolean indicating if the matrix is an inverse covariance matrix
-  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list,
-                       bool                                                            isInverse = false) -> CovarianceMatrixFull
+  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> CovarianceMatrixFull
   {
-    return CovarianceMatrixFull{SquareMatrix::FromList(list), isInverse};
+    return CovarianceMatrixFull{SquareMatrix::FromList(list)};
   }
 
   /// \brief Construct an Identity matrix
@@ -99,11 +89,6 @@ public:
   /// \return tl::expected<CovarianceMatrixFull, Errors>
   auto inverse() const -> tl::expected<CovarianceMatrixFull, Errors>;
 
-  /// \brief Checks inverse status
-  /// \return true
-  /// \return false
-  [[nodiscard]] auto isInverse() const -> bool { return _isInverse; }
-
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A
   template <bool IsRowMajor_>
@@ -118,9 +103,6 @@ public:
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
   void setVariance(const sint32 idx, const FloatType_ val);
-
-private:
-  bool _isInverse{false};
 };
 
 } // namespace math
