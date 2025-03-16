@@ -7,6 +7,7 @@
 #include "math/linalg/diagonal_matrix.hpp"   // IWYU pragma: keep
 #include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
 #include "math/linalg/vector.hpp"            // IWYU pragma: keep
+#include <cmath>
 #include <limits>
 
 namespace tracking
@@ -20,33 +21,45 @@ inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<Fl
                                                              FloatType_                                               c,
                                                              Vector<FloatType_, Size_>                                x)
 {
-  // Navigation Filter Best Practices
-  //   Carpenter, Russell J. and D'Souza, Christopher N.
-  //   NASA
-  // page 89
+  // based on
+  // https://scicomp.stackexchange.com/questions/8323/computational-complexity-and-implementation-of-udu-modified-cholesky-rank-1-upda
 
-  assert(c > 0 && "algorithm is designed for KF time update where P grows and thus c is positive");
+  if (c == 0)
+    return; // no update required
 
-  FloatType_ beta{};
-  FloatType_ eta{};
-  FloatType_ dj{};
-  for (auto j = Size_ - 1; j > 0; --j)
+  // update or downdate ?
+  const FloatType_ sign = (c > 0) ? +1 : -1;
+  c                     = c * sign; // remove the sign
+  for (int j = Size_ - 1; j >= 0; --j)
   {
-    dj                = d.at_unsafe(j);
-    d.at_unsafe(j)    = std::max(dj + (c * pow<2>(x.at_unsafe(j))), std::numeric_limits<FloatType_>::epsilon());
-    u.at_unsafe(j, j) = static_cast<FloatType_>(1.0);
+    // Retrieve diagonal and update vector value
+    FloatType_ djj = d.at_unsafe(j);
+    FloatType_ ujx = x.at_unsafe(j);
 
-    beta = c / d.at_unsafe(j); // division is safe because of std::max before
-    eta  = beta * x.at_unsafe(j);
-    for (auto i = 0; i < j; ++i)
+    // Compute updated diagonal element with clipping to ensure PSD
+    FloatType_ gamma = djj + sign * c * pow<2>(ujx);
+    gamma            = std::max(gamma, std::numeric_limits<FloatType_>::epsilon());
+
+    // Update the diagonal
+    d.at_unsafe(j) = gamma;
+
+    // Compute scaling factors for U update
+    FloatType_ beta = c / gamma;
+    FloatType_ eta  = beta * ujx;
+
+    // Update the upper triangular matrix
+    for (int i = 0; i < j; ++i)
     {
-      x.at_unsafe(i) -= u.at_unsafe(i, j) * x.at_unsafe(j);
-      u.at_unsafe(i, j) += x.at_unsafe(i) * eta;
+      FloatType_ uij = u.at_unsafe(i, j);
+      x.at_unsafe(i) -= uij * ujx;                      // Update x for future iterations
+      u.at_unsafe(i, j) += sign * eta * x.at_unsafe(i); // Apply correction to U
     }
-    c = beta * dj; // use here the backup value if d[j] stored at the beginning
+
+    // Update scaling factor for the next iteration
+    c = beta * djj;
   }
-  d.at_unsafe(0) += c * pow<2>(x.at_unsafe(0));
 }
+
 
 template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
 inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<FloatType_, Size_, true, IsRowMajor_>& l,
