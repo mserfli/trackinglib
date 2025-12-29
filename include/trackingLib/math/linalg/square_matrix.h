@@ -45,6 +45,7 @@ public:
   {
   }
 
+  // TODO do we really need these ctors given the transposed type?
   /// \brief Construct a new Square Matrix<FloatType_, Size from transposed base class object
   /// \param[in] other A transposed base class object
   explicit SquareMatrix(const typename Matrix::transpose_type& other)

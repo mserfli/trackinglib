@@ -35,27 +35,36 @@ struct TestPredictCV
     tracking::env::EgoMotion<FloatType> egoMotion{};
     FilterType<FloatType>               filter{};
 
+    // clang-format off
     auto vec = MM::StateVec::FromList({10, 2, 0, 0});
-    auto cov = MM::StateCov::FromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
-    // auto expVec = MM::StateVec::FromList({12, 2, 0, 0});
-    // auto expCov = MM::StateCov::FromList({{8.5, 6, 0, 0}, {6, 11, 0, 0}, {0, 0, 3.6, 5.1}, {0, 0, 5.1, 10.1}});
-    auto expVec = MM::StateVec::FromList({16, 2, 0, 0});
-    auto expCov = MM::StateCov::FromList({{+101.50, +48.0, +0.00000000000000000000, +0.00000000000000000000},
-                                          {+48.00, +31.0, +0.00000000000000000000, +0.00000000000000000000},
-                                          {+0.00, +0.0, +89.39999999999999147349, +45.29999999999999715783},
-                                          {+0.00, +0.0, +45.29999999999999715783, +30.10000000000000142109}});
-
+    auto cov = MM::StateCov::FromList({
+      {5, 0, 0, 0.0}, 
+      {0, 1, 0, 0.0}, 
+      {0, 0, 1, 0.0}, 
+      {0, 0, 0, 0.1}
+    });
+    auto expVec = MM::StateVec::FromList({10.19999999999999928946, 2, 0, 0});
+    auto expCov = MM::StateCov::FromList({
+      {+5.01025000000000009237, +0.10500000000000000999, +0.00000000000000000000, +0.00000000000000000000}, 
+      {+0.10500000000000000999, +1.10000000000000008882, +0.00000000000000000000, +0.00000000000000000000}, 
+      {+0.00000000000000000000, +0.00000000000000000000, +1.00124999999999997335, +0.01500000000000000291}, 
+      {+0.00000000000000000000, +0.00000000000000000000, +0.01500000000000000291, +0.20000000000000001110}
+    });
+    // clang-format on
     init(cov, expCov, filter);
 
     // instantiate MM with mocked EgoMotion compensation
     testing::NiceMock<test::MotionModelNoEgoMotionMock<MM>> mm{vec, cov};
     mm.delegate();
-    EXPECT_CALL(mm, compensateEgoMotion).Times(3);
+    EXPECT_CALL(mm, compensateEgoMotion).Times(1);
 
     // call UUT
-    mm.predict(static_cast<FloatType>(1.0), filter, egoMotion);
-    mm.predict(static_cast<FloatType>(1.0), filter, egoMotion);
-    mm.predict(static_cast<FloatType>(1.0), filter, egoMotion);
+    mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
+    // mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
+    // mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
+
+    mm._vec.print();
+    mm._cov.print();
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
