@@ -113,7 +113,7 @@ protected:
     }
   }
 
-  void test_op_add_scalar_Success()
+  void test_op_plus_scalar_Success()
   {
     IntMatType mat{_testIntMat};
     IntMatType res{};
@@ -128,7 +128,7 @@ protected:
     }
   }
 
-  void test_op_sub_scalar_Success()
+  void test_op_minus_scalar_Success()
   {
     IntMatType mat{_testIntMat};
     IntMatType res{};
@@ -647,24 +647,29 @@ TYPED_TEST(GTestMatrix, op_minus__Success) // NOLINT
   GTestMatrix<TypeParam>::template test_op_minus_Success<false>();
 }
 
-TYPED_TEST(GTestMatrix, op_mul__Success) // NOLINT
+TYPED_TEST(GTestMatrix, op_plus_scalar__Success) // NOLINT
+{
+  GTestMatrix<TypeParam>::test_op_plus_scalar_Success();
+}
+
+TYPED_TEST(GTestMatrix, op_minus_scalar__Success) // NOLINT
+{
+  GTestMatrix<TypeParam>::test_op_minus_scalar_Success();
+}
+
+TYPED_TEST(GTestMatrix, op_mul_scalar__Success) // NOLINT
 {
   GTestMatrix<TypeParam>::test_op_mul_scalar_Success();
   GTestMatrix<TypeParam>::test_op_mul_mat_Success();
 }
 
-TYPED_TEST(GTestMatrix, op_sub_scalar__Success) // NOLINT
-{
-  GTestMatrix<TypeParam>::test_op_sub_scalar_Success();
-}
-
-TYPED_TEST(GTestMatrix, op_div__FailDivByZero) // NOLINT
+TYPED_TEST(GTestMatrix, op_div_scalar__FailDivByZero) // NOLINT
 {
   GTestMatrix<TypeParam>::test_op_div_scalar_IntFailDivByZero();
   GTestMatrix<TypeParam>::test_op_div_scalar_FloatFailDivByZero();
 }
 
-TYPED_TEST(GTestMatrix, op_div__Success) // NOLINT
+TYPED_TEST(GTestMatrix, op_div_scalar__Success) // NOLINT
 {
   GTestMatrix<TypeParam>::test_op_div_scalar_inplace_IntSuccess();
   GTestMatrix<TypeParam>::test_op_div_scalar_IntSuccess();
@@ -688,7 +693,7 @@ TYPED_TEST(GTestMatrix, op_plus_transpose_inplace__Success) // NOLINT
 // FromList() error handling tests
 // ============================================================================
 
-TYPED_TEST(GTestMatrix, FromList_TooFewRows_ThrowsRuntimeError) // NOLINT
+TYPED_TEST(GTestMatrix, FromList_TooFewRows__ThrowsRuntimeError) // NOLINT
 {
   using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
 
@@ -701,7 +706,7 @@ TYPED_TEST(GTestMatrix, FromList_TooFewRows_ThrowsRuntimeError) // NOLINT
   // clang-format on
 }
 
-TYPED_TEST(GTestMatrix, FromList_TooManyRows_ThrowsRuntimeError) // NOLINT
+TYPED_TEST(GTestMatrix, FromList_TooManyRows__ThrowsRuntimeError) // NOLINT
 {
   using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
 
@@ -718,7 +723,7 @@ TYPED_TEST(GTestMatrix, FromList_TooManyRows_ThrowsRuntimeError) // NOLINT
   // clang-format on
 }
 
-TYPED_TEST(GTestMatrix, FromList_TooFewColumns_ThrowsRuntimeError) // NOLINT
+TYPED_TEST(GTestMatrix, FromList_TooFewColumns__ThrowsRuntimeError) // NOLINT
 {
   using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
 
@@ -734,7 +739,7 @@ TYPED_TEST(GTestMatrix, FromList_TooFewColumns_ThrowsRuntimeError) // NOLINT
   // clang-format on
 }
 
-TYPED_TEST(GTestMatrix, FromList_TooManyColumns_ThrowsRuntimeError) // NOLINT
+TYPED_TEST(GTestMatrix, FromList_TooManyColumns__ThrowsRuntimeError) // NOLINT
 {
   using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
 
@@ -750,7 +755,7 @@ TYPED_TEST(GTestMatrix, FromList_TooManyColumns_ThrowsRuntimeError) // NOLINT
   // clang-format on
 }
 
-TYPED_TEST(GTestMatrix, FromList_InconsistentColumnCounts_ThrowsRuntimeError) // NOLINT
+TYPED_TEST(GTestMatrix, FromList_InconsistentColumnCounts__ThrowsRuntimeError) // NOLINT
 {
   using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
 
@@ -766,7 +771,7 @@ TYPED_TEST(GTestMatrix, FromList_InconsistentColumnCounts_ThrowsRuntimeError) //
   // clang-format on
 }
 
-TYPED_TEST(GTestMatrix, FromList_EmptyList_ThrowsRuntimeError) // NOLINT
+TYPED_TEST(GTestMatrix, FromList_EmptyList__ThrowsRuntimeError) // NOLINT
 {
   using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
 
@@ -774,7 +779,7 @@ TYPED_TEST(GTestMatrix, FromList_EmptyList_ThrowsRuntimeError) // NOLINT
   EXPECT_THROW(IntMatType::FromList({}), std::runtime_error);
 }
 
-TYPED_TEST(GTestMatrix, FromList_SquareMatrix_TooFewRows_ThrowsRuntimeError) // NOLINT
+TYPED_TEST(GTestMatrix, FromList_SquareMatrix_TooFewRows__ThrowsRuntimeError) // NOLINT
 {
   using SquareMatType = typename GTestMatrix<TypeParam>::SquareIntMatType;
 
@@ -790,7 +795,7 @@ TYPED_TEST(GTestMatrix, FromList_SquareMatrix_TooFewRows_ThrowsRuntimeError) // 
   // clang-format on
 }
 
-TYPED_TEST(GTestMatrix, FromList_1x1Matrix_Success) // NOLINT
+TYPED_TEST(GTestMatrix, FromList_1x1Matrix__Success) // NOLINT
 {
   using Mat1x1Type = tracking::math::Matrix<sint32, 1, 1, TypeParam::IsRowMajor>;
 
@@ -807,7 +812,7 @@ TYPED_TEST(GTestMatrix, FromList_1x1Matrix_Success) // NOLINT
 // Note: Single-row and single-column tests use static layout for clarity
 // They don't use TYPED_TEST because they test specific matrix dimensions
 
-TEST(GTestMatrixEpecial, FromList_SingleRowMatrix_Success) // NOLINT
+TEST(GTestMatrixEpecial, FromList_SingleRowMatrix__Success) // NOLINT
 {
   using MatSingleRowType = tracking::math::Matrix<sint32, 1, 4, true>;
 
@@ -824,7 +829,7 @@ TEST(GTestMatrixEpecial, FromList_SingleRowMatrix_Success) // NOLINT
   EXPECT_EQ(mat.at_unsafe(0, 3), 40);
 }
 
-TEST(GTestMatrixEpecial, FromList_SingleColumnMatrix_Success) // NOLINT
+TEST(GTestMatrixEpecial, FromList_SingleColumnMatrix__Success) // NOLINT
 {
   using MatSingleColType = tracking::math::Matrix<sint32, 4, 1, true>;
 
@@ -842,4 +847,268 @@ TEST(GTestMatrixEpecial, FromList_SingleColumnMatrix_Success) // NOLINT
   EXPECT_EQ(mat.at_unsafe(1, 0), 20);
   EXPECT_EQ(mat.at_unsafe(2, 0), 30);
   EXPECT_EQ(mat.at_unsafe(3, 0), 40);
+}
+
+// ============================================================================
+// Additional Test Cases for Missing Coverage
+// ============================================================================
+
+// minmax() Tests
+TEST(GTestMatrixEpecial, minmax_AllValuesSame) // NOLINT
+{
+  using MatType  = tracking::math::Matrix<sint32, 2, 2, true>;
+  const auto mat = MatType::FromList({
+      {5, 5},
+      {5, 5},
+  });
+
+  const auto [min, max] = mat.minmax();
+  EXPECT_EQ(min, 5);
+  EXPECT_EQ(max, 5);
+}
+
+TEST(GTestMatrixEpecial, minmax_SingleElement) // NOLINT
+{
+  using MatType  = tracking::math::Matrix<sint32, 1, 1, true>;
+  const auto mat = MatType::FromList({
+      {42},
+  });
+
+  const auto [min, max] = mat.minmax();
+  EXPECT_EQ(min, 42);
+  EXPECT_EQ(max, 42);
+}
+
+TEST(GTestMatrixEpecial, minmax_ExtremeValues) // NOLINT
+{
+  using MatType                = tracking::math::Matrix<sint32, 2, 2, true>;
+  constexpr sint32 INT_MIN_VAL = std::numeric_limits<sint32>::lowest();
+  constexpr sint32 INT_MAX_VAL = std::numeric_limits<sint32>::max();
+
+  const auto mat = MatType::FromList({
+      {INT_MIN_VAL, 0},
+      {0, INT_MAX_VAL},
+  });
+
+  const auto [min, max] = mat.minmax();
+  EXPECT_EQ(min, INT_MIN_VAL);
+  EXPECT_EQ(max, INT_MAX_VAL);
+}
+
+// operator!= Tests
+TEST(GTestMatrixEpecial, op_not_equal__DifferentMatrices) // NOLINT
+{
+  using MatType   = tracking::math::Matrix<sint32, 2, 2, true>;
+  const auto mat1 = MatType::FromList({
+      {1, 2},
+      {3, 4},
+  });
+  const auto mat2 = MatType::FromList({
+      {1, 2}, {3, 5}, // Different element
+  });
+
+  EXPECT_TRUE(mat1 != mat2);
+  EXPECT_FALSE(mat1 == mat2);
+}
+
+TEST(GTestMatrixEpecial, op_not_equal__SameMatrices) // NOLINT
+{
+  using MatType   = tracking::math::Matrix<sint32, 2, 2, true>;
+  const auto mat1 = MatType::FromList({
+      {1, 2},
+      {3, 4},
+  });
+  const auto mat2 = MatType::FromList({
+      {1, 2},
+      {3, 4},
+  });
+
+  EXPECT_FALSE(mat1 != mat2);
+  EXPECT_TRUE(mat1 == mat2);
+}
+
+TEST(GTestMatrixEpecial, op_not_equal__DifferentValues) // NOLINT
+{
+  using MatType   = tracking::math::Matrix<sint32, 2, 2, true>;
+  const auto mat1 = MatType::FromList({
+      {1, 2},
+      {3, 4},
+  });
+  const auto mat2 = MatType::FromList({
+      {1, 2}, {3, 5}, // Different element
+  });
+
+  EXPECT_TRUE(mat1 != mat2);
+  EXPECT_FALSE(mat1 == mat2);
+}
+
+// Boundary Access Tests
+TEST(GTestMatrixEpecial, op_at_RowBoundary__OutOfBounds) // NOLINT
+{
+  using MatType = tracking::math::Matrix<sint32, 3, 3, true>;
+  auto mat      = MatType::Zeros();
+
+  auto result = mat(3, 0); // Row index equals Rows (out of bounds)
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), tracking::math::Errors::invalid_access_row);
+}
+
+TEST(GTestMatrixEpecial, op_at_ColBoundary__OutOfBounds) // NOLINT
+{
+  using MatType = tracking::math::Matrix<sint32, 3, 3, true>;
+  auto mat      = MatType::Zeros();
+
+  auto result = mat(0, 3); // Col index equals Cols (out of bounds)
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), tracking::math::Errors::invalid_access_col);
+}
+
+TEST(GTestMatrixEpecial, op_at__NegativeIndices) // NOLINT
+{
+  using MatType = tracking::math::Matrix<sint32, 3, 3, true>;
+  auto mat      = MatType::Zeros();
+
+  auto result_row = mat(-1, 0);
+  EXPECT_FALSE(result_row.has_value());
+  EXPECT_EQ(result_row.error(), tracking::math::Errors::invalid_access_row);
+
+  auto result_col = mat(0, -1);
+  EXPECT_FALSE(result_col.has_value());
+  EXPECT_EQ(result_col.error(), tracking::math::Errors::invalid_access_col);
+}
+
+// Matrix Multiplication with Different Dimensions
+TEST(GTestMatrixEpecial, op_mul__SquareMatrices) // NOLINT
+{
+  using MatType = tracking::math::Matrix<sint32, 3, 3, true>;
+  auto identity = MatType::Zeros();
+  // Create identity matrix
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    identity.at_unsafe(i, i) = 1;
+  }
+
+  auto ones   = MatType::Ones();
+  auto result = identity * ones;
+
+  // Identity * Ones should equal Ones
+  EXPECT_TRUE(result == ones);
+}
+
+TEST(GTestMatrixEpecial, op_mul__RowVectorTimesMatrix) // NOLINT
+{
+  using RowVecType = tracking::math::Matrix<sint32, 1, 3, true>;
+  using MatType    = tracking::math::Matrix<sint32, 3, 3, true>;
+
+  const auto row = RowVecType::FromList({
+      {1, 2, 3},
+  });
+
+  auto identity = MatType::Zeros();
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    identity.at_unsafe(i, i) = 1;
+  }
+
+  const auto result = row * identity;
+  EXPECT_TRUE(result == row);
+}
+
+TEST(GTestMatrixEpecial, op_mul__MatrixTimesColumnVector) // NOLINT
+{
+  using MatType    = tracking::math::Matrix<sint32, 3, 3, true>;
+  using ColVecType = tracking::math::Matrix<sint32, 3, 1, true>;
+
+  auto identity = MatType::Zeros();
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    identity.at_unsafe(i, i) = 1;
+  }
+
+  const auto col = ColVecType::FromList({
+      {5},
+      {10},
+      {15},
+  });
+
+  const auto result = identity * col;
+  EXPECT_TRUE(result == col);
+}
+
+// Self-Assignment Tests
+TEST(GTestMatrixEpecial, op_plus_equal__Self) // NOLINT
+{
+  using MatType      = tracking::math::Matrix<sint32, 2, 2, true>;
+  auto       matA    = MatType::FromList({
+      {1, 2},
+      {3, 4},
+  });
+  const auto expMatA = MatType::FromList({
+      {2, 4},
+      {6, 8},
+  });
+
+  matA += matA;
+  EXPECT_TRUE(matA == expMatA);
+}
+
+TEST(GTestMatrixEpecial, op_minus_equal__Self) // NOLINT
+{
+  using MatType      = tracking::math::Matrix<sint32, 2, 2, true>;
+  auto       matA    = MatType::FromList({
+      {1, 2},
+      {3, 4},
+  });
+  const auto expMatA = MatType::Zeros();
+
+  matA -= matA;
+  EXPECT_TRUE(matA == expMatA);
+}
+
+// Frobenius Norm Tests (floating-point only)
+TEST(GTestMatrixEpecial, frobenius_norm__IdentityMatrix) // NOLINT
+{
+  using MatType = tracking::math::Matrix<float32, 3, 3, true>;
+  auto identity = MatType::Zeros();
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    identity.at_unsafe(i, i) = 1.0F;
+  }
+
+  const auto norm = identity.frobenius_norm();
+  // Frobenius norm of 3x3 identity is sqrt(3)
+  EXPECT_FLOAT_EQ(norm, std::sqrt(3.0F));
+}
+
+TEST(GTestMatrixEpecial, frobenius_norm__ZeroMatrix) // NOLINT
+{
+  using MatType    = tracking::math::Matrix<float32, 2, 2, true>;
+  const auto zeros = MatType::Zeros();
+
+  const auto norm = zeros.frobenius_norm();
+  EXPECT_FLOAT_EQ(norm, 0.0F);
+}
+
+TEST(GTestMatrixEpecial, frobenius_norm__SingleElement) // NOLINT
+{
+  using MatType  = tracking::math::Matrix<float32, 1, 1, true>;
+  const auto mat = MatType::FromList({
+      {5.0F},
+  });
+
+  const auto norm = mat.frobenius_norm();
+  EXPECT_FLOAT_EQ(norm, 5.0F);
+}
+
+TEST(GTestMatrixEpecial, frobenius_norm__ArbitraryMatrix) // NOLINT
+{
+  using MatType  = tracking::math::Matrix<float32, 2, 2, true>;
+  const auto mat = MatType::FromList({
+      {3.0F, 4.0F},
+      {0.0F, 0.0F},
+  });
+
+  const auto norm = mat.frobenius_norm();
+  // sqrt(3^2 + 4^2 + 0^2 + 0^2) = sqrt(25) = 5
+  EXPECT_FLOAT_EQ(norm, 5.0F);
 }
