@@ -648,3 +648,163 @@ TYPED_TEST(GTestMatrix, op_plus_transpose_inplace__Success) // NOLINT
   GTestMatrix<TypeParam>::template test_op_plus_transpose_inplace_Success<true>();
   GTestMatrix<TypeParam>::template test_op_plus_transpose_inplace_Success<false>();
 }
+
+// ============================================================================
+// FromList() error handling tests
+// ============================================================================
+
+TYPED_TEST(GTestMatrix, FromList_TooFewRows_ThrowsRuntimeError) // NOLINT
+{
+  using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
+
+  // Try to create a 2x3 matrix with only 1 row
+  // clang-format off
+  EXPECT_THROW(IntMatType::FromList({
+                   {0, 1, 2},
+               }),
+               std::runtime_error);
+  // clang-format on
+}
+
+TYPED_TEST(GTestMatrix, FromList_TooManyRows_ThrowsRuntimeError) // NOLINT
+{
+  using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
+
+  // Try to create a 2x3 matrix with 3 rows
+  // clang-format off
+  EXPECT_THROW(
+    IntMatType::FromList({
+      {0, 1, 2},
+      {3, 4, 5},
+      {6, 7, 8},
+    }),
+    std::runtime_error
+  );
+  // clang-format on
+}
+
+TYPED_TEST(GTestMatrix, FromList_TooFewColumns_ThrowsRuntimeError) // NOLINT
+{
+  using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
+
+  // Try to create a 2x3 matrix with only 2 columns in a row
+  // clang-format off
+  EXPECT_THROW(
+    IntMatType::FromList({
+      {0, 1},
+      {3, 4},
+    }),
+    std::runtime_error
+  );
+  // clang-format on
+}
+
+TYPED_TEST(GTestMatrix, FromList_TooManyColumns_ThrowsRuntimeError) // NOLINT
+{
+  using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
+
+  // Try to create a 2x3 matrix with 4 columns in a row
+  // clang-format off
+  EXPECT_THROW(
+    IntMatType::FromList({
+      {0, 1, 2, 3},
+      {4, 5, 6, 7},
+    }),
+    std::runtime_error
+  );
+  // clang-format on
+}
+
+TYPED_TEST(GTestMatrix, FromList_InconsistentColumnCounts_ThrowsRuntimeError) // NOLINT
+{
+  using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
+
+  // Try to create a 2x3 matrix where rows have different column counts
+  // clang-format off
+  EXPECT_THROW(
+    IntMatType::FromList({
+      {0, 1, 2},
+      {3, 4},      // Only 2 columns instead of 3
+    }),
+    std::runtime_error
+  );
+  // clang-format on
+}
+
+TYPED_TEST(GTestMatrix, FromList_EmptyList_ThrowsRuntimeError) // NOLINT
+{
+  using IntMatType = typename GTestMatrix<TypeParam>::IntMatType;
+
+  // Try to create a 2x3 matrix with an empty initializer list
+  EXPECT_THROW(IntMatType::FromList({}), std::runtime_error);
+}
+
+TYPED_TEST(GTestMatrix, FromList_SquareMatrix_TooFewRows_ThrowsRuntimeError) // NOLINT
+{
+  using SquareMatType = typename GTestMatrix<TypeParam>::SquareIntMatType;
+
+  // Try to create a 3x3 matrix with only 2 rows
+  // clang-format off
+  EXPECT_THROW(
+    SquareMatType::FromList({
+      {0, 1, 2,},
+      {3, 4, 5,},
+    }),
+    std::runtime_error
+  );
+  // clang-format on
+}
+
+TYPED_TEST(GTestMatrix, FromList_1x1Matrix_Success) // NOLINT
+{
+  using Mat1x1Type = tracking::math::Matrix<sint32, 1, 1, TypeParam::IsRowMajor>;
+
+  // Verify 1x1 matrices work correctly
+  // clang-format off
+  const auto mat = Mat1x1Type::FromList({
+      {42},
+  });
+  // clang-format on
+
+  EXPECT_EQ(mat.at_unsafe(0, 0), 42);
+}
+
+// Note: Single-row and single-column tests use static layout for clarity
+// They don't use TYPED_TEST because they test specific matrix dimensions
+
+TEST(GTestMatrixEpecial, FromList_SingleRowMatrix_Success) // NOLINT
+{
+  using MatSingleRowType = tracking::math::Matrix<sint32, 1, 4, true>;
+
+  // Verify single-row matrices work correctly
+  // clang-format off
+  const auto mat = MatSingleRowType::FromList({
+      {10, 20, 30, 40},
+  });
+  // clang-format on
+
+  EXPECT_EQ(mat.at_unsafe(0, 0), 10);
+  EXPECT_EQ(mat.at_unsafe(0, 1), 20);
+  EXPECT_EQ(mat.at_unsafe(0, 2), 30);
+  EXPECT_EQ(mat.at_unsafe(0, 3), 40);
+}
+
+TEST(GTestMatrixEpecial, FromList_SingleColumnMatrix_Success) // NOLINT
+{
+  using MatSingleColType = tracking::math::Matrix<sint32, 4, 1, true>;
+
+  // Verify single-column matrices work correctly
+  // clang-format off
+  const auto mat = MatSingleColType::FromList({
+    {10,},
+    {20,},
+    {30,},
+    {40,},
+  });
+  // clang-format on
+
+  EXPECT_EQ(mat.at_unsafe(0, 0), 10);
+  EXPECT_EQ(mat.at_unsafe(1, 0), 20);
+  EXPECT_EQ(mat.at_unsafe(2, 0), 30);
+  EXPECT_EQ(mat.at_unsafe(3, 0), 40);
+}

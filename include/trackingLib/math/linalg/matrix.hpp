@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <stdexcept>
 #include <type_traits>
 
 namespace tracking
@@ -19,8 +20,20 @@ template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::FromList(
     const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix
 {
-  assert(list.size() == RowsInMem);
-  assert(list.begin()->size() == ColsInMem);
+  // Validate row count
+  if (list.size() != static_cast<std::size_t>(RowsInMem))
+  {
+    throw std::runtime_error("FromList: expected " + std::to_string(RowsInMem) + " rows, got " + std::to_string(list.size()));
+  }
+
+  // Validate column count for each row
+  for (const auto& row : list)
+  {
+    if (row.size() != static_cast<std::size_t>(ColsInMem))
+    {
+      throw std::runtime_error("FromList: expected " + std::to_string(ColsInMem) + " columns, got " + std::to_string(row.size()));
+    }
+  }
 
   Matrix tmp;
   auto   iter = tmp.data().begin();
