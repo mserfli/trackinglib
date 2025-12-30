@@ -4,6 +4,7 @@
 #include "math/linalg/matrix.h"
 
 #include <algorithm>
+#include <cmath>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -164,6 +165,19 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator==(
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator!=(const Matrix& other) const -> bool
+{
+  return !(*this == other);
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator!=(
+    const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool
+{
+  return !(*this == other);
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matrix& other)
 {
   const auto&  otherData = other.data();
@@ -269,6 +283,28 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-(
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+(ValueType_ scalar) const -> Matrix
+{
+  Matrix res{*this};
+  for (auto& val : res.data())
+  {
+    val += scalar;
+  }
+  return res;
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-(ValueType_ scalar) const -> Matrix
+{
+  Matrix res{*this};
+  for (auto& val : res.data())
+  {
+    val -= scalar;
+  }
+  return res;
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(ValueType_ scalar) const -> Matrix
 {
   Matrix res{*this};
@@ -330,6 +366,18 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::minmax() const -> std
 {
   const auto [min, max] = std::minmax_element(data().begin(), data().end());
   return std::make_tuple(*min, *max);
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <typename FloatType, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool>>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::frobenius_norm() const -> ValueType_
+{
+  ValueType_ sum_of_squares = static_cast<ValueType_>(0);
+  for (const auto& val : data())
+  {
+    sum_of_squares += val * val;
+  }
+  return std::sqrt(sum_of_squares);
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>

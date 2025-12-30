@@ -113,6 +113,36 @@ protected:
     }
   }
 
+  void test_op_add_scalar_Success()
+  {
+    IntMatType mat{_testIntMat};
+    IntMatType res{};
+
+    // call UUT
+    res = mat + 2;
+
+    const sint32 size = _testIntMat._data.size();
+    for (auto idx = 0; idx < size; ++idx)
+    {
+      EXPECT_EQ(res._data[idx], _testIntMat._data[idx] + 2);
+    }
+  }
+
+  void test_op_sub_scalar_Success()
+  {
+    IntMatType mat{_testIntMat};
+    IntMatType res{};
+
+    // call UUT
+    res = mat - 2;
+
+    const sint32 size = _testIntMat._data.size();
+    for (auto idx = 0; idx < size; ++idx)
+    {
+      EXPECT_EQ(res._data[idx], _testIntMat._data[idx] - 2);
+    }
+  }
+
   void test_op_div_scalar_inplace_IntSuccess()
   {
     IntMatType mat{_testIntMat};
@@ -621,6 +651,11 @@ TYPED_TEST(GTestMatrix, op_mul__Success) // NOLINT
 {
   GTestMatrix<TypeParam>::test_op_mul_scalar_Success();
   GTestMatrix<TypeParam>::test_op_mul_mat_Success();
+}
+
+TYPED_TEST(GTestMatrix, op_sub_scalar__Success) // NOLINT
+{
+  GTestMatrix<TypeParam>::test_op_sub_scalar_Success();
 }
 
 TYPED_TEST(GTestMatrix, op_div__FailDivByZero) // NOLINT

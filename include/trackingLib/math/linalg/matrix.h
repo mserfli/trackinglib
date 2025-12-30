@@ -88,6 +88,16 @@ public:
   /// \param[in] other  matrix with opposite memory layout
   /// \return true   if all elements are equal
   auto operator==(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
+
+  /// \brief Inequality comparison to equal matrix type
+  /// \param[in] other  matrix of equal type
+  /// \return true   if any element differs
+  auto operator!=(const Matrix& other) const -> bool;
+
+  /// \brief Inequality comparison to matrix of equal size, but opposite memory layout
+  /// \param[in] other  matrix with opposite memory layout
+  /// \return true   if any element differs
+  auto operator!=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
   // <---
 
   //////////////////////////////////////////////////
@@ -138,6 +148,16 @@ public:
   /// \return Matrix   result of Self - Other
   template <bool MajorOrder_>
   auto operator-(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
+
+  /// \brief Calculates Self + scalar (adds scalar to each element)
+  /// \param[in] scalar  a scalar value
+  /// \return Matrix   result of Self + scalar
+  auto operator+(ValueType_ scalar) const -> Matrix;
+
+  /// \brief Calculates Self - scalar (subtracts scalar from each element)
+  /// \param[in] scalar  a scalar value
+  /// \return Matrix   result of Self - scalar
+  auto operator-(ValueType_ scalar) const -> Matrix;
 
   /// \brief Calculates Self * scalar
   /// \param[in] scalar  a scalar value
@@ -190,6 +210,12 @@ public:
   /// \brief Get min and max value of the matrix
   /// \return tuple of min, max value
   auto minmax() const -> std::tuple<ValueType_, ValueType_>;
+
+  /// \brief Calculate Frobenius norm (L2 norm): sqrt(sum of squared elements)
+  /// Only available for floating-point types
+  /// \return ValueType_   the Frobenius norm of the matrix
+  template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
+  auto frobenius_norm() const -> ValueType_;
 
   /// \brief Fast transpose without changing the layout
   /// \return const transpose_type&   const reference to same data as Self, but differently interpreted
