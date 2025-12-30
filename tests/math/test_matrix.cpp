@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 #include "base/atomic_types.h"
-#include "trackingLib/math/linalg/matrix.hpp" // IWYU pragma: keep
+#include "math/linalg/square_matrix.h"
+#include "trackingLib/math/linalg/matrix.hpp"        // IWYU pragma: keep
+#include "trackingLib/math/linalg/square_matrix.hpp" // IWYU pragma: keep
 
 #define TEST_MATRIX_WITH_VISUAL_INSPECTION(X) // X.print()
 
@@ -980,13 +982,8 @@ TEST(GTestMatrixSpecial, op_at__NegativeIndices) // NOLINT
 // Matrix Multiplication with Different Dimensions
 TEST(GTestMatrixSpecial, op_mul__SquareMatrices) // NOLINT
 {
-  using MatType = tracking::math::Matrix<sint32, 3, 3, true>;
-  auto identity = MatType::Zeros();
-  // Create identity matrix
-  for (sint32 i = 0; i < 3; ++i)
-  {
-    identity.at_unsafe(i, i) = 1;
-  }
+  using MatType       = tracking::math::Matrix<sint32, 3, 3, true>;
+  const auto identity = tracking::math::SquareMatrix<sint32, 3, true>::Identity();
 
   auto ones   = MatType::Ones();
   auto result = identity * ones;
@@ -997,18 +994,11 @@ TEST(GTestMatrixSpecial, op_mul__SquareMatrices) // NOLINT
 
 TEST(GTestMatrixSpecial, op_mul__RowVectorTimesMatrix) // NOLINT
 {
-  using RowVecType = tracking::math::Matrix<sint32, 1, 3, true>;
-  using MatType    = tracking::math::Matrix<sint32, 3, 3, true>;
-
-  const auto row = RowVecType::FromList({
+  using RowVecType    = tracking::math::Matrix<sint32, 1, 3, true>;
+  const auto row      = RowVecType::FromList({
       {1, 2, 3},
   });
-
-  auto identity = MatType::Zeros();
-  for (sint32 i = 0; i < 3; ++i)
-  {
-    identity.at_unsafe(i, i) = 1;
-  }
+  const auto identity = tracking::math::SquareMatrix<sint32, 3, true>::Identity();
 
   const auto result = row * identity;
   EXPECT_TRUE(result == row);
@@ -1016,20 +1006,13 @@ TEST(GTestMatrixSpecial, op_mul__RowVectorTimesMatrix) // NOLINT
 
 TEST(GTestMatrixSpecial, op_mul__MatrixTimesColumnVector) // NOLINT
 {
-  using MatType    = tracking::math::Matrix<sint32, 3, 3, true>;
-  using ColVecType = tracking::math::Matrix<sint32, 3, 1, true>;
-
-  auto identity = MatType::Zeros();
-  for (sint32 i = 0; i < 3; ++i)
-  {
-    identity.at_unsafe(i, i) = 1;
-  }
-
-  const auto col = ColVecType::FromList({
+  using ColVecType    = tracking::math::Matrix<sint32, 3, 1, true>;
+  const auto col      = ColVecType::FromList({
       {5},
       {10},
       {15},
   });
+  const auto identity = tracking::math::SquareMatrix<sint32, 3, true>::Identity();
 
   const auto result = identity * col;
   EXPECT_TRUE(result == col);
@@ -1066,18 +1049,14 @@ TEST(GTestMatrixSpecial, op_minus_equal__Self) // NOLINT
 }
 
 // Frobenius Norm Tests (floating-point only)
-TEST(GTestMatrixSpecial, frobenius_norm__IdentityMatrix) // NOLINT
+TEST(GTestMatrixSpecial, frobenius_norm__OneMatrix) // NOLINT
 {
   using MatType = tracking::math::Matrix<float32, 3, 3, true>;
-  auto identity = MatType::Zeros();
-  for (sint32 i = 0; i < 3; ++i)
-  {
-    identity.at_unsafe(i, i) = 1.0F;
-  }
+  auto ones     = MatType::Ones();
 
-  const auto norm = identity.frobenius_norm();
-  // Frobenius norm of 3x3 identity is sqrt(3)
-  EXPECT_FLOAT_EQ(norm, std::sqrt(3.0F));
+  const auto norm = ones.frobenius_norm();
+  // Frobenius norm of 3x3 identity is sqrt(9) = 3
+  EXPECT_FLOAT_EQ(norm, 3.0F);
 }
 
 TEST(GTestMatrixSpecial, frobenius_norm__ZeroMatrix) // NOLINT
