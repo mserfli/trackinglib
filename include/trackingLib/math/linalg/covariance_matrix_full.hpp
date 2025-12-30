@@ -23,12 +23,9 @@ inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expe
     // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
     const auto u = L.solve(CovarianceMatrixFull::Identity());
     // L'*Ainv = u     -> solve for Ainv using backward substitution
-    auto s = L.transpose().solve(u);
-
-    // symmetrize
-    s += s.transpose();
-    s *= static_cast<FloatType_>(0.5);
-    return CovarianceMatrixFull{SquareMatrix{std::move(s)}};
+    math::SquareMatrix cov{L.transpose().solve(u)};
+    cov.symmetrize();
+    return CovarianceMatrixFull{SquareMatrix{std::move(cov)}};
   }
   return tl::unexpected<Errors>{retVal.error()};
 }
@@ -40,12 +37,10 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
   assert(this->isSymmetric() && "Covariance currently not symmetric");
   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
   // for normal covariance matrix P, the calculation is P = A*P*A'
-  const auto paT = this->operator*(A.transpose());
-  auto       res = A.operator*(paT);
-  // symmetrize
-  res += res.transpose();
-  res *= static_cast<FloatType_>(0.5);
-  *this = CovarianceMatrixFull{SquareMatrix{std::move(res)}};
+  const auto   paT = this->operator*(A.transpose());
+  SquareMatrix cov{A.operator*(paT)};
+  cov.symmetrize();
+  *this = CovarianceMatrixFull{SquareMatrix{std::move(cov)}};
 }
 
 template <typename FloatType_, sint32 Size_>

@@ -256,6 +256,13 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric() const ->
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline void SquareMatrix<ValueType_, Size_, IsRowMajor_>::symmetrize()
+{
+  *this += this->transpose();
+  *this *= static_cast<ValueType_>(0.5);
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::hasStrictlyPositiveDiagonalElems() const -> bool
 {
   sint32 j{0};

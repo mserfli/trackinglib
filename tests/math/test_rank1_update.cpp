@@ -79,7 +79,6 @@ TEST(Rank1Update, udu_downdate) // NOLINT
   // call UUT
   tracking::math::Rank1Update<float64, 4, true>::run(U, D, -sigma, w);
   auto cov = U * D * U.transpose();
-  cov.print();
 
   for (auto row = 0; row < 4; ++row)
   {

@@ -77,6 +77,10 @@ public:
   /// \return tl::expected<CovarianceMatrixFactored, Errors>
   auto inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>;
 
+  /// \brief Calculates the inverse as composed covariance
+  /// \return compose_type
+  auto composed_inverse() const -> compose_type;
+
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A   A square matrix which is transforming P in same space
   template <bool IsRowMajor_>

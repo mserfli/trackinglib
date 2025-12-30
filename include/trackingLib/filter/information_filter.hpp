@@ -34,11 +34,9 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
   // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric
   const auto H =
       math::SquareMatrix<FloatType_, DimX_>(math::SquareMatrix<FloatType_, DimX_>::Identity() + M * (G * Q * G.transpose()));
-  auto s = H.qrSolve(M);
-  // symmetrize
-  s += s.transpose();
-  s *= static_cast<FloatType_>(0.5);
-  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(s)};
+  math::SquareMatrix cov = H.qrSolve(M);
+  cov.symmetrize();
+  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(cov)};
 }
 
 template <typename FloatType_>
@@ -51,11 +49,10 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
   // Information Formulation of the UDU Kalman Filter
   // Christopher D’Souza and Renato Zanetti
   // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
-
   const math::SquareMatrix<FloatType_, DimX_, false>  invA     = A.inverse();
   const math::Matrix<FloatType_, DimX_, DimQ_, false> invAMulG = invA * G;
 
-  // apply DimQ times the AgeeTurner Rank-1 update P = P - c*x*x'
+  // apply DimQ times the Rank-1 update P = P - c*x*x'
   // with Gi=inv(A)*G(:,i) and ci=inv(Gi'*Y*Gi+inv(Q(i,i))) is (1x1) and x=Y*Gi is (nx1)
   FloatType_                      ci;
   math::Vector<FloatType_, DimX_> xi;
@@ -66,10 +63,12 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
     const auto    fullY{Y()};
     xi = fullY * Gi;
     ci = -1 / (1 / Q.at_unsafe(i) + Gi * xi);
+
     Y.rank1Update(ci, xi);
   }
-  // propagate factorization by A
-  Y.apaT(A); // implementation of apaT handles automatically the inverse covariance case
+  // propagate factorization by inv(A)'
+  const math::SquareMatrix<FloatType_, DimX_, true> invAT{invA.transpose()};
+  Y.apaT(invAT);
 }
 
 } // namespace filter

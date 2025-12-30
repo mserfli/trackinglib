@@ -45,20 +45,6 @@ public:
   {
   }
 
-  /// \brief Construct a new Square Matrix<FloatType_, Size from transposed base class object
-  /// \param[in] other A transposed base class object
-  explicit SquareMatrix(const typename Matrix::transpose_type& other)
-      : Matrix{other.transpose()}
-  {
-  }
-
-  /// \brief Move construct a new Square Matrix<FloatType_, Size from transposed base class object
-  /// \param[in] other A transposed base class object
-  explicit SquareMatrix(typename Matrix::transpose_type&& other) noexcept
-      : Matrix{std::move(other.transpose())}
-  {
-  }
-
   /// \brief Construct a new Square Matrix object
   /// \param[in] other A diagonal matrix
   SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other); // NOLINT(google-explicit-constructor)
@@ -109,6 +95,9 @@ public:
   /// \brief Check for symmetry of the matrix
   /// \return true
   [[nodiscard]] auto isSymmetric() const -> bool;
+
+  /// \brief Symmetrize the matrix by averaging it with its transpose
+  void symmetrize();
 
 protected:
   /// \brief Check whether the diagonal elements of the matrix are strictly positive
