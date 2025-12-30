@@ -125,10 +125,8 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::at_unsafe(sint32 row, s
 template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()() const -> compose_type
 {
-  auto cov = _u * _d * _u.transpose();
-  // symmetrize
-  cov += cov.transpose();
-  cov *= static_cast<FloatType_>(0.5);
+  math::SquareMatrix cov{_u * _d * _u.transpose()};
+  cov.symmetrize();
   return compose_type{std::move(cov)};
 }
 
@@ -155,12 +153,10 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::inverse() const -> tl::
 template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFactored<FloatType_, Size_>::composed_inverse() const -> compose_type
 {
-  auto inv_u = _u.inverse();
-  auto inv_d = _d.inverse();
-  auto cov   = typename compose_type::SquareMatrix{inv_u.transpose() * inv_d * inv_u};
-  // symmetrize
-  cov += cov.transpose();
-  cov *= static_cast<FloatType_>(0.5);
+  auto               inv_u = _u.inverse();
+  auto               inv_d = _d.inverse();
+  math::SquareMatrix cov{inv_u.transpose() * inv_d * inv_u};
+  cov.symmetrize();
   return compose_type{std::move(cov)};
 }
 

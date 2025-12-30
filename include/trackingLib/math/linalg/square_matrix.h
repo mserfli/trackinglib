@@ -96,6 +96,9 @@ public:
   /// \return true
   [[nodiscard]] auto isSymmetric() const -> bool;
 
+  /// \brief Symmetrize the matrix by averaging it with its transpose
+  void symmetrize();
+
 protected:
   /// \brief Check whether the diagonal elements of the matrix are strictly positive
   /// \return true
