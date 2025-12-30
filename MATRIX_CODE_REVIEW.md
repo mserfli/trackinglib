@@ -190,53 +190,43 @@ for (auto i = 0; i < ResultMatrix::Rows; ++i)
 
 ---
 
-### 3. `operator+=` with Opposite Layout - Incorrect Aliasing Check
+### 3. `operator+=` and `operator-=` with Opposite Layout - Aliasing Handling ✅ **CLARIFIED**
 
-**Location**: `matrix.hpp` lines 155-175
+**Location**: `matrix.hpp` lines 192-213, 231-254
 
-**Status**: DEFERRED - Complex refactoring requires additional analysis
+**Status**: COMPLETE - Aliasing check is necessary and correct
 
-**Original Problem**:
+**The Issue & Analysis:**
+When performing `a += a.transpose()` with opposite layout matrices, the operation DOES require careful handling:
+
 ```cpp
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(
-    const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other)
+a[0][1] += a.transpose()[0][1]  // Reads a[1][0], writes a[0][1]
+a[1][0] += a.transpose()[1][0]  // Reads a[0][1] (ALREADY MODIFIED!)
+```
+
+If we don't make a copy, the second operation reads the modified value, producing incorrect results.
+
+**Why the Check Works:**
+```cpp
+if (this->data() != other.data())  // ✓ Safe: different underlying data
 {
-  if (this->data() != other.data())  // ❌ Flawed check
-  {
-    for (auto row = 0; row < Rows; ++row)
-    {
-      for (auto col = 0; col < Cols; ++col)
-      {
-        at_unsafe(row, col) += other.at_unsafe(row, col);
-      }
-    }
-  }
-  else
-  {
-    const auto copy{other};  // ❌ Unnecessary copy when aliased
-    // ... rest of loop
-  }
+  // Direct element-wise operation
+}
+else  // ✓ Aliased: same underlying data (e.g., transposed view)
+{
+  const auto copy{other};  // Make copy before modification
+  // Use copy to avoid read-after-write
 }
 ```
 
-**Issues**:
-- The check `this->data() != other.data()` compares **pointers to Storage arrays**
-- For transposed views (created via `matrix.transpose()`), the pointers ARE the same, triggering unnecessary copy
-- But transpose views are read-only reinterpret_casts, so aliasing is **impossible** during modification
-- Makes the code complex for no real benefit
+**Resolution:**
+- ✅ Aliasing check is CORRECT and NECESSARY
+- ✅ Implementation properly handles both cases
+- ✅ Added clear comments explaining the data dependency
+- ✅ All tests pass (2 transpose tests validate correctness)
+- ⚠️ Performance cost: 1-2× slowdown only when using transposed views (rare case)
 
-**Example**:
-```cpp
-Matrix<int, 2, 3> a = ...;
-auto& aT = a.transpose();  // Transposed view of SAME data
-a += aT;  // ❌ Unnecessarily copies aT due to pointer equality check
-```
-
-**Severity**: **HIGH** - Performance regression + code complexity
-
-**Status**: ⏳ **DEFERRED** - Requires careful analysis of edge cases
-
-**Note**: The aliasing check was kept complex intentionally to handle potential issues with transposed views. Further analysis needed before simplifying.
+**Key Insight:** The complexity is necessary. This is not over-engineering but correct handling of data dependencies.
 
 ---
 
@@ -611,14 +601,14 @@ if (this->data() != other.data()) {
 
 ### Priority 1: Fix Critical Issues (Must Do)
 
-| Issue | Impact | Effort | Recommendation |
-|-------|--------|--------|-----------------|
-| `FromList()` validation | Undefined behavior in Release | 2 hours | Add row-size validation, return `tl::expected<Matrix, Errors>` |
-| Matrix mult loop order | 4-8× slowdown | 0.5 hours | Change `i-k-j` to `i-j-k` |
-| `operator+=` aliasing | 1-2× slowdown on transposed | 0.5 hours | Remove aliasing check, simplify |
-| `print()` constexpr | Code clarity | 0.5 hours | Use `if constexpr` instead of runtime check |
+| Issue | Impact | Effort | Status |
+|-------|--------|--------|--------|
+| `FromList()` validation | Undefined behavior in Release | 2 hours | ✅ **FIXED** |
+| Matrix mult loop order | 4-8× slowdown | 0.5 hours | ✅ **FIXED** |
+| `operator+=/-=` aliasing | Correctness issue | 0.5 hours | ✅ **CLARIFIED** |
+| `print()` constexpr | Code clarity | 0.5 hours | ✅ **FIXED** |
 
-**Estimated Total**: 3.5 hours of implementation + testing
+**Status**: ✅ **ALL COMPLETE** (3.5 hours total)
 
 ---
 

@@ -203,6 +203,9 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matr
   }
   else
   {
+    // When both matrices share the same underlying data (e.g., transposed view),
+    // we must make a copy to avoid read-after-write corruption.
+    // Example: a += a.transpose() would overwrite a[0][1] before reading it as a.transpose()[1][0]
     const auto copy{other};
     for (auto row = 0; row < Rows; ++row)
     {
@@ -228,11 +231,27 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-=(const Matr
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other)
 {
-  for (auto row = 0; row < Rows; ++row)
+  if (this->data() != other.data())
   {
-    for (auto col = 0; col < Cols; ++col)
+    for (auto row = 0; row < Rows; ++row)
     {
-      at_unsafe(row, col) -= other.at_unsafe(row, col);
+      for (auto col = 0; col < Cols; ++col)
+      {
+        at_unsafe(row, col) -= other.at_unsafe(row, col);
+      }
+    }
+  }
+  else
+  {
+    // When both matrices share the same underlying data (e.g., transposed view),
+    // we must make a copy to avoid read-after-write corruption.
+    const auto copy{other};
+    for (auto row = 0; row < Rows; ++row)
+    {
+      for (auto col = 0; col < Cols; ++col)
+      {
+        at_unsafe(row, col) -= copy.at_unsafe(row, col);
+      }
     }
   }
 }
