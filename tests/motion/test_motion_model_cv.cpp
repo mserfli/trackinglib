@@ -36,6 +36,7 @@ struct TestPredictCV
     FilterType<FloatType>               filter{};
 
     // clang-format off
+    const int steps = 3;
     auto vec = MM::StateVec::FromList({10, 2, 0, 0});
     auto cov = MM::StateCov::FromList({
       {5, 0, 0, 0.0}, 
@@ -43,12 +44,12 @@ struct TestPredictCV
       {0, 0, 1, 0.0}, 
       {0, 0, 0, 0.1}
     });
-    auto expVec = MM::StateVec::FromList({10.19999999999999928946, 2, 0, 0});
+    auto expVec = MM::StateVec::FromList({10.6, 2, 0, 0});
     auto expCov = MM::StateCov::FromList({
-      {+5.01025000000000009237, +0.10500000000000000999, +0.00000000000000000000, +0.00000000000000000000}, 
-      {+0.10500000000000000999, +1.10000000000000008882, +0.00000000000000000000, +0.00000000000000000000}, 
-      {+0.00000000000000000000, +0.00000000000000000000, +1.00124999999999997335, +0.01500000000000000291}, 
-      {+0.00000000000000000000, +0.00000000000000000000, +0.01500000000000000291, +0.20000000000000001110}
+      {+5.09875, +0.34500, +0.00000, +0.00000},
+      {+0.34500, +1.30000, +0.00000, +0.00000},
+      {+0.00000, +0.00000, +1.01775, +0.07500},
+      {+0.00000, +0.00000, +0.07500, +0.40000}
     });
     // clang-format on
     init(cov, expCov, filter);
@@ -56,12 +57,13 @@ struct TestPredictCV
     // instantiate MM with mocked EgoMotion compensation
     testing::NiceMock<test::MotionModelNoEgoMotionMock<MM>> mm{vec, cov};
     mm.delegate();
-    EXPECT_CALL(mm, compensateEgoMotion).Times(1);
+    EXPECT_CALL(mm, compensateEgoMotion).Times(steps);
 
     // call UUT
-    mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
-    // mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
-    // mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
+    for (auto i = 0; i < steps; ++i)
+    {
+      mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
+    }
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
