@@ -63,9 +63,6 @@ struct TestPredictCV
     // mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
     // mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
 
-    mm._vec.print();
-    mm._cov.print();
-
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
       EXPECT_FLOAT_EQ(mm._vec.at_unsafe(row), expVec.at_unsafe(row));

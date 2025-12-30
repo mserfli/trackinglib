@@ -34,12 +34,12 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
   // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric
   const auto H =
       math::SquareMatrix<FloatType_, DimX_>(math::SquareMatrix<FloatType_, DimX_>::Identity() + M * (G * Q * G.transpose()));
-  auto s = H.qrSolve(M);
-  s.print();
+  auto cov = H.qrSolve(M);
+
   // symmetrize
-  s += s.transpose();
-  s *= static_cast<FloatType_>(0.5);
-  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(s)};
+  cov += cov.transpose();
+  cov *= static_cast<FloatType_>(0.5);
+  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(cov)};
 }
 
 template <typename FloatType_>
@@ -49,12 +49,6 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
                                                       const math::Matrix<FloatType_, DimX_, DimQ_>&      G,
                                                       const math::DiagonalMatrix<FloatType_, DimQ_>&     Q)
 {
-  Y.print();
-  A.print();
-  G.print();
-  Q.print();
-
-
   // Information Formulation of the UDU Kalman Filter
   // Christopher D’Souza and Renato Zanetti
   // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
@@ -73,14 +67,11 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFact
     xi = fullY * Gi;
     ci = -1 / (1 / Q.at_unsafe(i) + Gi * xi);
 
-    std::cout << "ci=" << ci << std::endl;
-    xi.print();
     Y.rank1Update(ci, xi);
   }
-  Y._u.print();
-  Y._d.print();
-  // propagate factorization by A
-  Y.apaT(A); // implementation of apaT handles automatically the inverse covariance case
+  // propagate factorization by inv(A)'
+  const math::SquareMatrix<FloatType_, DimX_, true> invAT{invA.transpose()};
+  Y.apaT(invAT);
 }
 
 } // namespace filter

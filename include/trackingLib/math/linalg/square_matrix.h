@@ -45,21 +45,6 @@ public:
   {
   }
 
-  // TODO do we really need these ctors given the transposed type?
-  /// \brief Construct a new Square Matrix<FloatType_, Size from transposed base class object
-  /// \param[in] other A transposed base class object
-  explicit SquareMatrix(const typename Matrix::transpose_type& other)
-      : Matrix{other.transpose()}
-  {
-  }
-
-  /// \brief Move construct a new Square Matrix<FloatType_, Size from transposed base class object
-  /// \param[in] other A transposed base class object
-  explicit SquareMatrix(typename Matrix::transpose_type&& other) noexcept
-      : Matrix{std::move(other.transpose())}
-  {
-  }
-
   /// \brief Construct a new Square Matrix object
   /// \param[in] other A diagonal matrix
   SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other); // NOLINT(google-explicit-constructor)
