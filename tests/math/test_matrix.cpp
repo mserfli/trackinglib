@@ -121,7 +121,7 @@ protected:
     IntMatType res{};
 
     // call UUT
-    res = mat + 2;
+    res = 2 + mat;
 
     const sint32 size = _testIntMat._data.size();
     for (auto idx = 0; idx < size; ++idx)

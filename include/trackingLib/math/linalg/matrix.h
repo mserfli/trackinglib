@@ -320,6 +320,21 @@ TEST_REMOVE_PRIVATE:
 //////////////////////////////////////////////////
 // non member operations  --->
 
+/// \brief Calculates Scalar + Matrix
+/// \tparam ValueType_
+/// \tparam Rows_
+/// \tparam Cols_
+/// \tparam IsRowMajor_
+/// \param[in] scalar
+/// \param[in] mat
+/// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+static auto operator+(ValueType_                                     scalar,
+                      Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+{
+  return mat + scalar;
+}
+
 /// \brief Calculates Scalar * Matrix
 /// \tparam ValueType_
 /// \tparam Rows_
