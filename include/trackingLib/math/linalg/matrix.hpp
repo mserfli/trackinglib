@@ -98,8 +98,8 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::print() const
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_
 {
-  assert((0 <= row) && (row < Rows_));
-  assert((0 <= col) && (col < Cols_));
+  assert((0 <= row) && (row < Rows));
+  assert((0 <= col) && (col < Cols));
   const auto idx = IsRowMajor_ ? (row * ColsInMem) + col : (col * ColsInMem) + row;
   return data()[idx];
 }
@@ -107,8 +107,8 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row,
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) -> ValueType_&
 {
-  assert((0 <= row) && (row < Rows_));
-  assert((0 <= col) && (col < Cols_));
+  assert((0 <= row) && (row < Rows));
+  assert((0 <= col) && (col < Cols));
   const auto idx = IsRowMajor_ ? (row * ColsInMem) + col : (col * ColsInMem) + row;
   return data()[idx];
 }
@@ -467,8 +467,8 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setBlock(
   assert((srcRowBeg + srcRowCount <= SrcRowSize_) && "copy to many rows from src");
   assert((srcColBeg + srcColCount <= SrcColSize_) && "copy to many cols from src");
 
-  assert((dstRowBeg + srcRowCount <= Rows_) && "copy to many rows to dst");
-  assert((dstColBeg + srcColCount <= Cols_) && "copy to many cols to dst");
+  assert((dstRowBeg + srcRowCount <= Rows) && "copy to many rows to dst");
+  assert((dstColBeg + srcColCount <= Cols) && "copy to many cols to dst");
 
   for (sint32 row = 0; row < srcRowCount; ++row)
   {

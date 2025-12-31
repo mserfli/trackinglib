@@ -181,15 +181,16 @@ static auto operator*(ValueType_ scalar, const Matrix<...>& mat) -> Matrix<...>
 
 ### Priority 3: Code Quality (Maintainability)
 
-- [ ] **Standardize use of `Rows` vs `Rows_`**
+- [x] **Standardize use of `Rows` vs `Rows_`**
   - Decide on convention: use static constexpr members (`Rows`, `Cols`) consistently
   - Update all implementations to follow convention
   - **Files**: [`matrix.hpp`](../include/trackingLib/math/linalg/matrix.hpp)
 
-- [ ] **Consider refactoring transpose implementation**
+- [x] **Consider refactoring transpose implementation**
   - Current `reinterpret_cast` approach is clever but potentially UB
   - Consider alternative: return a lightweight view class
   - Or: Document the aliasing requirements clearly
+  - **Decision**: Kept `reinterpret_cast` implementation as per user feedback. The `MatrixView` class exists but refactoring `transpose()` to use it would be a significant change. The current implementation is efficient and aliasing issues are now handled by the operators.
   - **Files**: [`matrix.hpp:403-418`](../include/trackingLib/math/linalg/matrix.hpp:403)
 
 - [ ] **Add Doxygen documentation for all public methods**
@@ -198,7 +199,7 @@ static auto operator*(ValueType_ scalar, const Matrix<...>& mat) -> Matrix<...>
   - Document the aliasing behavior of transpose
   - **Files**: [`matrix.h`](../include/trackingLib/math/linalg/matrix.h)
 
-- [ ] **Consider adding `[[nodiscard]]` attributes**
+- [x] **Consider adding `[[nodiscard]]` attributes**
   - Add to methods that return values (e.g., `operator+`, `operator*`)
   - Prevents accidental misuse like `mat1 + mat2;` (result ignored)
   - **Files**: [`matrix.h`](../include/trackingLib/math/linalg/matrix.h)
