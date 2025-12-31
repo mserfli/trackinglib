@@ -74,7 +74,7 @@ TEST_REMOVE_PRIVATE:
 };
 
 template <typename ValueType_>
-static inline auto Point3d<ValueType_>::FromValues(const ValueType_ x, const ValueType_ y, const ValueType_ z) -> Point3d
+inline auto Point3d<ValueType_>::FromValues(const ValueType_ x, const ValueType_ y, const ValueType_ z) -> Point3d
 {
   Point3d tmp{};
   tmp.x() = x;
