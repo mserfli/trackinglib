@@ -9,11 +9,11 @@ namespace math
 {
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline MatrixView<FloatType, Rows, Cols, true>::MatrixView(const Matrix<FloatType, Rows, Cols>& matrix,
-                                                           const sint32                         rowBegin,
-                                                           const sint32                         colBegin,
-                                                           const sint32                         rowEnd,
-                                                           const sint32                         colEnd)
+inline MatrixView<FloatType, Rows, Cols>::MatrixView(const Matrix<FloatType, Rows, Cols>& matrix,
+                                                     const sint32                         rowBegin,
+                                                     const sint32                         colBegin,
+                                                     const sint32                         rowEnd,
+                                                     const sint32                         colEnd)
     : _matrix{matrix}
     , _rowBegin{rowBegin}
     , _colBegin{colBegin}
@@ -28,15 +28,15 @@ inline MatrixView<FloatType, Rows, Cols, true>::MatrixView(const Matrix<FloatTyp
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto MatrixView<FloatType, Rows, Cols, true>::operator()(sint32 row, sint32 col) const -> FloatType
+inline auto MatrixView<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) const -> FloatType
 {
   assert(row < _rowCount);
-  assert(col < _colBegin);
-  return _matrix(_rowBegin + row, _colBegin + col);
+  assert(col < _colCount);
+  return _matrix.at_unsafe(_rowBegin + row, _colBegin + col);
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto MatrixView<FloatType, Rows, Cols, true>::operator+(const Matrix<FloatType, Rows, Cols>& other) const
+inline auto MatrixView<FloatType, Rows, Cols>::operator+(const Matrix<FloatType, Rows, Cols>& other) const
     -> Matrix<FloatType, Rows, Cols>
 {
   auto result{other};
@@ -44,14 +44,14 @@ inline auto MatrixView<FloatType, Rows, Cols, true>::operator+(const Matrix<Floa
   {
     for (auto col = 0; col < Cols; ++col)
     {
-      result(row, col) += this->operator()(row, col);
+      result.at_unsafe(row, col) += this->operator()(row, col);
     }
   }
   return result;
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto MatrixView<FloatType, Rows, Cols, true>::operator-(const Matrix<FloatType, Rows, Cols>& other) const
+inline auto MatrixView<FloatType, Rows, Cols>::operator-(const Matrix<FloatType, Rows, Cols>& other) const
     -> Matrix<FloatType, Rows, Cols>
 {
   auto result{other};
@@ -59,7 +59,7 @@ inline auto MatrixView<FloatType, Rows, Cols, true>::operator-(const Matrix<Floa
   {
     for (auto col = 0; col < Cols; ++col)
     {
-      result(row, col) -= this->operator()(row, col);
+      result.at_unsafe(row, col) -= this->operator()(row, col);
     }
   }
   return result;
@@ -67,7 +67,7 @@ inline auto MatrixView<FloatType, Rows, Cols, true>::operator-(const Matrix<Floa
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
 template <sint32 Cols2>
-inline auto MatrixView<FloatType, Rows, Cols, true>::operator*(const Matrix<FloatType, Cols, Cols2>& other) const
+inline auto MatrixView<FloatType, Rows, Cols>::operator*(const Matrix<FloatType, Cols, Cols2>& other) const
     -> Matrix<FloatType, Rows, Cols2>
 {
   Matrix<FloatType, Rows, Cols> result;
@@ -78,7 +78,7 @@ inline auto MatrixView<FloatType, Rows, Cols, true>::operator*(const Matrix<Floa
     {
       for (auto j = 0; j < Cols2; ++j)
       {
-        result(i, j) += this->operator()(i, k) * other(k, j);
+        result.at_unsafe(i, j) += this->operator()(i, k) * other.at_unsafe(k, j);
       }
     }
   }
@@ -86,115 +86,116 @@ inline auto MatrixView<FloatType, Rows, Cols, true>::operator*(const Matrix<Floa
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto MatrixView<FloatType, Rows, Cols, true>::operator+(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>
+inline auto MatrixView<FloatType, Rows, Cols>::operator+(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>
 {
   Matrix<FloatType, Rows, Cols> result;
-  for (auto row = 0; row < Rows; ++row)
+  for (auto row = 0; row < _rowCount; ++row)
   {
-    for (auto col = 0; col < Cols; ++col)
+    for (auto col = 0; col < _colCount; ++col)
     {
-      result(row, col) = this->operator()(row, col) + other;
+      result.at_unsafe(row, col) = this->operator()(row, col) + other;
     }
   }
   return result;
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto MatrixView<FloatType, Rows, Cols, true>::operator-(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>
+inline auto MatrixView<FloatType, Rows, Cols>::operator-(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>
 {
   Matrix<FloatType, Rows, Cols> result;
-  for (auto row = 0; row < Rows; ++row)
+  for (auto row = 0; row < _rowCount; ++row)
   {
-    for (auto col = 0; col < Cols; ++col)
+    for (auto col = 0; col < _colCount; ++col)
     {
-      result(row, col) = this->operator()(row, col) - other;
+      result.at_unsafe(row, col) = this->operator()(row, col) - other;
     }
   }
   return result;
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto MatrixView<FloatType, Rows, Cols, true>::operator*(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>
+inline auto MatrixView<FloatType, Rows, Cols>::operator*(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>
 {
   Matrix<FloatType, Rows, Cols> result;
-  for (auto row = 0; row < Rows; ++row)
+  for (auto row = 0; row < _rowCount; ++row)
   {
-    for (auto col = 0; col < Cols; ++col)
+    for (auto col = 0; col < _colCount; ++col)
     {
-      result(row, col) = this->operator()(row, col) * other;
+      result.at_unsafe(row, col) = this->operator()(row, col) * other;
     }
   }
   return result;
 }
 
 template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto MatrixView<FloatType, Rows, Cols, true>::operator/(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>
+inline auto MatrixView<FloatType, Rows, Cols>::operator/(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>
 {
   Matrix<FloatType, Rows, Cols> result;
-  for (auto row = 0; row < Rows; ++row)
+  for (auto row = 0; row < _rowCount; ++row)
   {
-    for (auto col = 0; col < Cols; ++col)
+    for (auto col = 0; col < _colCount; ++col)
     {
-      result(row, col) = this->operator()(row, col) / other;
+      result.at_unsafe(row, col) = this->operator()(row, col) / other;
     }
   }
   return result;
 }
 
-template <typename FloatType, sint32 RowsA, sint32 ColsA, bool ExtMemA, sint32 RowsB, sint32 ColsB, bool ExtMemB>
-auto operator+(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a, const MatrixView<FloatType, RowsB, ColsB, ExtMemB>& b)
-    -> MatrixView<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB), false>
+template <typename FloatType, sint32 RowsA, sint32 ColsA, sint32 RowsB, sint32 ColsB>
+auto operator+(const MatrixView<FloatType, RowsA, ColsA>& a,
+               const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)>
 {
   assert(a.getRowCount() == b.getRowCount());
   assert(a.getColCount() == b.getColCount());
-  MatrixView<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB), false> result{0, 0, a.getRowCount(), a.getColCount()};
+  Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)> result{};
 
   for (auto row = 0; row < a.getRowCount(); ++row)
   {
     for (auto col = 0; col < a.getColCount(); ++col)
     {
-      result(row, col) = a(row, col) + b(row, col);
+      result.at_unsafe(row, col) = a(row, col) + b(row, col);
     }
   }
   return result;
 }
 
-template <typename FloatType, sint32 RowsA, sint32 ColsA, bool ExtMemA, sint32 RowsB, sint32 ColsB, bool ExtMemB>
-auto operator-(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a, const MatrixView<FloatType, RowsB, ColsB, ExtMemB>& b)
-    -> MatrixView<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB), false>
+template <typename FloatType, sint32 RowsA, sint32 ColsA, sint32 RowsB, sint32 ColsB>
+auto operator-(const MatrixView<FloatType, RowsA, ColsA>& a,
+               const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)>
 {
   assert(a.getRowCount() == b.getRowCount());
   assert(a.getColCount() == b.getColCount());
-  MatrixView<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB), false> result{0, 0, a.getRowCount(), a.getColCount()};
+  Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)> result{};
 
   for (auto row = 0; row < a.getRowCount(); ++row)
   {
     for (auto col = 0; col < a.getColCount(); ++col)
     {
-      result(row, col) = a(row, col) - b(row, col);
+      result.at_unsafe(row, col) = a(row, col) - b(row, col);
     }
   }
   return result;
 }
 
-template <typename FloatType, sint32 RowsA, sint32 ColsA, bool ExtMemA, sint32 RowsB, sint32 ColsB, bool ExtMemB>
-auto operator*(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a, const MatrixView<FloatType, RowsB, ColsB, ExtMemB>& b)
-    -> MatrixView<FloatType, RowsA, ColsB, false>
+template <typename FloatType, sint32 RowsA, sint32 ColsA, sint32 RowsB, sint32 ColsB>
+auto operator*(const MatrixView<FloatType, RowsA, ColsA>& a,
+               const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, RowsA, ColsB>
 {
   assert(a.getColCount() == b.getRowCount());
-  MatrixView<FloatType, RowsA, ColsB, false> result{0, 0, a.getRowCount(), b.getColCount()};
+  Matrix<FloatType, RowsA, ColsB> result{};
 
 #pragma omp parallel for private(i, j, k) shared(A, B, C)
-  for (auto i = 0; i < result.getRowCount(); ++i)
+  for (auto i = 0; i < a.getRowCount(); ++i)
   {
     for (auto k = 0; k < a.getColCount(); ++k)
     {
-      for (auto j = 0; j < result.getColCount(); ++j)
+      for (auto j = 0; j < b.getColCount(); ++j)
       {
-        result(i, j) += a(i, k) * b(k, j);
+        result.at_unsafe(i, j) += a(i, k) * b(k, j);
       }
     }
   }
+  return result;
 }
 
 } // namespace math

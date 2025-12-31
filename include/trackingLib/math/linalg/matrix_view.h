@@ -13,18 +13,12 @@ namespace math
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 class MatrixColumnView TEST_REMOVE_FINAL;
 
-template <typename FloatType, sint32 Rows, sint32 Cols, bool ExtMem = true>
-class MatrixView TEST_REMOVE_FINAL
-{
-};
-
 /// \brief A sub matrix view on a Matrix object providing arithmetic operations
 /// \tparam FloatType
 /// \tparam Rows
 /// \tparam Cols
-/// \tparam ExtMem  optionally use internal matrix object if false
 template <typename FloatType, sint32 Rows, sint32 Cols>
-class MatrixView<FloatType, Rows, Cols, true> TEST_REMOVE_FINAL
+class MatrixView TEST_REMOVE_FINAL
 {
 public:
   /// \brief Construct a new Matrix View object
@@ -40,6 +34,9 @@ public:
                       const sint32                         colEnd);
 
   auto operator()(sint32 row, sint32 col) const -> FloatType;
+
+  [[nodiscard]] auto getRowCount() const -> sint32 { return _rowCount; }
+  [[nodiscard]] auto getColCount() const -> sint32 { return _colCount; }
 
   auto operator+(const Matrix<FloatType, Rows, Cols>& other) const -> Matrix<FloatType, Rows, Cols>;
   auto operator-(const Matrix<FloatType, Rows, Cols>& other) const -> Matrix<FloatType, Rows, Cols>;
@@ -62,43 +59,17 @@ TEST_REMOVE_PROTECTED:
   const sint32                         _colCount;
 };
 
+template <typename FloatType, sint32 RowsA, sint32 ColsA, sint32 RowsB, sint32 ColsB>
+auto operator+(const MatrixView<FloatType, RowsA, ColsA>& a,
+               const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)>;
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
-class MatrixView<FloatType, Rows, Cols, false> TEST_REMOVE_FINAL
-{
-public:
-  /// \brief Construct a new Matrix View object with internally stored matrix
-  /// \param[in] rowBegin
-  /// \param[in] colBegin
-  /// \param[in] rowEnd
-  /// \param[in] colEnd
-  explicit MatrixView(const sint32 rowBegin, const sint32 colBegin, const sint32 rowEnd, const sint32 colEnd)
-      : _view{_matrix, rowBegin, colBegin, rowEnd, colEnd}
-  {
-  }
+template <typename FloatType, sint32 RowsA, sint32 ColsA, sint32 RowsB, sint32 ColsB>
+auto operator-(const MatrixView<FloatType, RowsA, ColsA>& a,
+               const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)>;
 
-  inline auto operator()(sint32 row, sint32 col) const -> FloatType { return _view(row, col); }
-  inline auto operator()(sint32 row, sint32 col) -> FloatType { return _matrix(row, col); }
-
-  // clang-format off
-TEST_REMOVE_PROTECTED:
-  ; // workaround for correct indentation
-  // clang-format on
-  Matrix<FloatType, Rows, Cols>                  _matrix{};
-  const MatrixView<FloatType, Rows, Cols, true>& _view;
-};
-
-template <typename FloatType, sint32 RowsA, sint32 ColsA, bool ExtMemA, sint32 RowsB, sint32 ColsB, bool ExtMemB>
-auto operator+(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a, const MatrixView<FloatType, RowsB, ColsB, ExtMemB>& b)
-    -> MatrixView<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB), false>;
-
-template <typename FloatType, sint32 RowsA, sint32 ColsA, bool ExtMemA, sint32 RowsB, sint32 ColsB, bool ExtMemB>
-auto operator-(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a, const MatrixView<FloatType, RowsB, ColsB, ExtMemB>& b)
-    -> MatrixView<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB), false>;
-
-template <typename FloatType, sint32 RowsA, sint32 ColsA, bool ExtMemA, sint32 RowsB, sint32 ColsB, bool ExtMemB>
-auto operator*(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a,
-               const MatrixView<FloatType, RowsB, ColsB, ExtMemB>& b) -> MatrixView<FloatType, RowsA, ColsB, false>;
+template <typename FloatType, sint32 RowsA, sint32 ColsA, sint32 RowsB, sint32 ColsB>
+auto operator*(const MatrixView<FloatType, RowsA, ColsA>& a,
+               const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, RowsA, ColsB>;
 
 
 } // namespace math

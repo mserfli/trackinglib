@@ -116,6 +116,95 @@ TEST(SquareMatrix, decomposeLLT_SymmetricNotPositiveDefinite_ExpectError) // NOL
   EXPECT_FALSE(retVal.has_value());
 }
 
+TEST(SquareMatrix, symmetrize) // NOLINT
+{
+  // clang-format off
+  auto mat = tracking::math::SquareMatrix<float32, 3, true>::FromList({
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+  });
+  // clang-format on
+
+  // call UUT
+  mat.symmetrize();
+
+  EXPECT_TRUE(mat.isSymmetric());
+
+  // Check values: (A + A^T) / 2
+  // (2+4)/2 = 3
+  // (3+7)/2 = 5
+  // (6+8)/2 = 7
+  EXPECT_FLOAT_EQ(mat.at_unsafe(0, 1), 3.0F);
+  EXPECT_FLOAT_EQ(mat.at_unsafe(1, 0), 3.0F);
+  EXPECT_FLOAT_EQ(mat.at_unsafe(0, 2), 5.0F);
+  EXPECT_FLOAT_EQ(mat.at_unsafe(2, 0), 5.0F);
+  EXPECT_FLOAT_EQ(mat.at_unsafe(1, 2), 7.0F);
+  EXPECT_FLOAT_EQ(mat.at_unsafe(2, 1), 7.0F);
+}
+
+TEST(SquareMatrix, ctor_from_diag) // NOLINT
+{
+  using DiagMatType = tracking::math::DiagonalMatrix<float32, 3>;
+  const auto diag   = DiagMatType::FromList({1, 2, 3});
+
+  // call UUT
+  const tracking::math::SquareMatrix<float32, 3, true> mat(diag);
+
+  EXPECT_FLOAT_EQ(mat.at_unsafe(0, 0), 1.0F);
+  EXPECT_FLOAT_EQ(mat.at_unsafe(1, 1), 2.0F);
+  EXPECT_FLOAT_EQ(mat.at_unsafe(2, 2), 3.0F);
+
+  // Off-diagonal should be zero
+  EXPECT_FLOAT_EQ(mat.at_unsafe(0, 1), 0.0F);
+  EXPECT_FLOAT_EQ(mat.at_unsafe(1, 0), 0.0F);
+}
+
+TEST(SquareMatrix, decomposeUDUT) // NOLINT
+{
+  // clang-format off
+  auto cov = tracking::math::SquareMatrix<float32, 3, true>::FromList({
+    {10, 2, 1},
+    { 2, 5, 1},
+    { 1, 1, 2}
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeUDUT();
+
+  EXPECT_TRUE(retVal.has_value());
+  const auto [U, D] = retVal.value();
+
+  // Verify U is unit upper triangular
+  EXPECT_TRUE(U.isUnitUpperTriangular());
+
+  // Verify reconstruction P = U * D * U^T
+  const auto recomposed = (U * D) * U.transpose();
+  for (auto row = 0; row < 3; row++)
+  {
+    for (auto col = 0; col < 3; col++)
+    {
+      EXPECT_FLOAT_EQ(cov.at_unsafe(row, col), recomposed.at_unsafe(row, col));
+    }
+  }
+}
+
+TEST(SquareMatrix, decomposeUDUT_NotSymmetric_ExpectError) // NOLINT
+{
+  // clang-format off
+  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+    {10, 2},
+    { 1, 5}
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeUDUT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
 TEST(SquareMatrix, decomposeLDLT) // NOLINT
 {
   // clang-format off
