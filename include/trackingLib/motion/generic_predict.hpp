@@ -43,8 +43,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(con
 
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& Y          = underlying.getCov();
-#if 0    
-    // TODO(matthias): ego motion compensation is quite complicated here, maybe neglect influence of Ge*Pe*Ge'
+#if 0 // TODO(matthias): ego motion compensation is quite complicated here, maybe neglect influence of Ge*Pe*Ge'
     // reconstruct P which might cause issues because P becomes extremly large
     static auto postP = cov.inverse();
     // apply ego motion compensation on P
