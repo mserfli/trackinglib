@@ -191,7 +191,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matr
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other)
 {
-  if (this->data() != other.data())
+  if (this->data().data() != other.data().data())
   {
     for (auto row = 0; row < Rows; ++row)
     {
@@ -231,7 +231,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-=(const Matr
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other)
 {
-  if (this->data() != other.data())
+  if (this->data().data() != other.data().data())
   {
     for (auto row = 0; row < Rows; ++row)
     {
@@ -267,18 +267,26 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*=(ValueType_
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <typename IntType, typename std::enable_if_t<std::is_integral<IntType>::value, bool>>
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(IntType scalar)
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(IntType scalar) -> tl::expected<void, Errors>
 {
-  assert((std::abs(scalar) > static_cast<IntType>(0)) && "division by zero");
-  inplace_div_by_int_unsafe(scalar);
+  if (std::abs(scalar) > static_cast<IntType>(0))
+  {
+    inplace_div_by_int_unsafe(scalar);
+    return {};
+  }
+  return tl::unexpected<Errors>{Errors::divide_by_zero};
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <typename FloatType, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool>>
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(FloatType scalar)
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(FloatType scalar) -> tl::expected<void, Errors>
 {
-  assert((std::abs(scalar) > std::numeric_limits<FloatType>::min()) && "division by zero");
-  inplace_mul_by_inverse_factor_unsafe(scalar);
+  if (std::abs(scalar) > std::numeric_limits<FloatType>::min())
+  {
+    inplace_mul_by_inverse_factor_unsafe(scalar);
+    return {};
+  }
+  return tl::unexpected<Errors>{Errors::divide_by_zero};
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
