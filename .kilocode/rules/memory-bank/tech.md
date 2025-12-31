@@ -100,6 +100,7 @@
   - Typed tests for template instantiations
   - Parameterized tests for different configurations
   - Mock objects for testing protected/private members
+  - disable clang format locally on matrix definitions to improve readability 
 
 #### Code Coverage
 - **Tool**: lcov

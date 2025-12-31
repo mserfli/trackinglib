@@ -34,6 +34,8 @@ The trackinglib project is a mature, well-structured C++ header-only library for
 - C++20 contracts - experimental
 
 ### Known Limitations
+- Measurement update not yet implemented in all filters
+- ego motion compensations is currently deactivated during prediction and also not tested
 - UKF is not yet implemented (only header stub exists)
 - Python bindings are experimental and may not be fully functional
 - Eigen is only used for development/comparison, not in production code
@@ -41,6 +43,12 @@ The trackinglib project is a mature, well-structured C++ header-only library for
 ## Next Steps
 
 The project is in a stable state with comprehensive documentation. Future work could focus on:
+- Increasing test coverage on math and other layers
+- Fix cyclic includes by using more heavily forward declarations
+- Fix all gcc and clang compiler warnings
+- Refactor the contracts and have a special built step to check them on C++20 build
+- Implement and activate the ego motion compensation during prediction
+- Implementing measurement update for all filters
 - Implementing the UKF filter
 - Stabilizing Python bindings
 - Adding more motion models if needed
@@ -53,4 +61,5 @@ The project is in a stable state with comprehensive documentation. Future work c
 - Error handling uses `tl::expected` pattern instead of exceptions
 - Template-heavy design provides compile-time safety but may increase compile times
 - Special test macros (`TEST_REMOVE_PRIVATE`, etc.) allow testing private members
+- Testcode locally disables clang formatting to improve readability of matrix definitions
 - The library follows strict AUTOSAR C++14 guidelines for automotive safety
