@@ -4,104 +4,65 @@
 #include "math/linalg/covariance_matrix_full.h"
 
 #include "math/linalg/errors.h"
-#include "math/linalg/square_matrix.hpp"
-#include "math/linalg/triangular_matrix.hpp"
+#include "math/linalg/square_matrix.hpp"     // IWYU pragma: keep
+#include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
 
 namespace tracking
 {
 namespace math
 {
 
-template <typename FloatType, sint32 Size>
-CovarianceMatrixFull<FloatType, Size>::CovarianceMatrixFull(const SquareMatrix<FloatType, Size>& other, const bool isInverse)
-    : SquareMatrix<FloatType, Size>{other}
-    , _isInverse{isInverse}
+template <typename FloatType_, sint32 Size_>
+inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
 {
-  assert(this->isSymmetric() && "Constructed covariance not symmetric");
-}
-
-template <typename FloatType, sint32 Size>
-auto CovarianceMatrixFull<FloatType, Size>::Identity() -> CovarianceMatrixFull
-{
-  CovarianceMatrixFull cov{SquareMatrix<FloatType, Size>::Identity(), false};
-  return cov;
-}
-
-template <typename FloatType, sint32 Size>
-void CovarianceMatrixFull<FloatType, Size>::setIdentity()
-{
-  SquareMatrix<FloatType, Size>::setIdentity();
-}
-
-template <typename FloatType, sint32 Size>
-inline auto CovarianceMatrixFull<FloatType, Size>::operator()(sint32 row, sint32 col) const -> FloatType
-{
-  return SquareMatrix<FloatType, Size>::operator()(row, col);
-}
-
-template <typename FloatType, sint32 Size>
-inline auto CovarianceMatrixFull<FloatType, Size>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
-{
-  const auto retVal = SquareMatrix<FloatType, Size>::decomposeLLT();
+  const auto retVal = SquareMatrix::decomposeLLT();
   if (retVal.has_value())
   {
     const auto& L = *retVal;
     // L*(L'*Ainv) = eye(n,n)
     // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
-    auto u = L.solve(CovarianceMatrixFull::Identity());
+    const auto u = L.solve(CovarianceMatrixFull::Identity());
     // L'*Ainv = u     -> solve for Ainv using backward substitution
-    auto s = L.transpose().solve(u);
-    return CovarianceMatrixFull(static_cast<FloatType>(0.5) * (s + s.transpose()), !_isInverse);
+    math::SquareMatrix cov{L.transpose().solve(u)};
+    cov.symmetrize();
+    return CovarianceMatrixFull{SquareMatrix{std::move(cov)}};
   }
   return tl::unexpected<Errors>{retVal.error()};
 }
 
-template <typename FloatType, sint32 Size>
-inline auto CovarianceMatrixFull<FloatType, Size>::isInverse() const -> bool
-{
-  return _isInverse;
-}
-
-template <typename FloatType, sint32 Size>
-inline void CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A)
+template <typename FloatType_, sint32 Size_>
+template <bool IsRowMajor_>
+inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A)
 {
   assert(this->isSymmetric() && "Covariance currently not symmetric");
-  if (_isInverse)
-  {
-    // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
-    SquareMatrix<FloatType, Size> res = A.transpose() * this->operator*=(A);
-    res += res.transpose();
-    res *= static_cast<FloatType>(0.5);
-    this->operator=(CovarianceMatrixFull(res, _isInverse));
-  }
-  else
-  {
-    // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
-    SquareMatrix<FloatType, Size> res = A * this->operator*=(A.transpose());
-    res += res.transpose();
-    res *= static_cast<FloatType>(0.5);
-    this->operator=(CovarianceMatrixFull(res, _isInverse));
-  }
+  // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
+  // for normal covariance matrix P, the calculation is P = A*P*A'
+  const auto   paT = this->operator*(A.transpose());
+  SquareMatrix cov{A.operator*(paT)};
+  cov.symmetrize();
+  *this = CovarianceMatrixFull{SquareMatrix{std::move(cov)}};
 }
 
-template <typename FloatType, sint32 Size>
-inline auto CovarianceMatrixFull<FloatType, Size>::apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFull
+template <typename FloatType_, sint32 Size_>
+template <bool IsRowMajor_>
+inline auto CovarianceMatrixFull<FloatType_, Size_>::apaT(
+    const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull
 {
   auto copy(*this);
   copy.apaT(A);
   return copy;
 }
 
-template <typename FloatType, sint32 Size>
-inline void CovarianceMatrixFull<FloatType, Size>::setVariance(const sint32 idx, const FloatType val)
+template <typename FloatType_, sint32 Size_>
+inline void CovarianceMatrixFull<FloatType_, Size_>::setVariance(const sint32 idx, const FloatType_ val)
 {
-  constexpr auto zero = static_cast<FloatType>(0.0);
-  for (sint32 j = 0; j < Size; ++j)
+  constexpr auto zero = static_cast<FloatType_>(0.0);
+  for (sint32 j = 0; j < Size_; ++j)
   {
-    SquareMatrix<FloatType, Size>::operator()(idx, j) = zero;
-    SquareMatrix<FloatType, Size>::operator()(j, idx) = zero;
+    SquareMatrix::at_unsafe(idx, j) = zero;
+    SquareMatrix::at_unsafe(j, idx) = zero;
   }
-  SquareMatrix<FloatType, Size>::operator()(idx, idx) = val;
+  SquareMatrix::at_unsafe(idx, idx) = val;
 }
 
 } // namespace math

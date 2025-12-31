@@ -8,6 +8,9 @@ namespace math
 
 enum class Errors
 {
+  invalid_access_row,
+  invalid_access_col,
+  invalid_access_idx,
   divide_by_zero,           // 9 / 0 == ?
   not_integer_division,     // 5 / 2 == 2.5 (which is not an integer)
   integer_divide_overflows, // INT_MIN / -1

@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <trackingLib/math/linalg/matrix.h>
+#include <sstream>
 #include <string>
 
 
@@ -13,21 +14,21 @@ namespace py = pybind11;
 template <typename FloatType, std::size_t Rows, std::size_t Cols>
 void declare_matrix(py::module& m, const std::string& typestr)
 {
-  using MT = tracking::math::Matrix<FloatType, Rows, Cols>;
+  using MT                 = tracking::math::Matrix<FloatType, Rows, Cols>;
   std::string pyclass_name = std::string("Matrix") + typestr + std::to_string(Rows) + std::to_string(Cols);
   // clang-format off
   py::class_<MT>(m, pyclass_name.c_str(), py::buffer_protocol(), py::dynamic_attr())
     .def(py::init<>())
-    .def(py::init<const std::array<typename MT::value_type, MT::rows * MT::cols>&>())
+    .def(py::init<const std::array<typename MT::value_type, MT::Rows * MT::Cols>&>())
     .def("__add__", [](MT& mat, const MT& other) { return mat.operator+=(other); })
     .def("__sub__", [](MT& mat, const MT& other) { return mat.operator-=(other); })
     .def("__mul__", [](MT& mat, const typename MT::value_type scalar) { return mat.operator*=(scalar); })
     .def("__div__", [](MT& mat, const typename MT::value_type scalar) { return mat.operator/=(scalar); })
-    .def("__mul__", [](MT& mat, const tracking::math::Matrix<typename MT::value_type, MT::cols, 1>& other) { return mat.operator*=(other); })
-    .def("__mul__", [](MT& mat, const tracking::math::Matrix<typename MT::value_type, MT::cols, 2>& other) { return mat.operator*=(other); })
+    .def("__mul__", [](MT& mat, const tracking::math::Matrix<typename MT::value_type, MT::Cols, 1>& other) { return mat.operator*(other); })
+    .def("__mul__", [](MT& mat, const tracking::math::Matrix<typename MT::value_type, MT::Cols, 2>& other) { return mat.operator*(other); })
     .def("__repr__", [](const MT& mat) {
       std::stringstream stream;
-      stream << mat._data;
+      stream << mat.print();
       return stream.str(); 
     });
   // clang-format on

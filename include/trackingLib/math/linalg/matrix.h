@@ -1,304 +1,355 @@
 #ifndef FDEAAACC_9EF1_4C87_94DC_2FA494822664
 #define FDEAAACC_9EF1_4C87_94DC_2FA494822664
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/contracts/matrix_intf.h"
-#include <cmath>
-#include <initializer_list>
-#include <iostream>
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdocumentation"
-#include <Eigen/Cholesky>
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/OrderingMethods>
-#include <Eigen/SparseCholesky>
-#pragma clang diagnostic pop
-
+#include "math/linalg/errors.h"
+#include "math/linalg/matrix_types.h" // IWYU pragma: keep
+#include <algorithm>
+#include <array>
+#include <tuple>
+#include <type_traits>
 
 namespace tracking
 {
 namespace math
 {
 
-// forward declaration to prevent cyclic includes
-template <typename FloatType, sint32 Size, bool isLower>
-class TriangularMatrix;
-
-// TODO(matthias): add doxygen
 // TODO(matthias): add support for external memory
 // TODO(matthias): add template params to support coord transformations (inFrame e.g. EGO_k_1, outFrame, power -> 2 for covs)
-template <typename FloatType, sint32 Rows, sint32 Cols>
-class Matrix: public contract::MatrixIntf<Matrix<FloatType, Rows, Cols>, Matrix>
+/// Compliant to AUTOSAR C++14, A8-4-8: Output parameters shall not be used, making use of RVO and NRVO
+
+/// \brief  Implements a Row x Col matrix stored internally according to IsRowMajor
+/// \tparam ValueType_   element type
+/// \tparam Rows_        number of rows
+/// \tparam Cols_        number of cols
+/// \tparam IsRowMajor_  memory layout of the matrix
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_ = true>
+class Matrix: public contract::MatrixIntf<Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>, Matrix>
 {
 public:
-  using transpose_type       = Matrix<FloatType, Cols, Rows>;
-  using value_type           = FloatType;
-  static constexpr auto rows = Rows;
-  static constexpr auto cols = Cols;
+  /// \brief Type of the transposed matrix without changing the memory layout
+  using transpose_type = Matrix<ValueType_, Cols_, Rows_, !IsRowMajor_>;
+  /// \brief Type of the transposed matrix with fixed row major memory layout
+  using transpose_type_row_major   = Matrix<ValueType_, Cols_, Rows_, true>;
+  using value_type                 = ValueType_;                  ///< element type
+  static constexpr auto Rows       = Rows_;                       ///< number of rows
+  static constexpr auto Cols       = Cols_;                       ///< number of cols
+  static constexpr auto RowsInMem  = IsRowMajor_ ? Rows_ : Cols_; ///< number of rows in memory
+  static constexpr auto ColsInMem  = IsRowMajor_ ? Cols_ : Rows_; ///< number of cols in memory
+  static constexpr auto IsRowMajor = IsRowMajor_;                 ///< memory layout of the matrix
 
-  Matrix()                  = default;
-  Matrix(const Matrix&)     = default;
-  Matrix(Matrix&&) noexcept = default;
-  auto operator=(const Matrix&) -> Matrix& = default;
+  // rule of 5 declarations
+  Matrix()                                     = default;
+  Matrix(const Matrix&)                        = default;
+  Matrix(Matrix&&) noexcept                    = default;
+  auto operator=(const Matrix&) -> Matrix&     = default;
   auto operator=(Matrix&&) noexcept -> Matrix& = default;
   virtual ~Matrix()                            = default;
 
-  /// \brief Construct a new Matrix object given initializer list
-  /// \param[in] list  An initializer list describing list of matrix rows
-  Matrix(const std::initializer_list<std::initializer_list<FloatType>>& list);
+  //////////////////////////////////////////////////
+  // additional constructors  --->
+  /// \brief Construct a new Matrix object with given initializer list representing the memory layout of the matrix
+  /// \param[in] list  An initializer list describing the memory layout of the matrix
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
 
-  explicit Matrix(const std::array<FloatType, static_cast<size_t>(Rows* Cols)>& arr);
-
-  auto operator()(sint32 row, sint32 col) const -> FloatType;
-  auto operator()(sint32 row, sint32 col) -> FloatType&;
-
-  auto operator+=(const Matrix& other) -> Matrix&;
-  auto operator-=(const Matrix& other) -> Matrix&;
-
-  /// Compliant to AUTOSAR C++14, A8-4-8: Output parameters shall not be used
-  template <sint32 Cols2>
-  auto operator*=(const Matrix<FloatType, Cols, Cols2>& other) -> Matrix<FloatType, Rows, Cols2>;
-
-  auto operator*=(FloatType scalar) -> Matrix&;
-  auto operator/=(FloatType scalar) -> Matrix&;
-
-  auto operator==(const Matrix& other) const -> bool;
-
-  void        setZeros();
+  /// \brief Construct a Zero matrix
+  /// \return Zero matrix
   static auto Zeros() -> Matrix;
 
-  void        setOnes();
+  /// \brief Construct a matrix filled with ones
+  /// \return One matrix
   static auto Ones() -> Matrix;
+  // <---
+
+  //////////////////////////////////////////////////
+  // access operators  --->
+  /// \brief Element read-only access
+  /// \param[in] row  row of the element to read
+  /// \param[in] col  column of the element to read
+  /// \return tl::expected<ValueType_, Errors>   either the value at (row,col) or an Error descriptor
+  auto operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>;
+
+  /// \brief Element modify access
+  /// \param[in] row  row of the element to modify
+  /// \param[in] col  column of the element to modify
+  /// \return tl::expected<std::reference_wrapper<ValueType_>, Errors>   either the reference at (row,col) or an Error descriptor
+  auto operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
+  // <---
+
+  //////////////////////////////////////////////////
+  // comparison operators  --->
+  /// \brief Comparison to equal matrix type
+  /// \param[in] other  matrix of equal type
+  /// \return true   if all elements are equal
+  auto operator==(const Matrix& other) const -> bool;
+
+  /// \brief Comparison to matrix of equal size, but opposite memory layout
+  /// \param[in] other  matrix with opposite memory layout
+  /// \return true   if all elements are equal
+  auto operator==(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
+
+  /// \brief Inequality comparison to equal matrix type
+  /// \param[in] other  matrix of equal type
+  /// \return true   if any element differs
+  auto operator!=(const Matrix& other) const -> bool;
+
+  /// \brief Inequality comparison to matrix of equal size, but opposite memory layout
+  /// \param[in] other  matrix with opposite memory layout
+  /// \return true   if any element differs
+  auto operator!=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
+  // <---
+
+  //////////////////////////////////////////////////
+  // arithmetic assignment operators  --->
+  /// \brief Calculates Self = Self + Other
+  /// \param[in] other  matrix of equal size
+  void operator+=(const Matrix& other);
+
+  /// \brief Calculates Self = Self + Other
+  /// \param[in] other  matrix of equal size, but opposite memory layout
+  void operator+=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other);
+
+  /// \brief Calculates Self = Self - Other
+  /// \param[in] other  matrix of equal size
+  void operator-=(const Matrix& other);
+
+  /// \brief Calculates Self = Self - Other
+  /// \param[in] other  matrix of equal size, but opposite memory layout
+  void operator-=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other);
+
+  /// \brief Calculates Self = Self * scalar
+  /// \param[in] scalar   scalar value
+  void operator*=(ValueType_ scalar);
+
+  /// \brief Calculates Self = Self / scalar for integral matrices
+  /// \param[in] scalar   integral scalar value
+  template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
+  void operator/=(IntType scalar);
+
+  /// \brief Calculates Self = Self / scalar for floating-point matrices
+  /// \param[in] scalar   floating-point scalar value
+  template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
+  void operator/=(FloatType scalar);
+  // <---
+
+  //////////////////////////////////////////////////
+  // arithmentic operators --->
+  /// \brief Calculates Self + Other
+  /// \tparam MajorOrder_  memory layout of other matrix
+  /// \param[in] other  matrix of equal size
+  /// \return Matrix   result of Self + Other
+  template <bool MajorOrder_>
+  auto operator+(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
+
+  /// \brief Calculates Self - Other
+  /// \tparam MajorOrder_  memory layout of other matrix
+  /// \param[in] other  matrix of equal size
+  /// \return Matrix   result of Self - Other
+  template <bool MajorOrder_>
+  auto operator-(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
+
+  /// \brief Calculates Self + scalar (adds scalar to each element)
+  /// \param[in] scalar  a scalar value
+  /// \return Matrix   result of Self + scalar
+  auto operator+(ValueType_ scalar) const -> Matrix;
+
+  /// \brief Calculates Self - scalar (subtracts scalar from each element)
+  /// \param[in] scalar  a scalar value
+  /// \return Matrix   result of Self - scalar
+  auto operator-(ValueType_ scalar) const -> Matrix;
+
+  /// \brief Calculates Self * scalar
+  /// \param[in] scalar  a scalar value
+  /// \return Matrix   result of Self * scalar
+  auto operator*(ValueType_ scalar) const -> Matrix;
+
+  /// \brief Calculates Self / scalar for integral matrices
+  /// \tparam IntType
+  /// \param[in] scalar  a scalar value
+  /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
+  template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
+  auto operator/(IntType scalar) const -> tl::expected<Matrix, Errors>;
+
+  /// \brief Calculates Self / scalar for floating-point matrices
+  /// \tparam IntType
+  /// \param[in] scalar  a scalar value
+  /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
+  template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
+  auto operator/(FloatType scalar) const -> tl::expected<Matrix, Errors>;
+
+  /// \brief Calculates matrix multiplication Self * Other
+  /// \tparam Cols2_
+  /// \tparam IsRowMajor2_
+  /// \param[in] other
+  /// \return Matrix<ValueType_, Rows_, Cols2_, IsRowMajor_>
+  template <sint32 Cols2_, bool IsRowMajor2_>
+  auto operator*(const Matrix<ValueType_, Cols_, Cols2_, IsRowMajor2_>& other) const
+      -> Matrix<ValueType_, Rows_, Cols2_, IsRowMajor_>;
+  // <---
+
+  //////////////////////////////////////////////////
+  // other operations --->
+  /// \brief Print the matrix to stdout
+  void print() const;
+
+  /// \brief Sets all elements to zero
+  void setZeros();
+
+  /// \brief Sets all elements to one
+  void setOnes();
+
+  /// \brief Get min value of the matrix
+  /// \return min value
+  auto min() const -> ValueType_ { return *std::min_element(data().begin(), data().end()); }
+
+  /// \brief Get max value of the matrix
+  /// \return max value
+  auto max() const -> ValueType_ { return *std::max_element(data().begin(), data().end()); }
+
+  /// \brief Get min and max value of the matrix
+  /// \return tuple of min, max value
+  auto minmax() const -> std::tuple<ValueType_, ValueType_>;
+
+  /// \brief Calculate Frobenius norm (L2 norm): sqrt(sum of squared elements)
+  /// Only available for floating-point types
+  /// \return ValueType_   the Frobenius norm of the matrix
+  template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
+  auto frobenius_norm() const -> ValueType_;
+
+  /// \brief Fast transpose without changing the layout
+  /// \return const transpose_type&   const reference to same data as Self, but differently interpreted
+  auto transpose() const -> const transpose_type&;
+
+  /// \brief Fast transpose without changing the layout
+  /// \return transpose_type&   reference to same data as Self, but differently interpreted
+  auto transpose() -> transpose_type&;
+
+  /// \brief Fast transpose without changing the layout
+  /// \return transpose_type   rvalue to same data as Self, but differently interpreted
+  auto transpose_rvalue() && -> transpose_type;
 
   /// \brief Set a block matrix at given position
-  /// \tparam SrcRowSize   Rows of the source block
-  /// \tparam SrcColSize   Cols of the source block
-  /// \tparam SrcRowCount  Number of rows to copy from source
-  /// \tparam SrcColCount  Number of cols to copy from source
-  /// \tparam SrcRowBeg    Begin row index in source
-  /// \tparam SrcColBeg    Begin col index in source
-  /// \tparam DstRowBeg    Begin row index in dest
-  /// \tparam DstColBeg    Begin col index in dest
-  /// \param[in] block     Source block matrix to copy from
-  template <sint32 SrcRowSize,
-            sint32 SrcColSize,
-            sint32 SrcRowCount,
-            sint32 SrcColCount,
-            sint32 SrcRowBeg,
-            sint32 SrcColBeg,
-            sint32 DstRowBeg,
-            sint32 DstColBeg>
-  void setBlock(const Matrix<FloatType, SrcRowSize, SrcColSize>& block);
+  /// \tparam SrcRowSize_      Rows of the source block
+  /// \tparam SrcColSize_      Cols of the source block
+  /// \tparam SrcRowCount_     Number of rows to copy from source
+  /// \tparam SrcColCount_     Number of cols to copy from source
+  /// \tparam SrcRowBeg_       Begin row index in source
+  /// \tparam SrcColBeg_       Begin col index in source
+  /// \tparam SrcIsRowMajor_   Memory layout of source
+  /// \tparam DstRowBeg_       Begin row index in dest
+  /// \tparam DstColBeg_       Begin col index in dest
+  /// \param[in] block         Source block matrix to copy from
+  template <sint32 SrcRowSize_,
+            sint32 SrcColSize_,
+            sint32 SrcRowCount_,
+            sint32 SrcColCount_,
+            sint32 SrcRowBeg_,
+            sint32 SrcColBeg_,
+            bool   SrcIsRowMajor_,
+            sint32 DstRowBeg_,
+            sint32 DstColBeg_>
+  void setBlock(const Matrix<ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_>& block);
 
-  auto transpose() const -> transpose_type;
+  /// \brief Set a block matrix at given position
+  /// \tparam SrcRowSize_      Rows of the source block
+  /// \tparam SrcColSize_      Cols of the source block
+  /// \tparam SrcIsRowMajor_   Memory layout of source
+  /// \param srcRowCount       Number of rows to copy from source
+  /// \param srcColCount       Number of cols to copy from source
+  /// \param srcRowBeg         Begin row index in source
+  /// \param srcColBeg         Begin col index in source
+  /// \param dstRowBeg         Begin row index in dest
+  /// \param dstColBeg         Begin col index in dest
+  /// \param[in] block         Source block matrix to copy from
+  template <sint32 SrcRowSize_, sint32 SrcColSize_, bool SrcIsRowMajor_>
+  void setBlock(const sint32                                                        srcRowCount,
+                const sint32                                                        srcColCount,
+                const sint32                                                        srcRowBeg,
+                const sint32                                                        srcColBeg,
+                const sint32                                                        dstRowBeg,
+                const sint32                                                        dstColBeg,
+                const Matrix<ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_>& block);
+  // <---
 
-  void print() const;
+  //////////////////////////////////////////////////
+  // unsafe access operators  --->
+  /// \brief Unsafe element read-only access
+  /// \param[in] row  row of the element to read
+  /// \param[in] col  column of the element to read
+  /// \return ValueType_   the value at (row,col)
+  auto at_unsafe(sint32 row, sint32 col) const -> ValueType_;
+
+  /// \brief Unsafe element modify access
+  /// \param[in] row  row of the element to read
+  /// \param[in] col  column of the element to read
+  /// \return ValueType_   the value at (row,col)
+  auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
+  // <---
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
   ; // workaround for correct indentation
   // clang-format on
-  Eigen::Matrix<FloatType, Rows, Cols> _data{}; // TODO(matthias): make this a unique_ptr to profit from move ctor/assignment
+  using Storage = std::array<ValueType_, static_cast<sint32>(Rows* Cols)>; ///< type of the internal storage
 
-  template <typename U, sint32 Rows_, sint32 Cols_>
-  friend class Matrix; // needed to access member _data in operator*=
+  //////////////////////////////////////////////////
+  // access operators  --->
+  /// \brief  Read-only access to the internal data
+  /// \return const Storage&
+  auto data() const -> const Storage& { return _data; }
 
-  template <typename U, sint32 Size, bool isLower>
-  friend class TriangularMatrix; // needed to access member _data in solve()
+  /// \brief Modify access to the internal data
+  /// \return Storage&
+  auto data() -> Storage& { return _data; }
+  // <---
+
+  // clang-format off
+TEST_REMOVE_PRIVATE:
+  ; // workaround for correct indentation
+  // clang-format on
+  template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
+  void inplace_div_by_int_unsafe(IntType scalar);
+
+  template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
+  void inplace_mul_by_inverse_factor_unsafe(FloatType scalar);
+
+  Storage _data{}; ///< internal data to store the matrix
 };
 
-//
-// implementation of member functions/operators
+//////////////////////////////////////////////////
+// non member operations  --->
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
-Matrix<FloatType, Rows, Cols>::Matrix(const std::initializer_list<std::initializer_list<FloatType>>& list)
-    : _data{list}
+/// \brief Calculates Scalar + Matrix
+/// \tparam ValueType_
+/// \tparam Rows_
+/// \tparam Cols_
+/// \tparam IsRowMajor_
+/// \param[in] scalar
+/// \param[in] mat
+/// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+static auto operator+(ValueType_                                     scalar,
+                      Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
+  return mat + scalar;
 }
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
-Matrix<FloatType, Rows, Cols>::Matrix(const std::array<FloatType, static_cast<size_t>(Rows* Cols)>& arr)
-    : _data{Eigen::Map<const Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(arr.data(), Rows, Cols)}
+/// \brief Calculates Scalar * Matrix
+/// \tparam ValueType_
+/// \tparam Rows_
+/// \tparam Cols_
+/// \tparam IsRowMajor_
+/// \param[in] scalar
+/// \param[in] mat
+/// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+static auto operator*(ValueType_                                     scalar,
+                      Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
+  return mat * scalar;
 }
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) const -> FloatType
-{
-  assert((row >= 0 && row < Rows) && "bad row index");
-  assert((col >= 0 && col < Cols) && "bad col index");
-  return _data(row, col);
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator()(sint32 row, sint32 col) -> FloatType&
-{
-  assert((row >= 0 && row < Rows) && "bad row index");
-  assert((col >= 0 && col < Cols) && "bad col index");
-  return _data(row, col);
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator+=(const Matrix& other) -> Matrix&
-{
-  _data += other._data;
-  return *this;
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator-=(const Matrix& other) -> Matrix&
-{
-  _data -= other._data;
-  return *this;
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-template <sint32 Cols2>
-inline auto Matrix<FloatType, Rows, Cols>::operator*=(const Matrix<FloatType, Cols, Cols2>& other)
-    -> Matrix<FloatType, Rows, Cols2>
-{
-  Matrix<FloatType, Rows, Cols2> temp;
-  temp._data = (_data * other._data).eval();
-  return temp;
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator*=(FloatType scalar) -> Matrix&
-{
-  _data *= scalar;
-  return *this;
-}
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator/=(FloatType scalar) -> Matrix&
-{
-  assert(std::abs(scalar) > static_cast<FloatType>(0.0));
-  _data /= scalar;
-  return *this;
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::operator==(const Matrix& other) const -> bool
-{
-  return _data == other._data;
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline void Matrix<FloatType, Rows, Cols>::setZeros()
-{
-  _data.setZero();
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::Zeros() -> Matrix
-{
-  Matrix tmp;
-  tmp.setZeros();
-  return tmp;
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline void Matrix<FloatType, Rows, Cols>::setOnes()
-{
-  _data.setOnes();
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-auto Matrix<FloatType, Rows, Cols>::Ones() -> Matrix
-{
-  Matrix tmp;
-  tmp.setOnes();
-  return tmp;
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-template <sint32 SrcRowSize,
-          sint32 SrcColSize,
-          sint32 SrcRowCount,
-          sint32 SrcColCount,
-          sint32 SrcRowBeg,
-          sint32 SrcColBeg,
-          sint32 DstRowBeg,
-          sint32 DstColBeg>
-void Matrix<FloatType, Rows, Cols>::setBlock(const Matrix<FloatType, SrcRowSize, SrcColSize>& block)
-{
-  static_assert((SrcRowCount > 1) && (SrcColCount > 1), "use scalar access operator for block copy size == 1");
-  static_assert(SrcRowBeg + SrcRowCount <= SrcRowSize, "copy to many rows from src");
-  static_assert(SrcColBeg + SrcColCount <= SrcColSize, "copy to many cols from src");
-
-  static_assert(DstRowBeg + SrcRowCount <= Rows, "copy to many rows to dst");
-  static_assert(DstColBeg + SrcColCount <= Cols, "copy to many cols to dst");
-
-  for (sint32 row = 0; row < SrcRowCount; ++row)
-  {
-    for (sint32 col = 0; col < SrcColCount; ++col)
-    {
-      this->operator()(DstRowBeg + row, DstColBeg + col) = block(SrcRowBeg + row, SrcColBeg + col);
-    }
-  }
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto Matrix<FloatType, Rows, Cols>::transpose() const -> Matrix<FloatType, Cols, Rows>
-{
-  Matrix<FloatType, Cols, Rows> temp;
-  temp._data = _data.transpose();
-  return temp;
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline void Matrix<FloatType, Rows, Cols>::print() const
-{
-  std::cout << _data << "\n" << std::endl;
-}
-
-
-//
-// non member class operators
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-auto operator+(const Matrix<FloatType, Rows, Cols>& m1, const Matrix<FloatType, Rows, Cols>& m2) -> Matrix<FloatType, Rows, Cols>
-{
-  Matrix<FloatType, Rows, Cols> temp(m1);
-  return (temp += m2);
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-auto operator-(const Matrix<FloatType, Rows, Cols>& m1, const Matrix<FloatType, Rows, Cols>& m2) -> Matrix<FloatType, Rows, Cols>
-{
-  Matrix<FloatType, Rows, Cols> temp(m1);
-  return (temp -= m2);
-}
-
-template <typename FloatType, sint32 Rows1, sint32 Cols1, sint32 Cols2>
-auto operator*(const Matrix<FloatType, Rows1, Cols1>& m1, const Matrix<FloatType, Cols1, Cols2>& m2)
-    -> Matrix<FloatType, Rows1, Cols2>
-{
-  Matrix<FloatType, Rows1, Cols1> temp(m1);
-  return (temp *= m2);
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-auto operator*(const Matrix<FloatType, Rows, Cols>& m, FloatType scalar) -> Matrix<FloatType, Rows, Cols>
-{
-  Matrix<FloatType, Rows, Cols> temp(m);
-  return (temp *= scalar);
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-auto operator*(FloatType scalar, const Matrix<FloatType, Rows, Cols>& m) -> Matrix<FloatType, Rows, Cols>
-{
-  return (m * scalar);
-}
-
-template <typename FloatType, sint32 Rows, sint32 Cols>
-auto operator/(const Matrix<FloatType, Rows, Cols>& m, FloatType scalar) -> Matrix<FloatType, Rows, Cols>
-{
-  assert(std::abs(scalar) > static_cast<FloatType>(0.0));
-  Matrix<FloatType, Rows, Cols> temp(m);
-  return (temp /= scalar);
-}
+// <---
 
 } // namespace math
 } // namespace tracking

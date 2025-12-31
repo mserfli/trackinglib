@@ -1,8 +1,8 @@
 #ifndef DD2B2494_7486_42BA_84E2_32308E26DBBC
 #define DD2B2494_7486_42BA_84E2_32308E26DBBC
 
-#include "base/first_include.h"
-#include "math/linalg/contracts/covariance_matrix_intf.h"
+#include "base/first_include.h"                           // IWYU pragma: keep
+#include "math/linalg/contracts/covariance_matrix_intf.h" // IWYU pragma: keep
 #include "math/linalg/square_matrix.h"
 
 namespace tracking
@@ -10,77 +10,99 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType, sint32 Size>
-class CovarianceMatrixFull
-    : public SquareMatrix<FloatType, Size>
-    , public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType, Size>>
+template <typename FloatType_, sint32 Size_>
+class CovarianceMatrixFull: public SquareMatrix<FloatType_, Size_, true>
+//, public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>>
 {
 public:
-  using value_type   = FloatType;
-  using compose_type = CovarianceMatrixFull;
-  static constexpr auto dim = Size;
+  using SquareMatrix = SquareMatrix<FloatType_, Size_, true>; ///< type of the parent class
 
-  //  rule of 5 declarations
-  CovarianceMatrixFull()                                = default;
-  CovarianceMatrixFull(const CovarianceMatrixFull&)     = default;
-  CovarianceMatrixFull(CovarianceMatrixFull&&) noexcept = default;
-  auto operator=(const CovarianceMatrixFull&) -> CovarianceMatrixFull& = default;
+  using value_type          = FloatType_;
+  using compose_type        = CovarianceMatrixFull;
+  static constexpr auto dim = Size_;
+
+  // rule of 5 declarations
+  CovarianceMatrixFull()                                                   = default;
+  CovarianceMatrixFull(const CovarianceMatrixFull&)                        = default;
+  CovarianceMatrixFull(CovarianceMatrixFull&&) noexcept                    = default;
+  auto operator=(const CovarianceMatrixFull&) -> CovarianceMatrixFull&     = default;
   auto operator=(CovarianceMatrixFull&&) noexcept -> CovarianceMatrixFull& = default;
   virtual ~CovarianceMatrixFull()                                          = default;
 
-  /// \brief Construct an Identity matrix
-  /// \return CovarianceMatrixFull
-  static auto Identity() -> CovarianceMatrixFull;
-
-  /// \brief Set Identity covariance
-  void setIdentity();
-
-  /// \brief Access operator to the covariance value at (row, col)
-  /// \param[in,out] row  The specified row
-  /// \param[in,out] col  The specified column
-  /// \return FloatType
-  auto operator()(sint32 row, sint32 col) const -> FloatType;
-
-  /// \brief Creates the "composed" covariance, although no composition is needed
-  /// \return const CovarianceMatrixFull& 
-  auto operator()() const -> const CovarianceMatrixFull&
+  //////////////////////////////////////////////////
+  // additional constructors  --->
+  /// \brief Construct a new Covariance Matrix Full<FloatType_, Size_> object
+  /// \param[in] other A base class object
+  explicit CovarianceMatrixFull(const SquareMatrix& other)
+      : SquareMatrix{other}
   {
-    return *this;
+    assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
-  /// \brief Calculates the inverse based on Cholesky decomposition
-  /// \return tl::expected<CovarianceMatrixFull, Errors> 
-  auto inverse() const -> tl::expected<CovarianceMatrixFull, Errors>;
+  /// \brief Move construct a new Covariance Matrix Full<FloatType_, Size_> object
+  /// \param[in] other A base class object
+  explicit CovarianceMatrixFull(SquareMatrix&& other) noexcept
+      : SquareMatrix{std::move(other)}
+  {
+    assert(this->isSymmetric() && "Constructed covariance not symmetric");
+  }
 
-  /// \brief Checks inverse status
-  /// \return true
-  /// \return false
-  [[nodiscard]] auto isInverse() const -> bool;
+  /// \brief Construct a new Covariance Matrix Full<FloatType_, Size_> object from a transposed SquareMatrix
+  /// \param[in] other A transposed base class object
+  explicit CovarianceMatrixFull(const typename SquareMatrix::transpose_type& other)
+      : SquareMatrix{other.transpose()}
+  {
+    assert(this->isSymmetric() && "Constructed covariance not symmetric");
+  }
+
+  /// \brief Move construct a new Covariance Matrix Full<FloatType_, Size_> object from a transposed SquareMatrix
+  /// \param[in] other A transposed base class object
+  explicit CovarianceMatrixFull(typename SquareMatrix::transpose_type&& other) noexcept
+      : SquareMatrix{std::move(other).transpose_rvalue()}
+  {
+    assert(this->isSymmetric() && "Constructed covariance not symmetric");
+  }
+
+  /// \brief Construct a new Covariance Matrix Full object with given initializer list representing the memory layout of the
+  /// matrix
+  /// \param[in] list  An initializer list describing the memory layout of the matrix
+  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> CovarianceMatrixFull
+  {
+    return CovarianceMatrixFull{SquareMatrix::FromList(list)};
+  }
+
+  /// \brief Construct an Identity matrix
+  /// \return CovarianceMatrixFull  Resulting identity matrix
+  static auto Identity() -> CovarianceMatrixFull { return CovarianceMatrixFull{SquareMatrix::Identity()}; }
+
+  /// \brief Set internal matrix to the Identity matrix
+  void setIdentity() { SquareMatrix::setIdentity(); }
+
+  /// \brief Access operator to the covariance value at (row, col)
+  using SquareMatrix::operator();
+
+  /// \brief Creates the "composed" covariance, although no composition is needed
+  /// \return const CovarianceMatrixFull&
+  auto operator()() const -> const CovarianceMatrixFull& { return *this; }
+
+  /// \brief Calculates the inverse based on Cholesky decomposition
+  /// \return tl::expected<CovarianceMatrixFull, Errors>
+  auto inverse() const -> tl::expected<CovarianceMatrixFull, Errors>;
 
   /// \brief Calculate A*P*A' inplace
   /// \param[in] A
-  void apaT(const SquareMatrix<FloatType, Size>& A);
+  template <bool IsRowMajor_>
+  void apaT(const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A);
 
   /// \brief Calculate A*P*A'
   /// \param[in] A
-  auto apaT(const SquareMatrix<FloatType, Size>& A) const -> CovarianceMatrixFull;
+  template <bool IsRowMajor_>
+  auto apaT(const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull;
 
   /// \brief Set the variance at (idx,idx) and clears any correlations
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
-  void setVariance(const sint32 idx, const FloatType val);
-
-  // clang-format off
-TEST_REMOVE_PRIVATE:
-  ; // workaround for correct indentation
-  // clang-format on
-
-  /// \brief Testing: Construct a new Covariance Matrix Full< Float Type,  Size> object
-  /// \param[in] other A base class object
-  /// \param[in] isInverse
-  explicit CovarianceMatrixFull(const SquareMatrix<FloatType, Size>& other, const bool isInverse = false);
-
-  bool _isInverse{false};
+  void setVariance(const sint32 idx, const FloatType_ val);
 };
 
 } // namespace math

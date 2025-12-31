@@ -36,10 +36,10 @@ inline void StateVecConverter<
   using DstType = MotionModelCV<CovarianceMatrixType, FloatType>;
   using SrcType = MotionModelCA<CovarianceMatrixType, FloatType>;
 
-  dstVec[DstType::X]  = srcVec[SrcType::X];
-  dstVec[DstType::VX] = srcVec[SrcType::VX];
-  dstVec[DstType::Y]  = srcVec[SrcType::Y];
-  dstVec[DstType::VY] = srcVec[SrcType::VY];
+  dstVec.at_unsafe(DstType::X)  = srcVec.at_unsafe(SrcType::X);
+  dstVec.at_unsafe(DstType::VX) = srcVec.at_unsafe(SrcType::VX);
+  dstVec.at_unsafe(DstType::Y)  = srcVec.at_unsafe(SrcType::Y);
+  dstVec.at_unsafe(DstType::VY) = srcVec.at_unsafe(SrcType::VY);
 }
 
 template <typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
@@ -53,12 +53,12 @@ inline void StateVecConverter<
   using DstType = MotionModelCA<CovarianceMatrixType, FloatType>;
   using SrcType = MotionModelCV<CovarianceMatrixType, FloatType>;
 
-  dstVec[DstType::X]  = srcVec[SrcType::X];
-  dstVec[DstType::VX] = srcVec[SrcType::VX];
-  dstVec[DstType::AX] = static_cast<FloatType>(0.0);
-  dstVec[DstType::Y]  = srcVec[SrcType::Y];
-  dstVec[DstType::VY] = srcVec[SrcType::VY];
-  dstVec[DstType::AY] = static_cast<FloatType>(0.0);
+  dstVec.at_unsafe(DstType::X)  = srcVec.at_unsafe(SrcType::X);
+  dstVec.at_unsafe(DstType::VX) = srcVec.at_unsafe(SrcType::VX);
+  dstVec.at_unsafe(DstType::AX) = static_cast<FloatType>(0.0);
+  dstVec.at_unsafe(DstType::Y)  = srcVec.at_unsafe(SrcType::Y);
+  dstVec.at_unsafe(DstType::VY) = srcVec.at_unsafe(SrcType::VY);
+  dstVec.at_unsafe(DstType::AY) = static_cast<FloatType>(0.0);
 }
 
 } // namespace motion

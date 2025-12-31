@@ -179,7 +179,7 @@ auto operator-(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a, const Matr
 
 template <typename FloatType, sint32 RowsA, sint32 ColsA, bool ExtMemA, sint32 RowsB, sint32 ColsB, bool ExtMemB>
 auto operator*(const MatrixView<FloatType, RowsA, ColsA, ExtMemA>& a, const MatrixView<FloatType, RowsB, ColsB, ExtMemB>& b)
--> MatrixView<FloatType, RowsA, ColsB, false>
+    -> MatrixView<FloatType, RowsA, ColsB, false>
 {
   assert(a.getColCount() == b.getRowCount());
   MatrixView<FloatType, RowsA, ColsB, false> result{0, 0, a.getRowCount(), b.getColCount()};

@@ -39,6 +39,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::X,
                            SrcType::X,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::X,
                            DstType::X>(srcCov);
   // copy cross correlations between x,vx and y,vy
@@ -48,6 +49,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::X,
                            SrcType::Y,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::X,
                            DstType::Y>(srcCov);
   dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
@@ -56,6 +58,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::Y,
                            SrcType::X,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::Y,
                            DstType::X>(srcCov);
   // copy y,vy and its correlations
@@ -65,6 +68,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::Y,
                            SrcType::Y,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::Y,
                            DstType::Y>(srcCov);
 }
@@ -83,10 +87,10 @@ inline void StateCovConverter<
   // create a permutation matrix from SrcType to DstType
   math::SquareMatrix<FloatType, SrcType::NUM_STATE_VARIABLES> A;
   A.setZeros();
-  A(DstType::X, SrcType::X)   = one;
-  A(DstType::VX, SrcType::VX) = one;
-  A(DstType::Y, SrcType::Y)   = one;
-  A(DstType::VY, SrcType::VY) = one;
+  A.at_unsafe(DstType::X, SrcType::X)   = one;
+  A.at_unsafe(DstType::VX, SrcType::VX) = one;
+  A.at_unsafe(DstType::Y, SrcType::Y)   = one;
+  A.at_unsafe(DstType::VY, SrcType::VY) = one;
 
   // fill dstCov with the resulting top left block
   dstCov.template fill<SrcType::NUM_STATE_VARIABLES, DstType::NUM_STATE_VARIABLES>(srcCov.apaT(A));
@@ -116,6 +120,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::X,
                            SrcType::X,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::X,
                            DstType::X>(srcCov);
   // copy cross correlations between x,vx and y,vy
@@ -125,6 +130,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::X,
                            SrcType::Y,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::X,
                            DstType::Y>(srcCov);
   dstCov.template setBlock<SrcType::NUM_STATE_VARIABLES,
@@ -133,6 +139,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::Y,
                            SrcType::X,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::Y,
                            DstType::X>(srcCov);
   // copy y,vy and its correlations
@@ -142,6 +149,7 @@ inline void StateCovConverter<
                            2,
                            SrcType::Y,
                            SrcType::Y,
+                           SrcType::StateCov::IsRowMajor,
                            DstType::Y,
                            DstType::Y>(srcCov);
 }
@@ -159,10 +167,10 @@ inline void StateCovConverter<
 
   math::SquareMatrix<FloatType, DstType::NUM_STATE_VARIABLES> A;
   A.setZeros();
-  A(DstType::X, SrcType::X)   = one;
-  A(DstType::VX, SrcType::VX) = one;
-  A(DstType::Y, SrcType::Y)   = one;
-  A(DstType::VY, SrcType::VY) = one;
+  A.at_unsafe(DstType::X, SrcType::X)   = one;
+  A.at_unsafe(DstType::VX, SrcType::VX) = one;
+  A.at_unsafe(DstType::Y, SrcType::Y)   = one;
+  A.at_unsafe(DstType::VY, SrcType::VY) = one;
 
   dstCov.setIdentity();
   // copy CV into CA

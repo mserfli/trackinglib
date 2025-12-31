@@ -3,6 +3,9 @@
 
 #include "env/ego_motion.h"
 
+#include "math/linalg/covariance_matrix_full.hpp" // IWYU pragma: keep
+#include "math/linalg/vector.hpp"                 // IWYU pragma: keep
+
 namespace tracking
 {
 namespace env
@@ -18,13 +21,13 @@ void EgoMotion<FloatType>::compensatePosition(FloatType&      posXNewEgo,
                                               const FloatType posYOldEgo) const
 {
   // transfer to COG
-  Point2d posOldCog{posXOldEgo, posYOldEgo};
+  auto posOldCog = Point2d::FromValues(posXOldEgo, posYOldEgo);
   posOldCog.x() += _geometry.distCog2Ego;
 
   // translate first
   // compensate motion displacement
-  const Point2d displacement{_displacementCog.vec[DS_X], _displacementCog.vec[DS_Y]};
-  const Point2d translated = posOldCog - displacement;
+  const auto displacement = Point2d::FromValues(_displacementCog.vec.at_unsafe(DS_X), _displacementCog.vec.at_unsafe(DS_Y));
+  const auto translated   = Point2d{posOldCog - displacement};
 
   // rotate according to deltaPsi
   compensateDirection(posXNewEgo, posYNewEgo, translated.x(), translated.y());

@@ -1,41 +1,69 @@
 cmake_minimum_required(VERSION 3.24)
 
 project(trackingLib 
-        VERSION 0.1.0
+        VERSION 0.2.0
 )
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
+if(NOT CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 17)
 endif()
 
-set(CMAKE_CXX_FLAGS "-w")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+# endif()
+
+if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+else()
+    set(CMAKE_CXX_FLAGS "/W0 /EHsc") #/W3
+    set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2")
+endif()
 
 include(FetchContent)
+
+# Define an option to activate dependency and linkage to Eigen
+option(USE_EIGEN "Activate dependency and linkage to Eigen" OFF)
+if(USE_EIGEN)
+    FetchContent_Declare (
+        Eigen
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+        GIT_TAG 3.4
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE 
+    )
+    FetchContent_MakeAvailable(Eigen)
+    
+    option(EIGEN_BUILD_DOC OFF)
+    option(EIGEN_BUILD_PKGCONFIG OFF)
+endif()
+
+# Define an option to activate dependency and linkage to Pybind11
+option(USE_PYBIND11 "Activate dependency and linkage to Pybind11 (experimental)" OFF)
+if(USE_PYBIND11)
+    FetchContent_Declare (
+        pybind11
+        GIT_REPOSITORY https://github.com/pybind/pybind11
+        GIT_TAG stable
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE 
+    )
+    FetchContent_MakeAvailable(pybind11)
+
+    option(PYBIND11_TEST OFF)
+endif()
 
 FetchContent_Declare (
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG v1.12.x
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE 
-)
-
-FetchContent_Declare (
-    Eigen
-    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG 3.4
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE 
-)
-
-FetchContent_Declare (
-    pybind11
-    GIT_REPOSITORY https://github.com/pybind/pybind11
-    GIT_TAG stable
+    GIT_TAG v1.16.x
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE 
 )
@@ -48,22 +76,19 @@ FetchContent_Declare (
     GIT_PROGRESS TRUE 
 )
 
-option(EIGEN_BUILD_DOC OFF)
 option(BUILD_TESTING OFF)
-option(EIGEN_BUILD_PKGCONFIG OFF)
 option(EXPECTED_ENABLE_TESTS OFF)
-option(PYBIND11_TEST OFF)
 
 FetchContent_MakeAvailable (
     googletest
-    Eigen
-    pybind11
     expected
 )
 
-# activate code coverage
-include(coverage)
-append_coverage_compiler_flags()
+if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    # activate code coverage
+    include(coverage)
+    append_coverage_compiler_flags()
+endif()
 
 enable_testing()
 include(GoogleTest)
@@ -87,13 +112,26 @@ target_include_directories(
            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_14)
-
-target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen expected)
-
-add_subdirectory(examples)
-add_subdirectory(python)
 add_subdirectory(tests)
+
+if(USE_PYBIND11)
+    add_subdirectory(python)
+endif()
+
+if(USE_EIGEN)
+    target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen expected)
+
+    # Export Eigen target
+    install(
+        EXPORT Eigen3Targets
+        FILE Eigen3Targets.cmake
+        NAMESPACE Eigen3::
+        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/eigen3/cmake
+    )
+    add_subdirectory(examples)
+else()
+    target_link_libraries(${PROJECT_NAME} INTERFACE expected)
+endif()
 
 # locations are provided by GNUInstallDirs
 install(

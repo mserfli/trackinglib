@@ -1,10 +1,10 @@
 #ifndef D33C0BB9_EF21_44C6_8DAD_0C38C418D824
 #define D33C0BB9_EF21_44C6_8DAD_0C38C418D824
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "env/ego_motion.h"
-#include "filter/kalman_filter.h"
 #include "filter/information_filter.h"
+#include "filter/kalman_filter.h"
 #include "motion/state_mem.h"
 
 namespace tracking
@@ -47,10 +47,10 @@ TEST_REMOVE_PROTECTED:
   // clang-format on
 
   // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
-  IMotionModel(const IMotionModel& other) = default;
-  IMotionModel(IMotionModel&&) noexcept   = default;
+  IMotionModel(const IMotionModel& other)                    = default;
+  IMotionModel(IMotionModel&&) noexcept                      = default;
   auto operator=(const IMotionModel& other) -> IMotionModel& = default;
-  auto operator=(IMotionModel&&) noexcept -> IMotionModel& = default;
+  auto operator=(IMotionModel&&) noexcept -> IMotionModel&   = default;
 };
 
 // clang-format off
@@ -85,10 +85,10 @@ TEST_REMOVE_PROTECTED:
   // clang-format on
 
   // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
-  ExtendedMotionModel(const ExtendedMotionModel& other) = default;
-  ExtendedMotionModel(ExtendedMotionModel&&) noexcept   = default;
+  ExtendedMotionModel(const ExtendedMotionModel& other)                    = default;
+  ExtendedMotionModel(ExtendedMotionModel&&) noexcept                      = default;
   auto operator=(const ExtendedMotionModel& other) -> ExtendedMotionModel& = default;
-  auto operator=(ExtendedMotionModel&&) noexcept -> ExtendedMotionModel& = default;
+  auto operator=(ExtendedMotionModel&&) noexcept -> ExtendedMotionModel&   = default;
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
@@ -96,8 +96,8 @@ TEST_REMOVE_PRIVATE:
   // clang-format on
 
   /// \brief Testing: Construct a new Extended Motion Model object
-  /// \param[in] vec 
-  /// \param[in] cov 
+  /// \param[in] vec
+  /// \param[in] cov
   explicit ExtendedMotionModel(const StateVec& vec, const StateCov& cov)
       : IMotionModel<FloatType>{}
       , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}

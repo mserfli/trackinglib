@@ -1,10 +1,10 @@
 #ifndef EB85CC72_56D5_4D88_89CF_98C6580F5B61
 #define EB85CC72_56D5_4D88_89CF_98C6580F5B61
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "env/ego_motion.h"
-#include "math/linalg/covariance_matrix_factored.h"
-#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/covariance_matrix_factored.h" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_full.h"     // IWYU pragma: keep
 #include "math/linalg/matrix.h"
 #include "motion/generic_predict.h"
 #include "motion/imotion_model.h"
@@ -59,15 +59,16 @@ public:
   using EgoMotion              = env::EgoMotion<FloatType>;
   using EgoMotionMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, EgoMotion::DS_NUM_VARIABLES>;
 
-  static constexpr sint32 NUM_AUG_PROC_NOISE_VARIABLES = NUM_PROC_NOISE_VARIABLES + EgoMotion::DS_NUM_VARIABLES;
-  using AugmentedProcessNoiseDiagMatrix                = math::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
+  static constexpr sint32 NUM_AUG_PROC_NOISE_VARIABLES =
+      NUM_PROC_NOISE_VARIABLES + static_cast<sint32>(EgoMotion::DS_NUM_VARIABLES);
+  using AugmentedProcessNoiseDiagMatrix    = math::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
   using AugmentedProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
 
   // rule of 5 declarations
-  MotionModelCA()                         = default;
-  MotionModelCA(const MotionModelCA&)     = default;
-  MotionModelCA(MotionModelCA&&) noexcept = default;
-  auto operator=(const MotionModelCA&) -> MotionModelCA& = default;
+  MotionModelCA()                                            = default;
+  MotionModelCA(const MotionModelCA&)                        = default;
+  MotionModelCA(MotionModelCA&&) noexcept                    = default;
+  auto operator=(const MotionModelCA&) -> MotionModelCA&     = default;
   auto operator=(MotionModelCA&&) noexcept -> MotionModelCA& = default;
   virtual ~MotionModelCA()                                   = default;
 

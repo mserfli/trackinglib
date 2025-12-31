@@ -3,75 +3,94 @@
 
 #include "math/linalg/matrix_column_view.h"
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline tracking::math::MatrixColumnView<FloatType, Rows, Cols>::MatrixColumnView(const Matrix<FloatType, Rows, Cols>& matrix,
-                                                                                 const sint32                         col,
-                                                                                 const sint32                         rowBegin,
-                                                                                 const sint32                         rowEnd)
+#include "math/linalg/matrix.hpp" // IWYU pragma: keep
+#include "math/linalg/vector.hpp" // IWYU pragma: keep
+
+namespace tracking
+{
+namespace math
+{
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>::MatrixColumnView(
+    const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& matrix, const sint32 col, const sint32 rowBegin, const sint32 rowEnd)
     : _matrix{matrix}
     , _col{col}
     , _rowBegin{rowBegin}
-    , _rowCount{rowEnd-rowBegin+1}
+    , _rowCount{rowEnd - rowBegin + 1}
 {
   assert(_rowBegin >= 0);
-  assert(_rowCount <= Rows);
+  assert(_rowCount <= Rows_);
 }
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
-inline auto tracking::math::MatrixColumnView<FloatType, Rows, Cols>::operator[](const sint32 idx) const -> FloatType
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(const sint32 idx) const -> ValueType_
 {
   assert(idx < _rowCount);
   const auto row = _rowBegin + idx;
-  return _matrix(row, _col);
+  return _matrix.at_unsafe(row, _col);
 }
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
-template <sint32 Rows2>
-inline auto tracking::math::MatrixColumnView<FloatType, Rows, Cols>::operator*(const Vector<FloatType, Rows2>& other) const
-    -> FloatType
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <sint32 Rows2_>
+inline auto MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(const Vector<ValueType_, Rows2_>& other) const
+    -> ValueType_
 {
-  static_assert(Rows2 <= Rows);
-  assert(Rows2 == _rowCount);
+  static_assert(Rows2_ <= Rows_);
+  assert(Rows2_ == _rowCount);
   // calc dot product
-  FloatType result{};
-  for (auto row = 0; row < Rows2; ++row)
+  ValueType_ result{};
+  for (auto row = 0; row < Rows2_; ++row)
   {
-    result += this->operator[](row) * other[row];
+    result += this->at_unsafe(row) * other.at_unsafe(row);
   }
   return result;
 }
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
-template <sint32 Rows2, sint32 Cols2>
-inline auto tracking::math::MatrixColumnView<FloatType, Rows, Cols>::operator*(const MatrixColumnView<FloatType, Rows2, Cols2>& other) const -> FloatType
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
+inline auto MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(
+    const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const -> ValueType_
 {
   assert(other.getRowCount() == _rowCount);
   // calc dot product
-  FloatType result{};
+  ValueType_ result{};
   for (auto row = 0; row < _rowCount; ++row)
   {
-    result += this->operator[](row) * other[row];
+    result += this->at_unsafe(row) * other.at_unsafe(row);
   }
   return result;
-
 }
 
-template <typename FloatType, sint32 Rows, sint32 Cols, sint32 Rows2, sint32 Cols2>
-inline auto tracking::math::operator*(const Matrix<FloatType, Rows, Cols>&             mat,
-                                      const MatrixColumnView<FloatType, Rows2, Cols2>& colView) -> Vector<FloatType, Rows>
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline void MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>::print() const
 {
-  static_assert(Cols <= Rows2);
-  assert(Cols == colView.getRowCount());
-
-  Vector<FloatType, Rows> result{};
-  for (auto row = 0; row < Rows; ++row)
+  for (auto row = 0; row < _rowCount; ++row)
   {
-    for (auto col = 0; col < Cols; ++col)
+    std::cout << at_unsafe(row) << ", ";
+  }
+  std::cout << "\n" << std::endl;
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_, sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
+inline auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&              mat,
+                      const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& colView) -> Vector<ValueType_, Rows_>
+{
+  static_assert(Cols_ <= Rows2_);
+  assert(Cols_ == colView.getRowCount());
+
+  Vector<ValueType_, Rows_> result{};
+  for (auto row = 0; row < Rows_; ++row)
+  {
+    for (auto col = 0; col < Cols_; ++col)
     {
-      result[row] += mat(row, col) * colView[col];
+      result.at_unsafe(row) += mat.at_unsafe(row, col) * colView.at_unsafe(col);
     }
   }
   return result;
 }
+
+} // namespace math
+} // namespace tracking
 
 #endif // DAD67FEF_0E47_455C_AC3E_CE31BDC7EE3F

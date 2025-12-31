@@ -1,8 +1,8 @@
 #ifndef FFCF1757_A52C_4BEF_BFD6_2475D08B37C6
 #define FFCF1757_A52C_4BEF_BFD6_2475D08B37C6
 
-#include "base/first_include.h"
-#include "math/linalg/vector.h"
+#include "base/first_include.h" // IWYU pragma: keep
+#include "math/linalg/vector.h" // IWYU pragma: keep
 
 namespace tracking
 {
@@ -11,83 +11,87 @@ namespace math
 
 // TODO(matthias): add downcast from Point3d
 // TODO(matthias): add interface contract
-template <typename FloatType>
-class Point2d: public Vector<FloatType, 2>
+template <typename ValueType_>
+class Point2d: public Vector<ValueType_, 2>
 {
 public:
-  /// \brief Inherit Rule of 5 behavior from base class
-  using Vector<FloatType, 2>::Vector;
+  using Vector = Vector<ValueType_, 2>; ///< type of the parent class
 
-  /// \brief Construct a new Point 2d< Float Type> object
+  // unhide ctor of base class to allow implicit call in derived default ctors
+  using Vector::Vector;
+
+  /// \brief Construct a new Point 2d<ValueType_> object
   /// \param[in] other A base class object
-  Point2d(const Vector<FloatType, 2>& other); // NOLINT(google-explicit-constructor)
+  explicit Point2d(const Vector& other)
+      : Vector{other}
+  {
+  }
 
-  /// \brief Construct a new Point 2d< Float Type> object
+  /// \brief Move construct a new Point 2d<ValueType_> object
+  /// \param[in] other A base class object
+  explicit Point2d(Vector&& other) noexcept
+      : Vector{std::move(other)}
+  {
+  }
+
+  /// \brief Construct a new Point 2d<ValueType_> object
   /// \param[in] x  Value for x
   /// \param[in] y  Value for y
-  Point2d(const FloatType x, const FloatType y);
+  static auto FromValues(const ValueType_ x, const ValueType_ y) -> Point2d;
 
   /// \brief Read access to x value
-  /// \return FloatType
-  auto x() const -> FloatType;
+  /// \return ValueType_
+  auto x() const -> ValueType_;
 
   /// \brief Read access to y value
-  /// \return FloatType
-  auto y() const -> FloatType;
+  /// \return ValueType_
+  auto y() const -> ValueType_;
 
   /// \brief Write access to x value
-  /// \return FloatType
-  auto x() -> FloatType&;
+  /// \return ValueType_
+  auto x() -> ValueType_&;
 
   /// \brief Write access to y value
-  /// \return FloatType
-  auto y() -> FloatType&;
+  /// \return ValueType_
+  auto y() -> ValueType_&;
 
-  // clang-format off
-TEST_REMOVE_PRIVATE:
-  ; // workaround for correct indentation
-  // clang-format on
-
-  /// \brief hide inherited operator[] to prevent wrong access
-  using Vector<FloatType, 2>::operator[];
+private:
+  /// \brief hide inherited at_unsafe to prevent wrong access
+  using Vector::at_unsafe;
 };
+;
 
-template <typename FloatType>
-Point2d<FloatType>::Point2d(const Vector<FloatType, 2>& other)
-    : Vector<FloatType, 2>{other}
+template <typename ValueType_>
+inline auto Point2d<ValueType_>::FromValues(const ValueType_ x, const ValueType_ y) -> Point2d
 {
+  Point2d tmp{};
+  tmp.x() = x;
+  tmp.y() = y;
+  return tmp;
 }
 
-template <typename FloatType>
-Point2d<FloatType>::Point2d(const FloatType x, const FloatType y)
-    : Vector<FloatType, 2>()
+template <typename ValueType_>
+inline auto Point2d<ValueType_>::x() const -> ValueType_
 {
-  this->x() = x;
-  this->y() = y;
+  return Vector::at_unsafe(0);
 }
 
-template <typename FloatType>
-inline auto Point2d<FloatType>::x() const -> FloatType
+template <typename ValueType_>
+inline auto Point2d<ValueType_>::y() const -> ValueType_
 {
-  return this->operator[](0);
+  return Vector::at_unsafe(1);
 }
 
-template <typename FloatType>
-inline auto Point2d<FloatType>::y() const -> FloatType
+template <typename ValueType_>
+inline auto Point2d<ValueType_>::x() -> ValueType_&
 {
-  return this->operator[](1);
+  return Vector::at_unsafe(0);
 }
 
-template <typename FloatType>
-inline auto Point2d<FloatType>::x() -> FloatType&
+template <typename ValueType_>
+inline auto Point2d<ValueType_>::y() -> ValueType_&
 {
-  return this->operator[](0);
-}
-
-template <typename FloatType>
-inline auto Point2d<FloatType>::y() -> FloatType&
-{
-  return this->operator[](1);
+  return Vector::at_unsafe(1);
 }
 
 } // namespace math

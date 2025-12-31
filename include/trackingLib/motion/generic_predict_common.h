@@ -1,7 +1,7 @@
 #ifndef DA3325A6_9F6B_4D55_87B2_336CB0BAF21E
 #define DA3325A6_9F6B_4D55_87B2_336CB0BAF21E
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "env/ego_motion.h"
 
 namespace tracking

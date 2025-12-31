@@ -1,43 +1,50 @@
 #ifndef BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 #define BC7FD90F_FBB7_481C_89C4_89BEE41309C5
 
-#include "base/first_include.h"
-#include "math/linalg/square_matrix.h"
-#include <initializer_list>
+#include "base/first_include.h"        // IWYU pragma: keep
+#include "math/linalg/square_matrix.h" // IWYU pragma: keep
 
 namespace tracking
 {
 namespace math
 {
 
-template <typename FloatType, sint32 Rows, sint32 Cols>
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 class Matrix; // LCOV_EXCL_LINE
 
-template <typename FloatType, sint32 Size>
-class DiagonalMatrix; // LCOV_EXCL_LINE
+template <typename ValueType_, sint32 Size_>
+class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
 
 // TODO(matthias): add interface contract
-// TODO(matthias): speedup transpose by storing the current transpose status and swap col/row access
 // TODO(matthias): use own memory optimized to required number of elements
-template <typename FloatType, sint32 Size, bool isLower>
-class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<FloatType, Size>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_ = true>
+class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
 {
 public:
-  // rule of 5 declarations
-  TriangularMatrix()                              = default;
-  TriangularMatrix(const TriangularMatrix& other) = default;
-  TriangularMatrix(TriangularMatrix&&) noexcept   = default;
-  auto operator=(const TriangularMatrix&) -> TriangularMatrix& = default;
-  auto operator=(TriangularMatrix&&) noexcept -> TriangularMatrix& = default;
-  ~TriangularMatrix()                                              = default;
+  using SquareMatrix = SquareMatrix<ValueType_, Size_, IsRowMajor_>; ///< type of the parent class
+
+  // unhide ctor of base class to allow implicit call in derived default ctors
+  using SquareMatrix::SquareMatrix;
+
+  /// \brief Type of the transposed matrix without changing the memory layout
+  using transpose_type = TriangularMatrix<ValueType_, Size_, !IsLower_, !IsRowMajor_>;
 
   /// \brief Construct a new Triangular Matrix object
   /// \param[in] other
-  TriangularMatrix(const SquareMatrix<FloatType, Size>& other); // NOLINT(google-explicit-constructor)
+  explicit TriangularMatrix(const SquareMatrix& other);
 
-  /// \brief Construct a new TriangularMatrix object given initializer list
-  /// \param[in] list  An initializer list describing a full square matrix
-  TriangularMatrix(const std::initializer_list<std::initializer_list<FloatType>>& list);
+  /// \brief Move construct a new Triangular Matrix object
+  /// \param[in] other
+  explicit TriangularMatrix(SquareMatrix&& other) noexcept
+      : SquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts
+
+  /// \brief Construct a new Triangular Matrix object with given initializer list representing the memory layout of the matrix
+  /// \param[in] list  An initializer list describing the memory layout of the matrix
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix;
+
+  /// \brief Construct an Identity matrix
+  /// \return TriangularMatrix  Resulting identity matrix
+  static auto Identity() -> TriangularMatrix { return TriangularMatrix{SquareMatrix::Identity()}; }
 
   /// \brief Set a lower/upper triangular block matrix at given position
   /// \tparam SrcSize    Size of the source block
@@ -48,81 +55,103 @@ public:
   /// \tparam DstColBeg  Begin col index in dest
   /// \param[in] block   Source block matrix to copy from
   template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
-  void setBlock(const TriangularMatrix<FloatType, SrcSize, isLower>& block);
+  void setBlock(const TriangularMatrix<ValueType_, SrcSize, IsLower_, IsRowMajor_>& block);
+
+  // TODO(matthias): add setBlock with params defined at runtime
 
   /// \brief Multiplication with generic matrix: Tria * Matrix
-  /// \tparam Cols
+  /// \tparam Cols_
+  /// \tparam IsRowMajor2_
   /// \param[in] mat
-  /// \return Matrix<FloatType, Size, Cols>
-  template <sint32 Cols>
-  auto operator*(const Matrix<FloatType, Size, Cols>& mat) const -> Matrix<FloatType, Size, Cols>;
+  /// \return Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
+  template <sint32 Cols_, bool IsRowMajor2_>
+  auto operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& mat) const
+      -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>;
 
   /// \brief Multiplication with triangular matrix: Tria * Matrix
   /// \param[in] mat  A triangular matrix
   /// \return TriangularMatrix<FloatType, Size, isLower>
-  auto operator*(const TriangularMatrix<FloatType, Size, isLower>& mat) const -> TriangularMatrix;
+  auto operator*(const TriangularMatrix& mat) const -> TriangularMatrix;
 
   /// \brief Multiplication with triangular matrix: Tria * Matrix
   /// \param[in] mat  A triangular matrix
   /// \return SquareMatrix<FloatType, Size>
-  auto operator*(const TriangularMatrix<FloatType, Size, !isLower>& mat) const -> SquareMatrix<FloatType, Size>;
+  auto operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> SquareMatrix;
 
   /// \brief Multiplication with diagonal matrix: Tria * Matrix
   /// \param[in] diag  A diagonal matrix
   /// \return TriangularMatrix<FloatType, Size, isLower>
-  auto operator*(const DiagonalMatrix<FloatType, Size>& diag) const -> TriangularMatrix;
+  auto operator*(const DiagonalMatrix<ValueType_, Size_>& diag) const -> TriangularMatrix;
 
   /// \brief Multiplication with scalar: Tria * scalar
   /// \param[in] scalar  A scalar value
   /// \return TriangularMatrix<FloatType, Size, isLower>
-  auto operator*(const FloatType scalar) const -> TriangularMatrix;
+  auto operator*(const ValueType_ scalar) const -> TriangularMatrix;
 
   /// \brief Inplace Multiplication with scalar: Tria * scalar
   /// \param[in] scalar  A scalar value
   /// \return TriangularMatrix<FloatType, Size, isLower>&
-  auto operator*=(const FloatType scalar) -> TriangularMatrix&;
+  auto operator*=(const ValueType_ scalar) -> TriangularMatrix&;
 
   /// \brief Element read-only access to a scalar triangular value
   /// \param[in] row  Row index of the element
   /// \param[in] col  Col index of the element
   /// \return FloatType  scalar triangular value
-  auto operator()(sint32 row, sint32 col) const -> FloatType;
+  auto operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>;
 
   /// \brief Element access to a scalar triangular value
   /// \param[in] row  Row index of the element
   /// \param[in] col  Col index of the element
   /// \return FloatType&  Reference to the scalar triangular value
-  auto operator()(sint32 row, sint32 col) -> FloatType&;
+  auto operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
 
-  /// \brief Calculate the transposed matrix
-  /// \return TriangularMatrix<FloatType, Size, !isLower>
-  auto transpose() const -> TriangularMatrix<FloatType, Size, !isLower>;
+  /// \brief Calculate the transposed matrix without changing the layout
+  /// \return const transpose_type&   const reference to same data as Self, but differently interpreted
+  auto transpose() const -> const transpose_type&;
+
+  /// \brief Calculate the transposed matrix without changing the layout
+  /// \return transpose_type&   reference to same data as Self, but differently interpreted
+  auto transpose() -> transpose_type&;
 
   /// \brief Solver for A*x=b based on Cholesky decomposition of A
-  /// \tparam Cols  Number of columns in the rhs variable b
+  /// \tparam Cols_  Number of columns in the rhs variable b
+  /// \tparam IsRowMajor2_
   /// \param[in] b  Matrix describing the rhs of the equation A*x=b
-  /// \return Matrix<FloatType, Size, Cols> describing x
-  template <sint32 Cols>
-  auto solve(const Matrix<FloatType, Size, Cols>& b) const -> Matrix<FloatType, Size, Cols>;
+  /// \return Matrix<FloatType, Size, Cols, IsRowMajor2_> describing x
+  template <sint32 Cols_, bool IsRowMajor2_>
+  auto solve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>;
 
   /// \brief Calculates the inverse of the underlying matrix
   /// \return TriangularMatrix
   auto inverse() const -> TriangularMatrix;
+
   // TODO(matthias): UnitUpper inplace inverse, Grewal Table 6.7 p.235
 
   /// \brief Checks for Unit Upper condition
   /// \return true
   [[nodiscard]] auto isUnitUpperTriangular() const -> bool;
 
-  // clang-format off
-TEST_REMOVE_PRIVATE:
-  ; // workaround to keep following idententation
-  // clang-format on
+  //////////////////////////////////////////////////
+  // unsafe access operators  --->
+  /// \brief Element read-only access to a scalar triangular value
+  /// \param[in] row  Row index of the element
+  /// \param[in] col  Col index of the element
+  /// \return FloatType  scalar triangular value
+  auto at_unsafe(sint32 row, sint32 col) const -> ValueType_;
+
+  /// \brief Element access to a scalar triangular value
+  /// \param[in] row  Row index of the element
+  /// \param[in] col  Col index of the element
+  /// \return FloatType&  Reference to the scalar triangular value
+  auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
+  // <---
+
+private:
   /// \brief hide inherited transpose function
-  using SquareMatrix<FloatType, Size>::transpose;
+  using SquareMatrix::transpose;
 
   /// \brief hide inherited operator() to prevent accessing off-triangular elements
-  using SquareMatrix<FloatType, Size>::operator();
+  using SquareMatrix::operator();
 };
 
 } // namespace math

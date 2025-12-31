@@ -3,120 +3,197 @@
 
 #include "math/linalg/square_matrix.h"
 
-#include "math/linalg/diagonal_matrix.h"
-#include "math/linalg/matrix_column_view.hpp"
-#include "math/linalg/matrix_row_view.hpp"
-#include "math/linalg/matrix_view.hpp"
-#include "math/linalg/triangular_matrix.hpp"
-#include "math/linalg/vector.hpp"
+#include "math/linalg/diagonal_matrix.hpp"    // IWYU pragma: keep
+#include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
+#include "math/linalg/matrix_row_view.hpp"    // IWYU pragma: keep
+#include "math/linalg/triangular_matrix.hpp"  // IWYU pragma: keep
+#include "math/linalg/vector.hpp"             // IWYU pragma: keep
+#include <cmath>                              // sqrt
 #include <limits>
-#include <utility>
 
 namespace tracking
 {
 namespace math
 {
 
-template <typename FloatType, sint32 Size>
-SquareMatrix<FloatType, Size>::SquareMatrix(const Matrix<FloatType, Size, Size>& other)
-    : Matrix<FloatType, Size, Size>{other}
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+SquareMatrix<ValueType_, Size_, IsRowMajor_>::SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other)
 {
-}
-
-template <typename FloatType, sint32 Size>
-SquareMatrix<FloatType, Size>::SquareMatrix(const DiagonalMatrix<FloatType, Size>& other)
-{
-  for (auto idx = 0; idx < Size; ++idx)
+  for (auto idx = 0; idx < Size_; ++idx)
   {
-    this->operator()(idx, idx) = other[idx];
+    this->at_unsafe(idx, idx) = other.at_unsafe(idx);
   }
 }
 
-template <typename FloatType, sint32 Size>
-inline void SquareMatrix<FloatType, Size>::setIdentity()
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::FromList(
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix
 {
-  this->_data.setIdentity();
+  return SquareMatrix{Matrix::FromList(list)};
 }
 
-template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::Identity() -> SquareMatrix
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline void SquareMatrix<ValueType_, Size_, IsRowMajor_>::setIdentity()
 {
-  SquareMatrix tmp;
-  tmp.setIdentity();
-  return tmp;
+  *this = SquareMatrix{DiagonalMatrix<ValueType_, Size_>::Identity()};
 }
 
-template <typename FloatType, sint32 Size>
-inline void SquareMatrix<FloatType, Size>::qrSolve(SquareMatrix<FloatType, Size>& x, const SquareMatrix<FloatType, Size>& b) const
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::Identity() -> SquareMatrix
 {
-  Eigen::HouseholderQR<Eigen::Matrix<FloatType, Size, Size>> qr(this->_data);
-  x._data = qr.solve(b._data);
-}
+  return SquareMatrix{DiagonalMatrix<ValueType_, Size_>::Identity()};
+} // LCOV_EXCL_LINE
 
-template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::decomposeLLT() const -> tl::expected<TriangularMatrix<FloatType, Size, true>, Errors>
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix& b) const
+    -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
+{
+  const auto [Q, R] = householderQR();
+  return static_cast<SquareMatrix<ValueType_, Size_, !IsRowMajor_>>(R.solve(Q.transpose() * b));
+} // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const
+    -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>>
+{
+  // implementation based on https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf
+
+  // Initially, Q is an identity matrix because no orthogonal transformations have been applied yet.
+  SquareMatrix Q{SquareMatrix::Identity()};
+  // Initializes the upper triangular matrix R as a copy of the input matrix. This is the matrix
+  // that will be transformed to become upper triangular.
+  SquareMatrix R{*this};
+
+  // scale to reduce numerical issues
+  const auto [min, max]  = R.minmax();
+  const auto scaleFactor = std::abs(min) > std::abs(max) ? min : max;
+  R /= scaleFactor;
+
+  using ColumnVector = Vector<ValueType_, Size_>;
+  static ColumnVector w{};
+  for (auto j = 0; j < Size_; ++j)
+  {
+    // Extract Size_-j rows of the j-th column as a Vector starting in row j.
+    w.setBlock(Size_ - j, 1, j, j, j, 0, R);
+    for (auto k = 0; k < j; ++k)
+    {
+      // set unused values to zero
+      w.at_unsafe(k) = static_cast<ValueType_>(0);
+    }
+
+    const ValueType_ normx = w.norm();
+    // Determines the sign of the j-th diagonal element of R.
+    const ValueType_ sign =
+        (R.at_unsafe(j, j) < static_cast<ValueType_>(0)) ? static_cast<ValueType_>(1) : static_cast<ValueType_>(-1);
+    const ValueType_ u1  = R.at_unsafe(j, j) - sign * normx;
+    const ValueType_ tau = -sign * u1 / normx; // Computes the parameter tau for the Householder transformation.
+
+    w /= u1;                                                                  // Computes the Householder vector w.
+    w.at_unsafe(j)   = static_cast<ValueType_>(1);                            // Sets the j-th row of w to 1 for convenience.
+    const auto wView = MatrixColumnView<ValueType_, Size_, 1, true>(w, 0, j); // create view starting in j-th row
+
+    // Update R using the Householder transformation
+    for (auto i = j; i < Size_; ++i) // cols
+    {
+      // R(j:end, i) = R(j:end, i) - tau * w * (w' * R(j:end, i));
+      const auto tau_dotRw = tau * (MatrixColumnView<ValueType_, Size_, Size_, IsRowMajor_>(R, i, j) * wView);
+      for (auto k = j; k < Size_; ++k) // rows
+      {
+        R.at_unsafe(k, i) -= tau_dotRw * wView.at_unsafe(k - j);
+      }
+    }
+
+    // Update Q using the Householder transformation
+    for (auto i = 0; i < Size_; ++i) // rows
+    {
+      // Q(i,j:end) = Q(i,j:end) - tau * (Q(i,j:end) * w) * w';
+      const auto tau_dotQw = tau * (MatrixRowView<ValueType_, Size_, Size_, IsRowMajor_>(Q, i, j) * wView);
+      for (auto k = j; k < Size_; ++k) // cols
+      {
+        Q.at_unsafe(i, k) -= tau_dotQw * wView.at_unsafe(k - j);
+      }
+    }
+  }
+  auto triuR = TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>{std::move(R)};
+  triuR *= scaleFactor;
+  return std::make_pair(std::move(Q), std::move(triuR));
+} // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
+    -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>
 {
   if (isSymmetric())
   {
-    const Eigen::LLT<Eigen::Matrix<FloatType, Size, Size>> llt(this->_data);
-
-    if (llt.info() == Eigen::Success)
+    if (hasStrictlyPositiveDiagonalElems())
     {
-      TriangularMatrix<FloatType, Size, true> L{};
-      L.setZeros();
-      const auto& internalL = llt.matrixL();
-      // copy lower triangular elements of internal matrix
-      for (sint32 col = 0; col < Size; ++col)
+      TriangularMatrix<ValueType_, Size_, true, IsRowMajor_> L{};
+      for (auto j = 0; j < Size_; ++j)
       {
-        L(col, col) = internalL(col, col);
-        for (sint32 row = col + 1; row < Size; ++row)
+        ValueType_ sum = this->at_unsafe(j, j);
+        for (auto k = 0; k < j; ++k)
         {
-          L(row, col) = internalL(row, col);
+          sum -= L.at_unsafe(j, k) * L.at_unsafe(j, k);
+        }
+        L.at_unsafe(j, j) = std::sqrt(sum);
+
+        for (auto i = j + 1; i < Size_; ++i)
+        {
+          sum = this->at_unsafe(i, j);
+          for (auto k = 0; k < j; ++k)
+          {
+            sum -= L.at_unsafe(i, k) * L.at_unsafe(j, k);
+          }
+          L.at_unsafe(i, j) = sum / L.at_unsafe(j, j);
         }
       }
-      return L;
+      return std::move(L);
     }
     return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
   }
   return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
 }
 
-template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::decomposeLDLT() const
-    -> tl::expected<std::pair<TriangularMatrix<FloatType, Size, true>, DiagonalMatrix<FloatType, Size>>, Errors>
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLDLT() const
+    -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>, Errors>
 {
   if (isSymmetric())
   {
-    const Eigen::SimplicialLDLT<Eigen::SparseMatrix<FloatType>, Eigen::Lower, Eigen::NaturalOrdering<int>> ldlt(
-        this->_data.sparseView());
-
-    if (ldlt.info() == Eigen::Success)
+    if (hasStrictlyPositiveDiagonalElems())
     {
-      TriangularMatrix<FloatType, Size, true> L{};
-      DiagonalMatrix<FloatType, Size>         D{};
-      L.setIdentity();
-
-      const auto  internalL = Eigen::SparseMatrix<FloatType>(ldlt.matrixL());
-      const auto& internalD = ldlt.vectorD();
-      // copy strict lower triangular and diagonal elements of internal matrix
-      for (sint32 col = 0; col < Size; ++col)
+      TriangularMatrix<ValueType_, Size_, true, IsRowMajor_> L{};
+      DiagonalMatrix<ValueType_, Size_>                      D{};
+      for (auto j = 0; j < Size_; ++j)
       {
-        D[col] = internalD[col];
-        for (sint32 row = col + 1; row < Size; ++row)
+        ValueType_ sum = this->at_unsafe(j, j);
+        for (auto k = 0; k < j; ++k)
         {
-          L(row, col) = internalL.coeff(row, col);
+          sum -= D.at_unsafe(k) * L.at_unsafe(j, k) * L.at_unsafe(j, k);
+        }
+        D.at_unsafe(j)    = sum;
+        L.at_unsafe(j, j) = static_cast<ValueType_>(1);
+
+        for (auto i = j + 1; i < Size_; ++i)
+        {
+          sum = this->at_unsafe(i, j);
+          for (auto k = 0; k < j; ++k)
+          {
+            sum -= D.at_unsafe(k) * L.at_unsafe(i, k) * L.at_unsafe(j, k);
+          }
+          L.at_unsafe(i, j) = sum / D.at_unsafe(j);
         }
       }
-      return std::make_pair(L, D);
+      return std::make_pair(std::move(L), std::move(D));
     }
     return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
   }
   return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
 }
 
-template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::decomposeUDUT() const
-    -> tl::expected<std::pair<TriangularMatrix<FloatType, Size, false>, DiagonalMatrix<FloatType, Size>>, Errors>
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const
+    -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>, Errors>
 {
   // Grewal & Andrews, Kalman Filtering Theory and Practice Using MATLAB, 4th
   // Edition, Wiley, 2014.
@@ -126,58 +203,75 @@ inline auto SquareMatrix<FloatType, Size>::decomposeUDUT() const
 
   if (isSymmetric())
   {
-    const auto& P = this->_data;
-    TriangularMatrix<FloatType, Size, false> U{};
-    DiagonalMatrix<FloatType, Size> D{};
-    for (sint32 j = Size - 1; j >= 0; --j)
+    const auto&                                             P = *this;
+    TriangularMatrix<ValueType_, Size_, false, IsRowMajor_> U{};
+    DiagonalMatrix<ValueType_, Size_>                       D{};
+    for (sint32 j = Size_ - 1; j >= 0; --j)
     {
       for (sint32 i = j; i >= 0; --i)
       {
-        auto sigma = P(i, j);
-        for (sint32 k = j + 1; k < Size; ++k)
+        auto sigma = P.at_unsafe(i, j);
+        for (sint32 k = j + 1; k < Size_; ++k)
         {
-          sigma -= U(i, k) * D[k] * U(j, k);
+          sigma -= U.at_unsafe(i, k) * D.at_unsafe(k) * U.at_unsafe(j, k);
         }
         if (i == j)
         {
-          D[j]    = std::max(sigma, std::numeric_limits<FloatType>::epsilon());
-          U(j, j) = static_cast<FloatType>(1.0);
+          D.at_unsafe(j)    = std::max(sigma, std::numeric_limits<ValueType_>::epsilon());
+          U.at_unsafe(j, j) = static_cast<ValueType_>(1.0);
         }
         else
         {
-          U(i, j) = sigma / D[j];
+          U.at_unsafe(i, j) = sigma / D.at_unsafe(j);
         }
       }
     }
-    return std::make_pair(U, D);
+    return std::make_pair(std::move(U), std::move(D));
   }
   return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
 }
 
-template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::inverse() const -> SquareMatrix
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
 {
-  SquareMatrix inv{};
-  qrSolve(inv, SquareMatrix::Identity());
-  return inv;
-}
+  return qrSolve(SquareMatrix::Identity());
+} // LCOV_EXCL_LINE
 
-template <typename FloatType, sint32 Size>
-inline auto SquareMatrix<FloatType, Size>::isSymmetric() const -> bool
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric() const -> bool
 {
   // check all off diagonal elements
-  for (auto row = 1; row < Size; ++row)
+  for (auto row = 0; row < Size_; ++row)
   {
-    for (auto col = row; col < Size; ++col)
+    for (auto col = row + 1; col < Size_; ++col)
     {
-      auto absDiff = std::abs(this->_data(row, col) - this->_data(col, row));
-      if (absDiff > std::numeric_limits<FloatType>::epsilon())
+      const auto absDiff = std::abs(this->at_unsafe(row, col) - this->at_unsafe(col, row));
+      if (absDiff > std::numeric_limits<ValueType_>::epsilon())
       {
         return false;
       }
     }
   }
   return true;
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline void SquareMatrix<ValueType_, Size_, IsRowMajor_>::symmetrize()
+{
+  *this += this->transpose();
+  *this *= static_cast<ValueType_>(0.5);
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::hasStrictlyPositiveDiagonalElems() const -> bool
+{
+  sint32 j{0};
+  // check all diagonal elements
+  while ((j < Size_) && (this->at_unsafe(j, j) > static_cast<ValueType_>(0)))
+  {
+    ++j;
+  }
+  return j == Size_;
 }
 
 } // namespace math

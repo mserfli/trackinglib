@@ -1,7 +1,7 @@
 #ifndef D79C9F07_9851_46B8_9FAF_A055552247EE
 #define D79C9F07_9851_46B8_9FAF_A055552247EE
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 #include "motion/motion_model_ca.h"
 #include "motion/motion_model_cv.h"
 

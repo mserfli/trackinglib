@@ -3,65 +3,124 @@
 
 #include "math/linalg/vector.h"
 
-template <typename FloatType, sint32 Size>
-inline tracking::math::Vector<FloatType, Size>::Vector(const Matrix<FloatType, Size, 1>& other)
-    : Matrix<FloatType, Size, 1>{other}
-{
-}
+#include "math/linalg/matrix.hpp"             // IWYU pragma: keep
+#include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
+#include <cmath>                              // for sqrt
 
-template <typename FloatType, sint32 Size>
-template <sint32 Row>
-static inline auto tracking::math::Vector<FloatType, Size>::unitVector() -> Vector<FloatType, Size>
+namespace tracking
 {
-  auto tmp(Vector<FloatType, Size>::zero());
-  tmp[Row] = static_cast<FloatType>(1.0);
+namespace math
+{
+
+template <typename ValueType_, sint32 Size_>
+template <sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto Vector<ValueType_, Size_>::FromMatrixColumnView(
+    const MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>& colView) -> Vector
+{
+  assert(colView.getRowCount() == Size_);
+  Vector tmp;
+  for (sint32 i = 0; i < Size_; ++i)
+  {
+    tmp.at_unsafe(i) = colView.at_unsafe(i);
+  }
   return tmp;
 }
 
-template <typename FloatType, sint32 Size>
-inline auto tracking::math::Vector<FloatType, Size>::operator[](sint32 idx) const -> FloatType
+template <typename ValueType_, sint32 Size_>
+inline auto Vector<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) -> Vector
 {
-  return this->operator()(idx, 0);
+  assert(list.size() == Size_);
+
+  Vector tmp;
+  auto   iter = tmp.data().begin();
+  std::copy(list.begin(), list.end(), iter);
+  return tmp;
 }
 
-template <typename FloatType, sint32 Size>
-inline auto tracking::math::Vector<FloatType, Size>::operator[](sint32 idx) -> FloatType&
+template <typename ValueType_, sint32 Size_>
+inline auto Vector<ValueType_, Size_>::Zeros() -> Vector
 {
-  return this->operator()(idx, 0);
+  return Vector{Matrix::Zeros()};
+} // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_>
+inline auto Vector<ValueType_, Size_>::Ones() -> Vector
+{
+  return Vector{Matrix::Ones()};
+} // LCOV_EXCL_LINE
+
+template <typename ValueType_, sint32 Size_>
+template <sint32 Row_>
+inline auto Vector<ValueType_, Size_>::UnitVector() -> Vector
+{
+  static_assert(Row_ >= 0 && Row_ < Size_);
+
+  auto tmp{Vector::Zeros()};
+  tmp.at_unsafe(Row_) = static_cast<ValueType_>(1.0);
+  return tmp;
 }
 
-template <typename FloatType, sint32 Size>
-inline auto tracking::math::Vector<FloatType, Size>::operator*(const Vector<FloatType, Size>& other) const -> FloatType
+template <typename ValueType_, sint32 Size_>
+inline auto Vector<ValueType_, Size_>::operator[](sint32 idx) const -> tl::expected<ValueType_, Errors>
 {
-  const Matrix<FloatType, 1, 1> temp{this->transpose() * other};
-  return temp(0, 0);
+  return Matrix::operator()(idx, 0);
 }
 
-template <typename FloatType, sint32 Size>
-inline auto tracking::math::Vector<FloatType, Size>::normSq() const -> FloatType
+template <typename ValueType_, sint32 Size_>
+inline auto Vector<ValueType_, Size_>::operator[](sint32 idx) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>
+{
+  return Matrix::operator()(idx, 0);
+}
+
+template <typename ValueType_, sint32 Size_>
+inline auto Vector<ValueType_, Size_>::operator*(const Vector& other) const -> ValueType_
+{
+  auto sum = static_cast<ValueType_>(0);
+  for (auto idx = 0; idx < Size_; ++idx)
+  {
+    sum += at_unsafe(idx) * other.at_unsafe(idx);
+  }
+  return sum;
+}
+
+template <typename ValueType_, sint32 Size_>
+inline auto Vector<ValueType_, Size_>::normSq() const -> ValueType_
 {
   return this->operator*(*this);
 }
 
-template <typename FloatType, sint32 Size>
-inline auto tracking::math::Vector<FloatType, Size>::norm() const -> FloatType
+template <typename ValueType_, sint32 Size_>
+template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
+inline auto Vector<ValueType_, Size_>::norm() const -> ValueType_
 {
   return std::sqrt(normSq());
 }
 
-template <typename FloatType, sint32 Size>
-inline void tracking::math::Vector<FloatType, Size>::normalize()
+template <typename ValueType_>
+template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
+inline auto Vector<ValueType_, 1>::norm() const -> ValueType_
 {
-  auto  length = norm();
+  return std::abs(Matrix<ValueType_, 1, 1, true>::at_unsafe(0, 0));
+}
+
+template <typename ValueType_, sint32 Size_>
+template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
+inline void Vector<ValueType_, Size_>::normalize()
+{
+  const auto length = norm();
   this->operator/=(length);
 }
 
-template <typename FloatType, sint32 Size>
-inline auto tracking::math::Vector<FloatType, Size>::normalize() const -> Vector<FloatType, Size>
+template <typename ValueType_, sint32 Size_>
+template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
+inline auto Vector<ValueType_, Size_>::normalize() const -> Vector
 {
-  Vector<FloatType, Size> tmp(*this);
+  Vector tmp(*this);
   tmp.normalize();
   return tmp;
 }
+
+} // namespace math
+} // namespace tracking
 
 #endif // FE49A15E_40AF_485A_A47C_F00025FCB4E2

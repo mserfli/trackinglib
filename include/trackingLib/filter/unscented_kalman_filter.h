@@ -1,6 +1,6 @@
 #ifndef AD237274_32FC_44B9_8977_84F38BE2F8CB
 #define AD237274_32FC_44B9_8977_84F38BE2F8CB
 
-#include "base/first_include.h"
+#include "base/first_include.h" // IWYU pragma: keep
 
 #endif // AD237274_32FC_44B9_8977_84F38BE2F8CB
