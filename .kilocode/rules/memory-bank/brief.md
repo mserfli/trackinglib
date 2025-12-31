@@ -22,7 +22,7 @@ Features currently in draft mode:
 
 
 Non-functional requirements:
-* The library is compliant to AUTOSAR-C++14 guidelines
+* The library is compliant to AUTOSAR-C++14 guidelines, https://sbmueller.github.io/autosar_cpp_guidelines/index.html
 * The minimum required C++ standard is C++17
 * Error handling makes use of Rust's std::result pattern ported to C++ in https://github.com/TartanLlama/expected
 * The library supports GCC and Clang compilers
