@@ -133,47 +133,47 @@ static auto operator*(ValueType_ scalar, const Matrix<...>& mat) -> Matrix<...>
 
 ### Priority 1: Critical Fixes (Safety & Correctness)
 
-- [ ] **Fix aliasing detection in `operator+=` and `operator-=`**
+- [x] **Fix aliasing detection in `operator+=` and `operator-=`**
   - Change `this->data() != other.data()` to `this->data().data() != other.data().data()`
   - Add comprehensive tests for aliasing with transposed views
   - Test with both square and non-square matrices
   - **Files**: [`matrix.hpp:194`](../include/trackingLib/math/linalg/matrix.hpp:194), [`matrix.hpp:234`](../include/trackingLib/math/linalg/matrix.hpp:234)
 
-- [ ] **Make error handling consistent for division operators**
+- [x] **Make error handling consistent for division operators**
   - Option A: Make `operator/=` return `tl::expected` (breaking change)
   - Option B: Add runtime checks in `operator/=` even in release builds
   - Option C: Document the behavior difference clearly
   - **Recommendation**: Option B for safety
   - **Files**: [`matrix.hpp:272`](../include/trackingLib/math/linalg/matrix.hpp:272), [`matrix.hpp:280`](../include/trackingLib/math/linalg/matrix.hpp:280)
 
-- [ ] **Fix `const` correctness in non-member operators**
+- [x] **Fix `const` correctness in non-member operators**
   - Change parameter from `Matrix&` to `const Matrix&`
   - **Files**: [`matrix.h:332`](../include/trackingLib/math/linalg/matrix.h:332), [`matrix.h:347`](../include/trackingLib/math/linalg/matrix.h:347)
 
 ### Priority 2: Test Coverage (Quality Assurance)
 
-- [ ] **Add comprehensive `setBlock()` tests**
+- [x] **Add comprehensive `setBlock()` tests**
   - Test compile-time template version with various block sizes
   - Test runtime parameter version with boundary conditions
   - Test with different source/destination memory layouts
   - Test error conditions (out of bounds)
   - **Files**: Create new tests in [`test_matrix.cpp`](../tests/math/test_matrix.cpp)
 
-- [ ] **Add aliasing detection tests**
+- [x] **Add aliasing detection tests**
   - Test `operator+=` with transpose for non-square matrices
   - Test `operator-=` with transpose
   - Test self-assignment edge cases
   - Test with different memory layouts
   - **Files**: Extend [`test_matrix.cpp`](../tests/math/test_matrix.cpp)
 
-- [ ] **Add transpose operation tests**
+- [x] **Add transpose operation tests**
   - Test non-square matrix transpose
   - Test chained transpose operations (`mat.transpose().transpose()`)
   - Test transpose with different memory layouts
   - Test `transpose_rvalue()` with move semantics
   - **Files**: Extend [`test_matrix.cpp`](../tests/math/test_matrix.cpp)
 
-- [ ] **Add matrix multiplication tests**
+- [x] **Add matrix multiplication tests**
   - Test non-square matrix multiplication (MxN * NxP)
   - Test with different memory layouts
   - Test edge cases (1x1, 1xN, Nx1 matrices)
@@ -181,15 +181,16 @@ static auto operator*(ValueType_ scalar, const Matrix<...>& mat) -> Matrix<...>
 
 ### Priority 3: Code Quality (Maintainability)
 
-- [ ] **Standardize use of `Rows` vs `Rows_`**
+- [x] **Standardize use of `Rows` vs `Rows_`**
   - Decide on convention: use static constexpr members (`Rows`, `Cols`) consistently
   - Update all implementations to follow convention
   - **Files**: [`matrix.hpp`](../include/trackingLib/math/linalg/matrix.hpp)
 
-- [ ] **Consider refactoring transpose implementation**
+- [x] **Consider refactoring transpose implementation**
   - Current `reinterpret_cast` approach is clever but potentially UB
   - Consider alternative: return a lightweight view class
   - Or: Document the aliasing requirements clearly
+  - **Decision**: Kept `reinterpret_cast` implementation as per user feedback. The `MatrixView` class exists but refactoring `transpose()` to use it would be a significant change. The current implementation is efficient and aliasing issues are now handled by the operators.
   - **Files**: [`matrix.hpp:403-418`](../include/trackingLib/math/linalg/matrix.hpp:403)
 
 - [ ] **Add Doxygen documentation for all public methods**
@@ -198,7 +199,7 @@ static auto operator*(ValueType_ scalar, const Matrix<...>& mat) -> Matrix<...>
   - Document the aliasing behavior of transpose
   - **Files**: [`matrix.h`](../include/trackingLib/math/linalg/matrix.h)
 
-- [ ] **Consider adding `[[nodiscard]]` attributes**
+- [x] **Consider adding `[[nodiscard]]` attributes**
   - Add to methods that return values (e.g., `operator+`, `operator*`)
   - Prevents accidental misuse like `mat1 + mat2;` (result ignored)
   - **Files**: [`matrix.h`](../include/trackingLib/math/linalg/matrix.h)

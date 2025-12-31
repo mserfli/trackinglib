@@ -51,15 +51,15 @@ public:
   // additional constructors  --->
   /// \brief Construct a new Matrix object with given initializer list representing the memory layout of the matrix
   /// \param[in] list  An initializer list describing the memory layout of the matrix
-  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
 
   /// \brief Construct a Zero matrix
   /// \return Zero matrix
-  static auto Zeros() -> Matrix;
+  [[nodiscard]] static auto Zeros() -> Matrix;
 
   /// \brief Construct a matrix filled with ones
   /// \return One matrix
-  static auto Ones() -> Matrix;
+  [[nodiscard]] static auto Ones() -> Matrix;
   // <---
 
   //////////////////////////////////////////////////
@@ -68,13 +68,13 @@ public:
   /// \param[in] row  row of the element to read
   /// \param[in] col  column of the element to read
   /// \return tl::expected<ValueType_, Errors>   either the value at (row,col) or an Error descriptor
-  auto operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>;
+  [[nodiscard]] auto operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>;
 
   /// \brief Element modify access
   /// \param[in] row  row of the element to modify
   /// \param[in] col  column of the element to modify
   /// \return tl::expected<std::reference_wrapper<ValueType_>, Errors>   either the reference at (row,col) or an Error descriptor
-  auto operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
+  [[nodiscard]] auto operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
   // <---
 
   //////////////////////////////////////////////////
@@ -82,22 +82,22 @@ public:
   /// \brief Comparison to equal matrix type
   /// \param[in] other  matrix of equal type
   /// \return true   if all elements are equal
-  auto operator==(const Matrix& other) const -> bool;
+  [[nodiscard]] auto operator==(const Matrix& other) const -> bool;
 
   /// \brief Comparison to matrix of equal size, but opposite memory layout
   /// \param[in] other  matrix with opposite memory layout
   /// \return true   if all elements are equal
-  auto operator==(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
+  [[nodiscard]] auto operator==(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
 
   /// \brief Inequality comparison to equal matrix type
   /// \param[in] other  matrix of equal type
   /// \return true   if any element differs
-  auto operator!=(const Matrix& other) const -> bool;
+  [[nodiscard]] auto operator!=(const Matrix& other) const -> bool;
 
   /// \brief Inequality comparison to matrix of equal size, but opposite memory layout
   /// \param[in] other  matrix with opposite memory layout
   /// \return true   if any element differs
-  auto operator!=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
+  [[nodiscard]] auto operator!=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
   // <---
 
   //////////////////////////////////////////////////
@@ -124,13 +124,15 @@ public:
 
   /// \brief Calculates Self = Self / scalar for integral matrices
   /// \param[in] scalar   integral scalar value
+  /// \return tl::expected<void, Errors>   success or divide_by_zero error
   template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
-  void operator/=(IntType scalar);
+  auto operator/=(IntType scalar) -> tl::expected<void, Errors>;
 
   /// \brief Calculates Self = Self / scalar for floating-point matrices
   /// \param[in] scalar   floating-point scalar value
+  /// \return tl::expected<void, Errors>   success or divide_by_zero error
   template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
-  void operator/=(FloatType scalar);
+  auto operator/=(FloatType scalar) -> tl::expected<void, Errors>;
   // <---
 
   //////////////////////////////////////////////////
@@ -140,43 +142,43 @@ public:
   /// \param[in] other  matrix of equal size
   /// \return Matrix   result of Self + Other
   template <bool MajorOrder_>
-  auto operator+(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
+  [[nodiscard]] auto operator+(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
 
   /// \brief Calculates Self - Other
   /// \tparam MajorOrder_  memory layout of other matrix
   /// \param[in] other  matrix of equal size
   /// \return Matrix   result of Self - Other
   template <bool MajorOrder_>
-  auto operator-(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
+  [[nodiscard]] auto operator-(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
 
   /// \brief Calculates Self + scalar (adds scalar to each element)
   /// \param[in] scalar  a scalar value
   /// \return Matrix   result of Self + scalar
-  auto operator+(ValueType_ scalar) const -> Matrix;
+  [[nodiscard]] auto operator+(ValueType_ scalar) const -> Matrix;
 
   /// \brief Calculates Self - scalar (subtracts scalar from each element)
   /// \param[in] scalar  a scalar value
   /// \return Matrix   result of Self - scalar
-  auto operator-(ValueType_ scalar) const -> Matrix;
+  [[nodiscard]] auto operator-(ValueType_ scalar) const -> Matrix;
 
   /// \brief Calculates Self * scalar
   /// \param[in] scalar  a scalar value
   /// \return Matrix   result of Self * scalar
-  auto operator*(ValueType_ scalar) const -> Matrix;
+  [[nodiscard]] auto operator*(ValueType_ scalar) const -> Matrix;
 
   /// \brief Calculates Self / scalar for integral matrices
   /// \tparam IntType
   /// \param[in] scalar  a scalar value
   /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
   template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
-  auto operator/(IntType scalar) const -> tl::expected<Matrix, Errors>;
+  [[nodiscard]] auto operator/(IntType scalar) const -> tl::expected<Matrix, Errors>;
 
   /// \brief Calculates Self / scalar for floating-point matrices
   /// \tparam IntType
   /// \param[in] scalar  a scalar value
   /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
   template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
-  auto operator/(FloatType scalar) const -> tl::expected<Matrix, Errors>;
+  [[nodiscard]] auto operator/(FloatType scalar) const -> tl::expected<Matrix, Errors>;
 
   /// \brief Calculates matrix multiplication Self * Other
   /// \tparam Cols2_
@@ -184,7 +186,7 @@ public:
   /// \param[in] other
   /// \return Matrix<ValueType_, Rows_, Cols2_, IsRowMajor_>
   template <sint32 Cols2_, bool IsRowMajor2_>
-  auto operator*(const Matrix<ValueType_, Cols_, Cols2_, IsRowMajor2_>& other) const
+  [[nodiscard]] auto operator*(const Matrix<ValueType_, Cols_, Cols2_, IsRowMajor2_>& other) const
       -> Matrix<ValueType_, Rows_, Cols2_, IsRowMajor_>;
   // <---
 
@@ -201,33 +203,33 @@ public:
 
   /// \brief Get min value of the matrix
   /// \return min value
-  auto min() const -> ValueType_ { return *std::min_element(data().begin(), data().end()); }
+  [[nodiscard]] auto min() const -> ValueType_ { return *std::min_element(data().begin(), data().end()); }
 
   /// \brief Get max value of the matrix
   /// \return max value
-  auto max() const -> ValueType_ { return *std::max_element(data().begin(), data().end()); }
+  [[nodiscard]] auto max() const -> ValueType_ { return *std::max_element(data().begin(), data().end()); }
 
   /// \brief Get min and max value of the matrix
   /// \return tuple of min, max value
-  auto minmax() const -> std::tuple<ValueType_, ValueType_>;
+  [[nodiscard]] auto minmax() const -> std::tuple<ValueType_, ValueType_>;
 
   /// \brief Calculate Frobenius norm (L2 norm): sqrt(sum of squared elements)
   /// Only available for floating-point types
   /// \return ValueType_   the Frobenius norm of the matrix
   template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
-  auto frobenius_norm() const -> ValueType_;
+  [[nodiscard]] auto frobenius_norm() const -> ValueType_;
 
   /// \brief Fast transpose without changing the layout
   /// \return const transpose_type&   const reference to same data as Self, but differently interpreted
-  auto transpose() const -> const transpose_type&;
+  [[nodiscard]] auto transpose() const -> const transpose_type&;
 
   /// \brief Fast transpose without changing the layout
   /// \return transpose_type&   reference to same data as Self, but differently interpreted
-  auto transpose() -> transpose_type&;
+  [[nodiscard]] auto transpose() -> transpose_type&;
 
   /// \brief Fast transpose without changing the layout
   /// \return transpose_type   rvalue to same data as Self, but differently interpreted
-  auto transpose_rvalue() && -> transpose_type;
+  [[nodiscard]] auto transpose_rvalue() && -> transpose_type;
 
   /// \brief Set a block matrix at given position
   /// \tparam SrcRowSize_      Rows of the source block
@@ -278,13 +280,13 @@ public:
   /// \param[in] row  row of the element to read
   /// \param[in] col  column of the element to read
   /// \return ValueType_   the value at (row,col)
-  auto at_unsafe(sint32 row, sint32 col) const -> ValueType_;
+  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -> ValueType_;
 
   /// \brief Unsafe element modify access
   /// \param[in] row  row of the element to read
   /// \param[in] col  column of the element to read
   /// \return ValueType_   the value at (row,col)
-  auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
+  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
   // <---
 
   // clang-format off
@@ -329,8 +331,9 @@ TEST_REMOVE_PRIVATE:
 /// \param[in] mat
 /// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-static auto operator+(ValueType_                                     scalar,
-                      Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+[[nodiscard]] static auto operator+(ValueType_                                           scalar,
+                                    const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat)
+    -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
   return mat + scalar;
 }
@@ -344,8 +347,9 @@ static auto operator+(ValueType_                                     scalar,
 /// \param[in] mat
 /// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-static auto operator*(ValueType_                                     scalar,
-                      Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
+[[nodiscard]] static auto operator*(ValueType_                                           scalar,
+                                    const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat)
+    -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
   return mat * scalar;
 }

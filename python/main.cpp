@@ -23,7 +23,14 @@ void declare_matrix(py::module& m, const std::string& typestr)
     .def("__add__", [](MT& mat, const MT& other) { return mat.operator+=(other); })
     .def("__sub__", [](MT& mat, const MT& other) { return mat.operator-=(other); })
     .def("__mul__", [](MT& mat, const typename MT::value_type scalar) { return mat.operator*=(scalar); })
-    .def("__div__", [](MT& mat, const typename MT::value_type scalar) { return mat.operator/=(scalar); })
+    .def("__div__", [](MT& mat, const typename MT::value_type scalar) {
+      auto res = mat.operator/=(scalar);
+      if (res) {
+        return mat;
+      } else {
+        throw std::runtime_error("division by zero");
+      }
+    })
     .def("__mul__", [](MT& mat, const tracking::math::Matrix<typename MT::value_type, MT::Cols, 1>& other) { return mat.operator*(other); })
     .def("__mul__", [](MT& mat, const tracking::math::Matrix<typename MT::value_type, MT::Cols, 2>& other) { return mat.operator*(other); })
     .def("__repr__", [](const MT& mat) {
