@@ -581,6 +581,15 @@ graph TD
 
 ## Complete Migration Guide
 
+### Special Note: SquareMatrix Identity Operations
+
+The `SquareMatrix::setIdentity()` and `SquareMatrix::Identity()` methods rely on conversion from `DiagonalMatrix` to `SquareMatrix`. After refactoring:
+
+- **Current implementation**: `SquareMatrix{DiagonalMatrix<ValueType_, Size_>::Identity()}`
+- **After refactoring**: Same implementation continues to work
+- **Constructor availability**: `SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other)` remains available
+- **Conversion support**: `SquareFromDiagonal()` function available in `square_conversions.hpp`
+
 ### For Library Users - Matrix Type Conversions
 
 **Before (old API)**:
