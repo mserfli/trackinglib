@@ -18,14 +18,13 @@ This plan tracks remaining work for matrix class refactoring and test coverage i
 ## 1. Remaining Test Coverage Gaps
 
 ### SquareMatrix Constructor from DiagonalMatrix
-**Status**: ❌ Not tested
+**Status**: ✅ Tested
 
-**Issue**: [`SquareMatrix`](include/trackingLib/math/linalg/square_matrix.h) has a constructor that accepts [`DiagonalMatrix`](include/trackingLib/math/linalg/diagonal_matrix.h), but no test verifies this functionality.
+**Issue**: [`SquareMatrix`](include/trackingLib/math/linalg/square_matrix.h) has a constructor that accepts [`DiagonalMatrix`](include/trackingLib/math/linalg/diagonal_matrix.h).
 
-**Plan**:
-- Add test case in [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp)
-- Verify that diagonal elements are correctly copied
-- Verify that off-diagonal elements are zero
+**Status**: Test added in [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp:146) that verifies:
+- Diagonal elements are correctly copied
+- Off-diagonal elements are zero
 
 ---
 
@@ -79,7 +78,7 @@ This plan tracks remaining work for matrix class refactoring and test coverage i
 4. ✅ ~~Add Vector::FromMatrixColumnView test~~ - **COMPLETED**
 5. ✅ ~~Add SquareMatrix::decomposeUDUT test~~ - **COMPLETED**
 6. ✅ ~~Add SquareMatrix::symmetrize test~~ - **COMPLETED**
-7. ❌ **Add SquareMatrix(DiagonalMatrix) constructor test** - **REMAINING**
+7. ✅ ~~Add SquareMatrix(DiagonalMatrix) constructor test~~ - **COMPLETED**
 
 ### Low Priority (Code Quality)
 8. ⚠️ **Refactor print() methods** - See separate plan: [`print_methods_refactoring.md`](plans/print_methods_refactoring.md)
@@ -90,14 +89,8 @@ This plan tracks remaining work for matrix class refactoring and test coverage i
 
 ## Next Steps
 
-### Immediate Actions
-1. **Add Missing Test**: Create test for `SquareMatrix(DiagonalMatrix)` constructor
-   - File: [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp)
-   - Verify diagonal elements copied correctly
-   - Verify off-diagonal elements are zero
-
 ### Future Improvements
-2. **See Separate Plans**:
+1. **See Separate Plans**:
    - Print methods: [`print_methods_refactoring.md`](plans/print_methods_refactoring.md)
    - Cyclic dependencies: [`cyclic_dependencies_analysis.md`](plans/cyclic_dependencies_analysis.md)
    - OpenMP parallelization: [`openmp_parallelization_analysis.md`](plans/openmp_parallelization_analysis.md)
