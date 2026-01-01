@@ -1,5 +1,28 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/vector.hpp" // IWYU pragma: keep
+#include "trackingLib/math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
+#include "trackingLib/math/linalg/vector.hpp"             // IWYU pragma: keep
+
+TEST(Vector, ctor_from_colView) // NOLINT
+{
+  using VecType = tracking::math::Vector<sint32, 3>;
+  using MatType = tracking::math::Matrix<sint32, 3, 3, true>;
+  
+  const auto mat = MatType::FromList({
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+  });
+  
+  // View of the middle column (2, 5, 8)
+  const tracking::math::MatrixColumnView<sint32, 3, 3, true> colView(mat, 1);
+  
+  // call UUT
+  const auto vec = VecType::FromMatrixColumnView(colView);
+  
+  EXPECT_EQ(vec.at_unsafe(0), 2);
+  EXPECT_EQ(vec.at_unsafe(1), 5);
+  EXPECT_EQ(vec.at_unsafe(2), 8);
+}
 
 TEST(Vector, ctor_initializerList__Success) // NOLINT
 {

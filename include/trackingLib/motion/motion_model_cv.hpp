@@ -99,7 +99,8 @@ template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
 void MotionModelCV<CovarianceMatrixType, FloatType>::computeQ(ProcessNoiseDiagMatrix& Q, const FloatType /* dt */)
 {
   // DWNA process, elements in Q define an acceleration, i.e. unit is equal to m/s**2
-  Q = {static_cast<FloatType>(10.0), static_cast<FloatType>(10.0)};
+  Q.at_unsafe(Q_VX) = static_cast<FloatType>(10.0);
+  Q.at_unsafe(Q_VY) = static_cast<FloatType>(10.0);
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>

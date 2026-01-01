@@ -32,14 +32,14 @@ public:
   /// \brief Read access to specific index of the column view
   /// \param[in] idx  index in range [0, rowCount]
   /// \return ValueType_
-  auto at_unsafe(const sint32 idx) const -> ValueType_;
+  [[nodiscard]] auto at_unsafe(const sint32 idx) const -> ValueType_;
 
   /// \brief Dot product between the viewed column and another column vector
   /// \tparam Rows2_
   /// \param[in] other  A vector
   /// \return ValueType_
   template <sint32 Rows2_>
-  auto operator*(const Vector<ValueType_, Rows2_>& other) const -> ValueType_;
+  [[nodiscard]] auto operator*(const Vector<ValueType_, Rows2_>& other) const -> ValueType_;
 
   /// \brief Dot product between the viewed column and another viewed column
   /// \tparam Rows2_
@@ -48,7 +48,7 @@ public:
   /// \param[in] other  Another column view
   /// \return ValueType_
   template <sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
-  auto operator*(const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const -> ValueType_;
+  [[nodiscard]] auto operator*(const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const -> ValueType_;
 
   // TODO(matthias): add columnView * rowView resulting in a new Matrix
 
@@ -56,8 +56,6 @@ public:
   /// \return sint32
   [[nodiscard]] auto getRowCount() const -> sint32 { return _rowCount; }
 
-  /// \brief Print the matrix to stdout
-  void print() const;
 
 private:
   const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& _matrix;
@@ -76,8 +74,9 @@ private:
 /// \param[in] colView   A matrix column view
 /// \return Vector<ValueType_, Rows_>
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_, sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
-auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&              mat,
-               const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& colView) -> Vector<ValueType_, Rows_>;
+[[nodiscard]] auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&              mat,
+                             const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& colView)
+    -> Vector<ValueType_, Rows_>;
 
 } // namespace math
 } // namespace tracking

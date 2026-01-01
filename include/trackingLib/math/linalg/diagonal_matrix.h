@@ -3,6 +3,7 @@
 
 #include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/errors.h"
+#include "math/linalg/matrix_io.h"
 
 namespace tracking
 {
@@ -35,7 +36,7 @@ public:
 
   /// \brief Construct an Identity matrix
   /// \return DiagonalMatrix  Resulting identity matrix
-  static auto Identity() -> DiagonalMatrix;
+  [[nodiscard]] static auto Identity() -> DiagonalMatrix;
 
   /// \brief Construct a new Diagonal Matrix object
   /// \tparam IsRowMajor_
@@ -66,11 +67,12 @@ public:
 
   /// \brief Assign a new DiagonalMatrix object given initializer list
   /// \param[in] list  An initializer list describing the diagonal elements
-  auto operator=(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix&; // TODO(matthias): do we really need this
+  [[nodiscard]] auto operator=(const std::initializer_list<ValueType_>& list)
+      -> DiagonalMatrix&; // TODO(matthias): do we really need this
 
   /// \brief Assign a new DiagonalMatrix object given initializer list
   /// \param[in] list  An initializer list describing a full square matrix
-  auto operator=(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+  [[nodiscard]] auto operator=(const std::initializer_list<std::initializer_list<ValueType_>>& list)
       -> DiagonalMatrix&; // TODO(matthias): do we really need this
 
   /// \brief Multiplication with generic matrix: D * Matrix
@@ -79,7 +81,8 @@ public:
   /// \param[in] mat
   /// \return Matrix<ValueType_, Size_, Cols_, IsRowMajor_>
   template <sint32 Cols_, bool IsRowMajor_>
-  auto operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& mat) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>;
+  [[nodiscard]] auto operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& mat) const
+      -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>;
 
   /// \brief Multiplication with triangular matrix: D * Matrix
   /// \tparam isLower_
@@ -87,33 +90,31 @@ public:
   /// \param[in] mat  A triangular matrix
   /// \return TriangularMatrix<ValueType_, Size_, isLower_, isRowMajor_>
   template <bool IsLower_, bool IsRowMajor_>
-  auto operator*(const TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>& mat) const
+  [[nodiscard]] auto operator*(const TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>& mat) const
       -> TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>;
 
   /// \brief Multiplication with diagonal matrix: D * Matrix
   /// \param[in] mat  A diagonal matrix
   /// \return DiagonalMatrix<ValueType_, Size_>
-  auto operator*(const DiagonalMatrix& mat) const -> DiagonalMatrix;
+  [[nodiscard]] auto operator*(const DiagonalMatrix& mat) const -> DiagonalMatrix;
 
   /// \brief Multiplication with scalar: D * scalar
   /// \param[in] scalar  A scalar value
   /// \return DiagonalMatrix<ValueType_, Size_>
-  auto operator*(const ValueType_ scalar) const -> DiagonalMatrix;
+  [[nodiscard]] auto operator*(const ValueType_ scalar) const -> DiagonalMatrix;
 
   /// \brief Inplace Multiplication with diagonal matrix: D * Matrix
   /// \param[in] mat  A diagonal matrix
-  /// \return DiagonalMatrix<ValueType_, Size_>&
-  auto operator*=(const DiagonalMatrix& mat) -> DiagonalMatrix&;
+  void operator*=(const DiagonalMatrix& mat);
 
   /// \brief Inplace Multiplication with scalar: D * scalar
   /// \param[in] scalar  A scalar value
-  /// \return DiagonalMatrix<ValueType_, Size_>&
-  auto operator*=(const ValueType_ scalar) -> DiagonalMatrix&;
+  void operator*=(const ValueType_ scalar);
 
   /// \brief Element access to a scalar diagonal value
   /// \param[in] idx  Row/Col index of the element
   /// \return tl::expected<std::reference_wrapper<ValueType_>, Errors>   either the reference at (idx) or an Error descriptor
-  auto operator[](const sint32 idx) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>
+  [[nodiscard]] auto operator[](const sint32 idx) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>
   { // implemented here to solve cyclic includes
     if (!(idx >= 0 && idx < Size_))
     {
@@ -125,7 +126,7 @@ public:
   /// \brief Element read-only access to a scalar diagonal value
   /// \param[in] idx  Row/Col index of the element
   /// \return tl::expected<ValueType_, Errors>   either the value at (idx) or an Error descriptor
-  auto operator[](const sint32 idx) const -> tl::expected<ValueType_, Errors>
+  [[nodiscard]] auto operator[](const sint32 idx) const -> tl::expected<ValueType_, Errors>
   { // implemented here to solve cyclic includes
     if (!(idx >= 0 && idx < Size_))
     {
@@ -136,7 +137,7 @@ public:
 
   /// \brief Calculates the inverse
   /// \return DiagonalMatrix<ValueType_, Size_>
-  auto inverse() const -> DiagonalMatrix;
+  [[nodiscard]] auto inverse() const -> DiagonalMatrix;
 
   /// \brief Calculates the inverse inplace
   void inverse();
@@ -144,20 +145,20 @@ public:
   /// \brief Checks for positive definite condition of the diagonal matrix (all elements > 0)
   [[nodiscard]] auto isPositiveDefinite() const -> bool;
 
-  /// \brief Print the matrix
-  void print() const;
+  /// \brief Checks for positive semi-definite condition of the diagonal matrix (all elements >= 0)
+  [[nodiscard]] auto isPositiveSemiDefinite() const -> bool;
 
   //////////////////////////////////////////////////
   // unsafe access operators  --->
   /// \brief Element read-only access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_  Scalar vector value
-  auto at_unsafe(sint32 idx) const -> ValueType_ { return _data.at_unsafe(idx); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) const -> ValueType_ { return _data.at_unsafe(idx); }
 
   /// \brief Element access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_&  Reference to the scalar vector value
-  auto at_unsafe(sint32 idx) -> ValueType_& { return _data.at_unsafe(idx); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) -> ValueType_& { return _data.at_unsafe(idx); }
   // <---
 
   // clang-format off
@@ -168,8 +169,8 @@ TEST_REMOVE_PRIVATE:
 };
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat,
-               const DiagonalMatrix<ValueType_, Cols_>&             diag) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>;
+[[nodiscard]] auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat,
+                             const DiagonalMatrix<ValueType_, Cols_>& diag) -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>;
 
 } // namespace math
 } // namespace tracking

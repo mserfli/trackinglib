@@ -48,17 +48,17 @@ public:
 
   /// \brief Construct a Zero vector
   /// \return Zero matrix
-  static auto Zeros() -> Vector;
+  [[nodiscard]] static auto Zeros() -> Vector;
 
   /// \brief Construct a matrix filled with ones
   /// \return One matrix
-  static auto Ones() -> Vector;
+  [[nodiscard]] static auto Ones() -> Vector;
 
   /// \brief Create unit vector
   /// \tparam Row_  Index position equal to 1
   /// \return Vector<ValueType_, Size_>
   template <sint32 Row_>
-  static auto UnitVector() -> Vector;
+  [[nodiscard]] static auto UnitVector() -> Vector;
   // <---
 
   //////////////////////////////////////////////////
@@ -66,12 +66,12 @@ public:
   /// \brief Element read-only access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_  Scalar vector value
-  auto operator[](sint32 idx) const -> tl::expected<ValueType_, Errors>;
+  [[nodiscard]] auto operator[](sint32 idx) const -> tl::expected<ValueType_, Errors>;
 
   /// \brief Element access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_&  Reference to the scalar vector value
-  auto operator[](sint32 idx) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
+  [[nodiscard]] auto operator[](sint32 idx) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
   // <---
 
   //////////////////////////////////////////////////
@@ -79,19 +79,19 @@ public:
   /// \brief Dot product with other vector of same size
   /// \param[in] other
   /// \return ValueType_
-  auto operator*(const Vector& other) const -> ValueType_;
+  [[nodiscard]] auto operator*(const Vector& other) const -> ValueType_;
   // <---
 
   //////////////////////////////////////////////////
   // other operations --->
   /// \brief Squared L1 norm (aka squared vector length)
   /// \return ValueType_
-  auto normSq() const -> ValueType_;
+  [[nodiscard]] auto normSq() const -> ValueType_;
 
   /// \brief L2 norm (aka vector length)
   /// \return ValueType_
   template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
-  auto norm() const -> ValueType_;
+  [[nodiscard]] auto norm() const -> ValueType_;
 
   /// \brief In-place normalization to unit length vector
   template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
@@ -100,7 +100,7 @@ public:
   /// \brief Create new vector normalized to unit length vector
   /// \return Vector<ValueType_, Size_>
   template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
-  auto normalize() const -> Vector;
+  [[nodiscard]] auto normalize() const -> Vector;
   // <---
 
   //////////////////////////////////////////////////
@@ -108,12 +108,12 @@ public:
   /// \brief Element read-only access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_  Scalar vector value
-  auto at_unsafe(sint32 idx) const -> ValueType_ { return Matrix::at_unsafe(idx, 0); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) const -> ValueType_ { return Matrix::at_unsafe(idx, 0); }
 
   /// \brief Element access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_&  Reference to the scalar vector value
-  auto at_unsafe(sint32 idx) -> ValueType_& { return Matrix::at_unsafe(idx, 0); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) -> ValueType_& { return Matrix::at_unsafe(idx, 0); }
   // <---
 
 protected:
@@ -138,7 +138,7 @@ public:
   /// \brief L2 norm (aka vector length)
   /// \return ValueType_
   template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
-  auto norm() const -> ValueType_;
+  [[nodiscard]] auto norm() const -> ValueType_;
 };
 
 } // namespace math

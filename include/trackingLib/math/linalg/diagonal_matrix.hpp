@@ -175,25 +175,23 @@ inline auto DiagonalMatrix<ValueType_, Size_>::operator*(const ValueType_ scalar
 }
 
 template <typename ValueType_, sint32 Size_>
-inline auto DiagonalMatrix<ValueType_, Size_>::operator*=(const DiagonalMatrix& mat) -> DiagonalMatrix&
+inline void DiagonalMatrix<ValueType_, Size_>::operator*=(const DiagonalMatrix& mat)
 {
   // element-wise multiplication of the elements on both diagonals
   for (auto idx = 0; idx < Size_; ++idx)
   {
     _data.at_unsafe(idx) *= mat.at_unsafe(idx);
   }
-  return *this;
 }
 
 template <typename ValueType_, sint32 Size_>
-inline auto DiagonalMatrix<ValueType_, Size_>::operator*=(const ValueType_ scalar) -> DiagonalMatrix&
+inline void DiagonalMatrix<ValueType_, Size_>::operator*=(const ValueType_ scalar)
 {
   // element-wise multiplication of the elements on both diagonals
   for (auto idx = 0; idx < Size_; ++idx)
   {
     _data.at_unsafe(idx) *= scalar;
   }
-  return *this;
 }
 
 template <typename ValueType_, sint32 Size_>
@@ -225,12 +223,6 @@ inline auto DiagonalMatrix<ValueType_, Size_>::isPositiveDefinite() const -> boo
   return isValid;
 }
 
-template <typename ValueType_, sint32 Size_>
-inline void DiagonalMatrix<ValueType_, Size_>::print() const
-{
-  const SquareMatrix<ValueType_, Size_, true> diag{*this};
-  diag.print();
-}
 
 // ------ non-member functions ---------------------------------------------------------------------------------------------------
 

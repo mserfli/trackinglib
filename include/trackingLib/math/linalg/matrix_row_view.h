@@ -35,7 +35,7 @@ public:
   /// \brief Read access to specific index of the row view
   /// \param[in] idx  index in range [0, colCount]
   /// \return ValueType_
-  auto at_unsafe(const sint32 idx) const -> ValueType_;
+  [[nodiscard]] auto at_unsafe(const sint32 idx) const -> ValueType_;
 
   /// \brief Multiplication with other matrix
   /// \tparam Rows2_
@@ -44,7 +44,7 @@ public:
   /// \param[in] other  A matrix
   /// \return Matrix<ValueType_, 1, Cols2_, IsRowMajor2_>
   template <sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
-  auto operator*(const Matrix<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const
+  [[nodiscard]] auto operator*(const Matrix<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const
       -> Matrix<ValueType_, 1, Cols2_, IsRowMajor2_>;
 
   /// \brief Dot product with other matrix column view
@@ -54,14 +54,12 @@ public:
   /// \param[in] other  A matrix column view
   /// \return ValueType_
   template <sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
-  auto operator*(const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const -> ValueType_;
+  [[nodiscard]] auto operator*(const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const -> ValueType_;
 
   /// \brief Get the number of cols in the row view
   /// \return sint32
   [[nodiscard]] auto getColCount() const -> sint32 { return _colCount; }
 
-  /// \brief Print the matrix to stdout
-  void print() const;
 
 private:
   const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& _matrix;

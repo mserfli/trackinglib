@@ -55,42 +55,42 @@ public:
 
   /// \brief Construct an Identity matrix
   /// \return SquareMatrix  Resulting identity matrix
-  static auto Identity() -> SquareMatrix;
+  [[nodiscard]] static auto Identity() -> SquareMatrix;
 
   /// \brief Set internal matrix to the Identity matrix
   void setIdentity();
 
   /// \brief Decompose internal matrix into Q*R
   /// \return [Q,R] = pair<SquareMatrix, TriangularMatrix>
-  auto householderQR() const -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>>;
+  [[nodiscard]] auto householderQR() const -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>>;
 
   /// \brief Solve A * x = b using QR decomposition
   /// \param[in]  b  Result vector/matrix of A * x
   /// \return SquareMatrix x
-  auto qrSolve(const SquareMatrix& b) const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
+  [[nodiscard]] auto qrSolve(const SquareMatrix& b) const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
   /// \brief Decompose internal matrix into L*L' using standard Cholesky factorization
   /// \return tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>
   /// \precondition internal matrix is symmetric and positive definite
-  auto decomposeLLT() const -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>;
+  [[nodiscard]] auto decomposeLLT() const -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>;
 
   /// \brief Decompose internal matrix into L*D*L' using rational Cholesky factorization
   /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
   /// Errors> \precondition internal matrix is symmetric and positive semi definite
-  auto decomposeLDLT() const
+  [[nodiscard]] auto decomposeLDLT() const
       -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
                       Errors>;
 
   /// \brief Decompose internal matrix into U*D*U' using rational Cholesky factorization
   /// \return tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
   /// Errors> \precondition internal matrix is symmetric and positive semi definite
-  auto decomposeUDUT() const
+  [[nodiscard]] auto decomposeUDUT() const
       -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
                       Errors>;
 
   /// \brief Calculates the inverse based on QR factorization
   /// \return SquareMatrix with toggled IsRowMajor
-  auto inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
+  [[nodiscard]] auto inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
   /// \brief Check for symmetry of the matrix
   /// \return true

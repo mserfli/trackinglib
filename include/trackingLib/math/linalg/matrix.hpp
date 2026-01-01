@@ -6,8 +6,6 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
-#include <iomanip>
-#include <iostream>
 #include <limits>
 #include <stdexcept>
 #include <type_traits>
@@ -74,26 +72,6 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Ones() -> Matrix
   return tmp;
 }
 
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::print() const
-{
-  for (auto row = 0; row < Rows; ++row)
-  {
-    for (auto col = 0; col < Cols; ++col)
-    {
-      if constexpr (std::is_floating_point<ValueType_>::value)
-      {
-        std::cout << std::fixed << std::setprecision(20) << std::showpos << std::setw(25) << at_unsafe(row, col) << ", ";
-      }
-      else
-      {
-        std::cout << at_unsafe(row, col) << ", ";
-      }
-    }
-    std::cout << "\n";
-  }
-  std::cout << "\n" << std::endl;
-}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_

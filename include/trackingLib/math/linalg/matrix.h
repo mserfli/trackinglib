@@ -51,7 +51,7 @@ public:
   // additional constructors  --->
   /// \brief Construct a new Matrix object with given initializer list representing the memory layout of the matrix
   /// \param[in] list  An initializer list describing the memory layout of the matrix
-  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
 
   /// \brief Construct a Zero matrix
   /// \return Zero matrix
@@ -192,8 +192,6 @@ public:
 
   //////////////////////////////////////////////////
   // other operations --->
-  /// \brief Print the matrix to stdout
-  void print() const;
 
   /// \brief Sets all elements to zero
   void setZeros();
@@ -331,8 +329,7 @@ TEST_REMOVE_PRIVATE:
 /// \param[in] mat
 /// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-[[nodiscard]] static auto operator+(ValueType_                                           scalar,
-                                    const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat)
+[[nodiscard]] static auto operator+(ValueType_ scalar, const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat)
     -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
   return mat + scalar;
@@ -347,8 +344,7 @@ template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 /// \param[in] mat
 /// \return Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-[[nodiscard]] static auto operator*(ValueType_                                           scalar,
-                                    const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat)
+[[nodiscard]] static auto operator*(ValueType_ scalar, const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& mat)
     -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
 {
   return mat * scalar;
