@@ -41,19 +41,19 @@ public:
 
   /// \brief Read access to x value
   /// \return ValueType_
-  auto x() const -> ValueType_;
+  [[nodiscard]] auto x() const -> ValueType_;
 
   /// \brief Read access to y value
   /// \return ValueType_
-  auto y() const -> ValueType_;
+  [[nodiscard]] auto y() const -> ValueType_;
 
   /// \brief Write access to x value
   /// \return ValueType_
-  auto x() -> ValueType_&;
+  [[nodiscard]] auto x() -> ValueType_&;
 
   /// \brief Write access to y value
   /// \return ValueType_
-  auto y() -> ValueType_&;
+  [[nodiscard]] auto y() -> ValueType_&;
 
 private:
   /// \brief hide inherited at_unsafe to prevent wrong access

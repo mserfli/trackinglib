@@ -190,7 +190,7 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*=(const ValueType_ scalar) -> TriangularMatrix&
+inline void TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*=(const ValueType_ scalar)
 {
   // TODO(matthias): can be optimized as soon as elements are stored in array instead of a SquareMatrix
   if (IsLower_)
@@ -213,7 +213,6 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
       }
     }
   }
-  return *this;
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>

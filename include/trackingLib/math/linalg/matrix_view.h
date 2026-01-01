@@ -33,20 +33,20 @@ public:
                       const sint32                         rowEnd,
                       const sint32                         colEnd);
 
-  auto operator()(sint32 row, sint32 col) const -> FloatType;
+  [[nodiscard]] auto operator()(sint32 row, sint32 col) const -> FloatType;
 
   [[nodiscard]] auto getRowCount() const -> sint32 { return _rowCount; }
   [[nodiscard]] auto getColCount() const -> sint32 { return _colCount; }
 
-  auto operator+(const Matrix<FloatType, Rows, Cols>& other) const -> Matrix<FloatType, Rows, Cols>;
-  auto operator-(const Matrix<FloatType, Rows, Cols>& other) const -> Matrix<FloatType, Rows, Cols>;
+  [[nodiscard]] auto operator+(const Matrix<FloatType, Rows, Cols>& other) const -> Matrix<FloatType, Rows, Cols>;
+  [[nodiscard]] auto operator-(const Matrix<FloatType, Rows, Cols>& other) const -> Matrix<FloatType, Rows, Cols>;
   template <sint32 Cols2>
-  auto operator*(const Matrix<FloatType, Cols, Cols2>& other) const -> Matrix<FloatType, Rows, Cols2>;
+  [[nodiscard]] auto operator*(const Matrix<FloatType, Cols, Cols2>& other) const -> Matrix<FloatType, Rows, Cols2>;
 
-  auto operator+(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>;
-  auto operator-(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>;
-  auto operator*(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>;
-  auto operator/(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>;
+  [[nodiscard]] auto operator+(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>;
+  [[nodiscard]] auto operator-(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>;
+  [[nodiscard]] auto operator*(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>;
+  [[nodiscard]] auto operator/(const FloatType& other) const -> Matrix<FloatType, Rows, Cols>;
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
@@ -60,16 +60,16 @@ TEST_REMOVE_PROTECTED:
 };
 
 template <typename FloatType, sint32 RowsA, sint32 ColsA, sint32 RowsB, sint32 ColsB>
-auto operator+(const MatrixView<FloatType, RowsA, ColsA>& a,
-               const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)>;
+[[nodiscard]] auto operator+(const MatrixView<FloatType, RowsA, ColsA>& a, const MatrixView<FloatType, RowsB, ColsB>& b)
+    -> Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)>;
 
 template <typename FloatType, sint32 RowsA, sint32 ColsA, sint32 RowsB, sint32 ColsB>
-auto operator-(const MatrixView<FloatType, RowsA, ColsA>& a,
-               const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)>;
+[[nodiscard]] auto operator-(const MatrixView<FloatType, RowsA, ColsA>& a, const MatrixView<FloatType, RowsB, ColsB>& b)
+    -> Matrix<FloatType, std::min(RowsA, RowsB), std::min(ColsA, ColsB)>;
 
 template <typename FloatType, sint32 RowsA, sint32 ColsA, sint32 RowsB, sint32 ColsB>
-auto operator*(const MatrixView<FloatType, RowsA, ColsA>& a,
-               const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, RowsA, ColsB>;
+[[nodiscard]] auto operator*(const MatrixView<FloatType, RowsA, ColsA>& a,
+                             const MatrixView<FloatType, RowsB, ColsB>& b) -> Matrix<FloatType, RowsA, ColsB>;
 
 
 } // namespace math

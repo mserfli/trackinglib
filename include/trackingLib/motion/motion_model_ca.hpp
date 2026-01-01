@@ -119,7 +119,8 @@ template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
 void MotionModelCA<CovarianceMatrixType, FloatType>::computeQ(ProcessNoiseDiagMatrix& Q, const FloatType dt)
 {
   // DWPA process, elements in Q define an acceleration increment, i.e. unit is equal to m/s**2
-  Q = {static_cast<FloatType>(100.0 * dt * dt), static_cast<FloatType>(100.0 * dt * dt)};
+  Q.at_unsafe(Q_AX) = static_cast<FloatType>(100.0 * dt * dt);
+  Q.at_unsafe(Q_AY) = static_cast<FloatType>(100.0 * dt * dt);
 }
 
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>

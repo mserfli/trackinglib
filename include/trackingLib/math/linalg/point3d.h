@@ -42,27 +42,27 @@ public:
 
   /// \brief Read access to x value
   /// \return ValueType_
-  auto x() const -> ValueType_;
+  [[nodiscard]] auto x() const -> ValueType_;
 
   /// \brief Read access to y value
   /// \return ValueType_
-  auto y() const -> ValueType_;
+  [[nodiscard]] auto y() const -> ValueType_;
 
   /// \brief Read access to z value
   /// \return ValueType_
-  auto z() const -> ValueType_;
+  [[nodiscard]] auto z() const -> ValueType_;
 
   /// \brief Write access to x value
   /// \return ValueType_
-  auto x() -> ValueType_&;
+  [[nodiscard]] auto x() -> ValueType_&;
 
   /// \brief Write access to y value
   /// \return ValueType_
-  auto y() -> ValueType_&;
+  [[nodiscard]] auto y() -> ValueType_&;
 
   /// \brief Write access to z value
   /// \return ValueType_
-  auto z() -> ValueType_&;
+  [[nodiscard]] auto z() -> ValueType_&;
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
