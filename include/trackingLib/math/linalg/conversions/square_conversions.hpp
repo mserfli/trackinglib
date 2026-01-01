@@ -13,6 +13,39 @@ namespace math
 namespace conversions
 {
 
+// SquareFromList: SquareMatrix from initializer_list<initializer_list<ValueType_>>
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+    -> SquareMatrix<ValueType_, Size_, IsRowMajor_>
+{
+  SquareMatrix<ValueType_, Size_, IsRowMajor_> result{};
+
+  // Validate row count
+  if (list.size() != static_cast<std::size_t>(result.RowsInMem))
+  {
+    throw std::runtime_error("SquareFromList: expected " + std::to_string(result.RowsInMem) + " rows, got " +
+                             std::to_string(list.size()));
+  }
+
+  // Validate column count for each row
+  for (const auto& row : list)
+  {
+    if (row.size() != static_cast<std::size_t>(result.ColsInMem))
+    {
+      throw std::runtime_error("SquareFromList: expected " + std::to_string(result.ColsInMem) + " columns, got " +
+                               std::to_string(row.size()));
+    }
+  }
+
+  auto iter = result.data().begin();
+  for (const auto& row : list)
+  {
+    std::copy(row.begin(), row.end(), iter);
+    iter += row.size();
+  }
+  return result;
+}
+
 // SquareFromDiagonal: SquareMatrix from DiagonalMatrix
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareFromDiagonal(const DiagonalMatrix<ValueType_, Size_>& diag) -> SquareMatrix<ValueType_, Size_, IsRowMajor_>
@@ -21,26 +54,6 @@ inline auto SquareFromDiagonal(const DiagonalMatrix<ValueType_, Size_>& diag) ->
   for (sint32 i = 0; i < Size_; ++i)
   {
     result.at_unsafe(i, i) = diag.at_unsafe(i);
-  }
-  return result;
-}
-
-// SquareFromList: SquareMatrix from initializer_list<initializer_list<ValueType_>>
-template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-    -> SquareMatrix<ValueType_, Size_, IsRowMajor_>
-{
-  SquareMatrix<ValueType_, Size_, IsRowMajor_> result{};
-  sint32                                       row = 0;
-  for (const auto& rowList : list)
-  {
-    assert(rowList.size() == Size_);
-    sint32 col = 0;
-    for (auto val : rowList)
-    {
-      result.at_unsafe(row, col++) = val;
-    }
-    ++row;
   }
   return result;
 }

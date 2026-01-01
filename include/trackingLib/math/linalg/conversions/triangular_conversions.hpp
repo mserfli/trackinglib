@@ -13,6 +13,14 @@ namespace math
 namespace conversions
 {
 
+// TriangularFromList: TriangularMatrix from initializer_list<initializer_list<ValueType_>>
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+    -> TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>
+{
+  return TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>{SquareMatrix<ValueType_, Size_, IsRowMajor_>::FromList(list)};
+}
+
 // TriangularFromSquare: TriangularMatrix from SquareMatrix
 // <target>From<source> pattern
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
@@ -20,14 +28,6 @@ inline auto TriangularFromSquare(const SquareMatrix<ValueType_, Size_, IsRowMajo
     -> TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>
 {
   return TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>{mat};
-}
-
-// TriangularFromList: TriangularMatrix from initializer_list<initializer_list<ValueType_>>
-template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-    -> TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>
-{
-  return TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>{SquareMatrix<ValueType_, Size_, IsRowMajor_>::FromList(list)};
 }
 
 } // namespace conversions

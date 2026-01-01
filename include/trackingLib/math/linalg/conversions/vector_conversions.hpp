@@ -13,19 +13,6 @@ namespace math
 namespace conversions
 {
 
-// VectorFromMatrixColumnView: Vector from MatrixColumnView
-template <typename ValueType_, sint32 Size_>
-inline auto VectorFromMatrixColumnView(const MatrixColumnView<ValueType_, Size_, 1, true>& colView) -> Vector<ValueType_, Size_>
-{
-  assert(colView.getRowCount() == Size_);
-  Vector<ValueType_, Size_> result;
-  for (sint32 i = 0; i < Size_; ++i)
-  {
-    result.at_unsafe(i) = colView.at_unsafe(i);
-  }
-  return result;
-}
-
 // VectorFromList: Vector from initializer_list<ValueType_>
 template <typename ValueType_, sint32 Size_>
 inline auto VectorFromList(const std::initializer_list<ValueType_>& list) -> Vector<ValueType_, Size_>
@@ -38,14 +25,15 @@ inline auto VectorFromList(const std::initializer_list<ValueType_>& list) -> Vec
   return tmp;
 }
 
-// MatrixFromVector: Matrix from Vector
+// VectorFromMatrixColumnView: Vector from MatrixColumnView
 template <typename ValueType_, sint32 Size_>
-inline auto MatrixFromVector(const Vector<ValueType_, Size_>& vec) -> Matrix<ValueType_, Size_, 1, true>
+inline auto VectorFromMatrixColumnView(const MatrixColumnView<ValueType_, Size_, 1, true>& colView) -> Vector<ValueType_, Size_>
 {
-  Matrix<ValueType_, Size_, 1, true> result{};
+  assert(colView.getRowCount() == Size_);
+  Vector<ValueType_, Size_> result;
   for (sint32 i = 0; i < Size_; ++i)
   {
-    result.at_unsafe(i, 0) = vec.at_unsafe(i);
+    result.at_unsafe(i) = colView.at_unsafe(i);
   }
   return result;
 }
