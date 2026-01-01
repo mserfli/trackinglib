@@ -12,30 +12,6 @@ namespace tracking
 namespace math
 {
 
-template <typename ValueType_, sint32 Size_>
-template <sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Vector<ValueType_, Size_>::FromMatrixColumnView(
-    const MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>& colView) -> Vector
-{
-  assert(colView.getRowCount() == Size_);
-  Vector tmp;
-  for (sint32 i = 0; i < Size_; ++i)
-  {
-    tmp.at_unsafe(i) = colView.at_unsafe(i);
-  }
-  return tmp;
-}
-
-template <typename ValueType_, sint32 Size_>
-inline auto Vector<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) -> Vector
-{
-  assert(list.size() == Size_);
-
-  Vector tmp;
-  auto   iter = tmp.data().begin();
-  std::copy(list.begin(), list.end(), iter);
-  return tmp;
-}
 
 template <typename ValueType_, sint32 Size_>
 inline auto Vector<ValueType_, Size_>::Zeros() -> Vector

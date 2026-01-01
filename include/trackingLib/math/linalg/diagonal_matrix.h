@@ -38,20 +38,6 @@ public:
   /// \return DiagonalMatrix  Resulting identity matrix
   [[nodiscard]] static auto Identity() -> DiagonalMatrix;
 
-  /// \brief Construct a new Diagonal Matrix object
-  /// \tparam IsRowMajor_
-  /// \param[in] other
-  template <bool IsRowMajor_>
-  static auto FromMatrix(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& other) -> DiagonalMatrix;
-
-  /// \brief Construct a new DiagonalMatrix object given initializer list
-  /// \param[in] list  An initializer list describing the diagonal elements
-  static auto FromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix;
-
-  /// \brief Construct a new DiagonalMatrix object given initializer list
-  /// \param[in] list  An initializer list describing a full square matrix
-  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> DiagonalMatrix;
-
   /// \brief Set internal matrix to the Identity matrix
   void setIdentity();
 

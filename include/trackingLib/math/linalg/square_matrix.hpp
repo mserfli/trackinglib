@@ -25,12 +25,6 @@ SquareMatrix<ValueType_, Size_, IsRowMajor_>::SquareMatrix(const DiagonalMatrix<
   }
 }
 
-template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::FromList(
-    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix
-{
-  return SquareMatrix{Matrix::FromList(list)};
-}
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline void SquareMatrix<ValueType_, Size_, IsRowMajor_>::setIdentity()

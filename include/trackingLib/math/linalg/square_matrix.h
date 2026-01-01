@@ -49,9 +49,6 @@ public:
   /// \param[in] other A diagonal matrix
   SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other); // NOLINT(google-explicit-constructor)
 
-  /// \brief Construct a new Square Matrix object with given initializer list representing the memory layout of the matrix
-  /// \param[in] list  An initializer list describing the memory layout of the matrix
-  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix;
 
   /// \brief Construct an Identity matrix
   /// \return SquareMatrix  Resulting identity matrix

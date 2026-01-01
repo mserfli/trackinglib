@@ -30,12 +30,6 @@ inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMat
   }
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::FromList(
-    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix
-{
-  return TriangularMatrix{SquareMatrix::FromList(list)};
-}
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
