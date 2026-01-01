@@ -1,20 +1,22 @@
 #include "gtest/gtest.h"
+#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"
 #include "trackingLib/math/linalg/matrix_view.hpp" // IWYU pragma: keep
+
+using namespace tracking::math;
 
 TEST(MatrixView, ctor_view) // NOLINT
 {
   // testing MatrixView on existing matrix
-  using IntMatType = tracking::math::Matrix<sint32, 3, 3, true>;
   // clang-format off
-  const auto mat{IntMatType::FromList({
-    {1, 2, 3}, 
-    {4, 5, 6}, 
+  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+    {1, 2, 3},
+    {4, 5, 6},
     {7, 8, 9}
   })};
   // clang-format on
 
   // View of the top-left 2x2 block
-  const tracking::math::MatrixView<sint32, 3, 3> view(mat, 0, 0, 1, 1);
+  const MatrixView<sint32, 3, 3> view(mat, 0, 0, 1, 1);
 
   EXPECT_EQ(view.getRowCount(), 2);
   EXPECT_EQ(view.getColCount(), 2);
@@ -26,25 +28,24 @@ TEST(MatrixView, ctor_view) // NOLINT
 
 TEST(MatrixView, add_views) // NOLINT
 {
-  using IntMatType = tracking::math::Matrix<sint32, 3, 3, true>;
   // clang-format off
-  const auto mat{IntMatType::FromList({
-    {1, 2, 3}, 
-    {4, 5, 6}, 
+  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+    {1, 2, 3},
+    {4, 5, 6},
     {7, 8, 9}
   })};
   // clang-format on
 
   // View 1: top-left 2x2
-  const tracking::math::MatrixView<sint32, 3, 3> view1(mat, 0, 0, 1, 1);
+  const MatrixView<sint32, 3, 3> view1(mat, 0, 0, 1, 1);
   // View 2: bottom-right 2x2
-  const tracking::math::MatrixView<sint32, 3, 3> view2(mat, 1, 1, 2, 2);
+  const MatrixView<sint32, 3, 3> view2(mat, 1, 1, 2, 2);
 
   // Result should be 2x2 matrix (stored in 3x3)
   auto res = view1 + view2;
 
   // res is Matrix<sint32, 3, 3>
-  static_assert(std::is_same<decltype(res), tracking::math::Matrix<sint32, 3, 3, true>>::value);
+  static_assert(std::is_same<decltype(res), Matrix<sint32, 3, 3, true>>::value);
 
   // view1: {{1, 2}, {4, 5}}
   // view2: {{5, 6}, {8, 9}}
@@ -57,19 +58,18 @@ TEST(MatrixView, add_views) // NOLINT
 
 TEST(MatrixView, mul_views) // NOLINT
 {
-  using IntMatType = tracking::math::Matrix<sint32, 3, 3, true>;
   // clang-format off
-  const auto mat{IntMatType::FromList({
-    {1, 2, 3}, 
-    {4, 5, 6}, 
+  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+    {1, 2, 3},
+    {4, 5, 6},
     {7, 8, 9}
   })};
   // clang-format on
 
   // View 1: top-left 2x2
-  const tracking::math::MatrixView<sint32, 3, 3> view1(mat, 0, 0, 1, 1);
+  const MatrixView<sint32, 3, 3> view1(mat, 0, 0, 1, 1);
   // View 2: bottom-right 2x2
-  const tracking::math::MatrixView<sint32, 3, 3> view2(mat, 1, 1, 2, 2);
+  const MatrixView<sint32, 3, 3> view2(mat, 1, 1, 2, 2);
 
   // Result should be 2x2 matrix
   auto res = view1 * view2;
@@ -88,10 +88,14 @@ TEST(MatrixView, mul_views) // NOLINT
 
 TEST(MatrixView, scalar_ops) // NOLINT
 {
-  using IntMatType = tracking::math::Matrix<sint32, 3, 3, true>;
-  const auto mat{IntMatType::FromList({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}})};
-
-  const tracking::math::MatrixView<sint32, 3, 3> view(mat, 0, 0, 1, 1);
+  // clang-format off
+  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+    {1, 2, 3}, 
+    {4, 5, 6}, 
+    {7, 8, 9}
+  })};
+  // clang-format on
+  const MatrixView<sint32, 3, 3> view(mat, 0, 0, 1, 1);
 
   auto res = view * 2;
   EXPECT_EQ(res.at_unsafe(0, 0), 2);

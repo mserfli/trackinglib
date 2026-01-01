@@ -17,11 +17,11 @@ target_sources(${TEST_BINARY} PRIVATE
     test.cpp
     math/test_matrix.cpp
     math/test_vector.cpp
-    #math/test_point2d.cpp
+    math/test_point2d.cpp
     #math/test_point3d.cpp
-    #math/test_matrix_column_view.cpp
-    #math/test_matrix_row_view.cpp
-    #math/test_matrix_view.cpp
+    math/test_matrix_column_view.cpp
+    math/test_matrix_row_view.cpp
+    math/test_matrix_view.cpp
     #math/test_square_matrix.cpp
     #math/test_triangular_matrix.cpp
     math/test_diagonal_matrix.cpp
