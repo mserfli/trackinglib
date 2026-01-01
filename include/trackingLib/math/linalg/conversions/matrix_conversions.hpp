@@ -5,6 +5,7 @@
 #include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
 #include "math/linalg/vector.hpp"             // IWYU pragma: keep
 #include <initializer_list>
+#include <stdexcept>
 
 namespace tracking
 {

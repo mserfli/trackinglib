@@ -7,7 +7,6 @@
 #include <cmath>
 #include <functional>
 #include <limits>
-#include <stdexcept>
 #include <type_traits>
 
 namespace tracking
