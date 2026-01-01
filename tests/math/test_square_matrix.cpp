@@ -143,23 +143,6 @@ TEST(SquareMatrix, symmetrize) // NOLINT
   EXPECT_FLOAT_EQ(mat.at_unsafe(2, 1), 7.0F);
 }
 
-TEST(SquareMatrix, ctor_from_diag) // NOLINT
-{
-  using DiagMatType = tracking::math::DiagonalMatrix<float32, 3>;
-  const auto diag   = DiagMatType::FromList({1, 2, 3});
-
-  // call UUT
-  const tracking::math::SquareMatrix<float32, 3, true> mat(diag);
-
-  EXPECT_FLOAT_EQ(mat.at_unsafe(0, 0), 1.0F);
-  EXPECT_FLOAT_EQ(mat.at_unsafe(1, 1), 2.0F);
-  EXPECT_FLOAT_EQ(mat.at_unsafe(2, 2), 3.0F);
-
-  // Off-diagonal should be zero
-  EXPECT_FLOAT_EQ(mat.at_unsafe(0, 1), 0.0F);
-  EXPECT_FLOAT_EQ(mat.at_unsafe(1, 0), 0.0F);
-}
-
 TEST(SquareMatrix, decomposeUDUT) // NOLINT
 {
   // clang-format off

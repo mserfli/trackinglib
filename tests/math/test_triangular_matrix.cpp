@@ -46,29 +46,6 @@ TEST(TriangularMatrix, ctor_triu) // NOLINT
   }
 }
 
-TEST(TriangularMatrix, ctor_square) // NOLINT
-{
-  // clang-format off
-  using FloatSquareMatType = tracking::math::SquareMatrix<float32, 3, true>;
-  using TriangularMatrix = tracking::math::TriangularMatrix<float32, 3, false, true>;
-  const auto mat = FloatSquareMatType::FromList({
-    {1, 2, 3},
-    {4, 5, 6},
-    {7, 8, 9}
-  });
-  const auto expMat = TriangularMatrix::FromList({
-    {1, 2, 3},
-    {0, 5, 6},
-    {0, 0, 9}
-  });
-  // clang-format on
-
-  // call UUT
-  const TriangularMatrix triuMat{mat};
-
-  EXPECT_EQ(expMat._data, triuMat._data);
-}
-
 TEST(TriangularMatrix, Identity) // NOLINT
 {
   // clang-format off

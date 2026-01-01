@@ -1,44 +1,15 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
-#include "trackingLib/math/linalg/vector.hpp"             // IWYU pragma: keep
+#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp" // IWYU pragma: keep
+#include "trackingLib/math/linalg/conversions/vector_conversions.hpp" // IWYU pragma: keep
+#include "trackingLib/math/linalg/matrix_column_view.hpp"             // IWYU pragma: keep
+#include "trackingLib/math/linalg/vector.hpp"                         // IWYU pragma: keep
 
-TEST(Vector, ctor_from_colView) // NOLINT
-{
-  using VecType = tracking::math::Vector<sint32, 3>;
-  using MatType = tracking::math::Matrix<sint32, 3, 3, true>;
-  
-  const auto mat = MatType::FromList({
-    {1, 2, 3},
-    {4, 5, 6},
-    {7, 8, 9}
-  });
-  
-  // View of the middle column (2, 5, 8)
-  const tracking::math::MatrixColumnView<sint32, 3, 3, true> colView(mat, 1);
-  
-  // call UUT
-  const auto vec = VecType::FromMatrixColumnView(colView);
-  
-  EXPECT_EQ(vec.at_unsafe(0), 2);
-  EXPECT_EQ(vec.at_unsafe(1), 5);
-  EXPECT_EQ(vec.at_unsafe(2), 8);
-}
-
-TEST(Vector, ctor_initializerList__Success) // NOLINT
-{
-  using VecType = tracking::math::Vector<sint32, 4>;
-  const auto a  = VecType::Ones();
-
-  // call UUT
-  const auto b = VecType::FromList({1, 1, 1, 1});
-
-  EXPECT_EQ(a, b);
-}
+using namespace tracking::math;
 
 TEST(Vector, UnitVector__Success) // NOLINT
 {
-  using VecType = tracking::math::Vector<sint32, 4>;
-  const auto a  = VecType::FromList({0, 0, 1, 0});
+  using VecType = Vector<sint32, 4>;
+  const auto a  = conversions::VectorFromList<sint32, 4>({0, 0, 1, 0});
 
   // call UUT
   const auto res = VecType::UnitVector<2>();
@@ -48,8 +19,8 @@ TEST(Vector, UnitVector__Success) // NOLINT
 
 TEST(Vector, test_op_at_Success) // NOLINT
 {
-  using VecType = tracking::math::Vector<sint32, 4>;
-  auto a        = VecType::FromList({1, 2, 3, 4});
+  using VecType = Vector<sint32, 4>;
+  auto a        = conversions::VectorFromList<sint32, 4>({1, 2, 3, 4});
 
   // call UUT
   auto retVal = a[VecType::Rows - 1];
@@ -60,8 +31,8 @@ TEST(Vector, test_op_at_Success) // NOLINT
 
 TEST(Vector, test_op_at_const_Success) // NOLINT
 {
-  using VecType = tracking::math::Vector<sint32, 4>;
-  const auto a  = VecType::FromList({1, 2, 3, 4});
+  using VecType = Vector<sint32, 4>;
+  const auto a  = conversions::VectorFromList<sint32, 4>({1, 2, 3, 4});
 
   // call UUT
   auto retVal = a[VecType::Rows - 1];
@@ -72,9 +43,9 @@ TEST(Vector, test_op_at_const_Success) // NOLINT
 
 TEST(Vector, op_dot__Success) // NOLINT
 {
-  using VecType = tracking::math::Vector<sint32, 4>;
+  using VecType = Vector<sint32, 4>;
   const auto a  = VecType::Ones();
-  const auto b  = VecType::FromList({1, 2, 3, 4});
+  const auto b  = conversions::VectorFromList<sint32, 4>({1, 2, 3, 4});
 
   // call UUT
   const auto res = a * b;
@@ -84,8 +55,7 @@ TEST(Vector, op_dot__Success) // NOLINT
 
 TEST(Vector, op_normSq__Success) // NOLINT
 {
-  using VecType = tracking::math::Vector<sint32, 4>;
-  const auto a  = VecType::FromList({1, 2, 3, 4});
+  const auto a = conversions::VectorFromList<sint32, 4>({1, 2, 3, 4});
 
   // call UUT
   const auto res = a.normSq();
@@ -95,8 +65,7 @@ TEST(Vector, op_normSq__Success) // NOLINT
 
 TEST(Vector, op_norm__Success) // NOLINT
 {
-  using VecType = tracking::math::Vector<float32, 2>;
-  const auto a  = VecType::FromList({3, 4});
+  const auto a = conversions::VectorFromList<float32, 2>({3, 4});
 
   // call UUT
   const auto res = a.norm();
@@ -106,9 +75,8 @@ TEST(Vector, op_norm__Success) // NOLINT
 
 TEST(Vector, op_normalize__Success) // NOLINT
 {
-  using VecType = tracking::math::Vector<float32, 2>;
-  const auto a  = VecType::FromList({3, 4});
-  const auto b  = VecType::FromList({3 / 5.0, 4 / 5.0});
+  const auto a = conversions::VectorFromList<float32, 2>({3, 4});
+  const auto b = conversions::VectorFromList<float32, 2>({3 / 5.0, 4 / 5.0});
 
   // call UUT
   const auto res = a.normalize();
