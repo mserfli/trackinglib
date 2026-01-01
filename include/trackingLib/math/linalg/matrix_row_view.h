@@ -60,8 +60,6 @@ public:
   /// \return sint32
   [[nodiscard]] auto getColCount() const -> sint32 { return _colCount; }
 
-  /// \brief Print the matrix to stdout
-  void print() const;
 
 private:
   const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& _matrix;

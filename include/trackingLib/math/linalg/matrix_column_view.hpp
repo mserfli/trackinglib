@@ -62,15 +62,6 @@ inline auto MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(
   return result;
 }
 
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline void MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>::print() const
-{
-  for (auto row = 0; row < _rowCount; ++row)
-  {
-    std::cout << at_unsafe(row) << ", ";
-  }
-  std::cout << "\n" << std::endl;
-}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_, sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
 inline auto operator*(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&              mat,

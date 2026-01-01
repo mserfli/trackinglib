@@ -457,18 +457,3 @@ TEST(DiagonalMatrix, isPositiveDefinite_false) // NOLINT
 
   EXPECT_FALSE(result);
 }
-
-TEST(DiagonalMatrix, print) // NOLINT
-{
-  // clang-format off
-  using DiagonalMatrix = tracking::math::DiagonalMatrix<float32, 3>;
-  const auto diagMat = DiagonalMatrix::FromList({
-    {1, 0, 0}, 
-    {0, 2, 0}, 
-    {0, 0, 3}
-  });
-  // clang-format on
-
-  // call UUT
-  diagMat.print();
-}

@@ -3,6 +3,7 @@
 
 #include "base/first_include.h"                           // IWYU pragma: keep
 #include "math/linalg/contracts/covariance_matrix_intf.h" // IWYU pragma: keep
+#include <iostream>                                       // IWYU pragma: keep
 
 namespace tracking
 {
@@ -124,7 +125,6 @@ public:
   /// \param[in] val  The value to be set
   void setDiagonal(const sint32 idx, const FloatType_ val);
 
-  void print() const { this->operator()().print(); }
 
   //////////////////////////////////////////////////
   // unsafe access operators  --->

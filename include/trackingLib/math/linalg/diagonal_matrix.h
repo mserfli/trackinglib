@@ -3,6 +3,7 @@
 
 #include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/errors.h"
+#include "math/linalg/matrix_io.h"
 
 namespace tracking
 {
@@ -144,8 +145,8 @@ public:
   /// \brief Checks for positive definite condition of the diagonal matrix (all elements > 0)
   [[nodiscard]] auto isPositiveDefinite() const -> bool;
 
-  /// \brief Print the matrix
-  void print() const;
+  /// \brief Checks for positive semi-definite condition of the diagonal matrix (all elements >= 0)
+  [[nodiscard]] auto isPositiveSemiDefinite() const -> bool;
 
   //////////////////////////////////////////////////
   // unsafe access operators  --->

@@ -69,15 +69,6 @@ inline auto MatrixRowView<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(
   return result;
 }
 
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline void MatrixRowView<ValueType_, Rows_, Cols_, IsRowMajor_>::print() const
-{
-  for (auto col = 0; col < _colCount; ++col)
-  {
-    std::cout << at_unsafe(col) << ", ";
-  }
-  std::cout << "\n" << std::endl;
-}
 
 } // namespace math
 } // namespace tracking

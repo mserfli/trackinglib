@@ -223,12 +223,6 @@ inline auto DiagonalMatrix<ValueType_, Size_>::isPositiveDefinite() const -> boo
   return isValid;
 }
 
-template <typename ValueType_, sint32 Size_>
-inline void DiagonalMatrix<ValueType_, Size_>::print() const
-{
-  const SquareMatrix<ValueType_, Size_, true> diag{*this};
-  diag.print();
-}
 
 // ------ non-member functions ---------------------------------------------------------------------------------------------------
 

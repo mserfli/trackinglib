@@ -35,8 +35,8 @@ void declare_matrix(py::module& m, const std::string& typestr)
     .def("__mul__", [](MT& mat, const tracking::math::Matrix<typename MT::value_type, MT::Cols, 2>& other) { return mat.operator*(other); })
     .def("__repr__", [](const MT& mat) {
       std::stringstream stream;
-      stream << mat.print();
-      return stream.str(); 
+      stream << mat;
+      return stream.str();
     });
   // clang-format on
 }

@@ -192,8 +192,6 @@ public:
 
   //////////////////////////////////////////////////
   // other operations --->
-  /// \brief Print the matrix to stdout
-  void print() const;
 
   /// \brief Sets all elements to zero
   void setZeros();
