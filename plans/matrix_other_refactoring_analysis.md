@@ -1,96 +1,112 @@
 # Matrix Classes Refactoring and Coverage Plan
 
-## 1. Matrix Views (`MatrixColumnView`, `MatrixRowView`, `MatrixView`)
+## Status Summary
 
-### Findings
-*   **`MatrixColumnView` / `MatrixRowView`**:
-    *   **Coverage**: Good. Arithmetic operations are tested.
-    *   **Issues**: `print()` method writes directly to `std::cout`.
-*   **`MatrixView`**:
-    *   **CRITICAL BUG**: `MatrixView<FloatType, Rows, Cols, false>` (the owning version) initializes a reference member `_view` with a temporary object in the constructor initializer list. This results in a dangling reference.
-    *   **Coverage**: **ZERO**. No test file exists.
-    *   **Issues**: Uses `#pragma omp parallel for` which introduces an OpenMP dependency.
+This plan tracks remaining work for matrix class refactoring and test coverage improvements. Several items from the original analysis have been completed.
 
-### Plan
-1.  **Fix Critical Bug**: Refactor `MatrixView<..., false>` to store the view by value or reimplement the accessors to avoid the dangling reference.
-2.  **Add Tests**: Create `tests/math/test_matrix_view.cpp` covering:
-    *   Construction (view on existing matrix, owning view).
-    *   Arithmetic operations (`+`, `-`, `*`, `/`).
-    *   Interaction with `Matrix`.
-3.  **Refactoring**:
-    *   Consider removing `print()` or replacing with `operator<<`.
+### ✅ Completed Items
+- **MatrixView Critical Bug**: Fixed - the owning version with dangling reference has been removed
+- **MatrixView Tests**: Created [`tests/math/test_matrix_view.cpp`](tests/math/test_matrix_view.cpp) with comprehensive coverage
+- **Point2d Tests**: Populated [`tests/math/test_point2d.cpp`](tests/math/test_point2d.cpp) with full coverage
+- **Point3d Tests**: Created [`tests/math/test_point3d.cpp`](tests/math/test_point3d.cpp) with full coverage
+- **Vector::FromMatrixColumnView**: Test exists in [`tests/math/test_vector.cpp`](tests/math/test_vector.cpp:20)
+- **SquareMatrix::decomposeUDUT**: Tests exist in [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp:163)
+- **SquareMatrix::symmetrize**: Test exists in [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp:119)
 
-## 2. Vector and Points (`Vector`, `Point2d`, `Point3d`)
+---
 
-### Findings
-*   **`Vector`**:
-    *   **Coverage**: Mostly good.
-    *   **Missing**: `FromMatrixColumnView` is not tested.
-*   **`Point2d`**:
-    *   **Coverage**: **ZERO**. `tests/math/test_point2d.cpp` exists but is empty.
-*   **`Point3d`**:
-    *   **Coverage**: **ZERO**. No test file exists.
+## 1. Remaining Test Coverage Gaps
 
-### Plan
-1.  **Add Tests**:
-    *   Populate `tests/math/test_point2d.cpp` (constructors, accessors `x/y`, inheritance from Vector).
-    *   Create `tests/math/test_point3d.cpp` (constructors, accessors `x/y/z`, inheritance from Vector).
-    *   Add test for `Vector::FromMatrixColumnView` in `tests/math/test_vector.cpp`.
+### SquareMatrix Constructor from DiagonalMatrix
+**Status**: ❌ Not tested
 
-## 3. Square Matrix (`SquareMatrix`)
+**Issue**: [`SquareMatrix`](include/trackingLib/math/linalg/square_matrix.h) has a constructor that accepts [`DiagonalMatrix`](include/trackingLib/math/linalg/diagonal_matrix.h), but no test verifies this functionality.
 
-### Findings
-*   **Coverage**: Good for most complex algorithms (`householderQR`, `decomposeLLT`, `decomposeLDLT`, `inverse`).
-*   **Missing**:
-    *   `decomposeUDUT` (Critical for UDU factorization feature).
-    *   `symmetrize`.
-    *   Constructor from `DiagonalMatrix`.
+**Plan**:
+- Add test case in [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp)
+- Verify that diagonal elements are correctly copied
+- Verify that off-diagonal elements are zero
 
-### Plan
-1.  **Add Tests**:
-    *   Add `decomposeUDUT` test case (verify reconstruction $P = U D U^T$).
-    *   Add `symmetrize` test case.
-    *   Add `SquareMatrix(DiagonalMatrix)` test case.
+---
 
-## 4. Diagonal and Triangular Matrices
+## 2. Code Quality Issues
 
-### Findings
-*   **`DiagonalMatrix`**:
-    *   **Coverage**: Good.
-    *   **Issues**: `print()` uses `std::cout`.
-*   **`TriangularMatrix`**:
-    *   **Coverage**: Good.
-    *   **Issues**: Uses `#pragma omp parallel for`.
+### 2.1 Print Methods Using std::cout
+**Status**: ⚠️ Moved to separate plan
 
-### Plan
-1.  **Refactoring**:
-    *   Review OpenMP usage.
-    *   Consider `print()` refactoring.
+**Issue**: Multiple classes have `print()` methods that are not idiomatic C++.
 
-## 5. Cyclic Dependencies
+**See**: [`plans/print_methods_refactoring.md`](plans/print_methods_refactoring.md) for comprehensive analysis including:
+- Template-based `operator<<` solution with zero code duplication
+- Unified formatting for all matrix types
+- Migration strategy from `print()` to `operator<<`
+- Advanced features (custom formatting, JSON/CSV output)
+- Removes circular dependencies caused by print methods
 
-### Findings
-*   **`SquareMatrix` <-> `DiagonalMatrix`**:
-    *   `SquareMatrix` uses `DiagonalMatrix` (Identity, setIdentity).
-    *   `DiagonalMatrix` uses `SquareMatrix` (FromMatrix, print).
-    *   Both include each other's `.hpp` files.
-*   **`SquareMatrix` <-> `TriangularMatrix`**:
-    *   `TriangularMatrix` inherits `SquareMatrix`.
-    *   `SquareMatrix` uses `TriangularMatrix` (decompositions).
-    *   Both include each other's `.hpp` files.
+### 2.2 OpenMP Dependency
+**Status**: ⚠️ Moved to separate plan
 
-### Plan
-1.  **Break `SquareMatrix` <-> `DiagonalMatrix` Cycle**:
-    *   Refactor `DiagonalMatrix::print()` to remove dependency on `SquareMatrix`.
-    *   Move `DiagonalMatrix::FromMatrix` to a new header `diagonal_matrix_utils.hpp` (or similar) to remove the dependency from the core class.
-    *   Remove `#include "square_matrix.hpp"` from `diagonal_matrix.hpp`.
-2.  **Break `SquareMatrix` <-> `TriangularMatrix` Cycle**:
-    *   Move decomposition methods (`householderQR`, `decomposeLLT`, `decomposeLDLT`, `decomposeUDUT`) from `square_matrix.hpp` to a new header `square_matrix_decompositions.hpp`.
-    *   Remove `#include "triangular_matrix.hpp"` from `square_matrix.hpp`.
+**Issue**: Inconsistent OpenMP usage across matrix multiplication operations.
 
-## Execution Order
-1.  **Fix `MatrixView`**: This is a blocker/critical bug.
-2.  **Add `MatrixView` Tests**: Verify fix.
-3.  **Add Point/Vector Tests**: Low hanging fruit, high value for completeness.
-4.  **Add `SquareMatrix` Tests**: Ensure core algorithms are fully covered.
-5.  **Refactor Cycles**: Perform the structural changes to break cyclic dependencies.
+**See**: [`plans/openmp_parallelization_analysis.md`](plans/openmp_parallelization_analysis.md) for comprehensive analysis and strategy.
+
+---
+
+## 3. Cyclic Dependencies
+
+**Status**: ⚠️ Moved to separate plan
+
+**Issue**: Multiple circular dependencies between `SquareMatrix`, `DiagonalMatrix`, and `TriangularMatrix`.
+
+**See**: [`plans/cyclic_dependencies_analysis.md`](plans/cyclic_dependencies_analysis.md) for comprehensive analysis including:
+- Detailed dependency graph with Mermaid diagrams
+- Analysis of all three cycles
+- Impact on compilation times and maintainability
+- Multiple resolution strategies with pros/cons
+- Phased implementation plan
+- Before/after dependency graphs
+
+---
+
+## 4. Execution Priority
+
+### High Priority (Blocking Issues)
+1. ✅ ~~Fix MatrixView critical bug~~ - **COMPLETED**
+2. ✅ ~~Add MatrixView tests~~ - **COMPLETED**
+
+### Medium Priority (Test Coverage)
+3. ✅ ~~Add Point2d/Point3d tests~~ - **COMPLETED**
+4. ✅ ~~Add Vector::FromMatrixColumnView test~~ - **COMPLETED**
+5. ✅ ~~Add SquareMatrix::decomposeUDUT test~~ - **COMPLETED**
+6. ✅ ~~Add SquareMatrix::symmetrize test~~ - **COMPLETED**
+7. ❌ **Add SquareMatrix(DiagonalMatrix) constructor test** - **REMAINING**
+
+### Low Priority (Code Quality)
+8. ⚠️ **Refactor print() methods** - See separate plan: [`print_methods_refactoring.md`](plans/print_methods_refactoring.md)
+9. ⚠️ **Break cyclic dependencies** - See separate plan: [`cyclic_dependencies_analysis.md`](plans/cyclic_dependencies_analysis.md)
+10. ⚠️ **OpenMP parallelization** - See separate plan: [`openmp_parallelization_analysis.md`](plans/openmp_parallelization_analysis.md)
+
+---
+
+## Next Steps
+
+### Immediate Actions
+1. **Add Missing Test**: Create test for `SquareMatrix(DiagonalMatrix)` constructor
+   - File: [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp)
+   - Verify diagonal elements copied correctly
+   - Verify off-diagonal elements are zero
+
+### Future Improvements
+2. **See Separate Plans**:
+   - Print methods: [`print_methods_refactoring.md`](plans/print_methods_refactoring.md)
+   - Cyclic dependencies: [`cyclic_dependencies_analysis.md`](plans/cyclic_dependencies_analysis.md)
+   - OpenMP parallelization: [`openmp_parallelization_analysis.md`](plans/openmp_parallelization_analysis.md)
+
+---
+
+## Notes
+
+- All critical bugs have been resolved
+- Test coverage is significantly improved
+- Remaining work is primarily code quality and architectural improvements
+- No blocking issues remain for library functionality
