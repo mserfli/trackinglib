@@ -87,6 +87,7 @@
   - `TEST_REMOVE_PRIVATE=private`
   - `TEST_VIRTUAL=`
 - **Documentation Style** (see [`matrix.h`](include/trackingLib/math/linalg/matrix.h) for reference):
+  - Use triple-slash comments (`///`) for all Doxygen documentation
   - Use backslash commands: `\brief`, `\tparam`, `\param[in]`, `\param[out]`, `\return`
   - Do NOT use @ commands (e.g., `@brief`, `@param`)
   - Include `\brief` for all classes and functions

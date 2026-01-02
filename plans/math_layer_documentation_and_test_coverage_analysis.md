@@ -414,7 +414,7 @@ The math layer consists of two main subdirectories:
    - Consider adding documentation coverage reporting
 
 2. **Documentation Standards:**
-   - Use Doxygen style comments (`///` or `/** */`)
+   - Use Doxygen triple-slash comments (`///`) for all documentation
    - Include `\brief` for all classes and functions (backslash style, not @)
    - Include `\tparam` for all template parameters (backslash style, not @)
    - Include `\param[in]` or `\param[out]` for all function parameters (backslash style, not @)
