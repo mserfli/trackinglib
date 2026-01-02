@@ -15,7 +15,7 @@ namespace math
 template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
 {
-  const auto retVal = SquareMatrix::decomposeLLT();
+  const auto retVal = BaseSquareMatrix::decomposeLLT();
   if (retVal.has_value())
   {
     const auto& L = *retVal;
@@ -23,9 +23,9 @@ inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expe
     // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
     const auto u = L.solve(CovarianceMatrixFull::Identity());
     // L'*Ainv = u     -> solve for Ainv using backward substitution
-    math::SquareMatrix cov{L.transpose().solve(u)};
+    math::SquareMatrix<FloatType_, Size_, true> cov{L.transpose().solve(u)};
     cov.symmetrize();
-    return CovarianceMatrixFull{SquareMatrix{std::move(cov)}};
+    return CovarianceMatrixFull{std::move(cov)};
   }
   return tl::unexpected<Errors>{retVal.error()};
 }
@@ -37,10 +37,10 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
   assert(this->isSymmetric() && "Covariance currently not symmetric");
   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
   // for normal covariance matrix P, the calculation is P = A*P*A'
-  const auto   paT = this->operator*(A.transpose());
-  SquareMatrix cov{A.operator*(paT)};
+  const auto       paT = this->operator*(A.transpose());
+  BaseSquareMatrix cov{A.operator*(paT)};
   cov.symmetrize();
-  *this = CovarianceMatrixFull{SquareMatrix{std::move(cov)}};
+  *this = CovarianceMatrixFull{std::move(cov)};
 }
 
 template <typename FloatType_, sint32 Size_>
@@ -59,10 +59,10 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::setVariance(const sint32 id
   constexpr auto zero = static_cast<FloatType_>(0.0);
   for (sint32 j = 0; j < Size_; ++j)
   {
-    SquareMatrix::at_unsafe(idx, j) = zero;
-    SquareMatrix::at_unsafe(j, idx) = zero;
+    BaseSquareMatrix::at_unsafe(idx, j) = zero;
+    BaseSquareMatrix::at_unsafe(j, idx) = zero;
   }
-  SquareMatrix::at_unsafe(idx, idx) = val;
+  BaseSquareMatrix::at_unsafe(idx, idx) = val;
 }
 
 } // namespace math

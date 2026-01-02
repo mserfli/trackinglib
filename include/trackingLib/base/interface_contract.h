@@ -101,9 +101,9 @@ template <typename Alias, typename AmbiguitySeed>
 struct has_member
 {
   template <typename C>
-  static char((&f(decltype(&C::value))))[1];
+  static char (&f(decltype(&C::value)))[1];
   template <typename C>
-  static char((&f(...)))[2];
+  static char (&f(...))[2];
 
   // Make sure the member name is consistently spelled the same.
   static_assert((sizeof(f<AmbiguitySeed>(0)) == 1),

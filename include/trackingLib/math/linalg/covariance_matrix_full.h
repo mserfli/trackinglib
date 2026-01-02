@@ -15,7 +15,7 @@ class CovarianceMatrixFull: public SquareMatrix<FloatType_, Size_, true>
 //, public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>>
 {
 public:
-  using SquareMatrix = SquareMatrix<FloatType_, Size_, true>; ///< type of the parent class
+  using BaseSquareMatrix = SquareMatrix<FloatType_, Size_, true>; ///< type of the parent class
 
   using value_type          = FloatType_;
   using compose_type        = CovarianceMatrixFull;
@@ -33,45 +33,45 @@ public:
   // additional constructors  --->
   /// \brief Construct a new Covariance Matrix Full<FloatType_, Size_> object
   /// \param[in] other A base class object
-  explicit CovarianceMatrixFull(const SquareMatrix& other)
-      : SquareMatrix{other}
+  explicit CovarianceMatrixFull(const BaseSquareMatrix& other)
+      : BaseSquareMatrix{other}
   {
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
   /// \brief Move construct a new Covariance Matrix Full<FloatType_, Size_> object
   /// \param[in] other A base class object
-  explicit CovarianceMatrixFull(SquareMatrix&& other) noexcept
-      : SquareMatrix{std::move(other)}
+  explicit CovarianceMatrixFull(BaseSquareMatrix&& other) noexcept
+      : BaseSquareMatrix{std::move(other)}
   {
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
   /// \brief Construct a new Covariance Matrix Full<FloatType_, Size_> object from a transposed SquareMatrix
   /// \param[in] other A transposed base class object
-  explicit CovarianceMatrixFull(const typename SquareMatrix::transpose_type& other)
-      : SquareMatrix{other.transpose()}
+  explicit CovarianceMatrixFull(const typename BaseSquareMatrix::transpose_type& other)
+      : BaseSquareMatrix{other.transpose()}
   {
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
   /// \brief Move construct a new Covariance Matrix Full<FloatType_, Size_> object from a transposed SquareMatrix
   /// \param[in] other A transposed base class object
-  explicit CovarianceMatrixFull(typename SquareMatrix::transpose_type&& other) noexcept
-      : SquareMatrix{std::move(other).transpose_rvalue()}
+  explicit CovarianceMatrixFull(typename BaseSquareMatrix::transpose_type&& other) noexcept
+      : BaseSquareMatrix{std::move(other).transpose_rvalue()}
   {
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFull  Resulting identity matrix
-  static auto Identity() -> CovarianceMatrixFull { return CovarianceMatrixFull{SquareMatrix::Identity()}; }
+  static auto Identity() -> CovarianceMatrixFull { return CovarianceMatrixFull{BaseSquareMatrix::Identity()}; }
 
   /// \brief Set internal matrix to the Identity matrix
-  void setIdentity() { SquareMatrix::setIdentity(); }
+  void setIdentity() { BaseSquareMatrix::setIdentity(); }
 
   /// \brief Access operator to the covariance value at (row, col)
-  using SquareMatrix::operator();
+  using BaseSquareMatrix::operator();
 
   /// \brief Creates the "composed" covariance, although no composition is needed
   /// \return const CovarianceMatrixFull&

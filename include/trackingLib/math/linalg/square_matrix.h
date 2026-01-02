@@ -24,24 +24,24 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_ = true>
 class SquareMatrix: public Matrix<ValueType_, Size_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
 {
 public:
-  using Matrix = Matrix<ValueType_, Size_, Size_, IsRowMajor_>; ///< type of the parent class
+  using BaseMatrix = Matrix<ValueType_, Size_, Size_, IsRowMajor_>; ///< type of the parent class
 
   // unhide ctor of base class to allow implicit call in derived default ctors
-  using Matrix::Matrix;
+  using BaseMatrix::BaseMatrix;
 
   //////////////////////////////////////////////////
   // additional constructors  --->
   /// \brief Construct a new Square Matrix<FloatType_, Size_> object
   /// \param[in] other A base class object
-  explicit SquareMatrix(const Matrix& other)
-      : Matrix{other}
+  explicit SquareMatrix(const BaseMatrix& other)
+      : BaseMatrix{other}
   {
   }
 
   /// \brief Move construct a new Square Matrix<FloatType_, Size_> object
   /// \param[in] other A base class object
-  explicit SquareMatrix(Matrix&& other) noexcept
-      : Matrix{std::move(other)}
+  explicit SquareMatrix(BaseMatrix&& other) noexcept
+      : BaseMatrix{std::move(other)}
   {
   }
 

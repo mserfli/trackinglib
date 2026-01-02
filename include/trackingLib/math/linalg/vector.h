@@ -17,24 +17,24 @@ template <typename ValueType_, sint32 Size_>
 class Vector: public Matrix<ValueType_, Size_, 1, true> // LCOV_EXCL_LINE
 {
 public:
-  using Matrix = Matrix<ValueType_, Size_, 1, true>; ///< type of the parent class
+  using BaseMatrix = Matrix<ValueType_, Size_, 1, true>; ///< type of the parent class
 
   // unhide ctor of base class to allow implicit call in derived default ctors
-  using Matrix::Matrix;
+  using BaseMatrix::BaseMatrix;
 
   //////////////////////////////////////////////////
   // additional constructors  --->
   /// \brief Construct a new Vector<ValueType_, Size_> object
   /// \param[in] other A base class object
-  explicit Vector(const Matrix& other)
-      : Matrix{other}
+  explicit Vector(const BaseMatrix& other)
+      : BaseMatrix{other}
   {
   }
 
   /// \brief Move construct a new Vector<ValueType_, Size_> object
   /// \param[in] other A base class object
-  explicit Vector(Matrix&& other) noexcept
-      : Matrix{std::move(other)}
+  explicit Vector(BaseMatrix&& other) noexcept
+      : BaseMatrix{std::move(other)}
   {
   }
 
@@ -100,19 +100,19 @@ public:
   /// \brief Element read-only access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_  Scalar vector value
-  [[nodiscard]] auto at_unsafe(sint32 idx) const -> ValueType_ { return Matrix::at_unsafe(idx, 0); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) const -> ValueType_ { return BaseMatrix::at_unsafe(idx, 0); }
 
   /// \brief Element access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_&  Reference to the scalar vector value
-  [[nodiscard]] auto at_unsafe(sint32 idx) -> ValueType_& { return Matrix::at_unsafe(idx, 0); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) -> ValueType_& { return BaseMatrix::at_unsafe(idx, 0); }
   // <---
 
 protected:
-  using Matrix::Ones;
-  using Matrix::Zeros;
-  using Matrix::operator();
-  using Matrix::at_unsafe;
+  using BaseMatrix::Ones;
+  using BaseMatrix::Zeros;
+  using BaseMatrix::operator();
+  using BaseMatrix::at_unsafe;
 };
 
 #if 0

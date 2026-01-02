@@ -15,22 +15,22 @@ template <typename ValueType_>
 class Point3d: public Vector<ValueType_, 3>
 {
 public:
-  using Vector = Vector<ValueType_, 3>; ///< type of the parent class
+  using BaseVector = Vector<ValueType_, 3>; ///< type of the parent class
 
   // unhide ctor of base class to allow implicit call in derived default ctors
-  using Vector::Vector;
+  using BaseVector::BaseVector;
 
   /// \brief Construct a new Point 3d<ValueType_> object
   /// \param[in] other A base class object
-  explicit Point3d(const Vector& other)
-      : Vector{other}
+  explicit Point3d(const BaseVector& other)
+      : BaseVector{other}
   {
   }
 
   /// \brief Move construct a new Point 3d<ValueType_> object
   /// \param[in] other A base class object
-  explicit Point3d(Vector&& other) noexcept
-      : Vector{std::move(other)}
+  explicit Point3d(BaseVector&& other) noexcept
+      : BaseVector{std::move(other)}
   {
   }
 
@@ -70,7 +70,7 @@ TEST_REMOVE_PRIVATE:
   // clang-format on
 
   /// \brief hide inherited at_unsafe to prevent wrong access
-  using Vector::at_unsafe;
+  using BaseVector::at_unsafe;
 };
 
 template <typename ValueType_>

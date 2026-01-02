@@ -21,27 +21,27 @@ template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_ = t
 class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
 {
 public:
-  using SquareMatrix = SquareMatrix<ValueType_, Size_, IsRowMajor_>; ///< type of the parent class
+  using BaseSquareMatrix = SquareMatrix<ValueType_, Size_, IsRowMajor_>; ///< type of the parent class
 
   // unhide ctor of base class to allow implicit call in derived default ctors
-  using SquareMatrix::SquareMatrix;
+  using BaseSquareMatrix::BaseSquareMatrix;
 
   /// \brief Type of the transposed matrix without changing the memory layout
   using transpose_type = TriangularMatrix<ValueType_, Size_, !IsLower_, !IsRowMajor_>;
 
   /// \brief Construct a new Triangular Matrix object
   /// \param[in] other
-  explicit TriangularMatrix(const SquareMatrix& other);
+  explicit TriangularMatrix(const BaseSquareMatrix& other);
 
   /// \brief Move construct a new Triangular Matrix object
   /// \param[in] other
-  explicit TriangularMatrix(SquareMatrix&& other) noexcept
-      : SquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts
+  explicit TriangularMatrix(BaseSquareMatrix&& other) noexcept
+      : BaseSquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts
 
 
   /// \brief Construct an Identity matrix
   /// \return TriangularMatrix  Resulting identity matrix
-  [[nodiscard]] static auto Identity() -> TriangularMatrix { return TriangularMatrix{SquareMatrix::Identity()}; }
+  [[nodiscard]] static auto Identity() -> TriangularMatrix { return TriangularMatrix{BaseSquareMatrix::Identity()}; }
 
   /// \brief Set a lower/upper triangular block matrix at given position
   /// \tparam SrcSize    Size of the source block
@@ -73,7 +73,7 @@ public:
   /// \brief Multiplication with triangular matrix: Tria * Matrix
   /// \param[in] mat  A triangular matrix
   /// \return SquareMatrix<FloatType, Size>
-  [[nodiscard]] auto operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> SquareMatrix;
+  [[nodiscard]] auto operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> BaseSquareMatrix;
 
   /// \brief Multiplication with diagonal matrix: Tria * Matrix
   /// \param[in] diag  A diagonal matrix
@@ -145,10 +145,10 @@ public:
 
 private:
   /// \brief hide inherited transpose function
-  using SquareMatrix::transpose;
+  using BaseSquareMatrix::transpose;
 
   /// \brief hide inherited operator() to prevent accessing off-triangular elements
-  using SquareMatrix::operator();
+  using BaseSquareMatrix::operator();
 };
 
 } // namespace math
