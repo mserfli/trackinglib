@@ -15,13 +15,13 @@ namespace math
 template <typename ValueType_, sint32 Size_>
 inline auto Vector<ValueType_, Size_>::Zeros() -> Vector
 {
-  return Vector{Matrix::Zeros()};
+  return Vector{BaseMatrix::Zeros()};
 } // LCOV_EXCL_LINE
 
 template <typename ValueType_, sint32 Size_>
 inline auto Vector<ValueType_, Size_>::Ones() -> Vector
 {
-  return Vector{Matrix::Ones()};
+  return Vector{BaseMatrix::Ones()};
 } // LCOV_EXCL_LINE
 
 template <typename ValueType_, sint32 Size_>
@@ -38,13 +38,13 @@ inline auto Vector<ValueType_, Size_>::UnitVector() -> Vector
 template <typename ValueType_, sint32 Size_>
 inline auto Vector<ValueType_, Size_>::operator[](sint32 idx) const -> tl::expected<ValueType_, Errors>
 {
-  return Matrix::operator()(idx, 0);
+  return BaseMatrix::operator()(idx, 0);
 }
 
 template <typename ValueType_, sint32 Size_>
 inline auto Vector<ValueType_, Size_>::operator[](sint32 idx) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>
 {
-  return Matrix::operator()(idx, 0);
+  return BaseMatrix::operator()(idx, 0);
 }
 
 template <typename ValueType_, sint32 Size_>

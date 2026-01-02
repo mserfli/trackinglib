@@ -15,22 +15,22 @@ template <typename ValueType_>
 class Point2d: public Vector<ValueType_, 2>
 {
 public:
-  using Vector = Vector<ValueType_, 2>; ///< type of the parent class
+  using BaseVector = Vector<ValueType_, 2>; ///< type of the parent class
 
   // unhide ctor of base class to allow implicit call in derived default ctors
-  using Vector::Vector;
+  using BaseVector::BaseVector;
 
   /// \brief Construct a new Point 2d<ValueType_> object
   /// \param[in] other A base class object
-  explicit Point2d(const Vector& other)
-      : Vector{other}
+  explicit Point2d(const BaseVector& other)
+      : BaseVector{other}
   {
   }
 
   /// \brief Move construct a new Point 2d<ValueType_> object
   /// \param[in] other A base class object
-  explicit Point2d(Vector&& other) noexcept
-      : Vector{std::move(other)}
+  explicit Point2d(BaseVector&& other) noexcept
+      : BaseVector{std::move(other)}
   {
   }
 
@@ -57,7 +57,7 @@ public:
 
 private:
   /// \brief hide inherited at_unsafe to prevent wrong access
-  using Vector::at_unsafe;
+  using BaseVector::at_unsafe;
 };
 ;
 
@@ -73,25 +73,25 @@ inline auto Point2d<ValueType_>::FromValues(const ValueType_ x, const ValueType_
 template <typename ValueType_>
 inline auto Point2d<ValueType_>::x() const -> ValueType_
 {
-  return Vector::at_unsafe(0);
+  return BaseVector::at_unsafe(0);
 }
 
 template <typename ValueType_>
 inline auto Point2d<ValueType_>::y() const -> ValueType_
 {
-  return Vector::at_unsafe(1);
+  return BaseVector::at_unsafe(1);
 }
 
 template <typename ValueType_>
 inline auto Point2d<ValueType_>::x() -> ValueType_&
 {
-  return Vector::at_unsafe(0);
+  return BaseVector::at_unsafe(0);
 }
 
 template <typename ValueType_>
 inline auto Point2d<ValueType_>::y() -> ValueType_&
 {
-  return Vector::at_unsafe(1);
+  return BaseVector::at_unsafe(1);
 }
 
 } // namespace math

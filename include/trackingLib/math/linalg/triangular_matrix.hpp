@@ -18,8 +18,8 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 class SquareMatrix;
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMatrix(const SquareMatrix& other)
-    : SquareMatrix{}
+inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMatrix(const BaseSquareMatrix& other)
+    : BaseSquareMatrix{}
 {
   // copy triangular elements from other
   for (sint32 row = 0; row < Size_; ++row)
@@ -140,10 +140,10 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(
-    const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> SquareMatrix
+    const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> BaseSquareMatrix
 {
-  SquareMatrix other{mat};
-  return SquareMatrix{this->operator*(other)};
+  BaseSquareMatrix other{mat};
+  return BaseSquareMatrix{this->operator*(other)};
 } // LCOV_EXCL_LINE
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
@@ -218,7 +218,7 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
   {
     return tl::unexpected<Errors>{Errors::invalid_access_idx};
   }
-  return SquareMatrix::operator()(row, col);
+  return BaseSquareMatrix::operator()(row, col);
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
@@ -229,21 +229,21 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
   {
     return tl::unexpected<Errors>{Errors::invalid_access_idx};
   }
-  return SquareMatrix::operator()(row, col);
+  return BaseSquareMatrix::operator()(row, col);
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_
 {
   assert((IsLower_ ? row >= col : row <= col) && "accessing off-triangular elements");
-  return SquareMatrix::at_unsafe(row, col);
+  return BaseSquareMatrix::at_unsafe(row, col);
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) -> ValueType_&
 {
   assert((IsLower_ ? row >= col : row <= col) && "accessing off-triangular elements");
-  return SquareMatrix::at_unsafe(row, col);
+  return BaseSquareMatrix::at_unsafe(row, col);
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
@@ -300,7 +300,7 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::inverse() const -> TriangularMatrix
 {
-  return TriangularMatrix{this->solve(SquareMatrix::Identity())};
+  return TriangularMatrix{this->solve(BaseSquareMatrix::Identity())};
 } // LCOV_EXCL_LINE
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
