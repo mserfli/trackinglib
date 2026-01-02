@@ -142,6 +142,29 @@ The trackinglib project is a mature, well-structured C++ header-only library for
     - Doxygen generates without warnings for both specialized operation classes
     - All 206 tests passing (no regressions)
 
+15. **Math Layer Documentation Phase 6.1** (COMPLETED 2026-01-02)
+    - Added comprehensive documentation for [`errors.h`](include/trackingLib/math/linalg/errors.h)
+    - Documented all error enum values with detailed descriptions of when each error occurs
+    - Added file-level documentation explaining the error handling system
+    - Documented usage with tl::expected<T, Errors> pattern
+    - Doxygen generates without warnings for errors.h
+
+16. **Math Layer Documentation Phase 6.2** (COMPLETED 2026-01-02)
+    - Added comprehensive class-level documentation for [`Point2d`](include/trackingLib/math/linalg/point2d.h)
+    - Added comprehensive class-level documentation for [`Point3d`](include/trackingLib/math/linalg/point3d.h)
+    - Documented point classes as Vector specializations with semantic meaning
+    - Added detailed usage examples for coordinate access and construction
+    - Documented FromValues factory methods and accessor methods
+    - Doxygen generates without warnings for both point classes
+
+17. **Math Layer Documentation Phase 6.3** (COMPLETED 2026-01-02)
+    - Added comprehensive documentation for [`functions.h`](include/trackingLib/math/analysis/functions.h)
+    - Documented compile-time power function with template metaprogramming details
+    - Added mathematical background and usage examples
+    - Documented helper struct specializations for different exponents
+    - Explained constexpr evaluation and zero runtime overhead
+    - Doxygen generates without warnings for functions.h
+
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
 - Created comprehensive tests for [`Point2d`](tests/math/test_point2d.cpp) and [`Point3d`](tests/math/test_point3d.cpp)
