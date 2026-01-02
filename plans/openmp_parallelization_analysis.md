@@ -1,4 +1,4 @@
-# OpenMP Parallelization Analysis and Strategy
+# OpenMP Parallelization Analysis and Strategy - ARCHIVED
 
 ## Overview
 

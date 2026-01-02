@@ -1,4 +1,4 @@
-# Matrix Classes Refactoring and Coverage Plan - PARTIALLY COMPLETED
+# Matrix Classes Refactoring and Coverage Plan - COMPLETED
 
 ## Status Summary
 
