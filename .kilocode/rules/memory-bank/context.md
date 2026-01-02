@@ -54,6 +54,15 @@ The trackinglib project is a mature, well-structured C++ header-only library for
     - Improved documentation for all public methods with complete \brief, \tparam, \param[in], \return coverage
     - Doxygen generates without warnings for Matrix class
 
+7. **Math Layer Documentation Phase 1.2** (COMPLETED 2026-01-02)
+    - Added comprehensive class-level documentation for [`SquareMatrix`](include/trackingLib/math/linalg/square_matrix.h)
+    - Added comprehensive class-level documentation for [`TriangularMatrix`](include/trackingLib/math/linalg/triangular_matrix.h)
+    - Added comprehensive class-level documentation for [`DiagonalMatrix`](include/trackingLib/math/linalg/diagonal_matrix.h)
+    - Enhanced method documentation with mathematical background, complexity analysis, and usage notes
+    - Documented decomposition algorithms (QR, LLT, LDLT, UDUT) with references to academic literature
+    - Added performance characteristics and numerical stability notes
+    - Doxygen generates without warnings for all three classes
+
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
 - Created comprehensive tests for [`Point2d`](tests/math/test_point2d.cpp) and [`Point3d`](tests/math/test_point3d.cpp)
