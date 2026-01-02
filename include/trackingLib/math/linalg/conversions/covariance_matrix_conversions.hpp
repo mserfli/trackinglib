@@ -45,7 +45,7 @@ inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::in
   const auto retVal = other.decomposeLDLT();
   assert(retVal.has_value());
   const auto [l, d] = retVal.value_or(std::make_pair(TriangularMatrix<FloatType_, Size_, true, false>::Identity(),
-                                                     DiagonalMatrix<FloatType_, Size_>::Identity()));
+                                                      DiagonalMatrix<FloatType_, Size_>::Identity()));
   // we calc the inverse of L and D and map the inv(L).transpose() to U being again a row major upper triangular matrix
   // the resulting UDUt matrix describes the covariance matrix in information form, i.e. the inverse covariance matrix
   return CovarianceMatrixFactored{std::move(l.inverse().transpose()), std::move(d.inverse())};
@@ -66,6 +66,33 @@ inline auto CovarianceMatrixFullFromList(const std::initializer_list<std::initia
     -> CovarianceMatrixFull<FloatType_, Size_>
 {
   return CovarianceMatrixFull{SquareFromList<FloatType_, Size_, true>(list)};
+}
+
+/// \brief Create CovarianceMatrix from nested initializer list (generic version)
+/// \tparam CovarianceMatrixType  Template template parameter for covariance type
+/// \tparam FloatType_            Floating point type
+/// \tparam Size_                 Matrix dimension
+/// \param[in] list               Nested initializer list
+/// \return CovarianceMatrix instance
+template <template <typename FloatType_, sint32 Size_> class CovarianceMatrixType, typename FloatType_, sint32 Size_>
+inline auto CovarianceMatrixFromList(const std::initializer_list<std::initializer_list<FloatType_>>& list)
+    -> CovarianceMatrixType<FloatType_, Size_>
+{
+  // Use the specific conversion functions based on the covariance matrix type
+  if constexpr (std::is_same_v<CovarianceMatrixType<FloatType_, Size_>, CovarianceMatrixFull<FloatType_, Size_>>)
+  {
+    return CovarianceMatrixFullFromList<FloatType_, Size_>(list);
+  }
+  else if constexpr (std::is_same_v<CovarianceMatrixType<FloatType_, Size_>, CovarianceMatrixFactored<FloatType_, Size_>>)
+  {
+    return CovarianceMatrixFactoredFromList<FloatType_, Size_>(list);
+  }
+  else
+  {
+    // This should not happen for valid covariance matrix types
+    static_assert(!std::is_same_v<CovarianceMatrixType<FloatType_, Size_>, CovarianceMatrixType<FloatType_, Size_>>,
+                  "Unsupported covariance matrix type");
+  }
 }
 
 } // namespace conversions

@@ -37,15 +37,15 @@ struct TestPredictCV
 
     // clang-format off
     const int steps = 3;
-    auto vec = MM::StateVec::FromList({10, 2, 0, 0});
-    auto cov = MM::StateCov::FromList({
-      {5, 0, 0, 0.0}, 
-      {0, 1, 0, 0.0}, 
-      {0, 0, 1, 0.0}, 
+    auto vec = MM::StateVecFromList({10, 2, 0, 0});
+    auto cov = MM::StateCovFromList({
+      {5, 0, 0, 0.0},
+      {0, 1, 0, 0.0},
+      {0, 0, 1, 0.0},
       {0, 0, 0, 0.1}
     });
-    auto expVec = MM::StateVec::FromList({10.6, 2, 0, 0});
-    auto expCov = MM::StateCov::FromList({
+    auto expVec = MM::StateVecFromList({10.6, 2, 0, 0});
+    auto expCov = MM::StateCovFromList({
       {+5.09875, +0.34500, +0.00000, +0.00000},
       {+0.34500, +1.30000, +0.00000, +0.00000},
       {+0.00000, +0.00000, +1.01775, +0.07500},
@@ -101,8 +101,8 @@ TEST(MotionModelCV, convertCA_fullCov) // NOLINT
   // clang-format off
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFull, float32>;
-  auto vec = MMCA::StateVec::FromList({10, 2, 0, 0, 2, 0.1});
-  auto cov = MMCA::StateCov::FromList({
+  auto vec = MMCA::StateVecFromList({10, 2, 0, 0, 2, 0.1});
+  auto cov = MMCA::StateCovFromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
@@ -147,8 +147,8 @@ TEST(MotionModelCV, convertCA_facCov) // NOLINT
   // clang-format off
   using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
   using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFactored, float32>;
-  auto vec = MMCA::StateVec::FromList({10, 2, 0, 0, 2, 0.1});
-  auto cov = MMCA::StateCov::FromList({
+  auto vec = MMCA::StateVecFromList({10, 2, 0, 0, 2, 0.1});
+  auto cov = MMCA::StateCovFromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
