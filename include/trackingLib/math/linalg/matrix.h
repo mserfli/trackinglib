@@ -49,10 +49,6 @@ public:
 
   //////////////////////////////////////////////////
   // additional constructors  --->
-  /// \brief Construct a new Matrix object with given initializer list representing the memory layout of the matrix
-  /// \param[in] list  An initializer list describing the memory layout of the matrix
-  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
-
   /// \brief Construct a Zero matrix
   /// \return Zero matrix
   [[nodiscard]] static auto Zeros() -> Matrix;

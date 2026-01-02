@@ -38,9 +38,6 @@ public:
   explicit TriangularMatrix(SquareMatrix&& other) noexcept
       : SquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts
 
-  /// \brief Construct a new Triangular Matrix object with given initializer list representing the memory layout of the matrix
-  /// \param[in] list  An initializer list describing the memory layout of the matrix
-  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix;
 
   /// \brief Construct an Identity matrix
   /// \return TriangularMatrix  Resulting identity matrix

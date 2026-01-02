@@ -19,6 +19,7 @@ include/trackingLib/
 │   └── linalg/              # Linear algebra
 │       ├── matrix.h/.hpp    # General matrix implementation
 │       ├── square_matrix.h/.hpp
+│       ├── square_matrix_decompositions.hpp  # Decomposition implementations
 │       ├── triangular_matrix.h/.hpp
 │       ├── diagonal_matrix.h/.hpp
 │       ├── vector.h/.hpp
@@ -27,14 +28,26 @@ include/trackingLib/
 │       ├── rank1_update.h/.hpp
 │       ├── modified_gram_schmidt.h/.hpp
 │       ├── point2d.h, point3d.h
-│       └── contracts/       # Interface definitions
+│       ├── matrix_io.h      # Stream output operators (operator<<)
+│       ├── matrix_view.h/.hpp  # Non-owning matrix views
+│       ├── matrix_row_view.h/.hpp
+│       ├── matrix_column_view.h/.hpp
+│       ├── contracts/       # Interface definitions
+│       └── conversions/     # Centralized conversion system
+│           ├── conversions.h              # Master header with forward declarations
+│           ├── matrix_conversions.hpp     # Matrix conversions
+│           ├── diagonal_conversions.hpp   # DiagonalMatrix conversions
+│           ├── square_conversions.hpp     # SquareMatrix conversions
+│           ├── triangular_conversions.hpp # TriangularMatrix conversions
+│           ├── vector_conversions.hpp     # Vector conversions
+│           └── covariance_matrix_conversions.hpp  # Covariance conversions
 ├── filter/                  # Filter implementations
 │   ├── kalman_filter.h/.hpp           # Extended Kalman Filter
 │   ├── unscented_kalman_filter.h      # UKF (stub)
 │   ├── information_filter.h/.hpp      # Information Filter
 │   └── covariance_intersection.h      # Covariance intersection
 └── motion/                  # Motion models
-    ├── imotion_model.h      # Motion model interface
+    ├── imotion_model.h      # Motion model interface with factory methods
     ├── motion_model_cv.h/.hpp  # Constant Velocity
     ├── motion_model_ca.h/.hpp  # Constant Acceleration
     ├── generic_predict.h/.hpp  # Generic prediction logic
@@ -89,6 +102,30 @@ include/trackingLib/
 - Template-based for type flexibility
 - CRTP (Curiously Recurring Template Pattern) for interfaces
 - Error handling via `tl::expected<T, Errors>`
+- Centralized conversion system with `<target>From<source>` naming pattern
+- Function overloading for list-based conversions
+- Stream output via template `operator<<` (no `print()` methods)
+
+**Matrix I/O System** ([`matrix_io.h`](include/trackingLib/math/linalg/matrix_io.h)):
+- Template-based `operator<<` for all matrix types
+- SFINAE-based type detection for C++17 compatibility
+- Works with any `std::ostream` (cout, files, stringstream)
+- Accesses elements via `at_unsafe()` interface (future-proof for packed storage)
+- Specialized formatting for `DiagonalMatrix`
+- No code duplication across matrix types
+
+**Conversion System** ([`math/linalg/conversions/`](include/trackingLib/math/linalg/conversions/)):
+- Centralized location for all type conversions
+- Unified `<target>From<source>` naming convention
+- Function overloading for different parameter types
+- Eliminates circular dependencies between matrix classes
+- Key conversions:
+  - `DiagonalFromSquare()`, `DiagonalFromList()` (overloaded)
+  - `SquareFromDiagonal()`, `SquareFromList()`
+  - `TriangularFromSquare()`, `TriangularFromList()`
+  - `VectorFromMatrixColumnView()`, `VectorFromList()`
+  - `MatrixFromVector()`, `MatrixFromMatrixColumnView()`
+  - `CovarianceMatrixFromList()` (supports both full and factored)
 
 ### 3. Filter Layer (`include/trackingLib/filter/`)
 
@@ -129,6 +166,10 @@ static void predictCovariance(
 - [`ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>`](include/trackingLib/motion/imotion_model.h): CRTP base
   - Combines `IMotionModel` and `StateMem`
   - Provides common position accessors
+  - Factory methods for convenient initialization:
+    - `StateVecFromList()` - Create state vector from initializer list
+    - `StateCovFromList()` - Create covariance from initializer list
+    - `FromLists()` - Create complete motion model from lists
   
 - [`MotionModelCV<CovarianceMatrixType, FloatType>`](include/trackingLib/motion/motion_model_cv.h): Constant Velocity
   - State: `[X, VX, Y, VY]` (4D)
@@ -220,7 +261,7 @@ static void predictCovariance(
 ## Build System
 
 - CMake-based build system ([`CMakeLists.txt`](CMakeLists.txt:1))
-- Version: 0.2.0
+- Version: 0.3.0
 - Minimum C++ standard: C++17
 - Optional dependencies:
   - Eigen (development only, via `USE_EIGEN` option)

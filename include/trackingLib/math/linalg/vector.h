@@ -38,14 +38,6 @@ public:
   {
   }
 
-  /// \brief Constructor that takes a MatrixColumnView
-  template <sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-  static auto FromMatrixColumnView(const MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>& colView) -> Vector;
-
-  /// \brief Construct a new Matrix object with given initializer list representing the memory layout of the matrix
-  /// \param[in] list  An initializer list describing the memory layout of the matrix
-  static auto FromList(const std::initializer_list<ValueType_>& list) -> Vector;
-
   /// \brief Construct a Zero vector
   /// \return Zero matrix
   [[nodiscard]] static auto Zeros() -> Vector;

@@ -29,47 +29,6 @@ CovarianceMatrixFactored<FloatType_, Size_>::CovarianceMatrixFactored(const Tria
 }
 
 template <typename FloatType_, sint32 Size_>
-auto CovarianceMatrixFactored<FloatType_, Size_>::FromList(const std::initializer_list<std::initializer_list<value_type>>& u,
-                                                           const std::initializer_list<value_type>& d) -> CovarianceMatrixFactored
-{
-  CovarianceMatrixFactored cov{TriangularMatrix<FloatType_, Size_, false, true>::FromList(u),
-                               DiagonalMatrix<FloatType_, Size_>::FromList(d)};
-  return cov;
-}
-
-template <typename FloatType_, sint32 Size_>
-auto CovarianceMatrixFactored<FloatType_, Size_>::FromList(const std::initializer_list<std::initializer_list<value_type>>& list)
-    -> CovarianceMatrixFactored
-{
-#if 0 // TODO(matthias): check why this is not producing the same results
-  // Information Formulation of the UDU Kalman Filter
-  // Christopher D’Souza and Renato Zanetti (2018)
-  // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
-  const auto other = SquareMatrix<FloatType_, Size_, false>{compose_type::SquareMatrix::FromList(list).transpose()};
-  // we use the transpose of the input matrix to get a column major matrix
-  // transposing requires a symmetric input matrix
-  assert(other.isSymmetric() && "Input matrix is not symmetric");
-  // we decompose the input matrix into LDLt form, with L being a column major lower triangular matrix
-  const auto retVal = other.decomposeLDLT();
-  assert(retVal.has_value());
-  const auto [l, d] = retVal.value_or(std::make_pair(TriangularMatrix<FloatType_, Size_, true, false>::Identity(),
-                                                     DiagonalMatrix<FloatType_, Size_>::Identity()));
-  // we calc the inverse of L and D and map the inv(L).transpose() to U being again a row major upper triangular matrix
-  // the resulting UDUt matrix describes the covariance matrix in information form, i.e. the inverse covariance matrix
-  return CovarianceMatrixFactored{std::move(l.inverse().transpose()), std::move(d.inverse())};
-#else
-  const auto other = compose_type::SquareMatrix::FromList(list);
-  assert(other.isSymmetric() && "Input matrix is not symmetric");
-  const auto retVal = other.decomposeUDUT();
-  assert(retVal.has_value());
-  const auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix<FloatType_, Size_, false, true>::Identity(),
-                                                     DiagonalMatrix<FloatType_, Size_>::Identity()));
-  return CovarianceMatrixFactored{std::move(u), std::move(d)};
-#endif
-}
-
-
-template <typename FloatType_, sint32 Size_>
 auto CovarianceMatrixFactored<FloatType_, Size_>::Identity() -> CovarianceMatrixFactored
 {
   CovarianceMatrixFactored cov{TriangularMatrix<FloatType_, Size_, false, true>::Identity(),

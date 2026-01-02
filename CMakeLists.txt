@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 
 project(trackingLib 
-        VERSION 0.2.0
+        VERSION 0.3.0
 )
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
@@ -94,7 +94,7 @@ enable_testing()
 include(GoogleTest)
 
 # generate compile_commands.json used by clang-tidy
-add_definitions(-DCMAKE_EXPORT_COMPILE_COMMANDS=1)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # create header only library 
 # based on https://github.com/bernedom/SI and https://discourse.cmake.org/t/header-only-library/5476

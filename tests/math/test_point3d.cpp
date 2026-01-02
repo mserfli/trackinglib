@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/point3d.h" // IWYU pragma: keep
+#include "trackingLib/math/linalg/point3d.h"  // IWYU pragma: keep
+#include "trackingLib/math/linalg/vector.hpp" // IWYU pragma: keep
 
 TEST(Point3d, ctor_default) // NOLINT
 {

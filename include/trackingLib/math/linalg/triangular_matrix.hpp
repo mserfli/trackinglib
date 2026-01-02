@@ -3,14 +3,19 @@
 
 #include "math/linalg/triangular_matrix.h"
 
-#include "math/linalg/diagonal_matrix.hpp" // IWYU pragma: keep
-#include "math/linalg/matrix.hpp"          // IWYU pragma: keep
-#include "math/linalg/square_matrix.hpp"   // IWYU pragma: keep
+#include "math/linalg/matrix.hpp" // IWYU pragma: keep
 
 namespace tracking
 {
 namespace math
 {
+
+// Forward declarations to prevent cyclic includes
+template <typename ValueType_, sint32 Size_>
+class DiagonalMatrix;
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+class SquareMatrix;
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMatrix(const SquareMatrix& other)
@@ -30,12 +35,6 @@ inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMat
   }
 }
 
-template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::FromList(
-    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix
-{
-  return TriangularMatrix{SquareMatrix::FromList(list)};
-}
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>

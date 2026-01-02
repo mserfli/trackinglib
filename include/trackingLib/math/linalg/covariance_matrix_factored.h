@@ -51,12 +51,6 @@ public:
   explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType_, Size_, false, true>& u,
                                     const DiagonalMatrix<FloatType_, Size_>&                d);
 
-  /// \brief Construct a new Covariance Matrix Factored object with initializer list representing the memory layout of the matrix
-  /// \param[in] u  An initializer list describing the memory layout of the unit upper triangular matrix
-  /// \param[in] d  An initializer list describing the memory layout of the diagonal matrix
-  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& u,
-                       const std::initializer_list<value_type>&                        d) -> CovarianceMatrixFactored;
-
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFactored
   static auto Identity() -> CovarianceMatrixFactored;
@@ -138,10 +132,6 @@ public:
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
-
-  /// \brief Construct a new Covariance Matrix Factored object with given initializer list representing a full covariance matrix
-  /// \param[in] list  An initializer list describing a full covariance matrix
-  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> CovarianceMatrixFactored;
 
   TriangularMatrix<FloatType_, Size_, false, true> _u{};
   DiagonalMatrix<FloatType_, Size_>                _d{};

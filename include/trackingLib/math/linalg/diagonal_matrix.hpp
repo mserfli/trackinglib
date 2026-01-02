@@ -4,7 +4,6 @@
 #include "math/linalg/diagonal_matrix.h"
 
 #include "math/linalg/matrix.hpp"            // IWYU pragma: keep
-#include "math/linalg/square_matrix.hpp"     // IWYU pragma: keep
 #include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
 #include "math/linalg/vector.hpp"            // IWYU pragma: keep
 
@@ -13,59 +12,15 @@ namespace tracking
 namespace math
 {
 
+// Forward declaration to prevent cyclic includes
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+class SquareMatrix;
+
 template <typename ValueType_, sint32 Size_>
 inline auto DiagonalMatrix<ValueType_, Size_>::Identity() -> DiagonalMatrix
 {
   DiagonalMatrix diag{};
   diag.setIdentity();
-  return diag;
-}
-
-template <typename ValueType_, sint32 Size_>
-template <bool IsRowMajor_>
-inline auto DiagonalMatrix<ValueType_, Size_>::FromMatrix(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& other)
-    -> DiagonalMatrix
-{
-  DiagonalMatrix diag{};
-  // copy diagonal elements from other
-  for (sint32 idx = 0; idx < Size_; ++idx)
-  {
-    diag.at_unsafe(idx) = other.at_unsafe(idx, idx);
-  }
-  return diag;
-}
-
-template <typename ValueType_, sint32 Size_>
-inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix
-{
-  assert((list.size() == Size_) && "Mismatching size of intializer list");
-
-  DiagonalMatrix diag{};
-  // fill diagonal elements
-  sint32 idx = 0;
-  for (auto val : list)
-  {
-    diag.at_unsafe(idx++) = val;
-  }
-  return diag;
-}
-
-template <typename ValueType_, sint32 Size_>
-inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-    -> DiagonalMatrix
-{
-  assert(list.size() == Size_);
-  assert(list.begin()->size() == Size_);
-
-  DiagonalMatrix diag{};
-  // copy diagonal elements from list
-  sint32 idx = 0;
-  for (const auto& rowList : list)
-  {
-    assert((rowList.size() == Size_) && "Mismatching size of intializer list");
-    diag.at_unsafe(idx) = *(rowList.begin() + idx);
-    ++idx;
-  }
   return diag;
 }
 
@@ -94,7 +49,14 @@ inline void DiagonalMatrix<ValueType_, Size_>::setBlock(const DiagonalMatrix<Val
 template <typename ValueType_, sint32 Size_>
 inline auto DiagonalMatrix<ValueType_, Size_>::operator=(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix&
 {
-  *this = FromList(list);
+  assert((list.size() == Size_) && "Mismatching size of intializer list");
+
+  // fill diagonal elements
+  sint32 idx = 0;
+  for (auto val : list)
+  {
+    at_unsafe(idx++) = val;
+  }
   return *this;
 }
 
@@ -102,7 +64,17 @@ template <typename ValueType_, sint32 Size_>
 inline auto DiagonalMatrix<ValueType_, Size_>::operator=(const std::initializer_list<std::initializer_list<ValueType_>>& list)
     -> DiagonalMatrix&
 {
-  *this = FromList(list);
+  assert(list.size() == Size_);
+  assert(list.begin()->size() == Size_);
+
+  // copy diagonal elements from list
+  sint32 idx = 0;
+  for (const auto& rowList : list)
+  {
+    assert((rowList.size() == Size_) && "Mismatching size of intializer list");
+    at_unsafe(idx) = *(rowList.begin() + idx);
+    ++idx;
+  }
   return *this;
 }
 

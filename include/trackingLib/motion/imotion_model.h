@@ -5,6 +5,8 @@
 #include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
+#include "math/linalg/conversions/covariance_matrix_conversions.hpp"
+#include "math/linalg/conversions/vector_conversions.hpp"
 #include "motion/state_mem.h"
 
 namespace tracking
@@ -102,6 +104,34 @@ TEST_REMOVE_PRIVATE:
       : IMotionModel<FloatType>{}
       , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}
   {
+  }
+
+  /// \brief Create state vector from initializer list
+  /// \param[in] list  Initializer list with state values
+  /// \return StateVec
+  static auto StateVecFromList(const std::initializer_list<FloatType>& list) -> StateVec
+  {
+    return tracking::math::conversions::VectorFromList<FloatType, Size>(list);
+  }
+
+  /// \brief Create state covariance from initializer list
+  /// \param[in] list  Nested initializer list with covariance values
+  /// \return StateCov
+  static auto StateCovFromList(const std::initializer_list<std::initializer_list<FloatType>>& list) -> StateCov
+  {
+    return tracking::math::conversions::CovarianceMatrixFromList<CovarianceMatrixType, FloatType, Size>(list);
+  }
+
+  /// \brief Create complete ExtendedMotionModel from initializer lists
+  /// \param[in] vecList  Initializer list for state vector
+  /// \param[in] covList  Nested initializer list for covariance matrix
+  /// \return ExtendedMotionModel instance
+  static auto FromLists(const std::initializer_list<FloatType>&                        vecList,
+                        const std::initializer_list<std::initializer_list<FloatType>>& covList) -> MotionModel
+  {
+    auto vec = StateVecFromList(vecList);
+    auto cov = StateCovFromList(covList);
+    return MotionModel{vec, cov};
   }
 };
 
