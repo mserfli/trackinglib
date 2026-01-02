@@ -71,6 +71,15 @@ The trackinglib project is a mature, well-structured C++ header-only library for
     - Doxygen generates without warnings for Vector class
     - All 206 tests passing (no regressions)
 
+9. **Math Layer Documentation Phase 2.1** (COMPLETED 2026-01-02)
+    - Added comprehensive file-level documentation for [`matrix_io.h`](include/trackingLib/math/linalg/matrix_io.h)
+    - Documented template-based operator<< design with SFINAE-based type detection
+    - Documented is_matrix_like trait and helper variable
+    - Added detailed examples for general matrices and DiagonalMatrix specialization
+    - Documented formatting behavior for different matrix types and value types
+    - Doxygen generates without warnings for matrix_io.h
+    - All 206 tests passing (no regressions)
+
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
 - Created comprehensive tests for [`Point2d`](tests/math/test_point2d.cpp) and [`Point3d`](tests/math/test_point3d.cpp)
