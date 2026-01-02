@@ -162,12 +162,6 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const
     -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>, Errors>
 {
-  // Grewal & Andrews, Kalman Filtering Theory and Practice Using MATLAB, 4th
-  // Edition, Wiley, 2014.
-  //
-  // Performs modified Cholesky decomposition of symmetric positive-definite
-  // matrix P (input).
-
   if (isSymmetric())
   {
     const auto&                                             P = *this;

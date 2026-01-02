@@ -88,11 +88,15 @@ public:
   /// \note This operation modifies the matrix in-place and does not change its size or layout
   void setIdentity();
 
-  /// \brief Perform QR decomposition using Householder transformations.
+  /// \brief Performs Householder QR decomposition of a square matrix
   ///
-  /// Decomposes the matrix A into the product Q * R, where Q is an orthogonal matrix
+  /// Decomposes a square matrix A into the product A = Q*R, where Q is an orthogonal matrix
   /// and R is an upper triangular matrix. This implementation uses Householder reflections
   /// for numerical stability.
+  ///
+  /// The Householder QR decomposition is based on successive Householder transformations that
+  /// zero out subdiagonal elements column by column. Each Householder reflection is represented
+  /// by a vector v and a scalar τ, where the reflection matrix is I - τ*v*v^T.
   ///
   /// \return std::pair<SquareMatrix, TriangularMatrix> A pair containing Q and R matrices,
   ///         where Q is orthogonal and R is upper triangular such that A = Q * R
@@ -100,9 +104,13 @@ public:
   /// \note The decomposition satisfies A = Q * R, with Q being orthogonal (Q^T * Q = I)
   ///       and R being upper triangular. This is useful for solving linear systems and
   ///       computing matrix inverses.
+  /// \note Time complexity: O(n^3) for an n x n matrix
+  /// \note Space complexity: O(n^2) additional space for Q and R matrices
+  /// \note Numerically stable and suitable for general square matrices
   ///
   /// \see qrSolve for solving linear systems using this decomposition
   /// \see inverse for matrix inversion using QR decomposition
+  /// \see https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf for algorithm reference
   [[nodiscard]] auto householderQR() const -> std::pair<SquareMatrix, TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>>;
 
   /// \brief Solve the linear system A * x = b using QR decomposition.
@@ -120,62 +128,93 @@ public:
   /// \see householderQR for the underlying decomposition
   [[nodiscard]] auto qrSolve(const SquareMatrix& b) const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
-  /// \brief Perform Cholesky decomposition L*L^T for symmetric positive definite matrices.
+  /// \brief Performs Cholesky decomposition (LLT) of a symmetric positive definite matrix
   ///
-  /// Decomposes a symmetric positive definite matrix A into L*L^T, where L is a lower
-  /// triangular matrix. This is the standard Cholesky factorization.
+  /// Decomposes a symmetric positive definite matrix A into the product A = L*L^T, where L
+  /// is a lower triangular matrix with positive diagonal elements. This is also known as
+  /// the Cholesky decomposition.
+  ///
+  /// The algorithm uses a recursive approach where each column of L is computed using
+  /// previous columns. For a symmetric positive definite matrix, the Cholesky factor L
+  /// satisfies L*L^T = A, with L being lower triangular.
   ///
   /// \return tl::expected<TriangularMatrix, Errors> The lower triangular matrix L on success,
-  ///         or an error if the matrix is not symmetric positive definite
+  ///         or Errors::matrix_not_symmetric if not symmetric, or
+  ///         Errors::matrix_not_positive_definite if not positive definite
   ///
   /// \note The matrix must be symmetric and positive definite
-  ///
-  /// \note Cholesky decomposition requires O(n³) operations and is numerically stable
-  ///       for positive definite matrices. It fails if the matrix has negative eigenvalues
-  ///       or is not symmetric.
+  /// \note Time complexity: O(n^3) for an n x n matrix
+  /// \note Space complexity: O(n^2) for the result matrix
+  /// \note Numerically stable for well-conditioned positive definite matrices
   ///
   /// \warning The input matrix must be symmetric. Use symmetrize() if needed.
+  /// \warning Fails if the matrix is not symmetric or not positive definite
   ///
-  /// \see decomposeLDLT for a more robust decomposition
+  /// \see decomposeLDLT for a more numerically stable variant
   /// \see isSymmetric for symmetry checking
   [[nodiscard]] auto decomposeLLT() const -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>;
 
-  /// \brief Perform LDL^T decomposition for symmetric matrices.
+  /// \brief Performs LDL^T decomposition of a symmetric positive definite matrix
   ///
-  /// Decomposes a symmetric matrix A into L*D*L^T, where L is a unit lower triangular
-  /// matrix (ones on diagonal) and D is a diagonal matrix. This is more robust than
-  /// standard Cholesky for positive semi-definite matrices.
+  /// Decomposes a symmetric positive definite matrix A into the product A = L*D*L^T, where
+  /// L is a unit lower triangular matrix (diagonal elements are 1) and D is a diagonal
+  /// matrix with positive diagonal elements.
+  ///
+  /// This decomposition is more numerically stable than LLT for certain matrices and is
+  /// particularly useful in Kalman filtering applications where the matrix structure
+  /// needs to be maintained. The LDL^T form separates the triangular structure (L) from
+  /// the scaling factors (D).
   ///
   /// \return tl::expected<std::pair<TriangularMatrix, DiagonalMatrix>, Errors>
-  ///         A pair containing L and D matrices on success, or an error if decomposition fails
+  ///         A pair containing L and D matrices on success, or Errors::matrix_not_symmetric
+  ///         if not symmetric, or Errors::matrix_not_positive_definite if not positive definite
   ///
-  /// \note The matrix must be symmetric
+  /// \note The matrix must be symmetric and positive definite
+  /// \note Time complexity: O(n^3) for an n x n matrix
+  /// \note Space complexity: O(n^2) for L and O(n) for D
+  /// \note More numerically stable than LLT for some applications
+  /// \note L has unit diagonal (all diagonal elements are 1)
   ///
-  /// \note LDL^T decomposition is more numerically stable than LLT for matrices that are
-  ///       positive semi-definite or near-singular. The L matrix has unit diagonal (all ones).
+  /// \warning Fails if the matrix is not symmetric or not positive definite
   ///
-  /// \see decomposeLLT for standard Cholesky decomposition
-  /// \see decomposeUDUT for upper triangular variant
+  /// \see decomposeLLT for the standard Cholesky decomposition
+  /// \see decomposeUDUT for the UDU^T variant
   [[nodiscard]] auto decomposeLDLT() const
       -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
                       Errors>;
 
-  /// \brief Perform UDU^T decomposition for symmetric matrices.
+  /// \brief Performs UDU^T decomposition of a symmetric matrix
   ///
-  /// Decomposes a symmetric matrix A into U*D*U^T, where U is a unit upper triangular
-  /// matrix (ones on diagonal) and D is a diagonal matrix. This is the upper triangular
-  /// variant of LDL^T decomposition.
+  /// Decomposes a symmetric matrix A into the product A = U*D*U^T, where U is a unit upper
+  /// triangular matrix (diagonal elements are 1) and D is a diagonal matrix. This is also
+  /// known as the UDU^T factorization.
+  ///
+  /// This decomposition is particularly important in Kalman filtering for maintaining the
+  /// UDU^T form of covariance matrices, which provides better numerical stability than
+  /// standard covariance representations. The algorithm works backwards from the last
+  /// column to the first, computing U and D simultaneously.
+  ///
+  /// The implementation is based on modified Cholesky decomposition and includes numerical
+  /// safeguards to ensure positive definiteness even for near-singular matrices.
   ///
   /// \return tl::expected<std::pair<TriangularMatrix, DiagonalMatrix>, Errors>
-  ///         A pair containing U and D matrices on success, or an error if decomposition fails
+  ///         A pair containing U and D matrices on success, or Errors::matrix_not_symmetric
+  ///         if not symmetric
   ///
   /// \note The matrix must be symmetric
+  /// \note Time complexity: O(n^3) for an n x n matrix
+  /// \note Space complexity: O(n^2) for U and O(n) for D
+  /// \note Numerically stable with safeguards for near-singular matrices
+  /// \note U has unit diagonal (all diagonal elements are 1)
+  /// \note D diagonal elements are clamped to a minimum value for numerical stability
   ///
-  /// \note UDU^T decomposition provides the same benefits as LDL^T but with upper triangular
-  ///       structure. Both are used in Kalman filtering for numerical stability.
+  /// \warning Fails if the matrix is not symmetric
   ///
   /// \see decomposeLDLT for the lower triangular variant
   /// \see CovarianceMatrixFactored for UDU usage in Kalman filters
+  /// \see Grewal & Andrews, Kalman Filtering Theory and Practice Using MATLAB, 4th Edition, Wiley, 2014
+  /// \see Gerald J. Bierman, "Factorization Methods for Discrete Sequential Estimation", 1977
+  /// \see Catherine L. Thornton, "Triangular Covariance Factorizations for Kalman Filtering", 1976
   [[nodiscard]] auto decomposeUDUT() const
       -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
                       Errors>;

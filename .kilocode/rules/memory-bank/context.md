@@ -93,6 +93,19 @@ The trackinglib project is a mature, well-structured C++ header-only library for
     - **Architecture Decision**: Conversion function declarations remain in implementation files to avoid circular dependencies
     - **Documentation Strategy**: Each conversion function will be documented in its respective `.hpp` implementation file
     - **Rationale**: Maintains the circular-dependency-free design while providing comprehensive documentation
+
+11. **Math Layer Documentation Phase 2.3** (COMPLETED 2026-01-02)
+    - Added comprehensive Doxygen documentation for all four decomposition algorithms in [`square_matrix.h`](include/trackingLib/math/linalg/square_matrix.h) declarations
+    - Corrected documentation location: moved from implementation files to header declarations to avoid duplication
+    - Documented Householder QR decomposition with mathematical background and numerical stability notes
+    - Documented Cholesky (LLT) decomposition with preconditions and error handling
+    - Documented LDL^T decomposition with numerical advantages over LLT
+    - Documented UDU^T decomposition with Kalman filtering context and academic references
+    - Added complexity analysis (O(n^3)) and space complexity notes for all decompositions
+    - Included academic references (Grewal & Andrews, Bierman, Thornton, etc.)
+    - Removed redundant documentation from implementation files in [`square_matrix_decompositions.hpp`](include/trackingLib/math/linalg/square_matrix_decompositions.hpp)
+    - Doxygen generates without warnings for decomposition functions
+    - All 206 tests passing (no regressions)
     
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
