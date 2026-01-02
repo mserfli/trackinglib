@@ -1,12 +1,14 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/square_matrix.hpp" // IWYU pragma: keep
+#include "trackingLib/math/linalg/conversions/square_conversions.hpp" // IWYU pragma: keep
+#include "trackingLib/math/linalg/square_matrix.hpp"                  // IWYU pragma: keep
+
+using namespace tracking::math;
 
 TEST(SquareMatrix, householderQR) // NOLINT
 {
   // Create a square matrix for testing
   // clang-format off
-  using FloatSquareMatType = tracking::math::SquareMatrix<float32, 3, true>;
-  const auto mat = FloatSquareMatType::FromList({
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
@@ -31,13 +33,12 @@ TEST(SquareMatrix, inverse) // NOLINT
 {
   // Create a square matrix for testing
   // clang-format off
-  using FloatSquareMatType = tracking::math::SquareMatrix<float32, 3, true>;
-  const auto mat = FloatSquareMatType::FromList({
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
   });
-  const auto expInvMat = FloatSquareMatType::FromList({
+  const auto expInvMat = conversions::SquareFromList<float32, 3, true>({
     {1.0,  2.0,  3.0},
     {2.0,  6.0, 14.0},
     {3.0, 14.0, 45.0}
@@ -60,7 +61,7 @@ TEST(SquareMatrix, inverse) // NOLINT
 TEST(SquareMatrix, decomposeLLT) // NOLINT
 {
   // clang-format off
-  auto cov = tracking::math::SquareMatrix<float32, 6, true>::FromList({
+  auto cov = conversions::SquareFromList<float32, 6, true>({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
@@ -89,7 +90,7 @@ TEST(SquareMatrix, decomposeLLT) // NOLINT
 TEST(SquareMatrix, decomposeLLT_NotSymmetric_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+  auto cov = conversions::SquareFromList<float32, 2, true>({
     {10, -4},
     {-3, 13},
   });
@@ -104,7 +105,7 @@ TEST(SquareMatrix, decomposeLLT_NotSymmetric_ExpectError) // NOLINT
 TEST(SquareMatrix, decomposeLLT_SymmetricNotPositiveDefinite_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+  auto cov = conversions::SquareFromList<float32, 2, true>({
     {10, -3},
     {-3, -13},
   });
@@ -119,7 +120,7 @@ TEST(SquareMatrix, decomposeLLT_SymmetricNotPositiveDefinite_ExpectError) // NOL
 TEST(SquareMatrix, symmetrize) // NOLINT
 {
   // clang-format off
-  auto mat = tracking::math::SquareMatrix<float32, 3, true>::FromList({
+  auto mat = conversions::SquareFromList<float32, 3, true>({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
@@ -146,7 +147,7 @@ TEST(SquareMatrix, symmetrize) // NOLINT
 TEST(SquareMatrix, decomposeUDUT) // NOLINT
 {
   // clang-format off
-  auto cov = tracking::math::SquareMatrix<float32, 3, true>::FromList({
+  auto cov = conversions::SquareFromList<float32, 3, true>({
     {10, 2, 1},
     { 2, 5, 1},
     { 1, 1, 2}
@@ -176,7 +177,7 @@ TEST(SquareMatrix, decomposeUDUT) // NOLINT
 TEST(SquareMatrix, decomposeUDUT_NotSymmetric_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+  auto cov = conversions::SquareFromList<float32, 2, true>({
     {10, 2},
     { 1, 5}
   });
@@ -191,7 +192,7 @@ TEST(SquareMatrix, decomposeUDUT_NotSymmetric_ExpectError) // NOLINT
 TEST(SquareMatrix, decomposeLDLT) // NOLINT
 {
   // clang-format off
-  auto cov = tracking::math::SquareMatrix<float32, 6, true>::FromList({
+  auto cov = conversions::SquareFromList<float32, 6, true>({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
@@ -219,7 +220,7 @@ TEST(SquareMatrix, decomposeLDLT) // NOLINT
 TEST(SquareMatrix, decomposeLDLT_NotSymmetric_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+  auto cov = conversions::SquareFromList<float32, 2, true>({
     {10, -4},
     {-3, 13},
   });
@@ -234,7 +235,7 @@ TEST(SquareMatrix, decomposeLDLT_NotSymmetric_ExpectError) // NOLINT
 TEST(SquareMatrix, decomposeLDLT_SymmetricNotPositiveDefinite_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = tracking::math::SquareMatrix<float32, 2, true>::FromList({
+  auto cov = conversions::SquareFromList<float32, 2, true>({
     {10, -3},
     {-3, -13},
   });
