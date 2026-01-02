@@ -165,14 +165,14 @@ The math layer consists of two main subdirectories:
 - Documented is_matrix_like trait and its helper variable
 - Doxygen generates without warnings for matrix_io.h
 
-#### 2.2 Conversion System
+#### 2.2 Conversion System (COMPLETED 2026-01-02)
 **Files:** All files in [`conversions/`](include/trackingLib/math/linalg/conversions/) directory
-- Document the centralized conversion architecture
-- Explain `<target>From<source>` naming convention
-- Document function overloading strategy
-- Add usage examples for each conversion function
-- Document error handling for invalid conversions
-- Add cross-references between related conversions
+- Added comprehensive Doxygen documentation for all conversion functions in each .hpp file
+- Documented the `<target>From<source>` naming convention and function overloading strategy
+- Added usage examples and cross-references between related conversions
+- Documented error handling (runtime_error for dimension mismatches, assertions for list sizes)
+- Doxygen generates without warnings for all conversion functions
+- Each function has \brief, \tparam, \param[in], \return, and \see tags
 
 #### 2.3 Decomposition Implementations
 **File:** [`square_matrix_decompositions.hpp`](include/trackingLib/math/linalg/square_matrix_decompositions.hpp)
@@ -597,6 +597,75 @@ The math layer consists of two main subdirectories:
 6. **Coverage Targets:** Are the proposed coverage targets (>90% line, >85% branch) acceptable?
 7. **Academic References:** Should we include extensive academic references in documentation?
 8. **Examples:** How many usage examples should be included per class/function?
+
+## Phase 2.2 Conversion System Documentation Strategy
+
+### Question: Should we add conversion function declarations to conversions.h?
+
+**Answer:** No, we should NOT add conversion function declarations to [`conversions.h`](include/trackingLib/math/linalg/conversions/conversions.h) because it would reintroduce circular dependencies.
+
+### Detailed Analysis:
+
+#### Current Design (Circular-Dependency-Free):
+- [`conversions.h`](include/trackingLib/math/linalg/conversions/conversions.h) contains ONLY forward declarations
+- Each conversion function is implemented in separate `.hpp` files (e.g., `matrix_conversions.hpp`, `diagonal_conversions.hpp`)
+- These implementation files include the necessary matrix class headers
+- No circular dependencies exist because the master header doesn't include implementation details
+
+#### Why Adding Declarations Would Cause Problems:
+1. **Circular Dependency Risk**: If we add function declarations with full signatures, we'd need to include matrix class headers, which could create circular dependencies
+2. **Header Bloat**: The master header would become much larger and more complex
+3. **Compilation Time**: Including all matrix headers in the master file would increase compilation times
+4. **Defeats Purpose**: The current design successfully eliminated circular dependencies - adding declarations would undermine this achievement
+
+#### Recommended Documentation Strategy:
+1. **Document conversions.h**: Add comprehensive file-level documentation explaining the architecture (already done)
+2. **Document each conversion function**: Add Doxygen documentation to each function in its respective implementation file
+3. **Add cross-references**: Use `\see` commands to link between related conversions
+4. **Document in implementation files**: Each conversion function should have full Doxygen documentation in its `.hpp` file
+
+#### Example of Proper Documentation Location:
+```cpp
+// In diagonal_conversions.hpp:
+/// \brief Converts a SquareMatrix to a DiagonalMatrix
+///
+/// Extracts the diagonal elements from a square matrix to create a diagonal matrix.
+/// This conversion preserves only the diagonal elements and discards off-diagonal values.
+///
+/// \tparam ValueType_ The value type of matrix elements
+/// \tparam Size_ The size of the square matrix
+/// \tparam IsRowMajor_ The storage layout of the source matrix
+/// \param mat The source square matrix
+/// \return DiagonalMatrix containing the diagonal elements of the input matrix
+/// \see DiagonalFromList() for creating diagonal matrices from initializer lists
+/// \see SquareFromDiagonal() for the reverse conversion
+inline auto DiagonalFromSquare(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& mat) -> DiagonalMatrix<ValueType_, Size_>
+{
+    // implementation...
+}
+```
+
+#### Benefits of Current Approach:
+- **Maintains circular-dependency-free design**: No risk of reintroducing the problems we just solved
+- **Better organization**: Documentation is co-located with implementation
+- **Easier maintenance**: Changes to conversion functions don't require updating a central header
+- **Faster compilation**: Minimal includes in the master header
+- **Clear separation**: Architecture documentation in master header, function documentation with implementations
+
+### Implementation Plan for Phase 2.2:
+
+1. **Step 1**: Document [`conversions.h`](include/trackingLib/math/linalg/conversions/conversions.h) with architecture overview (COMPLETED)
+2. **Step 2**: Document each conversion function in its respective `.hpp` file:
+   - `matrix_conversions.hpp`: `MatrixFromList()`, `MatrixFromVector()`
+   - `diagonal_conversions.hpp`: `DiagonalFromSquare()`, `DiagonalFromList()` (both overloads)
+   - `square_conversions.hpp`: `SquareFromList()`, `SquareFromDiagonal()`
+   - `vector_conversions.hpp`: `VectorFromList()`, `VectorFromMatrixColumnView()`
+   - `triangular_conversions.hpp`: `TriangularFromSquare()`, `TriangularFromList()`
+   - `covariance_matrix_conversions.hpp`: `CovarianceMatrixFromList()` (both full and factored)
+3. **Step 3**: Add usage examples and cross-references
+4. **Step 4**: Generate Doxygen and verify all conversions appear in documentation
+
+This approach maintains the clean architecture while providing comprehensive documentation coverage.
 
 ## Appendix: File Inventory
 

@@ -13,7 +13,19 @@ namespace math
 namespace conversions
 {
 
-// SquareFromList: SquareMatrix from initializer_list<initializer_list<ValueType_>>
+/// \brief Creates a SquareMatrix from a nested initializer list
+///
+/// This function constructs a SquareMatrix from a nested initializer list where each inner list
+/// represents a row of the matrix. The dimensions must be square and match the template parameter.
+///
+/// \tparam ValueType_ The value type of matrix elements
+/// \tparam Size_ The dimension of the square matrix
+/// \tparam IsRowMajor_ The storage layout (true for row-major, false for column-major)
+/// \param[in] list Nested initializer list where outer list contains rows and inner lists contain values
+/// \return SquareMatrix instance initialized with the provided values
+/// \throws std::runtime_error If the list dimensions don't match the square matrix size
+/// \see SquareFromDiagonal() for creating from diagonal matrices
+/// \see MatrixFromList() for general matrix creation
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
     -> SquareMatrix<ValueType_, Size_, IsRowMajor_>
@@ -46,7 +58,18 @@ inline auto SquareFromList(const std::initializer_list<std::initializer_list<Val
   return result;
 }
 
-// SquareFromDiagonal: SquareMatrix from DiagonalMatrix
+/// \brief Creates a SquareMatrix from a DiagonalMatrix
+///
+/// This function creates a square matrix with the diagonal elements from a diagonal matrix.
+/// All off-diagonal elements are set to zero.
+///
+/// \tparam ValueType_ The value type of matrix elements
+/// \tparam Size_ The dimension of the matrices
+/// \tparam IsRowMajor_ The storage layout of the resulting square matrix
+/// \param[in] diag The source diagonal matrix
+/// \return SquareMatrix with diagonal elements from the input and zeros elsewhere
+/// \see DiagonalFromSquare() for the reverse conversion
+/// \see SquareFromList() for creating from initializer lists
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareFromDiagonal(const DiagonalMatrix<ValueType_, Size_>& diag) -> SquareMatrix<ValueType_, Size_, IsRowMajor_>
 {

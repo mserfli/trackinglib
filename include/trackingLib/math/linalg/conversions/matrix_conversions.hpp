@@ -14,7 +14,20 @@ namespace math
 namespace conversions
 {
 
-// MatrixFromList: Matrix from initializer_list<initializer_list<ValueType_>>
+/// \brief Creates a Matrix from a nested initializer list
+///
+/// This function constructs a Matrix from a nested initializer list where each inner list
+/// represents a row of the matrix. The dimensions must match the template parameters exactly.
+///
+/// \tparam ValueType_ The value type of matrix elements (e.g., float32, float64)
+/// \tparam Rows_ The number of rows in the resulting matrix
+/// \tparam Cols_ The number of columns in the resulting matrix
+/// \tparam IsRowMajor_ The storage layout (true for row-major, false for column-major)
+/// \param[in] list Nested initializer list where outer list contains rows and inner lists contain column values
+/// \return Matrix instance initialized with the provided values
+/// \throws std::runtime_error If the list dimensions don't match the matrix dimensions
+/// \see MatrixFromVector() for creating matrices from vectors
+/// \see SquareFromList() for square matrix creation
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto MatrixFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
     -> Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>
@@ -47,7 +60,17 @@ inline auto MatrixFromList(const std::initializer_list<std::initializer_list<Val
   return result;
 }
 
-// MatrixFromVector: Matrix from Vector
+/// \brief Creates a single-column Matrix from a Vector
+///
+/// This function converts a Vector into a Matrix with one column, effectively
+/// representing the vector as a column matrix. The resulting matrix uses row-major storage.
+///
+/// \tparam ValueType_ The value type of vector and matrix elements
+/// \tparam Size_ The size of the vector and number of rows in the matrix
+/// \param[in] vec The source vector to convert
+/// \return Matrix with Size_ rows and 1 column containing the vector elements
+/// \see VectorFromMatrixColumnView() for the reverse conversion
+/// \see MatrixFromList() for creating matrices from initializer lists
 template <typename ValueType_, sint32 Size_>
 inline auto MatrixFromVector(const Vector<ValueType_, Size_>& vec) -> Matrix<ValueType_, Size_, 1, true>
 {

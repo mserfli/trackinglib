@@ -13,8 +13,19 @@ namespace math
 namespace conversions
 {
 
-// DiagonalFromSquare: DiagonalMatrix from SquareMatrix
-// <target>From<source> pattern
+
+/// \brief Creates a DiagonalMatrix from the diagonal elements of a SquareMatrix
+///
+/// This function extracts the diagonal elements from a square matrix to create a diagonal matrix.
+/// All off-diagonal elements are discarded, preserving only the main diagonal values.
+///
+/// \tparam ValueType_ The value type of matrix elements
+/// \tparam Size_ The size of the square matrix and resulting diagonal matrix
+/// \tparam IsRowMajor_ The storage layout of the source matrix
+/// \param[in] mat The source square matrix
+/// \return DiagonalMatrix containing the diagonal elements of the input matrix
+/// \see DiagonalFromList() for creating diagonal matrices from initializer lists
+/// \see SquareFromDiagonal() for the reverse conversion
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto DiagonalFromSquare(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& mat) -> DiagonalMatrix<ValueType_, Size_>
 {
@@ -26,8 +37,18 @@ inline auto DiagonalFromSquare(const SquareMatrix<ValueType_, Size_, IsRowMajor_
   return result;
 }
 
-// DiagonalFromList: DiagonalMatrix from initializer_list<ValueType_>
-// OPTIMIZED: Overloaded function for different list types
+/// \brief Creates a DiagonalMatrix from a flat initializer list
+///
+/// This function creates a diagonal matrix where the diagonal elements are taken from
+/// a flat initializer list. The list size must exactly match the matrix dimension.
+///
+/// \tparam ValueType_ The value type of matrix elements
+/// \tparam Size_ The size of the diagonal matrix
+/// \param[in] list Initializer list containing the diagonal values
+/// \return DiagonalMatrix with the specified diagonal elements
+/// \note The list size must equal Size_, otherwise assertion fails
+/// \see DiagonalFromSquare() for creating from square matrices
+/// \see DiagonalFromList() (overloaded) for nested list input
 template <typename ValueType_, sint32 Size_>
 inline auto DiagonalFromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix<ValueType_, Size_>
 {
@@ -43,8 +64,19 @@ inline auto DiagonalFromList(const std::initializer_list<ValueType_>& list) -> D
   return diag;
 }
 
-// DiagonalFromList: DiagonalMatrix from initializer_list<initializer_list<ValueType_>>
-// OPTIMIZED: Overloaded function for nested list
+/// \brief Creates a DiagonalMatrix from the diagonal of a nested initializer list
+///
+/// This function creates a diagonal matrix by extracting the diagonal elements from
+/// a nested initializer list representing a full matrix. Only the diagonal elements
+/// (where row index equals column index) are used.
+///
+/// \tparam ValueType_ The value type of matrix elements
+/// \tparam Size_ The size of the diagonal matrix
+/// \param[in] list Nested initializer list representing a full matrix
+/// \return DiagonalMatrix containing the diagonal elements from the input list
+/// \note The outer list size must equal Size_, and each inner list size must equal Size_
+/// \see DiagonalFromSquare() for creating from square matrices
+/// \see DiagonalFromList() (overloaded) for flat list input
 template <typename ValueType_, sint32 Size_>
 inline auto DiagonalFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
     -> DiagonalMatrix<ValueType_, Size_>
