@@ -3,9 +3,8 @@
 
 #include "math/linalg/vector.h"
 
-#include "math/linalg/matrix.hpp"             // IWYU pragma: keep
-#include "math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
-#include <cmath>                              // for sqrt
+#include "math/linalg/matrix.hpp" // IWYU pragma: keep
+#include <cmath>                  // for sqrt
 
 namespace tracking
 {
