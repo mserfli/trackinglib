@@ -106,7 +106,19 @@ The trackinglib project is a mature, well-structured C++ header-only library for
     - Removed redundant documentation from implementation files in [`square_matrix_decompositions.hpp`](include/trackingLib/math/linalg/square_matrix_decompositions.hpp)
     - Doxygen generates without warnings for decomposition functions
     - All 206 tests passing (no regressions)
-    
+
+12. **Math Layer Documentation Phase 3.1** (COMPLETED 2026-01-02)
+    - Added comprehensive class-level documentation for [`MatrixRowView`](include/trackingLib/math/linalg/matrix_row_view.h)
+    - Added comprehensive class-level documentation for [`MatrixColumnView`](include/trackingLib/math/linalg/matrix_column_view.h)
+    - Documented non-owning view concept for single row/column views
+    - Documented lifetime and safety considerations
+    - Documented all supported operations (matrix multiplication, dot products, element access)
+    - Added usage examples and performance notes (zero-copy operations)
+    - Documented all public methods with \brief, \tparam, \param[in], \return
+    - Added cross-references between view classes (MatrixView, MatrixRowView, MatrixColumnView)
+    - Doxygen generates without warnings for both view classes
+    - All 206 tests passing (no regressions)
+
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
 - Created comprehensive tests for [`Point2d`](tests/math/test_point2d.cpp) and [`Point3d`](tests/math/test_point3d.cpp)

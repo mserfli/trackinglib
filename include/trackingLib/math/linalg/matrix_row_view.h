@@ -13,51 +13,84 @@ namespace math
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 class MatrixColumnView TEST_REMOVE_FINAL;
 
-/// \brief A row view on a Matrix object providing arithmetic operations
-/// \tparam ValueType_
-/// \tparam Rows_
-/// \tparam Cols_
-/// \tparam IsRowMajor_
+/// \brief Non-owning single-row view providing arithmetic operations on Matrix objects
+///
+/// MatrixRowView provides a lightweight, zero-copy interface to access and manipulate
+/// a single row of a Matrix. It supports matrix multiplication and element access
+/// without copying data.
+///
+/// \tparam ValueType_ The value type for matrix elements
+/// \tparam Rows_ The number of rows in the source matrix
+/// \tparam Cols_ The number of columns in the source matrix
+/// \tparam IsRowMajor_ The storage layout of the source matrix (default: true)
+///
+/// \note This is a non-owning view - the lifetime of the MatrixRowView must not exceed
+///       the lifetime of the underlying Matrix object.
+/// \note All operations are performed in-place on the viewed row.
+/// \note Performance: Zero-copy operations, minimal overhead compared to direct matrix access.
+///
+/// \see Matrix for the underlying matrix implementation
+/// \see MatrixView for rectangular submatrix views
+/// \see MatrixColumnView for single-column views
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_ = true>
 class MatrixRowView TEST_REMOVE_FINAL
 {
 public:
-  /// \brief Construct a new Matrix Row View object
-  /// \param[in] matrix    the viewed matrix
-  /// \param[in] row       the selected row of matrix
-  /// \param[in] colBegin  optional begin col, default=0
-  /// \param[in] colEnd  optional number of cols, default=Cols_-1
+  /// \brief Construct a single-row view on an existing Matrix
+  ///
+  /// Creates a non-owning view of a single row of the given matrix.
+  /// The view covers columns from colBegin to colEnd-1 of the specified row.
+  ///
+  /// \param[in] matrix The matrix to view (must outlive the view)
+  /// \param[in] row Row index to view (0-based)
+  /// \param[in] colBegin Starting column index (inclusive, 0-based, default: 0)
+  /// \param[in] colEnd Ending column index (exclusive, must be > colBegin, default: Cols_)
+  ///
+  /// \note The view does not own the data - ensure the matrix lifetime exceeds the view's
+  /// \note Bounds are not checked at runtime - invalid indices may cause undefined behavior
+  /// \note For full row views, use colBegin=0, colEnd=Cols_
   explicit MatrixRowView(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& matrix,
                          const sint32                                         row,
                          const sint32                                         colBegin = 0,
-                         const sint32                                         colEnd   = Cols_ - 1);
+                         const sint32                                         colEnd   = Cols_);
 
-  /// \brief Read access to specific index of the row view
-  /// \param[in] idx  index in range [0, colCount]
-  /// \return ValueType_
+  /// \brief Access element at specified column index within the row view
+  ///
+  /// \param[in] idx Column index relative to the view (0 to getColCount()-1)
+  /// \return The element value
+  ///
+  /// \note No bounds checking - invalid indices cause undefined behavior
   [[nodiscard]] auto at_unsafe(const sint32 idx) const -> ValueType_;
 
-  /// \brief Multiplication with other matrix
-  /// \tparam Rows2_
-  /// \tparam Cols2_
-  /// \tparam IsRowMajor2_
-  /// \param[in] other  A matrix
-  /// \return Matrix<ValueType_, 1, Cols2_, IsRowMajor2_>
+  /// \brief Multiply this row view by another matrix
+  ///
+  /// Performs matrix multiplication: row_view * other
+  /// The result is a 1xCols2 matrix (effectively a row vector).
+  ///
+  /// \tparam Rows2_ Rows of the other matrix
+  /// \tparam Cols2_ Cols of the other matrix
+  /// \tparam IsRowMajor2_ Storage layout of the other matrix
+  /// \param[in] other Matrix to multiply with
+  /// \return Result matrix of size 1 x Cols2_
   template <sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
   [[nodiscard]] auto operator*(const Matrix<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const
       -> Matrix<ValueType_, 1, Cols2_, IsRowMajor2_>;
 
-  /// \brief Dot product with other matrix column view
-  /// \tparam Rows2_
-  /// \tparam Cols2_
-  /// \tparam IsRowMajor2_
-  /// \param[in] other  A matrix column view
-  /// \return ValueType_
+  /// \brief Compute dot product with a column view
+  ///
+  /// Performs dot product: row_view • column_view
+  /// Requires that the view dimensions are compatible.
+  ///
+  /// \tparam Rows2_ Rows of the column view
+  /// \tparam Cols2_ Cols of the column view
+  /// \tparam IsRowMajor2_ Storage layout of the column view
+  /// \param[in] other Column view to multiply with
+  /// \return Scalar result of the dot product
   template <sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_>
   [[nodiscard]] auto operator*(const MatrixColumnView<ValueType_, Rows2_, Cols2_, IsRowMajor2_>& other) const -> ValueType_;
 
-  /// \brief Get the number of cols in the row view
-  /// \return sint32
+  /// \brief Get the number of columns in this row view
+  /// \return Number of columns
   [[nodiscard]] auto getColCount() const -> sint32 { return _colCount; }
 
 
