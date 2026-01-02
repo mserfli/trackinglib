@@ -38,7 +38,6 @@ public:
   {
   }
 
-
   /// \brief Construct a Zero vector
   /// \return Zero matrix
   [[nodiscard]] static auto Zeros() -> Vector;
