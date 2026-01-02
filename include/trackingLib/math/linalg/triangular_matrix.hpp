@@ -3,14 +3,19 @@
 
 #include "math/linalg/triangular_matrix.h"
 
-#include "math/linalg/diagonal_matrix.hpp" // IWYU pragma: keep
-#include "math/linalg/matrix.hpp"          // IWYU pragma: keep
-#include "math/linalg/square_matrix.hpp"   // IWYU pragma: keep
+#include "math/linalg/matrix.hpp" // IWYU pragma: keep
 
 namespace tracking
 {
 namespace math
 {
+
+// Forward declarations to prevent cyclic includes
+template <typename ValueType_, sint32 Size_>
+class DiagonalMatrix;
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+class SquareMatrix;
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMatrix(const SquareMatrix& other)

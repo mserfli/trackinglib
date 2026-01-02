@@ -4,12 +4,15 @@
 #include "math/linalg/matrix_column_view.h"
 
 #include "math/linalg/matrix.hpp" // IWYU pragma: keep
-#include "math/linalg/vector.hpp" // IWYU pragma: keep
 
 namespace tracking
 {
 namespace math
 {
+
+// Forward declaration to prevent cyclic includes
+template <typename ValueType_, sint32 Size_>
+class Vector;
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline MatrixColumnView<ValueType_, Rows_, Cols_, IsRowMajor_>::MatrixColumnView(

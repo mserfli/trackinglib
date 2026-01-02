@@ -4,7 +4,6 @@
 #include "math/linalg/diagonal_matrix.h"
 
 #include "math/linalg/matrix.hpp"            // IWYU pragma: keep
-#include "math/linalg/square_matrix.hpp"     // IWYU pragma: keep
 #include "math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
 #include "math/linalg/vector.hpp"            // IWYU pragma: keep
 
@@ -12,6 +11,10 @@ namespace tracking
 {
 namespace math
 {
+
+// Forward declaration to prevent cyclic includes
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+class SquareMatrix;
 
 template <typename ValueType_, sint32 Size_>
 inline auto DiagonalMatrix<ValueType_, Size_>::Identity() -> DiagonalMatrix
