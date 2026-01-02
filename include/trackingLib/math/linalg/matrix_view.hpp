@@ -71,7 +71,6 @@ inline auto MatrixView<FloatType, Rows, Cols>::operator*(const Matrix<FloatType,
     -> Matrix<FloatType, Rows, Cols2>
 {
   Matrix<FloatType, Rows, Cols> result;
-#pragma omp parallel for private(i, j, k) shared(A, B, C)
   for (auto i = 0; i < Rows; ++i)
   {
     for (auto k = 0; k < Cols; ++k)
@@ -184,7 +183,6 @@ auto operator*(const MatrixView<FloatType, RowsA, ColsA>& a,
   assert(a.getColCount() == b.getRowCount());
   Matrix<FloatType, RowsA, ColsB> result{};
 
-#pragma omp parallel for private(i, j, k) shared(A, B, C)
   for (auto i = 0; i < a.getRowCount(); ++i)
   {
     for (auto k = 0; k < a.getColCount(); ++k)

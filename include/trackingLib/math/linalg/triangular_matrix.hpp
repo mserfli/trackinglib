@@ -77,7 +77,6 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
   Matrix<ValueType_, Size_, Cols_, IsRowMajor2_> result{};
   if (IsLower_)
   {
-#pragma omp parallel for private(i, j, k) shared(A, B, C)
     for (auto i = 0; i < Size_; ++i)
     {
       for (auto k = 0; k <= i; ++k)
@@ -91,7 +90,6 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
   }
   else
   {
-#pragma omp parallel for private(i, j, k) shared(A, B, C)
     for (auto i = 0; i < Size_; ++i)
     {
       for (auto k = i; k < Size_; ++k)
@@ -113,7 +111,6 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
   TriangularMatrix result{};
   if (IsLower_)
   {
-#pragma omp parallel for private(i, j, k) shared(A, B, C)
     for (auto i = 0; i < Size_; ++i)
     {
       for (auto k = 0; k <= i; ++k)
@@ -127,7 +124,6 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
   }
   else
   {
-#pragma omp parallel for private(i, j, k) shared(A, B, C)
     for (auto i = 0; i < Size_; ++i)
     {
       for (auto k = i; k < Size_; ++k)

@@ -231,6 +231,27 @@ static void predictCovariance(
 - Avoids matrix inversion where possible
 - Rank-1 updates for efficiency
 
+## OpenMP Decision
+
+**Status**: Removed (2026-01-02)
+
+**Rationale**:
+- Typical matrix sizes (≤15×15) are too small to benefit from parallelization
+- Thread creation overhead exceeds computation benefit for small matrices
+- AUTOSAR C++14 compliance requires deterministic behavior
+- OpenMP's non-deterministic thread scheduling conflicts with this requirement
+- Simplifies codebase and removes external dependency
+
+**Performance Impact**:
+- No negative impact for typical use cases (4×4, 6×6, 15×15 matrices)
+- Small matrices are faster without thread overhead
+- Maintains consistent, predictable performance
+
+**Historical Note**:
+- Previous implementation had OpenMP in some matrix multiplications
+- Implementation had syntax errors (undefined variables in private/shared clauses)
+- Application was inconsistent across matrix types
+
 ## Critical Implementation Paths
 
 ### Prediction Flow (CV Model with EKF)
