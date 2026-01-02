@@ -10,6 +10,25 @@ namespace tracking
 namespace math
 {
 
+/// \brief Full covariance matrix representation for Kalman filtering
+///
+/// A covariance matrix represents the uncertainty of a random vector in Kalman filtering.
+/// This class provides a standard full matrix representation where all elements are stored.
+/// Covariance matrices are always symmetric and positive semi-definite.
+///
+/// Key properties:
+/// - Symmetric: P[i,j] = P[j,i] for all i,j
+/// - Positive semi-definite: x^T*P*x >= 0 for all vectors x
+/// - Represents uncertainty in state estimation
+///
+/// This implementation uses row-major storage for consistency with other matrix types.
+/// All constructors enforce symmetry through assertions.
+///
+/// \tparam FloatType_ Floating-point type (float32 or float64)
+/// \tparam Size_ Dimension of the square covariance matrix
+///
+/// \see CovarianceMatrixFactored for UDU factored representation
+/// \see SquareMatrix for the base matrix functionality
 template <typename FloatType_, sint32 Size_>
 class CovarianceMatrixFull: public SquareMatrix<FloatType_, Size_, true>
 //, public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>>
@@ -77,23 +96,58 @@ public:
   /// \return const CovarianceMatrixFull&
   auto operator()() const -> const CovarianceMatrixFull& { return *this; }
 
-  /// \brief Calculates the inverse based on Cholesky decomposition
-  /// \return tl::expected<CovarianceMatrixFull, Errors>
+  /// \brief Calculates the matrix inverse using Cholesky decomposition
+  ///
+  /// Computes the inverse of the covariance matrix using Cholesky decomposition.
+  /// This method is numerically stable for positive definite matrices.
+  ///
+  /// \return tl::expected containing the inverse matrix on success, or an error code
+  /// \return Errors::NotPositiveDefinite if the matrix is not positive definite
+  ///
+  /// \note Time complexity: O(n^3) where n = Size_
+  /// \note The result satisfies: (*this) * result = Identity()
   auto inverse() const -> tl::expected<CovarianceMatrixFull, Errors>;
 
-  /// \brief Calculate A*P*A' inplace
-  /// \param[in] A
+  /// \brief Compute A*P*A^T in-place (covariance propagation)
+  ///
+  /// Performs the matrix operation A*P*A^T where P is this covariance matrix.
+  /// This operation propagates covariance through a linear transformation A.
+  /// The result overwrites the current matrix.
+  ///
+  /// \tparam IsRowMajor_ Storage layout of the transformation matrix A
+  /// \param[in] A Square transformation matrix
+  ///
+  /// \note This is a key operation in Kalman filter prediction
+  /// \note Time complexity: O(n^3) where n = Size_
   template <bool IsRowMajor_>
   void apaT(const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A);
 
-  /// \brief Calculate A*P*A'
-  /// \param[in] A
+  /// \brief Compute A*P*A^T (covariance propagation)
+  ///
+  /// Performs the matrix operation A*P*A^T where P is this covariance matrix.
+  /// This operation propagates covariance through a linear transformation A.
+  /// Returns a new covariance matrix without modifying this one.
+  ///
+  /// \tparam IsRowMajor_ Storage layout of the transformation matrix A
+  /// \param[in] A Square transformation matrix
+  /// \return New covariance matrix containing A*P*A^T
+  ///
+  /// \note This is a key operation in Kalman filter prediction
+  /// \note Time complexity: O(n^3) where n = Size_
   template <bool IsRowMajor_>
   auto apaT(const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull;
 
-  /// \brief Set the variance at (idx,idx) and clears any correlations
-  /// \param[in] idx  Index in diagonal matrix
-  /// \param[in] val  The value to be set
+  /// \brief Set diagonal variance element and clear correlations
+  ///
+  /// Sets the variance (diagonal element) at position (idx, idx) to the given value
+  /// and clears all off-diagonal correlations involving this state variable.
+  /// This effectively makes the idx-th state variable uncorrelated with others.
+  ///
+  /// \param[in] idx Zero-based index of the state variable (0 <= idx < Size_)
+  /// \param[in] val New variance value (must be positive)
+  ///
+  /// \note This operation modifies both the diagonal and off-diagonal elements
+  /// \note Commonly used to reinitialize uncertainty for specific state components
   void setVariance(const sint32 idx, const FloatType_ val);
 };
 

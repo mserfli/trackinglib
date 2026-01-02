@@ -119,6 +119,18 @@ The trackinglib project is a mature, well-structured C++ header-only library for
     - Doxygen generates without warnings for both view classes
     - All 206 tests passing (no regressions)
 
+13. **Math Layer Documentation Phase 4.1** (COMPLETED 2026-01-02)
+    - Added comprehensive class-level documentation for [`CovarianceMatrixFull`](include/trackingLib/math/linalg/covariance_matrix_full.h)
+    - Added comprehensive class-level documentation for [`CovarianceMatrixFactored`](include/trackingLib/math/linalg/covariance_matrix_factored.h)
+    - Documented covariance matrix properties (symmetry, positive semi-definiteness)
+    - Documented UDU factorization concept and numerical stability benefits
+    - Documented Thornton update algorithm for Kalman filter prediction
+    - Documented Agee-Turner rank-1 update for measurement updates
+    - Added references to academic publications (Thornton, Bierman, D'Souza)
+    - Enhanced method documentation with complexity analysis and usage notes
+    - Doxygen generates without warnings for both covariance matrix classes
+    - All 206 tests passing (no regressions)
+
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
 - Created comprehensive tests for [`Point2d`](tests/math/test_point2d.cpp) and [`Point3d`](tests/math/test_point3d.cpp)
