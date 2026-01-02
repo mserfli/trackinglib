@@ -63,14 +63,6 @@ public:
     assert(this->isSymmetric() && "Constructed covariance not symmetric");
   }
 
-  /// \brief Construct a new Covariance Matrix Full object with given initializer list representing the memory layout of the
-  /// matrix
-  /// \param[in] list  An initializer list describing the memory layout of the matrix
-  static auto FromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> CovarianceMatrixFull
-  {
-    return CovarianceMatrixFull{SquareMatrix::FromList(list)};
-  }
-
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFull  Resulting identity matrix
   static auto Identity() -> CovarianceMatrixFull { return CovarianceMatrixFull{SquareMatrix::Identity()}; }
