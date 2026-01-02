@@ -131,6 +131,17 @@ The trackinglib project is a mature, well-structured C++ header-only library for
     - Doxygen generates without warnings for both covariance matrix classes
     - All 206 tests passing (no regressions)
 
+14. **Math Layer Documentation Phase 5.1** (COMPLETED 2026-01-02)
+    - Added comprehensive class-level documentation for [`Rank1Update`](include/trackingLib/math/linalg/rank1_update.h)
+    - Added comprehensive class-level documentation for [`ModifiedGramSchmidt`](include/trackingLib/math/linalg/modified_gram_schmidt.h)
+    - Documented rank-1 update algorithms for UDU and LDL factorizations
+    - Documented Modified Gram-Schmidt orthogonalization for UDU factorization
+    - Added mathematical background and numerical stability considerations
+    - Referenced academic sources (Gill et al., Thornton, Grewal & Andrews)
+    - Documented Kalman filtering applications and usage contexts
+    - Doxygen generates without warnings for both specialized operation classes
+    - All 206 tests passing (no regressions)
+
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
 - Created comprehensive tests for [`Point2d`](tests/math/test_point2d.cpp) and [`Point3d`](tests/math/test_point3d.cpp)
