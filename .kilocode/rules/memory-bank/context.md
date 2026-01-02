@@ -31,13 +31,20 @@ The trackinglib project is a mature, well-structured C++ header-only library for
    - All 206 tests passing
 
 4. **Matrix Base Refactoring** (PARTIALLY COMPLETED)
-   - Fixed aliasing detection in `operator+=` and `operator-=`
-   - Made error handling consistent for division operators
-   - Fixed `const` correctness in non-member operators
-   - Added comprehensive test coverage for `setBlock()`, aliasing, transpose, and matrix multiplication
-   - Standardized use of `Rows`/`Cols` vs `Rows_`/`Cols_` template parameters
-   - Added `[[nodiscard]]` attributes to prevent misuse
-   - Remaining: Documentation improvements
+    - Fixed aliasing detection in `operator+=` and `operator-=`
+    - Made error handling consistent for division operators
+    - Fixed `const` correctness in non-member operators
+    - Added comprehensive test coverage for `setBlock()`, aliasing, transpose, and matrix multiplication
+    - Standardized use of `Rows`/`Cols` vs `Rows_`/`Cols_` template parameters
+    - Added `[[nodiscard]]` attributes to prevent misuse
+    - Remaining: Documentation improvements
+
+5. **OpenMP Removal** (COMPLETED)
+    - Completely removed all OpenMP pragmas from matrix multiplication operations
+    - Removed 6 pragmas total: 4 from `triangular_matrix.hpp`, 2 from `matrix_view.hpp`
+    - Eliminated syntax errors and inconsistent parallelization
+    - Maintains AUTOSAR C++14 deterministic behavior requirements
+    - All 206 tests passing
 
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
