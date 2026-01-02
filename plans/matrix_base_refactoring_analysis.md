@@ -1,4 +1,4 @@
-# Matrix Class Refactoring Analysis
+# Matrix Class Refactoring Analysis - PARTIALLY COMPLETED
 
 ## Executive Summary
 
