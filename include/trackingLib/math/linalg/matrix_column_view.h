@@ -40,16 +40,16 @@ public:
   ///
   /// \param[in] matrix The matrix to view (must outlive the view)
   /// \param[in] col Column index to view (0-based)
-  /// \param[in] rowBegin Starting row index (inclusive, 0-based, default: 0)
-  /// \param[in] rowEnd Ending row index (exclusive, must be > rowBegin, default: Rows_)
+  /// \param[in] rowBegin Starting row index (0-based, default: 0)
+  /// \param[in] rowEnd Ending row index (0-based, default: Rows_-1)
   ///
   /// \note The view does not own the data - ensure the matrix lifetime exceeds the view's
   /// \note Bounds are not checked at runtime - invalid indices may cause undefined behavior
-  /// \note For full column views, use rowBegin=0, rowEnd=Rows_
+  /// \note For full column views, use rowBegin=0, rowEnd=Rows_-1
   explicit MatrixColumnView(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>& matrix,
                             const sint32                                         col,
                             const sint32                                         rowBegin = 0,
-                            const sint32                                         rowEnd   = Rows_);
+                            const sint32                                         rowEnd   = Rows_ - 1);
 
   /// \brief Access element at specified row index within the column view
   ///

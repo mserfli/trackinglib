@@ -43,12 +43,12 @@ public:
   /// \param[in] matrix The matrix to view (must outlive the view)
   /// \param[in] rowBegin Starting row index (inclusive, 0-based)
   /// \param[in] colBegin Starting column index (inclusive, 0-based)
-  /// \param[in] rowEnd Ending row index (exclusive, must be > rowBegin)
-  /// \param[in] colEnd Ending column index (exclusive, must be > colBegin)
+  /// \param[in] rowEnd Ending row index (inclusive, 0-based)
+  /// \param[in] colEnd Ending column index (inclusive, 0-based)
   ///
   /// \note The view does not own the data - ensure the matrix lifetime exceeds the view's
   /// \note Bounds are not checked at runtime - invalid indices may cause undefined behavior
-  /// \note For full matrix views, use rowBegin=0, colBegin=0, rowEnd=Rows, colEnd=Cols
+  /// \note For full matrix views, use rowBegin=0, colBegin=0, rowEnd=Rows-1, colEnd=Cols-1
   explicit MatrixView(const Matrix<FloatType, Rows, Cols>& matrix,
                       const sint32                         rowBegin,
                       const sint32                         colBegin,
