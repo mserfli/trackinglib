@@ -28,6 +28,7 @@ target_sources(${TEST_BINARY} PRIVATE
     math/test_rank1_update.cpp
     math/test_covariance_matrix_full.cpp
     math/test_covariance_matrix_factored.cpp
+    # math/test_conversions.cpp
     motion/test_state_mem.cpp
     motion/test_motion_model_cv.cpp
     motion/test_motion_model_ca.cpp
