@@ -34,7 +34,6 @@ namespace math
 /// - Matrix multiplication with automatic result type deduction
 /// - Transpose operations with zero-copy views
 /// - Frobenius norm calculation for floating-point types
-/// - Comparison operations between matrices of same or different layouts
 ///
 /// \tparam ValueType_ The data type of matrix elements (typically arithmetic types like float32, float64, int)
 /// \tparam Rows_ The number of rows in the matrix (must be positive, > 0)
@@ -88,16 +87,22 @@ template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_ = tr
 class Matrix: public contract::MatrixIntf<Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>, Matrix>
 {
 public:
+  //////////////////////////////////////////////////
+  // type definitions  --->
+  /// \brief Type of the same matrix with opposite memory layout
+  using opposite_mem_layout_type = Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>;
   /// \brief Type of the transposed matrix without changing the memory layout
   using transpose_type = Matrix<ValueType_, Cols_, Rows_, !IsRowMajor_>;
   /// \brief Type of the transposed matrix with fixed row major memory layout
-  using transpose_type_row_major   = Matrix<ValueType_, Cols_, Rows_, true>;
-  using value_type                 = ValueType_;                  ///< element type
-  static constexpr auto Rows       = Rows_;                       ///< number of rows
-  static constexpr auto Cols       = Cols_;                       ///< number of cols
-  static constexpr auto RowsInMem  = IsRowMajor_ ? Rows_ : Cols_; ///< number of rows in memory
-  static constexpr auto ColsInMem  = IsRowMajor_ ? Cols_ : Rows_; ///< number of cols in memory
-  static constexpr auto IsRowMajor = IsRowMajor_;                 ///< memory layout of the matrix
+  using transpose_type_row_major = Matrix<ValueType_, Cols_, Rows_, true>;
+  using value_type               = ValueType_; ///< element type
+  /// \brief number of rows, columns, and memory layout
+  static constexpr auto Rows       = Rows_;       ///< number of rows
+  static constexpr auto Cols       = Cols_;       ///< number of cols
+  static constexpr auto IsRowMajor = IsRowMajor_; ///< memory layout of the matrix
+  /// \brief number of rows and columns in memory layout
+  static constexpr auto RowsInMem = IsRowMajor_ ? Rows_ : Cols_;
+  static constexpr auto ColsInMem = IsRowMajor_ ? Cols_ : Rows_;
 
   // rule of 5 declarations
   Matrix()                                     = default;
@@ -137,44 +142,34 @@ public:
 
   //////////////////////////////////////////////////
   // comparison operators  --->
-  /// \brief Comparison to equal matrix type
-  /// \param[in] other  matrix of equal type
+  /// \brief Comparison to other matrix
+  /// \tparam IsRowMajor2_  memory layout of other matrix
+  /// \param[in] other  matrix with any memory layout
   /// \return true   if all elements are equal
-  [[nodiscard]] auto operator==(const Matrix& other) const -> bool;
+  template <bool IsRowMajor2_>
+  [[nodiscard]] auto operator==(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other) const -> bool;
 
-  /// \brief Comparison to matrix of equal size, but opposite memory layout
-  /// \param[in] other  matrix with opposite memory layout
-  /// \return true   if all elements are equal
-  [[nodiscard]] auto operator==(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
-
-  /// \brief Inequality comparison to equal matrix type
-  /// \param[in] other  matrix of equal type
+  /// \brief Inequality comparison to other matrix
+  /// \tparam IsRowMajor2_  memory layout of other matrix
+  /// \param[in] other  matrix with any memory layout
   /// \return true   if any element differs
-  [[nodiscard]] auto operator!=(const Matrix& other) const -> bool;
-
-  /// \brief Inequality comparison to matrix of equal size, but opposite memory layout
-  /// \param[in] other  matrix with opposite memory layout
-  /// \return true   if any element differs
-  [[nodiscard]] auto operator!=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool;
+  template <bool IsRowMajor2_>
+  [[nodiscard]] auto operator!=(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other) const -> bool;
   // <---
 
   //////////////////////////////////////////////////
   // arithmetic assignment operators  --->
   /// \brief Calculates Self = Self + Other
-  /// \param[in] other  matrix of equal size
-  void operator+=(const Matrix& other);
-
-  /// \brief Calculates Self = Self + Other
-  /// \param[in] other  matrix of equal size, but opposite memory layout
-  void operator+=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other);
+  /// \tparam IsRowMajor2_  memory layout of other matrix
+  /// \param[in] other  matrix with any memory layout
+  template <bool IsRowMajor2_>
+  void operator+=(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other);
 
   /// \brief Calculates Self = Self - Other
-  /// \param[in] other  matrix of equal size
-  void operator-=(const Matrix& other);
-
-  /// \brief Calculates Self = Self - Other
-  /// \param[in] other  matrix of equal size, but opposite memory layout
-  void operator-=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other);
+  /// \tparam IsRowMajor2_  memory layout of other matrix
+  /// \param[in] other  matrix with any memory layout
+  template <bool IsRowMajor2_>
+  void operator-=(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other);
 
   /// \brief Calculates Self = Self * scalar
   /// \param[in] scalar   scalar value
@@ -198,18 +193,18 @@ public:
   //////////////////////////////////////////////////
   // arithmentic operators --->
   /// \brief Calculates Self + Other
-  /// \tparam MajorOrder_  memory layout of other matrix
-  /// \param[in] other  matrix of equal size
+  /// \tparam IsRowMajor2_  memory layout of other matrix
+  /// \param[in] other  matrix with any memory layout
   /// \return Matrix   result of Self + Other
-  template <bool MajorOrder_>
-  [[nodiscard]] auto operator+(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
+  template <bool IsRowMajor2_>
+  [[nodiscard]] auto operator+(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other) const -> Matrix;
 
   /// \brief Calculates Self - Other
-  /// \tparam MajorOrder_  memory layout of other matrix
-  /// \param[in] other  matrix of equal size
+  /// \tparam IsRowMajor2_  memory layout of other matrix
+  /// \param[in] other  matrix with any memory layout
   /// \return Matrix   result of Self - Other
-  template <bool MajorOrder_>
-  [[nodiscard]] auto operator-(const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix;
+  template <bool IsRowMajor2_>
+  [[nodiscard]] auto operator-(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other) const -> Matrix;
 
   /// \brief Calculates Self + scalar (adds scalar to each element)
   /// \param[in] scalar  a scalar value
@@ -255,7 +250,6 @@ public:
 
   //////////////////////////////////////////////////
   // other operations --->
-
   /// \brief Sets all elements to zero
   void setZeros();
 

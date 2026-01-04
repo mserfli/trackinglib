@@ -7,6 +7,7 @@ if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQ
         NAME lcov
         EXECUTABLE ${TEST_BINARY}
         BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        LCOV_ARGS --ignore-errors unused,mismatch
         EXCLUDE "/Users/matthias/miniforge3/*" "/Library/*" "/usr/include/*" "build/*" "_deps/*" "examples/*" "python/*" "tests/*"
     )
 endif()
@@ -28,7 +29,7 @@ target_sources(${TEST_BINARY} PRIVATE
     math/test_rank1_update.cpp
     math/test_covariance_matrix_full.cpp
     math/test_covariance_matrix_factored.cpp
-    # math/test_conversions.cpp
+    math/test_conversions.cpp
     motion/test_state_mem.cpp
     motion/test_motion_model_cv.cpp
     motion/test_motion_model_ca.cpp
