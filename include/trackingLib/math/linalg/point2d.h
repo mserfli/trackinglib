@@ -10,8 +10,8 @@
 /// \note Point2d is a thin wrapper around Vector that adds semantic meaning
 ///       and named accessors for 2D geometric operations.
 
-#include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/vector.h" // IWYU pragma: keep
+#include "base/first_include.h"   // IWYU pragma: keep
+#include "math/linalg/vector.hpp" // IWYU pragma: keep
 
 namespace tracking
 {

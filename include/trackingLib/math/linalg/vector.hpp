@@ -11,7 +11,6 @@ namespace tracking
 namespace math
 {
 
-
 template <typename ValueType_, sint32 Size_>
 inline auto Vector<ValueType_, Size_>::Zeros() -> Vector
 {
