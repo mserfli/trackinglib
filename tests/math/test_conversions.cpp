@@ -14,7 +14,6 @@
 #include "trackingLib/math/linalg/square_matrix.hpp"                             // IWYU pragma: keep
 #include "trackingLib/math/linalg/triangular_matrix.hpp"                         // IWYU pragma: keep
 #include "trackingLib/math/linalg/vector.hpp"                                    // IWYU pragma: keep
-#include <queue>
 
 using namespace tracking::math;
 
@@ -138,9 +137,7 @@ TYPED_TEST(GTestConversions, SquareFromList__Success) // NOLINT
       {7, 8, 9},
   });
 
-  auto resultExp = (TypeParam::IsRowMajor) 
-    ? std::vector<sint32>{1, 2, 3, 4, 5, 6, 7, 8, 9} 
-    : std::vector<sint32>{1, 4, 7, 2, 5, 8, 3, 6, 9};
+  auto resultExp = std::vector<sint32>{1, 2, 3, 4, 5, 6, 7, 8, 9};
   // clang-format on
 
   size_t index = 0;
@@ -266,16 +263,11 @@ TEST(GTestConversionsSpecial, VectorFromMatrixColumnView__Success) // NOLINT
 TYPED_TEST(GTestConversions, MatrixFromList__Success) // NOLINT
 {
   // clang-format off
-  const auto result = (TypeParam::IsRowMajor) 
-    ? conversions::MatrixFromList<sint32, 2, 3, TypeParam::IsRowMajor>({
-        {1, 2, 3},
-        {4, 5, 6},
-      })
-    : conversions::MatrixFromList<sint32, 2, 3, TypeParam::IsRowMajor>({
-        {1, 4},
-        {2, 5},
-        {3, 6},
-      });
+  const auto result = 
+    conversions::MatrixFromList<sint32, 2, 3, TypeParam::IsRowMajor>({
+      {1, 2, 3},
+      {4, 5, 6},
+    });
   
   auto resultExp = std::vector<sint32>{1, 2, 3, 4, 5, 6};
   // clang-format on
