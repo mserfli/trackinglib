@@ -65,7 +65,6 @@ public:
   /// \note This operation modifies the matrix in-place and does not change its size
   void setIdentity();
 
-
   /// \brief Set a diagonal block matrix at given position
   /// \tparam SrcSize_    Size_ of the source block
   /// \tparam SrcCount   Number of diagonal elements to copy from source
@@ -74,16 +73,6 @@ public:
   /// \param[in] block   Source block matrix to copy from
   template <sint32 SrcSize_, sint32 SrcCount_, sint32 SrcIdxBeg_, sint32 DstIdxBeg_>
   void setBlock(const DiagonalMatrix<ValueType_, SrcSize_>& block);
-
-  /// \brief Assign a new DiagonalMatrix object given initializer list
-  /// \param[in] list  An initializer list describing the diagonal elements
-  [[nodiscard]] auto operator=(const std::initializer_list<ValueType_>& list)
-      -> DiagonalMatrix&; // TODO(matthias): do we really need this
-
-  /// \brief Assign a new DiagonalMatrix object given initializer list
-  /// \param[in] list  An initializer list describing a full square matrix
-  [[nodiscard]] auto operator=(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-      -> DiagonalMatrix&; // TODO(matthias): do we really need this
 
   /// \brief Multiplication with generic matrix: D * Matrix
   /// \tparam Cols_

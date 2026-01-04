@@ -47,38 +47,6 @@ inline void DiagonalMatrix<ValueType_, Size_>::setBlock(const DiagonalMatrix<Val
 }
 
 template <typename ValueType_, sint32 Size_>
-inline auto DiagonalMatrix<ValueType_, Size_>::operator=(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix&
-{
-  assert((list.size() == Size_) && "Mismatching size of intializer list");
-
-  // fill diagonal elements
-  sint32 idx = 0;
-  for (auto val : list)
-  {
-    at_unsafe(idx++) = val;
-  }
-  return *this;
-}
-
-template <typename ValueType_, sint32 Size_>
-inline auto DiagonalMatrix<ValueType_, Size_>::operator=(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-    -> DiagonalMatrix&
-{
-  assert(list.size() == Size_);
-  assert(list.begin()->size() == Size_);
-
-  // copy diagonal elements from list
-  sint32 idx = 0;
-  for (const auto& rowList : list)
-  {
-    assert((rowList.size() == Size_) && "Mismatching size of intializer list");
-    at_unsafe(idx) = *(rowList.begin() + idx);
-    ++idx;
-  }
-  return *this;
-}
-
-template <typename ValueType_, sint32 Size_>
 template <sint32 Cols_, bool IsRowMajor_>
 inline auto DiagonalMatrix<ValueType_, Size_>::operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor_>& mat) const
     -> Matrix<ValueType_, Size_, Cols_, IsRowMajor_>
