@@ -102,7 +102,7 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
     }
   }
   return result;
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const TriangularMatrix& mat) const
@@ -144,7 +144,7 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
 {
   BaseSquareMatrix other{mat};
   return BaseSquareMatrix{this->operator*(other)};
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(
@@ -173,7 +173,7 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
     }
   }
   return result;
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(const ValueType_ scalar) const
@@ -264,10 +264,10 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
     const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
 {
   Matrix<ValueType_, Size_, Cols_, IsRowMajor2_> x{};
-  if (IsLower_) // LCOV_EXCL_LINE
+  if constexpr (IsLower_)
   {
     for (auto k = 0; k < Cols_; ++k)
-    { // LCOV_EXCL_LINE
+    {
       for (auto row = 0; row < Size_; ++row)
       {
         ValueType_ sum{};
@@ -279,12 +279,12 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
       }
     }
   }
-  else // LCOV_EXCL_LINE
-  {    // LCOV_EXCL_LINE
+  else
+  {
     for (auto k = 0; k < Cols_; ++k)
-    { // LCOV_EXCL_LINE
+    {
       for (auto row = Size_ - 1; row >= 0; --row)
-      { // LCOV_EXCL_LINE
+      {
         ValueType_ sum{};
         for (auto col = Size_ - 1; col > row; --col)
         {
@@ -301,7 +301,7 @@ template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::inverse() const -> TriangularMatrix
 {
   return TriangularMatrix{this->solve(BaseSquareMatrix::Identity())};
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::isUnitUpperTriangular() const -> bool

@@ -29,7 +29,7 @@ class MatrixColumnView TEST_REMOVE_FINAL;
 ///
 /// \see Matrix for the base class functionality
 template <typename ValueType_, sint32 Size_>
-class Vector: public Matrix<ValueType_, Size_, 1, true> // LCOV_EXCL_LINE
+class Vector: public Matrix<ValueType_, Size_, 1, true>
 {
 public:
   using BaseMatrix = Matrix<ValueType_, Size_, 1, true>; ///< type of the parent class
@@ -152,7 +152,7 @@ protected:
 /// which are essentially scalars in vector form.
 ///
 template <typename ValueType_>
-class Vector<ValueType_, 1>: public Matrix<ValueType_, 1, 1, true> // LCOV_EXCL_LINE
+class Vector<ValueType_, 1>: public Matrix<ValueType_, 1, 1, true>
 {
 public:
   /// \brief Compute the Euclidean norm (L2 norm) of the single-element vector

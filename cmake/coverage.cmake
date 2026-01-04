@@ -160,9 +160,10 @@ foreach(LANG ${LANGUAGES})
   endif()
 endforeach()
 
-set(COVERAGE_COMPILER_FLAGS "-g -O0 -fkeep-inline-functions -fno-default-inline -fprofile-arcs -ftest-coverage"
-    CACHE INTERNAL "")
-if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
+# -Og is great, but let's remove the forced inline management which creates the ghost blocks
+set(COVERAGE_COMPILER_FLAGS "-g -Og --coverage" CACHE INTERNAL "")
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")    
     include(CheckCXXCompilerFlag)
     check_cxx_compiler_flag(-fprofile-abs-path HAVE_fprofile_abs_path)
     if(HAVE_fprofile_abs_path)

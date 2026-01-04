@@ -2,8 +2,9 @@
 #define C21D598C_CF10_4BAC_8857_B0DA4A653638
 
 #include "conversions.h"
-#include "math/linalg/diagonal_matrix.hpp" // IWYU pragma: keep
-#include "math/linalg/square_matrix.hpp"   // IWYU pragma: keep
+#include "math/linalg/conversions/matrix_conversions.hpp" // IWYU pragma: keep
+#include "math/linalg/diagonal_matrix.hpp"                // IWYU pragma: keep
+#include "math/linalg/square_matrix.hpp"                  // IWYU pragma: keep
 #include <initializer_list>
 
 namespace tracking
@@ -21,7 +22,7 @@ namespace conversions
 /// \tparam ValueType_ The value type of matrix elements
 /// \tparam Size_ The dimension of the square matrix
 /// \tparam IsRowMajor_ The storage layout (true for row-major, false for column-major)
-/// \param[in] list Nested initializer list where outer list contains rows and inner lists contain values
+/// \param[in] list Nested initializer list in logical row-major format
 /// \return SquareMatrix instance initialized with the provided values
 /// \throws std::runtime_error If the list dimensions don't match the square matrix size
 /// \see SquareFromDiagonal() for creating from diagonal matrices
@@ -30,32 +31,7 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
     -> SquareMatrix<ValueType_, Size_, IsRowMajor_>
 {
-  SquareMatrix<ValueType_, Size_, IsRowMajor_> result{};
-
-  // Validate row count
-  if (list.size() != static_cast<std::size_t>(result.RowsInMem))
-  {
-    throw std::runtime_error("SquareFromList: expected " + std::to_string(result.RowsInMem) + " rows, got " +
-                             std::to_string(list.size()));
-  }
-
-  // Validate column count for each row
-  for (const auto& row : list)
-  {
-    if (row.size() != static_cast<std::size_t>(result.ColsInMem))
-    {
-      throw std::runtime_error("SquareFromList: expected " + std::to_string(result.ColsInMem) + " columns, got " +
-                               std::to_string(row.size()));
-    }
-  }
-
-  auto iter = result.data().begin();
-  for (const auto& row : list)
-  {
-    std::copy(row.begin(), row.end(), iter);
-    iter += row.size();
-  }
-  return result;
+  return SquareMatrix<ValueType_, Size_, IsRowMajor_>{MatrixFromList<ValueType_, Size_, Size_, IsRowMajor_>(list)};
 }
 
 /// \brief Creates a SquareMatrix from a DiagonalMatrix

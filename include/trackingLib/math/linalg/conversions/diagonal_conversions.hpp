@@ -13,30 +13,6 @@ namespace math
 namespace conversions
 {
 
-
-/// \brief Creates a DiagonalMatrix from the diagonal elements of a SquareMatrix
-///
-/// This function extracts the diagonal elements from a square matrix to create a diagonal matrix.
-/// All off-diagonal elements are discarded, preserving only the main diagonal values.
-///
-/// \tparam ValueType_ The value type of matrix elements
-/// \tparam Size_ The size of the square matrix and resulting diagonal matrix
-/// \tparam IsRowMajor_ The storage layout of the source matrix
-/// \param[in] mat The source square matrix
-/// \return DiagonalMatrix containing the diagonal elements of the input matrix
-/// \see DiagonalFromList() for creating diagonal matrices from initializer lists
-/// \see SquareFromDiagonal() for the reverse conversion
-template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto DiagonalFromSquare(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& mat) -> DiagonalMatrix<ValueType_, Size_>
-{
-  DiagonalMatrix<ValueType_, Size_> result;
-  for (sint32 i = 0; i < Size_; ++i)
-  {
-    result.at_unsafe(i) = mat.at_unsafe(i, i);
-  }
-  return result;
-}
-
 /// \brief Creates a DiagonalMatrix from a flat initializer list
 ///
 /// This function creates a diagonal matrix where the diagonal elements are taken from
@@ -72,7 +48,7 @@ inline auto DiagonalFromList(const std::initializer_list<ValueType_>& list) -> D
 ///
 /// \tparam ValueType_ The value type of matrix elements
 /// \tparam Size_ The size of the diagonal matrix
-/// \param[in] list Nested initializer list representing a full matrix
+/// \param[in] list Nested initializer list representing a square matrix
 /// \return DiagonalMatrix containing the diagonal elements from the input list
 /// \note The outer list size must equal Size_, and each inner list size must equal Size_
 /// \see DiagonalFromSquare() for creating from square matrices
@@ -94,6 +70,29 @@ inline auto DiagonalFromList(const std::initializer_list<std::initializer_list<V
     ++idx;
   }
   return diag;
+}
+
+/// \brief Creates a DiagonalMatrix from the diagonal elements of a SquareMatrix
+///
+/// This function extracts the diagonal elements from a square matrix to create a diagonal matrix.
+/// All off-diagonal elements are discarded, preserving only the main diagonal values.
+///
+/// \tparam ValueType_ The value type of matrix elements
+/// \tparam Size_ The size of the square matrix and resulting diagonal matrix
+/// \tparam IsRowMajor_ The storage layout of the source matrix
+/// \param[in] mat The source square matrix
+/// \return DiagonalMatrix containing the diagonal elements of the input matrix
+/// \see DiagonalFromList() for creating diagonal matrices from initializer lists
+/// \see SquareFromDiagonal() for the reverse conversion
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto DiagonalFromSquare(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& mat) -> DiagonalMatrix<ValueType_, Size_>
+{
+  DiagonalMatrix<ValueType_, Size_> result;
+  for (sint32 i = 0; i < Size_; ++i)
+  {
+    result.at_unsafe(i) = mat.at_unsafe(i, i);
+  }
+  return result;
 }
 
 } // namespace conversions

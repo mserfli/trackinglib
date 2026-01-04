@@ -23,7 +23,7 @@ namespace conversions
 /// \tparam Rows_ The number of rows in the resulting matrix
 /// \tparam Cols_ The number of columns in the resulting matrix
 /// \tparam IsRowMajor_ The storage layout (true for row-major, false for column-major)
-/// \param[in] list Nested initializer list where outer list contains rows and inner lists contain column values
+/// \param[in] list Nested initializer list in logical row-major format
 /// \return Matrix instance initialized with the provided values
 /// \throws std::runtime_error If the list dimensions don't match the matrix dimensions
 /// \see MatrixFromVector() for creating matrices from vectors
@@ -34,28 +34,49 @@ inline auto MatrixFromList(const std::initializer_list<std::initializer_list<Val
 {
   Matrix<ValueType_, Rows_, Cols_, IsRowMajor_> result{};
 
-  // Validate row count
-  if (list.size() != static_cast<std::size_t>(result.RowsInMem))
+  // Validate row count - input is always in logical row-major format
+  if (list.size() != static_cast<std::size_t>(Rows_))
   {
-    throw std::runtime_error("MatrixFromList: expected " + std::to_string(result.RowsInMem) + " rows, got " +
-                             std::to_string(list.size()));
+    throw std::runtime_error("MatrixFromList: expected " + std::to_string(Rows_) + " rows, got " + std::to_string(list.size()));
   }
 
-  // Validate column count for each row
+  // Validate column count for each row - input is always in logical row-major format
   for (const auto& row : list)
   {
-    if (row.size() != static_cast<std::size_t>(result.ColsInMem))
+    if (row.size() != static_cast<std::size_t>(Cols_))
     {
-      throw std::runtime_error("MatrixFromList: expected " + std::to_string(result.ColsInMem) + " columns, got " +
+      throw std::runtime_error("MatrixFromList: expected " + std::to_string(Cols_) + " columns, got " +
                                std::to_string(row.size()));
     }
   }
 
-  auto iter = result.data().begin();
-  for (const auto& row : list)
+  if constexpr (IsRowMajor_)
   {
-    std::copy(row.begin(), row.end(), iter);
-    iter += row.size();
+    // For row-major storage, copy data directly
+    auto iter = result.data().begin();
+    for (const auto& row : list)
+    {
+      std::copy(row.begin(), row.end(), iter);
+      iter += row.size();
+    }
+  }
+  else
+  {
+    // For column-major storage, transpose the input data
+    for (sint32 col = 0; col < Cols_; ++col)
+    {
+      for (sint32 row = 0; row < Rows_; ++row)
+      {
+        // Get element from row-major input
+        auto row_iter = list.begin();
+        std::advance(row_iter, row);
+        auto col_iter = row_iter->begin();
+        std::advance(col_iter, col);
+
+        // Store in column-major order
+        result.data()[col * Rows_ + row] = *col_iter;
+      }
+    }
   }
   return result;
 }

@@ -13,11 +13,11 @@ namespace math
 
 // forward declaration to prevent cyclic includes
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-class TriangularMatrix; // LCOV_EXCL_LINE
+class TriangularMatrix;
 
 // forward declaration to prevent cyclic includes
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
+class DiagonalMatrix TEST_REMOVE_FINAL;
 
 // TODO(matthias): add interface contract
 
@@ -39,7 +39,7 @@ class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
 /// \see TriangularMatrix for triangular matrix operations
 /// \see DiagonalMatrix for diagonal matrix operations
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_ = true>
-class SquareMatrix: public Matrix<ValueType_, Size_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
+class SquareMatrix: public Matrix<ValueType_, Size_, Size_, IsRowMajor_>
 {
 public:
   using BaseMatrix = Matrix<ValueType_, Size_, Size_, IsRowMajor_>; ///< type of the parent class
