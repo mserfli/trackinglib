@@ -100,9 +100,6 @@ public:
   static constexpr auto Rows       = Rows_;       ///< number of rows
   static constexpr auto Cols       = Cols_;       ///< number of cols
   static constexpr auto IsRowMajor = IsRowMajor_; ///< memory layout of the matrix
-  /// \brief number of rows and columns in memory layout
-  static constexpr auto RowsInMem = IsRowMajor_ ? Rows_ : Cols_;
-  static constexpr auto ColsInMem = IsRowMajor_ ? Cols_ : Rows_;
 
   // rule of 5 declarations
   Matrix()                                     = default;
@@ -356,6 +353,10 @@ public:
 TEST_REMOVE_PROTECTED:
   ; // workaround for correct indentation
   // clang-format on
+  /// \brief number of rows and columns in memory layout
+  static constexpr auto RowsInMem = IsRowMajor_ ? Rows_ : Cols_;
+  static constexpr auto ColsInMem = IsRowMajor_ ? Cols_ : Rows_;
+
   using Storage = std::array<ValueType_, static_cast<sint32>(Rows* Cols)>; ///< type of the internal storage
 
   //////////////////////////////////////////////////
