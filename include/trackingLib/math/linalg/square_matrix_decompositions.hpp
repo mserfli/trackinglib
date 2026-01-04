@@ -81,7 +81,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const
   auto triuR = TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>{std::move(R)};
   triuR *= scaleFactor;
   return std::make_pair(std::move(Q), std::move(triuR));
-} // LCOV_EXCL_LINE
+}
 
 // LLT decomposition
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>

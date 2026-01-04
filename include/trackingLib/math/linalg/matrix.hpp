@@ -26,7 +26,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Zeros() -> Matrix
   Matrix tmp;
   tmp.setZeros();
   return tmp;
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setOnes()
@@ -40,7 +40,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Ones() -> Matrix
   Matrix tmp;
   tmp.setOnes();
   return tmp;
-} // LCOV_EXCL_LINE
+}
 
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
@@ -50,7 +50,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row,
   assert((0 <= col) && (col < Cols));
   const auto idx = IsRowMajor_ ? (row * ColsInMem) + col : (col * ColsInMem) + row;
   return data()[idx];
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) -> ValueType_&
@@ -59,7 +59,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row,
   assert((0 <= col) && (col < Cols));
   const auto idx = IsRowMajor_ ? (row * ColsInMem) + col : (col * ColsInMem) + row;
   return data()[idx];
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator()(sint32 row,
@@ -74,7 +74,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator()(sint32 row
     return tl::unexpected<Errors>{Errors::invalid_access_col};
   }
   return at_unsafe(row, col);
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator()(sint32 row, sint32 col)
@@ -89,7 +89,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator()(sint32 row
     return tl::unexpected<Errors>{Errors::invalid_access_col};
   }
   return at_unsafe(row, col);
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <bool IsRowMajor2_>
@@ -115,7 +115,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator==(
     }
     return isEqual;
   }
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <bool IsRowMajor2_>
@@ -123,7 +123,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator!=(
     const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other) const -> bool
 {
   return !(*this == other);
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <bool IsRowMajor2_>
@@ -218,7 +218,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(IntType sc
     return {};
   }
   return tl::unexpected<Errors>{Errors::divide_by_zero};
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <typename FloatType, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool>>
@@ -230,7 +230,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(FloatType 
     return {};
   }
   return tl::unexpected<Errors>{Errors::divide_by_zero};
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <bool IsRowMajor2_>
@@ -240,7 +240,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+(
   Matrix res{*this};
   res += other;
   return res;
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <bool IsRowMajor2_>
@@ -250,7 +250,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-(
   Matrix res{*this};
   res -= other;
   return res;
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+(ValueType_ scalar) const -> Matrix
@@ -261,7 +261,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+(ValueType_ 
     val += scalar;
   }
   return res;
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-(ValueType_ scalar) const -> Matrix
@@ -272,7 +272,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-(ValueType_ 
     val -= scalar;
   }
   return res;
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(ValueType_ scalar) const -> Matrix
@@ -280,7 +280,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(ValueType_ 
   Matrix res{*this};
   res *= scalar;
   return res;
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <typename IntType, typename std::enable_if_t<std::is_integral<IntType>::value, bool>>
@@ -293,7 +293,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(IntType sca
     return res;
   }
   return tl::unexpected<Errors>{Errors::divide_by_zero};
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <typename FloatType, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool>>
@@ -306,7 +306,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(FloatType s
     return res;
   }
   return tl::unexpected<Errors>{Errors::divide_by_zero};
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <sint32 Cols2_, bool IsRowMajor2_>
@@ -328,14 +328,14 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(
     }
   }
   return result;
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::minmax() const -> std::tuple<ValueType_, ValueType_>
 {
   const auto [min, max] = std::minmax_element(data().begin(), data().end());
   return std::make_tuple(*min, *max);
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <typename FloatType, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool>>
@@ -347,25 +347,25 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::frobenius_norm() cons
     sum_of_squares += val * val;
   }
   return std::sqrt(sum_of_squares);
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose() const -> const transpose_type&
 {
   return reinterpret_cast<const transpose_type&>(*this);
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose() -> transpose_type&
 {
   return reinterpret_cast<transpose_type&>(*this);
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose_rvalue() && -> transpose_type
 {
   return reinterpret_cast<transpose_type&>(*this);
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 template <sint32 SrcRowSize_,

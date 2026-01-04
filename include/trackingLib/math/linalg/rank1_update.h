@@ -9,13 +9,13 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-class TriangularMatrix; // LCOV_EXCL_LINE
+class TriangularMatrix;
 
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
+class DiagonalMatrix TEST_REMOVE_FINAL;
 
 template <typename ValueType_, sint32 Size_>
-class Vector; // LCOV_EXCL_LINE
+class Vector;
 
 /// \brief Rank-1 update algorithms for UDU and LDL matrix factorizations
 ///

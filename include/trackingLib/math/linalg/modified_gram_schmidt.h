@@ -9,16 +9,16 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class Matrix; // LCOV_EXCL_LINE
+class Matrix;
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-class SquareMatrix; // LCOV_EXCL_LINE
+class SquareMatrix;
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-class TriangularMatrix; // LCOV_EXCL_LINE
+class TriangularMatrix;
 
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
+class DiagonalMatrix TEST_REMOVE_FINAL;
 
 
 /// \brief Modified Gram-Schmidt orthogonalization for UDU factorization

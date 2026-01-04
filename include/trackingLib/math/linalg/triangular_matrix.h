@@ -10,10 +10,10 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class Matrix; // LCOV_EXCL_LINE
+class Matrix;
 
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
+class DiagonalMatrix TEST_REMOVE_FINAL;
 
 // TODO(matthias): add interface contract
 // TODO(matthias): use optimized menory storage for triangular matrices
@@ -36,7 +36,7 @@ class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
 /// \see SquareMatrix for general square matrix operations
 /// \see DiagonalMatrix for diagonal matrix operations
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_ = true>
-class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
+class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_>
 {
 public:
   using BaseSquareMatrix = SquareMatrix<ValueType_, Size_, IsRowMajor_>; ///< type of the parent class

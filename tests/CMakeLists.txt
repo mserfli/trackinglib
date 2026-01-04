@@ -7,8 +7,25 @@ if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQ
         NAME lcov
         EXECUTABLE ${TEST_BINARY}
         BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
-        LCOV_ARGS --ignore-errors unused,mismatch
-        EXCLUDE "/Users/matthias/miniforge3/*" "/Library/*" "/usr/include/*" "build/*" "_deps/*" "examples/*" "python/*" "tests/*"
+        # Added derive_function_end_line to stop LCOV from miscalculating template function ends
+        LCOV_ARGS 
+            --ignore-errors unused,mismatch 
+            --rc lcov_excl_braces_stop=1 
+            --rc geninfo_unexecuted_blocks=0
+            --rc derive_function_end_line=0
+        # Added GENHTML_ARGS to prevent hidden branch paths from marking lines as red
+        GENHTML_ARGS
+            --no-branch-coverage
+            --ignore-errors mismatch
+        EXCLUDE 
+            "/Users/matthias/miniforge3/*" 
+            "/Library/*" 
+            "/usr/include/*" 
+            "build/*" 
+            "_deps/*" 
+            "examples/*" 
+            "python/*" 
+            "tests/*"
     )
 endif()
 
