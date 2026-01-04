@@ -11,18 +11,17 @@ namespace tracking
 namespace math
 {
 
-
 template <typename ValueType_, sint32 Size_>
 inline auto Vector<ValueType_, Size_>::Zeros() -> Vector
 {
   return Vector{BaseMatrix::Zeros()};
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Size_>
 inline auto Vector<ValueType_, Size_>::Ones() -> Vector
 {
   return Vector{BaseMatrix::Ones()};
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Size_>
 template <sint32 Row_>

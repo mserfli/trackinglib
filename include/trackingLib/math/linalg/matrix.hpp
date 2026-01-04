@@ -92,113 +92,108 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator()(sint32 row
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator==(const Matrix& other) const -> bool
-{
-  return (data() == other.data());
-}
-
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <bool IsRowMajor2_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator==(
-    const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool
+    const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other) const -> bool
 {
-  bool isEqual = true;
-  for (auto row = 0; row < Rows; ++row)
+  if constexpr (IsRowMajor_ == IsRowMajor2_)
   {
-    for (auto col = 0; col < Cols; ++col)
-    {
-      isEqual = isEqual && (at_unsafe(row, col) == other.at_unsafe(row, col));
-    }
+    // same memory layout: can compare underlying data arrays directly
+    // TODO(matthias): check whether this only checks pointers or also the elements
+    return this->data() == other.data();
   }
-  return isEqual;
-}
-
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator!=(const Matrix& other) const -> bool
-{
-  return !(*this == other);
-}
-
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator!=(
-    const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other) const -> bool
-{
-  return !(*this == other);
-}
-
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matrix& other)
-{
-  const auto&  otherData = other.data();
-  const sint32 size      = data().size();
-  for (sint32 idx = 0; idx < size; ++idx)
+  else
   {
-    data()[idx] += otherData[idx];
-  }
-}
-
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other)
-{
-  if (this->data().data() != other.data().data())
-  {
+    // different memory layouts: compare element-wise
+    bool isEqual = true;
     for (auto row = 0; row < Rows; ++row)
     {
       for (auto col = 0; col < Cols; ++col)
       {
-        at_unsafe(row, col) += other.at_unsafe(row, col);
+        isEqual = isEqual && (at_unsafe(row, col) == other.at_unsafe(row, col));
       }
+    }
+    return isEqual;
+  }
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <bool IsRowMajor2_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator!=(
+    const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other) const -> bool
+{
+  return !(*this == other);
+}
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+template <bool IsRowMajor2_>
+inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other)
+{
+  if constexpr (IsRowMajor_ == IsRowMajor2_)
+  {
+    // same memory layout: can add underlying data arrays directly
+    const auto&  otherData = other.data();
+    const sint32 size      = data().size();
+    for (sint32 idx = 0; idx < size; ++idx)
+    {
+      data()[idx] += otherData[idx];
     }
   }
   else
   {
-    // When both matrices share the same underlying data (e.g., transposed view),
+    // different memory layouts: add element-wise
+    // When both matrices share the same underlying data and are square Matrices (e.g., transposed view),
     // we must make a copy to avoid read-after-write corruption.
     // Example: a += a.transpose() would overwrite a[0][1] before reading it as a.transpose()[1][0]
-    const auto copy{other};
+    auto&& tmp = ((this->data().data() == other.data().data()) && (Rows_ == Cols_))
+                     ? Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>{other}
+                     : std::move(other);
     for (auto row = 0; row < Rows; ++row)
     {
       for (auto col = 0; col < Cols; ++col)
       {
-        at_unsafe(row, col) += copy.at_unsafe(row, col);
+        at_unsafe(row, col) += tmp.at_unsafe(row, col);
       }
     }
   }
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-=(const Matrix& other)
+template <bool IsRowMajor2_>
+inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-=(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other)
 {
-  const auto&  otherData = other.data();
-  const sint32 size      = data().size();
-  for (sint32 idx = 0; idx < size; ++idx)
+  if constexpr (IsRowMajor_ == IsRowMajor2_)
   {
-    data()[idx] -= otherData[idx];
-  }
-}
-
-template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-=(const Matrix<ValueType_, Rows_, Cols_, !IsRowMajor_>& other)
-{
-  if (this->data().data() != other.data().data())
-  {
-    for (auto row = 0; row < Rows; ++row)
+    if (this->data().data() == other.data().data())
     {
-      for (auto col = 0; col < Cols; ++col)
+      // case: A -= A
+      this->setZeros();
+    }
+    else
+    {
+      // case: A -= B
+      const auto&  otherData = other.data();
+      const sint32 size      = data().size();
+      for (sint32 idx = 0; idx < size; ++idx)
       {
-        at_unsafe(row, col) -= other.at_unsafe(row, col);
+        data()[idx] -= otherData[idx];
       }
     }
   }
   else
   {
-    // When both matrices share the same underlying data (e.g., transposed view),
+    // different memory layouts: subtract element-wise
+    // When both matrices share the same underlying data and are square Matrices (e.g., transposed view),
     // we must make a copy to avoid read-after-write corruption.
-    const auto copy{other};
+    // Example: a -= a.transpose() would overwrite a[0][1] before reading it as a.transpose()[1][0]
+    auto&& tmp = ((this->data().data() == other.data().data()) && (Rows_ == Cols_))
+                     ? Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>{other}
+                     : std::move(other);
     for (auto row = 0; row < Rows; ++row)
     {
       for (auto col = 0; col < Cols; ++col)
       {
-        at_unsafe(row, col) -= copy.at_unsafe(row, col);
+        at_unsafe(row, col) -= tmp.at_unsafe(row, col);
       }
     }
   }
@@ -238,9 +233,9 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(FloatType 
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <bool MajorOrder_>
+template <bool IsRowMajor2_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+(
-    const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix
+    const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other) const -> Matrix
 {
   Matrix res{*this};
   res += other;
@@ -248,9 +243,9 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+(
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <bool MajorOrder_>
+template <bool IsRowMajor2_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-(
-    const Matrix<ValueType_, Rows_, Cols_, MajorOrder_>& other) const -> Matrix
+    const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& other) const -> Matrix
 {
   Matrix res{*this};
   res -= other;
@@ -332,7 +327,6 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(
       }
     }
   }
-
   return result;
 }
 

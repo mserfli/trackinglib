@@ -11,20 +11,35 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class Matrix; // LCOV_EXCL_LINE
+class Matrix;
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-class SquareMatrix; // LCOV_EXCL_LINE
+class SquareMatrix;
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-class TriangularMatrix; // LCOV_EXCL_LINE
+class TriangularMatrix;
 
 template <typename ValueType_, sint32 Size_>
-class Vector; // LCOV_EXCL_LINE
+class Vector;
 
 // TODO(matthias): add interface contract
+
+/// \brief A diagonal matrix that stores only the diagonal elements for memory efficiency.
+///
+/// This class represents diagonal matrices where only the diagonal elements are stored
+/// and manipulated. All off-diagonal elements are implicitly zero. Provides optimized
+/// operations for diagonal-specific computations like inversion and multiplication.
+///
+/// \tparam ValueType_ The data type of diagonal elements (e.g., float32, float64)
+/// \tparam Size_ The dimension of the diagonal matrix (compile-time constant)
+///
+/// \note Memory efficient: stores only Size_ elements instead of Size_²
+/// \note All operations are O(Size_) instead of O(Size_²) for general matrices
+///
+/// \see SquareMatrix for general square matrix operations
+/// \see TriangularMatrix for triangular matrix operations
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL // LCOV_EXCL_LINE
+class DiagonalMatrix TEST_REMOVE_FINAL
 {
 public:
   // rule of 5 declarations
@@ -34,13 +49,21 @@ public:
   auto operator=(const DiagonalMatrix&) -> DiagonalMatrix&     = default;
   auto operator=(DiagonalMatrix&&) noexcept -> DiagonalMatrix& = default;
 
-  /// \brief Construct an Identity matrix
-  /// \return DiagonalMatrix  Resulting identity matrix
+  /// \brief Construct an identity diagonal matrix.
+  ///
+  /// Creates a diagonal matrix with ones on the diagonal (identity matrix).
+  ///
+  /// \return DiagonalMatrix An identity matrix with ones on the diagonal
+  ///
+  /// \note This is equivalent to a diagonal matrix with all diagonal elements equal to 1
   [[nodiscard]] static auto Identity() -> DiagonalMatrix;
 
-  /// \brief Set internal matrix to the Identity matrix
+  /// \brief Set the diagonal matrix to identity in-place.
+  ///
+  /// Modifies the diagonal elements to all be 1, creating an identity matrix.
+  ///
+  /// \note This operation modifies the matrix in-place and does not change its size
   void setIdentity();
-
 
   /// \brief Set a diagonal block matrix at given position
   /// \tparam SrcSize_    Size_ of the source block
@@ -50,16 +73,6 @@ public:
   /// \param[in] block   Source block matrix to copy from
   template <sint32 SrcSize_, sint32 SrcCount_, sint32 SrcIdxBeg_, sint32 DstIdxBeg_>
   void setBlock(const DiagonalMatrix<ValueType_, SrcSize_>& block);
-
-  /// \brief Assign a new DiagonalMatrix object given initializer list
-  /// \param[in] list  An initializer list describing the diagonal elements
-  [[nodiscard]] auto operator=(const std::initializer_list<ValueType_>& list)
-      -> DiagonalMatrix&; // TODO(matthias): do we really need this
-
-  /// \brief Assign a new DiagonalMatrix object given initializer list
-  /// \param[in] list  An initializer list describing a full square matrix
-  [[nodiscard]] auto operator=(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-      -> DiagonalMatrix&; // TODO(matthias): do we really need this
 
   /// \brief Multiplication with generic matrix: D * Matrix
   /// \tparam Cols_
@@ -121,17 +134,41 @@ public:
     return at_unsafe(idx);
   }
 
-  /// \brief Calculates the inverse
-  /// \return DiagonalMatrix<ValueType_, Size_>
+  /// \brief Compute the inverse of the diagonal matrix.
+  ///
+  /// Calculates the inverse by taking the reciprocal of each diagonal element.
+  /// The result is also a diagonal matrix.
+  ///
+  /// \return DiagonalMatrix The inverse matrix such that D * D^(-1) = I
+  ///
+  /// \warning Fails if any diagonal element is zero (singular matrix)
+  /// \note O(Size_) complexity, very efficient for diagonal matrices
   [[nodiscard]] auto inverse() const -> DiagonalMatrix;
 
-  /// \brief Calculates the inverse inplace
+  /// \brief Compute the inverse in-place.
+  ///
+  /// Modifies this matrix to contain its inverse by taking reciprocals of diagonal elements.
+  ///
+  /// \warning Fails if any diagonal element is zero (singular matrix)
+  /// \note More memory efficient than the const version for large matrices
   void inverse();
 
-  /// \brief Checks for positive definite condition of the diagonal matrix (all elements > 0)
+  /// \brief Check if the diagonal matrix is positive definite.
+  ///
+  /// A diagonal matrix is positive definite if all diagonal elements are positive.
+  ///
+  /// \return true if all diagonal elements are > 0, false otherwise
+  ///
+  /// \note For diagonal matrices, positive definiteness is equivalent to all elements > 0
   [[nodiscard]] auto isPositiveDefinite() const -> bool;
 
-  /// \brief Checks for positive semi-definite condition of the diagonal matrix (all elements >= 0)
+  /// \brief Check if the diagonal matrix is positive semi-definite.
+  ///
+  /// A diagonal matrix is positive semi-definite if all diagonal elements are non-negative.
+  ///
+  /// \return true if all diagonal elements are >= 0, false otherwise
+  ///
+  /// \note For diagonal matrices, positive semi-definiteness means all elements >= 0
   [[nodiscard]] auto isPositiveSemiDefinite() const -> bool;
 
   //////////////////////////////////////////////////

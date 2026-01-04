@@ -13,7 +13,18 @@ namespace math
 namespace conversions
 {
 
-// VectorFromList: Vector from initializer_list<ValueType_>
+/// \brief Creates a Vector from an initializer list
+///
+/// This function constructs a Vector from a flat initializer list.
+/// The list size must exactly match the vector size.
+///
+/// \tparam ValueType_ The value type of vector elements
+/// \tparam Size_ The size of the vector
+/// \param[in] list Initializer list containing the vector values
+/// \return Vector instance initialized with the provided values
+/// \note The list size must equal Size_, otherwise assertion fails
+/// \see VectorFromMatrixColumnView() for creating from matrix column views
+/// \see MatrixFromVector() for the reverse conversion
 template <typename ValueType_, sint32 Size_>
 inline auto VectorFromList(const std::initializer_list<ValueType_>& list) -> Vector<ValueType_, Size_>
 {
@@ -25,7 +36,18 @@ inline auto VectorFromList(const std::initializer_list<ValueType_>& list) -> Vec
   return tmp;
 }
 
-// VectorFromMatrixColumnView: Vector from MatrixColumnView
+/// \brief Creates a Vector from a MatrixColumnView
+///
+/// This function extracts the elements from a matrix column view to create a vector.
+/// The column view must have the correct dimensions.
+///
+/// \tparam ValueType_ The value type of vector and matrix elements
+/// \tparam Size_ The size of the resulting vector
+/// \param[in] colView The source matrix column view
+/// \return Vector containing the elements from the column view
+/// \note The column view row count must equal Size_, otherwise assertion fails
+/// \see VectorFromList() for creating from initializer lists
+/// \see MatrixFromVector() for the reverse conversion
 template <typename ValueType_, sint32 Size_>
 inline auto VectorFromMatrixColumnView(const MatrixColumnView<ValueType_, Size_, 1, true>& colView) -> Vector<ValueType_, Size_>
 {

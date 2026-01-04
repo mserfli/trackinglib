@@ -37,7 +37,7 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::Identity() -> SquareMatrix
 {
   return SquareMatrix{DiagonalMatrix<ValueType_, Size_>::Identity()};
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix& b) const
@@ -45,14 +45,14 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMa
 {
   const auto [Q, R] = householderQR();
   return static_cast<SquareMatrix<ValueType_, Size_, !IsRowMajor_>>(R.solve(Q.transpose() * b));
-} // LCOV_EXCL_LINE
+}
 
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
 {
   return qrSolve(SquareMatrix::Identity());
-} // LCOV_EXCL_LINE
+}
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric() const -> bool

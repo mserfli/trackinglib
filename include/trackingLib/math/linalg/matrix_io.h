@@ -1,3 +1,23 @@
+/// \file matrix_io.h
+/// \brief Stream output operators for all matrix types in the trackingLib math library.
+///
+/// This file provides template-based operator<< implementations for streaming matrix objects
+/// to any std::ostream (cout, files, stringstream). The design uses SFINAE-based type detection
+/// to work with all matrix-like types that provide the required interface.
+///
+/// Key features:
+/// - Works with any std::ostream (cout, files, stringstream)
+/// - Template-based implementation for compile-time type safety
+/// - SFINAE-based type detection for C++17 compatibility
+/// - Specialized formatting for DiagonalMatrix
+/// - Future-proof design using at_unsafe() interface
+///
+/// \note This file replaces the previous print() methods across all matrix types,
+///       providing idiomatic C++ stream output without code duplication.
+///
+/// \see matrix.h for the base Matrix class
+/// \see diagonal_matrix.h for DiagonalMatrix specialization
+
 #ifndef C63CC10A_92E8_4A79_8412_56D9CFCB8DB4
 #define C63CC10A_92E8_4A79_8412_56D9CFCB8DB4
 
@@ -15,7 +35,21 @@ namespace math
 template <typename ValueType_, sint32 Size_>
 class DiagonalMatrix;
 
-// SFINAE helper to detect matrix-like types
+/// \brief SFINAE helper to detect matrix-like types at compile time.
+///
+/// This trait uses SFINAE (Substitution Failure is Not An Error) to detect whether
+/// a type provides the interface expected of matrix-like objects. It checks for:
+/// - An at_unsafe(sint32, sint32) method for element access
+/// - A nested value_type typedef
+/// - Static Rows and Cols constants
+///
+/// This allows the operator<< template to work with any matrix type that provides
+/// the required interface, enabling compile-time polymorphism without inheritance.
+///
+/// \tparam T The type to check for matrix-like properties
+/// \tparam Enable SFINAE parameter (automatically deduced)
+///
+/// \see operator<<(std::ostream&, const M&) for usage
 template <typename T, typename = void>
 struct is_matrix_like: std::false_type
 {
@@ -30,11 +64,47 @@ struct is_matrix_like<T,
 {
 };
 
+/// \brief Convenience variable template for is_matrix_like trait.
+///
+/// Provides a more convenient syntax for checking if a type is matrix-like.
+/// Equivalent to is_matrix_like<T>::value.
+///
+/// \tparam T The type to check
+///
+/// \see is_matrix_like
 template <typename T>
 inline constexpr bool is_matrix_like_v = is_matrix_like<T>::value;
 
-// Template operator<< for all matrix-like types
-// Primary template for general matrix-like types
+/// \brief Template operator<< for streaming matrix-like objects to output streams.
+///
+/// This function provides idiomatic C++ stream output for all matrix types in the trackingLib
+/// math library. It uses SFINAE to enable the operator only for types that provide the
+/// required matrix interface.
+///
+/// The output format provides:
+/// - Fixed-width columns for alignment
+/// - 6 decimal places for floating-point types with sign display
+/// - Comma-separated values within rows
+/// - One row per line
+///
+/// \tparam M The matrix type (automatically deduced)
+/// \param[in,out] os The output stream to write to
+/// \param[in] matrix The matrix object to stream
+/// \return Reference to the output stream for chaining
+///
+/// \note Uses at_unsafe() for element access, which is future-proof for packed storage
+/// \note Formatting is optimized for readability in debug/console output
+///
+/// \see operator<<(std::ostream&, const DiagonalMatrix&) for DiagonalMatrix specialization
+///
+/// Usage example:
+/// \code{.cpp}
+/// Matrix<float32, 2, 3> mat = /* ... */;
+/// std::cout << mat << std::endl;
+/// // Output:
+/// // +1.000000, +2.000000, +3.000000
+/// // +4.000000, +5.000000, +6.000000
+/// \endcode
 template <typename M>
 auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix_like_v<M>, std::ostream&>
 {
@@ -65,7 +135,38 @@ auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix
   return os;
 }
 
-// Specialization for DiagonalMatrix which has different at_unsafe signature
+/// \brief Specialization of operator<< for DiagonalMatrix.
+///
+/// DiagonalMatrix requires special handling because it stores only diagonal elements
+/// and has a different at_unsafe() signature (single index instead of row,col).
+/// This specialization outputs the full matrix representation with zeros off-diagonal.
+///
+/// The output format matches the general matrix operator<< for consistency:
+/// - Fixed-width columns for alignment
+/// - 6 decimal places for floating-point types with sign display
+/// - Diagonal elements from stored values, off-diagonal as zero
+///
+/// \tparam ValueType The element type (float32, float64, etc.)
+/// \tparam Size The matrix dimension (compile-time constant)
+/// \param[in,out] os The output stream to write to
+/// \param[in] matrix The DiagonalMatrix object to stream
+/// \return Reference to the output stream for chaining
+///
+/// \note This specialization is necessary because DiagonalMatrix::at_unsafe() takes
+///       only one parameter (diagonal index) unlike general matrices
+///
+/// \see DiagonalMatrix for the matrix class
+/// \see operator<<(std::ostream&, const M&) for general matrix streaming
+///
+/// Usage example:
+/// \code{.cpp}
+/// DiagonalMatrix<float32, 3> diag = /* diagonal [1, 2, 3] */;
+/// std::cout << diag << std::endl;
+/// // Output:
+/// // +1.000000, +0.000000, +0.000000
+/// // +0.000000, +2.000000, +0.000000
+/// // +0.000000, +0.000000, +3.000000
+/// \endcode
 template <typename ValueType, sint32 Size>
 std::ostream& operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<ValueType, Size>& matrix)
 {

@@ -10,15 +10,33 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class Matrix; // LCOV_EXCL_LINE
+class Matrix;
 
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL; // LCOV_EXCL_LINE
+class DiagonalMatrix TEST_REMOVE_FINAL;
 
 // TODO(matthias): add interface contract
-// TODO(matthias): use own memory optimized to required number of elements
+// TODO(matthias): use optimized menory storage for triangular matrices
+
+/// \brief A triangular matrix specialization that stores only the upper or lower triangular part.
+///
+/// This class represents triangular matrices (upper or lower) and provides operations
+/// optimized for triangular structure. It inherits from SquareMatrix but restricts
+/// access to maintain triangular properties. Memory usage is not yet optimized and
+/// still stores the full square matrix internally.
+///
+/// \tparam ValueType_ The data type of matrix elements (e.g., float32, float64)
+/// \tparam Size_ The dimension of the triangular matrix (compile-time constant)
+/// \tparam IsLower_ Triangular type flag (true for lower triangular, false for upper triangular)
+/// \tparam IsRowMajor_ Storage layout flag (true for row-major, false for column-major)
+///
+/// \note Currently uses full square matrix storage. Future optimization should use
+///       triangular storage to save memory (Size_*(Size_+1)/2 elements instead of Size_^2).
+///
+/// \see SquareMatrix for general square matrix operations
+/// \see DiagonalMatrix for diagonal matrix operations
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_ = true>
-class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_> // LCOV_EXCL_LINE
+class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix<ValueType_, Size_, IsRowMajor_>
 {
 public:
   using BaseSquareMatrix = SquareMatrix<ValueType_, Size_, IsRowMajor_>; ///< type of the parent class
@@ -39,28 +57,46 @@ public:
       : BaseSquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts
 
 
-  /// \brief Construct an Identity matrix
-  /// \return TriangularMatrix  Resulting identity matrix
+  /// \brief Construct an identity triangular matrix.
+  ///
+  /// Creates a triangular matrix with ones on the diagonal and zeros elsewhere,
+  /// maintaining the triangular structure constraint.
+  ///
+  /// \return TriangularMatrix An identity matrix respecting triangular constraints
+  ///
+  /// \note For unit triangular matrices, this creates a matrix with ones on the diagonal
   [[nodiscard]] static auto Identity() -> TriangularMatrix { return TriangularMatrix{BaseSquareMatrix::Identity()}; }
 
-  /// \brief Set a lower/upper triangular block matrix at given position
-  /// \tparam SrcSize    Size of the source block
-  /// \tparam SrcCount   Number of diagonal elements to copy from source
-  /// \tparam SrcRowBeg  Begin row index in source
-  /// \tparam SrcColBeg  Begin col index in source
-  /// \tparam DstRowBeg  Begin row index in dest
-  /// \tparam DstColBeg  Begin col index in dest
-  /// \param[in] block   Source block matrix to copy from
+  /// \brief Set a triangular block within this triangular matrix.
+  ///
+  /// Copies a triangular block from the source matrix to the specified position
+  /// in this matrix, maintaining triangular structure constraints.
+  ///
+  /// \tparam SrcSize Size of the source triangular block
+  /// \tparam SrcCount Number of diagonal elements to copy
+  /// \tparam SrcRowBeg Starting row index in the source block
+  /// \tparam SrcColBeg Starting column index in the source block
+  /// \tparam DstRowBeg Starting row index in destination (this matrix)
+  /// \tparam DstColBeg Starting column index in destination (this matrix)
+  /// \param[in] block The source triangular block matrix to copy from
+  ///
+  /// \note All indices are compile-time constants for efficiency
   template <sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg>
   void setBlock(const TriangularMatrix<ValueType_, SrcSize, IsLower_, IsRowMajor_>& block);
 
   // TODO(matthias): add setBlock with params defined at runtime
 
-  /// \brief Multiplication with generic matrix: Tria * Matrix
-  /// \tparam Cols_
-  /// \tparam IsRowMajor2_
-  /// \param[in] mat
-  /// \return Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
+  /// \brief Multiply triangular matrix with a general matrix.
+  ///
+  /// Performs matrix multiplication T * M where T is this triangular matrix
+  /// and M is a general matrix. Optimized for triangular structure.
+  ///
+  /// \tparam Cols_ Number of columns in the input matrix
+  /// \tparam IsRowMajor2_ Storage layout of the input matrix
+  /// \param[in] mat The matrix to multiply with (right-hand side)
+  /// \return Matrix The result of the multiplication T * M
+  ///
+  /// \note Complexity is O(Size_² * Cols_), optimized for triangular operations
   template <sint32 Cols_, bool IsRowMajor2_>
   [[nodiscard]] auto operator*(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& mat) const
       -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>;
@@ -109,17 +145,32 @@ public:
   /// \return transpose_type&   reference to same data as Self, but differently interpreted
   [[nodiscard]] auto transpose() -> transpose_type&;
 
-  /// \brief Solver for A*x=b based on Cholesky decomposition of A
-  /// \tparam Cols_  Number of columns in the rhs variable b
-  /// \tparam IsRowMajor2_
-  /// \param[in] b  Matrix describing the rhs of the equation A*x=b
-  /// \return Matrix<FloatType, Size, Cols, IsRowMajor2_> describing x
+  /// \brief Solve the triangular system T*x = b using forward/backward substitution.
+  ///
+  /// Solves the linear system T*x = b where T is this triangular matrix.
+  /// Uses efficient forward substitution for lower triangular or backward
+  /// substitution for upper triangular matrices.
+  ///
+  /// \tparam Cols_ Number of columns in the right-hand side matrix b
+  /// \tparam IsRowMajor2_ Storage layout of the right-hand side matrix
+  /// \param[in] b Right-hand side matrix of the equation T*x = b
+  /// \return Matrix Solution matrix x such that T*x ≈ b
+  ///
+  /// \note Complexity is O(Size_² * Cols_), much faster than general matrix solving
+  /// \note Assumes the triangular matrix is non-singular
   template <sint32 Cols_, bool IsRowMajor2_>
   [[nodiscard]] auto solve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const
       -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>;
 
-  /// \brief Calculates the inverse of the underlying matrix
-  /// \return TriangularMatrix
+  /// \brief Compute the inverse of the triangular matrix.
+  ///
+  /// Calculates the inverse using specialized triangular matrix inversion algorithms.
+  /// The result maintains the triangular structure.
+  ///
+  /// \return TriangularMatrix The inverse matrix such that T * T^(-1) = I
+  ///
+  /// \note More efficient than general matrix inversion due to triangular structure
+  /// \note Assumes the matrix is non-singular
   [[nodiscard]] auto inverse() const -> TriangularMatrix;
 
   // TODO(matthias): UnitUpper inplace inverse, Grewal Table 6.7 p.235

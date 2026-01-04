@@ -16,8 +16,18 @@ namespace math
 namespace conversions
 {
 
-// CovarianceMatrixFactoredFromList: CovarianceMatrixFactored from initializer_list<initializer_list<ValueType_>> and
-// initializer_list<ValueType_>
+/// \brief Creates a CovarianceMatrixFactored from separate U and D initializer lists
+///
+/// This function constructs a factored covariance matrix from separate initializer lists
+/// for the upper triangular U matrix and diagonal D matrix components.
+///
+/// \tparam FloatType_ The floating point type for matrix elements
+/// \tparam Size_ The dimension of the covariance matrix
+/// \param[in] u Nested initializer list for the upper triangular U matrix
+/// \param[in] d Flat initializer list for the diagonal D matrix
+/// \return CovarianceMatrixFactored instance with the specified U and D components
+/// \see CovarianceMatrixFactoredFromList() (overloaded) for single list input
+/// \see CovarianceMatrixFullFromList() for full covariance matrices
 template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::initializer_list<FloatType_>>& u,
                                              const std::initializer_list<FloatType_>&                        d)
@@ -28,7 +38,18 @@ inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::in
   return CovarianceMatrixFactored{std::move(u_), std::move(d_)};
 }
 
-// CovarianceMatrixFactoredFromList: CovarianceMatrixFactored from initializer_list<initializer_list<ValueType_>>
+/// \brief Creates a CovarianceMatrixFactored from a nested initializer list
+///
+/// This function constructs a factored covariance matrix by decomposing the input
+/// covariance matrix into UDU^T form. The input must be symmetric.
+///
+/// \tparam FloatType_ The floating point type for matrix elements
+/// \tparam Size_ The dimension of the covariance matrix
+/// \param[in] list Nested initializer list representing the full covariance matrix
+/// \return CovarianceMatrixFactored instance with UDU^T decomposition of the input
+/// \note The input matrix must be symmetric, otherwise assertion fails
+/// \see CovarianceMatrixFactoredFromList() (overloaded) for separate U and D input
+/// \see CovarianceMatrixFullFromList() for full covariance matrices
 template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::initializer_list<FloatType_>>& list)
     -> CovarianceMatrixFactored<FloatType_, Size_>
@@ -45,7 +66,7 @@ inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::in
   const auto retVal = other.decomposeLDLT();
   assert(retVal.has_value());
   const auto [l, d] = retVal.value_or(std::make_pair(TriangularMatrix<FloatType_, Size_, true, false>::Identity(),
-                                                      DiagonalMatrix<FloatType_, Size_>::Identity()));
+                                                     DiagonalMatrix<FloatType_, Size_>::Identity()));
   // we calc the inverse of L and D and map the inv(L).transpose() to U being again a row major upper triangular matrix
   // the resulting UDUt matrix describes the covariance matrix in information form, i.e. the inverse covariance matrix
   return CovarianceMatrixFactored{std::move(l.inverse().transpose()), std::move(d.inverse())};
@@ -60,7 +81,16 @@ inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::in
 #endif
 }
 
-// CovarianceMatrixFullFromList: CovarianceMatrixFull from initializer_list<initializer_list<ValueType_>>
+/// \brief Creates a CovarianceMatrixFull from a nested initializer list
+///
+/// This function constructs a full covariance matrix from a nested initializer list.
+///
+/// \tparam FloatType_ The floating point type for matrix elements
+/// \tparam Size_ The dimension of the covariance matrix
+/// \param[in] list Nested initializer list representing the covariance matrix
+/// \return CovarianceMatrixFull instance initialized with the provided values
+/// \see CovarianceMatrixFactoredFromList() for factored covariance matrices
+/// \see CovarianceMatrixFromList() for generic covariance matrix creation
 template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFullFromList(const std::initializer_list<std::initializer_list<FloatType_>>& list)
     -> CovarianceMatrixFull<FloatType_, Size_>
@@ -68,12 +98,19 @@ inline auto CovarianceMatrixFullFromList(const std::initializer_list<std::initia
   return CovarianceMatrixFull{SquareFromList<FloatType_, Size_, true>(list)};
 }
 
-/// \brief Create CovarianceMatrix from nested initializer list (generic version)
-/// \tparam CovarianceMatrixType  Template template parameter for covariance type
-/// \tparam FloatType_            Floating point type
-/// \tparam Size_                 Matrix dimension
-/// \param[in] list               Nested initializer list
-/// \return CovarianceMatrix instance
+/// \brief Creates a CovarianceMatrix from a nested initializer list (generic version)
+///
+/// This template function provides a unified interface for creating covariance matrices
+/// from nested initializer lists. It automatically dispatches to the appropriate
+/// conversion function based on the covariance matrix type (full or factored).
+///
+/// \tparam CovarianceMatrixType Template template parameter specifying the covariance type
+/// \tparam FloatType_ The floating point type for matrix elements
+/// \tparam Size_ The dimension of the covariance matrix
+/// \param[in] list Nested initializer list representing the covariance matrix
+/// \return CovarianceMatrix instance of the specified type
+/// \see CovarianceMatrixFullFromList() for full covariance matrices
+/// \see CovarianceMatrixFactoredFromList() for factored covariance matrices
 template <template <typename FloatType_, sint32 Size_> class CovarianceMatrixType, typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFromList(const std::initializer_list<std::initializer_list<FloatType_>>& list)
     -> CovarianceMatrixType<FloatType_, Size_>
