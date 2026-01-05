@@ -91,6 +91,75 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::hasStrictlyPositiveDia
   return j == Size_;
 }
 
+// ============================================================================
+// Matrix Property Check Functions
+// ============================================================================
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isOrthogonal(ValueType_ tolerance) const -> bool
+{
+  const auto QtQ      = this->transpose() * (*this);
+  const auto identity = SquareMatrix<ValueType_, Size_, !IsRowMajor_>::Identity();
+
+  for (auto i = 0; i < Size_; ++i)
+  {
+    for (auto j = 0; j < Size_; ++j)
+    {
+      const auto diff = std::abs(QtQ.at_unsafe(i, j) - identity.at_unsafe(i, j));
+      if (diff > tolerance)
+      {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isUpperTriangular(ValueType_ tolerance) const -> bool
+{
+  for (auto i = 0; i < Size_; ++i)
+  {
+    for (auto j = 0; j < i; ++j)
+    {
+      if (std::abs(this->at_unsafe(i, j)) > tolerance)
+      {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isLowerTriangular(ValueType_ tolerance) const -> bool
+{
+  for (auto i = 0; i < Size_; ++i)
+  {
+    for (auto j = i + 1; j < Size_; ++j)
+    {
+      if (std::abs(this->at_unsafe(i, j)) > tolerance)
+      {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::hasUnitDiagonal(ValueType_ tolerance) const -> bool
+{
+  for (auto i = 0; i < Size_; ++i)
+  {
+    if (std::abs(this->at_unsafe(i, i) - static_cast<ValueType_>(1.0)) > tolerance)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
 } // namespace math
 } // namespace tracking
 

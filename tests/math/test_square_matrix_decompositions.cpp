@@ -1,8 +1,7 @@
 #include "gtest/gtest.h"
 #include "trackingLib/math/linalg/conversions/square_conversions.hpp"
 #include "trackingLib/math/linalg/diagonal_matrix.hpp"
-#include "trackingLib/math/linalg/matrix.hpp"
-#include "trackingLib/math/linalg/square_matrix.hpp"
+#include "trackingLib/math/linalg/square_matrix.hpp" // IWYU pragma: keep
 #include "trackingLib/math/linalg/triangular_matrix.hpp"
 
 using namespace tracking::math;
@@ -44,75 +43,6 @@ auto createIllConditionedMatrix() -> SquareMatrix<ValueType_, Size_, true>
     }
   }
   return mat;
-}
-
-// Helper function to check if matrix is orthogonal
-template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-auto isOrthogonal(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& Q, ValueType_ tolerance = 1e-6) -> bool
-{
-  const auto QtQ      = Q.transpose() * Q;
-  const auto identity = SquareMatrix<ValueType_, Size_, !IsRowMajor_>::Identity();
-
-  for (auto i = 0; i < Size_; ++i)
-  {
-    for (auto j = 0; j < Size_; ++j)
-    {
-      const auto diff = std::abs(QtQ.at_unsafe(i, j) - identity.at_unsafe(i, j));
-      if (diff > tolerance)
-      {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-// Helper function to check if matrix is upper triangular
-template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-auto isUpperTriangular(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& R, ValueType_ tolerance = 1e-6) -> bool
-{
-  for (auto i = 0; i < Size_; ++i)
-  {
-    for (auto j = 0; j < i; ++j)
-    {
-      if (std::abs(R.at_unsafe(i, j)) > tolerance)
-      {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-// Helper function to check if matrix is lower triangular
-template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-auto isLowerTriangular(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& L, ValueType_ tolerance = 1e-6) -> bool
-{
-  for (auto i = 0; i < Size_; ++i)
-  {
-    for (auto j = i + 1; j < Size_; ++j)
-    {
-      if (std::abs(L.at_unsafe(i, j)) > tolerance)
-      {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-// Helper function to check if matrix has unit diagonal
-template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-auto hasUnitDiagonal(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& mat, ValueType_ tolerance = 1e-6) -> bool
-{
-  for (auto i = 0; i < Size_; ++i)
-  {
-    if (std::abs(mat.at_unsafe(i, i) - static_cast<ValueType_>(1.0)) > tolerance)
-    {
-      return false;
-    }
-  }
-  return true;
 }
 
 // ============================================================================
@@ -159,7 +89,7 @@ TEST(SquareMatrixDecompositions, householderQR_OrthogonalityOfQ__Success) // NOL
   const auto [Q, R] = mat.householderQR();
 
   // Check that Q is orthogonal (Q^T * Q = I)
-  EXPECT_TRUE(isOrthogonal(Q));
+  EXPECT_TRUE(Q.isOrthogonal());
 }
 
 TEST(SquareMatrixDecompositions, householderQR_UpperTriangularR__Success) // NOLINT
@@ -177,7 +107,7 @@ TEST(SquareMatrixDecompositions, householderQR_UpperTriangularR__Success) // NOL
   const auto [Q, R] = mat.householderQR();
 
   // Check that R is upper triangular
-  EXPECT_TRUE(isUpperTriangular(R));
+  EXPECT_TRUE(R.isUpperTriangular());
 }
 
 TEST(SquareMatrixDecompositions, householderQR_Reconstruction__Success) // NOLINT
@@ -341,7 +271,7 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_UnitDiagonalL__Success) // NOLINT
   const auto [L, D] = retVal.value();
 
   // Check that L has unit diagonal
-  EXPECT_TRUE(hasUnitDiagonal(L));
+  EXPECT_TRUE(L.hasUnitDiagonal());
 }
 
 TEST(SquareMatrixDecompositions, decomposeLDLT_NotSymmetric_ExpectError) // NOLINT
@@ -439,7 +369,7 @@ TEST(SquareMatrixDecompositions, decomposeUDUT_UnitDiagonalU__Success) // NOLINT
   const auto [U, D] = retVal.value();
 
   // Check that U has unit diagonal
-  EXPECT_TRUE(hasUnitDiagonal(U));
+  EXPECT_TRUE(U.hasUnitDiagonal());
 }
 
 TEST(SquareMatrixDecompositions, decomposeUDUT_NumericalStability__Success) // NOLINT
