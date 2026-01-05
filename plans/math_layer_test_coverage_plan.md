@@ -8,12 +8,12 @@ This plan addresses the need to analyze and improve test coverage for the math l
 
 ### Test Coverage Status
 
-**Existing Test Files (14 files, 215 tests):**
+**Existing Test Files (14 files, 322 tests):**
 - [`test_matrix.cpp`](tests/math/test_matrix.cpp) - 108 tests (comprehensive)
 - [`test_square_matrix.cpp`](tests/math/test_square_matrix.cpp) - 12 tests
 - [`test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) - 26 tests
 - [`test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp) - 18 tests
-- [`test_vector.cpp`](tests/math/test_vector.cpp) - 8 tests
+- [`test_vector.cpp`](tests/math/test_vector.cpp) - 39 tests (expanded from 8 to 39)
 - [`test_matrix_view.cpp`](tests/math/test_matrix_view.cpp) - 4 tests (recently added)
 - [`test_matrix_row_view.cpp`](tests/math/test_matrix_row_view.cpp) - 3 tests
 - [`test_matrix_column_view.cpp`](tests/math/test_matrix_column_view.cpp) - 5 tests
@@ -127,18 +127,31 @@ This plan addresses the need to analyze and improve test coverage for the math l
 - **Actual:** 22 comprehensive tests covering all decomposition algorithms
 - **Coverage:** Excellent - all decomposition methods thoroughly tested with both float32 and float64 types
 
-#### 2.2 Vector Operations
-**Expand:** [`test_vector.cpp`](tests/math/test_vector.cpp)
-- Follow existing naming convention: `<operation>__<expected_result>`
-- Use **Typed Tests** if testing with different value types
-- Add tests for vector arithmetic operations
-  - Examples: `op_plus__Success`, `op_minus__Success`, `op_mul_scalar__Success`
-- Add tests for cross product (if implemented): `crossProduct__Success`
-- Add tests for vector-matrix multiplication: `op_mul_matrix__Success`
-- Add tests for element-wise operations: `elementWise_multiply__Success`
-- Add tests for vector views: `VectorView_operations__Success`
-- Add edge cases: `ZeroVector_norm__Success`, `UnitVector_normalize__Success`
-- **Estimated:** 10-15 additional tests
+#### 2.2 Vector Operations (COMPLETED 2026-01-05)
+**Expand:** [`test_vector.cpp`](tests/math/test_vector.cpp) (32 additional tests)
+- ✅ Follow existing naming convention: `<operation>__<expected_result>`
+- ✅ Use **Typed Tests** for testing with different value types (sint32, float32, float64)
+- ✅ Add tests for vector arithmetic operations:
+  - `op_plus__Success`: Vector addition
+  - `op_minus__Success`: Vector subtraction
+  - `op_mul_scalar__Success`: Scalar multiplication (using scalar * vector syntax)
+  - `op_plus_scalar__Success`: Scalar addition
+  - `op_minus_scalar__Success`: Scalar subtraction
+- ✅ Add tests for vector-matrix multiplication: `op_mul_matrix__Success`
+- ✅ Add tests for element-wise operations:
+  - `op_plus_equals__Success`: In-place vector addition
+  - `op_minus_equals__Success`: In-place vector subtraction
+  - `op_mul_equals_scalar__Success`: In-place scalar multiplication
+- ✅ Add edge cases:
+  - `ZeroVector_norm__Success`: Zero vector norm calculation
+  - `ZeroVector_dot_product__Success`: Zero vector dot product
+  - `UnitVector_normalize__Success`: Unit vector normalization
+- ✅ Add error handling tests:
+  - `op_at__FailBadRowIdx`: Out-of-bounds access
+  - `op_divide_by_zero__Fail`: Division by zero error handling
+- **Actual:** 32 comprehensive tests covering all vector operations
+- **Coverage:** Excellent - all vector operations thoroughly tested with multiple value types
+- **Test Count:** Increased from 273 to 322 total tests
 
 #### 2.3 Covariance Matrix Operations
 **Expand:** [`test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp), [`test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp)
@@ -270,14 +283,14 @@ This plan addresses the need to analyze and improve test coverage for the math l
    - Tests verify both success and failure paths
 
 3. **Test Count:**
-     - Target: 310+ total tests for math layer (currently 273)
+     - Target: 310+ total tests for math layer (currently 322)
      - New tests: ~37-53 additional tests remaining
      - Distribution:
        - Conversions: 30-40 tests (COMPLETED: 30-40 tests)
        - Modified Gram-Schmidt: 10-15 tests (COMPLETED: 6 tests)
        - Analysis functions: 8-10 tests (COMPLETED: 22 tests)
        - Square matrix decompositions: 20-25 tests (COMPLETED: 22 tests)
-       - Expanded coverage: 35-45 tests (PENDING)
+       - Expanded coverage: 35-45 tests (COMPLETED: 32 vector tests)
        - Integration tests: 15-20 tests (PENDING)
        - Numerical stability: 10-15 tests (PENDING)
        - Error handling: 20-25 tests (PENDING)
@@ -353,7 +366,7 @@ This plan addresses the need to analyze and improve test coverage for the math l
 
 ### Existing Test Files to Expand:
 1. [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp) (+5-8 tests for non-decomposition methods)
-2. [`tests/math/test_vector.cpp`](tests/math/test_vector.cpp) (+10-15 tests)
+2. [`tests/math/test_vector.cpp`](tests/math/test_vector.cpp) (COMPLETED: +31 tests, from 8 to 39)
 3. [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) (+8-10 tests)
 4. [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) (+8-10 tests)
 5. [`tests/math/test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) (+10-15 tests)
