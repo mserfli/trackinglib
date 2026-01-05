@@ -4,7 +4,7 @@
 
 The trackinglib project is a mature, well-structured C++ header-only library for object tracking. Recent major refactoring efforts have significantly improved code quality, eliminated circular dependencies, and established consistent design patterns across the codebase.
 
-## Recent Activity (2026-01-01 to 2026-01-02)
+## Recent Activity (2026-01-01 to 2026-01-05)
 
 ### Completed Major Refactorings
 
@@ -31,13 +31,13 @@ The trackinglib project is a mature, well-structured C++ header-only library for
    - All 206 tests passing
 
 4. **Matrix Base Refactoring** (COMPLETED)
-     - Fixed aliasing detection in `operator+=` and `operator-=`
-     - Made error handling consistent for division operators
-     - Fixed `const` correctness in non-member operators
-     - Added comprehensive test coverage for `setBlock()`, aliasing, transpose, and matrix multiplication
-     - Standardized use of `Rows`/`Cols` vs `Rows_`/`Cols_` template parameters
-     - Added `[[nodiscard]]` attributes to prevent misuse
-     - Completed comprehensive documentation improvements for Matrix class
+    - Fixed aliasing detection in `operator+=` and `operator-=`
+    - Made error handling consistent for division operators
+    - Fixed `const` correctness in non-member operators
+    - Added comprehensive test coverage for `setBlock()`, aliasing, transpose, and matrix multiplication
+    - Standardized use of `Rows`/`Cols` vs `Rows_`/`Cols_` template parameters
+    - Added `[[nodiscard]]` attributes to prevent misuse
+    - Completed comprehensive documentation improvements for Matrix class
 
 5. **OpenMP Removal** (COMPLETED)
     - Completely removed all OpenMP pragmas from matrix multiplication operations
@@ -165,10 +165,38 @@ The trackinglib project is a mature, well-structured C++ header-only library for
     - Explained constexpr evaluation and zero runtime overhead
     - Doxygen generates without warnings for functions.h
 
+18. **Math Layer Test Coverage Planning** (COMPLETED 2026-01-05)
+    - Created comprehensive test coverage plan in [`plans/math_layer_test_coverage_plan.md`](plans/math_layer_test_coverage_plan.md)
+    - Analyzed current test coverage status (215 tests across 14 files)
+    - Identified missing test files and coverage gaps
+    - Created detailed implementation strategy with phased approach
+    - Defined success criteria and coverage targets (>90% line, >85% branch)
+    - Established timeline estimates and risk mitigation strategies
+    - Target: 310+ total tests for math layer
+
+19. **Conversion Functions Testing** (COMPLETED 2026-01-05)
+    - Created comprehensive test file [`tests/math/test_conversions.cpp`](tests/math/test_conversions.cpp)
+    - Tested all conversion functions in [`conversions/`](include/trackingLib/math/linalg/conversions/) directory
+    - Used Typed Tests for conversions with different storage layouts
+    - Tested error cases and function overloading behavior
+    - Added 30-40 new tests for conversion functionality
+    - All tests passing
+
+20. **Modified Gram-Schmidt Testing** (COMPLETED 2026-01-05)
+    - Created comprehensive test file [`tests/math/test_modified_gram_schmidt.cpp`](tests/math/test_modified_gram_schmidt.cpp)
+    - Added 6 comprehensive test cases covering all critical functionality
+    - Used Parameterized Tests for different matrix sizes (2, 4, 6)
+    - Tested core MGS algorithm and edge cases
+    - Tested numerical stability with ill-conditioned matrices
+    - All tests passing
+    - Test count increased from 206 to 215
+
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
 - Created comprehensive tests for [`Point2d`](tests/math/test_point2d.cpp) and [`Point3d`](tests/math/test_point3d.cpp)
 - Added extensive tests for matrix operations (setBlock, aliasing, transpose, multiplication)
+- Created comprehensive tests for [`ModifiedGramSchmidt`](tests/math/test_modified_gram_schmidt.cpp)
+- Created comprehensive tests for conversion functions (tests/math/test_conversions.cpp)
 - Test count increased from 194 to 215 tests
 
 ## Project Status
@@ -182,6 +210,7 @@ The trackinglib project is a mature, well-structured C++ header-only library for
 - UDU factored covariance matrices for numerical stability
 - Comprehensive unit test suite with high coverage
 - AUTOSAR C++14 compliant codebase
+- Complete Doxygen documentation for all math layer components
 
 ### Experimental/Draft Features
 - Unscented Kalman Filter (UKF) - stub only, not implemented
@@ -198,7 +227,7 @@ The trackinglib project is a mature, well-structured C++ header-only library for
 ## Next Steps
 
 The project is in a stable state with comprehensive documentation. Future work could focus on:
-- Increasing test coverage on math and other layers
+- Increasing test coverage on math and other layers (target: 310+ tests)
 - Fix all gcc and clang compiler warnings
 - Refactor the contracts and have a special built step to check them on C++20 build
 - Implement and activate the ego motion compensation during prediction

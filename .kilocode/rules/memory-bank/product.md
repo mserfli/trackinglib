@@ -30,6 +30,7 @@ The library is organized into several key components:
 - **Factored Covariance**: UDU factorization based on academic publications for numerical stability
 - **Error Handling**: Uses Rust-style `tl::expected` pattern for safe error propagation
 - **Ego Motion Support**: All motion models include built-in ego motion compensation during prediction
+- **Comprehensive Testing**: 215+ unit tests with >90% line coverage target and >85% branch coverage target
 
 ### User Experience Goals
 
@@ -38,6 +39,7 @@ The library is organized into several key components:
 3. **Ease of Use**: Header-only library with minimal dependencies
 4. **Flexibility**: Support for different filter types, motion models, and covariance representations
 5. **Code Quality**: AUTOSAR C++14 compliant, comprehensive testing, and documentation
+6. **Test Coverage**: Comprehensive test coverage plan targeting >90% line coverage and >85% branch coverage
 
 ## Target Users
 

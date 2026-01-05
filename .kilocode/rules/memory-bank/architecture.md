@@ -278,6 +278,8 @@ static void predictCovariance(
   - [`tests/math/`](tests/math/): Math library tests
   - [`tests/motion/`](tests/motion/): Motion model tests
   - Mock objects in [`tests/motion/mocks/`](tests/motion/mocks/)
+- Comprehensive test coverage plan in [`plans/math_layer_test_coverage_plan.md`](plans/math_layer_test_coverage_plan.md)
+- Target: 310+ tests with >90% line coverage and >85% branch coverage
 
 ## Build System
 
