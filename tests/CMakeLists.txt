@@ -11,13 +11,14 @@ set(TEST_SOURCES
     math/test_matrix_row_view.cpp
     math/test_matrix_view.cpp
     math/test_square_matrix.cpp
+    math/test_square_matrix_decompositions.cpp
     math/test_triangular_matrix.cpp
     math/test_diagonal_matrix.cpp
     math/test_rank1_update.cpp
+    math/test_modified_gram_schmidt.cpp
     math/test_covariance_matrix_full.cpp
     math/test_covariance_matrix_factored.cpp
     math/test_conversions.cpp
-    math/test_modified_gram_schmidt.cpp
     motion/test_state_mem.cpp
     motion/test_motion_model_cv.cpp
     motion/test_motion_model_ca.cpp
