@@ -164,6 +164,50 @@ This plan addresses the need to analyze and improve test coverage for the math l
 - **Actual:** 18 comprehensive tests covering all required functionality
 - **Coverage:** Excellent - all covariance matrix operations thoroughly tested
 
+#### 2.3.5 Trace and Determinant Functions (NEW)
+**Expand:** [`test_square_matrix.cpp`](tests/math/test_square_matrix.cpp), [`test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp), [`test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp)
+
+**Square Matrix Trace and Determinant:**
+- Add tests for `trace()` function with different matrix sizes (2x2, 3x3, 4x4)
+- Add tests for `trace()` with both float32 and float64 value types
+- Add tests for `determinant()` function with different matrix sizes
+- Add tests for `determinant()` with both float32 and float64 value types
+- Add tests for determinant of identity matrices (should be 1)
+- Add tests for determinant of singular matrices (should be 0)
+- Add tests for determinant of ill-conditioned matrices
+- Add tests for trace of identity matrices (should equal matrix size)
+- Add tests for trace of zero matrices (should be 0)
+- **Estimated:** 12-15 tests
+
+**Triangular Matrix Determinant:**
+- Add tests for `determinant()` function with upper triangular matrices
+- Add tests for `determinant()` function with lower triangular matrices
+- Add tests for `determinant()` with both float32 and float64 value types
+- Add tests for determinant of unit triangular matrices
+- Add tests for determinant of singular triangular matrices
+- Add tests for trace inheritance from SquareMatrix (should work correctly)
+- **Estimated:** 8-10 tests
+
+**Diagonal Matrix Trace and Determinant:**
+- Add tests for `trace()` function with different matrix sizes
+- Add tests for `trace()` with both float32 and float64 value types
+- Add tests for `determinant()` function with different matrix sizes
+- Add tests for `determinant()` with both float32 and float64 value types
+- Add tests for determinant of identity diagonal matrices (should be 1)
+- Add tests for determinant of singular diagonal matrices (should be 0)
+- Add tests for trace of identity diagonal matrices (should equal matrix size)
+- Add tests for trace of zero diagonal matrices (should be 0)
+- Add tests for trace and determinant consistency (trace should equal determinant for 1x1 matrices)
+- **Estimated:** 10-12 tests
+
+**Integration Tests:**
+- Add tests comparing trace results across different matrix types for the same data
+- Add tests comparing determinant results across different matrix types for the same data
+- Add tests for consistency between full matrix and factored matrix trace/determinant
+- **Estimated:** 4-6 tests
+
+**Total Estimated:** 34-43 tests
+
 #### 2.4 Triangular Matrix Operations
 **Expand:** [`test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp)
 - Add tests for triangular solve operations
@@ -292,6 +336,7 @@ This plan addresses the need to analyze and improve test coverage for the math l
         - Analysis functions: 8-10 tests (COMPLETED: 22 tests)
         - Square matrix decompositions: 20-25 tests (COMPLETED: 22 tests)
         - Expanded coverage: 35-45 tests (COMPLETED: 32 vector tests + 18 covariance tests)
+        - Trace and determinant functions: 34-43 tests (NEW)
         - Integration tests: 15-20 tests (PENDING)
         - Numerical stability: 10-15 tests (PARTIALLY COMPLETED: 2 tests in covariance section)
         - Error handling: 20-25 tests (PENDING)
@@ -366,10 +411,10 @@ This plan addresses the need to analyze and improve test coverage for the math l
 6. `tests/math/test_numerical_stability.cpp` (10-15 tests)
 
 ### Existing Test Files to Expand:
-1. [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp) (+5-8 tests for non-decomposition methods)
+1. [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp) (+5-8 tests for non-decomposition methods + 12-15 tests for trace/determinant)
 2. [`tests/math/test_vector.cpp`](tests/math/test_vector.cpp) (COMPLETED: +31 tests, from 8 to 39)
 3. [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) (COMPLETED: +8 tests, from 6 to 14)
 4. [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) (COMPLETED: +12 tests, from 8 to 20)
-5. [`tests/math/test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) (+10-15 tests)
-6. [`tests/math/test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp) (+8-10 tests)
+5. [`tests/math/test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) (+10-15 tests for triangular operations + 8-10 tests for trace/determinant)
+6. [`tests/math/test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp) (+8-10 tests for diagonal operations + 10-12 tests for trace/determinant)
 7. All test files for error handling (+20-25 tests distributed)

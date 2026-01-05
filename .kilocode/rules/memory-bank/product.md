@@ -30,7 +30,7 @@ The library is organized into several key components:
 - **Factored Covariance**: UDU factorization based on academic publications for numerical stability
 - **Error Handling**: Uses Rust-style `tl::expected` pattern for safe error propagation
 - **Ego Motion Support**: All motion models include built-in ego motion compensation during prediction
-- **Comprehensive Testing**: 215+ unit tests with >90% line coverage target and >85% branch coverage target
+- **Comprehensive Testing**: 322+ unit tests with >90% line coverage target and >85% branch coverage target
 
 ### User Experience Goals
 

@@ -167,7 +167,7 @@ The trackinglib project is a mature, well-structured C++ header-only library for
 
 18. **Math Layer Test Coverage Planning** (COMPLETED 2026-01-05)
     - Created comprehensive test coverage plan in [`plans/math_layer_test_coverage_plan.md`](plans/math_layer_test_coverage_plan.md)
-    - Analyzed current test coverage status (215 tests across 14 files)
+    - Analyzed current test coverage status (322 tests across 14 files)
     - Identified missing test files and coverage gaps
     - Created detailed implementation strategy with phased approach
     - Defined success criteria and coverage targets (>90% line, >85% branch)
@@ -220,6 +220,28 @@ The trackinglib project is a mature, well-structured C++ header-only library for
     - All tests passing (22/22)
     - Test count increased from 251 to 273
 
+23. **Vector Operations Testing Expansion** (COMPLETED 2026-01-05)
+    - Expanded [`tests/math/test_vector.cpp`](tests/math/test_vector.cpp) from 8 to 39 tests
+    - Added comprehensive tests for vector arithmetic operations
+    - Added tests for vector-matrix multiplication
+    - Added tests for element-wise operations
+    - Added edge cases and error handling tests
+    - Used Typed Tests for different value types (sint32, float32, float64)
+    - All tests passing
+    - Test count increased from 273 to 311
+
+24. **Covariance Matrix Testing Expansion** (COMPLETED 2026-01-05)
+    - Expanded [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) from 6 to 14 tests
+    - Expanded [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) from 8 to 20 tests
+    - Added tests for symmetry preservation
+    - Added tests for positive semi-definiteness
+    - Added tests for conversion between full and factored forms
+    - Added tests for Thornton update algorithm
+    - Added tests for numerical stability comparisons
+    - Added tests for large matrices
+    - All tests passing
+    - Test count increased from 311 to 322
+
 ### Test Coverage Improvements
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
 - Created comprehensive tests for [`Point2d`](tests/math/test_point2d.cpp) and [`Point3d`](tests/math/test_point3d.cpp)
@@ -228,7 +250,9 @@ The trackinglib project is a mature, well-structured C++ header-only library for
 - Created comprehensive tests for conversion functions (tests/math/test_conversions.cpp)
 - Created comprehensive tests for analysis functions (tests/math/test_functions.cpp)
 - Created comprehensive tests for square matrix decompositions (tests/math/test_square_matrix_decompositions.cpp)
-- Test count increased from 194 to 273 tests
+- Expanded vector operations tests (tests/math/test_vector.cpp)
+- Expanded covariance matrix tests (tests/math/test_covariance_matrix_full.cpp, tests/math/test_covariance_matrix_factored.cpp)
+- Test count increased from 194 to 322 tests
 
 ### Recent Activity (2026-01-05)
 
@@ -245,6 +269,28 @@ The trackinglib project is a mature, well-structured C++ header-only library for
 - All tests passing (22/22)
 - Test count increased from 251 to 273
 
+#### Vector Operations Testing Expansion (COMPLETED)
+- Expanded [`tests/math/test_vector.cpp`](tests/math/test_vector.cpp) from 8 to 39 tests
+- Added comprehensive tests for vector arithmetic operations
+- Added tests for vector-matrix multiplication
+- Added tests for element-wise operations
+- Added edge cases and error handling tests
+- Used Typed Tests for different value types (sint32, float32, float64)
+- All tests passing
+- Test count increased from 273 to 311
+
+#### Covariance Matrix Testing Expansion (COMPLETED)
+- Expanded [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) from 6 to 14 tests
+- Expanded [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) from 8 to 20 tests
+- Added tests for symmetry preservation
+- Added tests for positive semi-definiteness
+- Added tests for conversion between full and factored forms
+- Added tests for Thornton update algorithm
+- Added tests for numerical stability comparisons
+- Added tests for large matrices
+- All tests passing
+- Test count increased from 311 to 322
+
 ## Project Status
 
 ### Implemented Features
@@ -254,7 +300,7 @@ The trackinglib project is a mature, well-structured C++ header-only library for
 - Constant Acceleration (CA) motion model with ego motion compensation
 - Self-contained matrix library with comprehensive operations
 - UDU factored covariance matrices for numerical stability
-- Comprehensive unit test suite with high coverage (273 tests)
+- Comprehensive unit test suite with high coverage (322 tests)
 - AUTOSAR C++14 compliant codebase
 - Complete Doxygen documentation for all math layer components
 - Modern C++17 constexpr implementation for mathematical functions
