@@ -284,17 +284,17 @@ This plan addresses the need to analyze and improve test coverage for the math l
    - Tests verify both success and failure paths
 
 3. **Test Count:**
-     - Target: 310+ total tests for math layer (currently 322)
-     - New tests: ~37-53 additional tests remaining
-     - Distribution:
-       - Conversions: 30-40 tests (COMPLETED: 30-40 tests)
-       - Modified Gram-Schmidt: 10-15 tests (COMPLETED: 6 tests)
-       - Analysis functions: 8-10 tests (COMPLETED: 22 tests)
-       - Square matrix decompositions: 20-25 tests (COMPLETED: 22 tests)
-       - Expanded coverage: 35-45 tests (COMPLETED: 32 vector tests)
-       - Integration tests: 15-20 tests (PENDING)
-       - Numerical stability: 10-15 tests (PENDING)
-       - Error handling: 20-25 tests (PENDING)
+      - Target: 310+ total tests for math layer (currently 322)
+      - Tests completed: 20 additional covariance matrix tests
+      - Distribution:
+        - Conversions: 30-40 tests (COMPLETED: 30-40 tests)
+        - Modified Gram-Schmidt: 10-15 tests (COMPLETED: 6 tests)
+        - Analysis functions: 8-10 tests (COMPLETED: 22 tests)
+        - Square matrix decompositions: 20-25 tests (COMPLETED: 22 tests)
+        - Expanded coverage: 35-45 tests (COMPLETED: 32 vector tests + 18 covariance tests)
+        - Integration tests: 15-20 tests (PENDING)
+        - Numerical stability: 10-15 tests (PARTIALLY COMPLETED: 2 tests in covariance section)
+        - Error handling: 20-25 tests (PENDING)
 
 ## Risks and Mitigation
 
@@ -368,8 +368,8 @@ This plan addresses the need to analyze and improve test coverage for the math l
 ### Existing Test Files to Expand:
 1. [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp) (+5-8 tests for non-decomposition methods)
 2. [`tests/math/test_vector.cpp`](tests/math/test_vector.cpp) (COMPLETED: +31 tests, from 8 to 39)
-3. [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) (+8-10 tests)
-4. [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) (+8-10 tests)
+3. [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) (COMPLETED: +8 tests, from 6 to 14)
+4. [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) (COMPLETED: +12 tests, from 8 to 20)
 5. [`tests/math/test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) (+10-15 tests)
 6. [`tests/math/test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp) (+8-10 tests)
 7. All test files for error handling (+20-25 tests distributed)
