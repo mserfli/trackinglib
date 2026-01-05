@@ -1,7 +1,6 @@
 #include "gtest/gtest.h"
 #include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"   // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"     // IWYU pragma: keep
-#include "trackingLib/math/linalg/conversions/square_conversions.hpp"     // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/triangular_conversions.hpp" // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/vector_conversions.hpp"     // IWYU pragma: keep
 #include "trackingLib/math/linalg/diagonal_matrix.hpp"                    // IWYU pragma: keep
@@ -405,5 +404,6 @@ TEST(DiagonalMatrix, isPositiveDefinite_false) // NOLINT
   // call UUT
   auto result = diagMat.isPositiveDefinite();
 
+  EXPECT_EQ(diagMat.at_unsafe(0), diagMat.at_unsafe(2));
   EXPECT_FALSE(result);
 }
