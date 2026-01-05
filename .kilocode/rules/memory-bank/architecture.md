@@ -97,6 +97,13 @@ include/trackingLib/
   - Agee-Turner rank-1 update
   - Better numerical stability
 
+**Mathematical Functions** ([`functions.h`](include/trackingLib/math/analysis/functions.h)):
+- **Modern C++17 Implementation**: Replaced template metaprogramming with modern `constexpr` functions
+- **Compile-time Power Function**: `pow<N>(x)` computes x^N at compile time
+- **Zero Runtime Overhead**: When used with compile-time constants
+- **Better Readability**: Uses `if constexpr` instead of recursive template specializations
+- **Maintains Functionality**: Same interface and behavior as previous implementation
+
 **Design Patterns**:
 - Header/implementation split (`.h`/`.hpp`)
 - Template-based for type flexibility

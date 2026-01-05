@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 # 1. Define the list of test source files
 set(TEST_SOURCES
+    math/test_functions.cpp
     math/test_matrix.cpp
     math/test_vector.cpp
     math/test_point2d.cpp
