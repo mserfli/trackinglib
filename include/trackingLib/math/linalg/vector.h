@@ -146,23 +146,6 @@ protected:
   using BaseMatrix::at_unsafe;
 };
 
-/// \brief Specialization of Vector for single-element vectors.
-///
-/// This specialization provides optimized operations for 1-element vectors,
-/// which are essentially scalars in vector form.
-///
-template <typename ValueType_>
-class Vector<ValueType_, 1>: public Matrix<ValueType_, 1, 1, true>
-{
-public:
-  /// \brief Compute the Euclidean norm (L2 norm) of the single-element vector
-  /// \return The L2 norm value (absolute value of the single element)
-  /// \note Specialization for 1-element vectors
-  /// \note Only available for floating-point ValueType_
-  template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
-  [[nodiscard]] auto norm() const -> ValueType_;
-};
-
 } // namespace math
 } // namespace tracking
 

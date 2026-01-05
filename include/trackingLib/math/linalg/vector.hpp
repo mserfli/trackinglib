@@ -67,22 +67,30 @@ template <typename ValueType_, sint32 Size_>
 template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
 inline auto Vector<ValueType_, Size_>::norm() const -> ValueType_
 {
-  return std::sqrt(normSq());
-}
-
-template <typename ValueType_>
-template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
-inline auto Vector<ValueType_, 1>::norm() const -> ValueType_
-{
-  return std::abs(Matrix<ValueType_, 1, 1, true>::at_unsafe(0, 0));
+  if constexpr (Size_ == 1)
+  {
+    return std::abs(Matrix<ValueType_, 1, 1, true>::at_unsafe(0, 0));
+  }
+  else
+  {
+    return std::sqrt(normSq());
+  }
 }
 
 template <typename ValueType_, sint32 Size_>
 template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
 inline void Vector<ValueType_, Size_>::normalize()
 {
-  const auto length = norm();
-  this->operator/=(length);
+  if constexpr (Size_ == 1)
+  {
+    // the normalized vector of dim 1 is always 1 or -1, so we just set it accordingly
+    at_unsafe(0) = std::copysign(static_cast<ValueType_>(1.0), at_unsafe(0));
+  }
+  else
+  {
+    const auto length = norm();
+    this->operator/=(length);
+  }
 }
 
 template <typename ValueType_, sint32 Size_>
