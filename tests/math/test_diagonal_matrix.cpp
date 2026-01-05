@@ -395,8 +395,8 @@ TEST(DiagonalMatrix, isPositiveDefinite_false) // NOLINT
   // clang-format off
   const auto val = std::numeric_limits<float32>::min();
   const auto diagMat = conversions::DiagonalFromList<float32, 3>({
-    {val, 0,   0}, 
-    {  0, 0,   0}, 
+    {val, 0,   0},
+    {  0, 0,   0},
     {  0, 0, val}
   });
   // clang-format on
@@ -406,4 +406,220 @@ TEST(DiagonalMatrix, isPositiveDefinite_false) // NOLINT
 
   EXPECT_EQ(diagMat.at_unsafe(0), diagMat.at_unsafe(2));
   EXPECT_FALSE(result);
+}
+
+// ============================================================================
+// Trace and Determinant Tests
+// ============================================================================
+
+TEST(DiagonalMatrix, trace_2x2__Success) // NOLINT
+{
+  // Create a 2x2 diagonal matrix
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 2>({
+    {1, 0},
+    {0, 2}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.trace();
+
+  // Expected: 1 + 2 = 3
+  EXPECT_FLOAT_EQ(result, 3.0F);
+}
+
+TEST(DiagonalMatrix, trace_3x3__Success) // NOLINT
+{
+  // Create a 3x3 diagonal matrix
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+    {1, 0, 0},
+    {0, 2, 0},
+    {0, 0, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.trace();
+
+  // Expected: 1 + 2 + 3 = 6
+  EXPECT_FLOAT_EQ(result, 6.0F);
+}
+
+TEST(DiagonalMatrix, trace_4x4__Success) // NOLINT
+{
+  // Create a 4x4 diagonal matrix
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 4>({
+    {1, 0, 0, 0},
+    {0, 2, 0, 0},
+    {0, 0, 3, 0},
+    {0, 0, 0, 4}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.trace();
+
+  // Expected: 1 + 2 + 3 + 4 = 10
+  EXPECT_FLOAT_EQ(result, 10.0F);
+}
+
+TEST(DiagonalMatrix, trace_IdentityMatrix__Success) // NOLINT
+{
+  const auto identity = DiagonalMatrix<float32, 3>::Identity();
+
+  // call UUT
+  const auto result = identity.trace();
+
+  // Expected: 1 + 1 + 1 = 3 (matrix size)
+  EXPECT_FLOAT_EQ(result, 3.0F);
+}
+
+TEST(DiagonalMatrix, trace_ZeroMatrix__Success) // NOLINT
+{
+  const auto zeroMat = DiagonalMatrix<float32, 3>{};
+
+  // call UUT
+  const auto result = zeroMat.trace();
+
+  // Expected: 0 + 0 + 0 = 0
+  EXPECT_FLOAT_EQ(result, 0.0F);
+}
+
+TEST(DiagonalMatrix, trace_Double__Success) // NOLINT
+{
+  // Create a 3x3 diagonal matrix with double precision
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float64, 3>({
+    {1.0, 0.0, 0.0},
+    {0.0, 2.0, 0.0},
+    {0.0, 0.0, 3.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.trace();
+
+  // Expected: 1.0 + 2.0 + 3.0 = 6.0
+  EXPECT_DOUBLE_EQ(result, 6.0);
+}
+
+TEST(DiagonalMatrix, trace_1x1_Consistency__Success) // NOLINT
+{
+  // Create a 1x1 diagonal matrix
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 1>({
+    {5}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto traceResult = diagMat.trace();
+  const auto detResult   = diagMat.determinant();
+
+  // For 1x1 matrices, trace should equal determinant
+  EXPECT_FLOAT_EQ(traceResult, detResult);
+  EXPECT_FLOAT_EQ(traceResult, 5.0F);
+}
+
+TEST(DiagonalMatrix, determinant_2x2__Success) // NOLINT
+{
+  // Create a 2x2 diagonal matrix
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 2>({
+    {1, 0},
+    {0, 2}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.determinant();
+
+  // Expected: 1 * 2 = 2 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 2.0F);
+}
+
+TEST(DiagonalMatrix, determinant_3x3__Success) // NOLINT
+{
+  // Create a 3x3 diagonal matrix
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+    {1, 0, 0},
+    {0, 2, 0},
+    {0, 0, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.determinant();
+
+  // Expected: 1 * 2 * 3 = 6 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 6.0F);
+}
+
+TEST(DiagonalMatrix, determinant_IdentityMatrix__Success) // NOLINT
+{
+  const auto identity = DiagonalMatrix<float32, 3>::Identity();
+
+  // call UUT
+  const auto result = identity.determinant();
+
+  // Expected: 1 (identity matrix determinant is always 1)
+  EXPECT_FLOAT_EQ(result, 1.0F);
+}
+
+TEST(DiagonalMatrix, determinant_SingularMatrix__Success) // NOLINT
+{
+  // Create a singular diagonal matrix (zero on diagonal)
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+    {1, 0, 0},
+    {0, 0, 0},
+    {0, 0, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.determinant();
+
+  // Expected: 1 * 0 * 3 = 0 (singular matrix)
+  EXPECT_FLOAT_EQ(result, 0.0F);
+}
+
+TEST(DiagonalMatrix, determinant_Double__Success) // NOLINT
+{
+  // Create a 3x3 diagonal matrix with double precision
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float64, 3>({
+    {1.0, 0.0, 0.0},
+    {0.0, 2.0, 0.0},
+    {0.0, 0.0, 3.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.determinant();
+
+  // Expected: 1.0 * 2.0 * 3.0 = 6.0
+  EXPECT_DOUBLE_EQ(result, 6.0);
+}
+
+TEST(DiagonalMatrix, determinant_NegativeElements__Success) // NOLINT
+{
+  // Create a diagonal matrix with negative elements
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+    {-1, 0,  0},
+    { 0, 2,  0},
+    { 0, 0, -3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.determinant();
+
+  // Expected: (-1) * 2 * (-3) = 6 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 6.0F);
 }

@@ -655,3 +655,185 @@ TEST(TriangularMatrix, isUnitUpperTriangular_true) // NOLINT
 
   EXPECT_TRUE(result);
 }
+
+// ============================================================================
+// Determinant Tests
+// ============================================================================
+
+TEST(TriangularMatrix, determinant_UpperTriangular_2x2__Success) // NOLINT
+{
+  // Create a 2x2 upper triangular matrix
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 2, false, true>({
+    {1, 2},
+    {0, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1 * 3 = 3 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 3.0F);
+}
+
+TEST(TriangularMatrix, determinant_LowerTriangular_2x2__Success) // NOLINT
+{
+  // Create a 2x2 lower triangular matrix
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {1, 0},
+    {2, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 1 * 3 = 3 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 3.0F);
+}
+
+TEST(TriangularMatrix, determinant_UpperTriangular_3x3__Success) // NOLINT
+{
+  // Create a 3x3 upper triangular matrix
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+    {1, 2, 3},
+    {0, 4, 5},
+    {0, 0, 6}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1 * 4 * 6 = 24 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 24.0F);
+}
+
+TEST(TriangularMatrix, determinant_LowerTriangular_3x3__Success) // NOLINT
+{
+  // Create a 3x3 lower triangular matrix
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {1, 0, 0},
+    {2, 3, 0},
+    {4, 5, 6}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 1 * 3 * 6 = 18 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 18.0F);
+}
+
+TEST(TriangularMatrix, determinant_UnitTriangular_Upper__Success) // NOLINT
+{
+  // Create a 3x3 unit upper triangular matrix
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+    {1, 2, 3},
+    {0, 1, 4},
+    {0, 0, 1}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1 * 1 * 1 = 1 (unit triangular matrices have determinant 1)
+  EXPECT_FLOAT_EQ(result, 1.0F);
+}
+
+TEST(TriangularMatrix, determinant_UnitTriangular_Lower__Success) // NOLINT
+{
+  // Create a 3x3 unit lower triangular matrix
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {1, 0, 0},
+    {2, 1, 0},
+    {3, 4, 1}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 1 * 1 * 1 = 1 (unit triangular matrices have determinant 1)
+  EXPECT_FLOAT_EQ(result, 1.0F);
+}
+
+TEST(TriangularMatrix, determinant_Singular_Upper__Success) // NOLINT
+{
+  // Create a singular upper triangular matrix (zero on diagonal)
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+    {1, 2, 3},
+    {0, 0, 4},
+    {0, 0, 5}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1 * 0 * 5 = 0 (singular matrix)
+  EXPECT_FLOAT_EQ(result, 0.0F);
+}
+
+TEST(TriangularMatrix, determinant_Singular_Lower__Success) // NOLINT
+{
+  // Create a singular lower triangular matrix (zero on diagonal)
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {0, 0, 0},
+    {1, 2, 0},
+    {3, 4, 5}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 0 * 2 * 5 = 0 (singular matrix)
+  EXPECT_FLOAT_EQ(result, 0.0F);
+}
+
+TEST(TriangularMatrix, determinant_Double_Upper__Success) // NOLINT
+{
+  // Create a 3x3 upper triangular matrix with double precision
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float64, 3, false, true>({
+    {1.0, 2.0, 3.0},
+    {0.0, 4.0, 5.0},
+    {0.0, 0.0, 6.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1.0 * 4.0 * 6.0 = 24.0
+  EXPECT_DOUBLE_EQ(result, 24.0);
+}
+
+TEST(TriangularMatrix, determinant_Double_Lower__Success) // NOLINT
+{
+  // Create a 3x3 lower triangular matrix with double precision
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float64, 3, true, true>({
+    {1.0, 0.0, 0.0},
+    {2.0, 3.0, 0.0},
+    {4.0, 5.0, 6.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 1.0 * 3.0 * 6.0 = 18.0
+  EXPECT_DOUBLE_EQ(result, 18.0);
+}
