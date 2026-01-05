@@ -153,6 +153,23 @@ public:
   /// \note More memory efficient than the const version for large matrices
   void inverse();
 
+  /// \brief Calculate the trace of the diagonal matrix.
+  ///
+  /// Computes the sum of all diagonal elements of the matrix.
+  /// The trace is defined as the sum of elements A_ii for i = 1 to n.
+  ///
+  /// \return ValueType_ The trace of the matrix(sum of diagonal elements)
+  [[nodiscard]] auto trace() const -> ValueType_;
+
+  /// \brief Calculate the determinant of the square matrix.
+  ///
+  /// Computes the determinant as the product of the diagonal elements.
+  ///
+  /// \return ValueType_ The determinant of the matrix
+  /// \note Time complexity: O(n) where n is the matrix dimension
+  /// \note For singular matrices, the determinant will be zero or very close to zero
+  [[nodiscard]] auto determinant() const -> ValueType_;
+
   /// \brief Check if the diagonal matrix is positive definite.
   ///
   /// A diagonal matrix is positive definite if all diagonal elements are positive.

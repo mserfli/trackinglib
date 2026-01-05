@@ -304,6 +304,17 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::inverse(
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::determinant() const -> ValueType_
+{
+  ValueType_ det{1.0};
+  for (auto idx = 0; idx < Size_; ++idx)
+  {
+    det *= this->at_unsafe(idx, idx);
+  }
+  return det;
+}
+
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::isUnitUpperTriangular() const -> bool
 {
   auto isValid = true;

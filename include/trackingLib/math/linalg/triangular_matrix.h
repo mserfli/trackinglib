@@ -173,6 +173,15 @@ public:
   /// \note Assumes the matrix is non-singular
   [[nodiscard]] auto inverse() const -> TriangularMatrix;
 
+  /// \brief Calculate the determinant of the triangular matrix.
+  ///
+  /// Computes the determinant as the product of the diagonal elements.
+  ///
+  /// \return ValueType_ The determinant of the matrix
+  /// \note Time complexity: O(n) where n is the matrix dimension
+  /// \note For singular matrices, the determinant will be zero or very close to zero
+  [[nodiscard]] auto determinant() const -> ValueType_;
+
   // TODO(matthias): UnitUpper inplace inverse, Grewal Table 6.7 p.235
 
   /// \brief Checks for Unit Upper condition
@@ -197,6 +206,9 @@ public:
 private:
   /// \brief hide inherited transpose function
   using BaseSquareMatrix::transpose;
+
+  /// \brief hide inherited determinant function
+  using BaseSquareMatrix::determinant;
 
   /// \brief hide inherited operator() to prevent accessing off-triangular elements
   using BaseSquareMatrix::operator();

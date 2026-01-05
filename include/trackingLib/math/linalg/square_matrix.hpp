@@ -40,6 +40,85 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::Identity() -> SquareMa
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::trace() const -> ValueType_
+{
+  ValueType_ result{0};
+  for (auto i = 0; i < Size_; ++i)
+  {
+    result += this->at_unsafe(i, i);
+  }
+  return result;
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::determinant() const -> ValueType_
+{
+  // Create a copy of the matrix for LU decomposition
+  SquareMatrix<ValueType_, Size_, IsRowMajor_> luMatrix{*this};
+  sint32                                       permutationCount{0};
+
+  // Perform LU decomposition with partial pivoting
+  for (auto k = 0; k < Size_; ++k)
+  {
+    // Partial pivoting: find the row with maximum element in current column
+    auto       maxRow = k;
+    ValueType_ maxVal = std::abs(luMatrix.at_unsafe(k, k));
+
+    for (auto i = k + 1; i < Size_; ++i)
+    {
+      const auto absVal = std::abs(luMatrix.at_unsafe(i, k));
+      if (absVal > maxVal)
+      {
+        maxVal = absVal;
+        maxRow = i;
+      }
+    }
+
+    // Swap rows if necessary
+    if (maxRow != k)
+    {
+      for (auto j = 0; j < Size_; ++j)
+      {
+        std::swap(luMatrix.at_unsafe(k, j), luMatrix.at_unsafe(maxRow, j));
+      }
+      permutationCount++;
+    }
+
+    // Check for singular matrix
+    if (std::abs(luMatrix.at_unsafe(k, k)) < std::numeric_limits<ValueType_>::epsilon())
+    {
+      return static_cast<ValueType_>(0);
+    }
+
+    // Perform elimination for rows below the current one
+    for (auto i = k + 1; i < Size_; ++i)
+    {
+      const auto factor = luMatrix.at_unsafe(i, k) / luMatrix.at_unsafe(k, k);
+
+      for (auto j = k; j < Size_; ++j)
+      {
+        luMatrix.at_unsafe(i, j) -= factor * luMatrix.at_unsafe(k, j);
+      }
+    }
+  }
+
+  // Calculate determinant as product of diagonal elements, multiplied by (-1)^permutationCount
+  ValueType_ det{1};
+  for (auto i = 0; i < Size_; ++i)
+  {
+    det *= luMatrix.at_unsafe(i, i);
+  }
+
+  // Apply sign based on number of row permutations
+  if (permutationCount % 2 != 0)
+  {
+    det = -det;
+  }
+
+  return det;
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix& b) const
     -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
 {

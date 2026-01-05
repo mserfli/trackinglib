@@ -90,6 +90,27 @@ public:
   /// \note This operation modifies the matrix in-place and does not change its size or layout
   void setIdentity();
 
+  /// \brief Calculate the trace of the square matrix.
+  ///
+  /// Computes the sum of all diagonal elements of the matrix.
+  /// The trace is defined as the sum of elements A_ii for i = 1 to n.
+  ///
+  /// \return ValueType_ The trace of the matrix(sum of diagonal elements)
+  [[nodiscard]] auto trace() const -> ValueType_;
+
+  /// \brief Calculate the determinant of the square matrix.
+  ///
+  /// Computes the determinant using LU decomposition with partial pivoting.
+  /// The determinant is the product of the diagonal elements of the upper triangular
+  /// matrix from the LU decomposition, multiplied by (-1)^k where k is the number
+  /// of row permutations.
+  ///
+  /// \return ValueType_ The determinant of the matrix
+  /// \note Time complexity: O(n^3) where n is the matrix dimension
+  /// \note For singular matrices, the determinant will be zero or very close to zero
+  /// \note Uses partial pivoting for numerical stability
+  [[nodiscard]] auto determinant() const -> ValueType_;
+
   /// \brief Performs Householder QR decomposition of a square matrix
   ///
   /// Decomposes a square matrix A into the product A = Q*R, where Q is an orthogonal matrix
