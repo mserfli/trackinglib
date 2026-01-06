@@ -106,17 +106,22 @@
   - Main test runner: [`tests/test.cpp`](tests/test.cpp)
   - Math tests: [`tests/math/`](tests/math/)
     - [`test_matrix.cpp`](tests/math/test_matrix.cpp) - Matrix class tests (108 tests)
-    - [`test_matrix_io.cpp`](tests/math/test_matrix_io.cpp) - Stream output tests
-    - [`test_matrix_view.cpp`](tests/math/test_matrix_view.cpp) - MatrixView tests
-    - [`test_vector.cpp`](tests/math/test_vector.cpp) - Vector tests (8 tests)
-    - [`test_point2d.cpp`](tests/math/test_point2d.cpp) - Point2d tests
-    - [`test_point3d.cpp`](tests/math/test_point3d.cpp) - Point3d tests
+    - [`test_matrix_io.cpp`](tests/math/test_matrix_io.cpp) - Stream output tests (11 tests)
+    - [`test_matrix_view.cpp`](tests/math/test_matrix_view.cpp) - MatrixView tests (4 tests)
+    - [`test_matrix_row_view.cpp`](tests/math/test_matrix_row_view.cpp) - MatrixRowView tests (3 tests)
+    - [`test_matrix_column_view.cpp`](tests/math/test_matrix_column_view.cpp) - MatrixColumnView tests (5 tests)
+    - [`test_vector.cpp`](tests/math/test_vector.cpp) - Vector tests (39 tests)
+    - [`test_point2d.cpp`](tests/math/test_point2d.cpp) - Point2d tests (4 tests)
+    - [`test_point3d.cpp`](tests/math/test_point3d.cpp) - Point3d tests (4 tests)
     - [`test_square_matrix.cpp`](tests/math/test_square_matrix.cpp) - SquareMatrix tests (12 tests)
     - [`test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) - TriangularMatrix tests (26 tests)
     - [`test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp) - DiagonalMatrix tests (18 tests)
-    - [`test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) - Covariance tests
-    - [`test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) - Factored covariance tests
+    - [`test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) - Covariance tests (14 tests)
+    - [`test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) - Factored covariance tests (20 tests)
     - [`test_rank1_update.cpp`](tests/math/test_rank1_update.cpp) - Rank-1 update tests (6 tests)
+    - [`test_conversions.cpp`](tests/math/test_conversions.cpp) - Conversion functions tests (30-40 tests)
+    - [`test_modified_gram_schmidt.cpp`](tests/math/test_modified_gram_schmidt.cpp) - Modified Gram-Schmidt tests (6 tests)
+    - [`test_matrix_integration.cpp`](tests/math/test_matrix_integration.cpp) - Matrix integration tests (11 tests)
   - Motion tests: [`tests/motion/`](tests/motion/)
     - [`test_motion_model_cv.cpp`](tests/motion/test_motion_model_cv.cpp) - CV model tests
     - [`test_motion_model_ca.cpp`](tests/motion/test_motion_model_ca.cpp) - CA model tests
@@ -148,8 +153,10 @@
   - **clang-format Control**: Disable locally for matrix definitions to improve readability
     - Use `// clang-format off` and `// clang-format on` around matrix initializer lists
   - **Comprehensive Coverage**: Edge cases (aliasing, transpose, block operations)
-  - **Test Count**: 215 tests (as of 2026-01-02)
-
+  - **Test Count**: 333+ tests (as of 2026-01-06)
+  - **Test Coverage Plan**: Comprehensive plan created in [`plans/math_layer_test_coverage_plan.md`](plans/math_layer_test_coverage_plan.md)
+  - **Target**: 310+ tests for math layer with >90% line coverage and >85% branch coverage
+  
 #### Code Coverage
 - **Tool**: lcov
 - **Build Type**: Coverage

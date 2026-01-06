@@ -153,12 +153,45 @@ inline void DiagonalMatrix<ValueType_, Size_>::inverse()
 }
 
 template <typename ValueType_, sint32 Size_>
+inline auto DiagonalMatrix<ValueType_, Size_>::trace() const -> ValueType_
+{
+  ValueType_ sum{static_cast<ValueType_>(0)};
+  for (auto idx = 0; idx < Size_; ++idx)
+  {
+    sum += _data.at_unsafe(idx);
+  }
+  return sum;
+}
+
+template <typename ValueType_, sint32 Size_>
+inline auto DiagonalMatrix<ValueType_, Size_>::determinant() const -> ValueType_
+{
+  ValueType_ det{static_cast<ValueType_>(1)};
+  for (auto idx = 0; idx < Size_; ++idx)
+  {
+    det *= _data.at_unsafe(idx);
+  }
+  return det;
+}
+
+template <typename ValueType_, sint32 Size_>
 inline auto DiagonalMatrix<ValueType_, Size_>::isPositiveDefinite() const -> bool
 {
   auto isValid = true;
   for (auto idx = 0; idx < Size_; ++idx)
   {
     isValid = isValid && (static_cast<ValueType_>(0) < _data.at_unsafe(idx));
+  }
+  return isValid;
+}
+
+template <typename ValueType_, sint32 Size_>
+inline auto DiagonalMatrix<ValueType_, Size_>::isPositiveSemiDefinite() const -> bool
+{
+  auto isValid = true;
+  for (auto idx = 0; idx < Size_; ++idx)
+  {
+    isValid = isValid && (static_cast<ValueType_>(0) <= _data.at_unsafe(idx));
   }
   return isValid;
 }

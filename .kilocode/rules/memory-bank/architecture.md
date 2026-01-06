@@ -97,6 +97,13 @@ include/trackingLib/
   - Agee-Turner rank-1 update
   - Better numerical stability
 
+**Mathematical Functions** ([`functions.h`](include/trackingLib/math/analysis/functions.h)):
+- **Modern C++17 Implementation**: Replaced template metaprogramming with modern `constexpr` functions
+- **Compile-time Power Function**: `pow<N>(x)` computes x^N at compile time
+- **Zero Runtime Overhead**: When used with compile-time constants
+- **Better Readability**: Uses `if constexpr` instead of recursive template specializations
+- **Maintains Functionality**: Same interface and behavior as previous implementation
+
 **Design Patterns**:
 - Header/implementation split (`.h`/`.hpp`)
 - Template-based for type flexibility
@@ -278,6 +285,8 @@ static void predictCovariance(
   - [`tests/math/`](tests/math/): Math library tests
   - [`tests/motion/`](tests/motion/): Motion model tests
   - Mock objects in [`tests/motion/mocks/`](tests/motion/mocks/)
+- Comprehensive test coverage plan in [`plans/math_layer_test_coverage_plan.md`](plans/math_layer_test_coverage_plan.md)
+- Target: 310+ tests with >90% line coverage and >85% branch coverage
 
 ## Build System
 

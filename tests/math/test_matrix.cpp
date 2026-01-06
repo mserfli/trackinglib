@@ -1010,7 +1010,7 @@ TEST(GTestMatrixSpecial, op_plus_transpose_inplace_NonSquare_ShouldNotAlias) // 
 {
   using MatType = Matrix<sint32, 2, 3, true>;
   // clang-format off
-  MatType mat   = conversions::MatrixFromList<sint32, 2, 3, true>({
+  const MatType mat   = conversions::MatrixFromList<sint32, 2, 3, true>({
       {1, 2, 3},
       {4, 5, 6},
   });

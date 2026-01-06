@@ -22,11 +22,13 @@ class DiagonalMatrix TEST_REMOVE_FINAL;
 // TODO(matthias): add interface contract
 
 /// \brief A square matrix specialization of the Matrix class providing additional operations
-/// specific to square matrices such as decompositions, inverse calculations, and symmetry checks.
+/// specific to square matrices such as decompositions, inverse calculations, symmetry checks,
+/// and matrix property validation.
 ///
 /// This class inherits from Matrix<ValueType_, Size_, Size_, IsRowMajor_> and extends it with
 /// operations that are only meaningful for square matrices. It supports various matrix
-/// decompositions (QR, LLT, LDLT, UDUT), matrix inversion, and symmetry operations.
+/// decompositions (QR, LLT, LDLT, UDUT), matrix inversion, symmetry operations, and
+/// property checking functions for validation and debugging.
 ///
 /// \tparam ValueType_ The data type of matrix elements (e.g., float32, float64)
 /// \tparam Size_ The dimension of the square matrix (compile-time constant)
@@ -87,6 +89,27 @@ public:
   ///
   /// \note This operation modifies the matrix in-place and does not change its size or layout
   void setIdentity();
+
+  /// \brief Calculate the trace of the square matrix.
+  ///
+  /// Computes the sum of all diagonal elements of the matrix.
+  /// The trace is defined as the sum of elements A_ii for i = 1 to n.
+  ///
+  /// \return ValueType_ The trace of the matrix(sum of diagonal elements)
+  [[nodiscard]] auto trace() const -> ValueType_;
+
+  /// \brief Calculate the determinant of the square matrix.
+  ///
+  /// Computes the determinant using LU decomposition with partial pivoting.
+  /// The determinant is the product of the diagonal elements of the upper triangular
+  /// matrix from the LU decomposition, multiplied by (-1)^k where k is the number
+  /// of row permutations.
+  ///
+  /// \return ValueType_ The determinant of the matrix
+  /// \note Time complexity: O(n^3) where n is the matrix dimension
+  /// \note For singular matrices, the determinant will be zero or very close to zero
+  /// \note Uses partial pivoting for numerical stability
+  [[nodiscard]] auto determinant() const -> ValueType_;
 
   /// \brief Performs Householder QR decomposition of a square matrix
   ///
@@ -234,15 +257,6 @@ public:
   /// \see householderQR for the underlying decomposition
   [[nodiscard]] auto inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
-  /// \brief Check if the matrix is symmetric.
-  ///
-  /// Tests whether the matrix equals its transpose (A = A^T).
-  ///
-  /// \return true if the matrix is symmetric, false otherwise
-  ///
-  /// \note Symmetry checking uses element-wise comparison and may have floating-point precision issues
-  [[nodiscard]] auto isSymmetric() const -> bool;
-
   /// \brief Symmetrize the matrix by averaging with its transpose.
   ///
   /// Modifies the matrix to be symmetric by computing (A + A^T) / 2.
@@ -252,6 +266,84 @@ public:
   /// \note This operation modifies the matrix in-place and ensures perfect symmetry
   ///       at the cost of slightly changing the original values.
   void symmetrize();
+
+  //////////////////////////////////////////////////
+  // square matrix property checks  --->
+  /// \brief Check if the matrix is symmetric.
+  ///
+  /// Tests whether the matrix equals its transpose (A = A^T).
+  ///
+  /// \param tolerance Tolerance for numerical comparison (default: 1e-6)
+  /// \return true if the matrix is symmetric, false otherwise
+  ///
+  /// \note Symmetry checking uses element-wise comparison and may have floating-point precision issues
+  [[nodiscard]] auto isSymmetric(ValueType_ tolerance = 1e-6) const -> bool;
+
+  /// \brief Checks if the matrix is positive semi-definite.
+  ///
+  /// Tests whether all eigenvalues of the matrix are non-negative.
+  /// A positive semi-definite matrix satisfies x^T * A * x >= 0 for all non-zero vectors x.
+  ///
+  /// This is a key property for covariance matrices in statistics and machine learning.
+  ///
+  /// The check is performed using Cholesky decomposition; if it succeeds, the matrix
+  /// is positive definite.
+  ///
+  /// \return true if the matrix is positive semi-definite, false otherwise
+  [[nodiscard]] auto isPositiveSemiDefinite() const -> bool;
+
+  /// \brief Checks if the matrix is orthogonal within a specified tolerance
+  ///
+  /// Tests whether the matrix is orthogonal by checking if Q^T * Q = I within tolerance.
+  /// An orthogonal matrix satisfies Q^T * Q = I, where I is the identity matrix.
+  ///
+  /// \param tolerance Tolerance for numerical comparison (default: 1e-6)
+  /// \return true if matrix is orthogonal within tolerance, false otherwise
+  ///
+  /// \note This is useful for validating QR decomposition results
+  /// \note Time complexity: O(n^3) due to matrix multiplication
+  /// \see householderQR() for QR decomposition that produces orthogonal matrices
+  [[nodiscard]] auto isOrthogonal(ValueType_ tolerance = 1e-6) const -> bool;
+
+  /// \brief Checks if the matrix is upper triangular within a specified tolerance
+  ///
+  /// Tests whether all elements below the main diagonal are zero within tolerance.
+  /// An upper triangular matrix has all elements below the diagonal equal to zero.
+  ///
+  /// \param tolerance Tolerance for numerical comparison (default: 1e-6)
+  /// \return true if matrix is upper triangular within tolerance, false otherwise
+  ///
+  /// \note This is useful for validating decomposition results (QR, UDUT)
+  /// \note Time complexity: O(n^2)
+  /// \see householderQR() for QR decomposition that produces upper triangular matrices
+  [[nodiscard]] auto isUpperTriangular(ValueType_ tolerance = 1e-6) const -> bool;
+
+  /// \brief Checks if the matrix is lower triangular within a specified tolerance
+  ///
+  /// Tests whether all elements above the main diagonal are zero within tolerance.
+  /// A lower triangular matrix has all elements above the diagonal equal to zero.
+  ///
+  /// \param tolerance Tolerance for numerical comparison (default: 1e-6)
+  /// \return true if matrix is lower triangular within tolerance, false otherwise
+  ///
+  /// \note This is useful for validating decomposition results (LLT, LDLT)
+  /// \note Time complexity: O(n^2)
+  /// \see decomposeLLT() for LLT decomposition that produces lower triangular matrices
+  [[nodiscard]] auto isLowerTriangular(ValueType_ tolerance = 1e-6) const -> bool;
+
+  /// \brief Checks if the matrix has a unit diagonal within a specified tolerance
+  ///
+  /// Tests whether all diagonal elements are equal to 1 within tolerance.
+  /// A unit diagonal matrix has all diagonal elements equal to 1.
+  ///
+  /// \param tolerance Tolerance for numerical comparison (default: 1e-6)
+  /// \return true if all diagonal elements are 1 within tolerance, false otherwise
+  ///
+  /// \note This is useful for validating decomposition results (LDLT, UDUT)
+  /// \note Time complexity: O(n)
+  /// \see decomposeLDLT() for LDLT decomposition that produces unit diagonal matrices
+  [[nodiscard]] auto hasUnitDiagonal(ValueType_ tolerance = 1e-6) const -> bool;
+  // <---
 
 protected:
   /// \brief Check if all diagonal elements are strictly positive.

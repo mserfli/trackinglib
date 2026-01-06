@@ -5,8 +5,8 @@
 /// \brief Mathematical functions for compile-time computations
 ///
 /// This file provides mathematical functions that can be evaluated at compile time.
-/// The implementation uses template metaprogramming to compute results during
-/// compilation, avoiding runtime overhead for constant expressions.
+/// The implementation uses modern C++17 constexpr functions for better readability
+/// and maintainability compared to template metaprogramming approaches.
 ///
 /// \note All functions are constexpr and can be used in template parameters
 ///       and other compile-time contexts.
@@ -17,52 +17,14 @@ namespace tracking
 {
 namespace math
 {
-namespace detail
-{
-/// \brief Helper struct for compile-time power computation
-///
-/// This template metaprogramming helper recursively computes x^N at compile time.
-/// The recursion is unrolled by the compiler, resulting in zero runtime overhead.
-///
-/// \tparam T The value type (must support multiplication)
-/// \tparam N The exponent (must be a compile-time constant)
-template <class T, int N>
-struct helper
-{
-  /// \brief Compute x^N recursively
-  /// \param x The base value
-  /// \return x^N
-  static constexpr T pow(const T x) { return helper<T, N - 1>::pow(x) * x; }
-};
-
-/// \brief Specialization for N=1 (base case)
-/// \tparam T The value type
-template <class T>
-struct helper<T, 1>
-{
-  /// \brief Return x^1 = x
-  /// \param x The base value
-  /// \return x
-  static constexpr T pow(const T x) { return x; }
-};
-
-/// \brief Specialization for N=0 (base case)
-/// \tparam T The value type
-template <class T>
-struct helper<T, 0>
-{
-  /// \brief Return x^0 = 1 (mathematical convention)
-  /// \return 1
-  static constexpr T pow(const T) { return 1; }
-};
-} // namespace detail
-
 /// \brief Compile-time power function
 ///
-/// Computes x^N at compile time using template metaprogramming.
-/// This function has zero runtime overhead when used with compile-time constants.
+/// Computes x^N at compile time using a simple iterative approach.
+/// This modern C++17 implementation replaces the previous template metaprogramming
+/// approach, providing better readability and maintainability while maintaining
+/// zero runtime overhead when used with compile-time constants.
 ///
-/// \tparam N The exponent (must be a compile-time constant)
+/// \tparam N The exponent (must be a compile-time constant, non-negative integer)
 /// \tparam T The value type (must support multiplication)
 /// \param x The base value
 /// \return x raised to the power N
@@ -77,9 +39,26 @@ struct helper<T, 0>
 /// constexpr int template_param = tracking::math::pow<4>(3); // can be used in templates
 /// \endcode
 template <int N, class T>
-T constexpr pow(T const x)
+constexpr T pow(T const x)
 {
-  return detail::helper<T, N>::pow(x);
+  if constexpr (N == 0)
+  {
+    return 1; // x^0 = 1 (mathematical convention)
+  }
+  else if constexpr (N == 1)
+  {
+    return x; // x^1 = x
+  }
+  else
+  {
+    // Iterative approach for N >= 2
+    T result = x;
+    for (int i = 1; i < N; ++i)
+    {
+      result *= x;
+    }
+    return result;
+  }
 }
 
 } // namespace math

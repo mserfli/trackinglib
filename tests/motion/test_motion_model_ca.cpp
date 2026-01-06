@@ -2,7 +2,7 @@
 
 #include "mocks/motion_model_no_ego_motion.hpp"
 #include "trackingLib/motion/motion_model_ca.hpp" // IWYU pragma: keep
-
+#include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
 
 // instatiate all templates for full coverage report
 template class tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFull, float32>;

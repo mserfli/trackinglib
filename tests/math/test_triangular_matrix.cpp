@@ -655,3 +655,705 @@ TEST(TriangularMatrix, isUnitUpperTriangular_true) // NOLINT
 
   EXPECT_TRUE(result);
 }
+
+// ============================================================================
+// Determinant Tests
+// ============================================================================
+
+TEST(TriangularMatrix, determinant_UpperTriangular_2x2__Success) // NOLINT
+{
+  // Create a 2x2 upper triangular matrix
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 2, false, true>({
+    {1, 2},
+    {0, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1 * 3 = 3 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 3.0F);
+}
+
+TEST(TriangularMatrix, determinant_LowerTriangular_2x2__Success) // NOLINT
+{
+  // Create a 2x2 lower triangular matrix
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {1, 0},
+    {2, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 1 * 3 = 3 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 3.0F);
+}
+
+TEST(TriangularMatrix, determinant_UpperTriangular_3x3__Success) // NOLINT
+{
+  // Create a 3x3 upper triangular matrix
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+    {1, 2, 3},
+    {0, 4, 5},
+    {0, 0, 6}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1 * 4 * 6 = 24 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 24.0F);
+}
+
+TEST(TriangularMatrix, determinant_LowerTriangular_3x3__Success) // NOLINT
+{
+  // Create a 3x3 lower triangular matrix
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {1, 0, 0},
+    {2, 3, 0},
+    {4, 5, 6}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 1 * 3 * 6 = 18 (product of diagonal elements)
+  EXPECT_FLOAT_EQ(result, 18.0F);
+}
+
+TEST(TriangularMatrix, determinant_UnitTriangular_Upper__Success) // NOLINT
+{
+  // Create a 3x3 unit upper triangular matrix
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+    {1, 2, 3},
+    {0, 1, 4},
+    {0, 0, 1}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1 * 1 * 1 = 1 (unit triangular matrices have determinant 1)
+  EXPECT_FLOAT_EQ(result, 1.0F);
+}
+
+TEST(TriangularMatrix, determinant_UnitTriangular_Lower__Success) // NOLINT
+{
+  // Create a 3x3 unit lower triangular matrix
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {1, 0, 0},
+    {2, 1, 0},
+    {3, 4, 1}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 1 * 1 * 1 = 1 (unit triangular matrices have determinant 1)
+  EXPECT_FLOAT_EQ(result, 1.0F);
+}
+
+TEST(TriangularMatrix, determinant_Singular_Upper__Success) // NOLINT
+{
+  // Create a singular upper triangular matrix (zero on diagonal)
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+    {1, 2, 3},
+    {0, 0, 4},
+    {0, 0, 5}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1 * 0 * 5 = 0 (singular matrix)
+  EXPECT_FLOAT_EQ(result, 0.0F);
+}
+
+TEST(TriangularMatrix, determinant_Singular_Lower__Success) // NOLINT
+{
+  // Create a singular lower triangular matrix (zero on diagonal)
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {0, 0, 0},
+    {1, 2, 0},
+    {3, 4, 5}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 0 * 2 * 5 = 0 (singular matrix)
+  EXPECT_FLOAT_EQ(result, 0.0F);
+}
+
+TEST(TriangularMatrix, determinant_Double_Upper__Success) // NOLINT
+{
+  // Create a 3x3 upper triangular matrix with double precision
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float64, 3, false, true>({
+    {1.0, 2.0, 3.0},
+    {0.0, 4.0, 5.0},
+    {0.0, 0.0, 6.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = triuMat.determinant();
+
+  // Expected: 1.0 * 4.0 * 6.0 = 24.0
+  EXPECT_DOUBLE_EQ(result, 24.0);
+}
+
+TEST(TriangularMatrix, determinant_Double_Lower__Success) // NOLINT
+{
+  // Create a 3x3 lower triangular matrix with double precision
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float64, 3, true, true>({
+    {1.0, 0.0, 0.0},
+    {2.0, 3.0, 0.0},
+    {4.0, 5.0, 6.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = trilMat.determinant();
+
+  // Expected: 1.0 * 3.0 * 6.0 = 18.0
+  EXPECT_DOUBLE_EQ(result, 18.0);
+}
+
+// ============================================================================
+// Additional Triangular Solve and Inversion Tests
+// ============================================================================
+
+TEST(TriangularMatrix, solve_ForwardSubstitution_2x2__Success) // NOLINT
+{
+  // Test forward substitution for lower triangular matrix (2x2)
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {2, 0},
+    {1, 3}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {4},
+    {7}
+  });
+  const auto expMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {2.0},
+    {1.6666667}
+  });
+  // clang-format on
+
+  // call UUT - forward substitution for lower triangular
+  auto resMat = trilMat.solve(bMat);
+
+  EXPECT_NEAR(expMat.at_unsafe(0, 0), resMat.at_unsafe(0, 0), 1e-6);
+  EXPECT_NEAR(expMat.at_unsafe(1, 0), resMat.at_unsafe(1, 0), 1e-6);
+}
+
+TEST(TriangularMatrix, solve_BackwardSubstitution_2x2__Success) // NOLINT
+{
+  // Test backward substitution for upper triangular matrix (2x2)
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 2, false, true>({
+    {2, 1},
+    {0, 3}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {5},
+    {9}
+  });
+  const auto expMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {1.0},
+    {3.0}
+  });
+  // clang-format on
+
+  // call UUT - backward substitution for upper triangular
+  auto resMat = triuMat.solve(bMat);
+
+  EXPECT_NEAR(expMat.at_unsafe(0, 0), resMat.at_unsafe(0, 0), 1e-6);
+  EXPECT_NEAR(expMat.at_unsafe(1, 0), resMat.at_unsafe(1, 0), 1e-6);
+}
+
+TEST(TriangularMatrix, solve_MultipleRHS_3x3__Success) // NOLINT
+{
+  // Test solving with multiple right-hand sides (3x3 system, 2 RHS)
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {1, 0, 0},
+    {2, 3, 0},
+    {4, 5, 6}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 3, 2, true>({
+    {1, 2},
+    {5, 6},
+    {9, 10}
+  });
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat.solve(bMat);
+
+  // Verify the solution by reconstructing: trilMat * resMat should ≈ bMat
+  auto reconstructed = trilMat * resMat;
+
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = 0; col < 2; ++col)
+    {
+      EXPECT_NEAR(bMat.at_unsafe(row, col), reconstructed.at_unsafe(row, col), 1e-5);
+    }
+  }
+}
+
+TEST(TriangularMatrix, inverse_UnitTriangular_Upper__Success) // NOLINT
+{
+  // Test inversion of unit upper triangular matrix
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+    {1, 2, 3},
+    {0, 1, 4},
+    {0, 0, 1}
+  });
+  const auto expMat = conversions::TriangularFromList<float32, 3, false, true>({
+    {1, -2, 5},
+    {0, 1, -4},
+    {0, 0, 1}
+  });
+  // clang-format on
+
+  // call UUT
+  auto invMat = triuMat.inverse();
+
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = row; col < 3; ++col)
+    {
+      EXPECT_NEAR(expMat.at_unsafe(row, col), invMat.at_unsafe(row, col), 1e-6);
+    }
+  }
+}
+
+TEST(TriangularMatrix, inverse_UnitTriangular_Lower__Success) // NOLINT
+{
+  // Test inversion of unit lower triangular matrix
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {1, 0, 0},
+    {2, 1, 0},
+    {3, 4, 1}
+  });
+  const auto expMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {1, 0, 0},
+    {-2, 1, 0},
+    {5, -4, 1}
+  });
+  // clang-format on
+
+  // call UUT
+  auto invMat = trilMat.inverse();
+
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = 0; col <= row; ++col)
+    {
+      EXPECT_NEAR(expMat.at_unsafe(row, col), invMat.at_unsafe(row, col), 1e-6);
+    }
+  }
+}
+
+TEST(TriangularMatrix, solve_NearSingular_Lower__Success) // NOLINT
+{
+  // Test solving with near-singular lower triangular matrix
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {1, 0},
+    {1, 0.0001}  // Very small diagonal element
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {1},
+    {1}
+  });
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat.solve(bMat);
+
+  // Should still work but with potential numerical issues
+  EXPECT_NEAR(1.0, resMat.at_unsafe(0, 0), 1e-3);   // Less strict tolerance
+  EXPECT_LT(std::abs(resMat.at_unsafe(1, 0)), 1e3); // Should not be infinite
+}
+
+TEST(TriangularMatrix, solve_NearSingular_Upper__Success) // NOLINT
+{
+  // Test solving with near-singular upper triangular matrix
+  // clang-format off
+  const auto triuMat = conversions::TriangularFromList<float32, 2, false, true>({
+    {0.0001, 1},  // Very small diagonal element
+    {0, 2}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {1},
+    {2}
+  });
+  // clang-format on
+
+  // call UUT
+  auto resMat = triuMat.solve(bMat);
+
+  // Should still work but with potential numerical issues
+  EXPECT_NEAR(1.0, resMat.at_unsafe(1, 0), 1e-3);   // Less strict tolerance
+  EXPECT_LT(std::abs(resMat.at_unsafe(0, 0)), 1e4); // Should not be extremely large
+}
+
+TEST(TriangularMatrix, inverse_NearSingular_Lower__Success) // NOLINT
+{
+  // Test inversion of near-singular lower triangular matrix
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {1, 0},
+    {1, 0.001}  // Very small diagonal element
+  });
+  // clang-format on
+
+  // call UUT
+  auto invMat = trilMat.inverse();
+
+  // Should work but may have large values
+  EXPECT_NEAR(1.0, invMat.at_unsafe(0, 0), 1e-3);
+  EXPECT_NEAR(-1000.0, invMat.at_unsafe(1, 0), 1e-1); // Should be approximately -1/0.001
+  EXPECT_GT(invMat.at_unsafe(1, 1), 1e2);             // Very large inverse element (1/0.001 = 1000)
+}
+
+TEST(TriangularMatrix, solve_IdentityMatrix__Success) // NOLINT
+{
+  // Test solving with identity matrix (should return the same as input)
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {1, 0, 0},
+    {0, 1, 0},
+    {0, 0, 1}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 3, 2, true>({
+    {1, 4},
+    {2, 5},
+    {3, 6}
+  });
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat.solve(bMat);
+
+  // Should be identical to input
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = 0; col < 2; ++col)
+    {
+      EXPECT_FLOAT_EQ(bMat.at_unsafe(row, col), resMat.at_unsafe(row, col));
+    }
+  }
+}
+
+TEST(TriangularMatrix, inverse_IdentityMatrix__Success) // NOLINT
+{
+  // Test inversion of identity matrix (should return identity)
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {1, 0, 0},
+    {0, 1, 0},
+    {0, 0, 1}
+  });
+  // clang-format on
+
+  // call UUT
+  auto invMat = trilMat.inverse();
+
+  // Should be identity matrix
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = 0; col <= row; ++col)
+    {
+      if (row == col)
+      {
+        EXPECT_FLOAT_EQ(1.0, invMat.at_unsafe(row, col));
+      }
+      else
+      {
+        EXPECT_FLOAT_EQ(0.0, invMat.at_unsafe(row, col));
+      }
+    }
+  }
+}
+
+TEST(TriangularMatrix, solve_DiagonalMatrix__Success) // NOLINT
+{
+  // Test solving with diagonal matrix (special case of triangular)
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {2, 0, 0},
+    {0, 3, 0},
+    {0, 0, 4}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 3, 1, true>({
+    {2},
+    {6},
+    {12}
+  });
+  const auto expMat = conversions::MatrixFromList<float32, 3, 1, true>({
+    {1.0},
+    {2.0},
+    {3.0}
+  });
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat.solve(bMat);
+
+  for (auto row = 0; row < 3; ++row)
+  {
+    EXPECT_NEAR(expMat.at_unsafe(row, 0), resMat.at_unsafe(row, 0), 1e-6);
+  }
+}
+
+TEST(TriangularMatrix, inverse_DiagonalMatrix__Success) // NOLINT
+{
+  // Test inversion of diagonal matrix (special case of triangular)
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {2, 0, 0},
+    {0, 3, 0},
+    {0, 0, 4}
+  });
+  const auto expMat = conversions::TriangularFromList<float32, 3, true, true>({
+    {0.5, 0, 0},
+    {0, 1.0/3.0, 0},
+    {0, 0, 0.25}
+  });
+  // clang-format on
+
+  // call UUT
+  auto invMat = trilMat.inverse();
+
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = 0; col <= row; ++col)
+    {
+      EXPECT_NEAR(expMat.at_unsafe(row, col), invMat.at_unsafe(row, col), 1e-6);
+    }
+  }
+}
+
+TEST(TriangularMatrix, solve_LargeValues__Success) // NOLINT
+{
+  // Test solving with large values to check numerical stability
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {1000, 0},
+    {2000, 3000}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {1000},
+    {5000}
+  });
+  const auto expMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {1.0},
+    {1.0}
+  });
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat.solve(bMat);
+
+  EXPECT_NEAR(expMat.at_unsafe(0, 0), resMat.at_unsafe(0, 0), 1e-3);
+  EXPECT_NEAR(expMat.at_unsafe(1, 0), resMat.at_unsafe(1, 0), 1e-3);
+}
+
+TEST(TriangularMatrix, solve_SmallValues__Success) // NOLINT
+{
+  // Test solving with small values to check numerical stability
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {0.001, 0},
+    {0.002, 0.003}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {0.001},
+    {0.005}
+  });
+  const auto expMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {1.0},
+    {1.0}
+  });
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat.solve(bMat);
+
+  EXPECT_NEAR(expMat.at_unsafe(0, 0), resMat.at_unsafe(0, 0), 1e-3);
+  EXPECT_NEAR(expMat.at_unsafe(1, 0), resMat.at_unsafe(1, 0), 1e-3);
+}
+
+TEST(TriangularMatrix, solve_NegativeValues__Success) // NOLINT
+{
+  // Test solving with negative values
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {-1, 0},
+    {2, -3}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {-1},
+    {5}
+  });
+  const auto expMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {1.0},
+    {-1.0}
+  });
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat.solve(bMat);
+
+  EXPECT_NEAR(expMat.at_unsafe(0, 0), resMat.at_unsafe(0, 0), 1e-6);
+  EXPECT_NEAR(expMat.at_unsafe(1, 0), resMat.at_unsafe(1, 0), 1e-6);
+}
+
+TEST(TriangularMatrix, inverse_NegativeValues__Success) // NOLINT
+{
+  // Test inversion with negative values
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {-1, 0},
+    {2, -3}
+  });
+  const auto expMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {-1, 0},
+    {-2.0/3.0, -1.0/3.0}
+  });
+  // clang-format on
+
+  // call UUT
+  auto invMat = trilMat.inverse();
+
+  for (auto row = 0; row < 2; ++row)
+  {
+    for (auto col = 0; col <= row; ++col)
+    {
+      EXPECT_NEAR(expMat.at_unsafe(row, col), invMat.at_unsafe(row, col), 1e-6);
+    }
+  }
+}
+
+TEST(TriangularMatrix, solve_MixedPrecision__Success) // NOLINT
+{
+  // Test solving with double precision for better accuracy
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float64, 3, true, true>({
+    {1.0, 0.0, 0.0},
+    {2.0, 3.0, 0.0},
+    {4.0, 5.0, 6.0}
+  });
+  const auto bMat = conversions::MatrixFromList<float64, 3, 1, true>({
+    {1.0},
+    {5.0},
+    {9.0}
+  });
+  // clang-format on
+
+  // call UUT
+  auto resMat = trilMat.solve(bMat);
+
+  // Verify the solution by reconstructing: trilMat * resMat should ≈ bMat
+  auto reconstructed = trilMat * resMat;
+
+  for (auto row = 0; row < 3; ++row)
+  {
+    EXPECT_NEAR(bMat.at_unsafe(row, 0), reconstructed.at_unsafe(row, 0), 1e-14);
+  }
+}
+
+TEST(TriangularMatrix, inverse_MixedPrecision__Success) // NOLINT
+{
+  // Test inversion with double precision for better accuracy
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float64, 2, true, true>({
+    {2.0, 0.0},
+    {1.0, 3.0}
+  });
+  const auto expMat = conversions::TriangularFromList<float64, 2, true, true>({
+    {0.5, 0.0},
+    {-1.0/6.0, 1.0/3.0}
+  });
+  // clang-format on
+
+  // call UUT
+  auto invMat = trilMat.inverse();
+
+  for (auto row = 0; row < 2; ++row)
+  {
+    for (auto col = 0; col <= row; ++col)
+    {
+      EXPECT_NEAR(expMat.at_unsafe(row, col), invMat.at_unsafe(row, col), 1e-14);
+    }
+  }
+}
+
+TEST(TriangularMatrix, solve_VerifySolution__Success) // NOLINT
+{
+  // Test that the solution actually satisfies the original equation
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {2, 0},
+    {1, 3}
+  });
+  const auto bMat = conversions::MatrixFromList<float32, 2, 1, true>({
+    {4},
+    {7}
+  });
+  // clang-format on
+
+  // call UUT
+  auto xMat = trilMat.solve(bMat);
+
+  // Verify that trilMat * xMat ≈ bMat
+  auto reconstructed = trilMat * xMat;
+  EXPECT_NEAR(bMat.at_unsafe(0, 0), reconstructed.at_unsafe(0, 0), 1e-5);
+  EXPECT_NEAR(bMat.at_unsafe(1, 0), reconstructed.at_unsafe(1, 0), 1e-5);
+}
+
+TEST(TriangularMatrix, inverse_VerifyInverse__Success) // NOLINT
+{
+  // Test that the inverse actually satisfies T * T^(-1) = I
+  // clang-format off
+  const auto trilMat = conversions::TriangularFromList<float32, 2, true, true>({
+    {2, 0},
+    {1, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  auto invMat = trilMat.inverse();
+
+  // Verify that trilMat * invMat ≈ I (only check the triangular part)
+  auto product = trilMat * invMat;
+  EXPECT_NEAR(1.0, product.at_unsafe(0, 0), 1e-5);
+  EXPECT_NEAR(0.0, product.at_unsafe(1, 0), 1e-5);
+  EXPECT_NEAR(1.0, product.at_unsafe(1, 1), 1e-5);
+}

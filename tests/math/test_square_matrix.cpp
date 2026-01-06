@@ -246,3 +246,456 @@ TEST(SquareMatrix, decomposeLDLT_SymmetricNotPositiveDefinite_ExpectError) // NO
 
   EXPECT_FALSE(retVal.has_value());
 }
+
+// ============================================================================
+// Matrix Property Check Tests
+// ============================================================================
+
+TEST(SquareMatrix, isOrthogonal_IdentityMatrix__Success) // NOLINT
+{
+  const auto identity = SquareMatrix<float32, 3, true>::Identity();
+
+  // call UUT
+  const auto result = identity.isOrthogonal();
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, isOrthogonal_NonOrthogonalMatrix__Fail) // NOLINT
+{
+  // Create a non-orthogonal matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 2, true>({
+    {1, 2},
+    {3, 4}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.isOrthogonal();
+
+  EXPECT_FALSE(result);
+}
+
+TEST(SquareMatrix, isOrthogonal_OrthogonalMatrix__Success) // NOLINT
+{
+  // Create an orthogonal matrix (rotation matrix)
+  const float32 cos_theta = std::cos(0.5F);
+  const float32 sin_theta = std::sin(0.5F);
+
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 2, true>({
+    {cos_theta, -sin_theta},
+    {sin_theta, cos_theta}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.isOrthogonal(1e-5F);
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, isUpperTriangular_IdentityMatrix__Success) // NOLINT
+{
+  const auto identity = SquareMatrix<float32, 3, true>::Identity();
+
+  // call UUT
+  const auto result = identity.isUpperTriangular();
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, isUpperTriangular_UpperTriangularMatrix__Success) // NOLINT
+{
+  // Create an upper triangular matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1, 2, 3},
+    {0, 4, 5},
+    {0, 0, 6}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.isUpperTriangular();
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, isUpperTriangular_NonUpperTriangularMatrix__Fail) // NOLINT
+{
+  // Create a non-upper triangular matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1, 2, 3},
+    {4, 5, 6},  // Has non-zero element below diagonal
+    {7, 8, 9}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.isUpperTriangular();
+
+  EXPECT_FALSE(result);
+}
+
+TEST(SquareMatrix, isLowerTriangular_IdentityMatrix__Success) // NOLINT
+{
+  const auto identity = SquareMatrix<float32, 3, true>::Identity();
+
+  // call UUT
+  const auto result = identity.isLowerTriangular();
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, isLowerTriangular_LowerTriangularMatrix__Success) // NOLINT
+{
+  // Create a lower triangular matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1, 0, 0},
+    {2, 3, 0},
+    {4, 5, 6}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.isLowerTriangular();
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, isLowerTriangular_NonLowerTriangularMatrix__Fail) // NOLINT
+{
+  // Create a non-lower triangular matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1, 2, 3},  // Has non-zero elements above diagonal
+    {4, 5, 6},
+    {7, 8, 9}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.isLowerTriangular();
+
+  EXPECT_FALSE(result);
+}
+
+TEST(SquareMatrix, hasUnitDiagonal_IdentityMatrix__Success) // NOLINT
+{
+  const auto identity = SquareMatrix<float32, 3, true>::Identity();
+
+  // call UUT
+  const auto result = identity.hasUnitDiagonal();
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, hasUnitDiagonal_UnitDiagonalMatrix__Success) // NOLINT
+{
+  // Create a matrix with unit diagonal
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1, 2, 3},
+    {4, 1, 6},
+    {7, 8, 1}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.hasUnitDiagonal();
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, hasUnitDiagonal_NonUnitDiagonalMatrix__Fail) // NOLINT
+{
+  // Create a matrix without unit diagonal
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {2, 2, 3},  // Diagonal element is 2, not 1
+    {4, 1, 6},
+    {7, 8, 1}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.hasUnitDiagonal();
+
+  EXPECT_FALSE(result);
+}
+
+TEST(SquareMatrix, isOrthogonal_WithTolerance__Success) // NOLINT
+{
+  // Create a matrix that's almost orthogonal but not exactly
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 2, true>({
+    {0.999F, -0.01F},
+    {0.01F, 0.999F}
+  });
+  // clang-format on
+
+  // Should pass with loose tolerance
+  EXPECT_TRUE(mat.isOrthogonal(0.02F));
+
+  // Should fail with strict tolerance
+  EXPECT_FALSE(mat.isOrthogonal(0.001F));
+}
+
+TEST(SquareMatrix, isUpperTriangular_WithTolerance__Success) // NOLINT
+{
+  // Create a matrix that's almost upper triangular
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1, 2, 3},
+    {0.001F, 4, 5},  // Small non-zero element below diagonal
+    {0, 0, 6}
+  });
+  // clang-format on
+
+  // Should pass with loose tolerance
+  EXPECT_TRUE(mat.isUpperTriangular(0.01F));
+
+  // Should fail with strict tolerance
+  EXPECT_FALSE(mat.isUpperTriangular(0.0001F));
+}
+
+TEST(SquareMatrix, isOrthogonal_Double__Success) // NOLINT
+{
+  const auto identity = SquareMatrix<float64, 3, true>::Identity();
+
+  // call UUT
+  const auto result = identity.isOrthogonal();
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, isUpperTriangular_Double__Success) // NOLINT
+{
+  // Create an upper triangular matrix with double precision
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float64, 3, true>({
+    {1.0, 2.0, 3.0},
+    {0.0, 4.0, 5.0},
+    {0.0, 0.0, 6.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.isUpperTriangular();
+
+  EXPECT_TRUE(result);
+}
+
+TEST(SquareMatrix, hasUnitDiagonal_Double__Success) // NOLINT
+{
+  const auto identity = SquareMatrix<float64, 3, true>::Identity();
+
+  // call UUT
+  const auto result = identity.hasUnitDiagonal();
+
+  EXPECT_TRUE(result);
+}
+
+// ============================================================================
+// Trace and Determinant Tests
+// ============================================================================
+
+TEST(SquareMatrix, trace_2x2__Success) // NOLINT
+{
+  // Create a 2x2 matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 2, true>({
+    {1, 2},
+    {3, 4}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.trace();
+
+  // Expected: 1 + 4 = 5
+  EXPECT_FLOAT_EQ(result, 5.0F);
+}
+
+TEST(SquareMatrix, trace_3x3__Success) // NOLINT
+{
+  // Create a 3x3 matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.trace();
+
+  // Expected: 1 + 5 + 9 = 15
+  EXPECT_FLOAT_EQ(result, 15.0F);
+}
+
+TEST(SquareMatrix, trace_4x4__Success) // NOLINT
+{
+  // Create a 4x4 matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 4, true>({
+    {1,  2,  3,  4},
+    {5,  6,  7,  8},
+    {9, 10, 11, 12},
+    {13, 14, 15, 16}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.trace();
+
+  // Expected: 1 + 6 + 11 + 16 = 34
+  EXPECT_FLOAT_EQ(result, 34.0F);
+}
+
+TEST(SquareMatrix, trace_IdentityMatrix__Success) // NOLINT
+{
+  const auto identity = SquareMatrix<float32, 3, true>::Identity();
+
+  // call UUT
+  const auto result = identity.trace();
+
+  // Expected: 1 + 1 + 1 = 3 (matrix size)
+  EXPECT_FLOAT_EQ(result, 3.0F);
+}
+
+TEST(SquareMatrix, trace_ZeroMatrix__Success) // NOLINT
+{
+  const auto zeroMat = SquareMatrix<float32, 3, true>{};
+
+  // call UUT
+  const auto result = zeroMat.trace();
+
+  // Expected: 0 + 0 + 0 = 0
+  EXPECT_FLOAT_EQ(result, 0.0F);
+}
+
+TEST(SquareMatrix, trace_Double__Success) // NOLINT
+{
+  // Create a 3x3 matrix with double precision
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float64, 3, true>({
+    {1.0, 2.0, 3.0},
+    {4.0, 5.0, 6.0},
+    {7.0, 8.0, 9.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.trace();
+
+  // Expected: 1.0 + 5.0 + 9.0 = 15.0
+  EXPECT_DOUBLE_EQ(result, 15.0);
+}
+
+TEST(SquareMatrix, determinant_2x2__Success) // NOLINT
+{
+  // Create a 2x2 matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 2, true>({
+    {1, 2},
+    {3, 4}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.determinant();
+
+  // Expected: (1*4) - (2*3) = 4 - 6 = -2
+  EXPECT_FLOAT_EQ(result, -2.0F);
+}
+
+TEST(SquareMatrix, determinant_3x3__Success) // NOLINT
+{
+  // Create a 3x3 matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1, 2, 3},
+    {0, 1, 4},
+    {5, 6, 0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.determinant();
+
+  // Expected: 1*(1*0 - 4*6) - 2*(0*0 - 4*5) + 3*(0*6 - 1*5)
+  //          = 1*(-24) - 2*(-20) + 3*(-5)
+  //          = -24 + 40 - 15 = 1
+  EXPECT_NEAR(result, 1.0F, 1e-5F);
+}
+
+TEST(SquareMatrix, determinant_IdentityMatrix__Success) // NOLINT
+{
+  const auto identity = SquareMatrix<float32, 3, true>::Identity();
+
+  // call UUT
+  const auto result = identity.determinant();
+
+  // Expected: 1 (identity matrix determinant is always 1)
+  EXPECT_FLOAT_EQ(result, 1.0F);
+}
+
+TEST(SquareMatrix, determinant_SingularMatrix__Success) // NOLINT
+{
+  // Create a singular matrix (determinant should be 0)
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1, 2, 3},
+    {1, 2, 3},
+    {4, 5, 6}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.determinant();
+
+  // Expected: 0 (rows 1 and 2 are identical, matrix is singular)
+  EXPECT_NEAR(result, 0.0F, 1e-5F);
+}
+
+TEST(SquareMatrix, determinant_IllConditionedMatrix__Success) // NOLINT
+{
+  // Create an ill-conditioned matrix
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float32, 3, true>({
+    {1.0, 2.0, 3.0},
+    {2.1, 4.2, 6.3},
+    {3.0, 6.0, 9.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.determinant();
+
+  // Expected: very small value (matrix is nearly singular)
+  EXPECT_NEAR(result, 0.0F, 1e-3F);
+}
+
+TEST(SquareMatrix, determinant_Double__Success) // NOLINT
+{
+  // Create a 3x3 matrix with double precision
+  // clang-format off
+  const auto mat = conversions::SquareFromList<float64, 3, true>({
+    {1.0, 2.0, 3.0},
+    {0.0, 1.0, 4.0},
+    {5.0, 6.0, 0.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = mat.determinant();
+
+  // Expected: 1.0
+  EXPECT_NEAR(result, 1.0, 1e-10);
+}
