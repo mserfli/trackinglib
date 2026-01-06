@@ -286,14 +286,16 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
 - **Coverage:** Excellent - all trace and determinant functions thoroughly tested with multiple matrix types and precision levels
 - **Test Count:** Increased from 295 to 339 total tests
 
-#### 2.4 Triangular Matrix Operations
-**Expand:** [`test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp)
-- Add tests for triangular solve operations
-- Add tests for forward/backward substitution
-- Add tests for triangular matrix inversion
-- Add tests for determinant calculation
-- Add edge cases (singular matrices, near-singular)
-- **Estimated:** 10-15 additional tests
+#### 2.4 Triangular Matrix Operations (COMPLETED 2026-01-06)
+**Expand:** [`test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) (20 additional tests)
+- ✅ Added tests for triangular solve operations (forward/backward substitution)
+- ✅ Added tests for triangular matrix inversion (unit triangular, identity, diagonal cases)
+- ✅ Added tests for determinant calculation (unit triangular, singular matrices)
+- ✅ Added edge cases (near-singular matrices, large/small values, negative values)
+- ✅ Added numerical stability tests with mixed precision (float32/float64)
+- ✅ Added verification tests that mathematically verify correctness
+- **Actual:** 20 comprehensive tests covering all triangular matrix operations
+- **Coverage:** Excellent - all triangular solve and inversion methods thoroughly tested
 
 #### 2.5 Diagonal Matrix Operations
 **Expand:** [`test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp)
@@ -429,9 +431,9 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
    - Tests verify both success and failure paths
 
 3. **Test Count:**
-      - Target: 310+ total tests for math layer (currently 339)
-      - Tests completed: 44 additional trace/determinant tests + 20 covariance matrix tests
-      - Tests needed: 25-35 additional tests for missing coverage
+      - Target: 310+ total tests for math layer (currently 359 after this update)
+      - Tests completed: 44 additional trace/determinant tests + 20 covariance matrix tests + 20 triangular matrix tests
+      - Tests needed: 5-15 additional tests for remaining coverage gaps
       - Distribution:
         - Conversions: 30-40 tests (COMPLETED: 30-40 tests)
         - Modified Gram-Schmidt: 10-15 tests (COMPLETED: 6 tests)
@@ -440,7 +442,8 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
         - Expanded coverage: 35-45 tests (COMPLETED: 32 vector tests + 18 covariance tests)
         - Trace and determinant functions: 34-43 tests (COMPLETED: 44 tests)
         - Integration tests: 15-20 tests (PARTIALLY COMPLETED: 10 tests in trace/determinant section)
-        - Numerical stability: 10-15 tests (PARTIALLY COMPLETED: 2 tests in covariance section)
+        - Numerical stability: 10-15 tests (PARTIALLY COMPLETED: 4 tests in triangular/covariance sections)
+        - Triangular matrix operations: 10-15 tests (COMPLETED: 20 tests)
         - Error handling: 20-25 tests (PENDING)
         - Matrix I/O: 10-15 tests (PENDING)
         - Covariance Matrix Full: 10-15 tests (PENDING)
