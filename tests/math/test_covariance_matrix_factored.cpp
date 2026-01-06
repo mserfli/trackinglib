@@ -699,3 +699,331 @@ TEST(CovarianceMatrixFactored, numerical_stability_ill_conditioned__Success) // 
   auto resultFull = cov();
   EXPECT_TRUE(isSymmetric(resultFull));
 }
+
+// Phase 2: Covariance Matrix Factored - Related Critical Gaps
+// ============================================================
+
+// 2.1 operator()(int, int) const for double,4 size
+
+TEST(CovarianceMatrixFactored, operator_call_const_double4__Success) // NOLINT
+{
+  // Create a factored covariance matrix
+  auto cov = createSymmetricPositiveDefiniteMatrix<float64, 4>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float64>> covList = {
+      {cov.at_unsafe(0, 0), cov.at_unsafe(0, 1), cov.at_unsafe(0, 2), cov.at_unsafe(0, 3)},
+      {cov.at_unsafe(1, 0), cov.at_unsafe(1, 1), cov.at_unsafe(1, 2), cov.at_unsafe(1, 3)},
+      {cov.at_unsafe(2, 0), cov.at_unsafe(2, 1), cov.at_unsafe(2, 2), cov.at_unsafe(2, 3)},
+      {cov.at_unsafe(3, 0), cov.at_unsafe(3, 1), cov.at_unsafe(3, 2), cov.at_unsafe(3, 3)}};
+
+  auto factoredCov = conversions::CovarianceMatrixFactoredFromList<float64, 4>(covList);
+
+  // Test operator()(int, int) const for all elements
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    for (sint32 j = 0; j < 4; ++j)
+    {
+      auto result = factoredCov(i, j);
+      ASSERT_TRUE(result.has_value());
+      EXPECT_NEAR(result.value(), cov.at_unsafe(i, j), 1e-6);
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, operator_call_const_double4_diagonal__Success) // NOLINT
+{
+  // Test diagonal elements specifically
+  auto cov = CovarianceMatrixFactored<float64, 4>::Identity();
+
+  // Test operator()(int, int) const for diagonal elements
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    auto result = cov(i, i);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_NEAR(result.value(), 1.0, 1e-6);
+  }
+}
+
+TEST(CovarianceMatrixFactored, operator_call_const_double4_off_diagonal__Success) // NOLINT
+{
+  // Create a factored covariance matrix with known off-diagonal values
+  auto fullCov = createSymmetricPositiveDefiniteMatrix<float64, 4>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float64>> covList = {
+      {fullCov.at_unsafe(0, 0), fullCov.at_unsafe(0, 1), fullCov.at_unsafe(0, 2), fullCov.at_unsafe(0, 3)},
+      {fullCov.at_unsafe(1, 0), fullCov.at_unsafe(1, 1), fullCov.at_unsafe(1, 2), fullCov.at_unsafe(1, 3)},
+      {fullCov.at_unsafe(2, 0), fullCov.at_unsafe(2, 1), fullCov.at_unsafe(2, 2), fullCov.at_unsafe(2, 3)},
+      {fullCov.at_unsafe(3, 0), fullCov.at_unsafe(3, 1), fullCov.at_unsafe(3, 2), fullCov.at_unsafe(3, 3)}};
+
+  auto factoredCov = conversions::CovarianceMatrixFactoredFromList<float64, 4>(covList);
+
+  // Test operator()(int, int) const for off-diagonal elements
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    for (sint32 j = i + 1; j < 4; ++j)
+    {
+      auto result = factoredCov(i, j);
+      ASSERT_TRUE(result.has_value());
+      EXPECT_NEAR(result.value(), fullCov.at_unsafe(i, j), 1e-6);
+
+      // Verify symmetry
+      auto result_sym = factoredCov(j, i);
+      ASSERT_TRUE(result_sym.has_value());
+      EXPECT_NEAR(result_sym.value(), fullCov.at_unsafe(j, i), 1e-6);
+      EXPECT_NEAR(result.value(), result_sym.value(), 1e-6);
+    }
+  }
+}
+
+// 2.2 setDiagonal() and setVariance() Methods for double,4 size
+
+TEST(CovarianceMatrixFactored, setDiagonal_double4__Success) // NOLINT
+{
+  // Create a factored covariance matrix
+  auto cov = CovarianceMatrixFactored<float64, 4>::Identity();
+
+  // Test setDiagonal()
+  cov.setDiagonal(1, 2.5);
+
+  // Verify the diagonal element is set correctly
+  auto result = cov(1, 1);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_NEAR(result.value(), 2.5, 1e-6);
+
+  // Verify symmetry is maintained
+  auto fullCov = cov();
+  EXPECT_TRUE(isSymmetric(fullCov));
+}
+
+TEST(CovarianceMatrixFactored, setVariance_double4__Success) // NOLINT
+{
+  // Create a factored covariance matrix
+  auto cov = CovarianceMatrixFactored<float64, 4>::Identity();
+
+  // Test setVariance()
+  cov.setVariance(2, 3.7);
+
+  // Verify the variance is set correctly
+  auto result = cov(2, 2);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_NEAR(result.value(), 3.7, 1e-6);
+
+  // Verify correlations are cleared (diagonal should be set, off-diagonal should be zero for that row/col)
+  auto fullCov = cov();
+  EXPECT_NEAR(fullCov.at_unsafe(2, 2), 3.7, 1e-6);
+  EXPECT_NEAR(fullCov.at_unsafe(2, 0), 0.0, 1e-6);
+  EXPECT_NEAR(fullCov.at_unsafe(2, 1), 0.0, 1e-6);
+  EXPECT_NEAR(fullCov.at_unsafe(2, 3), 0.0, 1e-6);
+}
+
+TEST(CovarianceMatrixFactored, setDiagonal_setVariance_consistency__Success) // NOLINT
+{
+  // Test consistency between setDiagonal and setVariance
+  auto cov1 = CovarianceMatrixFactored<float64, 4>::Identity();
+  auto cov2 = CovarianceMatrixFactored<float64, 4>::Identity();
+
+  // Use setDiagonal on first
+  cov1.setDiagonal(1, 2.5);
+
+  // Use setVariance on second (should give same result for diagonal element)
+  cov2.setVariance(1, 2.5);
+
+  // Verify diagonal elements are the same
+  auto result1 = cov1(1, 1);
+  auto result2 = cov2(1, 1);
+  ASSERT_TRUE(result1.has_value());
+  ASSERT_TRUE(result2.has_value());
+  EXPECT_NEAR(result1.value(), result2.value(), 1e-6);
+}
+
+// 2.3 Identity() and setIdentity() Methods for double,4 size
+
+TEST(CovarianceMatrixFactored, Identity_double4__Success) // NOLINT
+{
+  // Test Identity() method for double, 4x4
+  auto cov = CovarianceMatrixFactored<float64, 4>::Identity();
+
+  // Verify it's an identity matrix
+  auto fullCov = cov();
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    for (sint32 j = 0; j < 4; ++j)
+    {
+      float64 expected = (i == j) ? 1.0 : 0.0;
+      EXPECT_NEAR(fullCov.at_unsafe(i, j), expected, 1e-6);
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, setIdentity_double4__Success) // NOLINT
+{
+  // Create a non-identity factored covariance matrix
+  auto cov = createSymmetricPositiveDefiniteMatrix<float64, 4>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float64>> covList = {
+      {cov.at_unsafe(0, 0), cov.at_unsafe(0, 1), cov.at_unsafe(0, 2), cov.at_unsafe(0, 3)},
+      {cov.at_unsafe(1, 0), cov.at_unsafe(1, 1), cov.at_unsafe(1, 2), cov.at_unsafe(1, 3)},
+      {cov.at_unsafe(2, 0), cov.at_unsafe(2, 1), cov.at_unsafe(2, 2), cov.at_unsafe(2, 3)},
+      {cov.at_unsafe(3, 0), cov.at_unsafe(3, 1), cov.at_unsafe(3, 2), cov.at_unsafe(3, 3)}};
+
+  auto factoredCov = conversions::CovarianceMatrixFactoredFromList<float64, 4>(covList);
+
+  // Apply setIdentity()
+  factoredCov.setIdentity();
+
+  // Verify it's now an identity matrix
+  auto result = factoredCov();
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    for (sint32 j = 0; j < 4; ++j)
+    {
+      float64 expected = (i == j) ? 1.0 : 0.0;
+      EXPECT_NEAR(result.at_unsafe(i, j), expected, 1e-6);
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, Identity_setIdentity_equivalence__Success) // NOLINT
+{
+  // Test equivalence between Identity() and setIdentity()
+  auto cov1 = CovarianceMatrixFactored<float64, 4>::Identity();
+
+  // Create a non-identity matrix and apply setIdentity
+  auto cov2 = createSymmetricPositiveDefiniteMatrix<float64, 4>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float64>> covList = {
+      {cov2.at_unsafe(0, 0), cov2.at_unsafe(0, 1), cov2.at_unsafe(0, 2), cov2.at_unsafe(0, 3)},
+      {cov2.at_unsafe(1, 0), cov2.at_unsafe(1, 1), cov2.at_unsafe(1, 2), cov2.at_unsafe(1, 3)},
+      {cov2.at_unsafe(2, 0), cov2.at_unsafe(2, 1), cov2.at_unsafe(2, 2), cov2.at_unsafe(2, 3)},
+      {cov2.at_unsafe(3, 0), cov2.at_unsafe(3, 1), cov2.at_unsafe(3, 2), cov2.at_unsafe(3, 3)}};
+
+  auto factoredCov2 = conversions::CovarianceMatrixFactoredFromList<float64, 4>(covList);
+  factoredCov2.setIdentity();
+
+  // Verify both result in identity matrices
+  auto result1 = cov1();
+  auto result2 = factoredCov2();
+
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    for (sint32 j = 0; j < 4; ++j)
+    {
+      EXPECT_NEAR(result1.at_unsafe(i, j), result2.at_unsafe(i, j), 1e-6);
+    }
+  }
+}
+
+// 2.4 at_unsafe() for float,4 and float,6 sizes
+
+TEST(CovarianceMatrixFactored, at_unsafe_float4__Success) // NOLINT
+{
+  // Create a factored covariance matrix for float32, 4x4
+  auto cov = createSymmetricPositiveDefiniteMatrix<float32, 4>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float32>> covList = {
+      {cov.at_unsafe(0, 0), cov.at_unsafe(0, 1), cov.at_unsafe(0, 2), cov.at_unsafe(0, 3)},
+      {cov.at_unsafe(1, 0), cov.at_unsafe(1, 1), cov.at_unsafe(1, 2), cov.at_unsafe(1, 3)},
+      {cov.at_unsafe(2, 0), cov.at_unsafe(2, 1), cov.at_unsafe(2, 2), cov.at_unsafe(2, 3)},
+      {cov.at_unsafe(3, 0), cov.at_unsafe(3, 1), cov.at_unsafe(3, 2), cov.at_unsafe(3, 3)}};
+
+  auto factoredCov = conversions::CovarianceMatrixFactoredFromList<float32, 4>(covList);
+
+  // Test at_unsafe() for all elements
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    for (sint32 j = 0; j < 4; ++j)
+    {
+      float32 result = factoredCov.at_unsafe(i, j);
+      EXPECT_NEAR(result, cov.at_unsafe(i, j), 1e-5);
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, at_unsafe_float6__Success) // NOLINT
+{
+  // Create a factored covariance matrix for float32, 6x6
+  auto cov = createSymmetricPositiveDefiniteMatrix<float32, 6>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float32>> covList = {{cov.at_unsafe(0, 0),
+                                                                    cov.at_unsafe(0, 1),
+                                                                    cov.at_unsafe(0, 2),
+                                                                    cov.at_unsafe(0, 3),
+                                                                    cov.at_unsafe(0, 4),
+                                                                    cov.at_unsafe(0, 5)},
+                                                                   {cov.at_unsafe(1, 0),
+                                                                    cov.at_unsafe(1, 1),
+                                                                    cov.at_unsafe(1, 2),
+                                                                    cov.at_unsafe(1, 3),
+                                                                    cov.at_unsafe(1, 4),
+                                                                    cov.at_unsafe(1, 5)},
+                                                                   {cov.at_unsafe(2, 0),
+                                                                    cov.at_unsafe(2, 1),
+                                                                    cov.at_unsafe(2, 2),
+                                                                    cov.at_unsafe(2, 3),
+                                                                    cov.at_unsafe(2, 4),
+                                                                    cov.at_unsafe(2, 5)},
+                                                                   {cov.at_unsafe(3, 0),
+                                                                    cov.at_unsafe(3, 1),
+                                                                    cov.at_unsafe(3, 2),
+                                                                    cov.at_unsafe(3, 3),
+                                                                    cov.at_unsafe(3, 4),
+                                                                    cov.at_unsafe(3, 5)},
+                                                                   {cov.at_unsafe(4, 0),
+                                                                    cov.at_unsafe(4, 1),
+                                                                    cov.at_unsafe(4, 2),
+                                                                    cov.at_unsafe(4, 3),
+                                                                    cov.at_unsafe(4, 4),
+                                                                    cov.at_unsafe(4, 5)},
+                                                                   {cov.at_unsafe(5, 0),
+                                                                    cov.at_unsafe(5, 1),
+                                                                    cov.at_unsafe(5, 2),
+                                                                    cov.at_unsafe(5, 3),
+                                                                    cov.at_unsafe(5, 4),
+                                                                    cov.at_unsafe(5, 5)}};
+
+  auto factoredCov = conversions::CovarianceMatrixFactoredFromList<float32, 6>(covList);
+
+  // Test at_unsafe() for all elements
+  for (sint32 i = 0; i < 6; ++i)
+  {
+    for (sint32 j = 0; j < 6; ++j)
+    {
+      float32 result = factoredCov.at_unsafe(i, j);
+      EXPECT_NEAR(result, cov.at_unsafe(i, j), 1e-5);
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, at_unsafe_consistency__Success) // NOLINT
+{
+  // Test consistency between at_unsafe() and operator()() const
+  auto cov = createSymmetricPositiveDefiniteMatrix<float32, 4>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float32>> covList = {
+      {cov.at_unsafe(0, 0), cov.at_unsafe(0, 1), cov.at_unsafe(0, 2), cov.at_unsafe(0, 3)},
+      {cov.at_unsafe(1, 0), cov.at_unsafe(1, 1), cov.at_unsafe(1, 2), cov.at_unsafe(1, 3)},
+      {cov.at_unsafe(2, 0), cov.at_unsafe(2, 1), cov.at_unsafe(2, 2), cov.at_unsafe(2, 3)},
+      {cov.at_unsafe(3, 0), cov.at_unsafe(3, 1), cov.at_unsafe(3, 2), cov.at_unsafe(3, 3)}};
+
+  auto factoredCov = conversions::CovarianceMatrixFactoredFromList<float32, 4>(covList);
+
+  // Test consistency for all elements
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    for (sint32 j = 0; j < 4; ++j)
+    {
+      float32 unsafe_result = factoredCov.at_unsafe(i, j);
+      auto    safe_result   = factoredCov(i, j);
+
+      ASSERT_TRUE(safe_result.has_value());
+      EXPECT_NEAR(unsafe_result, safe_result.value(), 1e-5);
+    }
+  }
+}

@@ -73,11 +73,12 @@ if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQ
         GENHTML_ARGS
             --no-branch-coverage
             --ignore-errors mismatch
+            --legend
         EXCLUDE 
             "/Users/matthias/miniforge3/*" 
             "/Library/*" 
             "/usr/include/*" 
-            "build/*" 
+            "build_cov/*" 
             "_deps/*" 
             "examples/*" 
             "python/*" 

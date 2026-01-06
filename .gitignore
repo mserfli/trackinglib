@@ -1,5 +1,6 @@
 .cache
 .DS_store
 build
+build_cov
 doxydoc
 pytracking.*

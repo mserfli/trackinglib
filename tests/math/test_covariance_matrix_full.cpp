@@ -431,10 +431,10 @@ TEST(CovarianceMatrixFull, numerical_stability_ill_conditioned__Success) // NOLI
   // Test numerical stability with ill-conditioned matrix
   auto illCond = createIllConditionedMatrix<float64, 4>();
   auto A = conversions::SquareFromList<float64, 4, true>({
-    {0.95, 0.01, 0.01, 0.01},
-    {0.01, 0.95, 0.01, 0.01},
-    {0.01, 0.01, 0.95, 0.01},
-    {0.01, 0.01, 0.01, 0.95}
+      {0.95, 0.01, 0.01, 0.01},
+      {0.01, 0.95, 0.01, 0.01},
+      {0.01, 0.01, 0.95, 0.01},
+      {0.01, 0.01, 0.01, 0.95}
   });
 
   // Apply apaT operation
@@ -442,4 +442,297 @@ TEST(CovarianceMatrixFull, numerical_stability_ill_conditioned__Success) // NOLI
 
   // Verify symmetry is preserved even with ill-conditioned matrix
   EXPECT_TRUE(isSymmetric(illCond));
+}
+
+// Phase 1: Covariance Matrix Full - Section 2.6 Tests
+// ====================================================
+
+// 1.1 Constructors from Matrix (const&)
+
+TEST(CovarianceMatrixFull, ctor_from_Matrix_const_float3__Success) // NOLINT
+{
+  // Create a symmetric positive definite matrix
+  auto matrix = conversions::SquareFromList<float32, 3, true>({{4, 1, 2}, {1, 5, 3}, {2, 3, 6}});
+  
+  // Test constructor
+  auto cov = CovarianceMatrixFull<float32, 3>(matrix);
+  
+  // Verify data is copied correctly
+  EXPECT_EQ(cov._data, matrix._data);
+  
+  // Verify symmetry is maintained
+  EXPECT_TRUE(isSymmetric(cov));
+}
+
+TEST(CovarianceMatrixFull, ctor_from_Matrix_const_double4__Success) // NOLINT
+{
+  // Create a symmetric positive definite matrix
+  auto matrix = conversions::SquareFromList<float64, 4, true>({{4, 1, 2, 1}, {1, 5, 3, 2}, {2, 3, 6, 3}, {1, 2, 3, 4}});
+  
+  // Test constructor
+  auto cov = CovarianceMatrixFull<float64, 4>(matrix);
+  
+  // Verify data is copied correctly
+  EXPECT_EQ(cov._data, matrix._data);
+  
+  // Verify symmetry is maintained
+  EXPECT_TRUE(isSymmetric(cov));
+}
+
+TEST(CovarianceMatrixFull, ctor_from_Matrix_const_symmetry__Success) // NOLINT
+{
+  // Create a symmetric matrix
+  auto matrix = conversions::SquareFromList<float32, 3, true>({{2, 1, 1}, {1, 3, 1}, {1, 1, 4}});
+  
+  // Test constructor
+  auto cov = CovarianceMatrixFull<float32, 3>(matrix);
+  
+  // Verify symmetry is maintained
+  EXPECT_TRUE(isSymmetric(cov));
+  
+  // Verify positive definiteness
+  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+}
+
+TEST(CovarianceMatrixFull, ctor_from_Matrix_const_positive_definite__Success) // NOLINT
+{
+  // Create a known positive definite matrix
+  auto matrix = conversions::SquareFromList<float64, 3, true>({{6, 2, 1}, {2, 5, 2}, {1, 2, 4}});
+  
+  // Test constructor
+  auto cov = CovarianceMatrixFull<float64, 3>(matrix);
+  
+  // Verify positive definiteness is maintained
+  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+}
+
+// 1.2 Constructors from SquareMatrix (const&)
+
+TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_float3__Success) // NOLINT
+{
+  // Create a symmetric positive definite square matrix
+  auto squareMat = conversions::SquareFromList<float32, 3, true>({{4, 1, 2}, {1, 5, 3}, {2, 3, 6}});
+  
+  // Test constructor
+  auto cov = CovarianceMatrixFull<float32, 3>(squareMat);
+  
+  // Verify data is copied correctly
+  EXPECT_EQ(cov._data, squareMat._data);
+  
+  // Verify symmetry is maintained
+  EXPECT_TRUE(isSymmetric(cov));
+}
+
+TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_double4__Success) // NOLINT
+{
+  // Create a symmetric positive definite square matrix
+  auto squareMat = conversions::SquareFromList<float64, 4, true>({{4, 1, 2, 1}, {1, 5, 3, 2}, {2, 3, 6, 3}, {1, 2, 3, 4}});
+  
+  // Test constructor
+  auto cov = CovarianceMatrixFull<float64, 4>(squareMat);
+  
+  // Verify data is copied correctly
+  EXPECT_EQ(cov._data, squareMat._data);
+  
+  // Verify symmetry is maintained
+  EXPECT_TRUE(isSymmetric(cov));
+}
+
+TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_symmetry__Success) // NOLINT
+{
+  // Create a symmetric square matrix
+  auto squareMat = conversions::SquareFromList<float32, 3, true>({{3, 1, 1}, {1, 4, 1}, {1, 1, 5}});
+  
+  // Test constructor
+  auto cov = CovarianceMatrixFull<float32, 3>(squareMat);
+  
+  // Verify symmetry is maintained
+  EXPECT_TRUE(isSymmetric(cov));
+  
+  // Verify positive definiteness
+  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+}
+
+TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_positive_definite__Success) // NOLINT
+{
+  // Create a known positive definite square matrix
+  auto squareMat = conversions::SquareFromList<float64, 3, true>({{5, 1, 1}, {1, 6, 2}, {1, 2, 5}});
+  
+  // Test constructor
+  auto cov = CovarianceMatrixFull<float64, 3>(squareMat);
+  
+  // Verify positive definiteness is maintained
+  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+}
+
+// 1.3 Identity() Method for Float Types
+
+TEST(CovarianceMatrixFull, Identity_float3__Success) // NOLINT
+{
+  // Test Identity() method for float32, 3x3
+  auto cov = CovarianceMatrixFull<float32, 3>::Identity();
+  
+  // Verify it's an identity matrix
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    for (sint32 j = 0; j < 3; ++j)
+    {
+      float32 expected = (i == j) ? 1.0f : 0.0f;
+      EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
+    }
+  }
+  
+  // Verify symmetry
+  EXPECT_TRUE(isSymmetric(cov));
+}
+
+TEST(CovarianceMatrixFull, Identity_float4__Success) // NOLINT
+{
+  // Test Identity() method for float32, 4x4
+  auto cov = CovarianceMatrixFull<float32, 4>::Identity();
+  
+  // Verify it's an identity matrix
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    for (sint32 j = 0; j < 4; ++j)
+    {
+      float32 expected = (i == j) ? 1.0f : 0.0f;
+      EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
+    }
+  }
+  
+  // Verify symmetry
+  EXPECT_TRUE(isSymmetric(cov));
+}
+
+TEST(CovarianceMatrixFull, Identity_float6__Success) // NOLINT
+{
+  // Test Identity() method for float32, 6x6
+  auto cov = CovarianceMatrixFull<float32, 6>::Identity();
+  
+  // Verify it's an identity matrix
+  for (sint32 i = 0; i < 6; ++i)
+  {
+    for (sint32 j = 0; j < 6; ++j)
+    {
+      float32 expected = (i == j) ? 1.0f : 0.0f;
+      EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
+    }
+  }
+  
+  // Verify symmetry
+  EXPECT_TRUE(isSymmetric(cov));
+}
+
+// 1.4 operator()() const Methods
+
+TEST(CovarianceMatrixFull, operator_call_const_float3__Success) // NOLINT
+{
+  // Create a covariance matrix
+  auto cov = createSymmetricPositiveDefiniteMatrix<float32, 3>();
+  
+  // Test operator()() const
+  const auto& result = cov();
+  
+  // Verify it returns the same object
+  EXPECT_EQ(&result, &cov);
+  
+  // Verify data is unchanged
+  EXPECT_EQ(result._data, cov._data);
+}
+
+TEST(CovarianceMatrixFull, operator_call_const_double4__Success) // NOLINT
+{
+  // Create a covariance matrix
+  auto cov = createSymmetricPositiveDefiniteMatrix<float64, 4>();
+  
+  // Test operator()() const
+  const auto& result = cov();
+  
+  // Verify it returns the same object
+  EXPECT_EQ(&result, &cov);
+  
+  // Verify data is unchanged
+  EXPECT_EQ(result._data, cov._data);
+}
+
+TEST(CovarianceMatrixFull, operator_call_const_identity__Success) // NOLINT
+{
+  // Test with identity matrix
+  auto cov = CovarianceMatrixFull<float32, 3>::Identity();
+  
+  // Test operator()() const
+  const auto& result = cov();
+  
+  // Verify it returns the same object
+  EXPECT_EQ(&result, &cov);
+  
+  // Verify it's still an identity matrix
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    for (sint32 j = 0; j < 3; ++j)
+    {
+      float32 expected = (i == j) ? 1.0f : 0.0f;
+      EXPECT_FLOAT_EQ(result.at_unsafe(i, j), expected);
+    }
+  }
+}
+
+// 1.5 setIdentity() Methods
+
+TEST(CovarianceMatrixFull, setIdentity_float3__Success) // NOLINT
+{
+  // Create a non-identity covariance matrix
+  auto cov = createSymmetricPositiveDefiniteMatrix<float32, 3>();
+  
+  // Apply setIdentity()
+  cov.setIdentity();
+  
+  // Verify it's now an identity matrix
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    for (sint32 j = 0; j < 3; ++j)
+    {
+      float32 expected = (i == j) ? 1.0f : 0.0f;
+      EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
+    }
+  }
+}
+
+TEST(CovarianceMatrixFull, setIdentity_double4__Success) // NOLINT
+{
+  // Create a non-identity covariance matrix
+  auto cov = createSymmetricPositiveDefiniteMatrix<float64, 4>();
+  
+  // Apply setIdentity()
+  cov.setIdentity();
+  
+  // Verify it's now an identity matrix
+  for (sint32 i = 0; i < 4; ++i)
+  {
+    for (sint32 j = 0; j < 4; ++j)
+    {
+      float64 expected = (i == j) ? 1.0 : 0.0;
+      EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
+    }
+  }
+}
+
+TEST(CovarianceMatrixFull, setIdentity_float6__Success) // NOLINT
+{
+  // Create a non-identity covariance matrix
+  auto cov = createSymmetricPositiveDefiniteMatrix<float32, 6>();
+  
+  // Apply setIdentity()
+  cov.setIdentity();
+  
+  // Verify it's now an identity matrix
+  for (sint32 i = 0; i < 6; ++i)
+  {
+    for (sint32 j = 0; j < 6; ++j)
+    {
+      float32 expected = (i == j) ? 1.0f : 0.0f;
+      EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
+    }
+  }
 }

@@ -154,16 +154,7 @@ template <typename FloatType_, sint32 Size_>
 inline void CovarianceMatrixFactored<FloatType_, Size_>::rank1Update(const FloatType_ c, const Vector<FloatType_, Size_>& x)
 {
   math::Rank1Update<FloatType_, Size_, true>::run(_u, _d, c, x);
-  /*
-  if (c > 0)
-  {
-    math::Rank1Update<FloatType_, Size_, true>::run(_u, _d, c, x);
-  }
-  else
-  {
-    math::Rank1Update<FloatType_, Size_, false>::run(_u.transpose(), _d, c, x);
-  }
-  */
+
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }

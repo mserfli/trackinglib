@@ -10,9 +10,7 @@ in the root dir run
 doxygen
 
 ## create coverage report
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Coverage .. 
-cmake --build . --target lcov
+run `report_coverage.sh` and open `build_cov/coverage/index.html` in a webbrowser
 
 ## Python binding
 in the root dir run 

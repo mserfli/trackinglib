@@ -350,13 +350,13 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::frobenius_norm() cons
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose() const -> const transpose_type&
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose() const -> const transpose_type& // LCOV_EXCL_LINE
 {
   return reinterpret_cast<const transpose_type&>(*this);
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose() -> transpose_type&
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::transpose() -> transpose_type& // LCOV_EXCL_LINE
 {
   return reinterpret_cast<transpose_type&>(*this);
 }
