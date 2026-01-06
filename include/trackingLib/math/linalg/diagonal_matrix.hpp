@@ -185,6 +185,17 @@ inline auto DiagonalMatrix<ValueType_, Size_>::isPositiveDefinite() const -> boo
   return isValid;
 }
 
+template <typename ValueType_, sint32 Size_>
+inline auto DiagonalMatrix<ValueType_, Size_>::isPositiveSemiDefinite() const -> bool
+{
+  auto isValid = true;
+  for (auto idx = 0; idx < Size_; ++idx)
+  {
+    isValid = isValid && (static_cast<ValueType_>(0) <= _data.at_unsafe(idx));
+  }
+  return isValid;
+}
+
 
 // ------ non-member functions ---------------------------------------------------------------------------------------------------
 

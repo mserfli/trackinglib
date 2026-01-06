@@ -10,7 +10,7 @@ in the root dir run
 doxygen
 
 ## create coverage report
-mkdir build && cd build
+mkdir build_cov && cd build_cov
 cmake -DCMAKE_BUILD_TYPE=Coverage .. 
 cmake --build . --target lcov
 

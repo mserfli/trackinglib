@@ -297,13 +297,23 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
 - **Actual:** 20 comprehensive tests covering all triangular matrix operations
 - **Coverage:** Excellent - all triangular solve and inversion methods thoroughly tested
 
-#### 2.5 Diagonal Matrix Operations
-**Expand:** [`test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp)
-- Add tests for diagonal matrix eigenvalues
-- Add tests for diagonal matrix powers
-- Add tests for diagonal matrix exponential
-- Add tests for condition number
-- **Estimated:** 8-10 additional tests
+#### 2.5 Diagonal Matrix Operations (COMPLETED 2026-01-06)
+**Expand:** [`test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp) (10 additional tests)
+- ✅ Added implementation for `isPositiveSemiDefinite()` method in [`diagonal_matrix.hpp`](include/trackingLib/math/linalg/diagonal_matrix.hpp:189)
+- ✅ Added comprehensive tests for `isPositiveSemiDefinite()` method:
+  - `isPositiveSemiDefinite_AllPositive__Success`: All positive elements
+  - `isPositiveSemiDefinite_WithZero__Success`: With zero elements
+  - `isPositiveSemiDefinite_AllZero__Success`: All zero matrix
+  - `isPositiveSemiDefinite_WithNegative__Success`: With negative elements
+  - `isPositiveSemiDefinite_MixedSigns__Success`: Mixed positive and negative
+  - `isPositiveSemiDefinite_IdentityMatrix__Success`: Identity matrix
+  - `isPositiveSemiDefinite_SmallPositiveValues__Success`: Very small positive values
+  - `isPositiveSemiDefinite_DoublePrecision__Success`: Double precision test
+  - `isPositiveSemiDefinite_LargeMatrix__Success`: 4x4 matrix test
+  - `isPositiveSemiDefinite_EdgeCaseNegativeZero__Success`: Negative zero edge case
+- ✅ All tests pass (10/10)
+- ✅ Total diagonal matrix tests increased from 31 to 41
+- **Note:** Skipped eigenvalues, powers, exponential, and condition number operations as requested by user
 
 #### 2.6 Covariance Matrix Full - Missing Constructors and Methods
 **Expand:** [`test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) (10-15 additional tests)
@@ -431,8 +441,8 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
    - Tests verify both success and failure paths
 
 3. **Test Count:**
-      - Target: 310+ total tests for math layer (currently 359 after this update)
-      - Tests completed: 44 additional trace/determinant tests + 20 covariance matrix tests + 20 triangular matrix tests
+      - Target: 310+ total tests for math layer (currently 369 after this update)
+      - Tests completed: 44 additional trace/determinant tests + 20 covariance matrix tests + 20 triangular matrix tests + 10 diagonal matrix tests
       - Tests needed: 5-15 additional tests for remaining coverage gaps
       - Distribution:
         - Conversions: 30-40 tests (COMPLETED: 30-40 tests)
@@ -444,6 +454,7 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
         - Integration tests: 15-20 tests (PARTIALLY COMPLETED: 10 tests in trace/determinant section)
         - Numerical stability: 10-15 tests (PARTIALLY COMPLETED: 4 tests in triangular/covariance sections)
         - Triangular matrix operations: 10-15 tests (COMPLETED: 20 tests)
+        - Diagonal matrix operations: 8-10 tests (COMPLETED: 10 tests)
         - Error handling: 20-25 tests (PENDING)
         - Matrix I/O: 10-15 tests (PENDING)
         - Covariance Matrix Full: 10-15 tests (PENDING)
@@ -604,6 +615,6 @@ CovarianceMatrixFactored<float, 6>::at_unsafe(int, int) const  // 0% coverage
 3. [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) (PARTIALLY COMPLETED: +8 tests, from 6 to 14, needs +10-15 more)
 4. [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) (PARTIALLY COMPLETED: +12 tests, from 8 to 20, needs +8-12 more)
 5. [`tests/math/test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) (+10-15 tests for triangular operations + 8-10 tests for trace/determinant)
-6. [`tests/math/test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp) (+8-10 tests for diagonal operations + 10-12 tests for trace/determinant)
+6. [`tests/math/test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp) (COMPLETED: +10 tests for isPositiveSemiDefinite, from 31 to 41)
 7. [`tests/math/test_matrix_io.cpp`](tests/math/test_matrix_io.cpp) (+10-15 tests for missing operator<< coverage)
 8. All test files for error handling (+20-25 tests distributed)

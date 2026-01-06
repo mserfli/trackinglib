@@ -623,3 +623,176 @@ TEST(DiagonalMatrix, determinant_NegativeElements__Success) // NOLINT
   // Expected: (-1) * 2 * (-3) = 6 (product of diagonal elements)
   EXPECT_FLOAT_EQ(result, 6.0F);
 }
+
+// ============================================================================
+// isPositiveSemiDefinite Tests
+// ============================================================================
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_AllPositive__Success) // NOLINT
+{
+  // Create a diagonal matrix with all positive elements
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+    {1, 0, 0},
+    {0, 2, 0},
+    {0, 0, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.isPositiveSemiDefinite();
+
+  // Expected: true (all diagonal elements > 0)
+  EXPECT_TRUE(result);
+}
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_WithZero__Success) // NOLINT
+{
+  // Create a diagonal matrix with one zero element
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+    {1, 0, 0},
+    {0, 0, 0},
+    {0, 0, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.isPositiveSemiDefinite();
+
+  // Expected: true (all diagonal elements >= 0, including zero)
+  EXPECT_TRUE(result);
+}
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_AllZero__Success) // NOLINT
+{
+  // Create a zero diagonal matrix
+  const auto diagMat = DiagonalMatrix<float32, 3>{};
+
+  // call UUT
+  const auto result = diagMat.isPositiveSemiDefinite();
+
+  // Expected: true (all diagonal elements = 0)
+  EXPECT_TRUE(result);
+}
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_WithNegative__Success) // NOLINT
+{
+  // Create a diagonal matrix with one negative element
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+    {1, 0,  0},
+    {0, 2,  0},
+    {0, 0, -3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.isPositiveSemiDefinite();
+
+  // Expected: false (one diagonal element < 0)
+  EXPECT_FALSE(result);
+}
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_MixedSigns__Success) // NOLINT
+{
+  // Create a diagonal matrix with mixed positive and negative elements
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+    {-1, 0,  0},
+    { 0, 2,  0},
+    { 0, 0, -3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.isPositiveSemiDefinite();
+
+  // Expected: false (contains negative diagonal elements)
+  EXPECT_FALSE(result);
+}
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_IdentityMatrix__Success) // NOLINT
+{
+  // Create an identity matrix
+  const auto identity = DiagonalMatrix<float32, 3>::Identity();
+
+  // call UUT
+  const auto result = identity.isPositiveSemiDefinite();
+
+  // Expected: true (identity matrix has all diagonal elements = 1)
+  EXPECT_TRUE(result);
+}
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_SmallPositiveValues__Success) // NOLINT
+{
+  // Create a diagonal matrix with very small positive values
+  const auto val = std::numeric_limits<float32>::min();
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+    {val,   0,   0},
+    {  0, val,   0},
+    {  0,   0, val}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.isPositiveSemiDefinite();
+
+  // Expected: true (all diagonal elements > 0, even if very small)
+  EXPECT_TRUE(result);
+}
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_DoublePrecision__Success) // NOLINT
+{
+  // Create a diagonal matrix with double precision
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float64, 3>({
+    {1.0, 0.0, 0.0},
+    {0.0, 0.0, 0.0},
+    {0.0, 0.0, 3.0}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.isPositiveSemiDefinite();
+
+  // Expected: true (all diagonal elements >= 0)
+  EXPECT_TRUE(result);
+}
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_LargeMatrix__Success) // NOLINT
+{
+  // Create a larger diagonal matrix (4x4) with mixed values
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 4>({
+    {0, 0, 0, 0},
+    {0, 1, 0, 0},
+    {0, 0, 2, 0},
+    {0, 0, 0, 3}
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.isPositiveSemiDefinite();
+
+  // Expected: true (all diagonal elements >= 0)
+  EXPECT_TRUE(result);
+}
+
+TEST(DiagonalMatrix, isPositiveSemiDefinite_EdgeCaseNegativeZero__Success) // NOLINT
+{
+  // Create a diagonal matrix with negative zero (should be treated as zero)
+  // clang-format off
+  const auto diagMat = conversions::DiagonalFromList<float32, 2>({
+    {0.0f, 0.0f},
+    {0.0f, -0.0f}  // negative zero
+  });
+  // clang-format on
+
+  // call UUT
+  const auto result = diagMat.isPositiveSemiDefinite();
+
+  // Expected: true (negative zero should be treated as zero)
+  EXPECT_TRUE(result);
+}
