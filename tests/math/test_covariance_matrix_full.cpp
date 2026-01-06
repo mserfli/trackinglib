@@ -35,7 +35,7 @@ auto createSymmetricPositiveDefiniteMatrix() -> CovarianceMatrixFull<FloatType, 
 
 // Helper function to create an ill-conditioned matrix
 template <typename FloatType, sint32 Size>
-auto createIllConditionedMatrix() -> CovarianceMatrixFull<FloatType, Size>
+auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFull<FloatType, Size>
 {
   CovarianceMatrixFull<FloatType, Size> result{};
 
@@ -235,8 +235,6 @@ TEST(CovarianceMatrixFull, setVariance) // NOLINT
   EXPECT_EQ(cov._data, expCov._data);
 }
 
-// New comprehensive tests for section 2.3 of math layer test coverage plan
-
 TEST(CovarianceMatrixFull, symmetry_preservation_apaT__Success) // NOLINT
 {
   // Test that apaT operation preserves symmetry
@@ -394,7 +392,7 @@ TEST(CovarianceMatrixFull, large_matrix_apaT__Success) // NOLINT
 TEST(CovarianceMatrixFull, numerical_stability_ill_conditioned__Success) // NOLINT
 {
   // Test numerical stability with ill-conditioned matrix
-  auto illCond = createIllConditionedMatrix<float64, 4>();
+  auto illCond = createFactoredIllConditionedMatrix<float64, 4>();
   auto A = conversions::SquareFromList<float64, 4, true>({
       {0.95, 0.01, 0.01, 0.01},
       {0.01, 0.95, 0.01, 0.01},
@@ -408,11 +406,6 @@ TEST(CovarianceMatrixFull, numerical_stability_ill_conditioned__Success) // NOLI
   // Verify symmetry is preserved even with ill-conditioned matrix
   EXPECT_TRUE(illCond.isSymmetric());
 }
-
-// Phase 1: Covariance Matrix Full - Section 2.6 Tests
-// ====================================================
-
-// 1.1 Constructors from Matrix (const&)
 
 TEST(CovarianceMatrixFull, ctor_from_Matrix_const_float3__Success) // NOLINT
 {
@@ -471,8 +464,6 @@ TEST(CovarianceMatrixFull, ctor_from_Matrix_const_positive_definite__Success) //
   EXPECT_TRUE(cov.isPositiveSemiDefinite());
 }
 
-// 1.2 Constructors from SquareMatrix (const&)
-
 TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_float3__Success) // NOLINT
 {
   // Create a symmetric positive definite square matrix
@@ -529,8 +520,6 @@ TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_positive_definite__Succe
   // Verify positive definiteness is maintained
   EXPECT_TRUE(cov.isPositiveSemiDefinite());
 }
-
-// 1.3 Identity() Method for Float Types
 
 TEST(CovarianceMatrixFull, Identity_float3__Success) // NOLINT
 {
@@ -589,8 +578,6 @@ TEST(CovarianceMatrixFull, Identity_float6__Success) // NOLINT
   EXPECT_TRUE(cov.isSymmetric());
 }
 
-// 1.4 operator()() const Methods
-
 TEST(CovarianceMatrixFull, operator_call_const_float3__Success) // NOLINT
 {
   // Create a covariance matrix
@@ -642,8 +629,6 @@ TEST(CovarianceMatrixFull, operator_call_const_identity__Success) // NOLINT
     }
   }
 }
-
-// 1.5 setIdentity() Methods
 
 TEST(CovarianceMatrixFull, setIdentity_float3__Success) // NOLINT
 {
@@ -700,4 +685,68 @@ TEST(CovarianceMatrixFull, setIdentity_float6__Success) // NOLINT
       EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
     }
   }
+}
+
+// Error Handling Tests for Covariance Matrix Functions Returning tl::unexpected
+
+TEST(CovarianceMatrixFull, inverse_NotPositiveDefinite_ExpectError) // NOLINT
+{
+    // Create a non-positive definite matrix (negative eigenvalue)
+    auto nonPosDef = conversions::CovarianceMatrixFullFromList<float32, 3>({
+        {2,  1,  1},
+        {1,  2,  1},
+        {1,  1, -1}}); // Negative diagonal element makes it non-positive definite
+
+    // Test inverse() - should return error
+    auto result = nonPosDef.inverse();
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(CovarianceMatrixFull, inverse_SingularMatrix_ExpectError) // NOLINT
+{
+    // Create a singular matrix (determinant = 0)
+    auto singular = conversions::CovarianceMatrixFullFromList<float64, 3>({
+        {1, 2, 3},
+        {2, 4, 6},
+        {3, 6, 0} // diagonal element zero makes it singular
+      }); 
+
+    // Test inverse() - should return error
+    auto result = singular.inverse();
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(CovarianceMatrixFull, inverse_NonSymmetricMatrix_ExpectError) // NOLINT
+{
+    // Create a non-symmetric matrix
+    auto nonSymmetric = createSymmetricPositiveDefiniteMatrix<float64, 3>();
+    nonSymmetric.at_unsafe(0, 1) += 1.0; // Break symmetry
+    
+    // Test inverse() - should return error
+    auto result = nonSymmetric.inverse();
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(CovarianceMatrixFull, inverse_ZeroMatrix_ExpectError) // NOLINT
+{
+    // Create a zero matrix
+    auto zero = createSymmetricPositiveDefiniteMatrix<float64, 3>();
+    zero.setZeros();
+    
+    // Test inverse() - should return error
+    auto result = zero.inverse();
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(CovarianceMatrixFull, inverse_NegativeDefiniteMatrix_ExpectError) // NOLINT
+{
+    // Create a negative definite matrix
+    auto negDef = createSymmetricPositiveDefiniteMatrix<float64, 3>();
+    negDef.at_unsafe(0, 0) = -1.0;
+    negDef.at_unsafe(1, 1) = -2.0;
+    negDef.at_unsafe(2, 2) = -3.0; // All negative eigenvalues
+
+    // Test inverse() - should return error
+    auto result = negDef.inverse();
+    EXPECT_FALSE(result.has_value());
 }

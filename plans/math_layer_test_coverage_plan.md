@@ -437,15 +437,39 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
 
 ### Phase 4: Error Handling and Edge Cases (Estimated: 1-2 sessions)
 
-#### 4.1 Error Handling Tests
-**Expand:** Multiple test files
-- Test all error paths in tl::expected returns
-- Test boundary conditions
-- Test invalid inputs
-- Test dimension mismatches
-- Test division by zero
-- Test access out of bounds
-- **Estimated:** 20-25 additional tests across files
+#### 4.1 Error Handling Tests for Covariance Matrix Functions Returning tl::unexpected
+**Expand:** [`test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) and [`test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp)
+
+**Missing Tests for CovarianceMatrixFull::inverse(): (COMPLETED)**
+- `inverse_NotPositiveDefinite_ExpectError` - Test with non-positive definite matrix
+- `inverse_SingularMatrix_ExpectError` - Test with singular matrix (determinant = 0)
+- `inverse_NearSingularMatrix_ExpectError` - Test with near-singular matrix
+- `inverse_NonSymmetricMatrix_ExpectError` - Test with non-symmetric matrix
+- `inverse_ZeroMatrix_ExpectError` - Test with zero matrix
+- `inverse_NegativeDefiniteMatrix_ExpectError` - Test with negative definite matrix
+
+**Missing Tests for CovarianceMatrixFactored::operator()(int, int) const: (COMPLETED)**
+- `operator_call_InvalidRowIndex_ExpectError` - Test with row index < 0
+- `operator_call_InvalidRowIndexTooLarge_ExpectError` - Test with row index >= Size_
+- `operator_call_InvalidColIndex_ExpectError` - Test with column index < 0
+- `operator_call_InvalidColIndexTooLarge_ExpectError` - Test with column index >= Size_
+- `operator_call_NegativeIndices_ExpectError` - Test with both negative indices
+- `operator_call_OutOfBoundsIndices_ExpectError` - Test with both indices too large
+
+**Missing Tests for CovarianceMatrixFactored::inverse(): (COMPLETED)**
+- `inverse_NotPositiveDefinite_ExpectError` - Test with non-positive definite matrix
+- `inverse_SingularMatrix_ExpectError` - Test with singular matrix (determinant = 0)
+- `inverse_NearSingularMatrix_ExpectError` - Test with near-singular matrix
+- `inverse_ZeroMatrix_ExpectError` - Test with zero matrix
+- `inverse_NegativeDefiniteMatrix_ExpectError` - Test with negative definite matrix
+
+**Additional Error Handling Tests:**
+- Test boundary conditions for all functions
+- Test invalid inputs for all functions
+- Test dimension mismatches where applicable
+- Test numerical stability edge cases
+
+**Estimated:** 20-25 additional tests across files
 
 ## Implementation Strategy
 
@@ -500,16 +524,16 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
     - All critical algorithms have comprehensive coverage
 
 2. **Test Quality:**
-   - All tests pass consistently
-   - Tests are independent and can run in any order
-   - Tests have clear names and purposes
-   - Tests cover edge cases and boundary conditions
-   - Tests verify both success and failure paths
+    - All tests pass consistently
+    - Tests are independent and can run in any order
+    - Tests have clear names and purposes
+    - Tests cover edge cases and boundary conditions
+    - Tests verify both success and failure paths
 
 3. **Test Count:**
       - Target: 310+ total tests for math layer (currently 369 + 34 = 403 after this update)
       - Tests completed: 44 additional trace/determinant tests + 20 covariance matrix tests + 20 triangular matrix tests + 10 diagonal matrix tests + 17 covariance matrix full tests + 17 covariance matrix factored tests
-      - Tests needed: 5-15 additional tests for remaining coverage gaps (mostly error handling)
+      - Tests needed: 20-25 additional tests for remaining coverage gaps (error handling)
       - Distribution:
         - Conversions: 30-40 tests (COMPLETED: 30-40 tests)
         - Modified Gram-Schmidt: 10-15 tests (COMPLETED: 6 tests)
@@ -521,7 +545,10 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
         - Numerical stability: 10-15 tests (PARTIALLY COMPLETED: 4 tests in triangular/covariance sections)
         - Triangular matrix operations: 10-15 tests (COMPLETED: 20 tests)
         - Diagonal matrix operations: 8-10 tests (COMPLETED: 10 tests)
-        - Error handling: 20-25 tests (PENDING)
+        - Error handling: 20-25 tests (PENDING - 12 specific covariance matrix error tests + 8-13 general error tests)
+          - CovarianceMatrixFull::inverse() error tests: 6 tests needed
+          - CovarianceMatrixFactored::operator()(int, int) const error tests: 6 tests needed
+          - CovarianceMatrixFactored::inverse() error tests: 5 tests needed
         - Matrix I/O: 10-15 tests (COMPLETED: 16 tests)
         - Covariance Matrix Full: 10-15 tests (COMPLETED: 17 tests)
         - Covariance Matrix Factored: 4-8 tests (COMPLETED: 17 tests including composed_inverse)
@@ -637,7 +664,48 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
 
 ## Detailed Missing Function List
 
-Based on the lcov coverage report analysis, here is the complete list of functions that need test coverage:
+Based on the lcov coverage report analysis, here is the complete list of functions that need test coverage, including error handling tests:
+
+### Error Handling Tests for Functions Returning tl::unexpected
+
+#### CovarianceMatrixFull Missing Error Tests
+```cpp
+// inverse() - needs comprehensive error handling tests
+// CovarianceMatrixFull<float, 3>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
+// CovarianceMatrixFull<double, 4>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
+// Missing tests:
+// - inverse_NotPositiveDefinite_ExpectError (non-positive definite matrix)
+// - inverse_SingularMatrix_ExpectError (singular matrix)
+// - inverse_NearSingularMatrix_ExpectError (near-singular matrix)
+// - inverse_NonSymmetricMatrix_ExpectError (non-symmetric matrix)
+// - inverse_ZeroMatrix_ExpectError (zero matrix)
+// - inverse_NegativeDefiniteMatrix_ExpectError (negative definite matrix)
+```
+
+#### CovarianceMatrixFactored Missing Error Tests
+```cpp
+// operator()(int, int) const - needs comprehensive error handling tests
+// CovarianceMatrixFactored<float, 3>::operator()(sint32, sint32) const -> tl::expected<value_type, Errors>
+// CovarianceMatrixFactored<double, 4>::operator()(sint32, sint32) const -> tl::expected<value_type, Errors>
+// Missing tests:
+// - operator_call_InvalidRowIndex_ExpectError (row index < 0)
+// - operator_call_InvalidRowIndexTooLarge_ExpectError (row index >= Size_)
+// - operator_call_InvalidColIndex_ExpectError (column index < 0)
+// - operator_call_InvalidColIndexTooLarge_ExpectError (column index >= Size_)
+// - operator_call_NegativeIndices_ExpectError (both indices negative)
+// - operator_call_OutOfBoundsIndices_ExpectError (both indices too large)
+
+// inverse() - needs comprehensive error handling tests
+// CovarianceMatrixFactored<float, 3>::inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>
+// CovarianceMatrixFactored<double, 4>::inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>
+// Missing tests:
+// - inverse_NotPositiveDefinite_ExpectError (non-positive definite matrix)
+// - inverse_SingularMatrix_ExpectError (singular matrix)
+// - inverse_NearSingularMatrix_ExpectError (near-singular matrix)
+// - inverse_ZeroMatrix_ExpectError (zero matrix)
+// - inverse_NegativeDefiniteMatrix_ExpectError (negative definite matrix)
+```
+
 
 ### Matrix I/O Functions (0% coverage - HIGH PRIORITY)
 ```cpp
