@@ -22,6 +22,7 @@
 #define C63CC10A_92E8_4A79_8412_56D9CFCB8DB4
 
 #include "base/first_include.h" // IWYU pragma: keep
+#include "math/linalg/triangular_matrix.h"
 #include <iomanip>
 #include <ostream>
 #include <type_traits>
@@ -108,7 +109,7 @@ inline constexpr bool is_matrix_like_v = is_matrix_like<T>::value;
 template <typename M>
 auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix_like_v<M>, std::ostream&>
 {
-  using ValueType = typename M::value_type;
+  using ValueType_ = typename M::value_type;
 
   // Access elements via at_unsafe() - works regardless of internal memory layout
   // This is future-proof for packed triangular matrices
@@ -116,7 +117,7 @@ auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix
   {
     for (sint32 col = 0; col < M::Cols; ++col)
     {
-      if constexpr (std::is_floating_point_v<ValueType>)
+      if constexpr (std::is_floating_point_v<ValueType_>)
       {
         os << std::fixed << std::setprecision(6) << std::showpos << std::setw(12) << matrix.at_unsafe(row, col);
       }
@@ -126,6 +127,67 @@ auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix
       }
 
       if (col < M::Cols - 1)
+      {
+        os << ", ";
+      }
+    }
+    os << "\n";
+  }
+  return os;
+}
+
+/// \brief Specialization of operator<< for TriangularMatrix.
+///
+/// TriangularMatrix requires special handling because it doesn't allow to access
+/// off-diagonal matrix elements
+/// This specialization outputs the full matrix representation with zeros off-diagonal.
+///
+/// The output format matches the general matrix operator<< for consistency:
+/// - Fixed-width columns for alignment
+/// - 6 decimal places for floating-point types with sign display
+/// - Triangular elements from stored values, off-diagonal as zero
+///
+/// \tparam ValueType_ The element type (float32, float64, etc.)
+/// \tparam Size_ The matrix dimension (compile-time constant)
+/// \tparam IsLower_ Whether the matrix is lower triangular
+/// \tparam IsRowMajor_ Whether the matrix is stored in row-major order
+/// \param[in,out] os The output stream to write to
+/// \param[in] matrix The TriangularMatrix object to stream
+/// \return Reference to the output stream for chaining
+///
+/// \note This specialization is necessary because TriangularMatrix::at_unsafe() has
+///       restricted access to only triangular elements
+///
+/// \see TriangularMatrix for the matrix class
+/// \see operator<<(std::ostream&, const M&) for general matrix streaming
+template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
+std::ostream& operator<<(std::ostream&                                                                     os,
+                         const tracking::math::TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>& matrix)
+{
+  for (sint32 row = 0; row < Size_; ++row)
+  {
+    for (sint32 col = 0; col < Size_; ++col)
+    {
+      if constexpr (std::is_floating_point_v<ValueType_>)
+      {
+        os << std::fixed << std::setprecision(6) << std::showpos << std::setw(12);
+      }
+      else
+      {
+        os << std::setw(8);
+      }
+
+      // For triangular matrix, only triangular elements are stored
+      if ((IsLower_ && row >= col) || (!IsLower_ && row <= col))
+      {
+        os << matrix.at_unsafe(row, col);
+      }
+      else
+      {
+        os << static_cast<ValueType_>(0);
+      }
+
+      if (col < Size_ - 1)
       {
         os << ", ";
       }

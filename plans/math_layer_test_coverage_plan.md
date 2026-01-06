@@ -4,11 +4,73 @@
 
 This plan addresses the need to analyze and improve test coverage for the math layer of trackinglib. Recent refactoring efforts have resulted in new files being added and some unittest code being partially removed. This analysis will ensure comprehensive test coverage across all math layer components.
 
+### Current Coverage Status (2026-01-05)
+
+**Overall Math Layer Coverage:**
+- **Line Coverage:** 96.8% (883/912 lines)
+- **Function Coverage:** 76.2% (689/904 functions)
+
+**Critical Missing Coverage Areas:**
+
+1. **Matrix I/O Functions (0% coverage):**
+   - `operator<<` for various matrix types and sizes
+   - Matrix<double, 4, 3, true>, Matrix<double, 6, 3, true>
+   - SquareMatrix<double, 4, true>, SquareMatrix<double, 6, true>
+
+2. **Covariance Matrix Full (53.1% function coverage):**
+   - Constructors from Matrix (const& versions)
+   - Constructors from SquareMatrix (const& versions)
+   - Identity() method for some sizes
+   - operator()() const method
+   - setIdentity() method
+   - Destructors (all sizes)
+
+3. **Covariance Matrix Factored (71.9% function coverage):**
+   - composed_inverse() method (0% coverage)
+   - operator()(int, int) const for some sizes
+   - setDiagonal() and setVariance() methods for some sizes
+   - Identity() method for some sizes
+   - setIdentity() method for some sizes
+   - at_unsafe() for some sizes
+
+4. **Matrix Destructors (13.4% coverage):**
+   - Most matrix destructors are not covered
+   - This may require special test setup or analysis
+
+## Coverage Analysis Summary
+
+Based on the lcov coverage report from 2026-01-05, the following functions are missing test coverage and should be prioritized in the test coverage plan:
+
+### High Priority Missing Functions
+
+#### Matrix I/O (0% coverage)
+- `operator<<` for Matrix<double, 4, 3, true>
+- `operator<<` for Matrix<double, 6, 3, true>
+- `operator<<` for SquareMatrix<double, 4, true>
+- `operator<<` for SquareMatrix<double, 6, true>
+
+#### Covariance Matrix Full (critical methods)
+- `CovarianceMatrixFull(Matrix const&)` constructors
+- `CovarianceMatrixFull(SquareMatrix const&)` constructors
+- `Identity()` for float types
+- `operator()() const` methods
+- `setIdentity()` methods
+- All destructors
+
+#### Covariance Matrix Factored (critical methods)
+- `composed_inverse() const` (0% coverage - most critical)
+- `operator()(int, int) const` for double,4 size
+- `setDiagonal(int, double)` for double,4 size
+- `setVariance(int, double)` for double,4 size
+- `Identity()` for double,4 size
+- `setIdentity()` for double,4 size
+- `at_unsafe(int, int) const` for float,4 and float,6 sizes
+
 ## Current State Analysis
 
 ### Test Coverage Status
 
-**Existing Test Files (14 files, 322 tests):**
+**Existing Test Files (16 files, 339 tests):**
 - [`test_matrix.cpp`](tests/math/test_matrix.cpp) - 108 tests (comprehensive)
 - [`test_square_matrix.cpp`](tests/math/test_square_matrix.cpp) - 12 tests
 - [`test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) - 26 tests
@@ -17,27 +79,41 @@ This plan addresses the need to analyze and improve test coverage for the math l
 - [`test_matrix_view.cpp`](tests/math/test_matrix_view.cpp) - 4 tests (recently added)
 - [`test_matrix_row_view.cpp`](tests/math/test_matrix_row_view.cpp) - 3 tests
 - [`test_matrix_column_view.cpp`](tests/math/test_matrix_column_view.cpp) - 5 tests
-- [`test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) - 6 tests
-- [`test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) - 8 tests
+- [`test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) - 14 tests (expanded from 6 to 14)
+- [`test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) - 20 tests (expanded from 8 to 20)
 - [`test_rank1_update.cpp`](tests/math/test_rank1_update.cpp) - 6 tests
 - [`test_matrix_io.cpp`](tests/math/test_matrix_io.cpp) - 11 tests (recently added)
 - [`test_point2d.cpp`](tests/math/test_point2d.cpp) - 4 tests (recently added)
 - [`test_point3d.cpp`](tests/math/test_point3d.cpp) - 4 tests (recently added)
+- [`test_conversions.cpp`](tests/math/test_conversions.cpp) - 30-40 tests (recently added)
+- [`test_modified_gram_schmidt.cpp`](tests/math/test_modified_gram_schmidt.cpp) - 6 tests (recently added)
+- [`test_functions.cpp`](tests/math/test_functions.cpp) - 22 tests (recently added)
+- [`test_square_matrix_decompositions.cpp`](tests/math/test_square_matrix_decompositions.cpp) - 22 tests (recently added)
+- [`test_matrix_integration.cpp`](tests/math/test_matrix_integration.cpp) - 10 tests (recently added)
 
 **Missing Test Files:**
-- No tests for [`modified_gram_schmidt.h/.hpp`](include/trackingLib/math/linalg/modified_gram_schmidt.h)
-- No tests for [`square_matrix_decompositions.hpp`](include/trackingLib/math/linalg/square_matrix_decompositions.hpp) (decompositions tested via square_matrix tests)
-- No tests for conversion functions in [`conversions/`](include/trackingLib/math/linalg/conversions/) directory
-- No tests for [`functions.h`](include/trackingLib/math/analysis/functions.h) (compile-time power function)
 - No tests for [`matrix_types.h`](include/trackingLib/math/linalg/matrix_types.h) (enums)
 - No tests for [`errors.h`](include/trackingLib/math/linalg/errors.h) (error types)
 - No tests for contract interfaces
+- No dedicated tests for [`test_numerical_stability.cpp`](tests/math/test_numerical_stability.cpp) (partial coverage in other files)
 
 ## Test Coverage Improvement Plan
 
 ### Phase 1: Critical Gaps - New Files (Estimated: 3-4 sessions)
 
 #### 1.1 Conversion Functions Testing  (COMPLETED 2026-01-02)
+
+#### 1.4 Matrix I/O Functions Testing (PENDING)
+**Expand:** [`test_matrix_io.cpp`](tests/math/test_matrix_io.cpp) (10-15 additional tests)
+- Add tests for `operator<<` with different matrix types and sizes
+- Test Matrix<double, 4, 3, true> output
+- Test Matrix<double, 6, 3, true> output
+- Test SquareMatrix<double, 4, true> output
+- Test SquareMatrix<double, 6, true> output
+- Test different value types (float, double, int)
+- Test different storage layouts (row-major, column-major)
+- Test edge cases (empty matrices, single-element matrices)
+- **Estimated:** 10-15 additional tests
 **New File:** `tests/math/test_conversions.cpp`
 - Test all conversion functions in [`conversions/`](include/trackingLib/math/linalg/conversions/) directory
 - Use **Typed Tests** for conversions that work with different storage layouts (row-major/column-major)
@@ -227,6 +303,27 @@ This plan addresses the need to analyze and improve test coverage for the math l
 - Add tests for condition number
 - **Estimated:** 8-10 additional tests
 
+#### 2.6 Covariance Matrix Full - Missing Constructors and Methods
+**Expand:** [`test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) (10-15 additional tests)
+- Test constructors from Matrix (const& and && versions)
+- Test constructors from SquareMatrix (const& and && versions)
+- Test Identity() method for all sizes
+- Test operator()() const method
+- Test setIdentity() method
+- Test destructor coverage (may need special test setup)
+- Test with different template parameters (float, double, different sizes)
+- **Estimated:** 10-15 additional tests
+
+#### 2.7 Covariance Matrix Factored - Missing Methods
+**Expand:** [`test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) (8-12 additional tests)
+- Test composed_inverse() method (currently 0% coverage)
+- Test operator()(int, int) const for different sizes
+- Test setDiagonal() and setVariance() methods
+- Test Identity() method for different sizes
+- Test setIdentity() method
+- Test at_unsafe() for different sizes
+- **Estimated:** 8-12 additional tests
+
 ### Phase 3: Integration and Edge Cases (Estimated: 2-3 sessions)
 
 #### 3.1 Cross-Class Integration Tests
@@ -317,10 +414,12 @@ This plan addresses the need to analyze and improve test coverage for the math l
 ### Test Coverage Success Criteria
 
 1. **Coverage Metrics:**
-   - Line coverage >90% for math layer
-   - Branch coverage >85% for math layer
-   - All public methods have at least one test
-   - All error paths are tested
+    - Line coverage >90% for math layer (currently 96.8%)
+    - Branch coverage >85% for math layer
+    - Function coverage >90% for math layer (currently 76.2%)
+    - All public methods have at least one test
+    - All error paths are tested
+    - All critical algorithms have comprehensive coverage
 
 2. **Test Quality:**
    - All tests pass consistently
@@ -332,6 +431,7 @@ This plan addresses the need to analyze and improve test coverage for the math l
 3. **Test Count:**
       - Target: 310+ total tests for math layer (currently 339)
       - Tests completed: 44 additional trace/determinant tests + 20 covariance matrix tests
+      - Tests needed: 25-35 additional tests for missing coverage
       - Distribution:
         - Conversions: 30-40 tests (COMPLETED: 30-40 tests)
         - Modified Gram-Schmidt: 10-15 tests (COMPLETED: 6 tests)
@@ -342,6 +442,9 @@ This plan addresses the need to analyze and improve test coverage for the math l
         - Integration tests: 15-20 tests (PARTIALLY COMPLETED: 10 tests in trace/determinant section)
         - Numerical stability: 10-15 tests (PARTIALLY COMPLETED: 2 tests in covariance section)
         - Error handling: 20-25 tests (PENDING)
+        - Matrix I/O: 10-15 tests (PENDING)
+        - Covariance Matrix Full: 10-15 tests (PENDING)
+        - Covariance Matrix Factored: 8-12 tests (PENDING)
 
 ## Risks and Mitigation
 
@@ -393,30 +496,111 @@ This plan addresses the need to analyze and improve test coverage for the math l
 4. **Iterate and refine** the plan based on discoveries during implementation
 5. **Track progress** using the todo list and update memory bank as needed
 
+## Detailed Missing Function List
+
+Based on the lcov coverage report analysis, here is the complete list of functions that need test coverage:
+
+### Matrix I/O Functions (0% coverage - HIGH PRIORITY)
+```cpp
+// Matrix<double, 4, 3, true>
+std::enable_if<is_matrix_like_v<Matrix<double, 4, 3, true>>, std::basic_ostream<char>&>::type
+    operator<<(std::basic_ostream<char>&, Matrix<double, 4, 3, true> const&)
+
+// Matrix<double, 6, 3, true>
+std::enable_if<is_matrix_like_v<Matrix<double, 6, 3, true>>, std::basic_ostream<char>&>::type
+    operator<<(std::basic_ostream<char>&, Matrix<double, 6, 3, true> const&)
+
+// SquareMatrix<double, 4, true>
+std::enable_if<is_matrix_like_v<SquareMatrix<double, 4, true>>, std::basic_ostream<char>&>::type
+    operator<<(std::basic_ostream<char>&, SquareMatrix<double, 4, true> const&)
+
+// SquareMatrix<double, 6, true>
+std::enable_if<is_matrix_like_v<SquareMatrix<double, 6, true>>, std::basic_ostream<char>&>::type
+    operator<<(std::basic_ostream<char>&, SquareMatrix<double, 6, true> const&)
+```
+
+### Covariance Matrix Full Missing Functions
+```cpp
+// Constructors from Matrix (const&) - 0% coverage
+CovarianceMatrixFull<float, 3>::CovarianceMatrixFull(Matrix<float, 3, 3, false> const&)
+CovarianceMatrixFull<double, 4>::CovarianceMatrixFull(Matrix<double, 4, 4, false> const&)
+
+// Constructors from SquareMatrix (const&) - 0% coverage
+CovarianceMatrixFull<float, 3>::CovarianceMatrixFull(SquareMatrix<float, 3, true> const&)
+CovarianceMatrixFull<double, 4>::CovarianceMatrixFull(SquareMatrix<double, 4, true> const&)
+
+// Identity() - partial coverage
+CovarianceMatrixFull<float, 3>::Identity()  // 0% coverage
+
+// operator()() const - 0% coverage
+CovarianceMatrixFull<float, 3>::operator()() const
+CovarianceMatrixFull<double, 4>::operator()() const
+
+// setIdentity() - 0% coverage
+CovarianceMatrixFull<float, 3>::setIdentity()
+CovarianceMatrixFull<double, 4>::setIdentity()
+
+// Destructors - 0% coverage (all sizes)
+CovarianceMatrixFull<float, 3>::~CovarianceMatrixFull()
+CovarianceMatrixFull<double, 3>::~CovarianceMatrixFull()
+CovarianceMatrixFull<double, 4>::~CovarianceMatrixFull()
+CovarianceMatrixFull<double, 6>::~CovarianceMatrixFull()
+CovarianceMatrixFull<float, 4>::~CovarianceMatrixFull()
+CovarianceMatrixFull<float, 6>::~CovarianceMatrixFull()
+```
+
+### Covariance Matrix Factored Missing Functions
+```cpp
+// composed_inverse() - 0% coverage (CRITICAL)
+CovarianceMatrixFactored<float, 3>::composed_inverse() const
+CovarianceMatrixFactored<double, 4>::composed_inverse() const
+
+// operator()(int, int) const - partial coverage
+CovarianceMatrixFactored<double, 4>::operator()(int, int) const  // 0% coverage
+
+// setDiagonal() - partial coverage
+CovarianceMatrixFactored<double, 4>::setDiagonal(int, double)  // 0% coverage
+
+// setVariance() - partial coverage
+CovarianceMatrixFactored<double, 4>::setVariance(int, double)  // 0% coverage
+
+// Identity() - partial coverage
+CovarianceMatrixFactored<double, 4>::Identity()  // 0% coverage
+
+// setIdentity() - partial coverage
+CovarianceMatrixFactored<double, 4>::setIdentity()  // 0% coverage
+
+// at_unsafe() - partial coverage
+CovarianceMatrixFactored<float, 4>::at_unsafe(int, int) const  // 0% coverage
+CovarianceMatrixFactored<float, 6>::at_unsafe(int, int) const  // 0% coverage
+```
+
 ## Questions for User
 
-1. **Priority:** Should we prioritize testing first?
-2. **Scope:** Are there specific files or areas that are more critical than others?
-3. **Timeline:** What is the desired timeline for completion?
+1. **Priority:** Should we prioritize testing the critical missing functions first (especially `composed_inverse()` and Matrix I/O)?
+2. **Scope:** Are there specific functions or areas that are more critical than others for the application?
+3. **Timeline:** What is the desired timeline for achieving >90% function coverage?
 4. **Resources:** Will this be done by one person or multiple contributors?
-5. **Coverage Targets:** Are the proposed coverage targets (>90% line, >85% branch) acceptable?
-6. **Reference Implementations:** Should we use Eigen for comparison in tests?
+5. **Coverage Targets:** Are the proposed coverage targets (>90% line, >85% branch, >90% function) acceptable?
+6. **Reference Implementations:** Should we use Eigen for comparison in tests for the missing functions?
+7. **Destructor Testing:** Should we invest time in testing destructors, or accept that they may not be testable in the current framework?
 
 ## Appendix: Test Files to Create/Expand
 
 ### New Test Files Needed:
-1. `tests/math/test_conversions.cpp` (30-40 tests)
-2. `tests/math/test_modified_gram_schmidt.cpp` (10-15 tests)
-3. `tests/math/test_functions.cpp` (8-10 tests)
-4. `tests/math/test_square_matrix_decompositions.cpp` (20-25 tests)
-5. `tests/math/test_matrix_integration.cpp` (15-20 tests)
-6. `tests/math/test_numerical_stability.cpp` (10-15 tests)
+1. `tests/math/test_conversions.cpp` (30-40 tests) - COMPLETED
+2. `tests/math/test_modified_gram_schmidt.cpp` (10-15 tests) - COMPLETED (6 tests)
+3. `tests/math/test_functions.cpp` (8-10 tests) - COMPLETED (22 tests)
+4. `tests/math/test_square_matrix_decompositions.cpp` (20-25 tests) - COMPLETED (22 tests)
+5. `tests/math/test_matrix_integration.cpp` (15-20 tests) - PARTIALLY COMPLETED (10 tests)
+6. `tests/math/test_numerical_stability.cpp` (10-15 tests) - PARTIALLY COMPLETED (2 tests)
 
 ### Existing Test Files to Expand:
 1. [`tests/math/test_square_matrix.cpp`](tests/math/test_square_matrix.cpp) (+5-8 tests for non-decomposition methods + 12-15 tests for trace/determinant)
 2. [`tests/math/test_vector.cpp`](tests/math/test_vector.cpp) (COMPLETED: +31 tests, from 8 to 39)
-3. [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) (COMPLETED: +8 tests, from 6 to 14)
-4. [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) (COMPLETED: +12 tests, from 8 to 20)
+3. [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) (PARTIALLY COMPLETED: +8 tests, from 6 to 14, needs +10-15 more)
+4. [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) (PARTIALLY COMPLETED: +12 tests, from 8 to 20, needs +8-12 more)
 5. [`tests/math/test_triangular_matrix.cpp`](tests/math/test_triangular_matrix.cpp) (+10-15 tests for triangular operations + 8-10 tests for trace/determinant)
 6. [`tests/math/test_diagonal_matrix.cpp`](tests/math/test_diagonal_matrix.cpp) (+8-10 tests for diagonal operations + 10-12 tests for trace/determinant)
-7. All test files for error handling (+20-25 tests distributed)
+7. [`tests/math/test_matrix_io.cpp`](tests/math/test_matrix_io.cpp) (+10-15 tests for missing operator<< coverage)
+8. All test files for error handling (+20-25 tests distributed)

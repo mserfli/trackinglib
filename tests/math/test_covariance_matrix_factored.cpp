@@ -313,6 +313,165 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_apaT__Success) // NOLINT
   EXPECT_TRUE(isSymmetric(resultFull));
 }
 
+// Critical missing tests for composed_inverse() method - addressing 0% coverage
+
+TEST(CovarianceMatrixFactored, composed_inverse_identity__Success) // NOLINT
+{
+  // Test with identity matrix - should return identity
+  auto cov = CovarianceMatrixFactored<float64, 3>::Identity();
+
+  // Get the inverse
+  auto inv = cov.composed_inverse();
+
+  // For identity matrix, inverse should also be identity
+  auto expected = CovarianceMatrixFull<float64, 3>::Identity();
+
+  // Check that result is close to identity
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    for (sint32 j = 0; j < 3; ++j)
+    {
+      float64 expected_val = (i == j) ? 1.0 : 0.0;
+      EXPECT_NEAR(inv.at_unsafe(i, j), expected_val, 1e-6);
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, composed_inverse_diagonal__Success) // NOLINT
+{
+  // Test with diagonal matrix
+  auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 3>({{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}},
+                                                                       {2.0, 3.0, 4.0});
+
+  // Get the inverse
+  auto inv = cov.composed_inverse();
+
+  // For diagonal matrix with values [2, 3, 4], inverse should be [0.5, 1/3, 0.25]
+  EXPECT_NEAR(inv.at_unsafe(0, 0), 0.5, 1e-6);
+  EXPECT_NEAR(inv.at_unsafe(1, 1), 1.0 / 3.0, 1e-6);
+  EXPECT_NEAR(inv.at_unsafe(2, 2), 0.25, 1e-6);
+
+  // Off-diagonal elements should be zero
+  EXPECT_NEAR(inv.at_unsafe(0, 1), 0.0, 1e-6);
+  EXPECT_NEAR(inv.at_unsafe(0, 2), 0.0, 1e-6);
+  EXPECT_NEAR(inv.at_unsafe(1, 0), 0.0, 1e-6);
+  EXPECT_NEAR(inv.at_unsafe(1, 2), 0.0, 1e-6);
+  EXPECT_NEAR(inv.at_unsafe(2, 0), 0.0, 1e-6);
+  EXPECT_NEAR(inv.at_unsafe(2, 1), 0.0, 1e-6);
+}
+
+TEST(CovarianceMatrixFactored, composed_inverse_symmetric_positive_definite__Success) // NOLINT
+{
+  // Test with a known symmetric positive definite matrix
+  auto fullCov = createSymmetricPositiveDefiniteMatrix<float64, 3>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float64>> covList = {
+      {fullCov.at_unsafe(0, 0), fullCov.at_unsafe(0, 1), fullCov.at_unsafe(0, 2)},
+      {fullCov.at_unsafe(1, 0), fullCov.at_unsafe(1, 1), fullCov.at_unsafe(1, 2)},
+      {fullCov.at_unsafe(2, 0), fullCov.at_unsafe(2, 1), fullCov.at_unsafe(2, 2)}};
+
+  auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 3>(covList);
+
+  // Get the inverse
+  auto inv = cov.composed_inverse();
+
+  // Verify that the inverse is symmetric
+  EXPECT_TRUE(isSymmetric(inv));
+
+  // Verify that the inverse is positive definite
+  EXPECT_TRUE(isPositiveSemiDefinite(inv));
+}
+
+TEST(CovarianceMatrixFactored, composed_inverse_consistency__Success) // NOLINT
+{
+  // Test that inv * original ≈ identity
+  auto fullCov = createSymmetricPositiveDefiniteMatrix<float64, 3>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float64>> covList = {
+      {fullCov.at_unsafe(0, 0), fullCov.at_unsafe(0, 1), fullCov.at_unsafe(0, 2)},
+      {fullCov.at_unsafe(1, 0), fullCov.at_unsafe(1, 1), fullCov.at_unsafe(1, 2)},
+      {fullCov.at_unsafe(2, 0), fullCov.at_unsafe(2, 1), fullCov.at_unsafe(2, 2)}};
+
+  auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 3>(covList);
+  auto inv = cov.composed_inverse();
+
+  // Multiply inv * original and check if close to identity
+  auto product = inv * cov();
+
+  // Check that result is close to identity
+  for (sint32 i = 0; i < 3; ++i)
+  {
+    for (sint32 j = 0; j < 3; ++j)
+    {
+      float64 expected_val = (i == j) ? 1.0 : 0.0;
+      EXPECT_NEAR(product.at_unsafe(i, j), expected_val, 1e-4); // Looser tolerance for numerical stability
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, composed_inverse_symmetry__Success) // NOLINT
+{
+  // Test that result is symmetric
+  auto fullCov = createSymmetricPositiveDefiniteMatrix<float64, 4>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float64>> covList = {
+      {fullCov.at_unsafe(0, 0), fullCov.at_unsafe(0, 1), fullCov.at_unsafe(0, 2), fullCov.at_unsafe(0, 3)},
+      {fullCov.at_unsafe(1, 0), fullCov.at_unsafe(1, 1), fullCov.at_unsafe(1, 2), fullCov.at_unsafe(1, 3)},
+      {fullCov.at_unsafe(2, 0), fullCov.at_unsafe(2, 1), fullCov.at_unsafe(2, 2), fullCov.at_unsafe(2, 3)},
+      {fullCov.at_unsafe(3, 0), fullCov.at_unsafe(3, 1), fullCov.at_unsafe(3, 2), fullCov.at_unsafe(3, 3)}};
+
+  auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 4>(covList);
+
+  // Get the inverse
+  auto inv = cov.composed_inverse();
+
+  // Verify that the inverse is symmetric
+  EXPECT_TRUE(isSymmetric(inv));
+}
+
+TEST(CovarianceMatrixFactored, composed_inverse_positive_definite__Success) // NOLINT
+{
+  // Test that result is positive definite
+  auto fullCov = createSymmetricPositiveDefiniteMatrix<float64, 3>();
+
+  // Create nested initializer list for conversion
+  std::initializer_list<std::initializer_list<float64>> covList = {
+      {fullCov.at_unsafe(0, 0), fullCov.at_unsafe(0, 1), fullCov.at_unsafe(0, 2)},
+      {fullCov.at_unsafe(1, 0), fullCov.at_unsafe(1, 1), fullCov.at_unsafe(1, 2)},
+      {fullCov.at_unsafe(2, 0), fullCov.at_unsafe(2, 1), fullCov.at_unsafe(2, 2)}};
+
+  auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 3>(covList);
+
+  // Get the inverse
+  auto inv = cov.composed_inverse();
+
+  // Verify that the inverse is positive definite
+  EXPECT_TRUE(isPositiveSemiDefinite(inv));
+}
+
+TEST(CovarianceMatrixFactored, composed_inverse_different_sizes__Success) // NOLINT
+{
+  // Test with different matrix sizes
+
+  // Test 3x3
+  auto cov3 = CovarianceMatrixFactored<float32, 3>::Identity();
+  auto inv3 = cov3.composed_inverse();
+  EXPECT_NEAR(inv3.at_unsafe(0, 0), 1.0f, 1e-5);
+  EXPECT_NEAR(inv3.at_unsafe(1, 1), 1.0f, 1e-5);
+  EXPECT_NEAR(inv3.at_unsafe(2, 2), 1.0f, 1e-5);
+
+  // Test 4x4
+  auto cov4 = CovarianceMatrixFactored<float32, 4>::Identity();
+  auto inv4 = cov4.composed_inverse();
+  EXPECT_NEAR(inv4.at_unsafe(0, 0), 1.0f, 1e-5);
+  EXPECT_NEAR(inv4.at_unsafe(1, 1), 1.0f, 1e-5);
+  EXPECT_NEAR(inv4.at_unsafe(2, 2), 1.0f, 1e-5);
+  EXPECT_NEAR(inv4.at_unsafe(3, 3), 1.0f, 1e-5);
+}
+
 TEST(CovarianceMatrixFactored, symmetry_preservation_rank1Update__Success) // NOLINT
 {
   // Test that rank1Update operation preserves symmetry
