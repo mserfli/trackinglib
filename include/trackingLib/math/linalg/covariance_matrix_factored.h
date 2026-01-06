@@ -213,7 +213,6 @@ public:
   /// \param[in] val  The value to be set
   void setDiagonal(const sint32 idx, const FloatType_ val);
 
-
   //////////////////////////////////////////////////
   // unsafe access operators  --->
   /// \brief Unsafe element read-only access
@@ -221,6 +220,7 @@ public:
   /// \param[in] col  column of the element to read
   /// \return ValueType_   the value at (row,col)
   [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -> FloatType_;
+  /// <---
 
   // clang-format off
 TEST_REMOVE_PRIVATE:

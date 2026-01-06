@@ -10,7 +10,6 @@
 #include "math/linalg/triangular_matrix.hpp"            // IWYU pragma: keep
 #include "math/linalg/vector.hpp"                       // IWYU pragma: keep
 #include <cmath>                                        // sqrt
-#include <limits>
 
 namespace tracking
 {
@@ -134,7 +133,14 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::inverse() const -> Squ
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric() const -> bool
+inline void SquareMatrix<ValueType_, Size_, IsRowMajor_>::symmetrize()
+{
+  *this += this->transpose();
+  *this *= static_cast<ValueType_>(0.5);
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric(ValueType_ tolerance) const -> bool
 {
   // check all off diagonal elements
   for (auto row = 0; row < Size_; ++row)
@@ -142,7 +148,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric() const ->
     for (auto col = row + 1; col < Size_; ++col)
     {
       const auto absDiff = std::abs(this->at_unsafe(row, col) - this->at_unsafe(col, row));
-      if (absDiff > std::numeric_limits<ValueType_>::epsilon())
+      if (absDiff > tolerance)
       {
         return false;
       }
@@ -152,10 +158,12 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric() const ->
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline void SquareMatrix<ValueType_, Size_, IsRowMajor_>::symmetrize()
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveSemiDefinite() const -> bool
 {
-  *this += this->transpose();
-  *this *= static_cast<ValueType_>(0.5);
+  // Try Cholesky decomposition - if it succeeds, matrix is positive definite
+  const auto choleskyResult = this->decomposeLLT();
+  const bool result         = choleskyResult.has_value();
+  return result;
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>

@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 #include "trackingLib/math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "trackingLib/math/linalg/conversions/square_conversions.hpp"
-#include "trackingLib/math/linalg/covariance_matrix_factored.hpp"
-#include "trackingLib/math/linalg/covariance_matrix_full.hpp" // IWYU pragma: keep
+#include "trackingLib/math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep
+#include "trackingLib/math/linalg/covariance_matrix_full.hpp"     // IWYU pragma: keep
 #include "trackingLib/math/linalg/square_matrix.h"
 #include <cmath>
 
@@ -13,41 +13,6 @@ template class tracking::math::CovarianceMatrixFactored<float32, 3>;
 template class tracking::math::CovarianceMatrixFactored<float64, 4>;
 
 using namespace tracking::math;
-
-// Helper function to check if a matrix is symmetric
-template <typename MatrixType>
-bool isSymmetric(const MatrixType& mat, typename MatrixType::value_type tolerance = 1e-6f)
-{
-  for (sint32 i = 0; i < MatrixType::dim; ++i)
-  {
-    for (sint32 j = i + 1; j < MatrixType::dim; ++j)
-    {
-      if (std::abs(mat.at_unsafe(i, j) - mat.at_unsafe(j, i)) > tolerance)
-      {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-// Helper function to check if a matrix is positive semi-definite using Cholesky decomposition
-template <typename MatrixType>
-bool isPositiveSemiDefinite(const MatrixType& mat, typename MatrixType::value_type tolerance = 1e-6f)
-{
-  (void)tolerance; // Suppress unused parameter warning
-  // Try Cholesky decomposition - if it succeeds, matrix is positive definite
-  auto choleskyResult = mat.decomposeLLT();
-  if (choleskyResult.has_value())
-  {
-    return true;
-  }
-
-  // For semi-definite matrices, check eigenvalues (simplified approach)
-  // In practice, we'll consider matrices that are "close enough" to positive definite
-  // as acceptable for covariance matrices
-  return true; // Simplified for testing purposes
-}
 
 // Helper function to create a symmetric positive definite matrix
 template <typename FloatType, sint32 Size>
@@ -284,13 +249,13 @@ TEST(CovarianceMatrixFull, symmetry_preservation_apaT__Success) // NOLINT
   });
 
   // Verify initial symmetry
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 
   // Apply apaT operation
   cov.apaT(A);
 
   // Verify symmetry is preserved
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 }
 
 TEST(CovarianceMatrixFull, symmetry_preservation_setVariance__Success) // NOLINT
@@ -299,13 +264,13 @@ TEST(CovarianceMatrixFull, symmetry_preservation_setVariance__Success) // NOLINT
   auto cov = createSymmetricPositiveDefiniteMatrix<float32, 3>();
 
   // Verify initial symmetry
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 
   // Apply setVariance operation
   cov.setVariance(1, 5.0f);
 
   // Verify symmetry is preserved
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 }
 
 TEST(CovarianceMatrixFull, positive_semi_definite_apaT__Success) // NOLINT
@@ -319,13 +284,13 @@ TEST(CovarianceMatrixFull, positive_semi_definite_apaT__Success) // NOLINT
   });
 
   // Verify initial positive semi-definiteness
-  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+  EXPECT_TRUE(cov.isPositiveSemiDefinite());
 
   // Apply apaT operation
   cov.apaT(A);
 
   // Verify positive semi-definiteness is preserved
-  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+  EXPECT_TRUE(cov.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFull, positive_semi_definite_inverse__Success) // NOLINT
@@ -334,14 +299,14 @@ TEST(CovarianceMatrixFull, positive_semi_definite_inverse__Success) // NOLINT
   auto cov = createSymmetricPositiveDefiniteMatrix<float64, 4>();
 
   // Verify initial positive semi-definiteness
-  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+  EXPECT_TRUE(cov.isPositiveSemiDefinite());
 
   // Compute inverse
   auto invResult = cov.inverse();
   ASSERT_TRUE(invResult.has_value());
 
   // Verify positive semi-definiteness is preserved
-  EXPECT_TRUE(isPositiveSemiDefinite(invResult.value()));
+  EXPECT_TRUE(invResult.value().isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFull, conversion_to_factored__Success) // NOLINT
@@ -376,8 +341,8 @@ TEST(CovarianceMatrixFull, conversion_roundtrip__Success) // NOLINT
   auto original = createSymmetricPositiveDefiniteMatrix<float64, 4>();
 
   // Verify original properties
-  EXPECT_TRUE(isSymmetric(original));
-  EXPECT_TRUE(isPositiveSemiDefinite(original));
+  EXPECT_TRUE(original.isSymmetric());
+  EXPECT_TRUE(original.isPositiveSemiDefinite());
 
   // Create nested initializer list from original matrix data for conversion
   std::initializer_list<std::initializer_list<float64>> covList = {
@@ -392,8 +357,8 @@ TEST(CovarianceMatrixFull, conversion_roundtrip__Success) // NOLINT
   auto roundtrip = factored();
 
   // Verify properties are preserved
-  EXPECT_TRUE(isSymmetric(roundtrip));
-  EXPECT_TRUE(isPositiveSemiDefinite(roundtrip));
+  EXPECT_TRUE(roundtrip.isSymmetric());
+  EXPECT_TRUE(roundtrip.isPositiveSemiDefinite());
 
   // Verify numerical equivalence
   for (sint32 i = 0; i < 4; ++i) {
@@ -415,15 +380,15 @@ TEST(CovarianceMatrixFull, large_matrix_apaT__Success) // NOLINT
   }
 
   // Verify initial properties
-  EXPECT_TRUE(isSymmetric(cov));
-  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+  EXPECT_TRUE(cov.isSymmetric());
+  EXPECT_TRUE(cov.isPositiveSemiDefinite());
 
   // Apply apaT operation
   cov.apaT(A);
 
   // Verify properties are preserved
-  EXPECT_TRUE(isSymmetric(cov));
-  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+  EXPECT_TRUE(cov.isSymmetric());
+  EXPECT_TRUE(cov.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFull, numerical_stability_ill_conditioned__Success) // NOLINT
@@ -441,7 +406,7 @@ TEST(CovarianceMatrixFull, numerical_stability_ill_conditioned__Success) // NOLI
   illCond.apaT(A);
 
   // Verify symmetry is preserved even with ill-conditioned matrix
-  EXPECT_TRUE(isSymmetric(illCond));
+  EXPECT_TRUE(illCond.isSymmetric());
 }
 
 // Phase 1: Covariance Matrix Full - Section 2.6 Tests
@@ -461,7 +426,7 @@ TEST(CovarianceMatrixFull, ctor_from_Matrix_const_float3__Success) // NOLINT
   EXPECT_EQ(cov._data, matrix._data);
   
   // Verify symmetry is maintained
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 }
 
 TEST(CovarianceMatrixFull, ctor_from_Matrix_const_double4__Success) // NOLINT
@@ -476,7 +441,7 @@ TEST(CovarianceMatrixFull, ctor_from_Matrix_const_double4__Success) // NOLINT
   EXPECT_EQ(cov._data, matrix._data);
   
   // Verify symmetry is maintained
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 }
 
 TEST(CovarianceMatrixFull, ctor_from_Matrix_const_symmetry__Success) // NOLINT
@@ -488,10 +453,10 @@ TEST(CovarianceMatrixFull, ctor_from_Matrix_const_symmetry__Success) // NOLINT
   auto cov = CovarianceMatrixFull<float32, 3>(matrix);
   
   // Verify symmetry is maintained
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
   
   // Verify positive definiteness
-  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+  EXPECT_TRUE(cov.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFull, ctor_from_Matrix_const_positive_definite__Success) // NOLINT
@@ -503,7 +468,7 @@ TEST(CovarianceMatrixFull, ctor_from_Matrix_const_positive_definite__Success) //
   auto cov = CovarianceMatrixFull<float64, 3>(matrix);
   
   // Verify positive definiteness is maintained
-  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+  EXPECT_TRUE(cov.isPositiveSemiDefinite());
 }
 
 // 1.2 Constructors from SquareMatrix (const&)
@@ -520,7 +485,7 @@ TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_float3__Success) // NOLI
   EXPECT_EQ(cov._data, squareMat._data);
   
   // Verify symmetry is maintained
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 }
 
 TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_double4__Success) // NOLINT
@@ -535,7 +500,7 @@ TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_double4__Success) // NOL
   EXPECT_EQ(cov._data, squareMat._data);
   
   // Verify symmetry is maintained
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 }
 
 TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_symmetry__Success) // NOLINT
@@ -547,10 +512,10 @@ TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_symmetry__Success) // NO
   auto cov = CovarianceMatrixFull<float32, 3>(squareMat);
   
   // Verify symmetry is maintained
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
   
   // Verify positive definiteness
-  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+  EXPECT_TRUE(cov.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_positive_definite__Success) // NOLINT
@@ -562,7 +527,7 @@ TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_positive_definite__Succe
   auto cov = CovarianceMatrixFull<float64, 3>(squareMat);
   
   // Verify positive definiteness is maintained
-  EXPECT_TRUE(isPositiveSemiDefinite(cov));
+  EXPECT_TRUE(cov.isPositiveSemiDefinite());
 }
 
 // 1.3 Identity() Method for Float Types
@@ -583,7 +548,7 @@ TEST(CovarianceMatrixFull, Identity_float3__Success) // NOLINT
   }
   
   // Verify symmetry
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 }
 
 TEST(CovarianceMatrixFull, Identity_float4__Success) // NOLINT
@@ -602,7 +567,7 @@ TEST(CovarianceMatrixFull, Identity_float4__Success) // NOLINT
   }
   
   // Verify symmetry
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 }
 
 TEST(CovarianceMatrixFull, Identity_float6__Success) // NOLINT
@@ -621,7 +586,7 @@ TEST(CovarianceMatrixFull, Identity_float6__Success) // NOLINT
   }
   
   // Verify symmetry
-  EXPECT_TRUE(isSymmetric(cov));
+  EXPECT_TRUE(cov.isSymmetric());
 }
 
 // 1.4 operator()() const Methods

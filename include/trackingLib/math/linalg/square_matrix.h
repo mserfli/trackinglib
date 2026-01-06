@@ -257,15 +257,6 @@ public:
   /// \see householderQR for the underlying decomposition
   [[nodiscard]] auto inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
-  /// \brief Check if the matrix is symmetric.
-  ///
-  /// Tests whether the matrix equals its transpose (A = A^T).
-  ///
-  /// \return true if the matrix is symmetric, false otherwise
-  ///
-  /// \note Symmetry checking uses element-wise comparison and may have floating-point precision issues
-  [[nodiscard]] auto isSymmetric() const -> bool;
-
   /// \brief Symmetrize the matrix by averaging with its transpose.
   ///
   /// Modifies the matrix to be symmetric by computing (A + A^T) / 2.
@@ -275,6 +266,31 @@ public:
   /// \note This operation modifies the matrix in-place and ensures perfect symmetry
   ///       at the cost of slightly changing the original values.
   void symmetrize();
+
+  //////////////////////////////////////////////////
+  // square matrix property checks  --->
+  /// \brief Check if the matrix is symmetric.
+  ///
+  /// Tests whether the matrix equals its transpose (A = A^T).
+  ///
+  /// \param tolerance Tolerance for numerical comparison (default: 1e-6)
+  /// \return true if the matrix is symmetric, false otherwise
+  ///
+  /// \note Symmetry checking uses element-wise comparison and may have floating-point precision issues
+  [[nodiscard]] auto isSymmetric(ValueType_ tolerance = 1e-6) const -> bool;
+
+  /// \brief Checks if the matrix is positive semi-definite.
+  ///
+  /// Tests whether all eigenvalues of the matrix are non-negative.
+  /// A positive semi-definite matrix satisfies x^T * A * x >= 0 for all non-zero vectors x.
+  ///
+  /// This is a key property for covariance matrices in statistics and machine learning.
+  ///
+  /// The check is performed using Cholesky decomposition; if it succeeds, the matrix
+  /// is positive definite.
+  ///
+  /// \return true if the matrix is positive semi-definite, false otherwise
+  [[nodiscard]] auto isPositiveSemiDefinite() const -> bool;
 
   /// \brief Checks if the matrix is orthogonal within a specified tolerance
   ///
@@ -327,6 +343,7 @@ public:
   /// \note Time complexity: O(n)
   /// \see decomposeLDLT() for LDLT decomposition that produces unit diagonal matrices
   [[nodiscard]] auto hasUnitDiagonal(ValueType_ tolerance = 1e-6) const -> bool;
+  // <---
 
 protected:
   /// \brief Check if all diagonal elements are strictly positive.

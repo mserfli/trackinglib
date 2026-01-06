@@ -591,6 +591,11 @@ Based on the lcov coverage report from 2026-01-05, the following functions are m
 - **Covariance Matrix Factored:** 17 comprehensive tests added for remaining methods (COMPLETED)
 - **Status:** All identified coverage gaps have been addressed
 
+✅ **Code Cleanup COMPLETED:**
+- **Helper Function Refactoring:** Removed duplicate helper functions `isSymmetric()` and `isPositiveSemiDefinite()` from covariance matrix test files
+- **SquareMatrix Integration:** Now using the built-in `isSymmetric()` and `isPositiveSemiDefinite()` methods from SquareMatrix class
+- **Benefits:** Improved code maintainability, reduced duplication, and better alignment with the library's architecture
+
 3. **Evaluate Function Coverage Target:**
     - Assess if >90% function coverage is achievable with current approach
     - Consider excluding low-value functions (destructors, trivial getters) from targets

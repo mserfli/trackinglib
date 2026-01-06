@@ -15,41 +15,6 @@ template class tracking::math::CovarianceMatrixFull<float64, 4>;
 
 using namespace tracking::math;
 
-// Helper function to check if a matrix is symmetric
-template <typename MatrixType>
-bool isSymmetric(const MatrixType& mat, typename MatrixType::value_type tolerance = 1e-6f)
-{
-  for (sint32 i = 0; i < MatrixType::dim; ++i)
-  {
-    for (sint32 j = i + 1; j < MatrixType::dim; ++j)
-    {
-      if (std::abs(mat.at_unsafe(i, j) - mat.at_unsafe(j, i)) > tolerance)
-      {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-// Helper function to check if a matrix is positive semi-definite using Cholesky decomposition
-template <typename MatrixType>
-bool isPositiveSemiDefinite(const MatrixType& mat, typename MatrixType::value_type tolerance = 1e-6f)
-{
-  (void)tolerance; // Suppress unused parameter warning
-  // Try Cholesky decomposition - if it succeeds, matrix is positive definite
-  auto choleskyResult = mat.decomposeLLT();
-  if (choleskyResult.has_value())
-  {
-    return true;
-  }
-
-  // For semi-definite matrices, check eigenvalues (simplified approach)
-  // In practice, we'll consider matrices that are "close enough" to positive definite
-  // as acceptable for covariance matrices
-  return true; // Simplified for testing purposes
-}
-
 // Helper function to create a symmetric positive definite matrix
 template <typename FloatType, sint32 Size>
 auto createSymmetricPositiveDefiniteMatrix() -> CovarianceMatrixFull<FloatType, Size>
@@ -303,14 +268,14 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_apaT__Success) // NOLINT
 
   // Verify initial symmetry
   auto initialFull = cov();
-  EXPECT_TRUE(isSymmetric(initialFull));
+  EXPECT_TRUE(initialFull.isSymmetric());
 
   // Apply apaT operation
   cov.apaT(A);
 
   // Verify symmetry is preserved
   auto resultFull = cov();
-  EXPECT_TRUE(isSymmetric(resultFull));
+  EXPECT_TRUE(resultFull.isSymmetric());
 }
 
 // Critical missing tests for composed_inverse() method - addressing 0% coverage
@@ -377,10 +342,10 @@ TEST(CovarianceMatrixFactored, composed_inverse_symmetric_positive_definite__Suc
   auto inv = cov.composed_inverse();
 
   // Verify that the inverse is symmetric
-  EXPECT_TRUE(isSymmetric(inv));
+  EXPECT_TRUE(inv.isSymmetric());
 
   // Verify that the inverse is positive definite
-  EXPECT_TRUE(isPositiveSemiDefinite(inv));
+  EXPECT_TRUE(inv.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFactored, composed_inverse_consistency__Success) // NOLINT
@@ -429,7 +394,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_symmetry__Success) // NOLINT
   auto inv = cov.composed_inverse();
 
   // Verify that the inverse is symmetric
-  EXPECT_TRUE(isSymmetric(inv));
+  EXPECT_TRUE(inv.isSymmetric());
 }
 
 TEST(CovarianceMatrixFactored, composed_inverse_positive_definite__Success) // NOLINT
@@ -449,7 +414,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_positive_definite__Success) // N
   auto inv = cov.composed_inverse();
 
   // Verify that the inverse is positive definite
-  EXPECT_TRUE(isPositiveSemiDefinite(inv));
+  EXPECT_TRUE(inv.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFactored, composed_inverse_different_sizes__Success) // NOLINT
@@ -488,14 +453,14 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_rank1Update__Success) // NO
 
   // Verify initial symmetry
   auto initialFull = cov();
-  EXPECT_TRUE(isSymmetric(initialFull));
+  EXPECT_TRUE(initialFull.isSymmetric());
 
   // Apply rank1Update operation
   cov.rank1Update(0.5f, x);
 
   // Verify symmetry is preserved
   auto resultFull = cov();
-  EXPECT_TRUE(isSymmetric(resultFull));
+  EXPECT_TRUE(resultFull.isSymmetric());
 }
 
 TEST(CovarianceMatrixFactored, symmetry_preservation_thornton__Success) // NOLINT
@@ -519,14 +484,14 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_thornton__Success) // NOLIN
 
   // Verify initial symmetry
   auto initialFull = cov();
-  EXPECT_TRUE(isSymmetric(initialFull));
+  EXPECT_TRUE(initialFull.isSymmetric());
 
   // Apply Thornton update
   cov.thornton(Phi, G, Q);
 
   // Verify symmetry is preserved
   auto resultFull = cov();
-  EXPECT_TRUE(isSymmetric(resultFull));
+  EXPECT_TRUE(resultFull.isSymmetric());
 }
 
 TEST(CovarianceMatrixFactored, positive_semi_definite_rank1Update__Success) // NOLINT
@@ -545,14 +510,14 @@ TEST(CovarianceMatrixFactored, positive_semi_definite_rank1Update__Success) // N
 
   // Verify initial positive semi-definiteness
   auto initialFull = cov();
-  EXPECT_TRUE(isPositiveSemiDefinite(initialFull));
+  EXPECT_TRUE(initialFull.isPositiveSemiDefinite());
 
   // Apply rank1Update operation
   cov.rank1Update(0.5, x);
 
   // Verify positive semi-definiteness is preserved
   auto resultFull = cov();
-  EXPECT_TRUE(isPositiveSemiDefinite(resultFull));
+  EXPECT_TRUE(resultFull.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFactored, positive_semi_definite_thornton__Success) // NOLINT
@@ -578,14 +543,14 @@ TEST(CovarianceMatrixFactored, positive_semi_definite_thornton__Success) // NOLI
 
   // Verify initial positive semi-definiteness
   auto initialFull = cov();
-  EXPECT_TRUE(isPositiveSemiDefinite(initialFull));
+  EXPECT_TRUE(initialFull.isPositiveSemiDefinite());
 
   // Apply Thornton update
   cov.thornton(Phi, G, Q);
 
   // Verify positive semi-definiteness is preserved
   auto resultFull = cov();
-  EXPECT_TRUE(isPositiveSemiDefinite(resultFull));
+  EXPECT_TRUE(resultFull.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFactored, thornton_basic__Success) // NOLINT
@@ -614,8 +579,8 @@ TEST(CovarianceMatrixFactored, thornton_basic__Success) // NOLINT
 
   // Verify the result is still valid
   auto resultFull = cov();
-  EXPECT_TRUE(isSymmetric(resultFull));
-  EXPECT_TRUE(isPositiveSemiDefinite(resultFull));
+  EXPECT_TRUE(resultFull.isSymmetric());
+  EXPECT_TRUE(resultFull.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFactored, thornton_with_process_noise__Success) // NOLINT
@@ -644,8 +609,8 @@ TEST(CovarianceMatrixFactored, thornton_with_process_noise__Success) // NOLINT
 
   // Verify the result is still valid
   auto resultFull = cov();
-  EXPECT_TRUE(isSymmetric(resultFull));
-  EXPECT_TRUE(isPositiveSemiDefinite(resultFull));
+  EXPECT_TRUE(resultFull.isSymmetric());
+  EXPECT_TRUE(resultFull.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFactored, thornton_numerical_stability__Success) // NOLINT
@@ -672,8 +637,8 @@ TEST(CovarianceMatrixFactored, thornton_numerical_stability__Success) // NOLINT
 
   // Verify numerical stability is maintained
   auto resultFull = cov();
-  EXPECT_TRUE(isSymmetric(resultFull));
-  EXPECT_TRUE(isPositiveSemiDefinite(resultFull));
+  EXPECT_TRUE(resultFull.isSymmetric());
+  EXPECT_TRUE(resultFull.isPositiveSemiDefinite());
 }
 
 TEST(CovarianceMatrixFactored, numerical_stability_ill_conditioned__Success) // NOLINT
@@ -697,7 +662,7 @@ TEST(CovarianceMatrixFactored, numerical_stability_ill_conditioned__Success) // 
 
   // Verify symmetry is preserved even with ill-conditioned matrix
   auto resultFull = cov();
-  EXPECT_TRUE(isSymmetric(resultFull));
+  EXPECT_TRUE(resultFull.isSymmetric());
 }
 
 // Phase 2: Covariance Matrix Factored - Related Critical Gaps
@@ -794,7 +759,7 @@ TEST(CovarianceMatrixFactored, setDiagonal_double4__Success) // NOLINT
 
   // Verify symmetry is maintained
   auto fullCov = cov();
-  EXPECT_TRUE(isSymmetric(fullCov));
+  EXPECT_TRUE(fullCov.isSymmetric());
 }
 
 TEST(CovarianceMatrixFactored, setVariance_double4__Success) // NOLINT
