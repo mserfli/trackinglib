@@ -2,7 +2,7 @@ A generic C++ object tracking header only library for academical use to work wit
 
 The factored implementations are mainly based on publications from D'Souza, Bierman, Thornton, Carlson.
 * C. D'Souza and R. Zanetti, "Information Formulation of the UDU Kalman Filter," in IEEE Transactions on Aerospace and Electronic Systems, vol. 55, no. 1, pp. 493-498, Feb. 2019, doi: 10.1109/TAES.2018.2850379.
-* Pourtakdoust, Seid H. “Ud Covariance Factorization For Unscented Kalman Filter Using Sequential Measurements Update,” 2007, doi:10.5281/ZENODO.1071229.
+* Pourtakdoust, Seid H. "Ud Covariance Factorization For Unscented Kalman Filter Using Sequential Measurements Update," 2007, doi:10.5281/ZENODO.1071229.
 * Gerald J. Bierman, "Factorization Methods for Discrete Sequential Estimation", 1977
 * Catherine L. Thornton, "Triangular Covariance Factorizations for Kalman Filtering", 1976
 * Philip E. Gill, "Practical optimization", 2019, doi.org/10.1137/1.9781611975604
@@ -30,4 +30,3 @@ Non-functional requirements:
 * Test coverage is measured using lcov
 * The project uses additionally cmake, clang-format, clang-tidy and doxygen
 * libEigen is only used for development
-
