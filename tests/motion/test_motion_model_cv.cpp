@@ -17,12 +17,13 @@ template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
           typename FloatType>
 struct TestPredictCV
 {
-  using MM = tracking::motion::MotionModelCV<CovarianceMatrixType, FloatType>;
+  using MM             = tracking::motion::MotionModelCV<CovarianceMatrixType, FloatType>;
+  using EgoMotionInst  = tracking::env::EgoMotion<FloatType>;
+  using FilterTypeInst = FilterType<FloatType>;
 
-  template <typename FilterType_>
-  static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const FilterType_& /*filter*/)
+  static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const FilterTypeInst& /*filter*/)
   {
-    if constexpr (std::is_same_v<FilterType_, tracking::filter::InformationFilter<FloatType>>)
+    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<FloatType>>)
     {
       // InformationFilter behavior: invert covariance matrices
       cov    = cov.inverse().value();
@@ -35,16 +36,12 @@ struct TestPredictCV
     }
   }
 
-  template <typename FilterType_>
-  static auto tolerance(const FilterType_& /*filter*/) -> FloatType
-  {
-    return static_cast<FloatType>(1e-6);
-  }
+  static auto tolerance(const FilterTypeInst& /*filter*/) -> FloatType { return static_cast<FloatType>(1e-6); }
 
-  static void run()
+  static void run_without_ego_motion_compensation()
   {
-    tracking::env::EgoMotion<FloatType> egoMotion{};
-    FilterType<FloatType>               filter{};
+    EgoMotionInst  egoMotion{};
+    FilterTypeInst filter{};
 
     // clang-format off
     const int steps = 3;
@@ -90,22 +87,26 @@ struct TestPredictCV
 
 TEST(MotionModelCV, predict_fullCov_kalmanFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::KalmanFilter, TestFloatType>::run();
+  TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::KalmanFilter, TestFloatType>::
+      run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_factoredCov_kalmanFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::KalmanFilter, TestFloatType>::run();
+  TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::KalmanFilter, TestFloatType>::
+      run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_fullCov_informationFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::InformationFilter, TestFloatType>::run();
+  TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::InformationFilter, TestFloatType>::
+      run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_factoredCov_informationFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::InformationFilter, TestFloatType>::run();
+  TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::InformationFilter, TestFloatType>::
+      run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, convertCA_fullCov) // NOLINT
