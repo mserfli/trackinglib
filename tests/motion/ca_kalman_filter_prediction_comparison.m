@@ -1,18 +1,35 @@
-function cv_kalman_filter_prediction_comparison()
+function ca_kalman_filter_prediction_comparison()
     clc;
-    disp('--- Korrigierter Vergleich: KF vs. UDU-KF vs. UDUI (NASA Table I) ---');
+    disp('--- CA Model Vergleich: KF vs. UDU-KF vs. UDUI (6-State) ---');
 
     % 1. SYSTEM PARAMETER
-    dt = 0.1; 
-    Phi = blkdiag([1, dt; 0, 1], [1, dt; 0, 1]);
-    inv_Phi = blkdiag([1, -dt; 0, 1], [1, -dt; 0, 1]);
-    Q_diag_val = [10.0, 10.0]; 
-    G = [0.5*dt^2, 0; dt, 0; 0, 0.5*dt^2; 0, dt];
+    dt = 0.1;
+    % CA model state transition matrix (6x6): [X, VX, AX, Y, VY, AY]
+    Phi = [1, dt, 0.5*dt^2, 0, 0, 0;
+           0, 1, dt, 0, 0, 0;
+           0, 0, 1, 0, 0, 0;
+           0, 0, 0, 1, dt, 0.5*dt^2;
+           0, 0, 0, 0, 1, dt;
+           0, 0, 0, 0, 0, 1];
+    inv_Phi = [1, -dt, 0.5*dt^2, 0, 0, 0;
+               0, 1, -dt, 0, 0, 0;
+               0, 0, 1, 0, 0, 0;
+               0, 0, 0, 1, -dt, 0.5*dt^2;
+               0, 0, 0, 0, 1, -dt;
+               0, 0, 0, 0, 0, 1];
+    Q_diag_val = [100.0, 100.0] * dt^2;
+    % CA model process noise matrix (6x2): [AX, AY] noise
+    G = [0.5*dt^2, 0;
+         dt, 0;
+         1, 0;
+         0, 0.5*dt^2;
+         0, dt;
+         0, 1];
     Q_sys = G * diag(Q_diag_val) * G';
 
-    % 2. INITIALISIERUNG
-    x_init = [10; 2; 0; 0];
-    P_init = diag([ 5.0, 1.0, 1.0, 0.1]);
+    % 2. INITIALISIERUNG (from test_motion_model_ca.cpp)
+    x_init = [10; 2; 2; 0.0125; 0.05; 0.1];
+    P_init = diag([5.0, 1.0, 1.0, 1.0, 0.1, 1.0]);
 
     % Standard KF & UDU-KF
     x_KF = x_init; P_KF = P_init;
@@ -48,7 +65,7 @@ function cv_kalman_filter_prediction_comparison()
         % 2. Zustands-Transformation: z = inv(Phi)' * z und Y = inv(Phi)' * Y * inv(Phi)
         z_UIF = inv_Phi' * z_UIF;
         % Transformation der Faktoren U, D via Thornton (mit Q=0)
-        [~, U_UIF, D_UIF] = thornton(zeros(4,1), inv_Phi', U_UIF, D_UIF, zeros(4,2), zeros(2,2));
+        [~, U_UIF, D_UIF] = thornton(zeros(6,1), inv_Phi', U_UIF, D_UIF, zeros(6,2), zeros(2,2));
     end
 
     % REKONSTRUKTION
@@ -59,7 +76,7 @@ function cv_kalman_filter_prediction_comparison()
 
     fprintf('\nZustandsvektor x (Schritt %d):\n', steps);
     fprintf('Idx |    Standard KF    |      UDU-KF       |      UDU-IF      \n');
-    for i=1:4, fprintf('%d   | %15.7f | %17.7f | %17.7f\n', i, x_KF(i), x_UKF(i), x_UIF_res(i)); end
+    for i=1:6, fprintf('%d   | %15.7f | %17.7f | %17.7f\n', i, x_KF(i), x_UKF(i), x_UIF_res(i)); end
     
     fprintf('\nFrobenius-Fehler P (UDU_KF): %e\n', norm(P_KF - P_UKF_res, 'fro'));
     fprintf('\nFrobenius-Fehler P (UDU_IF): %e\n', norm(P_KF - P_UIF_res, 'fro'));

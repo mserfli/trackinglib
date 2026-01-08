@@ -52,32 +52,47 @@ struct TestPredictCA
   {
     EgoMotionInst  egoMotion{};
     FilterTypeInst filter{};
+    const int      steps = 5;
 
-    auto vec = MM::StateVecFromList({10, 2, 2, 0, 0, 0.1});
-    auto cov = MM::StateCovFromList({{5, 0, 0, 0, 0, 0},
-                                     {0, 1, 0, 0, 0, 0},
-                                     {0, 0, 1, 0, 0, 0},
-                                     {0, 0, 0, 1, 0, 0},
-                                     {0, 0, 0, 0, 0.1, 0},
-                                     {0, 0, 0, 0, 0, 1}});
+    // clang-format off
+    auto vec = MM::StateVecFromList({
+      10, 2, 2, 0.0125, 0.05, 0.1
+    });
+    auto cov = MM::StateCovFromList({
+      {5, 0, 0, 0, 0.0, 0},
+      {0, 1, 0, 0, 0.0, 0},
+      {0, 0, 1, 0, 0.0, 0},
+      {0, 0, 0, 1, 0.0, 0},
+      {0, 0, 0, 0, 0.1, 0},
+      {0, 0, 0, 0, 0.0, 1}
+    });
 
-    auto expVec = MM::StateVecFromList({13, 4, 2, 0.05, 0.1, 0.1});
-    auto expCov = MM::StateCovFromList({{31.25, 51.5, 50.5, 0, 0, 0},
-                                        {51.5, 102, 101, 0, 0, 0},
-                                        {50.5, 101, 101, 0, 0, 0},
-                                        {0, 0, 0, 26.35, 50.6, 50.5},
-                                        {0, 0, 0, 50.6, 101.1, 101},
-                                        {0, 0, 0, 50.5, 101, 101}});
+    auto expVec = MM::StateVecFromList({
+      11.25, 3, 2, 0.05, 0.1, 0.1
+    });
+    auto expCov = MM::StateCovFromList({
+      {5.29010, 0.67500, 0.40000,       0,       0,       0},
+      {0.67500, 1.80000, 2.00000,       0,       0,       0},
+      {0.40000, 2.00000, 6.00000,       0,       0,       0},
+      {      0,       0,       0, 1.06510, 0.22500, 0.40000},
+      {      0,       0,       0, 0.22500, 0.90000, 2.00000},
+      {      0,       0,       0, 0.40000, 2.00000, 6.00000},
+    });
+    // clang-format on
+
     init(cov, expCov, filter);
     const auto tol = tolerance(filter);
 
     // instantiate MM with mocked EgoMotion compensation
     testing::NiceMock<test::MotionModelNoEgoMotionMock<MM>> mm{vec, cov};
     mm.delegate();
-    EXPECT_CALL(mm, compensateEgoMotion);
+    EXPECT_CALL(mm, compensateEgoMotion).Times(steps);
 
     // call UUT
-    mm.predict(static_cast<FloatType>(1.0), filter, egoMotion);
+    for (auto i = 0; i < steps; ++i)
+    {
+      mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
+    }
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {

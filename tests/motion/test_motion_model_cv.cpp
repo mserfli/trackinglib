@@ -42,9 +42,9 @@ struct TestPredictCV
   {
     EgoMotionInst  egoMotion{};
     FilterTypeInst filter{};
+    const int      steps = 5;
 
     // clang-format off
-    const int steps = 3;
     auto vec = MM::StateVecFromList({10, 2, 0, 0});
     auto cov = MM::StateCovFromList({
       {5, 0, 0, 0.0},
@@ -52,14 +52,15 @@ struct TestPredictCV
       {0, 0, 1, 0.0},
       {0, 0, 0, 0.1}
     });
-    auto expVec = MM::StateVecFromList({10.6, 2, 0, 0});
+    auto expVec = MM::StateVecFromList({11, 2, 0, 0});
     auto expCov = MM::StateCovFromList({
-      {+5.09875, +0.34500, +0.00000, +0.00000},
-      {+0.34500, +1.30000, +0.00000, +0.00000},
-      {+0.00000, +0.00000, +1.01775, +0.07500},
-      {+0.00000, +0.00000, +0.07500, +0.40000}
+      {+5.29125, +0.62500, +0.00000, +0.00000},
+      {+0.62500, +1.50000, +0.00000, +0.00000},
+      {+0.00000, +0.00000, +1.06625, +0.17500},
+      {+0.00000, +0.00000, +0.17500, +0.60000}
     });
     // clang-format on
+
     init(cov, expCov, filter);
     const auto tol = tolerance(filter);
 
