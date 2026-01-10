@@ -50,9 +50,12 @@ struct TestPredictCA
 
   static void run_without_ego_motion_compensation()
   {
-    EgoMotionInst  egoMotion{};
+    const int      steps     = 5;
+    const auto     dt        = static_cast<FloatType>(0.1);
+    const auto     motion    = typename EgoMotionInst::InertialMotion{};
+    const auto     geometry  = typename EgoMotionInst::Geometry{};
+    const auto     egoMotion = EgoMotionInst(motion, geometry, dt);
     FilterTypeInst filter{};
-    const int      steps = 5;
 
     // clang-format off
     auto vec = MM::StateVecFromList({

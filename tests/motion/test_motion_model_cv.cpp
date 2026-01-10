@@ -40,9 +40,12 @@ struct TestPredictCV
 
   static void run_without_ego_motion_compensation()
   {
-    EgoMotionInst  egoMotion{};
+    const int      steps     = 5;
+    const auto     dt        = static_cast<FloatType>(0.1);
+    const auto     motion    = typename EgoMotionInst::InertialMotion{};
+    const auto     geometry  = typename EgoMotionInst::Geometry{};
+    const auto     egoMotion = EgoMotionInst(motion, geometry, dt);
     FilterTypeInst filter{};
-    const int      steps = 5;
 
     // clang-format off
     auto vec = MM::StateVecFromList({10, 2, 0, 0});
@@ -72,7 +75,61 @@ struct TestPredictCV
     // call UUT
     for (auto i = 0; i < steps; ++i)
     {
-      mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
+      mm.predict(dt, filter, egoMotion);
+    }
+
+    for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
+    {
+      EXPECT_FLOAT_EQ(mm._vec.at_unsafe(row), expVec.at_unsafe(row));
+      for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
+      {
+        EXPECT_NEAR(mm._cov.at_unsafe(row, col), expCov.at_unsafe(row, col), tol);
+      }
+    }
+  }
+
+  static void run_with_ego_motion_compensation()
+  {
+    const int  steps = 5;
+    const auto dt    = static_cast<FloatType>(0.1);
+    // clang-format off
+    const auto motion   = typename EgoMotionInst::InertialMotion{
+        .v = 2.0, .a = 1.0, .w = 0.1, 
+        .sv = 0.1, .sa = 0.1, .sw = 0.02};
+    const auto geometry = typename EgoMotionInst::Geometry{
+        .width = 1.8, .length = 4.5, .height = 1.5, 
+        .distCog2Ego = 1.0, .distFrontAxle2Ego = 2.5, .distFrontAxle2RearAxle = 2.5};
+    const auto     egoMotion = EgoMotionInst(motion, geometry, dt);
+    // clang-format on
+    FilterTypeInst filter{};
+
+    // clang-format off
+    auto vec = MM::StateVecFromList({10, 2, 0, 0});
+    auto cov = MM::StateCovFromList({
+      {5, 0, 0, 0.0},
+      {0, 1, 0, 0.0},
+      {0, 0, 1, 0.0},
+      {0, 0, 0, 0.1}
+    });
+    auto expVec = MM::StateVecFromList({11, 2, 0, 0});
+    auto expCov = MM::StateCovFromList({
+      {+5.29125, +0.62500, +0.00000, +0.00000},
+      {+0.62500, +1.50000, +0.00000, +0.00000},
+      {+0.00000, +0.00000, +1.06625, +0.17500},
+      {+0.00000, +0.00000, +0.17500, +0.60000}
+    });
+    // clang-format on
+
+    init(cov, expCov, filter);
+    const auto tol = tolerance(filter);
+
+    // instantiate regular MM (no mocking)
+    MM mm{vec, cov};
+
+    // call UUT
+    for (auto i = 0; i < steps; ++i)
+    {
+      mm.predict(dt, filter, egoMotion);
     }
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
@@ -91,6 +148,12 @@ TEST(MotionModelCV, predict_fullCov_kalmanFilter) // NOLINT
   TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::KalmanFilter, TestFloatType>::
       run_without_ego_motion_compensation();
 }
+
+// TEST(MotionModelCV, predict_fullCov_kalmanFilter_egoMotion) // NOLINT
+// {
+//   TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::KalmanFilter, TestFloatType>::
+//       run_with_ego_motion_compensation();
+// }
 
 TEST(MotionModelCV, predict_factoredCov_kalmanFilter) // NOLINT
 {
