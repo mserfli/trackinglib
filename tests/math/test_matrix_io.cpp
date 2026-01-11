@@ -9,7 +9,6 @@
 #include "trackingLib/math/linalg/matrix_io.h"
 #include "trackingLib/math/linalg/square_matrix.h"
 #include "trackingLib/math/linalg/triangular_matrix.h"
-#include "trackingLib/math/linalg/vector.h"
 #include <algorithm>
 #include <fstream>
 #include <sstream>
@@ -389,10 +388,10 @@ TEST(MatrixIO, VectorInt4__Success) // NOLINT
   std::stringstream ss;
   ss << vec;
 
-  const std::string expected = "   10\n"
-                               "   20\n"
-                               "   30\n"
-                               "   40\n";
+  const std::string expected = "      10\n"
+                               "      20\n"
+                               "      30\n"
+                               "      40\n";
 
   EXPECT_EQ(ss.str(), expected);
 }
