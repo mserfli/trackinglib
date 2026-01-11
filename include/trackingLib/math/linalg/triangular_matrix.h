@@ -13,7 +13,7 @@ template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 class Matrix;
 
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL;
+class DiagonalMatrix;
 
 // TODO(matthias): add interface contract
 // TODO(matthias): use optimized menory storage for triangular matrices

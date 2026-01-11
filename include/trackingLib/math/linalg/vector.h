@@ -10,7 +10,7 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class MatrixColumnView TEST_REMOVE_FINAL;
+class MatrixColumnView;
 
 // TODO(matthias): add interface contract
 

@@ -161,7 +161,7 @@ public:
   /// \return ValueType_ The trace of the matrix(sum of diagonal elements)
   [[nodiscard]] auto trace() const -> ValueType_;
 
-  /// \brief Calculate the determinant of the square matrix.
+  /// \brief Calculate the determinant of the diagonal matrix.
   ///
   /// Computes the determinant as the product of the diagonal elements.
   ///
