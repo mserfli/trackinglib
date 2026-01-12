@@ -59,7 +59,7 @@ auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFull<FloatType, Siz
 TEST(CovarianceMatrixFull, compose) // NOLINT
 {
   // clang-format off
-  const auto cov = conversions::CovarianceMatrixFullFromList<float32, 3>({
+  const auto cov = CovarianceMatrixFull<float32, 3>::FromList({
     {45, 52, 12},
     {52, 66, 16},
     {12, 16,  4}
@@ -75,7 +75,7 @@ TEST(CovarianceMatrixFull, compose) // NOLINT
 TEST(CovarianceMatrixFull, apaT) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFullFromList<float64, 4>({
+  auto cov = CovarianceMatrixFull<float64,4>::FromList({
     { 7.095005365385164,  -2.002405585706988,   3.186228227810577,  -1.796274062161563},
     {-2.002405585706988,   1.993403311363277,  -1.262526372481200,   0.223417952190492},
     { 3.186228227810577,  -1.262526372481200,   1.638799986245814,  -0.810174937419070},
@@ -88,7 +88,7 @@ TEST(CovarianceMatrixFull, apaT) // NOLINT
     {9.687082960197513e-01,   1.310361955580941e-01,   4.530398432949093e-01,   5.183403919872129e-01}
   });
     
-  const auto expCov = conversions::CovarianceMatrixFullFromList<float64, 4>({
+  const auto expCov = CovarianceMatrixFull<float64,4>::FromList({
     { 2.752859732130674,  -1.285839545719224,   0.473376178291911,   4.416126653289711},
     {-1.285839545719224,   1.851835913837325,   0.811096749802654,  -2.464137199670983},
     { 0.473376178291911,   0.811096749802654,   0.967827910529903,   0.408774316031078},
@@ -112,7 +112,7 @@ TEST(CovarianceMatrixFull, apaT) // NOLINT
 TEST(CovarianceMatrixFull, apaT_const) // NOLINT
 {
   // clang-format off
-  const auto cov = conversions::CovarianceMatrixFullFromList<float64, 4>({
+  const auto cov = CovarianceMatrixFull<float64,4>::FromList({
     { 7.095005365385164,  -2.002405585706988,   3.186228227810577,  -1.796274062161563},
     {-2.002405585706988,   1.993403311363277,  -1.262526372481200,   0.223417952190492},
     { 3.186228227810577,  -1.262526372481200,   1.638799986245814,  -0.810174937419070},
@@ -125,7 +125,7 @@ TEST(CovarianceMatrixFull, apaT_const) // NOLINT
     {9.687082960197513e-01,   1.310361955580941e-01,   4.530398432949093e-01,   5.183403919872129e-01}
   });
     
-  const auto expCov = conversions::CovarianceMatrixFullFromList<float64, 4>({
+  const auto expCov = CovarianceMatrixFull<float64,4>::FromList({
     { 2.752859732130674,  -1.285839545719224,   0.473376178291911,   4.416126653289711},
     {-1.285839545719224,   1.851835913837325,   0.811096749802654,  -2.464137199670983},
     { 0.473376178291911,   0.811096749802654,   0.967827910529903,   0.408774316031078},
@@ -149,7 +149,7 @@ TEST(CovarianceMatrixFull, apaT_const) // NOLINT
 TEST(CovarianceMatrixFull, apaT_equality)
 {
   // clang-format off
-  const auto cov = conversions::CovarianceMatrixFullFromList<float64, 4>({
+  const auto cov = CovarianceMatrixFull<float64,4>::FromList({
     { 7.095005365385164,  -2.002405585706988,   3.186228227810577,  -1.796274062161563},
     {-2.002405585706988,   1.993403311363277,  -1.262526372481200,   0.223417952190492},
     { 3.186228227810577,  -1.262526372481200,   1.638799986245814,  -0.810174937419070},
@@ -186,13 +186,13 @@ TEST(CovarianceMatrixFull, apaT_equality)
 TEST(CovarianceMatrixFull, inverse_const) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFullFromList<float64, 4>({
+  auto cov = CovarianceMatrixFull<float64,4>::FromList({
     { 7.095005365385164,  -2.002405585706988,   3.186228227810577,  -1.796274062161563},
     {-2.002405585706988,   1.993403311363277,  -1.262526372481200,   0.223417952190492},
     { 3.186228227810577,  -1.262526372481200,   1.638799986245814,  -0.810174937419070},
     {-1.796274062161563,   0.223417952190492,  -0.810174937419070,   0.821337656508534}
   });
-  const auto expInv = conversions::CovarianceMatrixFullFromList<float64, 4>({
+  const auto expInv = CovarianceMatrixFull<float64,4>::FromList({
     { 1.443780121231659e+00, -5.460031722987547e-01, -3.109739702037713e+00,  2.386089616571337e-01},
     {-5.460031722987547e-01,  1.771103154474497e+00,  3.118011666625712e+00,  1.399749934294501e+00},
     {-3.109739702037713e+00,  3.118011666625712e+00,  1.029938326077342e+01,  2.510219303968749e+00},
@@ -216,13 +216,13 @@ TEST(CovarianceMatrixFull, inverse_const) // NOLINT
 TEST(CovarianceMatrixFull, setVariance) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFullFromList<float32, 3>({
+  auto cov = CovarianceMatrixFull<float32, 3>::FromList({
     {45,  76,  72},
     {76, 132, 120},
     {72, 120, 144}
   });
 
-  const auto expCov = conversions::CovarianceMatrixFullFromList<float32, 3>({
+  const auto expCov = CovarianceMatrixFull<float32, 3>::FromList({
     {4,  0,  0},
     {0, 132, 120},
     {0, 120, 144}
@@ -692,7 +692,7 @@ TEST(CovarianceMatrixFull, setIdentity_float6__Success) // NOLINT
 TEST(CovarianceMatrixFull, inverse_NotPositiveDefinite_ExpectError) // NOLINT
 {
     // Create a non-positive definite matrix (negative eigenvalue)
-    auto nonPosDef = conversions::CovarianceMatrixFullFromList<float32, 3>({
+    auto nonPosDef = CovarianceMatrixFull<float32, 3>::FromList({
         {2,  1,  1},
         {1,  2,  1},
         {1,  1, -1}}); // Negative diagonal element makes it non-positive definite
@@ -705,7 +705,7 @@ TEST(CovarianceMatrixFull, inverse_NotPositiveDefinite_ExpectError) // NOLINT
 TEST(CovarianceMatrixFull, inverse_SingularMatrix_ExpectError) // NOLINT
 {
     // Create a singular matrix (determinant = 0)
-    auto singular = conversions::CovarianceMatrixFullFromList<float64, 3>({
+    auto singular = CovarianceMatrixFull<float64,3>::FromList({
         {1, 2, 3},
         {2, 4, 6},
         {3, 6, 0} // diagonal element zero makes it singular

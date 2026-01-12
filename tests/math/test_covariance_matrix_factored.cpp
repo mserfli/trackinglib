@@ -62,34 +62,15 @@ auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<FloatType,
   return covFactored.value();
 }
 
-TEST(CovarianceMatrixFactored, ctor_from_full_matrix) // NOLINT
-{
-  // clang-format off
-  const auto expCov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
-    {1,2,3},
-    {0,1,4},
-    {0,0,1}}, {1, 2, 4});
-
-  // call UUT
-  const auto cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
-    {45, 52, 12},
-    {52, 66, 16},
-    {12, 16,  4}});
-  // clang-format on
-
-  EXPECT_EQ(expCov._u._data, cov._u._data);
-  EXPECT_EQ(expCov._d._data, cov._d._data);
-}
-
 TEST(CovarianceMatrixFactored, compose) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  auto cov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1,2,3},
     {0,1,4},
     {0,0,1}}, {1, 2, 4});
 
-  const auto expMat = conversions::CovarianceMatrixFullFromList<float32, 3>({
+  const auto expMat = CovarianceMatrixFull<float32,3>::FromList({
     {45, 52, 12},
     {52, 66, 16},
     {12, 16,  4}});
@@ -104,7 +85,7 @@ TEST(CovarianceMatrixFactored, compose) // NOLINT
 struct CovarianceMatrixFactoredWithParams: public testing::TestWithParam<std::tuple<int, int>>
 {
   // clang-format off
-  CovarianceMatrixFactored<float32, 3> _cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  CovarianceMatrixFactored<float32, 3> _cov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1, 2, 3},
     {0, 1, 4},
     {0, 0, 1}}, {1, 2, 4});
@@ -130,7 +111,7 @@ INSTANTIATE_TEST_SUITE_P(CovarianceMatrixFactored,
 TEST(CovarianceMatrixFactored, apaT) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 4>({
+  auto cov = CovarianceMatrixFactored<float64,4>::FromList({
     {1.000000000000000,   0.378176125484376,   1.684500252612056,  -2.187010479706283},
     {                0,   1.000000000000000,  -1.241186420682381,   0.272017178830240},
     {                0,                   0,   1.000000000000000,  -0.986409098619786},
@@ -144,7 +125,7 @@ TEST(CovarianceMatrixFactored, apaT) // NOLINT
     {9.687082960197513e-01,   1.310361955580941e-01,   4.530398432949093e-01,   5.183403919872129e-01}});
    
 
-  const auto expCov = conversions::CovarianceMatrixFactoredFromList<float64, 4>({
+  const auto expCov = CovarianceMatrixFactored<float64,4>::FromList({
     {1.000000000000000,  -0.117162650062257,   0.236910463595170,   0.610508812057989},
     {                0,   1.000000000000000,   1.005949148623783,  -0.340655418792931},
     {                0,                   0,   1.000000000000000,   0.056511133324051},
@@ -168,7 +149,7 @@ TEST(CovarianceMatrixFactored, apaT) // NOLINT
 TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
 {
   // clang-format off
-  const auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 4>({
+  const auto cov = CovarianceMatrixFactored<float64,4>::FromList({
     {1.000000000000000,   0.378176125484376,   1.684500252612056,  -2.187010479706283},
     {                0,   1.000000000000000,  -1.241186420682381,   0.272017178830240},
     {                0,                   0,   1.000000000000000,  -0.986409098619786},
@@ -182,7 +163,7 @@ TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
     {9.687082960197513e-01,   1.310361955580941e-01,   4.530398432949093e-01,   5.183403919872129e-01}});
    
 
-  const auto expCov = conversions::CovarianceMatrixFactoredFromList<float64, 4>({
+  const auto expCov = CovarianceMatrixFactored<float64,4>::FromList({
     {1.000000000000000,  -0.117162650062257,   0.236910463595170,   0.610508812057989},
     {                0,   1.000000000000000,   1.005949148623783,  -0.340655418792931},
     {                0,                   0,   1.000000000000000,   0.056511133324051},
@@ -206,14 +187,14 @@ TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
 TEST(CovarianceMatrixFactored, rank1Update_upper) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  auto cov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1,2,3},
     {0,1,4},
     {0,0,1}}, {1, 2, 4});
 
   const auto x = conversions::VectorFromList<float32, 3>({1,2,3});
 
-  const auto expCov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  const auto expCov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1.000000000000000, 0.894009216589862, 1.588235294117647},
     {                0, 1.000000000000000, 2.235294117647059},
     {                0,                 0, 1.000000000000000}}, {3.654377880184332, 25.52941176470588, 8.5});
@@ -236,12 +217,12 @@ TEST(CovarianceMatrixFactored, rank1Update_upper) // NOLINT
 TEST(CovarianceMatrixFactored, setVariance) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  auto cov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1,2,3},
     {0,1,4},
     {0,0,1}}, {1, 2, 4});
 
-  const auto expMat = conversions::CovarianceMatrixFullFromList<float32, 3>({
+  const auto expMat = CovarianceMatrixFull<float32,3>::FromList({
     {2,  0,  0},
     {0, 66, 16},
     {0, 16,  4}});
@@ -307,7 +288,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_diagonal__Success) // NOLINT
 {
   // Test with diagonal matrix
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 3>(
+  auto cov = CovarianceMatrixFactored<float64,3>::FromList(
     {
     {1.0, 0.0, 0.0}, 
     {0.0, 1.0, 0.0}, 

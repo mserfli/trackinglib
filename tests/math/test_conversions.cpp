@@ -301,7 +301,7 @@ TEST(GTestConversionsSpecial, MatrixFromVector__Success) // NOLINT
 TEST(GTestConversionsSpecial, CovarianceMatrixFullFromList__Success) // NOLINT
 {
   // clang-format off
-  const auto result = conversions::CovarianceMatrixFullFromList<float32, 3>({
+  const auto result = CovarianceMatrixFull<float32,3>::FromList({
       {1.5F, 1.0F, 0.0F},
       {1.0F, 2.0F, 0.0F},
       {0.0F, 0.0F, 3.0F},
@@ -317,7 +317,7 @@ TEST(GTestConversionsSpecial, CovarianceMatrixFullFromList__Success) // NOLINT
 TEST(GTestConversionsSpecial, CovarianceMatrixFactoredFromList_SingleList__Success) // NOLINT
 {
   // clang-format off
-  const auto result = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  const auto result = conversions::CovarianceMatrixFactoredFromList<float32,3>({
       {1.5F, 1.0F, 0.0F},
       {1.0F, 2.0F, 0.0F},
       {0.0F, 0.0F, 3.0F},
@@ -333,7 +333,7 @@ TEST(GTestConversionsSpecial, CovarianceMatrixFactoredFromList_SingleList__Succe
 TEST(GTestConversionsSpecial, CovarianceMatrixFactoredFromList_SeparateLists__Success) // NOLINT
 {
   // clang-format off
-  const auto result = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  const auto result = CovarianceMatrixFactored<float32, 3>::FromList({
       {1.0F, 0.5F, 0.0F},
       {0.0F, 1.0F, 0.0F},
       {0.0F, 0.0F, 1.0F},
@@ -344,32 +344,4 @@ TEST(GTestConversionsSpecial, CovarianceMatrixFactoredFromList_SeparateLists__Su
   EXPECT_FLOAT_EQ(result.at_unsafe(0, 1), 1.0F);
   EXPECT_FLOAT_EQ(result.at_unsafe(1, 1), 2.0F);
   EXPECT_FLOAT_EQ(result.at_unsafe(2, 2), 3.0F);
-}
-
-TEST(GTestConversionsSpecial, CovarianceMatrixFromList_Full__Success) // NOLINT
-{
-  // clang-format off
-  const auto result = conversions::CovarianceMatrixFromList<CovarianceMatrixFull, float32, 3>({
-      {1.0F, 0.5F, 0.0F},
-      {0.5F, 2.0F, 0.0F},
-      {0.0F, 0.0F, 3.0F},
-  });
-  // clang-format on
-
-  EXPECT_FLOAT_EQ(result.at_unsafe(0, 0), 1.0F);
-  EXPECT_FLOAT_EQ(result.at_unsafe(0, 1), 0.5F);
-}
-
-TEST(GTestConversionsSpecial, CovarianceMatrixFromList_Factored__Success) // NOLINT
-{
-  // clang-format off
-  const auto result = conversions::CovarianceMatrixFromList<CovarianceMatrixFactored, float32, 3>({
-      {1.0F, 0.5F, 0.0F},
-      {0.5F, 2.0F, 0.0F},
-      {0.0F, 0.0F, 3.0F},
-  });
-  // clang-format on
-
-  EXPECT_TRUE(result.at_unsafe(0, 0) != 0.0F);
-  EXPECT_TRUE(result.at_unsafe(1, 1) != 0.0F);
 }
