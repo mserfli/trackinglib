@@ -37,6 +37,16 @@ auto CovarianceMatrixFactored<FloatType_, Size_>::Identity() -> CovarianceMatrix
 }
 
 template <typename FloatType_, sint32 Size_>
+auto CovarianceMatrixFactored<FloatType_, Size_>::FromList(const std::initializer_list<std::initializer_list<FloatType_>>& u,
+                                                           const std::initializer_list<FloatType_>& d) -> CovarianceMatrixFactored
+{
+  auto&& u_ = TriangularMatrix<FloatType_, Size_, false, true>::FromList(u);
+  auto&& d_ = DiagonalMatrix<FloatType_, Size_>::FromList(d);
+  return CovarianceMatrixFactored{std::move(u_), std::move(d_)};
+}
+
+
+template <typename FloatType_, sint32 Size_>
 void CovarianceMatrixFactored<FloatType_, Size_>::setIdentity()
 {
   _u.setIdentity();

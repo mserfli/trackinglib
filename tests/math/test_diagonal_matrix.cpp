@@ -60,6 +60,30 @@ TEST(DiagonalMatrix, setIdentity) // NOLINT
   EXPECT_EQ(expMat._data, diagMat._data);
 }
 
+TEST(DiagonalMatrix, FromList_Flat__Success) // NOLINT
+{
+  const auto result = DiagonalMatrix<sint32, 3>::FromList({1, 2, 3});
+
+  EXPECT_EQ(result.at_unsafe(0), 1);
+  EXPECT_EQ(result.at_unsafe(1), 2);
+  EXPECT_EQ(result.at_unsafe(2), 3);
+}
+
+TEST(DiagonalMatrix, FromList_Nested__Success) // NOLINT
+{
+  // clang-format off
+  const auto result = DiagonalMatrix<sint32, 3>::FromList({
+      {1, 0, 0},
+      {0, 2, 0},
+      {0, 0, 3},
+  });
+  // clang-format on
+
+  EXPECT_EQ(result.at_unsafe(0), 1);
+  EXPECT_EQ(result.at_unsafe(1), 2);
+  EXPECT_EQ(result.at_unsafe(2), 3);
+}
+
 TEST(DiagonalMatrix, setBlock_topLeft) // NOLINT
 {
   // clang-format off

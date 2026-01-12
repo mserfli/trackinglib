@@ -18,7 +18,7 @@ template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 class TriangularMatrix;
 
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL;
+class DiagonalMatrix;
 
 
 /// \brief Modified Gram-Schmidt orthogonalization for UDU factorization

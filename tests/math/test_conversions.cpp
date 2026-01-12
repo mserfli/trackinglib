@@ -52,13 +52,13 @@ protected:
   void SetUp() override
   {
     // clang-format off
-    _testSquareMat = conversions::SquareFromList<sint32, 3, MatrixStorageType::IsRowMajor>({
+    _testSquareMat = IntSquareMatType::FromList({
         {1, 2, 3},
         {4, 5, 6},
         {7, 8, 9},
     });
-    _testDiagMat = conversions::DiagonalFromList<sint32, 3>({1, 5, 9});
-    _testVec = conversions::VectorFromList<sint32, 3>({10, 20, 30});
+    _testDiagMat = IntDiagMatType::FromList({1, 5, 9});
+    _testVec = IntVecType::FromList({10, 20, 30});
     // clang-format on
   }
 
@@ -83,30 +83,6 @@ TYPED_TEST(GTestConversions, DiagonalFromSquare__Success) // NOLINT
   EXPECT_EQ(result.at_unsafe(0), 1);
   EXPECT_EQ(result.at_unsafe(1), 5);
   EXPECT_EQ(result.at_unsafe(2), 9);
-}
-
-TEST(GTestConversionsSpecial, DiagonalFromList_Flat__Success) // NOLINT
-{
-  const auto result = conversions::DiagonalFromList<sint32, 3>({1, 2, 3});
-
-  EXPECT_EQ(result.at_unsafe(0), 1);
-  EXPECT_EQ(result.at_unsafe(1), 2);
-  EXPECT_EQ(result.at_unsafe(2), 3);
-}
-
-TEST(GTestConversionsSpecial, DiagonalFromList_Nested__Success) // NOLINT
-{
-  // clang-format off
-  const auto result = conversions::DiagonalFromList<sint32, 3>({
-      {1, 0, 0},
-      {0, 2, 0},
-      {0, 0, 3},
-  });
-  // clang-format on
-
-  EXPECT_EQ(result.at_unsafe(0), 1);
-  EXPECT_EQ(result.at_unsafe(1), 2);
-  EXPECT_EQ(result.at_unsafe(2), 3);
 }
 
 // ============================================================================

@@ -38,6 +38,14 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::Identity() -> SquareMa
   return SquareMatrix{DiagonalMatrix<ValueType_, Size_>::Identity()};
 }
 
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::FromList(
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix
+{
+  return SquareMatrix{BaseMatrix::FromList(list)};
+}
+
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::trace() const -> ValueType_
 {
