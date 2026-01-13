@@ -375,7 +375,7 @@ TEST(MatrixIO, SquareMatrixDouble4x4RowMajor_ZeroMatrix__Success) // NOLINT
 
 TEST(MatrixIO, VectorFloat3__Success) // NOLINT
 {
-  const auto vec = conversions::VectorFromList<float32, 3>({1.0F, 2.0F, 3.0F});
+  const auto vec = Vector<float32, 3>::FromList({1.0F, 2.0F, 3.0F});
 
   std::stringstream ss;
   ss << vec;
@@ -389,7 +389,7 @@ TEST(MatrixIO, VectorFloat3__Success) // NOLINT
 
 TEST(MatrixIO, VectorInt4__Success) // NOLINT
 {
-  const auto vec = conversions::VectorFromList<sint32, 4>({10, 20, 30, 40});
+  const auto vec = Vector<sint32, 4>::FromList({10, 20, 30, 40});
 
   std::stringstream ss;
   ss << vec;
