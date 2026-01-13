@@ -248,6 +248,81 @@ TEST(SquareMatrix, decomposeLDLT_SymmetricNotPositiveDefinite_ExpectError) // NO
 }
 
 // ============================================================================
+// Matrix FromList ctor tests
+// ============================================================================
+
+/// \brief Helper class to support typed tests which wraps the IsRowMajor param into a type
+template <bool IsRowMajor_>
+struct MatrixStorageType
+{
+  static constexpr auto IsRowMajor = IsRowMajor_;
+};
+
+/// \brief Generic Matrix test class templatized by MatrixStorageType
+template <typename MatrixStorageType>
+class GTestSquareMatrix: public ::testing::Test
+{
+};
+
+using ::testing::Types;
+// The list of types we want to test.
+using MatrixStorageImplementations = Types<MatrixStorageType<true>, MatrixStorageType<false>>;
+TYPED_TEST_SUITE(GTestSquareMatrix, MatrixStorageImplementations);
+
+TYPED_TEST(GTestSquareMatrix, ctor_FromList__Success) // NOLINT
+{
+  // clang-format off
+  // call UUT
+  const auto result = SquareMatrix<sint32, 3, TypeParam::IsRowMajor>::FromList({
+      {1, 2, 3},
+      {4, 5, 6},
+      {7, 8, 9},
+  });
+
+  auto resultExp = std::vector<sint32>{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  // clang-format on
+
+  size_t index = 0;
+  for (sint32 r = 0; r < 3; ++r)
+  {
+    for (sint32 c = 0; c < 3; ++c)
+    {
+      EXPECT_EQ(result.at_unsafe(r, c), resultExp[index]);
+      ++index;
+    }
+  }
+}
+
+TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidRows__ThrowsRuntimeError) // NOLINT
+{
+  // clang-format off
+  auto throwFunc = []() {
+    // call UUT
+    return SquareMatrix<sint32, 3, TypeParam::IsRowMajor>::FromList({
+        {1, 2, 3},
+        {4, 5, 6},
+    });
+  };
+  // clang-format on
+  EXPECT_THROW(throwFunc(), std::runtime_error);
+}
+
+TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidCols__ThrowsRuntimeError) // NOLINT
+{
+  // clang-format off
+  auto throwFunc = []() {
+    // call UUT
+    return SquareMatrix<sint32, 3, TypeParam::IsRowMajor>::FromList({
+        {1, 2},
+        {4, 5},
+        {7, 8},
+    });
+  };
+  // clang-format on
+  EXPECT_THROW(throwFunc(), std::runtime_error);
+}
+
+// ============================================================================
 // Matrix Property Check Tests
 // ============================================================================
 

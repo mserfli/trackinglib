@@ -62,6 +62,23 @@ auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<FloatType,
   return covFactored.value();
 }
 
+TEST(CovarianceMatrixFactored, ctor_FromList_SeparateLists__Success) // NOLINT
+{
+  // clang-format off
+  // call UUT
+  const auto result = CovarianceMatrixFactored<float32, 3>::FromList({
+      {1.0F, 0.5F, 0.0F},
+      {0.0F, 1.0F, 0.0F},
+      {0.0F, 0.0F, 1.0F},
+  }, {1.0F, 2.0F, 3.0F});
+  // clang-format on
+
+  EXPECT_FLOAT_EQ(result.at_unsafe(0, 0), 1.5F);
+  EXPECT_FLOAT_EQ(result.at_unsafe(0, 1), 1.0F);
+  EXPECT_FLOAT_EQ(result.at_unsafe(1, 1), 2.0F);
+  EXPECT_FLOAT_EQ(result.at_unsafe(2, 2), 3.0F);
+}
+
 TEST(CovarianceMatrixFactored, compose) // NOLINT
 {
   // clang-format off

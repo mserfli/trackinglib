@@ -52,6 +52,67 @@ TEST(TriangularMatrix, ctor_triu) // NOLINT
   }
 }
 
+// ============================================================================
+// Matrix FromList ctor tests
+// ============================================================================
+
+/// \brief Helper class to support typed tests which wraps the IsRowMajor param into a type
+template <bool IsRowMajor_>
+struct MatrixStorageType
+{
+  static constexpr auto IsRowMajor = IsRowMajor_;
+};
+
+/// \brief Generic Matrix test class templatized by MatrixStorageType
+template <typename MatrixStorageType>
+class GTestTriangularMatrix: public ::testing::Test
+{
+};
+
+using ::testing::Types;
+// The list of types we want to test.
+using MatrixStorageImplementations = Types<MatrixStorageType<true>, MatrixStorageType<false>>;
+TYPED_TEST_SUITE(GTestTriangularMatrix, MatrixStorageImplementations);
+
+TYPED_TEST(GTestTriangularMatrix, ctor_FromList_Upper__Success) // NOLINT
+{
+  // clang-format off
+  // call UUT
+  const auto result = TriangularMatrix<sint32, 3, false, TypeParam::IsRowMajor>::FromList({
+      {1, 2, 3},
+      {0, 5, 6},
+      {0, 0, 9},
+  });
+  // clang-format on
+
+  EXPECT_EQ(result.at_unsafe(0, 0), 1);
+  EXPECT_EQ(result.at_unsafe(0, 1), 2);
+  EXPECT_EQ(result.at_unsafe(0, 2), 3);
+  EXPECT_EQ(result.at_unsafe(1, 1), 5);
+  EXPECT_EQ(result.at_unsafe(1, 2), 6);
+  EXPECT_EQ(result.at_unsafe(2, 2), 9);
+}
+
+TYPED_TEST(GTestTriangularMatrix, ctor_FromList_Lower__Success) // NOLINT
+{
+  // clang-format off
+  // call UUT
+  const auto result = TriangularMatrix<sint32, 3, true, TypeParam::IsRowMajor>::FromList({
+      {1, 0, 0},
+      {4, 5, 0},
+      {7, 8, 9},
+  });
+  // clang-format on
+
+  // Lower triangular: elements on and below diagonal should be preserved
+  EXPECT_EQ(result.at_unsafe(0, 0), 1);
+  EXPECT_EQ(result.at_unsafe(1, 0), 4);
+  EXPECT_EQ(result.at_unsafe(1, 1), 5);
+  EXPECT_EQ(result.at_unsafe(2, 0), 7);
+  EXPECT_EQ(result.at_unsafe(2, 1), 8);
+  EXPECT_EQ(result.at_unsafe(2, 2), 9);
+}
+
 TEST(TriangularMatrix, Identity) // NOLINT
 {
   // clang-format off

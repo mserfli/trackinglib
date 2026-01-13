@@ -25,20 +25,20 @@ struct MatrixTypeExtractor
   template <typename... Args>
   static auto MatrixFromList(Args&&... args)
   {
-    return conversions::MatrixFromList<ValueType, Rows, Cols, IsRowMajor>(std::forward<Args>(args)...);
+    return Matrix<ValueType, Rows, Cols, IsRowMajor>::FromList(std::forward<Args>(args)...);
   }
 
   // Overload for initializer_list to handle the common case
   template <typename T>
   static auto MatrixFromList(std::initializer_list<std::initializer_list<T>> list)
   {
-    return conversions::MatrixFromList<ValueType, Rows, Cols, IsRowMajor>(list);
+    return Matrix<ValueType, Rows, Cols, IsRowMajor>::FromList(list);
   }
 
   // Overload for empty initializer list
   static auto MatrixFromList(std::initializer_list<std::initializer_list<ValueType>> list = {})
   {
-    return conversions::MatrixFromList<ValueType, Rows, Cols, IsRowMajor>(list);
+    return Matrix<ValueType, Rows, Cols, IsRowMajor>::FromList(list);
   }
 };
 
@@ -550,6 +550,56 @@ TYPED_TEST(GTestMatrix, ctor_Ones__Success) // NOLINT
 
   const typename GTestMatrix<TypeParam>::IntMatType::Storage expStorage{1, 1, 1, 1, 1, 1};
   EXPECT_EQ(mat._data, expStorage);
+}
+
+TYPED_TEST(GTestMatrix, ctor_FromList__Success) // NOLINT
+{
+  // clang-format off
+  // call UUT
+  const auto result = Matrix<sint32, 2, 3, TypeParam::IsRowMajor>::FromList({
+    {1, 2, 3},
+    {4, 5, 6},
+  });
+  
+  auto resultExp = std::vector<sint32>{1, 2, 3, 4, 5, 6};
+  // clang-format on
+
+  size_t index = 0;
+  for (sint32 r = 0; r < result.Rows; ++r)
+  {
+    for (sint32 c = 0; c < result.Cols; ++c)
+    {
+      EXPECT_EQ(result.at_unsafe(r, c), resultExp[index]);
+      ++index;
+    }
+  }
+}
+
+TYPED_TEST(GTestMatrix, ctor_romList_InvalidRows__ThrowsRuntimeError) // NOLINT
+{
+  // clang-format off
+  auto throwFunc = []() {
+    // call UUT
+    return Matrix<sint32, 2, 3, TypeParam::IsRowMajor>::FromList({
+        {1, 2, 3},
+    });
+  };
+  // clang-format on
+  EXPECT_THROW(throwFunc(), std::runtime_error);
+}
+
+TYPED_TEST(GTestMatrix, ctor_FromList_InvalidCols__ThrowsRuntimeError) // NOLINT
+{
+  // clang-format off
+  auto throwFunc = []() {
+    // call UUT
+    return Matrix<sint32, 2, 3, TypeParam::IsRowMajor>::FromList({
+        {1, 2},
+        {4, 5},
+    });
+  };
+  // clang-format on
+  EXPECT_THROW(throwFunc(), std::runtime_error);
 }
 
 TYPED_TEST(GTestMatrix, at_unsafe__Success) // NOLINT

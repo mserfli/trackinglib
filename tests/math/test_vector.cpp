@@ -19,6 +19,17 @@ struct VectorValueType
 
 using VectorTestTypes = testing::Types<VectorValueType<sint32>, VectorValueType<float32>, VectorValueType<float64>>;
 
+TEST(Vector, ctor_FromList__Success) // NOLINT
+{
+  // call UUT
+  const auto result = Vector<sint32, 3>::FromList({1, 2, 3});
+
+  EXPECT_EQ(result.at_unsafe(0), 1);
+  EXPECT_EQ(result.at_unsafe(1), 2);
+  EXPECT_EQ(result.at_unsafe(2), 3);
+}
+
+
 TEST(Vector, UnitVector__Success) // NOLINT
 {
   // clang-format off

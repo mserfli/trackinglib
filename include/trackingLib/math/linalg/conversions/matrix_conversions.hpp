@@ -6,6 +6,7 @@
 #include "math/linalg/vector.hpp"             // IWYU pragma: keep
 #include <initializer_list>
 #include <stdexcept>
+#include <string> // Required for std::to_string in MatrixFromList
 
 namespace tracking
 {
