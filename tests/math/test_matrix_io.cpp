@@ -17,7 +17,7 @@ using namespace tracking::math;
 
 TEST(MatrixIO, BasicMatrixOutput) // NOLINT
 {
-  const auto mat = conversions::MatrixFromList<float32, 2, 2, true>({{1.0F, 2.0F}, {3.0F, 4.0F}});
+  const auto mat = Matrix<float32, 2, 2, true>::FromList({{1.0F, 2.0F}, {3.0F, 4.0F}});
 
   std::stringstream ss;
   ss << mat;
@@ -30,7 +30,7 @@ TEST(MatrixIO, BasicMatrixOutput) // NOLINT
 
 TEST(MatrixIO, IntegerMatrixOutput) // NOLINT
 {
-  const auto mat = conversions::MatrixFromList<sint32, 2, 2, true>({{1, 2}, {3, 4}});
+  const auto mat = Matrix<sint32, 2, 2, true>::FromList({{1, 2}, {3, 4}});
 
   std::stringstream ss;
   ss << mat;
@@ -43,7 +43,7 @@ TEST(MatrixIO, IntegerMatrixOutput) // NOLINT
 
 TEST(MatrixIO, SquareMatrixOutput) // NOLINT
 {
-  const auto mat = conversions::SquareFromList<float32, 3, true>({{1.0F, 2.0F, 3.0F}, {4.0F, 5.0F, 6.0F}, {7.0F, 8.0F, 9.0F}});
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({{1.0F, 2.0F, 3.0F}, {4.0F, 5.0F, 6.0F}, {7.0F, 8.0F, 9.0F}});
 
   std::stringstream ss;
   ss << mat;
@@ -57,7 +57,7 @@ TEST(MatrixIO, SquareMatrixOutput) // NOLINT
 
 TEST(MatrixIO, DiagonalMatrixOutput) // NOLINT
 {
-  const auto mat = conversions::DiagonalFromList<float32, 3>({1.0F, 2.0F, 3.0F});
+  const auto mat = DiagonalMatrix<float32, 3>::FromList({1.0F, 2.0F, 3.0F});
 
   std::stringstream ss;
   ss << mat;
@@ -72,7 +72,7 @@ TEST(MatrixIO, DiagonalMatrixOutput) // NOLINT
 TEST(MatrixIO, TriangularMatrixOutput) // NOLINT
 {
   const auto mat =
-      conversions::TriangularFromList<float32, 3, true, true>({{1.0F, 0.0F, 0.0F}, {2.0F, 3.0F, 0.0F}, {4.0F, 5.0F, 6.0F}});
+      TriangularMatrix<float32, 3, true, true>::FromList({{1.0F, 0.0F, 0.0F}, {2.0F, 3.0F, 0.0F}, {4.0F, 5.0F, 6.0F}});
 
   std::stringstream ss;
   ss << mat;
@@ -86,7 +86,7 @@ TEST(MatrixIO, TriangularMatrixOutput) // NOLINT
 
 TEST(MatrixIO, FileOutput) // NOLINT
 {
-  const auto mat = conversions::MatrixFromList<float32, 2, 2, true>({{1.0F, 2.0F}, {3.0F, 4.0F}});
+  const auto mat = Matrix<float32, 2, 2, true>::FromList({{1.0F, 2.0F}, {3.0F, 4.0F}});
 
   std::ofstream file("test_matrix_io_output.txt");
   file << mat;
@@ -103,7 +103,7 @@ TEST(MatrixIO, FileOutput) // NOLINT
 
 TEST(MatrixIO, ChainingOutput) // NOLINT
 {
-  const auto mat = conversions::MatrixFromList<float32, 2, 2, true>({{1.0F, 2.0F}, {3.0F, 4.0F}});
+  const auto mat = Matrix<float32, 2, 2, true>::FromList({{1.0F, 2.0F}, {3.0F, 4.0F}});
 
   std::stringstream ss;
   ss << "Matrix: " << mat << "End";
@@ -117,14 +117,14 @@ TEST(MatrixIO, ChainingOutput) // NOLINT
 TEST(MatrixIO, DifferentValueTypes) // NOLINT
 {
   // Test float64
-  const auto float64Mat = conversions::MatrixFromList<float64, 2, 2, true>({{1.0, 2.0}, {3.0, 4.0}});
+  const auto float64Mat = Matrix<float64, 2, 2, true>::FromList({{1.0, 2.0}, {3.0, 4.0}});
 
   std::stringstream ss1;
   ss1 << float64Mat;
   EXPECT_NE(ss1.str().find("+1.000000"), std::string::npos);
 
   // Test sint32
-  const auto sint32Mat = conversions::MatrixFromList<sint32, 2, 2, true>({{1, 2}, {3, 4}});
+  const auto sint32Mat = Matrix<sint32, 2, 2, true>::FromList({{1, 2}, {3, 4}});
 
   std::stringstream ss2;
   ss2 << sint32Mat;
@@ -134,7 +134,7 @@ TEST(MatrixIO, DifferentValueTypes) // NOLINT
 
 TEST(MatrixIO, SingleElementMatrix) // NOLINT
 {
-  const auto mat = conversions::MatrixFromList<float32, 1, 1, true>({{42.0F}});
+  const auto mat = Matrix<float32, 1, 1, true>::FromList({{42.0F}});
 
   std::stringstream ss;
   ss << mat;
@@ -145,8 +145,14 @@ TEST(MatrixIO, SingleElementMatrix) // NOLINT
 
 TEST(MatrixIO, LargeMatrix) // NOLINT
 {
-  const auto mat = conversions::MatrixFromList<float32, 4, 4, true>(
-      {{1.0F, 2.0F, 3.0F, 4.0F}, {5.0F, 6.0F, 7.0F, 8.0F}, {9.0F, 10.0F, 11.0F, 12.0F}, {13.0F, 14.0F, 15.0F, 16.0F}});
+  // clang-format off
+  const auto mat = Matrix<float32, 4, 4, true>::FromList({
+  {1.0F, 2.0F, 3.0F, 4.0F}, 
+  {5.0F, 6.0F, 7.0F, 8.0F}, 
+  {9.0F, 10.0F, 11.0F, 12.0F}, 
+  {13.0F, 14.0F, 15.0F, 16.0F}
+  });
+  // clang-format on
 
   std::stringstream ss;
   ss << mat;
@@ -165,7 +171,7 @@ TEST(MatrixIO, LargeMatrix) // NOLINT
 TEST(MatrixIO, MatrixDouble4x3RowMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<double, 4, 3, true>({
+  const auto mat = Matrix<double, 4, 3, true>::FromList({
       {1.0, 2.0, 3.0},
       {4.0, 5.0, 6.0},
       {7.0, 8.0, 9.0},
@@ -187,7 +193,7 @@ TEST(MatrixIO, MatrixDouble4x3RowMajor__Success) // NOLINT
 TEST(MatrixIO, MatrixDouble6x3RowMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<double, 6, 3, true>({
+  const auto mat = Matrix<double, 6, 3, true>::FromList({
       {1.0, 2.0, 3.0},
       {4.0, 5.0, 6.0},
       {7.0, 8.0, 9.0},
@@ -211,7 +217,7 @@ TEST(MatrixIO, MatrixDouble6x3RowMajor__Success) // NOLINT
 TEST(MatrixIO, SquareMatrixDouble4x4RowMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::SquareFromList<double, 4, true>({
+  const auto mat = SquareMatrix<double, 4, true>::FromList({
       {1.0, 2.0, 3.0, 4.0},
       {5.0, 6.0, 7.0, 8.0},
       {9.0, 10.0, 11.0, 12.0},
@@ -233,7 +239,7 @@ TEST(MatrixIO, SquareMatrixDouble4x4RowMajor__Success) // NOLINT
 TEST(MatrixIO, SquareMatrixDouble6x6RowMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::SquareFromList<double, 6, true>({
+  const auto mat = SquareMatrix<double, 6, true>::FromList({
       {1.0, 2.0, 3.0, 4.0, 5.0, 6.0},
       {7.0, 8.0, 9.0, 10.0, 11.0, 12.0},
       {13.0, 14.0, 15.0, 16.0, 17.0, 18.0},
@@ -257,7 +263,7 @@ TEST(MatrixIO, SquareMatrixDouble6x6RowMajor__Success) // NOLINT
 TEST(MatrixIO, MatrixDouble4x3ColumnMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<double, 4, 3, false>({
+  const auto mat = Matrix<double, 4, 3, false>::FromList({
       {1.0, 2.0, 3.0},
       {4.0, 5.0, 6.0},
       {7.0, 8.0, 9.0},
@@ -279,7 +285,7 @@ TEST(MatrixIO, MatrixDouble4x3ColumnMajor__Success) // NOLINT
 TEST(MatrixIO, SquareMatrixDouble4x4ColumnMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::SquareFromList<double, 4, false>({
+  const auto mat = SquareMatrix<double, 4, false>::FromList({
       {1.0, 2.0, 3.0, 4.0},
       {5.0, 6.0, 7.0, 8.0},
       {9.0, 10.0, 11.0, 12.0},
@@ -301,7 +307,7 @@ TEST(MatrixIO, SquareMatrixDouble4x4ColumnMajor__Success) // NOLINT
 TEST(MatrixIO, MatrixDouble4x3RowMajor_NegativeValues__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<double, 4, 3, true>({
+  const auto mat = Matrix<double, 4, 3, true>::FromList({
       {-1.0, -2.0, 3.0},
       {4.0, -5.0, -6.0},
       {-7.0, 8.0, -9.0},
@@ -319,7 +325,7 @@ TEST(MatrixIO, MatrixDouble4x3RowMajor_NegativeValues__Success) // NOLINT
 TEST(MatrixIO, SquareMatrixDouble4x4RowMajor_NegativeValues__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::SquareFromList<double, 4, true>({
+  const auto mat = SquareMatrix<double, 4, true>::FromList({
       {-1.0, -2.0, -3.0, -4.0},
       {-5.0, -6.0, -7.0, -8.0},
       {-9.0, -10.0, -11.0, -12.0},

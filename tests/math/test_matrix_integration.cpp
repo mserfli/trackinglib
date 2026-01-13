@@ -17,7 +17,7 @@ TEST(MatrixIntegration, Trace_Consistency_DiagonalVsSquare__Success) // NOLINT
 {
   // Create a diagonal matrix
   // clang-format off
-  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 2, 0},
     {0, 0, 3}
@@ -40,7 +40,7 @@ TEST(MatrixIntegration, Trace_Consistency_DiagonalVsTriangular__Success) // NOLI
 {
   // Create a diagonal matrix
   // clang-format off
-  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 2, 0},
     {0, 0, 3}
@@ -48,7 +48,7 @@ TEST(MatrixIntegration, Trace_Consistency_DiagonalVsTriangular__Success) // NOLI
   // clang-format on
 
   // Convert to upper triangular matrix
-  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({{1, 0, 0}, {0, 2, 0}, {0, 0, 3}});
+  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({{1, 0, 0}, {0, 2, 0}, {0, 0, 3}});
 
   // call UUT
   const auto diagTrace = diagMat.trace();
@@ -63,7 +63,7 @@ TEST(MatrixIntegration, Determinant_Consistency_DiagonalVsSquare__Success) // NO
 {
   // Create a diagonal matrix
   // clang-format off
-  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 2, 0},
     {0, 0, 3}
@@ -86,7 +86,7 @@ TEST(MatrixIntegration, Determinant_Consistency_DiagonalVsTriangular__Success) /
 {
   // Create a diagonal matrix
   // clang-format off
-  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 2, 0},
     {0, 0, 3}
@@ -94,7 +94,7 @@ TEST(MatrixIntegration, Determinant_Consistency_DiagonalVsTriangular__Success) /
   // clang-format on
 
   // Convert to upper triangular matrix
-  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({{1, 0, 0}, {0, 2, 0}, {0, 0, 3}});
+  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({{1, 0, 0}, {0, 2, 0}, {0, 0, 3}});
 
   // call UUT
   const auto diagDet = diagMat.determinant();
@@ -109,13 +109,13 @@ TEST(MatrixIntegration, Determinant_Consistency_UpperVsLowerTriangular__Success)
 {
   // Create upper and lower triangular matrices with same diagonal
   // clang-format off
-  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
     {0, 4, 5},
     {0, 0, 6}
   });
   
-  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {2, 4, 0},
     {3, 5, 6}
@@ -135,7 +135,7 @@ TEST(MatrixIntegration, Trace_DoublePrecision_Consistency__Success) // NOLINT
 {
   // Create diagonal matrix with double precision
   // clang-format off
-  const auto diagMat = conversions::DiagonalFromList<float64, 3>({
+  const auto diagMat = DiagonalMatrix<float64, 3>::FromList({
     {1.0, 0.0, 0.0},
     {0.0, 2.0, 0.0},
     {0.0, 0.0, 3.0}
@@ -158,7 +158,7 @@ TEST(MatrixIntegration, Determinant_DoublePrecision_Consistency__Success) // NOL
 {
   // Create diagonal matrix with double precision
   // clang-format off
-  const auto diagMat = conversions::DiagonalFromList<float64, 3>({
+  const auto diagMat = DiagonalMatrix<float64, 3>::FromList({
     {1.0, 0.0, 0.0},
     {0.0, 2.0, 0.0},
     {0.0, 0.0, 3.0}
@@ -223,19 +223,19 @@ TEST(MatrixIntegration, Trace_SingularMatrix_AllTypes__Success) // NOLINT
 {
   // Test singular matrices (with zero diagonal elements)
   // clang-format off
-  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 0, 0},
     {0, 0, 3}
   });
   
   const auto squareMat = SquareMatrix<float32, 3, true>{diagMat};
-  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
     {0, 0, 4},
     {0, 0, 5}
   });
-  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {2, 0, 0},
     {3, 4, 5}
@@ -259,19 +259,19 @@ TEST(MatrixIntegration, Determinant_SingularMatrix_AllTypes__Success) // NOLINT
 {
   // Test singular matrices (with zero diagonal elements)
   // clang-format off
-  const auto diagMat = conversions::DiagonalFromList<float32, 3>({
+  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 0, 0},
     {0, 0, 3}
   });
   
   const auto squareMat = SquareMatrix<float32, 3, true>{diagMat};
-  const auto triuMat = conversions::TriangularFromList<float32, 3, false, true>({
+  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
     {0, 0, 4},
     {0, 0, 5}
   });
-  const auto trilMat = conversions::TriangularFromList<float32, 3, true, true>({
+  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {2, 0, 0},
     {3, 4, 5}

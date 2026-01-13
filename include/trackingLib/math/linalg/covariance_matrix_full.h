@@ -4,6 +4,7 @@
 #include "base/first_include.h"                           // IWYU pragma: keep
 #include "math/linalg/contracts/covariance_matrix_intf.h" // IWYU pragma: keep
 #include "math/linalg/square_matrix.h"
+#include <initializer_list> // IWYU pragma: keep
 
 namespace tracking
 {
@@ -85,6 +86,18 @@ public:
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFull  Resulting identity matrix
   static auto Identity() -> CovarianceMatrixFull { return CovarianceMatrixFull{BaseSquareMatrix::Identity()}; }
+
+  /// \brief Creates a CovarianceMatrixFull from a nested initializer list
+  ///
+  /// This function constructs a full covariance matrix from a nested initializer list.
+  ///
+  /// \param[in] list Nested initializer list representing the covariance matrix
+  /// \return CovarianceMatrixFull instance initialized with the provided values
+  static auto FromList(const std::initializer_list<std::initializer_list<FloatType_>>& list) -> CovarianceMatrixFull
+  {
+    return CovarianceMatrixFull{BaseSquareMatrix::FromList(list)};
+  }
+  // <---
 
   /// \brief Set internal matrix to the Identity matrix
   void setIdentity() { BaseSquareMatrix::setIdentity(); }

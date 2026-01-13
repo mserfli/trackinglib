@@ -3,6 +3,7 @@
 
 #include "base/first_include.h"        // IWYU pragma: keep
 #include "math/linalg/square_matrix.h" // IWYU pragma: keep
+#include <initializer_list>
 
 namespace tracking
 {
@@ -66,6 +67,17 @@ public:
   ///
   /// \note For unit triangular matrices, this creates a matrix with ones on the diagonal
   [[nodiscard]] static auto Identity() -> TriangularMatrix { return TriangularMatrix{BaseSquareMatrix::Identity()}; }
+
+  /// \brief Creates a TriangularMatrix from a nested initializer list
+  ///
+  /// This function constructs a TriangularMatrix from a nested initializer list.
+  /// The triangular structure (upper or lower) is determined by the IsLower_ template parameter.
+  ///
+  /// \param[in] list Nested initializer list representing the triangular matrix
+  /// \return TriangularMatrix instance initialized with the provided values
+  /// \see TriangularFromSquare() for creating from square matrices
+  /// \see SquareFromList() for the underlying conversion
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix;
 
   /// \brief Set a triangular block within this triangular matrix.
   ///

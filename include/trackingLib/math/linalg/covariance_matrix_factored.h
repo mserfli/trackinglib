@@ -3,7 +3,8 @@
 
 #include "base/first_include.h"                           // IWYU pragma: keep
 #include "math/linalg/contracts/covariance_matrix_intf.h" // IWYU pragma: keep
-#include <iostream>                                       // IWYU pragma: keep
+#include <initializer_list>
+#include <iostream> // IWYU pragma: keep
 
 namespace tracking
 {
@@ -70,6 +71,8 @@ public:
   auto operator=(CovarianceMatrixFactored&&) noexcept -> CovarianceMatrixFactored& = default;
   virtual ~CovarianceMatrixFactored()                                              = default;
 
+  //////////////////////////////////////////////////
+  // additional constructors  --->
   /// \brief Construct a new Covariance Matrix Factored object
   /// \param[in] u   Unit upper triangular matrix
   /// \param[in] d   Diagonal matrix
@@ -79,6 +82,18 @@ public:
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFactored
   static auto Identity() -> CovarianceMatrixFactored;
+
+  /// \brief Creates a CovarianceMatrixFactored from separate U and D initializer lists
+  ///
+  /// This function constructs a factored covariance matrix from separate initializer lists
+  /// for the upper triangular U matrix and diagonal D matrix components.
+  ///
+  /// \param[in] u Nested initializer list for the upper triangular U matrix
+  /// \param[in] d Flat initializer list for the diagonal D matrix
+  /// \return CovarianceMatrixFactored instance with the specified U and D components
+  static auto FromList(const std::initializer_list<std::initializer_list<FloatType_>>& u,
+                       const std::initializer_list<FloatType_>&                        d) -> CovarianceMatrixFactored;
+  // <---
 
   /// \brief Set Identity covariance
   void setIdentity();

@@ -8,7 +8,7 @@ TEST(MatrixView, ctor_view) // NOLINT
 {
   // testing MatrixView on existing matrix
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
@@ -29,7 +29,7 @@ TEST(MatrixView, ctor_view) // NOLINT
 TEST(MatrixView, add_views) // NOLINT
 {
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
@@ -59,7 +59,7 @@ TEST(MatrixView, add_views) // NOLINT
 TEST(MatrixView, mul_views) // NOLINT
 {
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
@@ -89,7 +89,7 @@ TEST(MatrixView, mul_views) // NOLINT
 TEST(MatrixView, scalar_ops) // NOLINT
 {
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3}, 
     {4, 5, 6}, 
     {7, 8, 9}

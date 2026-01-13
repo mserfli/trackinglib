@@ -7,6 +7,8 @@
 #include <cmath>
 #include <functional>
 #include <limits>
+#include <stdexcept>
+#include <string>
 #include <type_traits>
 
 namespace tracking
@@ -42,6 +44,58 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Ones() -> Matrix
   return tmp;
 }
 
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::FromList(
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix
+{
+  Matrix result{};
+
+  // Validate row count - input is always in logical row-major format
+  if (list.size() != static_cast<std::size_t>(Rows))
+  {
+    throw std::runtime_error("Matrix::FromList: expected " + std::to_string(Rows) + " rows, got " + std::to_string(list.size()));
+  }
+
+  // Validate column count for each row - input is always in logical row-major format
+  for (const auto& row : list)
+  {
+    if (row.size() != static_cast<std::size_t>(Cols))
+    {
+      throw std::runtime_error("Matrix::FromList: expected " + std::to_string(Cols) + " columns, got " +
+                               std::to_string(row.size()));
+    }
+  }
+
+  if constexpr (IsRowMajor_)
+  {
+    // For row-major storage, copy data directly
+    auto iter = result.data().begin();
+    for (const auto& row : list)
+    {
+      std::copy(row.begin(), row.end(), iter);
+      iter += row.size();
+    }
+  }
+  else
+  {
+    // For column-major storage, transpose the input data
+    for (sint32 col = 0; col < Cols; ++col)
+    {
+      for (sint32 row = 0; row < Rows; ++row)
+      {
+        // Get element from row-major input
+        auto row_iter = list.begin();
+        std::advance(row_iter, row);
+        auto col_iter = row_iter->begin();
+        std::advance(col_iter, col);
+
+        // Store in column-major order
+        result.data()[col * Rows + row] = *col_iter;
+      }
+    }
+  }
+  return result;
+}
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_

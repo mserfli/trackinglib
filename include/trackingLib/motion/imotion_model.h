@@ -7,7 +7,9 @@
 #include "filter/kalman_filter.h"
 #include "math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "math/linalg/conversions/vector_conversions.hpp"
+#include "math/linalg/covariance_matrix_factored.h"
 #include "motion/state_mem.h"
+#include <type_traits>
 
 namespace tracking
 {
@@ -111,7 +113,7 @@ TEST_REMOVE_PRIVATE:
   /// \return StateVec
   static auto StateVecFromList(const std::initializer_list<FloatType>& list) -> StateVec
   {
-    return tracking::math::conversions::VectorFromList<FloatType, Size>(list);
+    return tracking::math::Vector<FloatType, Size>::FromList(list);
   }
 
   /// \brief Create state covariance from initializer list
@@ -119,7 +121,15 @@ TEST_REMOVE_PRIVATE:
   /// \return StateCov
   static auto StateCovFromList(const std::initializer_list<std::initializer_list<FloatType>>& list) -> StateCov
   {
-    return tracking::math::conversions::CovarianceMatrixFromList<CovarianceMatrixType, FloatType, Size>(list);
+    if constexpr (std::is_same_v<CovarianceMatrixType<FloatType, Size>, math::CovarianceMatrixFull<FloatType, Size>>)
+    {
+      return math::CovarianceMatrixFull<FloatType, Size>::FromList(list);
+    }
+
+    if constexpr (std::is_same_v<CovarianceMatrixType<FloatType, Size>, math::CovarianceMatrixFactored<FloatType, Size>>)
+    {
+      return tracking::math::conversions::CovarianceMatrixFactoredFromList<FloatType, Size>(list);
+    }
   }
 
   /// \brief Create complete ExtendedMotionModel from initializer lists

@@ -7,6 +7,7 @@
 #include "math/linalg/matrix_types.h" // IWYU pragma: keep
 #include <algorithm>
 #include <array>
+#include <initializer_list>
 #include <tuple>
 #include <type_traits>
 
@@ -118,6 +119,16 @@ public:
   /// \brief Construct a matrix filled with ones
   /// \return One matrix
   [[nodiscard]] static auto Ones() -> Matrix;
+
+  /// \brief Creates a Matrix from a nested initializer list
+  ///
+  /// This function constructs a Matrix from a nested initializer list where each inner list
+  /// represents a row of the matrix. The dimensions must match the template parameters exactly.
+  ///
+  /// \param[in] list Nested initializer list in logical row-major format
+  /// \return Matrix instance initialized with the provided values
+  /// \throws std::runtime_error If the list dimensions don't match the matrix dimensions
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
   // <---
 
   //////////////////////////////////////////////////
