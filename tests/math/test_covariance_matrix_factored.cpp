@@ -135,7 +135,7 @@ TEST(CovarianceMatrixFactored, apaT) // NOLINT
     {                0,                   0,                   0,   1.000000000000000}},
     { 0.692626242247276,   0.639133727238215,   0.839636056501929,   0.821337656508534});
 
-  const auto A = conversions::SquareFromList<float64, 4, true>({
+  const auto A = SquareMatrix<float64, 4, true>::FromList({
     {6.240853754330984e-01,   3.581644763169872e-01,   5.385448223130755e-01,   6.122387805324014e-01},
     {9.666405567486658e-04,   9.261665823497265e-01,   5.262033279133882e-02,   4.022802305927367e-01},
     {4.208940256150708e-01,   9.768163860098072e-01,   3.480474524537769e-01,   9.884169020892678e-01},
@@ -173,7 +173,7 @@ TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
     {                0,                   0,                   0,   1.000000000000000}},
     { 0.692626242247276,   0.639133727238215,   0.839636056501929,   0.821337656508534});
 
-  const auto A = conversions::SquareFromList<float64, 4, true>({
+  const auto A = SquareMatrix<float64, 4, true>::FromList({
     {6.240853754330984e-01,   3.581644763169872e-01,   5.385448223130755e-01,   6.122387805324014e-01},
     {9.666405567486658e-04,   9.261665823497265e-01,   5.262033279133882e-02,   4.022802305927367e-01},
     {4.208940256150708e-01,   9.768163860098072e-01,   3.480474524537769e-01,   9.884169020892678e-01},
@@ -209,7 +209,7 @@ TEST(CovarianceMatrixFactored, rank1Update_upper) // NOLINT
     {0,1,4},
     {0,0,1}}, {1, 2, 4});
 
-  const auto x = conversions::VectorFromList<float32, 3>({1,2,3});
+  const auto x = Vector<float32, 3>::FromList({1,2,3});
 
   const auto expCov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1.000000000000000, 0.894009216589862, 1.588235294117647},
@@ -259,7 +259,7 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_apaT__Success) // NOLINT
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 4>();
 
   // clang-format off
-  auto A = conversions::SquareFromList<float64, 4, true>({
+  auto A = SquareMatrix<float64, 4, true>::FromList({
     {0.9, 0.1, 0.2, 0.3}, 
     {0.1, 0.8, 0.1, 0.2}, 
     {0.2, 0.1, 0.7, 0.1}, 
@@ -414,7 +414,7 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_rank1Update__Success) // NO
 {
   // Test that rank1Update operation preserves symmetry
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float32, 3>();
-  auto x   = conversions::VectorFromList<float32, 3>({1.0f, 2.0f, 3.0f});
+  auto x   = Vector<float32, 3>::FromList({1.0f, 2.0f, 3.0f});
 
   // Verify initial symmetry
   auto initialFull = cov();
@@ -434,19 +434,19 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_thornton__Success) // NOLIN
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
 
   // clang-format off
-  auto Phi = conversions::SquareFromList<float64, 3, true>({
+  auto Phi = SquareMatrix<float64, 3, true>::FromList({
     {0.9, 0.1, 0.2}, 
     {0.1, 0.8, 0.1}, 
     {0.2, 0.1, 0.7}
   });
 
-  auto G = conversions::MatrixFromList<float64, 3, 2, true>({
+  auto G = Matrix<float64, 3, 2, true>::FromList({
     {0.5, 0.1}, 
     {0.1, 0.5}, 
     {0.2, 0.1}
   });
 
-  auto Q = conversions::DiagonalFromList<float64, 2>(
+  auto Q = DiagonalMatrix<float64, 2>::FromList(
     {0.1, 0.1}
   );
   // clang-format on
@@ -467,7 +467,7 @@ TEST(CovarianceMatrixFactored, positive_semi_definite_rank1Update__Success) // N
 {
   // Test that rank1Update operation preserves positive semi-definiteness
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
-  auto x   = conversions::VectorFromList<float64, 3>({1.0, 2.0, 3.0});
+  auto x   = Vector<float64, 3>::FromList({1.0, 2.0, 3.0});
 
   // Verify initial positive semi-definiteness
   auto initialFull = cov();
@@ -487,21 +487,21 @@ TEST(CovarianceMatrixFactored, positive_semi_definite_thornton__Success) // NOLI
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 4>();
 
   // clang-format off
-  auto Phi = conversions::SquareFromList<float64, 4, true>({
+  auto Phi = SquareMatrix<float64, 4, true>::FromList({
     {0.9, 0.05, 0.05, 0.05}, 
     {0.05, 0.9, 0.05, 0.05}, 
     {0.05, 0.05, 0.9, 0.05}, 
     {0.05, 0.05, 0.05, 0.9}
   });
 
-  auto G = conversions::MatrixFromList<float64, 4, 2, true>({
+  auto G = Matrix<float64, 4, 2, true>::FromList({
     {0.3, 0.1}, 
     {0.1, 0.3}, 
     {0.1, 0.1}, 
     {0.1, 0.1}
   });
 
-  auto Q = conversions::DiagonalFromList<float64, 2>(
+  auto Q = DiagonalMatrix<float64, 2>::FromList(
     {0.05, 0.05}
   );
   // clang-format on
@@ -525,13 +525,13 @@ TEST(CovarianceMatrixFactored, thornton_basic__Success) // NOLINT
 
   // clang-format off
   auto Phi = SquareMatrix<float64, 3, true>::Identity();
-  auto G   = conversions::MatrixFromList<float64, 3, 1, true>({
+  auto G   = Matrix<float64, 3, 1, true>::FromList({
     {0.5}, 
     {0.3}, 
     {0.2}
   });
 
-  auto Q = conversions::DiagonalFromList<float64, 1>(
+  auto Q = DiagonalMatrix<float64, 1>::FromList(
     {0.1}
   );
   // clang-format on
@@ -554,21 +554,21 @@ TEST(CovarianceMatrixFactored, thornton_with_process_noise__Success) // NOLINT
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float32, 4>();
 
   // clang-format off
-  auto Phi = conversions::SquareFromList<float32, 4, true>({
+  auto Phi = SquareMatrix<float32, 4, true>::FromList({
     {0.8, 0.1, 0.1, 0.0}, 
     {0.1, 0.8, 0.1, 0.0}, 
     {0.1, 0.1, 0.8, 0.0}, 
     {0.0, 0.0, 0.0, 1.0}
   });
 
-  auto G = conversions::MatrixFromList<float32, 4, 2, true>({
+  auto G = Matrix<float32, 4, 2, true>::FromList({
     {0.8, 0.1}, 
     {0.1, 0.8}, 
     {0.1, 0.1}, 
     {0.0, 0.0}
   });
 
-  auto Q = conversions::DiagonalFromList<float32, 2>(
+  auto Q = DiagonalMatrix<float32, 2>::FromList(
     {0.5, 0.5}
   );
   // clang-format on
@@ -587,19 +587,19 @@ TEST(CovarianceMatrixFactored, thornton_numerical_stability__Success) // NOLINT
   // Test Thornton update numerical stability with ill-conditioned matrix
   auto cov = createFactoredIllConditionedMatrix<float64, 3>();
   // clang-format off
-  auto Phi = conversions::SquareFromList<float64, 3, true>({
+  auto Phi = SquareMatrix<float64, 3, true>::FromList({
     {0.95, 0.01, 0.01}, 
     {0.01, 0.95, 0.01}, 
     {0.01, 0.01, 0.95}
   });
 
-  auto G = conversions::MatrixFromList<float64, 3, 1, true>({
+  auto G = Matrix<float64, 3, 1, true>::FromList({
     {0.1}, 
     {0.1}, 
     {0.1}
   });
 
-  auto Q = conversions::DiagonalFromList<float64, 1>(
+  auto Q = DiagonalMatrix<float64, 1>::FromList(
     {0.01}
   );
   // clang-format on
@@ -618,7 +618,7 @@ TEST(CovarianceMatrixFactored, numerical_stability_ill_conditioned__Success) // 
   // Test numerical stability with ill-conditioned matrix
   auto cov = createFactoredIllConditionedMatrix<float64, 4>();
   // clang-format off
-  auto A = conversions::SquareFromList<float64, 4, true>({
+  auto A = SquareMatrix<float64, 4, true>::FromList({
     {0.95, 0.01, 0.01, 0.01}, 
     {0.01, 0.95, 0.01, 0.01}, 
     {0.01, 0.01, 0.95, 0.01}, 

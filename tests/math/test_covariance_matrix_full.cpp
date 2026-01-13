@@ -98,7 +98,7 @@ TEST(CovarianceMatrixFull, apaT) // NOLINT
     { 3.186228227810577,  -1.262526372481200,   1.638799986245814,  -0.810174937419070},
     {-1.796274062161563,   0.223417952190492,  -0.810174937419070,   0.821337656508534}
   });
-  const auto A = conversions::SquareFromList<float64, 4, true>({
+  const auto A = SquareMatrix<float64, 4, true>::FromList({
     {6.240853754330984e-01,   3.581644763169872e-01,   5.385448223130755e-01,   6.122387805324014e-01},
     {9.666405567486658e-04,   9.261665823497265e-01,   5.262033279133882e-02,   4.022802305927367e-01},
     {4.208940256150708e-01,   9.768163860098072e-01,   3.480474524537769e-01,   9.884169020892678e-01},
@@ -135,7 +135,7 @@ TEST(CovarianceMatrixFull, apaT_const) // NOLINT
     { 3.186228227810577,  -1.262526372481200,   1.638799986245814,  -0.810174937419070},
     {-1.796274062161563,   0.223417952190492,  -0.810174937419070,   0.821337656508534}
   });
-  const auto A = conversions::SquareFromList<float64, 4, true>({
+  const auto A = SquareMatrix<float64, 4, true>::FromList({
     {6.240853754330984e-01,   3.581644763169872e-01,   5.385448223130755e-01,   6.122387805324014e-01},
     {9.666405567486658e-04,   9.261665823497265e-01,   5.262033279133882e-02,   4.022802305927367e-01},
     {4.208940256150708e-01,   9.768163860098072e-01,   3.480474524537769e-01,   9.884169020892678e-01},
@@ -172,7 +172,7 @@ TEST(CovarianceMatrixFull, apaT_equality)
     { 3.186228227810577,  -1.262526372481200,   1.638799986245814,  -0.810174937419070},
     {-1.796274062161563,   0.223417952190492,  -0.810174937419070,   0.821337656508534}
   });
-  const auto A = conversions::SquareFromList<float64, 4, true>({
+  const auto A = SquareMatrix<float64, 4, true>::FromList({
     {6.240853754330984e-01,   3.581644763169872e-01,   5.385448223130755e-01,   6.122387805324014e-01},
     {9.666405567486658e-04,   9.261665823497265e-01,   5.262033279133882e-02,   4.022802305927367e-01},
     {4.208940256150708e-01,   9.768163860098072e-01,   3.480474524537769e-01,   9.884169020892678e-01},
@@ -256,7 +256,7 @@ TEST(CovarianceMatrixFull, symmetry_preservation_apaT__Success) // NOLINT
 {
   // Test that apaT operation preserves symmetry
   auto cov = createSymmetricPositiveDefiniteMatrix<float64, 4>();
-  auto A = conversions::SquareFromList<float64, 4, true>({
+  auto A = SquareMatrix<float64, 4, true>::FromList({
     {0.9, 0.1, 0.2, 0.3},
     {0.1, 0.8, 0.1, 0.2},
     {0.2, 0.1, 0.7, 0.1},
@@ -292,7 +292,7 @@ TEST(CovarianceMatrixFull, positive_semi_definite_apaT__Success) // NOLINT
 {
   // Test that apaT operation preserves positive semi-definiteness
   auto cov = createSymmetricPositiveDefiniteMatrix<float64, 3>();
-  auto A = conversions::SquareFromList<float64, 3, true>({
+  auto A = SquareMatrix<float64, 3, true>::FromList({
     {0.9, 0.1, 0.2},
     {0.1, 0.8, 0.1},
     {0.2, 0.1, 0.7}
@@ -410,7 +410,7 @@ TEST(CovarianceMatrixFull, numerical_stability_ill_conditioned__Success) // NOLI
 {
   // Test numerical stability with ill-conditioned matrix
   auto illCond = createFactoredIllConditionedMatrix<float64, 4>();
-  auto A = conversions::SquareFromList<float64, 4, true>({
+  auto A = SquareMatrix<float64, 4, true>::FromList({
       {0.95, 0.01, 0.01, 0.01},
       {0.01, 0.95, 0.01, 0.01},
       {0.01, 0.01, 0.95, 0.01},
@@ -427,7 +427,7 @@ TEST(CovarianceMatrixFull, numerical_stability_ill_conditioned__Success) // NOLI
 TEST(CovarianceMatrixFull, ctor_from_Matrix_const_float3__Success) // NOLINT
 {
   // Create a symmetric positive definite matrix
-  auto matrix = conversions::SquareFromList<float32, 3, true>({{4, 1, 2}, {1, 5, 3}, {2, 3, 6}});
+  auto matrix = SquareMatrix<float32, 3, true>::FromList({{4, 1, 2}, {1, 5, 3}, {2, 3, 6}});
   
   // Test constructor
   auto cov = CovarianceMatrixFull<float32, 3>(matrix);
@@ -442,7 +442,7 @@ TEST(CovarianceMatrixFull, ctor_from_Matrix_const_float3__Success) // NOLINT
 TEST(CovarianceMatrixFull, ctor_from_Matrix_const_double4__Success) // NOLINT
 {
   // Create a symmetric positive definite matrix
-  auto matrix = conversions::SquareFromList<float64, 4, true>({{4, 1, 2, 1}, {1, 5, 3, 2}, {2, 3, 6, 3}, {1, 2, 3, 4}});
+  auto matrix = SquareMatrix<float64, 4, true>::FromList({{4, 1, 2, 1}, {1, 5, 3, 2}, {2, 3, 6, 3}, {1, 2, 3, 4}});
   
   // Test constructor
   auto cov = CovarianceMatrixFull<float64, 4>(matrix);
@@ -457,7 +457,7 @@ TEST(CovarianceMatrixFull, ctor_from_Matrix_const_double4__Success) // NOLINT
 TEST(CovarianceMatrixFull, ctor_from_Matrix_const_symmetry__Success) // NOLINT
 {
   // Create a symmetric matrix
-  auto matrix = conversions::SquareFromList<float32, 3, true>({{2, 1, 1}, {1, 3, 1}, {1, 1, 4}});
+  auto matrix = SquareMatrix<float32, 3, true>::FromList({{2, 1, 1}, {1, 3, 1}, {1, 1, 4}});
   
   // Test constructor
   auto cov = CovarianceMatrixFull<float32, 3>(matrix);
@@ -472,7 +472,7 @@ TEST(CovarianceMatrixFull, ctor_from_Matrix_const_symmetry__Success) // NOLINT
 TEST(CovarianceMatrixFull, ctor_from_Matrix_const_positive_definite__Success) // NOLINT
 {
   // Create a known positive definite matrix
-  auto matrix = conversions::SquareFromList<float64, 3, true>({{6, 2, 1}, {2, 5, 2}, {1, 2, 4}});
+  auto matrix = SquareMatrix<float64, 3, true>::FromList({{6, 2, 1}, {2, 5, 2}, {1, 2, 4}});
   
   // Test constructor
   auto cov = CovarianceMatrixFull<float64, 3>(matrix);
@@ -484,7 +484,7 @@ TEST(CovarianceMatrixFull, ctor_from_Matrix_const_positive_definite__Success) //
 TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_float3__Success) // NOLINT
 {
   // Create a symmetric positive definite square matrix
-  auto squareMat = conversions::SquareFromList<float32, 3, true>({{4, 1, 2}, {1, 5, 3}, {2, 3, 6}});
+  auto squareMat = SquareMatrix<float32, 3, true>::FromList({{4, 1, 2}, {1, 5, 3}, {2, 3, 6}});
   
   // Test constructor
   auto cov = CovarianceMatrixFull<float32, 3>(squareMat);
@@ -499,7 +499,7 @@ TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_float3__Success) // NOLI
 TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_double4__Success) // NOLINT
 {
   // Create a symmetric positive definite square matrix
-  auto squareMat = conversions::SquareFromList<float64, 4, true>({{4, 1, 2, 1}, {1, 5, 3, 2}, {2, 3, 6, 3}, {1, 2, 3, 4}});
+  auto squareMat = SquareMatrix<float64, 4, true>::FromList({{4, 1, 2, 1}, {1, 5, 3, 2}, {2, 3, 6, 3}, {1, 2, 3, 4}});
   
   // Test constructor
   auto cov = CovarianceMatrixFull<float64, 4>(squareMat);
@@ -514,7 +514,7 @@ TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_double4__Success) // NOL
 TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_symmetry__Success) // NOLINT
 {
   // Create a symmetric square matrix
-  auto squareMat = conversions::SquareFromList<float32, 3, true>({{3, 1, 1}, {1, 4, 1}, {1, 1, 5}});
+  auto squareMat = SquareMatrix<float32, 3, true>::FromList({{3, 1, 1}, {1, 4, 1}, {1, 1, 5}});
   
   // Test constructor
   auto cov = CovarianceMatrixFull<float32, 3>(squareMat);
@@ -529,7 +529,7 @@ TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_symmetry__Success) // NO
 TEST(CovarianceMatrixFull, ctor_from_SquareMatrix_const_positive_definite__Success) // NOLINT
 {
   // Create a known positive definite square matrix
-  auto squareMat = conversions::SquareFromList<float64, 3, true>({{5, 1, 1}, {1, 6, 2}, {1, 2, 5}});
+  auto squareMat = SquareMatrix<float64, 3, true>::FromList({{5, 1, 1}, {1, 6, 2}, {1, 2, 5}});
   
   // Test constructor
   auto cov = CovarianceMatrixFull<float64, 3>(squareMat);

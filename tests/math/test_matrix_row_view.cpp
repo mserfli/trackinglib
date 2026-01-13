@@ -8,13 +8,13 @@ TEST(MatrixRowView, mul_rhs) // NOLINT
 {
   // testing MatrixRowView * Matrix
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 4, 3, true>({
+  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9},
     {10,11,12},
   })};
-  const auto rhs{conversions::MatrixFromList<sint32, 3, 2, true>({
+  const auto rhs{Matrix<sint32, 3, 2, true>::FromList({
     {1, 2},
     {3, 4},
     {5, 6},
@@ -43,13 +43,13 @@ TEST(MatrixRowView, mul_rhs_ranged) // NOLINT
 {
   // testing MatrixRowView * Matrix
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 4, 3, true>({
+  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9},
     {10,11,12},
   })};
-  const auto rhs{conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto rhs{Matrix<sint32, 2, 2, true>::FromList({
     {1, 2},
     {3, 4},
   })};
@@ -77,7 +77,7 @@ TEST(MatrixRowView, dot_colView) // NOLINT
 {
   // testing MatrixRowView * MatrixColView
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 4, 3, true>({
+  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9},

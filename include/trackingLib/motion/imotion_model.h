@@ -113,7 +113,7 @@ TEST_REMOVE_PRIVATE:
   /// \return StateVec
   static auto StateVecFromList(const std::initializer_list<FloatType>& list) -> StateVec
   {
-    return tracking::math::conversions::VectorFromList<FloatType, Size>(list);
+    return tracking::math::Vector<FloatType, Size>::FromList(list);
   }
 
   /// \brief Create state covariance from initializer list

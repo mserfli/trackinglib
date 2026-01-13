@@ -145,7 +145,7 @@ TYPED_TEST(GTestConversions, TriangularFromSquare_Lower__Success) // NOLINT
 TEST(GTestConversionsSpecial, VectorFromMatrixColumnView__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<sint32, 3, 1, true>({
+  const auto mat = Matrix<sint32, 3, 1, true>::FromList({
       {10},
       {20},
       {30},
@@ -167,7 +167,7 @@ TEST(GTestConversionsSpecial, VectorFromMatrixColumnView__Success) // NOLINT
 
 TEST(GTestConversionsSpecial, MatrixFromVector__Success) // NOLINT
 {
-  const auto vec = conversions::VectorFromList<sint32, 3>({1, 2, 3});
+  const auto vec = Vector<sint32, 3>::FromList({1, 2, 3});
 
   // call UUT
   const auto result = conversions::MatrixFromVector(vec);
