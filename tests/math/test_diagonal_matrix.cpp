@@ -532,9 +532,9 @@ TEST(DiagonalMatrix, trace_1x1_Consistency__Success) // NOLINT
 {
   // Create a 1x1 diagonal matrix
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 1>::FromList({
+  const auto diagMat = DiagonalMatrix<float32, 1>::FromList(
     {5}
-  });
+  );
   // clang-format on
 
   // call UUT
