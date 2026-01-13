@@ -4,6 +4,7 @@
 #include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/errors.h"
 #include "math/linalg/matrix_io.h"
+#include <initializer_list>
 
 namespace tracking
 {
@@ -64,6 +65,27 @@ public:
   ///
   /// \note This operation modifies the matrix in-place and does not change its size
   void setIdentity();
+
+  /// \brief Creates a DiagonalMatrix from a flat initializer list
+  ///
+  /// This function creates a diagonal matrix where the diagonal elements are taken from
+  /// a flat initializer list. The list size must exactly match the matrix dimension.
+  ///
+  /// \param[in] list Initializer list containing the diagonal values
+  /// \return DiagonalMatrix with the specified diagonal elements
+  /// \note The list size must equal Size_, otherwise assertion fails
+  [[nodiscard]] static auto FromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix;
+
+  /// \brief Creates a DiagonalMatrix from the diagonal of a nested initializer list
+  ///
+  /// This function creates a diagonal matrix by extracting the diagonal elements from
+  /// a nested initializer list representing a full matrix. Only the diagonal elements
+  /// (where row index equals column index) are used.
+  ///
+  /// \param[in] list Nested initializer list representing a square matrix
+  /// \return DiagonalMatrix containing the diagonal elements from the input list
+  /// \note The outer list size must equal Size_, and each inner list size must equal Size_
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> DiagonalMatrix;
 
   /// \brief Set a diagonal block matrix at given position
   /// \tparam SrcSize_    Size_ of the source block

@@ -25,20 +25,20 @@ struct MatrixTypeExtractor
   template <typename... Args>
   static auto MatrixFromList(Args&&... args)
   {
-    return conversions::MatrixFromList<ValueType, Rows, Cols, IsRowMajor>(std::forward<Args>(args)...);
+    return Matrix<ValueType, Rows, Cols, IsRowMajor>::FromList(std::forward<Args>(args)...);
   }
 
   // Overload for initializer_list to handle the common case
   template <typename T>
   static auto MatrixFromList(std::initializer_list<std::initializer_list<T>> list)
   {
-    return conversions::MatrixFromList<ValueType, Rows, Cols, IsRowMajor>(list);
+    return Matrix<ValueType, Rows, Cols, IsRowMajor>::FromList(list);
   }
 
   // Overload for empty initializer list
   static auto MatrixFromList(std::initializer_list<std::initializer_list<ValueType>> list = {})
   {
-    return conversions::MatrixFromList<ValueType, Rows, Cols, IsRowMajor>(list);
+    return Matrix<ValueType, Rows, Cols, IsRowMajor>::FromList(list);
   }
 };
 
@@ -489,28 +489,28 @@ void GTestMatrix<MatrixStorageType>::SetUp()
 {
   constexpr bool IsRowMajor_ = MatrixStorageType::IsRowMajor;
   // clang-format off
-  _testIntMat = conversions::MatrixFromList<sint32, 2, 3, IsRowMajor_>({
+  _testIntMat = Matrix<sint32, 2, 3, IsRowMajor_>::FromList({
     {0, 1, 2,},
     {3, 4, 5,},
   });
-  _testIntMatOppositeMemLayout = conversions::MatrixFromList<sint32, 2, 3, !IsRowMajor_>({
+  _testIntMatOppositeMemLayout = Matrix<sint32, 2, 3, !IsRowMajor_>::FromList({
     {0, 1, 2,},
     {3, 4, 5,},
   });
-  _testIntMatMul = conversions::MatrixFromList<sint32, 3, 4, IsRowMajor_>({
+  _testIntMatMul = Matrix<sint32, 3, 4, IsRowMajor_>::FromList({
     {0,  1,  2,  3,},
     {4,  5,  6,  7,},
     {8,  9, 10, 11,},
   });
-  _testIntMatMulResult = conversions::MatrixFromList<sint32, 2, 4, IsRowMajor_>({
+  _testIntMatMulResult = Matrix<sint32, 2, 4, IsRowMajor_>::FromList({
     {20, 23, 26, 29,},
     {56, 68, 80, 92,},
   });
-  _testFloatMat = conversions::MatrixFromList<float32, 2, 3, IsRowMajor_>({
+  _testFloatMat = Matrix<float32, 2, 3, IsRowMajor_>::FromList({
     {0, 1, 2,},
     {3, 4, 5,},
   });
-  _testSquareIntMat = conversions::MatrixFromList<sint32, 3, 3, IsRowMajor_>({
+  _testSquareIntMat = Matrix<sint32, 3, 3, IsRowMajor_>::FromList({
     {0, 1, 2,},
     {3, 4, 5,},
     {6, 7, 8,},
@@ -550,6 +550,56 @@ TYPED_TEST(GTestMatrix, ctor_Ones__Success) // NOLINT
 
   const typename GTestMatrix<TypeParam>::IntMatType::Storage expStorage{1, 1, 1, 1, 1, 1};
   EXPECT_EQ(mat._data, expStorage);
+}
+
+TYPED_TEST(GTestMatrix, ctor_FromList__Success) // NOLINT
+{
+  // clang-format off
+  // call UUT
+  const auto result = Matrix<sint32, 2, 3, TypeParam::IsRowMajor>::FromList({
+    {1, 2, 3},
+    {4, 5, 6},
+  });
+  
+  auto resultExp = std::vector<sint32>{1, 2, 3, 4, 5, 6};
+  // clang-format on
+
+  size_t index = 0;
+  for (sint32 r = 0; r < result.Rows; ++r)
+  {
+    for (sint32 c = 0; c < result.Cols; ++c)
+    {
+      EXPECT_EQ(result.at_unsafe(r, c), resultExp[index]);
+      ++index;
+    }
+  }
+}
+
+TYPED_TEST(GTestMatrix, ctor_romList_InvalidRows__ThrowsRuntimeError) // NOLINT
+{
+  // clang-format off
+  auto throwFunc = []() {
+    // call UUT
+    return Matrix<sint32, 2, 3, TypeParam::IsRowMajor>::FromList({
+        {1, 2, 3},
+    });
+  };
+  // clang-format on
+  EXPECT_THROW(throwFunc(), std::runtime_error);
+}
+
+TYPED_TEST(GTestMatrix, ctor_FromList_InvalidCols__ThrowsRuntimeError) // NOLINT
+{
+  // clang-format off
+  auto throwFunc = []() {
+    // call UUT
+    return Matrix<sint32, 2, 3, TypeParam::IsRowMajor>::FromList({
+        {1, 2},
+        {4, 5},
+    });
+  };
+  // clang-format on
+  EXPECT_THROW(throwFunc(), std::runtime_error);
 }
 
 TYPED_TEST(GTestMatrix, at_unsafe__Success) // NOLINT
@@ -647,7 +697,7 @@ TYPED_TEST(GTestMatrix, op_plus_transpose_inplace__Success) // NOLINT
 // minmax() Tests
 TEST(GTestMatrixSpecial, minmax_AllValuesSame) // NOLINT
 {
-  const auto mat = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat = Matrix<sint32, 2, 2, true>::FromList({
       {5, 5},
       {5, 5},
   });
@@ -659,7 +709,7 @@ TEST(GTestMatrixSpecial, minmax_AllValuesSame) // NOLINT
 
 TEST(GTestMatrixSpecial, minmax_SingleElement) // NOLINT
 {
-  const auto mat = conversions::MatrixFromList<sint32, 1, 1, true>({
+  const auto mat = Matrix<sint32, 1, 1, true>::FromList({
       {42},
   });
 
@@ -673,7 +723,7 @@ TEST(GTestMatrixSpecial, minmax_ExtremeValues) // NOLINT
   constexpr sint32 INT_MIN_VAL = std::numeric_limits<sint32>::lowest();
   constexpr sint32 INT_MAX_VAL = std::numeric_limits<sint32>::max();
 
-  const auto mat = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat = Matrix<sint32, 2, 2, true>::FromList({
       {INT_MIN_VAL, 0},
       {0, INT_MAX_VAL},
   });
@@ -687,11 +737,11 @@ TEST(GTestMatrixSpecial, minmax_ExtremeValues) // NOLINT
 TEST(GTestMatrixSpecial, op_not_equal__DifferentMatrices) // NOLINT
 {
   // clang-format off
-  const auto mat1 = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat1 = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2},
       {3, 4},
   });
-  const auto mat2 = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat2 = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2}, {3, 5}, // Different element
   });
   // clang-format on
@@ -703,11 +753,11 @@ TEST(GTestMatrixSpecial, op_not_equal__DifferentMatrices) // NOLINT
 TEST(GTestMatrixSpecial, op_not_equal__SameMatrices) // NOLINT
 {
   // clang-format off
-  const auto mat1 = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat1 = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2},
       {3, 4},
   });
-  const auto mat2 = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat2 = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2},
       {3, 4},
   });
@@ -720,11 +770,11 @@ TEST(GTestMatrixSpecial, op_not_equal__SameMatrices) // NOLINT
 TEST(GTestMatrixSpecial, op_not_equal__DifferentValues) // NOLINT
 {
   // clang-format off
-  const auto mat1 = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat1 = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2},
       {3, 4},
   });
-  const auto mat2 = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat2 = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2}, {3, 5}, // Different element
   });
   // clang-format on
@@ -784,7 +834,7 @@ TEST(GTestMatrixSpecial, op_mul__SquareMatrices) // NOLINT
 TEST(GTestMatrixSpecial, op_mul__RowVectorTimesMatrix) // NOLINT
 {
   // clang-format off
-  const auto row      = conversions::MatrixFromList<sint32, 1, 3, true>({
+  const auto row      = Matrix<sint32, 1, 3, true>::FromList({
       {1, 2, 3},
   });
   // clang-format on
@@ -797,7 +847,7 @@ TEST(GTestMatrixSpecial, op_mul__RowVectorTimesMatrix) // NOLINT
 TEST(GTestMatrixSpecial, op_mul__MatrixTimesColumnVector) // NOLINT
 {
   // clang-format off
-  const auto col      = conversions::MatrixFromList<sint32, 3, 1, true>({
+  const auto col      = Matrix<sint32, 3, 1, true>::FromList({
       {5},
       {10},
       {15},
@@ -813,11 +863,11 @@ TEST(GTestMatrixSpecial, op_mul__MatrixTimesColumnVector) // NOLINT
 TEST(GTestMatrixSpecial, op_plus_equal__Self) // NOLINT
 {
   // clang-format off
-  auto       matA    = conversions::MatrixFromList<sint32, 2, 2, true>({
+  auto       matA    = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2},
       {3, 4},
   });
-  const auto expMatA = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto expMatA = Matrix<sint32, 2, 2, true>::FromList({
       {2, 4},
       {6, 8},
   });
@@ -831,7 +881,7 @@ TEST(GTestMatrixSpecial, op_minus_equal__Self) // NOLINT
 {
   using MatType = Matrix<sint32, 2, 2, true>;
   // clang-format off
-  auto       matA    = conversions::MatrixFromList<sint32, 2, 2, true>({
+  auto       matA    = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2},
       {3, 4},
   });
@@ -865,7 +915,7 @@ TEST(GTestMatrixSpecial, frobenius_norm__ZeroMatrix) // NOLINT
 TEST(GTestMatrixSpecial, frobenius_norm__SingleElement) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<float32, 1, 1, true>({
+  const auto mat = Matrix<float32, 1, 1, true>::FromList({
       {5.0F},
   });
   // clang-format on
@@ -877,7 +927,7 @@ TEST(GTestMatrixSpecial, frobenius_norm__SingleElement) // NOLINT
 TEST(GTestMatrixSpecial, frobenius_norm__ArbitraryMatrix) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<float32, 2, 2, true>({
+  const auto mat = Matrix<float32, 2, 2, true>::FromList({
       {3.0F, 4.0F},
       {0.0F, 0.0F},
   });
@@ -896,7 +946,7 @@ TEST(GTestMatrixSpecial, setBlock_CompileTime__Success) // NOLINT
 
   DstMatType dst = DstMatType::Zeros();
   // clang-format off
-  const SrcMatType src = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const SrcMatType src = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2},
       {3, 4},
   });
@@ -932,7 +982,7 @@ TEST(GTestMatrixSpecial, setBlock_Runtime__Success) // NOLINT
 
   DstMatType dst = DstMatType::Zeros();
   // clang-format off
-  const SrcMatType src = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const SrcMatType src = Matrix<sint32, 2, 2, true>::FromList({
       {1, 2},
       {3, 4},
   });
@@ -982,7 +1032,7 @@ TEST(GTestMatrixSpecial, op_minus_transpose_inplace_Square__Success) // NOLINT
 {
   using MatType = Matrix<sint32, 3, 3, true>;
   // clang-format off
-  MatType mat   = conversions::MatrixFromList<sint32, 3, 3, true>({
+  MatType mat   = Matrix<sint32, 3, 3, true>::FromList({
       {1, 2, 3},
       {4, 5, 6},
       {7, 8, 9},
@@ -996,7 +1046,7 @@ TEST(GTestMatrixSpecial, op_minus_transpose_inplace_Square__Success) // NOLINT
   mat -= mat.transpose();
 
   // clang-format off
-  const auto expected = conversions::MatrixFromList<sint32, 3, 3, true>({
+  const auto expected = Matrix<sint32, 3, 3, true>::FromList({
       {0, -2, -4},
       {2, 0, -2},
       {4, 2, 0},
@@ -1010,7 +1060,7 @@ TEST(GTestMatrixSpecial, op_plus_transpose_inplace_NonSquare_ShouldNotAlias) // 
 {
   using MatType = Matrix<sint32, 2, 3, true>;
   // clang-format off
-  const MatType mat   = conversions::MatrixFromList<sint32, 2, 3, true>({
+  const MatType mat   = Matrix<sint32, 2, 3, true>::FromList({
       {1, 2, 3},
       {4, 5, 6},
   });
@@ -1032,7 +1082,7 @@ TEST(GTestMatrixSpecial, op_plus_transpose_inplace_NonSquare_ShouldNotAlias) // 
 TEST(GTestMatrixSpecial, minmax_NegativeValues) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat = Matrix<sint32, 2, 2, true>::FromList({
       {-5, -1},
       {-10, -3},
   });
@@ -1046,7 +1096,7 @@ TEST(GTestMatrixSpecial, minmax_NegativeValues) // NOLINT
 TEST(GTestMatrixSpecial, minmax_MixedPositiveNegative) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<sint32, 2, 2, true>({
+  const auto mat = Matrix<sint32, 2, 2, true>::FromList({
       {-5, 10},
       {0, -3},
   });
@@ -1060,7 +1110,7 @@ TEST(GTestMatrixSpecial, minmax_MixedPositiveNegative) // NOLINT
 TEST(GTestMatrixSpecial, minmax_NonSquare) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<sint32, 2, 3, true>({
+  const auto mat = Matrix<sint32, 2, 3, true>::FromList({
       {1, 5, 3},
       {2, 0, 4},
   });
@@ -1075,11 +1125,11 @@ TEST(GTestMatrixSpecial, minmax_NonSquare) // NOLINT
 TEST(GTestMatrixSpecial, op_mul_NonSquare) // NOLINT
 {
   // clang-format off
-  const auto mat1 = conversions::MatrixFromList<sint32, 2, 3, true>({
+  const auto mat1 = Matrix<sint32, 2, 3, true>::FromList({
       {1, 2, 3},
       {4, 5, 6},
   });
-  const auto mat2 = conversions::MatrixFromList<sint32, 3, 4, true>({
+  const auto mat2 = Matrix<sint32, 3, 4, true>::FromList({
       {7, 8, 9, 10},
       {11, 12, 13, 14},
       {15, 16, 17, 18},
@@ -1090,7 +1140,7 @@ TEST(GTestMatrixSpecial, op_mul_NonSquare) // NOLINT
 
   // Manual calculation
   // clang-format off
-  const auto expected = conversions::MatrixFromList<sint32, 2, 4, true>({
+  const auto expected = Matrix<sint32, 2, 4, true>::FromList({
       {1 * 7 + 2 * 11 + 3 * 15, 1 * 8 + 2 * 12 + 3 * 16, 1 * 9 + 2 * 13 + 3 * 17, 1 * 10 + 2 * 14 + 3 * 18},
       {4 * 7 + 5 * 11 + 6 * 15, 4 * 8 + 5 * 12 + 6 * 16, 4 * 9 + 5 * 13 + 6 * 17, 4 * 10 + 5 * 14 + 6 * 18},
   });
@@ -1103,7 +1153,7 @@ TEST(GTestMatrixSpecial, op_mul_NonSquare) // NOLINT
 TEST(GTestMatrixSpecial, transpose_NonSquare_Chained) // NOLINT
 {
   // clang-format off
-  const auto mat = conversions::MatrixFromList<sint32, 2, 3, true>({
+  const auto mat = Matrix<sint32, 2, 3, true>::FromList({
       {1, 2, 3},
       {4, 5, 6},
   });
@@ -1128,7 +1178,7 @@ TEST(GTestMatrixSpecial, transpose_NonSquare_Chained) // NOLINT
 TEST(GTestMatrixSpecial, transpose_rvalue) // NOLINT
 {
   // clang-format off
-  auto mat      = conversions::MatrixFromList<sint32, 2, 3, true>({
+  auto mat      = Matrix<sint32, 2, 3, true>::FromList({
       {1, 2, 3},
       {4, 5, 6},
   });

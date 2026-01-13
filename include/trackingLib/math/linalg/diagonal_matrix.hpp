@@ -31,6 +31,40 @@ inline void DiagonalMatrix<ValueType_, Size_>::setIdentity()
 }
 
 template <typename ValueType_, sint32 Size_>
+inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix
+{
+  assert((list.size() == Size_) && "Mismatching size of intializer list");
+
+  DiagonalMatrix diag{};
+  // fill diagonal elements
+  sint32 idx = 0;
+  for (auto val : list)
+  {
+    diag.at_unsafe(idx++) = val;
+  }
+  return diag;
+}
+
+template <typename ValueType_, sint32 Size_>
+inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+    -> DiagonalMatrix
+{
+  assert(list.size() == Size_);
+  assert(list.begin()->size() == Size_);
+
+  DiagonalMatrix diag{};
+  // copy diagonal elements from list
+  sint32 idx = 0;
+  for (const auto& rowList : list)
+  {
+    assert((rowList.size() == Size_) && "Mismatching size of intializer list");
+    diag.at_unsafe(idx) = *(rowList.begin() + idx);
+    ++idx;
+  }
+  return diag;
+}
+
+template <typename ValueType_, sint32 Size_>
 template <sint32 SrcSize_, sint32 SrcCount_, sint32 SrcIdxBeg_, sint32 DstIdxBeg_>
 inline void DiagonalMatrix<ValueType_, Size_>::setBlock(const DiagonalMatrix<ValueType_, SrcSize_>& block)
 {

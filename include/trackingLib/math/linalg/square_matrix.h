@@ -4,7 +4,8 @@
 #include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/errors.h" // IWYU pragma: keep
 #include "math/linalg/matrix.h" // IWYU pragma: keep
-#include <utility>              // std::pair
+#include <initializer_list>
+#include <utility> // std::pair
 
 namespace tracking
 {
@@ -17,7 +18,7 @@ class TriangularMatrix;
 
 // forward declaration to prevent cyclic includes
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL;
+class DiagonalMatrix;
 
 // TODO(matthias): add interface contract
 
@@ -82,6 +83,21 @@ public:
   ///
   /// \note The identity matrix I satisfies I * A = A * I = A for any square matrix A
   [[nodiscard]] static auto Identity() -> SquareMatrix;
+
+  /// \brief Creates a SquareMatrix from a nested initializer list
+  ///
+  /// This function constructs a SquareMatrix from a nested initializer list where each inner list
+  /// represents a row of the matrix. The dimensions must be square and match the template parameter.
+  ///
+  /// \tparam ValueType_ The value type of matrix elements
+  /// \tparam Size_ The dimension of the square matrix
+  /// \tparam IsRowMajor_ The storage layout (true for row-major, false for column-major)
+  /// \param[in] list Nested initializer list in logical row-major format
+  /// \return SquareMatrix instance initialized with the provided values
+  /// \throws std::runtime_error If the list dimensions don't match the square matrix size
+  /// \see SquareFromDiagonal() for creating from diagonal matrices
+  /// \see MatrixFromList() for general matrix creation
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix;
 
   /// \brief Set the matrix to the identity matrix in-place.
   ///
