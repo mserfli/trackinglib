@@ -56,6 +56,9 @@ int main() {
         # Link with trackingLib
         target_link_libraries(${target_name} PUBLIC trackingLib::trackingLib)
         
+        # Register test with CTest
+        add_test(NAME ${target_name} COMMAND ${target_name})
+        
         # Add to a custom target for easy building
         if(NOT TARGET header_tests)
             add_custom_target(header_tests)
