@@ -199,9 +199,11 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matr
     // When both matrices share the same underlying data and are square Matrices (e.g., transposed view),
     // we must make a copy to avoid read-after-write corruption.
     // Example: a += a.transpose() would overwrite a[0][1] before reading it as a.transpose()[1][0]
-    auto&& tmp = ((this->data().data() == other.data().data()) && (Rows_ == Cols_))
+    // clang-format off
+    const auto&& tmp = ((*this==other) && (Rows_ == Cols_)) 
                      ? Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>{other}
                      : std::move(other);
+    // clang-format on
     for (auto row = 0; row < Rows; ++row)
     {
       for (auto col = 0; col < Cols; ++col)
