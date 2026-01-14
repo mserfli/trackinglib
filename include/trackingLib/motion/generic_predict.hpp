@@ -24,7 +24,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(con
   PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
   auto& underlying = static_cast<MotionModel&>(*this);
-  auto& P          = underlying.getCov();
+  auto& P          = underlying.getCovForInternalUse();
   //  apply ego motion compensation on P
   P = typename MotionModel::StateCov(typename MotionModel::StateCov::SquareMatrix{
       (data.Go * P * data.Go.transpose()) + (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose())});
@@ -66,7 +66,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(con
   PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
   auto& underlying = static_cast<MotionModel&>(*this);
-  auto& Y          = underlying.getCov();
+  auto& Y          = underlying.getCovForInternalUse();
 #if 0 // TODO(matthias): ego motion compensation is quite complicated here, maybe neglect influence of Ge*Pe*Ge'
     // reconstruct P which might cause issues because P becomes extremly large
     static auto postP = cov.inverse();

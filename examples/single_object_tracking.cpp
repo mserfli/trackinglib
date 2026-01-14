@@ -1,9 +1,9 @@
-#include "trackingLib/env/ego_motion.hpp"
-#include "trackingLib/filter/information_filter.hpp"
-#include "trackingLib/math/linalg/matrix_io.h"
-#include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
+#include "trackingLib/env/ego_motion.hpp"            // IWYU pragma: keep
+#include "trackingLib/filter/information_filter.hpp" // IWYU pragma: keep
+#include "trackingLib/filter/kalman_filter.hpp"      // IWYU pragma: keep
+#include "trackingLib/math/linalg/matrix_io.h"       // IWYU pragma: keep
+#include "trackingLib/motion/motion_model_cv.hpp"    // IWYU pragma: keep
 
-#include <iomanip>
 #include <iostream>
 
 using namespace tracking;
@@ -13,8 +13,9 @@ using FloatType = float64;
 
 int main()
 {
-  // Create an InformationFilter instance
+  // Create an Filter instance
   filter::InformationFilter<FloatType> informationFilter;
+  filter::KalmanFilter<FloatType>      kalmanFilter;
 
   // Create a MotionModelCV with full covariance matrix
   // State: [X, VX, Y, VY] - 4D state for constant velocity model
@@ -56,11 +57,13 @@ int main()
   const FloatType dt       = static_cast<FloatType>(0.1); // time step of 0.1 seconds
   const sint32    numSteps = 20;                          // simulate 20 time steps (2 seconds total)
 
-  std::cout << "Single Object Tracking Example with InformationFilter" << std::endl;
-  std::cout << "=====================================================" << std::endl;
+  std::cout << "Single Object Tracking Example" << std::endl;
+  std::cout << "with combined Information and Kalman Filter usage" << std::endl;
+  std::cout << "=================================================" << std::endl;
   std::cout << "Scenario: Diagonal crossing object (x=30,y=10, vx=10, vy=2.5)" << std::endl;
   std::cout << "Ego vehicle: Stationary (no motion)" << std::endl;
   std::cout << "Filter: InformationFilter (suitable for high initial uncertainty)" << std::endl;
+  std::cout << "Filter: KalmanFilter (after uncertainty has been initialized)" << std::endl;
   std::cout << "Motion Model: Constant Velocity (CV)" << std::endl;
   std::cout << std::endl;
 
@@ -71,6 +74,7 @@ int main()
   std::cout << static_cast<const MM&>(motionModel).getCov() << std::endl;
   std::cout << std::endl;
 
+  std::string filter_cov_str = "  Information Matrix (Y):";
   // Simulation loop
   for (sint32 step = 0; step < numSteps; ++step)
   {
@@ -80,16 +84,28 @@ int main()
     env::EgoMotion<FloatType> egoMotion(motionParams, geometry, dt);
 
     std::cout << "Step " << step << " (t=" << currentTime << "s):" << std::endl;
-    std::cout << "  Current State: (" << motionModel.getX() << ", " << motionModel.getY() << ") " << "v=(" << motionModel.getVx()
-              << ", " << motionModel.getVy() << ")" << std::endl;
 
-    // Predict the next state using InformationFilter
-    motionModel.predict(dt, informationFilter, egoMotion);
+    // Predict the next state
+    if(step < numSteps-5)
+    {
+      motionModel.predict(dt, informationFilter, egoMotion);
+    }
+    else if (step == numSteps-5)
+    {
+      std::cout << "!!! Switching from InformationFilter to KalmanFilter !!!\n" << std::endl;
+      filter_cov_str = "  Covariance Matrix (P):";
+      motionModel.invertCov();
+      motionModel.predict(dt, kalmanFilter, egoMotion);
+    }
+    else 
+    {
+      motionModel.predict(dt, kalmanFilter, egoMotion);
+    }
 
     std::cout << "  Predicted State: (" << motionModel.getX() << ", " << motionModel.getY() << ") " << "v=("
               << motionModel.getVx() << ", " << motionModel.getVy() << ")" << std::endl;
 
-    std::cout << "  Information Matrix (Y):" << std::endl;
+    std::cout << filter_cov_str << std::endl;
     std::cout << static_cast<const MM&>(motionModel).getCov() << std::endl;
     std::cout << std::endl;
   }

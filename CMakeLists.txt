@@ -119,7 +119,7 @@ target_include_directories(
 set(CMAKE_VERIFY_INTERFACE_HEADER_SETS ON)
 
 # Create header test applications (optional)
-option(BUILD_HEADER_TESTS "Build header test applications" ON)
+option(BUILD_HEADER_TESTS "Build header test applications" OFF)
 if(BUILD_HEADER_TESTS)
     create_header_test_applications()
 endif()
@@ -127,7 +127,7 @@ endif()
 add_subdirectory(tests)
 
 # Define an option to build examples
-option(BUILD_EXAMPLES "Build examples" OFF)
+option(BUILD_EXAMPLES "Build examples" ON)
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()

@@ -6,7 +6,6 @@
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
 #include "math/linalg/conversions/covariance_matrix_conversions.hpp"
-#include "math/linalg/conversions/vector_conversions.hpp"
 #include "math/linalg/covariance_matrix_factored.h"
 #include "motion/state_mem.h"
 #include <type_traits>
@@ -15,6 +14,12 @@ namespace tracking
 {
 namespace motion
 {
+namespace generic
+{
+
+template <typename T, typename FloatType_, template <typename, sint32> class CovarianceMatrixType_>
+class Predict; // Forward declaration only
+} // namespace generic
 
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
@@ -75,39 +80,6 @@ public:
   ExtendedMotionModel()          = default;
   virtual ~ExtendedMotionModel() = default;
 
-  /// \brief Read access to x position
-  /// \return FloatType
-  auto getX() const -> FloatType final { return this->operator[](MotionModel::X); }
-
-  /// \brief Read access to y position
-  /// \return FloatType
-  auto getY() const -> FloatType final { return this->operator[](MotionModel::Y); }
-
-  // clang-format off
-TEST_REMOVE_PROTECTED:
-  ; // workaround to keep following idententation
-  // clang-format on
-
-  // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
-  ExtendedMotionModel(const ExtendedMotionModel& other)                    = default;
-  ExtendedMotionModel(ExtendedMotionModel&&) noexcept                      = default;
-  auto operator=(const ExtendedMotionModel& other) -> ExtendedMotionModel& = default;
-  auto operator=(ExtendedMotionModel&&) noexcept -> ExtendedMotionModel&   = default;
-
-  // clang-format off
-TEST_REMOVE_PRIVATE:
-  ; // workaround to keep following idententation
-  // clang-format on
-
-  /// \brief Testing: Construct a new Extended Motion Model object
-  /// \param[in] vec
-  /// \param[in] cov
-  explicit ExtendedMotionModel(const StateVec& vec, const StateCov& cov)
-      : IMotionModel<FloatType>{}
-      , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}
-  {
-  }
-
   /// \brief Create state vector from initializer list
   /// \param[in] list  Initializer list with state values
   /// \return StateVec
@@ -142,6 +114,37 @@ TEST_REMOVE_PRIVATE:
     auto vec = StateVecFromList(vecList);
     auto cov = StateCovFromList(covList);
     return MotionModel{vec, cov};
+  }
+
+  /// \brief Read access to x position
+  /// \return FloatType
+  auto getX() const -> FloatType final { return this->operator[](MotionModel::X); }
+
+  /// \brief Read access to y position
+  /// \return FloatType
+  auto getY() const -> FloatType final { return this->operator[](MotionModel::Y); }
+
+  /// \brief Inverts the state covariance matrix into information form and vice versa
+  void invertCov() { this->getCov().inverse(); }
+
+  // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround to keep following idententation
+  // clang-format on
+
+  // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
+  ExtendedMotionModel(const ExtendedMotionModel& other)                    = default;
+  ExtendedMotionModel(ExtendedMotionModel&&) noexcept                      = default;
+  auto operator=(const ExtendedMotionModel& other) -> ExtendedMotionModel& = default;
+  auto operator=(ExtendedMotionModel&&) noexcept -> ExtendedMotionModel&   = default;
+
+  /// \brief Testing: Construct a new Extended Motion Model object
+  /// \param[in] vec
+  /// \param[in] cov
+  explicit ExtendedMotionModel(const StateVec& vec, const StateCov& cov)
+      : IMotionModel<FloatType>{}
+      , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}
+  {
   }
 };
 

@@ -19,6 +19,7 @@ inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expe
   if (retVal.has_value())
   {
     const auto& L = *retVal;
+    // A * Ainv = eye(n,n) with A=L*L' from Cholesky decomposition
     // L*(L'*Ainv) = eye(n,n)
     // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
     const auto u = L.solve(CovarianceMatrixFull::Identity());

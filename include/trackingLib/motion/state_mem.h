@@ -43,6 +43,11 @@ public:
   /// \return const StateCov&
   auto getCov() const -> ConstStateCov& { return _cov; }
 
+  /// \brief Read/Write access to state covariance matrix
+  /// \return StateCov&
+  /// \note Only for INTERNAL usage! Required in generic::Predict<..>::run().
+  auto getCovForInternalUse() -> StateCov& { return _cov; }
+
   /// \brief Read access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return const FloatType&
@@ -58,6 +63,15 @@ public:
 TEST_REMOVE_PROTECTED:
   ; // workaround for correct indentation
   // clang-format on
+
+  /// \brief Construct a new State Mem object
+  /// \param[in] vec
+  /// \param[in] cov
+  explicit StateMem(const StateVec& vec, const StateCov& cov)
+      : _vec{vec}
+      , _cov{cov}
+  {
+  }
 
   /// \brief Write access to full state vector
   /// \return const StateVec&
@@ -76,15 +90,6 @@ TEST_REMOVE_PROTECTED:
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
-
-  /// \brief Testing: Construct a new State Mem object
-  /// \param[in] vec
-  /// \param[in] cov
-  explicit StateMem(const StateVec& vec, const StateCov& cov)
-      : _vec{vec}
-      , _cov{cov}
-  {
-  }
 
   /// \brief State vector
   StateVec _vec{StateVec::Zeros()};
