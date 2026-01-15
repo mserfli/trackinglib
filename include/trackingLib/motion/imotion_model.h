@@ -7,6 +7,7 @@
 #include "filter/kalman_filter.h"
 #include "math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "math/linalg/covariance_matrix_factored.h"
+#include "math/linalg/errors.h"
 #include "motion/state_mem.h"
 #include <type_traits>
 
@@ -125,7 +126,7 @@ public:
   auto getY() const -> FloatType final { return this->operator[](MotionModel::Y); }
 
   /// \brief Inverts the state covariance matrix into information form and vice versa
-  void invertCov() { this->getCov().inverse(); }
+  auto invertCov() -> tl::expected<void, math::Errors>;
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
@@ -145,8 +146,28 @@ TEST_REMOVE_PROTECTED:
       : IMotionModel<FloatType>{}
       , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}
   {
+    assert(cov.determinant() > 0);
   }
 };
+
+template <typename MotionModel,
+          template <typename FloatType, sint32 Size>
+          class CovarianceMatrixType,
+          typename FloatType,
+          sint32 Size>
+auto ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>::invertCov() -> tl::expected<void, math::Errors>
+{
+  auto&& res = this->getCov().inverse();
+  if (res.has_value())
+  {
+    this->getCovForInternalUse() = res.value();
+    return {};
+  }
+  else
+  {
+    return tl::unexpected<math::Errors>{res.error()};
+  }
+}
 
 } // namespace motion
 } // namespace tracking

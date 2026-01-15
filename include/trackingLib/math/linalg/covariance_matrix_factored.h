@@ -108,6 +108,16 @@ public:
   /// \return compose_type
   auto operator()() const -> compose_type;
 
+  /// \brief Calculate the determinant of the covariance matrix.
+  ///
+  /// Computes the determinant as the product of the diagonal elements.
+  ///     det(cov) = det(U)*det(D)*det(U') = det(D)
+  ///
+  /// \return ValueType_ The determinant of the matrix
+  /// \note Time complexity: O(n) where n is the matrix dimension
+  /// \note For singular matrices, the determinant will be zero or very close to zero
+  auto determinant() const -> value_type { return _d.determinant(); }
+
   /// \brief Compute inverse in factored form
   ///
   /// Calculates the inverse of the covariance matrix while maintaining
@@ -124,12 +134,11 @@ public:
   /// \brief Compute inverse as full covariance matrix
   ///
   /// Calculates the inverse and returns it as a full covariance matrix.
-  /// This composes the UDU factorization into a full matrix before inversion.
+  /// This composes the inverse of UDU factorization into a full matrix.
   ///
   /// \return Full covariance matrix containing the inverse
   ///
   /// \note Time complexity: O(n^3) where n = Size_
-  /// \note Less numerically stable than factored inverse() for ill-conditioned matrices
   auto composed_inverse() const -> compose_type;
 
   /// \brief Compute A*P*A^T in-place (factored covariance propagation)

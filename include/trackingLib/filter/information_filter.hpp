@@ -36,7 +36,12 @@ void InformationFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull
       math::SquareMatrix<FloatType_, DimX_>(math::SquareMatrix<FloatType_, DimX_>::Identity() + M * (G * Q * G.transpose()));
   math::SquareMatrix cov = H.qrSolve(M);
   cov.symmetrize();
-  Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(cov)};
+
+  // prevent destroying the Information matrix, e.g. removing information from a zero Y matrix (no information)
+  if (cov.isPositiveSemiDefinite())
+  {
+    Y = math::CovarianceMatrixFull<FloatType_, DimX_>{std::move(cov)};
+  }
 }
 
 template <typename FloatType_>

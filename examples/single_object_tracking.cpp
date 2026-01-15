@@ -9,7 +9,7 @@
 using namespace tracking;
 
 #define CovarianceMatrixType math::CovarianceMatrixFull
-using FloatType = float32;
+using FloatType = float64;
 
 int main()
 {
@@ -28,10 +28,10 @@ int main()
   auto motionModel = MM::FromLists(
     {30.0, 10.0, 10.0, 2.5}, // State vector: [X, VX, Y, VY]
     {
-      {0.01, 0.0, 0.0, 0.0},  // Information matrix Y (low confidence)
-      {0.0, 0.01, 0.0, 0.0},
-      {0.0, 0.0, 0.01, 0.0},
-      {0.0, 0.0, 0.0, 0.01}
+      {0.001, 0.0, 0.0, 0.0},  // Information matrix Y (low confidence)
+      {0.0, 0.001, 0.0, 0.0},
+      {0.0, 0.0, 0.001, 0.0},
+      {0.0, 0.0, 0.0, 0.001}
   });
   // clang-format off
 
@@ -75,6 +75,7 @@ int main()
   std::cout << std::endl;
 
   std::string filter_cov_str = "  Information Matrix (Y):";
+  bool useKalman = false;
   // Simulation loop
   for (sint32 step = 0; step < numSteps; ++step)
   {
@@ -85,21 +86,21 @@ int main()
 
     std::cout << "Step " << step << " (t=" << currentTime << "s):" << std::endl;
 
-    // Predict the next state
-    if(step < numSteps-5)
+    if(useKalman)
     {
+      motionModel.predict(dt, kalmanFilter, egoMotion);
+    }
+    else {
+      // accumulate Information
       motionModel.predict(dt, informationFilter, egoMotion);
-    }
-    else if (step == numSteps-5)
-    {
-      std::cout << "!!! Switching from InformationFilter to KalmanFilter !!!\n" << std::endl;
-      filter_cov_str = "  Covariance Matrix (P):";
-      motionModel.invertCov();
-      motionModel.predict(dt, kalmanFilter, egoMotion);
-    }
-    else 
-    {
-      motionModel.predict(dt, kalmanFilter, egoMotion);
+
+      if((static_cast<const MM&>(motionModel).getCov().determinant() > 1e-6) && (motionModel.invertCov().has_value()))
+      {
+        // volume of information matrix was big enough and covariance transformation succeeded
+        std::cout << "!!! Switching from InformationFilter to KalmanFilter !!!\n" << std::endl;
+        filter_cov_str = "  Covariance Matrix (P):";
+        useKalman = true;
+      }
     }
 
     std::cout << "  Predicted State: (" << motionModel.getX() << ", " << motionModel.getY() << ") " << "v=("

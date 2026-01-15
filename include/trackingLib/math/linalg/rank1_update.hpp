@@ -106,9 +106,13 @@ inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<Fl
     c_               = std::max(1 - (p.transpose() * (dinv * p)).at_unsafe(0, 0), std::numeric_limits<FloatType_>::epsilon());
     for (auto j = Size_ - 1; j >= 0; --j)
     {
-      dj_            = d.at_unsafe(j);
-      c              = c_ + pow<2>(p.at_unsafe(j)) / dj_;
+      dj_ = d.at_unsafe(j);
+      c   = c_ + pow<2>(p.at_unsafe(j)) / dj_;
+
+      // update d, but ensure PSD
       d.at_unsafe(j) = dj_ * c_ / c;
+      d.at_unsafe(j) = std::max(d.at_unsafe(j), std::numeric_limits<FloatType_>::epsilon());
+
       beta           = -p.at_unsafe(j) / (dj_ * c_);
       x.at_unsafe(j) = p.at_unsafe(j);
       for (auto r = j + 1; r < Size_; ++r)

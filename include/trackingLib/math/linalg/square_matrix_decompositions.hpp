@@ -88,9 +88,9 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
     -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>
 {
-  if (isSymmetric())
+  if (hasStrictlyPositiveDiagonalElems())
   {
-    if (hasStrictlyPositiveDiagonalElems())
+    if (isSymmetric())
     {
       TriangularMatrix<ValueType_, Size_, true, IsRowMajor_> L{};
       for (auto j = 0; j < Size_; ++j)
@@ -114,9 +114,9 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
       }
       return std::move(L);
     }
-    return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
+    return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
   }
-  return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
+  return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
 }
 
 // LDLT decomposition
