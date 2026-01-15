@@ -9,14 +9,14 @@ on:
       - main
 
 jobs:
-  verify-headers:
+  verify-self-contained-headers:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y build-essential cmake doxygen graphviz lcov
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake
 
     - name: Configure with CMake
       run: cmake -S . -B build -DCMAKE_CXX_COMPILER=g++ -DCMAKE_CXX_STANDARD=17 -DCMAKE_BUILD_TYPE=Debug -DBUILD_HEADER_TESTS=ON
@@ -26,6 +26,45 @@ jobs:
     
     - name: Run header tests
       run: ctest --test-dir build -R "header_test_" --output-on-failure
+
+  verify-class-contracts:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+
+    - name: Configure with CMake
+      run: cmake -S . -B build -DCMAKE_CXX_COMPILER=g++ -DCMAKE_CXX_STANDARD=20 -DCMAKE_BUILD_TYPE=Debug
+
+    - name: Build with CMake
+      run: cmake --build build
+
+  doxygen-gen:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake doxygen graphviz lcov
+
+    - name: Build doxgen doc
+      run: doxygen .
+
+  coverage-gen:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake doxygen graphviz lcov
+
+    - name: Build coverage report
+      run: report_coverage.sh
 
   build-and-test:
     runs-on: ubuntu-latest
