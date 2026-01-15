@@ -41,7 +41,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run
   PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
   auto& underlying = static_cast<MotionModel&>(*this);
-  auto& P          = underlying.getCov();
+  auto& P          = underlying.getCovForInternalUse();
   // assert(!P.isInverse() && "Covariance may not represent an inverse covariance!");
 
   static auto AGo = typename MotionModel::StateMatrix{data.A * data.Go};
@@ -90,7 +90,7 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run
   PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
 
   auto& underlying = static_cast<MotionModel&>(*this);
-  auto& Y          = underlying.getCov();
+  auto& Y          = underlying.getCovForInternalUse();
 
   static auto AGo = typename MotionModel::StateMatrix{data.A * data.Go};
 

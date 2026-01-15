@@ -9,7 +9,7 @@
 using namespace tracking;
 
 #define CovarianceMatrixType math::CovarianceMatrixFull
-using FloatType = float64;
+using FloatType = float32;
 
 int main()
 {
@@ -71,7 +71,7 @@ int main()
   std::cout << "  Position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << std::endl;
   std::cout << "  Velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << std::endl;
   std::cout << "  Initial Information Matrix (Y):" << std::endl;
-  std::cout << static_cast<const MM&>(motionModel).getCov() << std::endl;
+  std::cout << static_cast<const MM&>(motionModel).getCov()() << std::endl;
   std::cout << std::endl;
 
   std::string filter_cov_str = "  Information Matrix (Y):";
@@ -106,7 +106,7 @@ int main()
               << motionModel.getVx() << ", " << motionModel.getVy() << ")" << std::endl;
 
     std::cout << filter_cov_str << std::endl;
-    std::cout << static_cast<const MM&>(motionModel).getCov() << std::endl;
+    std::cout << static_cast<const MM&>(motionModel).getCov()() << std::endl;
     std::cout << std::endl;
   }
 
