@@ -64,7 +64,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y build-essential cmake doxygen graphviz lcov
 
     - name: Build coverage report
-      run: report_coverage.sh
+      run: ./report_coverage.sh
 
   build-and-test:
     runs-on: ubuntu-latest
