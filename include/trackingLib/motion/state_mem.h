@@ -51,13 +51,13 @@ public:
   /// \brief Read access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return const FloatType&
-  auto operator[](const sint32 idx) const -> FloatType_ { return _vec.at_unsafe(idx); }
+  auto operator[](const sint32 idx) const -> value_type { return _vec.at_unsafe(idx); }
 
   /// \brief Read access to indexed element of the state covariance matrix
   /// \param[in,out] row  Row index in the state covariance matrix
   /// \param[in,out] col  Col index in the state covariance matrix
   /// \return FloatType
-  auto operator()(const sint32 row, const sint32 col) const -> FloatType_ { return _cov.at_unsafe(row, col); }
+  auto operator()(const sint32 row, const sint32 col) const -> value_type { return _cov.at_unsafe(row, col); }
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
@@ -84,7 +84,7 @@ TEST_REMOVE_PROTECTED:
   /// \brief Write access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return FloatType&
-  auto operator[](const sint32 idx) -> FloatType_& { return _vec.at_unsafe(idx); }
+  auto operator[](const sint32 idx) -> value_type& { return _vec.at_unsafe(idx); }
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
