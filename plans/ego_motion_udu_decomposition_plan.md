@@ -43,9 +43,9 @@ Where:
 - `J` = Jacobian matrix (full rank for valid motion)
 - `P` = Resulting covariance matrix (positive definite)
 
-## Implementation Phases
+## Implementation Workflow
 
-### Phase 0: Baseline Testing (NEW - CRITICAL FIRST STEP)
+### Step 1: Baseline Testing
 
 **Objective:** Establish comprehensive baseline tests before any refactoring to ensure numerical equivalence after changes.
 
@@ -140,91 +140,20 @@ TEST_F(EgoMotionTest, CircularMotionDisplacement__Success) {
 }
 ```
 
-**Reference Values:**
-- Document expected displacement and covariance values in test comments
-- Include mathematical derivation references
-- Store reference matrices for regression testing
-- Add test cases covering the transition between linear and circular motion
-
 **Files to Create:**
 - `tests/motion/test_ego_motion.cpp` - Main test file
 - `tests/motion/reference/ego_motion_reference_values.h` - Reference values header
 
-**Success Criteria:**
-- All baseline tests pass with current implementation
-- Reference values documented and verified
-- Test coverage includes linear, circular, and edge cases
-- Covariance matrix properties validated (symmetry, positive definiteness)
+### Step 2: Refactored Architecture
 
-### Phase 1: Infrastructure Preparation
-
-**Tasks:**
-- [ ] Create template parameter constraints for CovarianceMatrixType
-- [ ] Add type traits to detect covariance matrix capabilities
-- [ ] Update build system for new template instantiations
-- [ ] Add comprehensive test infrastructure
-
-**Files to Modify:**
-- `include/trackingLib/env/ego_motion.h` - Add template parameters
-- `include/trackingLib/env/ego_motion.hpp` - Update implementation
-- `tests/motion/test_ego_motion.cpp` - Add test cases
-- `CMakeLists.txt` - Add new test targets
-
-### Phase 2: Templatized EgoMotion Class
-
-**Tasks:**
-- [ ] Convert EgoMotion to template class with CovarianceMatrixType parameter
-- [ ] Update Displacement structure to use templatized covariance
-- [ ] Implement type-specific displacement calculation methods
-- [ ] Add SFINAE or concept constraints for template parameters
-
-**Implementation Details:**
-
-```cpp
-// Updated EgoMotion class
-template <template <typename, sint32> class CovarianceMatrixType, typename FloatType = float32>
-class EgoMotion
-{
-public:
-    using DisplacementCov = CovarianceMatrixType<FloatType, DS_NUM_VARIABLES>;
-    
-    struct Displacement
-    {
-        DisplacementVec vec{};
-        DisplacementCov cov{DisplacementCov::Identity()};
-        FloatType sinDeltaPsi{0.0};
-        FloatType cosDeltaPsi{1.0};
-    };
-    
-    // Constructor and existing interface
-    // ...
-    
-    // Updated displacement calculation
-    void calcDisplacement()
-    {
-        if (isLinearMotion())
-        {
-            calcLinearMotionDisplacement(_displacementCog, _motion, _dt);
-        }
-        else
-        {
-            calcCircularMotionDisplacement(_displacementCog, _motion, _dt);
-        }
-    }
-};
-```
-
-### Phase 3: Refactored Implementation (Updated)
+**Objective:** Create clean separation between Jacobian calculation and covariance computation.
 
 **Tasks:**
 - [ ] Implement `calcLinearMotionJacobian()` for linear motion case
 - [ ] Implement `calcCircularMotionJacobian()` for circular motion case
 - [ ] Implement `calcDisplacementVector()` for common displacement calculation
-- [ ] Implement `calcDisplacementCovariance()` with template specialization
-- [ ] Add comprehensive unit tests for Jacobian methods
-- [ ] Validate numerical equivalence between approaches
-- [ ] Ensure proper positive definite initialization
-- [ ] Add numerical stability checks and assertions
+- [ ] Implement `calcDisplacementCovariance()` with simplified UDU approach
+- [ ] Update EgoMotion class to use refactored methods
 
 **Refactored Architecture:**
 
@@ -245,20 +174,20 @@ public:
         // Calculate covariance using appropriate method based on motion type
         if (isLinearMotion())
         {
-            calcDisplacementCovariance(_displacementCog,
-                                     calcLinearMotionJacobian(_motion, _dt),
+            calcDisplacementCovariance(_displacementCog, 
+                                     calcLinearMotionJacobian(_motion, _dt), 
                                      _motion);
         }
         else
         {
-            calcDisplacementCovariance(_displacementCog,
-                                     calcCircularMotionJacobian(_motion, _dt),
+            calcDisplacementCovariance(_displacementCog, 
+                                     calcCircularMotionJacobian(_motion, _dt), 
                                      _motion);
         }
     }
     
     // Static methods for Jacobian calculation (pure functions)
-    static auto calcLinearMotionJacobian(const InertialMotion& motion, FloatType dt)
+    static auto calcLinearMotionJacobian(const InertialMotion& motion, FloatType dt) 
         -> math::SquareMatrix<FloatType, 3, true>;
     
     static auto calcCircularMotionJacobian(const InertialMotion& motion, FloatType dt)
@@ -270,103 +199,134 @@ private:
                                      const InertialMotion& motion,
                                      FloatType dt);
     
-    // Common covariance calculation (templatized)
+    // Common covariance calculation (templatized with simplified UDU)
     void calcDisplacementCovariance(Displacement& displacement,
                                   const math::SquareMatrix<FloatType, 3, true>& J,
                                   const InertialMotion& motion);
 };
 ```
 
-**Benefits of Refactored Design:**
-- Separates Jacobian calculation from covariance computation
-- Common logic for displacement vector calculation
-- Pure function Jacobian methods for better testability
-- Template specialization for covariance type handling
-- Reduced code duplication
-
-**Correct Implementation Pattern:**
+**Simplified UDU Implementation (Integrated from Start):**
 
 ```cpp
-template <typename FloatType_>
-void calcLinearMotionDisplacementUDU(
-    CovarianceMatrixFactored<FloatType_, 3>& cov, 
-    const InertialMotion& motion, 
-    FloatType_ dt)
+// Common covariance calculation method with simplified UDU approach
+template <template <typename, sint32> class CovarianceMatrixType, typename FloatType>
+void EgoMotion<CovarianceMatrixType, FloatType>::calcDisplacementCovariance(
+    Displacement& displacement,
+    const math::SquareMatrix<FloatType, 3, true>& J,
+    const InertialMotion& motion)
 {
-    // 1. Build Jacobian matrix J
-    using JacobianMatrix = math::SquareMatrix<FloatType_, 3, true>;
-    JacobianMatrix J{};
-    // ... set Jacobian elements ...
-    
-    // 2. Build positive definite diagonal input covariance Pin
-    DiagonalMatrix<FloatType_, 3> Pin{};
-    Pin.at_unsafe(0) = math::pow<2>(motion.sv); // σ_v² > 0
-    Pin.at_unsafe(1) = math::pow<2>(motion.sa); // σ_a² > 0
-    Pin.at_unsafe(2) = math::pow<2>(motion.sw); // σ_ω² > 0
-    
-    // 3. Initialize U and D with proper positive definite values
-    TriangularMatrix<FloatType_, 3, false, true> U = TriangularMatrix<FloatType_, 3, false, true>::Identity();
-    DiagonalMatrix<FloatType_, 3> D{Pin}; // Start with positive definite D
-    
-    // 4. Apply Modified Gram-Schmidt to compute UDU factorization
-    // This computes: UDU' = J * (U*D*U') * J^T = (J*U) * D * (J*U)'
-    math::ModifiedGramSchmidt<FloatType_, 3>::run(U, D, J);
-    
-    // 5. Create the result
-    cov = CovarianceMatrixFactored<FloatType_, 3>{std::move(U), std::move(D)};
+    if constexpr (std::is_same_v<CovarianceMatrixType<FloatType, 3>, 
+                                 CovarianceMatrixFactored<FloatType, 3>>)
+    {
+        // Simplified UDU implementation using existing interface
+        displacement.cov.setIdentity();
+        
+        // Set diagonal elements to create Pin = diag([σ_v², σ_a², σ_ω²])
+        displacement.cov.setDiagonal(0, math::pow<2>(motion.sv));
+        displacement.cov.setDiagonal(1, math::pow<2>(motion.sa));
+        displacement.cov.setDiagonal(2, math::pow<2>(motion.sw));
+        
+        // Apply the transformation: P = J * Pin * J^T using apaT
+        displacement.cov.apaT(J);
+    }
+    else
+    {
+        // Full matrix implementation
+        CovarianceMatrixFull<FloatType, 3> fullCov{};
+        fullCov.setZeros();
+        
+        // Set diagonal elements
+        fullCov.at_unsafe(0, 0) = math::pow<2>(motion.sv);
+        fullCov.at_unsafe(1, 1) = math::pow<2>(motion.sa);
+        fullCov.at_unsafe(2, 2) = math::pow<2>(motion.sw);
+        
+        // Apply transformation
+        fullCov.apaT(J);
+        
+        displacement.cov = std::move(fullCov);
+    }
 }
 ```
 
-**Key Numerical Considerations:**
-- Always initialize D with positive values (never zeros)
-- Ensure Jacobian is full rank for valid motion parameters
-- Add assertions to verify positive definiteness
-- Use epsilon clipping to prevent numerical underflow
+**Benefits of This Integrated Approach:**
 
-### Phase 4: Integration Testing
+1. **Simplicity**: Uses existing, well-tested interface methods from the beginning
+2. **Numerical Stability**: Leverages proven Modified Gram-Schmidt implementation
+3. **Consistency**: Follows established patterns in the codebase
+4. **Maintainability**: Clean, understandable code structure
+5. **Performance**: Efficient computation without manual matrix manipulation
+
+### Step 3: Motion Model Integration
+
+**Objective:** Update motion models to use the refactored, templatized EgoMotion class.
+
+**Tasks:**
+- [ ] Update MotionModelCV to use templatized EgoMotion
+- [ ] Update MotionModelCA to use templatized EgoMotion
+- [ ] Ensure type consistency between motion models and ego motion
+- [ ] Update prediction methods to handle both covariance types
+- [ ] Add comprehensive integration tests
+
+**Integration Pattern:**
+
+```cpp
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
+class MotionModelCV : public ExtendedMotionModel<...>
+{
+    // Use matching EgoMotion type
+    using EgoMotionType = env::EgoMotion<CovarianceMatrixType, FloatType>;
+    
+    void predict(const FloatType dt,
+                 const filter::KalmanFilter<FloatType>& filter,
+                 const EgoMotionType& egoMotion) final
+    {
+        // Type-consistent ego motion compensation
+        egoMotion.compensatePosition(/* ... */);
+        // ... rest of prediction logic ...
+    }
+};
+```
+
+### Step 4: Comprehensive Testing
+
+**Objective:** Validate the implementation thoroughly and ensure numerical equivalence.
 
 **Tasks:**
 - [ ] Add regression tests comparing old vs new implementation
 - [ ] Test numerical equivalence between refactored and original code
 - [ ] Validate Jacobian calculation methods independently
-- [ ] Test displacement consistency between old and new implementations
+- [ ] Test displacement consistency between implementations
 - [ ] Test covariance equivalence between both approaches
 - [ ] Add performance benchmarking tests
+- [ ] Test edge cases and numerical stability
 
-**Additional Test Cases:**
-- **Jacobian Validation**: Independent testing of Jacobian calculation methods
-- **Displacement Consistency**: Verify displacement vectors match between old and new implementations
-- **Covariance Equivalence**: Ensure both covariance implementations produce equivalent results
-- **Numerical Stability**: Test edge cases for both Jacobian types
-- **Regression Testing**: Compare results with baseline tests from Phase 0
-
-**Test Structure:**
+**Test Examples:**
 
 ```cpp
-// Regression test comparing old and new implementations
+// Regression test comparing implementations
 TEST_F(EgoMotionTest, RefactoredImplementation__NumericalEquivalence) {
     // Test with current implementation
     auto egoMotionOld = env::EgoMotion<float32>{motion, geometry, dt};
     auto oldDisplacement = egoMotionOld.getDisplacementCog();
     
-    // Test with refactored implementation (after it's implemented)
-    // This will be added during Phase 3
-    // auto egoMotionNew = env::EgoMotionRefactored<float32>{motion, geometry, dt};
-    // auto newDisplacement = egoMotionNew.getDisplacementCog();
+    // Test with refactored implementation
+    auto egoMotionNew = env::EgoMotionRefactored<float32>{motion, geometry, dt};
+    auto newDisplacement = egoMotionNew.getDisplacementCog();
     
     // Verify displacement vectors match
-    // EXPECT_NEAR(oldDisplacement.vec.at_unsafe(0), newDisplacement.vec.at_unsafe(0), 1e-6);
-    // EXPECT_NEAR(oldDisplacement.vec.at_unsafe(1), newDisplacement.vec.at_unsafe(1), 1e-6);
-    // EXPECT_NEAR(oldDisplacement.vec.at_unsafe(2), newDisplacement.vec.at_unsafe(2), 1e-6);
+    EXPECT_NEAR(oldDisplacement.vec.at_unsafe(0), newDisplacement.vec.at_unsafe(0), 1e-6);
+    EXPECT_NEAR(oldDisplacement.vec.at_unsafe(1), newDisplacement.vec.at_unsafe(1), 1e-6);
+    EXPECT_NEAR(oldDisplacement.vec.at_unsafe(2), newDisplacement.vec.at_unsafe(2), 1e-6);
     
     // Verify covariance matrices match
-    // auto oldCov = oldDisplacement.cov();
-    // auto newCov = newDisplacement.cov();
-    // for (int i = 0; i < 3; ++i) {
-    //     for (int j = 0; j < 3; ++j) {
-    //         EXPECT_NEAR(oldCov.at_unsafe(i, j), newCov.at_unsafe(i, j), 1e-6);
-    //     }
-    // }
+    auto oldCov = oldDisplacement.cov();
+    auto newCov = newDisplacement.cov();
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            EXPECT_NEAR(oldCov.at_unsafe(i, j), newCov.at_unsafe(i, j), 1e-6);
+        }
+    }
 }
 
 // Jacobian calculation tests
@@ -399,93 +359,16 @@ TEST_F(EgoMotionTest, LinearMotionJacobian__Correctness) {
 }
 ```
 
-### Phase 5: Full Matrix Implementation (Backward Compatibility)
+### Step 5: Documentation and Finalization
 
-**Tasks:**
-- [ ] Implement `calcLinearMotionDisplacementFull()` using existing approach
-- [ ] Implement `calcCircularMotionDisplacementFull()` using existing approach
-- [ ] Ensure API compatibility with existing code
-
-**Implementation:**
-
-```cpp
-template <typename FloatType_>
-void calcLinearMotionDisplacementFull(
-    CovarianceMatrixFull<FloatType_, 3>& cov, 
-    const InertialMotion& motion, 
-    FloatType_ dt)
-{
-    // Existing implementation using apaT
-    DisplacementCov tempCov{};
-    tempCov.setZeros();
-    
-    // Set diagonal elements
-    tempCov.at_unsafe(0, 0) = math::pow<2>(motion.sv);
-    tempCov.at_unsafe(1, 1) = math::pow<2>(motion.sa);
-    tempCov.at_unsafe(2, 2) = math::pow<2>(motion.sw);
-    
-    // Build Jacobian
-    using JacobianMatrix = math::SquareMatrix<FloatType_, 3, true>;
-    JacobianMatrix J{};
-    // ... set Jacobian elements ...
-    
-    // Compute covariance
-    tempCov.apaT(J);
-    cov = std::move(tempCov);
-}
-```
-
-### Phase 5: Motion Model Integration
-
-**Tasks:**
-- [ ] Update MotionModelCV to use templatized EgoMotion
-- [ ] Update MotionModelCA to use templatized EgoMotion
-- [ ] Ensure type consistency between motion models and ego motion
-- [ ] Update prediction methods to handle both covariance types
-
-**Integration Pattern:**
-
-```cpp
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-class MotionModelCV : public ExtendedMotionModel<...>
-{
-    // Use matching EgoMotion type
-    using EgoMotionType = env::EgoMotion<CovarianceMatrixType, FloatType>;
-    
-    void predict(const FloatType dt,
-                 const filter::KalmanFilter<FloatType>& filter,
-                 const EgoMotionType& egoMotion) final
-    {
-        // Type-consistent ego motion compensation
-        egoMotion.compensatePosition(/* ... */);
-        // ... rest of prediction logic ...
-    }
-};
-```
-
-### Phase 6: Testing and Validation
-
-**Tasks:**
-- [ ] Create comprehensive test suite for UDU ego motion
-- [ ] Test numerical equivalence between full and factored implementations
-- [ ] Test edge cases (small velocities, zero acceleration, etc.)
-- [ ] Test numerical stability with extreme parameters
-- [ ] Performance benchmarking
-
-**Test Cases Required:**
-1. **Numerical Equivalence**: Verify UDU and full implementations produce equivalent results
-2. **Positive Definiteness**: Ensure all covariance matrices remain positive definite
-3. **Edge Cases**: Small ω, zero acceleration, high velocities
-4. **Numerical Stability**: Ill-conditioned parameters, extreme values
-5. **Performance**: Compare computation time between approaches
-
-### Phase 7: Documentation and Examples
+**Objective:** Provide complete documentation and examples for users.
 
 **Tasks:**
 - [ ] Update Doxygen documentation for new templatized interface
 - [ ] Add usage examples for both covariance types
 - [ ] Create migration guide for existing users
 - [ ] Update README with new features
+- [ ] Final validation of all test cases
 
 **Documentation Examples:**
 
@@ -503,7 +386,7 @@ auto egoMotionFull = tracking::env::EgoMotion<
 >{motionParams, geometry, dt};
 ```
 
-## Updated Risk Assessment and Mitigation
+## Risk Assessment and Mitigation
 
 ### Risks
 
@@ -531,52 +414,23 @@ auto egoMotionFull = tracking::env::EgoMotion<
 5. **Backward Compatibility**: Existing code continues to work without modification
 6. **Test Coverage**: All baseline tests pass with refactored implementation
 
-## Updated Timeline and Milestones
+## Linear Workflow Benefits
 
-### Phase 0: Baseline Testing (Week 1-2)
-- Create comprehensive test suite for current implementation
-- Document expected results and reference values
-- Validate all baseline tests pass
-- Establish regression testing framework
+This linear workflow ensures:
 
-### Phase 1: Refactored Architecture (Week 3-4)
-- Implement separated Jacobian calculation methods
-- Create common displacement vector logic
-- Implement templatized covariance calculation
-- Maintain API compatibility
+1. **Clear Progression**: Each step builds logically on the previous one
+2. **Early Validation**: Baseline testing establishes expected behavior first
+3. **Integrated Simplification**: Simplified UDU approach is part of the core architecture from the start
+4. **Comprehensive Testing**: Validation at each step prevents regression
+5. **Smooth Integration**: Motion models updated after core functionality is proven
 
-### Phase 2: UDU Implementation (Week 5-6)
-- Implement UDU-specific covariance calculation
-- Ensure numerical stability with proper initialization
-- Add comprehensive assertions and checks
-- Validate mathematical equivalence
+## Resources and Timeline
 
-### Phase 3: Integration and Testing (Week 7-8)
-- Update motion models to use refactored EgoMotion
-- Add regression tests comparing implementations
-- Test numerical equivalence comprehensively
-- Validate system-wide integration
-
-### Phase 4: Documentation and Finalization (Week 9-10)
-- Document refactored interface clearly
-- Update examples for both covariance types
-- Create migration guide for users
-- Final validation of all test cases
-
-## Dependencies
-
-- Modified Gram-Schmidt implementation (existing)
-- CovarianceMatrixFactored class (existing)
-- CovarianceMatrixFull class (existing)
-- Motion model infrastructure (existing)
-
-## Resources Required
-
-- Development time: ~8-10 weeks
-- Testing resources: Comprehensive test environment
-- Documentation: Doxygen, examples, migration guide
-- Review: Code reviews, mathematical validation
+- **Development Time**: ~8-10 weeks
+- **Testing Resources**: Comprehensive test environment
+- **Documentation**: Doxygen, examples, migration guide
+- **Review**: Code reviews, mathematical validation
 
 ## Conclusion
 
-This plan provides a comprehensive roadmap for implementing native UDU decomposition in ego motion calculations while maintaining numerical stability, backward compatibility, and type safety. The phased approach ensures careful validation at each stage and addresses the key concern about positive definiteness in UDU factorization.
+This linear implementation plan provides a clear, step-by-step roadmap for implementing native UDU decomposition in ego motion calculations. By integrating the simplified UDU approach from the beginning and following a logical progression from testing to integration, the plan ensures numerical stability, maintainability, and backward compatibility while achieving all the original goals.
