@@ -9,7 +9,7 @@
 /// - Works with any std::ostream (cout, files, stringstream)
 /// - Template-based implementation for compile-time type safety
 /// - SFINAE-based type detection for C++17 compatibility
-/// - Specialized formatting for DiagonalMatrix
+/// - Specialized formatting for DiagonalMatrix, TriangularMatrix, and Vector
 /// - Future-proof design using at_unsafe() interface
 ///
 /// \note This file replaces the previous print() methods across all matrix types,
@@ -17,6 +17,7 @@
 ///
 /// \see matrix.h for the base Matrix class
 /// \see diagonal_matrix.h for DiagonalMatrix specialization
+/// \see vector.h for Vector specialization
 
 #ifndef C63CC10A_92E8_4A79_8412_56D9CFCB8DB4
 #define C63CC10A_92E8_4A79_8412_56D9CFCB8DB4
@@ -35,6 +36,9 @@ namespace math
 // Forward declarations
 template <typename ValueType_, sint32 Size_>
 class DiagonalMatrix;
+
+template <typename ValueType_, sint32 Size_>
+class Vector;
 
 /// \brief SFINAE helper to detect matrix-like types at compile time.
 ///
@@ -266,6 +270,57 @@ std::ostream& operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<
   }
   return os;
 }
+
+/// \brief Specialization of operator<< for Vector.
+///
+/// Vector requires special handling because it has a different at_unsafe() signature
+/// (single index instead of row,col) and represents a column vector.
+/// This specialization outputs the vector as a column matrix.
+///
+/// The output format matches the general matrix operator<< for consistency:
+/// - Fixed-width columns for alignment
+/// - 6 decimal places for floating-point types with sign display
+/// - Vector elements as a single column
+///
+/// \tparam ValueType_ The element type (float32, float64, etc.)
+/// \tparam Size_ The vector dimension (compile-time constant)
+/// \param[in,out] os The output stream to write to
+/// \param[in] vector The Vector object to stream
+/// \return Reference to the output stream for chaining
+///
+/// \note This specialization is necessary because Vector::at_unsafe() takes
+///       only one parameter (vector index) unlike general matrices
+///
+/// \see Vector for the vector class
+/// \see operator<<(std::ostream&, const M&) for general matrix streaming
+///
+/// Usage example:
+/// \code{.cpp}
+/// Vector<float32, 3> vec = /* [1, 2, 3] */;
+/// std::cout << vec << std::endl;
+/// // Output:
+/// // +1.000000
+/// // +2.000000
+/// // +3.000000
+/// \endcode
+template <typename ValueType_, sint32 Size_>
+std::ostream& operator<<(std::ostream& os, const tracking::math::Vector<ValueType_, Size_>& vector)
+{
+  for (sint32 row = 0; row < Size_; ++row)
+  {
+    if constexpr (std::is_floating_point_v<ValueType_>)
+    {
+      os << std::fixed << std::setprecision(6) << std::showpos << std::setw(12) << vector.at_unsafe(row);
+    }
+    else
+    {
+      os << std::setw(8) << vector.at_unsafe(row);
+    }
+    os << "\n";
+  }
+  return os;
+}
+
 } // namespace math
 } // namespace tracking
 

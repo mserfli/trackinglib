@@ -103,7 +103,8 @@ inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<Fl
     const auto  l_{l};
     decltype(x) p    = Vector<FloatType_, Size_>{l.solve(x)};
     const auto  dinv = static_cast<const DiagonalMatrix<FloatType_, Size_>&>(d).inverse();
-    c_               = std::max(1 - (p.transpose() * (dinv * p)).at_unsafe(0, 0), std::numeric_limits<FloatType_>::epsilon());
+    // ensure PSD
+    c_ = std::max(1 - (p.transpose() * (dinv * p)).at_unsafe(0, 0), std::numeric_limits<FloatType_>::epsilon());
     for (auto j = Size_ - 1; j >= 0; --j)
     {
       dj_            = d.at_unsafe(j);

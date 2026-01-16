@@ -109,6 +109,12 @@ public:
   /// \return const CovarianceMatrixFull&
   auto operator()() const -> const CovarianceMatrixFull& { return *this; }
 
+  /// \brief Calculate the determinant of the covariance matrix.
+  ///
+  /// \return ValueType_ The determinant of the matrix
+  /// \note uses SquareMatrix::determinant
+  auto determinant() const -> FloatType_ { return BaseSquareMatrix::determinant(); }
+
   /// \brief Calculates the matrix inverse using Cholesky decomposition
   ///
   /// Computes the inverse of the covariance matrix using Cholesky decomposition.

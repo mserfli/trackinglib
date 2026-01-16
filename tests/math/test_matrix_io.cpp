@@ -3,12 +3,12 @@
 #include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"
 #include "trackingLib/math/linalg/conversions/square_conversions.hpp"
 #include "trackingLib/math/linalg/conversions/triangular_conversions.hpp"
+#include "trackingLib/math/linalg/conversions/vector_conversions.hpp"
 #include "trackingLib/math/linalg/diagonal_matrix.h"
 #include "trackingLib/math/linalg/matrix.h"
 #include "trackingLib/math/linalg/matrix_io.h"
 #include "trackingLib/math/linalg/square_matrix.h"
 #include "trackingLib/math/linalg/triangular_matrix.h"
-#include "trackingLib/math/linalg/vector.h"
 #include <algorithm>
 #include <fstream>
 #include <sstream>
@@ -371,4 +371,33 @@ TEST(MatrixIO, SquareMatrixDouble4x4RowMajor_ZeroMatrix__Success) // NOLINT
   // Count newlines (should be 4 rows)
   size_t newlineCount = std::count(result.begin(), result.end(), '\n');
   EXPECT_EQ(newlineCount, 4);
+}
+
+TEST(MatrixIO, VectorFloat3__Success) // NOLINT
+{
+  const auto vec = Vector<float32, 3>::FromList({1.0F, 2.0F, 3.0F});
+
+  std::stringstream ss;
+  ss << vec;
+
+  const std::string expected = "   +1.000000\n"
+                               "   +2.000000\n"
+                               "   +3.000000\n";
+
+  EXPECT_EQ(ss.str(), expected);
+}
+
+TEST(MatrixIO, VectorInt4__Success) // NOLINT
+{
+  const auto vec = Vector<sint32, 4>::FromList({10, 20, 30, 40});
+
+  std::stringstream ss;
+  ss << vec;
+
+  const std::string expected = "      10\n"
+                               "      20\n"
+                               "      30\n"
+                               "      40\n";
+
+  EXPECT_EQ(ss.str(), expected);
 }

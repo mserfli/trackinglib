@@ -43,21 +43,35 @@ public:
   /// \return const StateCov&
   auto getCov() const -> ConstStateCov& { return _cov; }
 
+  /// \brief Read/Write access to state covariance matrix
+  /// \return StateCov&
+  /// \note Only for INTERNAL usage! Required in generic::Predict<..>::run().
+  auto getCovForInternalUse() -> StateCov& { return _cov; }
+
   /// \brief Read access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return const FloatType&
-  auto operator[](const sint32 idx) const -> FloatType_ { return _vec.at_unsafe(idx); }
+  auto operator[](const sint32 idx) const -> value_type { return _vec.at_unsafe(idx); }
 
   /// \brief Read access to indexed element of the state covariance matrix
   /// \param[in,out] row  Row index in the state covariance matrix
   /// \param[in,out] col  Col index in the state covariance matrix
   /// \return FloatType
-  auto operator()(const sint32 row, const sint32 col) const -> FloatType_ { return _cov.at_unsafe(row, col); }
+  auto operator()(const sint32 row, const sint32 col) const -> value_type { return _cov.at_unsafe(row, col); }
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
   ; // workaround for correct indentation
   // clang-format on
+
+  /// \brief Construct a new State Mem object
+  /// \param[in] vec
+  /// \param[in] cov
+  explicit StateMem(const StateVec& vec, const StateCov& cov)
+      : _vec{vec}
+      , _cov{cov}
+  {
+  }
 
   /// \brief Write access to full state vector
   /// \return const StateVec&
@@ -70,21 +84,12 @@ TEST_REMOVE_PROTECTED:
   /// \brief Write access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
   /// \return FloatType&
-  auto operator[](const sint32 idx) -> FloatType_& { return _vec.at_unsafe(idx); }
+  auto operator[](const sint32 idx) -> value_type& { return _vec.at_unsafe(idx); }
 
   // clang-format off
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
-
-  /// \brief Testing: Construct a new State Mem object
-  /// \param[in] vec
-  /// \param[in] cov
-  explicit StateMem(const StateVec& vec, const StateCov& cov)
-      : _vec{vec}
-      , _cov{cov}
-  {
-  }
 
   /// \brief State vector
   StateVec _vec{StateVec::Zeros()};

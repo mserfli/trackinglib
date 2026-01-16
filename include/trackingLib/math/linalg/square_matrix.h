@@ -74,6 +74,7 @@ public:
   /// \param[in] other The diagonal matrix to convert from
   ///
   /// \note This is an implicit conversion constructor for convenience
+  /// \note This constructor is defined in the implementation file to avoid circular dependencies
   SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other); // NOLINT(google-explicit-constructor)
 
 

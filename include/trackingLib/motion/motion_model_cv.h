@@ -70,6 +70,11 @@ public:
   auto operator=(MotionModelCV&&) noexcept -> MotionModelCV& = default;
   virtual ~MotionModelCV() TEST_REMOVE_FINAL                 = default;
 
+  /// \brief Construct a new CV given the vector and the covariance matrix
+  /// \param[in] vec
+  /// \param[in] cov
+  explicit MotionModelCV(const StateVec& vec, const StateCov& cov);
+
   /// \brief Read access to x velocity
   /// \return FloatType
   auto getVx() const -> FloatType final { return this->operator[](StateDef::VX); }
@@ -124,16 +129,6 @@ public:
   /// \param[out] G         The transformation of the process noise to the full state space
   /// \param[in]  dt        The delta time from last state to predicted state
   static void computeG(ProcessNoiseMappingMatrix& G, const FloatType dt);
-
-  // clang-format off
-TEST_REMOVE_PRIVATE:
-  ; // workaround to keep following idententation
-  // clang-format on
-
-  /// \brief Testing: Construct a new CA given the vector and the covariance matrix
-  /// \param[in] vec
-  /// \param[in] cov
-  explicit MotionModelCV(const StateVec& vec, const StateCov& cov);
 };
 
 } // namespace motion
