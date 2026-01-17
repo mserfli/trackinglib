@@ -68,10 +68,11 @@ protected:
         // Common test setup
         motion.v = 10.0f;  // 10 m/s
         motion.a = 2.0f;   // 2 m/s²
-        motion.w = 0.1f;   // 0.1 rad/s (small for linear case)
-        motion.sv = 0.5f;  // 0.5 m/s std dev
-        motion.sa = 0.2f;  // 0.2 m/s² std dev
-        motion.sw = 0.05f; // 0.05 rad/s std dev
+        motion.w = 0.100000000000000f;   // 0.1 rad/s (small for linear case)
+        motion.sv = 0.500000000000000f;  // 0.5 m/s std dev
+        motion.sa = 0.200000000000000f;  // 0.2 m/s² std dev
+        motion.sw = 5.000000000000000e-02f; // 0.05 rad/s std dev
+        dt = 0.100000000000000f; // 100ms time step
         
         geometry.distCog2Ego = 1.5f; // 1.5m from COG to ego point
         dt = 0.1f; // 100ms time step
@@ -87,15 +88,15 @@ TEST_F(EgoMotionTest, LinearMotionDisplacement__Success) {
     auto egoMotion = env::EgoMotion<float32>{motion, geometry, dt};
     
     // Expected displacement values (from derivation)
-    const FloatType expected_dx = 1.0005f; // T*v + 0.5*T²*(a - v*w)
-    const FloatType expected_dy = 0.0005f; // 0.5*T²*v*w
-    const FloatType expected_dpsi = 0.01f; // T*w
+    const FloatType expected_dx = 1.009983166750833e+00f; // T*v + 0.5*T²*(a - v*w)
+    const FloatType expected_dy = 5.049957916806945e-03f; // 0.5*T²*v*w
+    const FloatType expected_dpsi = 1.000000000000000e-02f; // T*w
     
     // Expected covariance matrix (from J * Pin * J^T)
     const math::SquareMatrix<float32, 3, true> expected_cov{
-        {0.250125f, 0.000125f, 0.0f},
-        {0.000125f, 0.000125f, 0.0f},
-        {0.0f, 0.0f, 0.0001f}
+        {2.501062500000000e-03f, -6.250000000000321e-08f, -2.500000000000001e-05f},
+        {-6.250000000000321e-08f, 6.312500000000004e-06f, 1.250000000000001e-05f},
+        {-2.500000000000001e-05f, 1.250000000000001e-05f, 2.500000000000001e-05f}
     };
     
     // Verify displacement vector
@@ -120,29 +121,34 @@ TEST_F(EgoMotionTest, CircularMotionDisplacement__Success) {
     auto egoMotion = env::EgoMotion<float32>{motion, geometry, dt};
     
     // Expected displacement values (from circular motion equations)
-    const FloatType dphi = motion.w * dt;
-    const FloatType sin_dphi_2 = std::sin(dphi/2);
-    const FloatType cos_dphi_2 = std::cos(dphi/2);
-    const FloatType c = dt * (2*motion.v + motion.a*dt) / dphi * sin_dphi_2;
-    const FloatType expected_dx = c * cos_dphi_2;
-    const FloatType expected_dy = c * sin_dphi_2;
-    const FloatType expected_dpsi = dphi;
+    const FloatType expected_dx = 1.009579219267702e+00f;
+    const FloatType expected_dy = 2.524474002168182e-02f;
+    const FloatType expected_dpsi = 5.000000000000000e-02f;
     
     // Verify displacement vector
     EXPECT_NEAR(egoMotion.getDisplacementCog().vec.at_unsafe(0), expected_dx, 1e-6);
     EXPECT_NEAR(egoMotion.getDisplacementCog().vec.at_unsafe(1), expected_dy, 1e-6);
     EXPECT_NEAR(egoMotion.getDisplacementCog().vec.at_unsafe(2), expected_dpsi, 1e-6);
     
-    // Verify covariance matrix properties (symmetry, positive definiteness)
+    // Expected covariance matrix (from J * Pin * J^T)
+    const math::SquareMatrix<float32, 3, true> expected_cov{
+        {1.989322451972914e-02f, -3.507798128842736e-02f, -1.051688841220866e-06f},
+        {-3.507798128842736e-02f, 6.185679729189588e-02f, -2.629769994633158e-08f},
+        {-1.051688841220866e-06f, -2.629769994633158e-08f, 2.500000000000001e-05f}
+    };
+    
+    // Verify covariance matrix
     auto actual_cov = egoMotion.getDisplacementCog().cov();
-    EXPECT_TRUE(actual_cov.isSymmetric(1e-6));
-    EXPECT_TRUE(actual_cov.isPositiveDefinite());
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            EXPECT_NEAR(actual_cov.at_unsafe(i, j), expected_cov.at_unsafe(i, j), 1e-6);
+        }
+    }
 }
 ```
 
 **Files to Create:**
-- `tests/motion/test_ego_motion.cpp` - Main test file
-- `tests/motion/reference/ego_motion_reference_values.h` - Reference values header
+- `tests/env/test_ego_motion.cpp` - Main test file
 
 ### Step 2: Refactored Architecture
 
