@@ -12,10 +12,9 @@ namespace motion
 namespace generic
 {
 
-template <typename MotionModel, typename FloatType>
-inline void PredictCommon<MotionModel, FloatType>::run(Storage&                         data,
-                                                       const FloatType                  dt,
-                                                       const env::EgoMotion<FloatType>& egoMotion)
+template <typename MotionModel, typename FloatType, template <typename FloatType_, sint32 Size> class CovarianceMatrixType>
+inline void PredictCommon<MotionModel, FloatType, CovarianceMatrixType>::run(
+    Storage& data, const FloatType dt, const env::EgoMotion<CovarianceMatrixType, FloatType>& egoMotion)
 {
   assert(dt >= static_cast<FloatType>(0.0));
   auto& underlying = static_cast<MotionModel&>(*this);

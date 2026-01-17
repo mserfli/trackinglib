@@ -54,7 +54,7 @@ public:
   using ProcessNoiseDiagMatrix    = math::DiagonalMatrix<FloatType, NUM_PROC_NOISE_VARIABLES>;
   using ProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_PROC_NOISE_VARIABLES>;
 
-  using EgoMotion              = env::EgoMotion<FloatType>;
+  using EgoMotion              = env::EgoMotion<CovarianceMatrixType, FloatType>;
   using EgoMotionMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, EgoMotion::DS_NUM_VARIABLES>;
 
   static constexpr sint32 NUM_AUG_PROC_NOISE_VARIABLES =
@@ -93,13 +93,9 @@ public:
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  void predict(const FloatType                        dt,
-               const filter::KalmanFilter<FloatType>& filter,
-               const env::EgoMotion<FloatType>&       egoMotion) final;
+  void predict(const FloatType dt, const filter::KalmanFilter<FloatType>& filter, const EgoMotion& egoMotion) final;
 
-  void predict(const FloatType                             dt,
-               const filter::InformationFilter<FloatType>& filter,
-               const env::EgoMotion<FloatType>&            egoMotion) final;
+  void predict(const FloatType dt, const filter::InformationFilter<FloatType>& filter, const EgoMotion& egoMotion) final;
 
   /// \brief Creates a CV model based on a CA model
   /// \param[in] other  The CA model

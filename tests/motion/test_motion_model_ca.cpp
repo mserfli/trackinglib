@@ -18,7 +18,7 @@ template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
 struct TestPredictCA
 {
   using MM             = tracking::motion::MotionModelCA<CovarianceMatrixType, FloatType>;
-  using EgoMotionInst  = tracking::env::EgoMotion<FloatType>;
+  using EgoMotionInst  = typename MM::EgoMotion;
   using FilterTypeInst = FilterType<FloatType>;
 
   static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const FilterTypeInst& /*filter*/)

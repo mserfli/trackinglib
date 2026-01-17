@@ -2,6 +2,7 @@
 #define EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8
 
 #include "base/first_include.h" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_factored.h"
 #include "math/linalg/covariance_matrix_full.h"
 #include "math/linalg/point2d.h"
 #include "math/linalg/vector.h"
@@ -22,17 +23,20 @@ namespace env
 /// The implementation is based on circular motion equations and includes:
 /// - Position compensation for objects relative to moving ego vehicle
 /// - Direction compensation for velocity vectors
-/// - Error propagation for uncertainty in motion parameters
+/// - Error propagation for uncertainty in motion parameters using UDU decomposition
 /// - Special handling for small angular velocities to avoid numerical issues
+/// - Support for both full and factored covariance matrix representations
 ///
 /// Mathematical Background:
 /// - Circular motion with yaw rate ω and speed v for time T
 /// - Secant approximation for small angular displacements
 /// - First-order error propagation for uncertainty in motion parameters
+/// - UDU decomposition for numerical stability in covariance calculations
 /// - Specialized equations for ω→0 limit to maintain numerical stability
 ///
+/// \tparam CovarianceMatrixType_ Template template for covariance matrix type (CovarianceMatrixFull or CovarianceMatrixFactored)
 /// \tparam FloatType_ Floating-point type for computations (float32, float64)
-template <typename FloatType_>
+template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
 class EgoMotion
 {
 public:
@@ -58,7 +62,7 @@ public:
   /// \brief Displacement covariance matrix type
   ///
   /// Covariance matrix for displacement uncertainties (3×3)
-  using DisplacementCov = math::CovarianceMatrixFull<FloatType_, DS_NUM_VARIABLES>;
+  using DisplacementCov = CovarianceMatrixType_<FloatType_, DS_NUM_VARIABLES>;
 
   /// \brief Inertial Motion parameters structure
   ///
@@ -122,7 +126,11 @@ public:
   auto operator=(EgoMotion&&) noexcept -> EgoMotion& = default;
   virtual ~EgoMotion()                               = default;
 
-  // initialize with motion parameters, geometry and time interval
+  /// \brief Constructor with explicit covariance matrix type
+  /// \tparam CovarianceMatrixType Template template for covariance matrix type
+  /// \param motion Motion parameters
+  /// \param geometry Vehicle geometry
+  /// \param dt Time interval
   EgoMotion(const InertialMotion& motion, const Geometry& geometry, const FloatType_ dt)
       : _motion(motion)
       , _geometry(geometry)
@@ -176,7 +184,7 @@ public:
   auto getMotion() const -> const InertialMotion& { return _motion; }
 
   // clang-format off
-TEST_REMOVE_PRIVATE:
+  TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
 
@@ -188,26 +196,44 @@ TEST_REMOVE_PRIVATE:
   //  or the linear motion for small angular velocities.
   void calcDisplacement();
 
-  /// \brief Compute displacement from motion parameters
+  /// \brief Calculate Jacobian for linear motion case
   ///
-  /// Calculates the displacement (Δx, Δy, Δψ) and covariance using the circular motion equations
-  /// from the derivation notebook. Handles both regular and small angular velocity cases.
+  /// Computes the Jacobian matrix for linear motion displacement with respect to motion parameters.
   ///
-  /// @param[out] displacement Output displacement structure with computed values
   /// @param[in] motion Input motion parameters
   /// @param[in] dt Time interval for the motion
-  static void calcCircularMotionDisplacement(Displacement& displacement, const InertialMotion& motion, FloatType_ dt);
+  /// @return Jacobian matrix (3x3)
+  static auto calcLinearMotionJacobian(const InertialMotion& motion, FloatType_ dt) -> math::SquareMatrix<FloatType_, 3, true>;
 
-  /// \brief Compute displacement for small angular velocities
+  /// \brief Calculate Jacobian for circular motion case
   ///
-  /// Uses simplified equations when ω^4 becomes too small to avoid numerical issues.
-  /// Based on the limit equations from the notebook: lim(ω→0) of the displacement equations.
+  /// Computes the Jacobian matrix for circular motion displacement with respect to motion parameters.
   ///
-  /// @param[out] displacement Output displacement structure with computed values
   /// @param[in] motion Input motion parameters
   /// @param[in] dt Time interval for the motion
-  static void calcLinearMotionDisplacement(Displacement& displacement, const InertialMotion& motion, FloatType_ dt);
+  /// @return Jacobian matrix (3x3)
+  static auto calcCircularMotionJacobian(const InertialMotion& motion, FloatType_ dt) -> math::SquareMatrix<FloatType_, 3, true>;
 
+  /// \brief Calculate displacement vector
+  ///
+  /// Computes the displacement vector [Δx, Δy, Δψ] from motion parameters.
+  ///
+  /// @param[out] displacement Output displacement structure
+  /// @param[in] motion Input motion parameters
+  /// @param[in] dt Time interval for the motion
+  static void calcDisplacementVector(Displacement& displacement, const InertialMotion& motion, FloatType_ dt);
+
+  /// \brief Calculate displacement covariance
+  ///
+  /// Computes the displacement covariance matrix using the simplified UDU approach.
+  /// This method uses the generic covariance matrix interface to support both full and factored representations.
+  ///
+  /// @param[out] displacement Output displacement structure with computed covariance
+  /// @param[in] J Jacobian matrix
+  /// @param[in] motion Input motion parameters
+  static void calcDisplacementCovariance(Displacement&                                  displacement,
+                                         const math::SquareMatrix<FloatType_, 3, true>& J,
+                                         const InertialMotion&                          motion);
 
   using Point2d = math::Point2d<FloatType_>; ///< 2D point type for geometric calculations
   InertialMotion _motion{};                  ///< Motion parameters (velocity, acceleration, yaw rate and uncertainties)

@@ -24,7 +24,7 @@ class Predict; // Forward declaration only
 
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
-template <typename FloatType>
+template <template <typename FloatType_, sint32 Size> class CovarianceMatrixType, typename FloatType>
 class IMotionModel
 {
 public:
@@ -45,11 +45,11 @@ public:
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
   virtual void predict(const FloatType                        dt,
                        const filter::KalmanFilter<FloatType>& filter, // TODO(matthias): decide between overloading or base class
-                       const env::EgoMotion<FloatType>&       egoMotion) = 0;
+                       const env::EgoMotion<CovarianceMatrixType, FloatType>& egoMotion) = 0;
 
-  virtual void predict(const FloatType                             dt,
-                       const filter::InformationFilter<FloatType>& filter,
-                       const env::EgoMotion<FloatType>&            egoMotion) = 0;
+  virtual void predict(const FloatType                                        dt,
+                       const filter::InformationFilter<FloatType>&            filter,
+                       const env::EgoMotion<CovarianceMatrixType, FloatType>& egoMotion) = 0;
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
@@ -70,7 +70,7 @@ template <typename MotionModel,
           sint32 Size>
 // clang-format on
 class ExtendedMotionModel
-    : public IMotionModel<FloatType>
+    : public IMotionModel<CovarianceMatrixType, FloatType>
     , public StateMem<CovarianceMatrixType, FloatType, Size>
 {
 public:
@@ -143,7 +143,7 @@ TEST_REMOVE_PROTECTED:
   /// \param[in] vec
   /// \param[in] cov
   explicit ExtendedMotionModel(const StateVec& vec, const StateCov& cov)
-      : IMotionModel<FloatType>{}
+      : IMotionModel<CovarianceMatrixType, FloatType>{}
       , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}
   {
     assert(cov.determinant() > 0);

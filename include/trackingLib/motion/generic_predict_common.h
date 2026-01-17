@@ -14,7 +14,8 @@ namespace generic
 /// \brief Base class for common calculations needed for any prediction
 /// \tparam MotionModel  The underlying motion model
 /// \tparam FloatType    The float type representation
-template <typename MotionModel, typename FloatType>
+/// \tparam CovarianceMatrixType  The used covariance matrix type
+template <typename MotionModel, typename FloatType, template <typename FloatType_, sint32 Size> class CovarianceMatrixType>
 class PredictCommon
 {
 public:
@@ -38,7 +39,7 @@ public:
   /// \param[out] data       Output data storage for all precomputed results
   /// \param[in]  dt         The delta time from last state to predicted state
   /// \param[in]  egoMotion  The known egoMotion from last state to predicted state
-  void run(Storage& data, const FloatType dt, const env::EgoMotion<FloatType>& egoMotion);
+  void run(Storage& data, const FloatType dt, const env::EgoMotion<CovarianceMatrixType, FloatType>& egoMotion);
 };
 
 } // namespace generic

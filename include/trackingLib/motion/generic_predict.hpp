@@ -16,12 +16,13 @@ namespace generic
 {
 
 template <typename MotionModel, typename FloatType>
-inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(const FloatType                        dt,
-                                                                             const filter::KalmanFilter<FloatType>& filter,
-                                                                             const env::EgoMotion<FloatType>&       egoMotion)
+inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(
+    const FloatType                                              dt,
+    const filter::KalmanFilter<FloatType>&                       filter,
+    const env::EgoMotion<math::CovarianceMatrixFull, FloatType>& egoMotion)
 {
-  static typename PredictCommon<MotionModel, FloatType>::Storage data{};
-  PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
+  static typename PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFull>::Storage data{};
+  PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFull>::run(data, dt, egoMotion);
 
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& P          = underlying.getCovForInternalUse();
@@ -33,12 +34,13 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(con
 }
 
 template <typename MotionModel, typename FloatType>
-inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run(const FloatType                        dt,
-                                                                                 const filter::KalmanFilter<FloatType>& filter,
-                                                                                 const env::EgoMotion<FloatType>&       egoMotion)
+inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run(
+    const FloatType                                                  dt,
+    const filter::KalmanFilter<FloatType>&                           filter,
+    const env::EgoMotion<math::CovarianceMatrixFactored, FloatType>& egoMotion)
 {
-  static typename PredictCommon<MotionModel, FloatType>::Storage data{};
-  PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
+  static typename PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFactored>::Storage data{};
+  PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFactored>::run(data, dt, egoMotion);
 
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& P          = underlying.getCovForInternalUse();
@@ -58,12 +60,13 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run
 }
 
 template <typename MotionModel, typename FloatType>
-inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(const FloatType                             dt,
-                                                                             const filter::InformationFilter<FloatType>& filter,
-                                                                             const env::EgoMotion<FloatType>& egoMotion)
+inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(
+    const FloatType                                              dt,
+    const filter::InformationFilter<FloatType>&                  filter,
+    const env::EgoMotion<math::CovarianceMatrixFull, FloatType>& egoMotion)
 {
-  static typename PredictCommon<MotionModel, FloatType>::Storage data{};
-  PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
+  static typename PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFull>::Storage data{};
+  PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFull>::run(data, dt, egoMotion);
 
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& Y          = underlying.getCovForInternalUse();
@@ -84,10 +87,12 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(con
 
 template <typename MotionModel, typename FloatType>
 inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run(
-    const FloatType dt, const filter::InformationFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion)
+    const FloatType                                                  dt,
+    const filter::InformationFilter<FloatType>&                      filter,
+    const env::EgoMotion<math::CovarianceMatrixFactored, FloatType>& egoMotion)
 {
-  static typename PredictCommon<MotionModel, FloatType>::Storage data{};
-  PredictCommon<MotionModel, FloatType>::run(data, dt, egoMotion);
+  static typename PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFactored>::Storage data{};
+  PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFactored>::run(data, dt, egoMotion);
 
   auto& underlying = static_cast<MotionModel&>(*this);
   auto& Y          = underlying.getCovForInternalUse();

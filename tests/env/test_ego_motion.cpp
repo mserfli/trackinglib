@@ -29,15 +29,15 @@ protected:
     dt = 0.1; // 100ms time step
   }
 
-  EgoMotion<float64>::InertialMotion motion{};
-  EgoMotion<float64>::Geometry       geometry{};
-  float64                            dt{};
+  EgoMotion<math::CovarianceMatrixFull, float64>::InertialMotion motion{};
+  EgoMotion<math::CovarianceMatrixFull, float64>::Geometry       geometry{};
+  float64                                                        dt{};
 };
 
 // Test linear motion displacement
 TEST_F(EgoMotionTest, LinearMotionDisplacement__Success)
 {
-  auto egoMotion = EgoMotion<float64>{motion, geometry, dt};
+  auto egoMotion = EgoMotion<math::CovarianceMatrixFull, float64>{motion, geometry, dt};
 
   // Expected displacement values (from derivation)
   const float64 expected_dx   = 1.009983166750833e+00; // T*v + 0.5*T²*(a - v*w)
@@ -75,7 +75,7 @@ TEST_F(EgoMotionTest, CircularMotionDisplacement__Success)
   // Use larger ω for circular motion
   motion.w = 0.5; // 0.5 rad/s
 
-  auto egoMotion = EgoMotion<float64>{motion, geometry, dt};
+  auto egoMotion = EgoMotion<math::CovarianceMatrixFull, float64>{motion, geometry, dt};
 
   // Expected displacement values (from circular motion equations)
   const float64 expected_dx   = 1.009579219267702e+00;
