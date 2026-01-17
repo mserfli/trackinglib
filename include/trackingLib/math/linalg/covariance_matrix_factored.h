@@ -83,6 +83,11 @@ public:
   /// \return CovarianceMatrixFactored
   static auto Identity() -> CovarianceMatrixFactored;
 
+  /// \brief Construct a diagonal covariance matrix
+  /// \param[in] diag  Diagonal matrix
+  /// \return CovarianceMatrixFactored
+  static auto FromDiagonal(const DiagonalMatrix<FloatType_, Size_>& diag) -> CovarianceMatrixFactored;
+
   /// \brief Creates a CovarianceMatrixFactored from separate U and D initializer lists
   ///
   /// This function constructs a factored covariance matrix from separate initializer lists

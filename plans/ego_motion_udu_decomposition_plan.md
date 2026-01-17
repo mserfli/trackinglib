@@ -185,7 +185,8 @@ public:
                                      _motion);
         }
     }
-    
+
+private:    
     // Static methods for Jacobian calculation (pure functions)
     static auto calcLinearMotionJacobian(const InertialMotion& motion, FloatType dt) 
         -> math::SquareMatrix<FloatType, 3, true>;
@@ -193,7 +194,6 @@ public:
     static auto calcCircularMotionJacobian(const InertialMotion& motion, FloatType dt)
         -> math::SquareMatrix<FloatType, 3, true>;
     
-private:
     // Common displacement vector calculation
     static void calcDisplacementVector(Displacement& displacement,
                                      const InertialMotion& motion,
@@ -216,36 +216,17 @@ void EgoMotion<CovarianceMatrixType, FloatType>::calcDisplacementCovariance(
     const math::SquareMatrix<FloatType, 3, true>& J,
     const InertialMotion& motion)
 {
-    if constexpr (std::is_same_v<CovarianceMatrixType<FloatType, 3>, 
-                                 CovarianceMatrixFactored<FloatType, 3>>)
-    {
-        // Simplified UDU implementation using existing interface
-        displacement.cov.setIdentity();
-        
-        // Set diagonal elements to create Pin = diag([σ_v², σ_a², σ_ω²])
-        displacement.cov.setDiagonal(0, math::pow<2>(motion.sv));
-        displacement.cov.setDiagonal(1, math::pow<2>(motion.sa));
-        displacement.cov.setDiagonal(2, math::pow<2>(motion.sw));
-        
-        // Apply the transformation: P = J * Pin * J^T using apaT
-        displacement.cov.apaT(J);
-    }
-    else
-    {
-        // Full matrix implementation
-        CovarianceMatrixFull<FloatType, 3> fullCov{};
-        fullCov.setZeros();
-        
-        // Set diagonal elements
-        fullCov.at_unsafe(0, 0) = math::pow<2>(motion.sv);
-        fullCov.at_unsafe(1, 1) = math::pow<2>(motion.sa);
-        fullCov.at_unsafe(2, 2) = math::pow<2>(motion.sw);
-        
-        // Apply transformation
-        fullCov.apaT(J);
-        
-        displacement.cov = std::move(fullCov);
-    }
+    // Generic implementation for both covariance matrix types
+    // Create diagonal matrix from motion uncertainties
+    auto diag = DiagonalMatrix<FloatType, 3>::FromList({math::pow<2>(motion.sv),
+                                                        math::pow<2>(motion.sa),
+                                                        math::pow<2>(motion.sw)});
+
+    // Create covariance matrix using generic FromDiagonal constructor
+    displacement.cov = std::move(CovarianceMatrixType<FloatType, 3>::FromDiagonal(diag));
+
+    // Apply the transformation: P = J * Pin * J^T using apaT
+    displacement.cov.apaT(J);
 }
 ```
 

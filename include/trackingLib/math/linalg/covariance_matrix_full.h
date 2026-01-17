@@ -87,6 +87,10 @@ public:
   /// \return CovarianceMatrixFull  Resulting identity matrix
   static auto Identity() -> CovarianceMatrixFull { return CovarianceMatrixFull{BaseSquareMatrix::Identity()}; }
 
+  /// \brief Construct a diagonal covariance matrix
+  /// \return CovarianceMatrixFactored
+  static auto FromDiagonal(const DiagonalMatrix<FloatType_, Size_>& diag) -> CovarianceMatrixFull;
+
   /// \brief Creates a CovarianceMatrixFull from a nested initializer list
   ///
   /// This function constructs a full covariance matrix from a nested initializer list.
