@@ -53,7 +53,7 @@ void EgoMotion<FloatType_>::compensateDirection(FloatType_&      dxNewEgo,
 template <typename FloatType_>
 auto EgoMotion<FloatType_>::isLinearMotion() const -> bool
 {
-  constexpr FloatType_ omegaThreshold = static_cast<FloatType_>(1e-6);
+  constexpr FloatType_ omegaThreshold = static_cast<FloatType_>(9e-3);
   return (math::pow<4>(_motion.w) < omegaThreshold);
 }
 
@@ -109,24 +109,6 @@ void EgoMotion<FloatType_>::calcCircularMotionDisplacement(Displacement&        
   // Based on: P = J * Pin * J^T
   // where J is the Jacobian of [dx, dy, dphi] with respect to [v, a, w]
 
-  // Jacobian elements (from symbolic derivation)
-  // Partial derivatives for dx
-  const FloatType_ dx_dv = (2.0 * T * sin_dphi_2 * cos_dphi_2) / dphi;
-  const FloatType_ dx_da = (T * T * sin_dphi_2 * cos_dphi_2) / dphi;
-  const FloatType_ dx_dw = (-(2.0 * v * T + a * T * T) * sin_dphi_2 * cos_dphi_2 / (dphi * dphi)) +
-                           ((2.0 * v * T + a * T * T) * sin_dphi_2 * sin_dphi_2 * T / (2.0 * dphi));
-
-  // Partial derivatives for dy
-  const FloatType_ dy_dv = (2.0 * T * sin_dphi_2 * sin_dphi_2) / dphi;
-  const FloatType_ dy_da = (T * T * sin_dphi_2 * sin_dphi_2) / dphi;
-  const FloatType_ dy_dw = (-(2.0 * v * T + a * T * T) * sin_dphi_2 * sin_dphi_2 / (dphi * dphi)) +
-                           ((2.0 * v * T + a * T * T) * sin_dphi_2 * cos_dphi_2 * T / (2.0 * dphi));
-
-  // Partial derivatives for dphi
-  const FloatType_ dphi_dv = 0.0;
-  const FloatType_ dphi_da = 0.0;
-  const FloatType_ dphi_dw = T;
-
   // Build Jacobian matrix (3x3)
   // J = [dx_dv, dx_da, dx_dw;
   //      dy_dv, dy_da, dy_dw;
@@ -149,21 +131,24 @@ void EgoMotion<FloatType_>::calcCircularMotionDisplacement(Displacement&        
   using JacobianMatrix = math::SquareMatrix<FloatType_, 3, true>;
   JacobianMatrix J{};
 
-  // Set Jacobian elements
-  J.at_unsafe(0, 0) = dx_dv; // dx/dv
-  J.at_unsafe(0, 1) = dx_da; // dx/da
-  J.at_unsafe(0, 2) = dx_dw; // dx/dw
-
-  J.at_unsafe(1, 0) = dy_dv; // dy/dv
-  J.at_unsafe(1, 1) = dy_da; // dy/da
-  J.at_unsafe(1, 2) = dy_dw; // dy/dw
-
-  J.at_unsafe(2, 0) = dphi_dv; // dphi/dv
-  J.at_unsafe(2, 1) = dphi_da; // dphi/da
-  J.at_unsafe(2, 2) = dphi_dw; // dphi/dw
+  J.at_unsafe(0, 0) = 2 * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w;
+  J.at_unsafe(0, 1) = T * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w;
+  J.at_unsafe(0, 2) = -1.0 / 2.0 * T * (T * a + 2 * v) * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / w +
+                      (1.0 / 2.0) * T * (T * a + 2 * v) * math::pow<2>(std::cos((1.0 / 2.0) * T * w)) / w -
+                      (T * a + 2 * v) * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / (w * w);
+  J.at_unsafe(1, 0) = 2 * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / w;
+  J.at_unsafe(1, 1) = T * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / w;
+  J.at_unsafe(1, 2) = T * (T * a + 2 * v) * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w -
+                      (T * a + 2 * v) * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / (w * w);
+  J.at_unsafe(2, 0) = 0;
+  J.at_unsafe(2, 1) = 0;
+  J.at_unsafe(2, 2) = T;
 
   // Compute covariance in-place: P = J * Pin * J^T using apaT method
   cov.apaT(J);
+
+  std::cout << cov << std::endl;
+
   displacement.cov = std::move(cov);
 }
 
@@ -178,6 +163,35 @@ void EgoMotion<FloatType_>::calcLinearMotionDisplacement(Displacement& displacem
   const FloatType_ a = motion.a;
   const FloatType_ w = motion.w;
 
+  // Calculate angular displacement: dφ = ω·T
+  const FloatType_ dphi   = w * dt;
+  const FloatType_ dphi_2 = dphi / 2.0;
+  // Precompute trigonometric values for efficiency
+  const FloatType_ sin_dphi_2 = std::sin(dphi_2);
+  const FloatType_ cos_dphi_2 = std::cos(dphi_2);
+
+  // Calculate secant length
+  // c = (2·v·T + a·T^2)/dφ · sin(dφ/2) = T * (2·v + a·T)/dφ · sin(dφ/2)
+  const FloatType_ c = T * (2.0 * v + a * T) / dphi * sin_dphi_2;
+
+  // Calculate displacement components
+  FloatType_ dx = c * cos_dphi_2;
+  FloatType_ dy = c * sin_dphi_2;
+
+
+  // Set displacement vector
+  displacement.vec.at_unsafe(DS_X)   = dx;
+  displacement.vec.at_unsafe(DS_Y)   = dy;
+  displacement.vec.at_unsafe(DS_PSI) = dphi;
+
+  // Precompute trigonometric values for efficiency
+  displacement.sinDeltaPsi = std::sin(dphi);
+  displacement.cosDeltaPsi = std::cos(dphi);
+
+  // Compute covariance matrix using the simplified Jacobian for small omega
+  // Jacobian becomes simpler in the limit
+
+
   // Limit equations
   // dx = T*v + 0.5*T^2*a - 0.5*T^2*v*w
   // dy = 0.5*T^2*v*w
@@ -185,21 +199,8 @@ void EgoMotion<FloatType_>::calcLinearMotionDisplacement(Displacement& displacem
 
   const FloatType_ fac0 = math::pow<2>(T);
   const FloatType_ fac1 = static_cast<FloatType_>(0.5) * fac0;
-  const FloatType_ dx   = T * v + fac1 * (a - v * w);
-  const FloatType_ dy   = fac1 * v * w;
-  const FloatType_ dpsi = T * w;
-
-  // Set displacement vector
-  displacement.vec.at_unsafe(DS_X)   = dx;
-  displacement.vec.at_unsafe(DS_Y)   = dy;
-  displacement.vec.at_unsafe(DS_PSI) = dpsi;
-
-  // Precompute trigonometric values for efficiency
-  displacement.sinDeltaPsi = std::sin(dpsi);
-  displacement.cosDeltaPsi = std::cos(dpsi);
-
-  // Compute covariance matrix using the simplified Jacobian for small omega
-  // Jacobian becomes simpler in the limit
+  dx                    = T * v + fac1 * (a - v * w);
+  dy                    = fac1 * v * w;
 
   // Partial derivatives for small omega case
   const FloatType_ dx_dv_small = T - fac1 * w;
