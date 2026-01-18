@@ -84,12 +84,12 @@ public:
   /// For small angular velocities (ω→0), simplified equations (linear motion) are used to avoid numerical issues.
   struct InertialMotion
   {
-    FloatType_ v{};  ///< Velocity [m/s]
-    FloatType_ a{};  ///< Acceleration [m/s²]
-    FloatType_ w{};  ///< Yaw rate [rad/s]
-    FloatType_ sv{}; ///< Velocity uncertainty (standard deviation) [m/s]
-    FloatType_ sa{}; ///< Acceleration uncertainty (standard deviation) [m/s²]
-    FloatType_ sw{}; ///< Yaw rate uncertainty (standard deviation) [rad/s]
+    FloatType_ v{};      ///< Velocity [m/s]
+    FloatType_ a{};      ///< Acceleration [m/s²]
+    FloatType_ w{};      ///< Yaw rate [rad/s]
+    FloatType_ sv{1e-6}; ///< Velocity uncertainty (standard deviation) [m/s]
+    FloatType_ sa{1e-6}; ///< Acceleration uncertainty (standard deviation) [m/s²]
+    FloatType_ sw{1e-6}; ///< Yaw rate uncertainty (standard deviation) [rad/s]
   };
 
   /// \brief Vehicle geometry parameters

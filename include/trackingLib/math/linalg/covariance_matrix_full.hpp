@@ -15,6 +15,7 @@ namespace math
 template <typename FloatType_, sint32 Size_>
 auto CovarianceMatrixFull<FloatType_, Size_>::FromDiagonal(const DiagonalMatrix<FloatType_, Size_>& diag) -> CovarianceMatrixFull
 {
+  assert(diag.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
   return CovarianceMatrixFull{diag};
 }
 

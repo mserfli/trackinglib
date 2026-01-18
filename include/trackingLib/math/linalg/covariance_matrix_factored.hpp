@@ -40,6 +40,7 @@ template <typename FloatType_, sint32 Size_>
 auto CovarianceMatrixFactored<FloatType_, Size_>::FromDiagonal(const DiagonalMatrix<FloatType_, Size_>& diag)
     -> CovarianceMatrixFactored
 {
+  assert(diag.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
   return CovarianceMatrixFactored{TriangularMatrix<FloatType_, Size_, false, true>::Identity(), diag};
 }
 
