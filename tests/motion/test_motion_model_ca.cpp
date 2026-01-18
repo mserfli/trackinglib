@@ -11,17 +11,17 @@ using TestFloatType = float32;
 template class tracking::motion::MotionModelCA<tracking::math::FullCovarianceMatrixPolicy<TestFloatType>>;
 template class tracking::motion::MotionModelCA<tracking::math::FactoredCovarianceMatrixPolicy<TestFloatType>>;
 
-template <typename CovarianceMatrixPolicy_, template <typename FloatType> class FilterType>
+template <typename CovarianceMatrixPolicy_, template <typename CovarianceMatrixPolicy> class FilterType>
 struct TestPredictCA
 {
   using MM             = tracking::motion::MotionModelCA<CovarianceMatrixPolicy_>;
   using EgoMotionInst  = tracking::env::EgoMotion<CovarianceMatrixPolicy_>;
+  using FilterTypeInst = FilterType<CovarianceMatrixPolicy_>;
   using FloatType      = typename CovarianceMatrixPolicy_::FloatType;
-  using FilterTypeInst = FilterType<FloatType>;
 
   static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const FilterTypeInst& /*filter*/)
   {
-    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<FloatType>>)
+    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<CovarianceMatrixPolicy_>>)
     {
       // InformationFilter behavior: invert covariance matrices
       cov    = cov.inverse().value();
@@ -36,7 +36,7 @@ struct TestPredictCA
 
   static auto tolerance(const FilterTypeInst& /*filter*/) -> FloatType
   {
-    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<FloatType>>)
+    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<CovarianceMatrixPolicy_>>)
     {
       return static_cast<FloatType>(1e-3);
     }

@@ -23,8 +23,8 @@ class Predict: public PredictCommon<MotionModel_, CovarianceMatrixPolicy_>
 public:
   using super_predict_common_type = PredictCommon<MotionModel_, CovarianceMatrixPolicy_>;
   using FloatType                 = typename CovarianceMatrixPolicy_::FloatType;
-  using KalmanFilterType          = filter::KalmanFilter<FloatType>;
-  using InformationFilterType     = filter::InformationFilter<FloatType>;
+  using KalmanFilterType          = filter::KalmanFilter<CovarianceMatrixPolicy_>;
+  using InformationFilterType     = filter::InformationFilter<CovarianceMatrixPolicy_>;
   using EgoMotionType             = env::EgoMotion<CovarianceMatrixPolicy_>;
 
   /// \brief State prediction with ego motion compensation using a KalmanFilter

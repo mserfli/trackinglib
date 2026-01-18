@@ -14,25 +14,22 @@ namespace tracking
 namespace filter
 {
 
-template <typename FloatType_>
+template <typename CovarianceMatrixPolicy_>
 template <sint32 DimX_, sint32 DimQ_>
-inline void KalmanFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFull<FloatType_, DimX_>& P,
-                                                        const math::SquareMatrix<FloatType_, DimX_>&   A,
-                                                        const math::Matrix<FloatType_, DimX_, DimQ_>&  G,
-                                                        const math::DiagonalMatrix<FloatType_, DimQ_>& Q)
+inline void KalmanFilter<CovarianceMatrixPolicy_>::predictCovariance(CovarianceMatrixType<DimX_>&                  P,
+                                                                     const math::SquareMatrix<FloatType, DimX_>&   A,
+                                                                     const math::Matrix<FloatType, DimX_, DimQ_>&  G,
+                                                                     const math::DiagonalMatrix<FloatType, DimQ_>& Q)
 {
-  P = math::CovarianceMatrixFull<FloatType_, DimX_>{
-      typename math::CovarianceMatrixFull<FloatType_, DimX_>::SquareMatrix{A * P * A.transpose() + G * Q * G.transpose()}};
-}
-
-template <typename FloatType_>
-template <sint32 DimX_, sint32 DimQ_>
-inline void KalmanFilter<FloatType_>::predictCovariance(math::CovarianceMatrixFactored<FloatType_, DimX_>& P,
-                                                        const math::SquareMatrix<FloatType_, DimX_>&       A,
-                                                        const math::Matrix<FloatType_, DimX_, DimQ_>&      G,
-                                                        const math::DiagonalMatrix<FloatType_, DimQ_>&     Q)
-{
-  P.thornton(A, G, Q);
+  if constexpr (CovarianceMatrixPolicy_::is_factored)
+  {
+    P.thornton(A, G, Q);
+  }
+  else
+  {
+    P = math::CovarianceMatrixFull<FloatType, DimX_>{
+        typename math::CovarianceMatrixFull<FloatType, DimX_>::SquareMatrix{A * P * A.transpose() + G * Q * G.transpose()}};
+  }
 }
 
 } // namespace filter

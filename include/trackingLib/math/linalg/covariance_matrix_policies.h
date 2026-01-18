@@ -54,7 +54,7 @@ struct FullCovarianceMatrixPolicy: CovarianceMatrixPolicyBase
   /// \tparam Size Dimension of the covariance matrix (Size × Size)
   /// \return Concrete covariance matrix type for the specified size
   template <sint32 Size>
-  using Instantiate = CovarianceMatrixFull<FloatT_, Size>;
+  using Instantiate = CovarianceMatrixFull<FloatType, Size>;
 };
 
 /// \brief Policy for using UDU factored covariance matrix representation
@@ -91,7 +91,7 @@ struct FactoredCovarianceMatrixPolicy: CovarianceMatrixPolicyBase
   /// \tparam Size Dimension of the covariance matrix (Size × Size)
   /// \return Concrete covariance matrix type for the specified size
   template <sint32 Size>
-  using Instantiate = CovarianceMatrixFactored<FloatT_, Size>;
+  using Instantiate = CovarianceMatrixFactored<FloatType, Size>;
 };
 
 } // namespace math

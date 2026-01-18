@@ -26,8 +26,8 @@ class IMotionModel
 public:
   using FloatType             = typename CovarianceMatrixPolicy_::FloatType;
   using EgoMotionType         = env::EgoMotion<CovarianceMatrixPolicy_>;
-  using KalmanFilterType      = filter::KalmanFilter<FloatType>;
-  using InformationFilterType = filter::InformationFilter<FloatType>;
+  using KalmanFilterType      = filter::KalmanFilter<CovarianceMatrixPolicy_>;
+  using InformationFilterType = filter::InformationFilter<CovarianceMatrixPolicy_>;
 
   // rule of 5 declarations
   IMotionModel()          = default;

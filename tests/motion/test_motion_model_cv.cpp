@@ -12,16 +12,17 @@ using TestFloatType = float32;
 template class tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<TestFloatType>>;
 template class tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<TestFloatType>>;
 
-template <typename CovarianceMatrixPolicy_, template <typename FloatType> class FilterType, typename FloatType>
+template <typename CovarianceMatrixPolicy_, template <typename CovarianceMatrixPolicy> class FilterType>
 struct TestPredictCV
 {
   using MM             = tracking::motion::MotionModelCV<CovarianceMatrixPolicy_>;
   using EgoMotionInst  = tracking::env::EgoMotion<CovarianceMatrixPolicy_>;
-  using FilterTypeInst = FilterType<FloatType>;
+  using FilterTypeInst = FilterType<CovarianceMatrixPolicy_>;
+  using FloatType      = typename CovarianceMatrixPolicy_::FloatType;
 
   static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const FilterTypeInst& /*filter*/)
   {
-    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<FloatType>>)
+    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<CovarianceMatrixPolicy_>>)
     {
       // InformationFilter behavior: invert covariance matrices
       cov    = cov.inverse().value();
@@ -146,33 +147,32 @@ struct TestPredictCV
 
 TEST(MotionModelCV, predict_fullCov_kalmanFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<TestFloatType>, tracking::filter::KalmanFilter, TestFloatType>::
-      run_without_ego_motion_compensation();
+  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<TestFloatType>,
+                tracking::filter::KalmanFilter>::run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_fullCov_kalmanFilter_egoMotion) // NOLINT
 {
-  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<TestFloatType>, tracking::filter::KalmanFilter, TestFloatType>::
-      run_with_ego_motion_compensation();
+  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<TestFloatType>,
+                tracking::filter::KalmanFilter>::run_with_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_factoredCov_kalmanFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<TestFloatType>, tracking::filter::KalmanFilter, TestFloatType>::
-      run_without_ego_motion_compensation();
+  TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<TestFloatType>,
+                tracking::filter::KalmanFilter>::run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_fullCov_informationFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<TestFloatType>, tracking::filter::InformationFilter, TestFloatType>::
-      run_without_ego_motion_compensation();
+  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<TestFloatType>,
+                tracking::filter::InformationFilter>::run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_factoredCov_informationFilter) // NOLINT
 {
   TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<TestFloatType>,
-                tracking::filter::InformationFilter,
-                TestFloatType>::run_without_ego_motion_compensation();
+                tracking::filter::InformationFilter>::run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, convertCA_fullCov) // NOLINT
