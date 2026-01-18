@@ -8,16 +8,8 @@ namespace tracking
 namespace motion
 {
 
-template <typename MM_Dst,
-          typename MM_Src,
-          typename FloatType,
-          template <typename FloatType_, sint32 Size_>
-          class CovarianceMatrixType>
-class StateVecConverter;
-
-template <typename MM, typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
-inline void StateVecConverter<MM, MM, FloatType, CovarianceMatrixType>::convertFrom(typename MM::StateVec&       dstVec,
-                                                                                    const typename MM::StateVec& srcVec)
+template <typename MM>
+inline void StateVecConverter<MM, MM>::convertFrom(typename MM::StateVec& dstVec, const typename MM::StateVec& srcVec)
 {
   if (&srcVec != &dstVec)
   {
@@ -25,16 +17,13 @@ inline void StateVecConverter<MM, MM, FloatType, CovarianceMatrixType>::convertF
   }
 }
 
-template <typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
-inline void StateVecConverter<
-    MotionModelCV<CovarianceMatrixType, FloatType>,
-    MotionModelCA<CovarianceMatrixType, FloatType>,
-    FloatType,
-    CovarianceMatrixType>::convertFrom(typename MotionModelCV<CovarianceMatrixType, FloatType>::StateVec&       dstVec,
-                                       const typename MotionModelCA<CovarianceMatrixType, FloatType>::StateVec& srcVec)
+template <typename CovarianceMatrixPolicy_>
+inline void StateVecConverter<MotionModelCV<CovarianceMatrixPolicy_>, MotionModelCA<CovarianceMatrixPolicy_>>::convertFrom(
+    typename MotionModelCV<CovarianceMatrixPolicy_>::StateVec&       dstVec,
+    const typename MotionModelCA<CovarianceMatrixPolicy_>::StateVec& srcVec)
 {
-  using DstType = MotionModelCV<CovarianceMatrixType, FloatType>;
-  using SrcType = MotionModelCA<CovarianceMatrixType, FloatType>;
+  using DstType = MotionModelCV<CovarianceMatrixPolicy_>;
+  using SrcType = MotionModelCA<CovarianceMatrixPolicy_>;
 
   dstVec.at_unsafe(DstType::X)  = srcVec.at_unsafe(SrcType::X);
   dstVec.at_unsafe(DstType::VX) = srcVec.at_unsafe(SrcType::VX);
@@ -42,16 +31,14 @@ inline void StateVecConverter<
   dstVec.at_unsafe(DstType::VY) = srcVec.at_unsafe(SrcType::VY);
 }
 
-template <typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
-inline void StateVecConverter<
-    MotionModelCA<CovarianceMatrixType, FloatType>,
-    MotionModelCV<CovarianceMatrixType, FloatType>,
-    FloatType,
-    CovarianceMatrixType>::convertFrom(typename MotionModelCA<CovarianceMatrixType, FloatType>::StateVec&       dstVec,
-                                       const typename MotionModelCV<CovarianceMatrixType, FloatType>::StateVec& srcVec)
+template <typename CovarianceMatrixPolicy_>
+inline void StateVecConverter<MotionModelCA<CovarianceMatrixPolicy_>, MotionModelCV<CovarianceMatrixPolicy_>>::convertFrom(
+    typename MotionModelCA<CovarianceMatrixPolicy_>::StateVec&       dstVec,
+    const typename MotionModelCV<CovarianceMatrixPolicy_>::StateVec& srcVec)
 {
-  using DstType = MotionModelCA<CovarianceMatrixType, FloatType>;
-  using SrcType = MotionModelCV<CovarianceMatrixType, FloatType>;
+  using DstType   = MotionModelCA<CovarianceMatrixPolicy_>;
+  using SrcType   = MotionModelCV<CovarianceMatrixPolicy_>;
+  using FloatType = typename CovarianceMatrixPolicy_::FloatType;
 
   dstVec.at_unsafe(DstType::X)  = srcVec.at_unsafe(SrcType::X);
   dstVec.at_unsafe(DstType::VX) = srcVec.at_unsafe(SrcType::VX);

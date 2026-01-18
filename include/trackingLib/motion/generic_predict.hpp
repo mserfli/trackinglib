@@ -15,61 +15,71 @@ namespace motion
 namespace generic
 {
 
-template <typename MotionModel, typename FloatType>
-inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(
-    const FloatType                                              dt,
-    const filter::KalmanFilter<FloatType>&                       filter,
-    const env::EgoMotion<math::CovarianceMatrixFull, FloatType>& egoMotion)
+template <typename MotionModel_, typename CovarianceMatrixPolicy_>
+inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const FloatType         dt,
+                                                                const KalmanFilterType& filter,
+                                                                const EgoMotionType&    egoMotion)
 {
-  static typename PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFull>::Storage data{};
-  PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFull>::run(data, dt, egoMotion);
+  static typename super_predict_common_type::Storage data{};
+  super_predict_common_type::run(data, dt, egoMotion);
 
-  auto& underlying = static_cast<MotionModel&>(*this);
+  auto& underlying = static_cast<MotionModel_&>(*this);
   auto& P          = underlying.getCovForInternalUse();
-  //  apply ego motion compensation on P
-  P = typename MotionModel::StateCov(typename MotionModel::StateCov::SquareMatrix{
-      (data.Go * P * data.Go.transpose()) + (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose())});
 
-  filter.predictCovariance(P, data.A, data.G, data.Q);
+  using Policy = typename MotionModel_::instance_trait::CovarianceMatrixPolicy;
+  if constexpr (Policy::is_factored)
+  {
+    static auto AGo = typename MotionModel_::StateMatrix{data.A * data.Go};
+
+    // TODO(matthias): complete calculations of the factored predict
+
+    // TODO(matthias): Optimization - provide a new BlockDiagonal matrix class to reduce operations on known zero elements
+    static typename MotionModel_::AugmentedProcessNoiseDiagMatrix Qstar; // [De 0; 0 Q]
+    // TODO(matthias): Optimization - we could also have a vector of matrices to avoid constructing augmented matrices with copy
+    // operations
+    static typename MotionModel_::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
+
+    filter.predictCovariance(P, AGo, data.G, data.Q);
+  }
+  else
+  {
+    //  apply ego motion compensation on P
+    P = typename MotionModel_::StateCov(typename MotionModel_::StateCov::SquareMatrix{
+        (data.Go * P * data.Go.transpose()) + (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose())});
+
+    filter.predictCovariance(P, data.A, data.G, data.Q);
+  }
 }
 
-template <typename MotionModel, typename FloatType>
-inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run(
-    const FloatType                                                  dt,
-    const filter::KalmanFilter<FloatType>&                           filter,
-    const env::EgoMotion<math::CovarianceMatrixFactored, FloatType>& egoMotion)
+template <typename MotionModel_, typename CovarianceMatrixPolicy_>
+inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const FloatType              dt,
+                                                                const InformationFilterType& filter,
+                                                                const EgoMotionType&         egoMotion)
 {
-  static typename PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFactored>::Storage data{};
-  PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFactored>::run(data, dt, egoMotion);
+  static typename super_predict_common_type::Storage data{};
+  super_predict_common_type::run(data, dt, egoMotion);
 
-  auto& underlying = static_cast<MotionModel&>(*this);
-  auto& P          = underlying.getCovForInternalUse();
-  // assert(!P.isInverse() && "Covariance may not represent an inverse covariance!");
-
-  static auto AGo = typename MotionModel::StateMatrix{data.A * data.Go};
-
-  // TODO(matthias): complete calculations of the factored predict
-
-  // TODO(matthias): Optimization - provide a new BlockDiagonal matrix class to reduce operations on known zero elements
-  static typename MotionModel::AugmentedProcessNoiseDiagMatrix Qstar; // [De 0; 0 Q]
-  // TODO(matthias): Optimization - we could also have a vector of matrices to avoid constructing augmented matrices with copy
-  // operations
-  static typename MotionModel::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
-
-  filter.predictCovariance(P, AGo, data.G, data.Q);
-}
-
-template <typename MotionModel, typename FloatType>
-inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(
-    const FloatType                                              dt,
-    const filter::InformationFilter<FloatType>&                  filter,
-    const env::EgoMotion<math::CovarianceMatrixFull, FloatType>& egoMotion)
-{
-  static typename PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFull>::Storage data{};
-  PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFull>::run(data, dt, egoMotion);
-
-  auto& underlying = static_cast<MotionModel&>(*this);
+  auto& underlying = static_cast<MotionModel_&>(*this);
   auto& Y          = underlying.getCovForInternalUse();
+
+  using Policy = typename MotionModel_::instance_trait::CovarianceMatrixPolicy;
+  if constexpr (Policy::is_factored)
+  {
+    static auto AGo = typename MotionModel_::StateMatrix{data.A * data.Go};
+
+    // TODO(matthias): complete calculations of the factored predict
+
+    // TODO(matthias): Optimization - provide a new BlockDiagonal matrix class to reduce operations on known zero elements
+    static typename MotionModel_::AugmentedProcessNoiseDiagMatrix Qstar; // [De 0; 0 Q]
+    // TODO(matthias): Optimization - we could also have a vector of matrices to avoid constructing augmented matrices with copy
+    // operations
+    static typename MotionModel_::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
+
+    // filter.predictCovariance(P, AGo, Gstar, Qstar);
+    filter.predictCovariance(Y, AGo, data.G, data.Q);
+  }
+  else
+  {
 #if 0 // TODO(matthias): ego motion compensation is quite complicated here, maybe neglect influence of Ge*Pe*Ge'
     // reconstruct P which might cause issues because P becomes extremly large
     static auto postP = cov.inverse();
@@ -80,35 +90,10 @@ inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFull>::run(
     Y = compP.inverse();
     filter.predictCovariance(Y, data.A, data.G, data.Q);
 #else
-  // we neglect the uncertainty of Ge*De*Ge'
-  filter.predictCovariance(Y, typename MotionModel::StateMatrix(data.A * data.Go), data.G, data.Q);
+    // we neglect the uncertainty of Ge*De*Ge'
+    filter.predictCovariance(Y, typename MotionModel_::StateMatrix(data.A * data.Go), data.G, data.Q);
 #endif
-}
-
-template <typename MotionModel, typename FloatType>
-inline void Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>::run(
-    const FloatType                                                  dt,
-    const filter::InformationFilter<FloatType>&                      filter,
-    const env::EgoMotion<math::CovarianceMatrixFactored, FloatType>& egoMotion)
-{
-  static typename PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFactored>::Storage data{};
-  PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFactored>::run(data, dt, egoMotion);
-
-  auto& underlying = static_cast<MotionModel&>(*this);
-  auto& Y          = underlying.getCovForInternalUse();
-
-  static auto AGo = typename MotionModel::StateMatrix{data.A * data.Go};
-
-  // TODO(matthias): complete calculations of the factored predict
-
-  // TODO(matthias): Optimization - provide a new BlockDiagonal matrix class to reduce operations on known zero elements
-  static typename MotionModel::AugmentedProcessNoiseDiagMatrix Qstar; // [De 0; 0 Q]
-  // TODO(matthias): Optimization - we could also have a vector of matrices to avoid constructing augmented matrices with copy
-  // operations
-  static typename MotionModel::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
-
-  // filter.predictCovariance(P, AGo, Gstar, Qstar);
-  filter.predictCovariance(Y, AGo, data.G, data.Q);
+  }
 }
 
 } // namespace generic

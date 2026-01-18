@@ -3,7 +3,7 @@
 
 #include "motion/generic_predict_common.h"
 
-#include "env/ego_motion.hpp"
+#include "env/ego_motion.hpp" // IWYU pragma: keep
 
 namespace tracking
 {
@@ -12,12 +12,13 @@ namespace motion
 namespace generic
 {
 
-template <typename MotionModel, typename FloatType, template <typename FloatType_, sint32 Size> class CovarianceMatrixType>
-inline void PredictCommon<MotionModel, FloatType, CovarianceMatrixType>::run(
-    Storage& data, const FloatType dt, const env::EgoMotion<CovarianceMatrixType, FloatType>& egoMotion)
+template <typename MotionModel_, typename CovarianceMatrixPolicy_>
+inline void PredictCommon<MotionModel_, CovarianceMatrixPolicy_>::run(Storage&             data,
+                                                                      const FloatType      dt,
+                                                                      const EgoMotionType& egoMotion)
 {
-  assert(dt >= static_cast<FloatType>(0.0));
-  auto& underlying = static_cast<MotionModel&>(*this);
+  assert(dt >= static_cast<FloatType>(0));
+  auto& underlying = static_cast<MotionModel_&>(*this);
 
   // transform posteriori state into current frame
   underlying.compensateEgoMotion(data.Ge, data.Go, egoMotion);

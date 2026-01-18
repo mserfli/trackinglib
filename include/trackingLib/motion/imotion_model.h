@@ -5,29 +5,29 @@
 #include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
-#include "math/linalg/conversions/covariance_matrix_conversions.hpp"
-#include "math/linalg/covariance_matrix_factored.h"
 #include "math/linalg/errors.h"
+#include "motion/motion_model_traits.h" // IWYU pragma: keep
 #include "motion/state_mem.h"
-#include <type_traits>
 
 namespace tracking
 {
 namespace motion
 {
-namespace generic
-{
-
-template <typename T, typename FloatType_, template <typename, sint32> class CovarianceMatrixType_>
-class Predict; // Forward declaration only
-} // namespace generic
 
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
-template <template <typename FloatType_, sint32 Size> class CovarianceMatrixType, typename FloatType>
+
+/// \brief Abstract Motion Model interface
+/// \tparam CovarianceMatrixPolicy_  Policy type that defines the covariance matrix implementation
+template <typename CovarianceMatrixPolicy_>
 class IMotionModel
 {
 public:
+  using FloatType             = typename CovarianceMatrixPolicy_::FloatType;
+  using EgoMotionType         = env::EgoMotion<CovarianceMatrixPolicy_>;
+  using KalmanFilterType      = filter::KalmanFilter<FloatType>;
+  using InformationFilterType = filter::InformationFilter<FloatType>;
+
   // rule of 5 declarations
   IMotionModel()          = default;
   virtual ~IMotionModel() = default;
@@ -43,13 +43,13 @@ public:
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  virtual void predict(const FloatType                        dt,
-                       const filter::KalmanFilter<FloatType>& filter, // TODO(matthias): decide between overloading or base class
-                       const env::EgoMotion<CovarianceMatrixType, FloatType>& egoMotion) = 0;
+  virtual void predict(const FloatType dt, const KalmanFilterType& filter, const EgoMotionType& egoMotion) = 0;
 
-  virtual void predict(const FloatType                                        dt,
-                       const filter::InformationFilter<FloatType>&            filter,
-                       const env::EgoMotion<CovarianceMatrixType, FloatType>& egoMotion) = 0;
+  /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
+  /// \param[in] dt         The delta time from last state to predicted state
+  /// \param[in] filter     The filter instance
+  /// \param[in] egoMotion  The known egoMotion from last state to predicted state
+  virtual void predict(const FloatType dt, const InformationFilterType& filter, const EgoMotionType& egoMotion) = 0;
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
@@ -63,19 +63,21 @@ TEST_REMOVE_PROTECTED:
   auto operator=(IMotionModel&&) noexcept -> IMotionModel&   = default;
 };
 
-// clang-format off
-template <typename MotionModel,
-          template <typename FloatType, sint32 Size> class CovarianceMatrixType,
-          typename FloatType,
-          sint32 Size>
-// clang-format on
+/// \brief Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance
+/// \tparam MotionModel_
+/// \tparam MotionModelTrait_
+template <typename MotionModel_, typename MotionModelTrait_>
 class ExtendedMotionModel
-    : public IMotionModel<CovarianceMatrixType, FloatType>
-    , public StateMem<CovarianceMatrixType, FloatType, Size>
+    : public IMotionModel<typename MotionModelTrait_::CovarianceMatrixPolicy>
+    , public StateMem<typename MotionModelTrait_::CovarianceMatrixPolicy, MotionModelTrait_::Size>
 {
 public:
-  using typename StateMem<CovarianceMatrixType, FloatType, Size>::StateVec;
-  using typename StateMem<CovarianceMatrixType, FloatType, Size>::StateCov;
+  using FloatType        = typename MotionModelTrait_::FloatType;
+  using StateDef         = typename MotionModelTrait_::StateDef;
+  using BaseIMotionModel = IMotionModel<typename MotionModelTrait_::CovarianceMatrixPolicy>;
+  using BaseStateMem     = StateMem<typename MotionModelTrait_::CovarianceMatrixPolicy, MotionModelTrait_::Size>;
+  using typename BaseStateMem::StateCov;
+  using typename BaseStateMem::StateVec;
 
   // rule of 5 declarations
   ExtendedMotionModel()          = default;
@@ -84,25 +86,14 @@ public:
   /// \brief Create state vector from initializer list
   /// \param[in] list  Initializer list with state values
   /// \return StateVec
-  static auto StateVecFromList(const std::initializer_list<FloatType>& list) -> StateVec
-  {
-    return tracking::math::Vector<FloatType, Size>::FromList(list);
-  }
+  static auto StateVecFromList(const std::initializer_list<FloatType>& list) -> StateVec { return StateVec::FromList(list); }
 
   /// \brief Create state covariance from initializer list
   /// \param[in] list  Nested initializer list with covariance values
   /// \return StateCov
   static auto StateCovFromList(const std::initializer_list<std::initializer_list<FloatType>>& list) -> StateCov
   {
-    if constexpr (std::is_same_v<CovarianceMatrixType<FloatType, Size>, math::CovarianceMatrixFull<FloatType, Size>>)
-    {
-      return math::CovarianceMatrixFull<FloatType, Size>::FromList(list);
-    }
-
-    if constexpr (std::is_same_v<CovarianceMatrixType<FloatType, Size>, math::CovarianceMatrixFactored<FloatType, Size>>)
-    {
-      return tracking::math::conversions::CovarianceMatrixFactoredFromList<FloatType, Size>(list);
-    }
+    return StateCov::FromList(list);
   }
 
   /// \brief Create complete ExtendedMotionModel from initializer lists
@@ -110,20 +101,20 @@ public:
   /// \param[in] covList  Nested initializer list for covariance matrix
   /// \return ExtendedMotionModel instance
   static auto FromLists(const std::initializer_list<FloatType>&                        vecList,
-                        const std::initializer_list<std::initializer_list<FloatType>>& covList) -> MotionModel
+                        const std::initializer_list<std::initializer_list<FloatType>>& covList) -> MotionModel_
   {
     auto vec = StateVecFromList(vecList);
     auto cov = StateCovFromList(covList);
-    return MotionModel{vec, cov};
+    return MotionModel_{vec, cov};
   }
 
   /// \brief Read access to x position
   /// \return FloatType
-  auto getX() const -> FloatType final { return this->operator[](MotionModel::X); }
+  auto getX() const -> FloatType final { return this->operator[](StateDef::X); }
 
   /// \brief Read access to y position
   /// \return FloatType
-  auto getY() const -> FloatType final { return this->operator[](MotionModel::Y); }
+  auto getY() const -> FloatType final { return this->operator[](StateDef::Y); }
 
   /// \brief Inverts the state covariance matrix into information form and vice versa
   auto invertCov() -> tl::expected<void, math::Errors>;
@@ -143,19 +134,15 @@ TEST_REMOVE_PROTECTED:
   /// \param[in] vec
   /// \param[in] cov
   explicit ExtendedMotionModel(const StateVec& vec, const StateCov& cov)
-      : IMotionModel<CovarianceMatrixType, FloatType>{}
-      , StateMem<CovarianceMatrixType, FloatType, Size>{vec, cov}
+      : BaseIMotionModel{}
+      , BaseStateMem{vec, cov}
   {
     assert(cov.determinant() > 0);
   }
 };
 
-template <typename MotionModel,
-          template <typename FloatType, sint32 Size>
-          class CovarianceMatrixType,
-          typename FloatType,
-          sint32 Size>
-auto ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>::invertCov() -> tl::expected<void, math::Errors>
+template <typename MotionModel_, typename MotionModelTrait_>
+auto ExtendedMotionModel<MotionModel_, MotionModelTrait_>::invertCov() -> tl::expected<void, math::Errors>
 {
   auto&& res = this->getCov().inverse();
   if (res.has_value())

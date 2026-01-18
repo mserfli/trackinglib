@@ -17,11 +17,11 @@ namespace tracking
 namespace env
 {
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-void EgoMotion<CovarianceMatrixType_, FloatType_>::compensatePosition(FloatType_&      posXNewEgo,
-                                                                      FloatType_&      posYNewEgo,
-                                                                      const FloatType_ posXOldEgo,
-                                                                      const FloatType_ posYOldEgo) const
+template <typename CovarianceMatrixPolicy_>
+void EgoMotion<CovarianceMatrixPolicy_>::compensatePosition(FloatType&      posXNewEgo,
+                                                            FloatType&      posYNewEgo,
+                                                            const FloatType posXOldEgo,
+                                                            const FloatType posYOldEgo) const
 {
   // transfer to COG
   auto posOldCog = Point2d::FromValues(posXOldEgo, posYOldEgo);
@@ -39,41 +39,41 @@ void EgoMotion<CovarianceMatrixType_, FloatType_>::compensatePosition(FloatType_
   posXNewEgo -= _geometry.distCog2Ego;
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-void EgoMotion<CovarianceMatrixType_, FloatType_>::compensateDirection(FloatType_&      dxNewEgo,
-                                                                       FloatType_&      dyNewEgo,
-                                                                       const FloatType_ dxOldEgo,
-                                                                       const FloatType_ dyOldEgo) const
+template <typename CovarianceMatrixPolicy_>
+void EgoMotion<CovarianceMatrixPolicy_>::compensateDirection(FloatType&      dxNewEgo,
+                                                             FloatType&      dyNewEgo,
+                                                             const FloatType dxOldEgo,
+                                                             const FloatType dyOldEgo) const
 {
   // rotate a vector (velocity or acceleration) according to deltaPsi
   dxNewEgo = (_displacementCog.cosDeltaPsi * dxOldEgo) + (_displacementCog.sinDeltaPsi * dyOldEgo);
   dyNewEgo = -(_displacementCog.sinDeltaPsi * dxOldEgo) + (_displacementCog.cosDeltaPsi * dyOldEgo);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-auto EgoMotion<CovarianceMatrixType_, FloatType_>::isLinearMotion() const -> bool
+template <typename CovarianceMatrixPolicy_>
+auto EgoMotion<CovarianceMatrixPolicy_>::isLinearMotion() const -> bool
 {
-  constexpr FloatType_ omegaThreshold = static_cast<FloatType_>(9e-3);
+  constexpr FloatType omegaThreshold = static_cast<FloatType>(9e-3);
   return (math::pow<4>(_motion.w) < omegaThreshold);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-void EgoMotion<CovarianceMatrixType_, FloatType_>::calcDisplacement()
+template <typename CovarianceMatrixPolicy_>
+void EgoMotion<CovarianceMatrixPolicy_>::calcDisplacement()
 {
   calcDisplacementVector(_displacementCog, _motion, _dt);
   const auto J = isLinearMotion() ? calcLinearMotionJacobian(_motion, _dt) : calcCircularMotionJacobian(_motion, _dt);
   calcDisplacementCovariance(_displacementCog, J, _motion);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-auto EgoMotion<CovarianceMatrixType_, FloatType_>::calcLinearMotionJacobian(const InertialMotion& motion, FloatType_ dt)
-    -> math::SquareMatrix<FloatType_, 3, true>
+template <typename CovarianceMatrixPolicy_>
+auto EgoMotion<CovarianceMatrixPolicy_>::calcLinearMotionJacobian(const InertialMotion& motion,
+                                                                  FloatType dt) -> math::SquareMatrix<FloatType, 3, true>
 {
   const auto T = dt;
   const auto v = motion.v;
   const auto a = motion.a;
 
-  math::SquareMatrix<FloatType_, 3, true> J{};
+  math::SquareMatrix<FloatType, 3, true> J{};
   J.setZeros();
   J.at_unsafe(0, 0) = T;
   J.at_unsafe(0, 1) = (1.0 / 2.0) * pow(T, 2);
@@ -83,16 +83,16 @@ auto EgoMotion<CovarianceMatrixType_, FloatType_>::calcLinearMotionJacobian(cons
   return std::move(J);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-auto EgoMotion<CovarianceMatrixType_, FloatType_>::calcCircularMotionJacobian(const InertialMotion& motion, FloatType_ dt)
-    -> math::SquareMatrix<FloatType_, 3, true>
+template <typename CovarianceMatrixPolicy_>
+auto EgoMotion<CovarianceMatrixPolicy_>::calcCircularMotionJacobian(const InertialMotion& motion,
+                                                                    FloatType dt) -> math::SquareMatrix<FloatType, 3, true>
 {
   const auto T = dt;
   const auto v = motion.v;
   const auto a = motion.a;
   const auto w = motion.w;
 
-  math::SquareMatrix<FloatType_, 3, true> J{};
+  math::SquareMatrix<FloatType, 3, true> J{};
   J.setZeros();
   J.at_unsafe(0, 0) = 2 * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w;
   J.at_unsafe(0, 1) = T * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w;
@@ -108,32 +108,32 @@ auto EgoMotion<CovarianceMatrixType_, FloatType_>::calcCircularMotionJacobian(co
   return std::move(J);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-void EgoMotion<CovarianceMatrixType_, FloatType_>::calcDisplacementVector(Displacement&         displacement,
-                                                                          const InertialMotion& motion,
-                                                                          FloatType_            dt)
+template <typename CovarianceMatrixPolicy_>
+void EgoMotion<CovarianceMatrixPolicy_>::calcDisplacementVector(Displacement&         displacement,
+                                                                const InertialMotion& motion,
+                                                                FloatType             dt)
 {
-  const FloatType_ T = dt;
-  const FloatType_ v = motion.v;
-  const FloatType_ a = motion.a;
-  const FloatType_ w = motion.w;
+  const FloatType T = dt;
+  const FloatType v = motion.v;
+  const FloatType a = motion.a;
+  const FloatType w = motion.w;
 
   // Calculate angular displacement: dφ = ω·T
-  const FloatType_ dphi   = w * dt;
-  const FloatType_ dphi_2 = dphi / 2.0;
+  const FloatType dphi   = w * dt;
+  const FloatType dphi_2 = dphi / 2.0;
   // Precompute trigonometric values for efficiency
-  const FloatType_ sin_dphi   = std::sin(dphi);
-  const FloatType_ sin_dphi_2 = std::sin(dphi_2);
-  const FloatType_ cos_dphi   = std::cos(dphi);
-  const FloatType_ cos_dphi_2 = std::cos(dphi_2);
+  const FloatType sin_dphi   = std::sin(dphi);
+  const FloatType sin_dphi_2 = std::sin(dphi_2);
+  const FloatType cos_dphi   = std::cos(dphi);
+  const FloatType cos_dphi_2 = std::cos(dphi_2);
 
   // Calculate secant length
   // c = (2·v·T + a·T^2)/dφ · sin(dφ/2) = T * (2·v + a·T)/dφ · sin(dφ/2)
-  const FloatType_ c = T * (2.0 * v + a * T) / dphi * sin_dphi_2;
+  const FloatType c = T * (2.0 * v + a * T) / dphi * sin_dphi_2;
 
   // Calculate displacement components
-  const FloatType_ dx = c * cos_dphi_2;
-  const FloatType_ dy = c * sin_dphi_2;
+  const FloatType dx = c * cos_dphi_2;
+  const FloatType dy = c * sin_dphi_2;
 
   // Set displacement vector
   displacement.vec.at_unsafe(DS_X)   = dx;
@@ -143,15 +143,15 @@ void EgoMotion<CovarianceMatrixType_, FloatType_>::calcDisplacementVector(Displa
   displacement.cosDeltaPsi           = cos_dphi;
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-void EgoMotion<CovarianceMatrixType_, FloatType_>::calcDisplacementCovariance(Displacement& displacement,
-                                                                              const math::SquareMatrix<FloatType_, 3, true>& J,
-                                                                              const InertialMotion& motion)
+template <typename CovarianceMatrixPolicy_>
+void EgoMotion<CovarianceMatrixPolicy_>::calcDisplacementCovariance(Displacement&                                 displacement,
+                                                                    const math::SquareMatrix<FloatType, 3, true>& J,
+                                                                    const InertialMotion&                         motion)
 {
   // clang-format off
   // Create diagonal matrix from motion uncertainties
   auto diag =
-    math::DiagonalMatrix<FloatType_, 3>::FromList({
+    math::DiagonalMatrix<FloatType, 3>::FromList({
       math::pow<2>(motion.sv), math::pow<2>(motion.sa), math::pow<2>(motion.sw)
   });
   // clang-format on
@@ -166,32 +166,32 @@ void EgoMotion<CovarianceMatrixType_, FloatType_>::calcDisplacementCovariance(Di
 
 #if 0
 // Implementation of displacement computation methods based on circular motion equations
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-void EgoMotion<CovarianceMatrixType_, FloatType_>::calcCircularMotionDisplacement(Displacement&         displacement,
+template <typename CovarianceMatrixPolicy_>
+void EgoMotion<CovarianceMatrixPolicy_>::calcCircularMotionDisplacement(Displacement&         displacement,
                                                                                   const InertialMotion& motion,
-                                                                                  FloatType_            dt)
+                                                                                  FloatType            dt)
 {
-  const FloatType_ T = dt;
-  const FloatType_ v = motion.v;
-  const FloatType_ a = motion.a;
-  const FloatType_ w = motion.w;
+  const FloatType T = dt;
+  const FloatType v = motion.v;
+  const FloatType a = motion.a;
+  const FloatType w = motion.w;
 
   // Calculate angular displacement: dφ = ω·T
-  const FloatType_ dphi   = w * dt;
-  const FloatType_ dphi_2 = dphi / 2.0;
+  const FloatType dphi   = w * dt;
+  const FloatType dphi_2 = dphi / 2.0;
   // Precompute trigonometric values for efficiency
-  const FloatType_ sin_dphi   = std::sin(dphi);
-  const FloatType_ sin_dphi_2 = std::sin(dphi_2);
-  const FloatType_ cos_dphi   = std::cos(dphi);
-  const FloatType_ cos_dphi_2 = std::cos(dphi_2);
+  const FloatType sin_dphi   = std::sin(dphi);
+  const FloatType sin_dphi_2 = std::sin(dphi_2);
+  const FloatType cos_dphi   = std::cos(dphi);
+  const FloatType cos_dphi_2 = std::cos(dphi_2);
 
   // Calculate secant length
   // c = (2·v·T + a·T^2)/dφ · sin(dφ/2) = T * (2·v + a·T)/dφ · sin(dφ/2)
-  const FloatType_ c = T * (2.0 * v + a * T) / dphi * sin_dphi_2;
+  const FloatType c = T * (2.0 * v + a * T) / dphi * sin_dphi_2;
 
   // Calculate displacement components
-  const FloatType_ dx = c * cos_dphi_2;
-  const FloatType_ dy = c * sin_dphi_2;
+  const FloatType dx = c * cos_dphi_2;
+  const FloatType dy = c * sin_dphi_2;
 
   // Set displacement vector
   displacement.vec.at_unsafe(DS_X)   = dx;
@@ -223,7 +223,7 @@ void EgoMotion<CovarianceMatrixType_, FloatType_>::calcCircularMotionDisplacemen
   cov.at_unsafe(2, 2) = math::pow<2>(motion.sw); // σ_ω²
 
   // Create Jacobian matrix (3x3)
-  using JacobianMatrix = math::SquareMatrix<FloatType_, 3, true>;
+  using JacobianMatrix = math::SquareMatrix<FloatType, 3, true>;
   JacobianMatrix J{};
 
   J.at_unsafe(0, 0) = 2 * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w;
@@ -247,33 +247,33 @@ void EgoMotion<CovarianceMatrixType_, FloatType_>::calcCircularMotionDisplacemen
   displacement.cov = std::move(cov);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
-void EgoMotion<CovarianceMatrixType_, FloatType_>::calcLinearMotionDisplacement(Displacement&         displacement,
+template <typename CovarianceMatrixPolicy_>
+void EgoMotion<CovarianceMatrixPolicy_>::calcLinearMotionDisplacement(Displacement&         displacement,
                                                                                 const InertialMotion& motion,
-                                                                                FloatType_            dt)
+                                                                                FloatType            dt)
 {
   // Small omega approximation using the limit equations
   // lim(ω→0) of the displacement equations
 
-  const FloatType_ T = dt;
-  const FloatType_ v = motion.v;
-  const FloatType_ a = motion.a;
-  const FloatType_ w = motion.w;
+  const FloatType T = dt;
+  const FloatType v = motion.v;
+  const FloatType a = motion.a;
+  const FloatType w = motion.w;
 
   // Calculate angular displacement: dφ = ω·T
-  const FloatType_ dphi   = w * dt;
-  const FloatType_ dphi_2 = dphi / 2.0;
+  const FloatType dphi   = w * dt;
+  const FloatType dphi_2 = dphi / 2.0;
   // Precompute trigonometric values for efficiency
-  const FloatType_ sin_dphi_2 = std::sin(dphi_2);
-  const FloatType_ cos_dphi_2 = std::cos(dphi_2);
+  const FloatType sin_dphi_2 = std::sin(dphi_2);
+  const FloatType cos_dphi_2 = std::cos(dphi_2);
 
   // Calculate secant length
   // c = (2·v·T + a·T^2)/dφ · sin(dφ/2) = T * (2·v + a·T)/dφ · sin(dφ/2)
-  const FloatType_ c = T * (2.0 * v + a * T) / dphi * sin_dphi_2;
+  const FloatType c = T * (2.0 * v + a * T) / dphi * sin_dphi_2;
 
   // Calculate displacement components
-  FloatType_ dx = c * cos_dphi_2;
-  FloatType_ dy = c * sin_dphi_2;
+  FloatType dx = c * cos_dphi_2;
+  FloatType dy = c * sin_dphi_2;
 
 
   // Set displacement vector
@@ -294,23 +294,23 @@ void EgoMotion<CovarianceMatrixType_, FloatType_>::calcLinearMotionDisplacement(
   // dy = 0.5*T^2*v*w
   // dphi = T*w
 
-  const FloatType_ fac0 = math::pow<2>(T);
-  const FloatType_ fac1 = static_cast<FloatType_>(0.5) * fac0;
+  const FloatType fac0 = math::pow<2>(T);
+  const FloatType fac1 = static_cast<FloatType>(0.5) * fac0;
   dx                    = T * v + fac1 * (a - v * w);
   dy                    = fac1 * v * w;
 
   // Partial derivatives for small omega case
-  const FloatType_ dx_dv_small = T - fac1 * w;
-  const FloatType_ dx_da_small = fac1;
-  const FloatType_ dx_dw_small = -fac0 * v;
+  const FloatType dx_dv_small = T - fac1 * w;
+  const FloatType dx_da_small = fac1;
+  const FloatType dx_dw_small = -fac0 * v;
 
-  const FloatType_ dy_dv_small = fac1 * w;
-  const FloatType_ dy_da_small = 0.0;
-  const FloatType_ dy_dw_small = fac1 * v;
+  const FloatType dy_dv_small = fac1 * w;
+  const FloatType dy_da_small = 0.0;
+  const FloatType dy_dw_small = fac1 * v;
 
-  const FloatType_ dphi_dv_small = 0.0;
-  const FloatType_ dphi_da_small = 0.0;
-  const FloatType_ dphi_dw_small = T;
+  const FloatType dphi_dv_small = 0.0;
+  const FloatType dphi_da_small = 0.0;
+  const FloatType dphi_dw_small = T;
 
   // Compute output covariance using matrix operations: P = J * Pin * J^T
   // Initialize covariance matrix to zeros
@@ -324,7 +324,7 @@ void EgoMotion<CovarianceMatrixType_, FloatType_>::calcLinearMotionDisplacement(
   cov.at_unsafe(2, 2) = math::pow<2>(motion.sw); // σ_ω²
 
   // Create Jacobian matrix (3x3)
-  using JacobianMatrix = math::SquareMatrix<FloatType_, 3, true>;
+  using JacobianMatrix = math::SquareMatrix<FloatType, 3, true>;
   JacobianMatrix J{};
 
   // Set Jacobian elements for small omega case
