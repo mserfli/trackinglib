@@ -36,7 +36,7 @@ namespace env
 ///
 /// \tparam CovarianceMatrixType_ Template template for covariance matrix type (CovarianceMatrixFull or CovarianceMatrixFactored)
 /// \tparam FloatType_ Floating-point type for computations (float32, float64)
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType_, typename FloatType_>
+template <template <typename FloatType_, sint32 Size_> class CovarianceMatrixType_, typename FloatType_>
 class EgoMotion
 {
 public:
