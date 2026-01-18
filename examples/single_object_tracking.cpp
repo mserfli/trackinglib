@@ -44,9 +44,9 @@ int main()
       .v  = static_cast<FloatType>(0.0), // velocity
       .a  = static_cast<FloatType>(0.0), // acceleration
       .w  = static_cast<FloatType>(0.0), // yaw rate
-      .sv = static_cast<FloatType>(0.0), // velocity uncertainty
-      .sa = static_cast<FloatType>(0.0), // acceleration uncertainty
-      .sw = static_cast<FloatType>(0.0)  // yaw rate uncertainty
+      .sv = static_cast<FloatType>(1e-6), // velocity uncertainty
+      .sa = static_cast<FloatType>(1e-6), // acceleration uncertainty
+      .sw = static_cast<FloatType>(1e-6)  // yaw rate uncertainty
   };
 
   EgoMotionType::Geometry geometry{

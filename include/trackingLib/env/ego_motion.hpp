@@ -11,6 +11,7 @@
 #include "math/linalg/square_matrix.hpp"                             // IWYU pragma: keep
 #include "math/linalg/vector.hpp"                                    // IWYU pragma: keep
 #include <cmath>
+#include <limits>
 
 namespace tracking
 {
@@ -76,8 +77,8 @@ auto EgoMotion<CovarianceMatrixPolicy_>::calcLinearMotionJacobian(const Inertial
   math::SquareMatrix<FloatType, 3, true> J{};
   J.setZeros();
   J.at_unsafe(0, 0) = T;
-  J.at_unsafe(0, 1) = (1.0 / 2.0) * pow(T, 2);
-  J.at_unsafe(1, 2) = (1.0 / 4.0) * pow(T, 3) * a + (1.0 / 2.0) * pow(T, 2) * v;
+  J.at_unsafe(0, 1) = (0.5) * pow(T, 2);
+  J.at_unsafe(1, 2) = (0.25) * pow(T, 3) * a + (0.5) * pow(T, 2) * v;
   J.at_unsafe(2, 2) = T;
 
   return std::move(J);
@@ -94,15 +95,15 @@ auto EgoMotion<CovarianceMatrixPolicy_>::calcCircularMotionJacobian(const Inerti
 
   math::SquareMatrix<FloatType, 3, true> J{};
   J.setZeros();
-  J.at_unsafe(0, 0) = 2 * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w;
-  J.at_unsafe(0, 1) = T * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w;
-  J.at_unsafe(0, 2) = -1.0 / 2.0 * T * (T * a + 2 * v) * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / w +
-                      (1.0 / 2.0) * T * (T * a + 2 * v) * math::pow<2>(std::cos((1.0 / 2.0) * T * w)) / w -
-                      (T * a + 2 * v) * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / (w * w);
-  J.at_unsafe(1, 0) = 2 * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / w;
-  J.at_unsafe(1, 1) = T * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / w;
-  J.at_unsafe(1, 2) = T * (T * a + 2 * v) * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w -
-                      (T * a + 2 * v) * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / (w * w);
+  J.at_unsafe(0, 0) = 2 * std::sin((0.5) * T * w) * std::cos((0.5) * T * w) / w;
+  J.at_unsafe(0, 1) = T * std::sin((0.5) * T * w) * std::cos((0.5) * T * w) / w;
+  J.at_unsafe(0, 2) = -0.5 * T * (T * a + 2 * v) * math::pow<2>(std::sin((0.5) * T * w)) / w +
+                      (0.5) * T * (T * a + 2 * v) * math::pow<2>(std::cos((0.5) * T * w)) / w -
+                      (T * a + 2 * v) * std::sin((0.5) * T * w) * std::cos((0.5) * T * w) / (w * w);
+  J.at_unsafe(1, 0) = 2 * math::pow<2>(std::sin((0.5) * T * w)) / w;
+  J.at_unsafe(1, 1) = T * math::pow<2>(std::sin((0.5) * T * w)) / w;
+  J.at_unsafe(1, 2) = T * (T * a + 2 * v) * std::sin((0.5) * T * w) * std::cos((0.5) * T * w) / w -
+                      (T * a + 2 * v) * math::pow<2>(std::sin((0.5) * T * w)) / (w * w);
   J.at_unsafe(2, 2) = T;
 
   return std::move(J);
@@ -117,30 +118,40 @@ void EgoMotion<CovarianceMatrixPolicy_>::calcDisplacementVector(Displacement&   
   const FloatType v = motion.v;
   const FloatType a = motion.a;
   const FloatType w = motion.w;
+  if (std::abs(T * w) < std::numeric_limits<FloatType>::epsilon())
+  {
+    // special case for (T*w) very close to zero
+    displacement.vec.setZeros();
+    displacement.vec.at_unsafe(DS_X) = 0.5 * T * (2 * v + a * T);
+    displacement.sinDeltaPsi         = static_cast<FloatType>(0);
+    displacement.cosDeltaPsi         = static_cast<FloatType>(1);
+  }
+  else
+  {
+    // Calculate angular displacement: dφ = ω·T
+    const FloatType dphi   = w * dt;
+    const FloatType dphi_2 = dphi / 2.0;
+    // Precompute trigonometric values for efficiency
+    const FloatType sin_dphi   = std::sin(dphi);
+    const FloatType sin_dphi_2 = std::sin(dphi_2);
+    const FloatType cos_dphi   = std::cos(dphi);
+    const FloatType cos_dphi_2 = std::cos(dphi_2);
 
-  // Calculate angular displacement: dφ = ω·T
-  const FloatType dphi   = w * dt;
-  const FloatType dphi_2 = dphi / 2.0;
-  // Precompute trigonometric values for efficiency
-  const FloatType sin_dphi   = std::sin(dphi);
-  const FloatType sin_dphi_2 = std::sin(dphi_2);
-  const FloatType cos_dphi   = std::cos(dphi);
-  const FloatType cos_dphi_2 = std::cos(dphi_2);
+    // Calculate secant length
+    // c = (2·v·T + a·T^2)/dφ · sin(dφ/2) = T * (2·v + a·T)/dφ · sin(dφ/2)
+    const FloatType c = T * (2.0 * v + a * T) / dphi * sin_dphi_2;
 
-  // Calculate secant length
-  // c = (2·v·T + a·T^2)/dφ · sin(dφ/2) = T * (2·v + a·T)/dφ · sin(dφ/2)
-  const FloatType c = T * (2.0 * v + a * T) / dphi * sin_dphi_2;
+    // Calculate displacement components
+    const FloatType dx = c * cos_dphi_2;
+    const FloatType dy = c * sin_dphi_2;
 
-  // Calculate displacement components
-  const FloatType dx = c * cos_dphi_2;
-  const FloatType dy = c * sin_dphi_2;
-
-  // Set displacement vector
-  displacement.vec.at_unsafe(DS_X)   = dx;
-  displacement.vec.at_unsafe(DS_Y)   = dy;
-  displacement.vec.at_unsafe(DS_PSI) = dphi;
-  displacement.sinDeltaPsi           = sin_dphi;
-  displacement.cosDeltaPsi           = cos_dphi;
+    // Set displacement vector
+    displacement.vec.at_unsafe(DS_X)   = dx;
+    displacement.vec.at_unsafe(DS_Y)   = dy;
+    displacement.vec.at_unsafe(DS_PSI) = dphi;
+    displacement.sinDeltaPsi           = sin_dphi;
+    displacement.cosDeltaPsi           = cos_dphi;
+  }
 }
 
 template <typename CovarianceMatrixPolicy_>
@@ -226,15 +237,15 @@ void EgoMotion<CovarianceMatrixPolicy_>::calcCircularMotionDisplacement(Displace
   using JacobianMatrix = math::SquareMatrix<FloatType, 3, true>;
   JacobianMatrix J{};
 
-  J.at_unsafe(0, 0) = 2 * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w;
-  J.at_unsafe(0, 1) = T * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w;
-  J.at_unsafe(0, 2) = -1.0 / 2.0 * T * (T * a + 2 * v) * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / w +
-                      (1.0 / 2.0) * T * (T * a + 2 * v) * math::pow<2>(std::cos((1.0 / 2.0) * T * w)) / w -
-                      (T * a + 2 * v) * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / (w * w);
-  J.at_unsafe(1, 0) = 2 * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / w;
-  J.at_unsafe(1, 1) = T * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / w;
-  J.at_unsafe(1, 2) = T * (T * a + 2 * v) * std::sin((1.0 / 2.0) * T * w) * std::cos((1.0 / 2.0) * T * w) / w -
-                      (T * a + 2 * v) * math::pow<2>(std::sin((1.0 / 2.0) * T * w)) / (w * w);
+  J.at_unsafe(0, 0) = 2 * std::sin((0.5) * T * w) * std::cos((0.5) * T * w) / w;
+  J.at_unsafe(0, 1) = T * std::sin((0.5) * T * w) * std::cos((0.5) * T * w) / w;
+  J.at_unsafe(0, 2) = -0.5 * T * (T * a + 2 * v) * math::pow<2>(std::sin((0.5) * T * w)) / w +
+                      (0.5) * T * (T * a + 2 * v) * math::pow<2>(std::cos((0.5) * T * w)) / w -
+                      (T * a + 2 * v) * std::sin((0.5) * T * w) * std::cos((0.5) * T * w) / (w * w);
+  J.at_unsafe(1, 0) = 2 * math::pow<2>(std::sin((0.5) * T * w)) / w;
+  J.at_unsafe(1, 1) = T * math::pow<2>(std::sin((0.5) * T * w)) / w;
+  J.at_unsafe(1, 2) = T * (T * a + 2 * v) * std::sin((0.5) * T * w) * std::cos((0.5) * T * w) / w -
+                      (T * a + 2 * v) * math::pow<2>(std::sin((0.5) * T * w)) / (w * w);
   J.at_unsafe(2, 0) = 0;
   J.at_unsafe(2, 1) = 0;
   J.at_unsafe(2, 2) = T;
