@@ -18,7 +18,7 @@ namespace motion
 /// \tparam CovarianceMatrixPolicy_ Policy type that defines the covariance matrix implementation
 /// \tparam Size_                   State dimension
 template <typename CovarianceMatrixPolicy_, sint32 Size_>
-class StateMem //: public contract::StateMemIntf<StateMem<CovarianceMatrixType, FloatType_, Size_>>
+class StateMem: public contract::StateMemIntf<StateMem<CovarianceMatrixPolicy_, Size_>>
 {
 public:
   using value_type    = typename CovarianceMatrixPolicy_::FloatType;

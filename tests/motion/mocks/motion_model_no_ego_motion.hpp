@@ -11,11 +11,12 @@ class MotionModelNoEgoMotionMock: public MM
 {
 public:
   using MM::MM;
+  using EgoMotionType = typename MM::EgoMotionType;
   MOCK_METHOD(void,
               compensateEgoMotion,
-              (typename MM::EgoMotionMappingMatrix&, typename MM::StateMatrix&, const typename MM::EgoMotion&),
+              (typename MM::EgoMotionMappingMatrix&, typename MM::StateMatrix&, const EgoMotionType&),
               (override));
-  void mock_compensateEgoMotion(typename MM::EgoMotionMappingMatrix&, typename MM::StateMatrix& Go, const typename MM::EgoMotion&)
+  void mock_compensateEgoMotion(typename MM::EgoMotionMappingMatrix&, typename MM::StateMatrix& Go, const EgoMotionType&)
   {
     Go.setIdentity();
   }
@@ -24,7 +25,7 @@ public:
     ON_CALL(*this, compensateEgoMotion)
         .WillByDefault([this](typename MM::EgoMotionMappingMatrix& Ge,
                               typename MM::StateMatrix&            Go,
-                              const typename MM::EgoMotion&        egoMotion) { mock_compensateEgoMotion(Ge, Go, egoMotion); });
+                              const EgoMotionType&                 egoMotion) { mock_compensateEgoMotion(Ge, Go, egoMotion); });
   }
 };
 } // namespace test

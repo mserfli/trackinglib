@@ -1,3 +1,4 @@
+#include "math/linalg/covariance_matrix_policies.h"
 #include "trackingLib/env/ego_motion.hpp"            // IWYU pragma: keep
 #include "trackingLib/filter/information_filter.hpp" // IWYU pragma: keep
 #include "trackingLib/filter/kalman_filter.hpp"      // IWYU pragma: keep
@@ -8,21 +9,21 @@
 
 using namespace tracking;
 
-#define CovarianceMatrixType math::CovarianceMatrixFull
-using FloatType = float64;
-
 int main()
 {
-  // Create an Filter instance
-  filter::InformationFilter<FloatType> informationFilter;
-  filter::KalmanFilter<FloatType>      kalmanFilter;
-
   // Define a MotionModelCV with full covariance matrix
   // State: [X, VX, Y, VY] - 4D state for constant velocity model
-  using MM = motion::MotionModelCV<CovarianceMatrixType, FloatType>;
+  using MM = motion::MotionModelCV<math::FullCovarianceMatrixPolicy<float64>>;
 
-  // Define an EgoMotion with same covariance matrix representation as the motion model
-  using EgoMotion = env::EgoMotion<CovarianceMatrixType, FloatType>;
+  // type aliases
+  using FloatType             = typename MM::FloatType;
+  using EgoMotionType         = typename MM::EgoMotionType;
+  using KalmanFilterType      = typename MM::KalmanFilterType;
+  using InformationFilterType = typename MM::InformationFilterType;
+
+  // Create an Filter instance
+  InformationFilterType informationFilter{};
+  KalmanFilterType      kalmanFilter{};
 
   // Initialize the object state: starting at x=30, y=10 with vx=10, vy=2.5
   // This represents a diagonal crossing object
@@ -39,7 +40,7 @@ int main()
 
   // Create ego motion with zero motion (ego vehicle is not moving)
   // This is the scenario where ego vehicle is stationary
-  EgoMotion::InertialMotion motionParams{
+  EgoMotionType::InertialMotion motionParams{
       .v  = static_cast<FloatType>(0.0), // velocity
       .a  = static_cast<FloatType>(0.0), // acceleration
       .w  = static_cast<FloatType>(0.0), // yaw rate
@@ -48,7 +49,7 @@ int main()
       .sw = static_cast<FloatType>(0.0)  // yaw rate uncertainty
   };
 
-  EgoMotion::Geometry geometry{
+  EgoMotionType::Geometry geometry{
       .width                  = static_cast<FloatType>(2.0),
       .length                 = static_cast<FloatType>(4.5),
       .height                 = static_cast<FloatType>(1.5),
@@ -87,7 +88,7 @@ int main()
     const FloatType currentTime = step * dt;
 
     // Create ego motion for this time step (zero motion)
-    EgoMotion egoMotion(motionParams, geometry, dt);
+    EgoMotionType egoMotion(motionParams, geometry, dt);
 
     std::cout << "Step " << step << " (t=" << currentTime << "s):" << std::endl;
 

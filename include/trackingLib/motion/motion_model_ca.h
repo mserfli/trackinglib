@@ -39,7 +39,7 @@ struct StateDefCA
 template <typename CovarianceMatrixPolicy_>
 class MotionModelCA TEST_REMOVE_FINAL
     : public StateDefCA
-    , public ExtendedMotionModel<MotionModelCV<CovarianceMatrixPolicy_>, MotionModelTraits<CovarianceMatrixPolicy_, StateDefCA>>
+    , public ExtendedMotionModel<MotionModelCA<CovarianceMatrixPolicy_>, MotionModelTraits<CovarianceMatrixPolicy_, StateDefCA>>
     , public generic::Predict<MotionModelCA<CovarianceMatrixPolicy_>, CovarianceMatrixPolicy_>
 {
 public:
@@ -50,7 +50,7 @@ public:
     NUM_PROC_NOISE_VARIABLES
   };
 
-  using instance_type              = MotionModelCV<CovarianceMatrixPolicy_>;
+  using instance_type              = MotionModelCA<CovarianceMatrixPolicy_>;
   using instance_trait             = MotionModelTraits<CovarianceMatrixPolicy_, StateDefCA>;
   using super_extended_mm_type     = ExtendedMotionModel<instance_type, instance_trait>;
   using super_generic_predict_type = generic::Predict<instance_type, CovarianceMatrixPolicy_>;

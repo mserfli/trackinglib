@@ -28,9 +28,9 @@ void MotionModelCA<CovarianceMatrixPolicy_>::predict(const FloatType         dt,
 }
 
 template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::predict(const FloatType                             dt,
-                                                     const filter::InformationFilter<FloatType>& filter,
-                                                     const EgoMotionType&                        egoMotion)
+void MotionModelCA<CovarianceMatrixPolicy_>::predict(const FloatType              dt,
+                                                     const InformationFilterType& filter,
+                                                     const EgoMotionType&         egoMotion)
 {
   super_generic_predict_type::run(dt, filter, egoMotion);
 }

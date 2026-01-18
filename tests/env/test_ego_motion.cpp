@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 #include <gtest/gtest.h>
-#include "env/ego_motion.hpp" // IWYU pragma: keep
-#include "math/linalg/covariance_matrix_factored.h"
-#include "math/linalg/covariance_matrix_full.h"
+#include "env/ego_motion.hpp"                         // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_full.hpp"     // IWYU pragma: keep
 #include <limits>
 
 namespace tracking
@@ -12,35 +12,13 @@ namespace tracking
 namespace env
 {
 
-// Matrix-Wrapper
-struct WrappedCovarianceMatrixFull
-{
-  template <typename T, sint32 S>
-  using Type = math::CovarianceMatrixFull<T, S>;
-};
-
-struct WrappedCovarianceMatrixFactored
-{
-  template <typename T, sint32 S>
-  using Type = math::CovarianceMatrixFactored<T, S>;
-};
-
-// carrier to bundle MatrixType and FloatType
-template <typename MatrixWrapper_, typename FloatType_>
-struct TestDefinition
-{
-  using Wrapper   = MatrixWrapper_;
-  using FloatType = FloatType_;
-};
-
 // Typed test fixture for ego motion calculations with different covariance matrix types
-template <typename T>
+template <typename CovarianceMatrixPolicy_>
 class GTestEgoMotion: public ::testing::Test
 {
 protected:
-  using FloatType     = typename T::FloatType;
-  using MatrixWrapper = typename T::Wrapper;
-  using EgoMotionType = EgoMotion<MatrixWrapper::template Type, FloatType>;
+  using FloatType     = typename CovarianceMatrixPolicy_::FloatType;
+  using EgoMotionType = EgoMotion<CovarianceMatrixPolicy_>;
 
   typename EgoMotionType::InertialMotion motion{};
   typename EgoMotionType::Geometry       geometry{};
@@ -136,10 +114,10 @@ protected:
 };
 
 // Define the types for typed tests
-using CovarianceMatrixTypes = ::testing::Types<TestDefinition<WrappedCovarianceMatrixFull, float32>,
-                                               TestDefinition<WrappedCovarianceMatrixFull, float64>,
-                                               TestDefinition<WrappedCovarianceMatrixFactored, float32>,
-                                               TestDefinition<WrappedCovarianceMatrixFactored, float64>>;
+using CovarianceMatrixTypes = ::testing::Types<math::FullCovarianceMatrixPolicy<float32>,
+                                               math::FullCovarianceMatrixPolicy<float64>,
+                                               math::FactoredCovarianceMatrixPolicy<float32>,
+                                               math::FactoredCovarianceMatrixPolicy<float64>>;
 
 TYPED_TEST_SUITE(GTestEgoMotion, CovarianceMatrixTypes);
 

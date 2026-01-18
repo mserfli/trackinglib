@@ -26,8 +26,8 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const FloatType 
   auto& underlying = static_cast<MotionModel_&>(*this);
   auto& P          = underlying.getCovForInternalUse();
 
-  using Policy = typename MotionModel_::instance_trait::CovarianceMatrixPolicy;
-  if constexpr (Policy::is_factored)
+  using CovarianceMatrixPolicy = typename MotionModel_::instance_trait::CovarianceMatrixPolicy;
+  if constexpr (CovarianceMatrixPolicy::is_factored)
   {
     static auto AGo = typename MotionModel_::StateMatrix{data.A * data.Go};
 
@@ -62,8 +62,8 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const FloatType 
   auto& underlying = static_cast<MotionModel_&>(*this);
   auto& Y          = underlying.getCovForInternalUse();
 
-  using Policy = typename MotionModel_::instance_trait::CovarianceMatrixPolicy;
-  if constexpr (Policy::is_factored)
+  using CovarianceMatrixPolicy = typename MotionModel_::instance_trait::CovarianceMatrixPolicy;
+  if constexpr (CovarianceMatrixPolicy::is_factored)
   {
     static auto AGo = typename MotionModel_::StateMatrix{data.A * data.Go};
 

@@ -5,6 +5,7 @@
 #include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
+#include "math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "math/linalg/errors.h"
 #include "motion/motion_model_traits.h" // IWYU pragma: keep
 #include "motion/state_mem.h"
@@ -72,10 +73,11 @@ class ExtendedMotionModel
     , public StateMem<typename MotionModelTrait_::CovarianceMatrixPolicy, MotionModelTrait_::Size>
 {
 public:
-  using FloatType        = typename MotionModelTrait_::FloatType;
-  using StateDef         = typename MotionModelTrait_::StateDef;
-  using BaseIMotionModel = IMotionModel<typename MotionModelTrait_::CovarianceMatrixPolicy>;
-  using BaseStateMem     = StateMem<typename MotionModelTrait_::CovarianceMatrixPolicy, MotionModelTrait_::Size>;
+  using FloatType              = typename MotionModelTrait_::FloatType;
+  using StateDef               = typename MotionModelTrait_::StateDef;
+  using CovarianceMatrixPolicy = typename MotionModelTrait_::CovarianceMatrixPolicy;
+  using BaseIMotionModel       = IMotionModel<CovarianceMatrixPolicy>;
+  using BaseStateMem           = StateMem<CovarianceMatrixPolicy, MotionModelTrait_::Size>;
   using typename BaseStateMem::StateCov;
   using typename BaseStateMem::StateVec;
 
@@ -93,7 +95,25 @@ public:
   /// \return StateCov
   static auto StateCovFromList(const std::initializer_list<std::initializer_list<FloatType>>& list) -> StateCov
   {
-    return StateCov::FromList(list);
+    if constexpr (CovarianceMatrixPolicy::is_factored)
+    {
+      return math::conversions::CovarianceMatrixFactoredFromList<FloatType, MotionModelTrait_::Size>(list);
+    }
+    else
+    {
+      return StateCov::FromList(list);
+    }
+  }
+
+  /// \brief Create factored state covariance from initializer list
+  /// \param[in] u Nested initializer list for the upper triangular U matrix
+  /// \param[in] d Flat initializer list for the diagonal D matrix
+  /// \return StateCov
+  template <typename T = CovarianceMatrixPolicy>
+  static auto StateCovFromList(const std::initializer_list<std::initializer_list<FloatType>>& u,
+                               const std::initializer_list<FloatType>& d) -> std::enable_if_t<T::is_factored, StateCov>
+  {
+    return StateCov::FromList(u, d);
   }
 
   /// \brief Create complete ExtendedMotionModel from initializer lists
