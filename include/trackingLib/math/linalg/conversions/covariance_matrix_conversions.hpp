@@ -61,28 +61,10 @@ template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::initializer_list<FloatType_>>& list)
     -> CovarianceMatrixFactored<FloatType_, Size_>
 {
-#if 0 // TODO(matthias): check why this is not producing the same results
-  // Information Formulation of the UDU Kalman Filter
-  // Christopher D’Souza and Renato Zanetti (2018)
-  // https://sites.utexas.edu/renato/files/2018/05/UDU_Information.pdf
-  const auto other = SquareMatrix<FloatType_, Size_, false>{compose_type::SquareMatrix::FromList(list).transpose()};
-  // we use the transpose of the input matrix to get a column major matrix
-  // transposing requires a symmetric input matrix
-  assert(other.isSymmetric() && "Input matrix is not symmetric");
-  // we decompose the input matrix into LDLt form, with L being a column major lower triangular matrix
-  const auto retVal = other.decomposeLDLT();
-  assert(retVal.has_value());
-  const auto [l, d] = retVal.value_or(std::make_pair(TriangularMatrix<FloatType_, Size_, true, false>::Identity(),
-                                                     DiagonalMatrix<FloatType_, Size_>::Identity()));
-  // we calc the inverse of L and D and map the inv(L).transpose() to U being again a row major upper triangular matrix
-  // the resulting UDUt matrix describes the covariance matrix in information form, i.e. the inverse covariance matrix
-  return CovarianceMatrixFactored{std::move(l.inverse().transpose()), std::move(d.inverse())};
-#else
   const auto other = CovarianceMatrixFactored<FloatType_, Size_>::compose_type::FromList(list);
   const auto cov   = CovarianceMatrixFactoredFromCovarianceMatrixFull<FloatType_, Size_>(other);
   assert(cov.has_value() && "Input matrix cannot be factored into UDUt form");
   return cov.value();
-#endif
 }
 
 } // namespace conversions

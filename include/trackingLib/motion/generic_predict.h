@@ -27,40 +27,50 @@ class Predict
 /// \tparam MotionModel           The underlying MotionModel
 /// \tparam FloatType             The float type representation
 template <typename MotionModel, typename FloatType>
-class Predict<MotionModel, FloatType, math::CovarianceMatrixFull>: public PredictCommon<MotionModel, FloatType>
+class Predict<MotionModel, FloatType, math::CovarianceMatrixFull>
+    : public PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFull>
 {
 public:
   /// \brief State prediction with ego motion compensation using a KalmanFilter
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  void run(const FloatType dt, const filter::KalmanFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion);
+  void run(const FloatType                                              dt,
+           const filter::KalmanFilter<FloatType>&                       filter,
+           const env::EgoMotion<math::CovarianceMatrixFull, FloatType>& egoMotion);
 
   /// \brief State prediction with ego motion compensation using an InformationFilter
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  void run(const FloatType dt, const filter::InformationFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion);
+  void run(const FloatType                                              dt,
+           const filter::InformationFilter<FloatType>&                  filter,
+           const env::EgoMotion<math::CovarianceMatrixFull, FloatType>& egoMotion);
 };
 
 /// \brief Partial specialization of the generic predictor for a factored covariance matrix
 /// \tparam MotionModel           The underlying MotionModel
 /// \tparam FloatType             The float type representation
 template <typename MotionModel, typename FloatType>
-class Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>: public PredictCommon<MotionModel, FloatType>
+class Predict<MotionModel, FloatType, math::CovarianceMatrixFactored>
+    : public PredictCommon<MotionModel, FloatType, math::CovarianceMatrixFactored>
 {
 public:
   /// \brief State prediction with ego motion compensation using a KalmanFilter
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  void run(const FloatType dt, const filter::KalmanFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion);
+  void run(const FloatType                                                  dt,
+           const filter::KalmanFilter<FloatType>&                           filter,
+           const env::EgoMotion<math::CovarianceMatrixFactored, FloatType>& egoMotion);
 
   /// \brief State prediction with ego motion compensation using an InformationFilter
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  void run(const FloatType dt, const filter::InformationFilter<FloatType>& filter, const env::EgoMotion<FloatType>& egoMotion);
+  void run(const FloatType                                                  dt,
+           const filter::InformationFilter<FloatType>&                      filter,
+           const env::EgoMotion<math::CovarianceMatrixFactored, FloatType>& egoMotion);
 };
 
 } // namespace generic

@@ -13,6 +13,13 @@ namespace math
 {
 
 template <typename FloatType_, sint32 Size_>
+auto CovarianceMatrixFull<FloatType_, Size_>::FromDiagonal(const DiagonalMatrix<FloatType_, Size_>& diag) -> CovarianceMatrixFull
+{
+  assert(diag.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
+  return CovarianceMatrixFull{diag};
+}
+
+template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
 {
   const auto retVal = BaseSquareMatrix::decomposeLLT();

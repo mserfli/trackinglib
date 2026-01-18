@@ -20,6 +20,7 @@ set(TEST_SOURCES
     math/test_covariance_matrix_factored.cpp
     math/test_conversions.cpp
     math/test_matrix_io.cpp
+    env/test_ego_motion.cpp
     motion/test_state_mem.cpp
     motion/test_motion_model_cv.cpp
     motion/test_motion_model_ca.cpp

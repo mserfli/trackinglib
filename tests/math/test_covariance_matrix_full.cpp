@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 #include "trackingLib/math/linalg/conversions/covariance_matrix_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/square_conversions.hpp"
-#include "trackingLib/math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep
-#include "trackingLib/math/linalg/covariance_matrix_full.hpp"     // IWYU pragma: keep
+#include "trackingLib/math/linalg/conversions/square_conversions.hpp" // IWYU pragma: keep
+#include "trackingLib/math/linalg/covariance_matrix_factored.hpp"     // IWYU pragma: keep
+#include "trackingLib/math/linalg/covariance_matrix_full.hpp"         // IWYU pragma: keep
 #include "trackingLib/math/linalg/square_matrix.h"
 #include <cmath>
 
@@ -54,6 +54,26 @@ auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFull<FloatType, Siz
     }
   }
   return result;
+}
+
+TEST(CovarianceMatrixFull, ctor_FromDiagonal__Success) // NOLINT
+{
+  const auto diag = DiagonalMatrix<float, 3>::FromList({1, 2, 3});
+  // call UUT
+  const auto result = CovarianceMatrixFull<float32, 3>::FromDiagonal(diag);
+
+  // verify
+  for (auto row = 0; row < 3; row++)
+  {
+    // diagonal elements
+    EXPECT_FLOAT_EQ(diag.at_unsafe(row), result.at_unsafe(row, row));
+    for (auto col = row + 1; col < 3; col++)
+    {
+      // off-diagonal elements
+      EXPECT_FLOAT_EQ(0, result.at_unsafe(row, col));
+      EXPECT_FLOAT_EQ(0, result.at_unsafe(col, row));
+    }
+  }
 }
 
 TEST(CovarianceMatrixFull, ctor_FromList__Success) // NOLINT

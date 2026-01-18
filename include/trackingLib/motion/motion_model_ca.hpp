@@ -22,7 +22,7 @@ MotionModelCA<CovarianceMatrixType, FloatType>::MotionModelCA(const StateVec& ve
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 void MotionModelCA<CovarianceMatrixType, FloatType>::predict(const FloatType                        dt,
                                                              const filter::KalmanFilter<FloatType>& filter,
-                                                             const env::EgoMotion<FloatType>&       egoMotion)
+                                                             const EgoMotion&                       egoMotion)
 {
   super_generic_predict_type::run(dt, filter, egoMotion);
 }
@@ -30,7 +30,7 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::predict(const FloatType    
 template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
 void MotionModelCA<CovarianceMatrixType, FloatType>::predict(const FloatType                             dt,
                                                              const filter::InformationFilter<FloatType>& filter,
-                                                             const env::EgoMotion<FloatType>&            egoMotion)
+                                                             const EgoMotion&                            egoMotion)
 {
   super_generic_predict_type::run(dt, filter, egoMotion);
 }

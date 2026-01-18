@@ -62,6 +62,26 @@ auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<FloatType,
   return covFactored.value();
 }
 
+TEST(CovarianceMatrixFactored, ctor_FromDiagonal__Success) // NOLINT
+{
+  const auto diag = DiagonalMatrix<float, 3>::FromList({1, 2, 3});
+  // call UUT
+  const auto result = CovarianceMatrixFactored<float32, 3>::FromDiagonal(diag);
+
+  // verify
+  for (auto row = 0; row < 3; row++)
+  {
+    // diagonal elements
+    EXPECT_FLOAT_EQ(diag.at_unsafe(row), result.at_unsafe(row, row));
+    for (auto col = row + 1; col < 3; col++)
+    {
+      // off-diagonal elements
+      EXPECT_FLOAT_EQ(0, result.at_unsafe(row, col));
+      EXPECT_FLOAT_EQ(0, result.at_unsafe(col, row));
+    }
+  }
+}
+
 TEST(CovarianceMatrixFactored, ctor_FromList_SeparateLists__Success) // NOLINT
 {
   // clang-format off
