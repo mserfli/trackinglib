@@ -31,8 +31,9 @@ namespace math
 /// \see CovarianceMatrixFactored for UDU factored representation
 /// \see SquareMatrix for the base matrix functionality
 template <typename FloatType_, sint32 Size_>
-class CovarianceMatrixFull: public SquareMatrix<FloatType_, Size_, true>
-//, public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType_, Size_, IsRowMajor_>>
+class CovarianceMatrixFull
+    : public SquareMatrix<FloatType_, Size_, true>
+    , public contract::CovarianceMatrixIntf<CovarianceMatrixFull<FloatType_, Size_>>
 {
 public:
   using BaseSquareMatrix = SquareMatrix<FloatType_, Size_, true>; ///< type of the parent class
@@ -130,6 +131,13 @@ public:
   /// \note Time complexity: O(n^3) where n = Size_
   /// \note The result satisfies: (*this) * result = Identity()
   auto inverse() const -> tl::expected<CovarianceMatrixFull, Errors>;
+
+  /// \brief Compute inverse as full covariance matrix
+  ///
+  /// Alias for inverse() to match the contract definitions
+  ///
+  /// \return Full covariance matrix containing the inverse
+  auto composed_inverse() const -> tl::expected<compose_type, Errors> { return this->inverse(); }
 
   /// \brief Compute A*P*A^T in-place (covariance propagation)
   ///

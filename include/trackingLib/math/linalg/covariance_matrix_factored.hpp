@@ -109,6 +109,17 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()() const -> c
 }
 
 template <typename FloatType_, sint32 Size_>
+inline auto CovarianceMatrixFactored<FloatType_, Size_>::trace() const -> FloatType_
+{
+  auto res = static_cast<FloatType_>(0);
+  for (sint32 i = 0; i < Size_; ++i)
+  {
+    res += at_unsafe(i, i);
+  }
+  return res;
+}
+
+template <typename FloatType_, sint32 Size_>
 inline auto CovarianceMatrixFactored<FloatType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>
 {
   // we use the transpose of the input matrix to get a column major matrix
@@ -129,7 +140,7 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::inverse() const -> tl::
 }
 
 template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::composed_inverse() const -> compose_type
+inline auto CovarianceMatrixFactored<FloatType_, Size_>::composed_inverse() const -> tl::expected<compose_type, Errors>
 {
   auto               inv_u = _u.inverse();
   auto               inv_d = _d.inverse();

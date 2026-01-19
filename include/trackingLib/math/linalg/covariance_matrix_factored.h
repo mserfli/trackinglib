@@ -56,7 +56,7 @@ class CovarianceMatrixFull;
 ///
 /// \note Based on academic publications by Thornton, Bierman, and D'Souza
 template <typename FloatType_, sint32 Size_>
-class CovarianceMatrixFactored //: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType_, Size_>>
+class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType_, Size_>>
 {
 public:
   using value_type          = FloatType_;
@@ -106,22 +106,30 @@ public:
   /// \brief Access operator to the covariance value at (row, col)
   /// \param[in,out] row  The specified row
   /// \param[in,out] col  The specified column
-  /// \return tl::expected<ValueType_, Errors>   either the value at (row,col) or an Error descriptor
+  /// \return tl::expected<value_type, Errors>   either the value at (row,col) or an Error descriptor
   auto operator()(sint32 row, sint32 col) const -> tl::expected<value_type, Errors>;
 
   /// \brief Creates the composed covariance
   /// \return compose_type
   auto operator()() const -> compose_type;
 
+  /// \brief Calculate the trace of the square matrix.
+  ///
+  /// Computes the sum of all diagonal elements of the matrix.
+  /// The trace is defined as the sum of elements A_ii for i = 1 to n.
+  ///
+  /// \return FloatType_ The trace of the matrix(sum of diagonal elements)
+  [[nodiscard]] auto trace() const -> FloatType_;
+
   /// \brief Calculate the determinant of the covariance matrix.
   ///
   /// Computes the determinant as the product of the diagonal elements.
   ///     det(cov) = det(U)*det(D)*det(U') = det(D)
   ///
-  /// \return ValueType_ The determinant of the matrix
+  /// \return FloatType_ The determinant of the matrix
   /// \note Time complexity: O(n) where n is the matrix dimension
   /// \note For singular matrices, the determinant will be zero or very close to zero
-  auto determinant() const -> value_type { return _d.determinant(); }
+  [[nodiscard]] auto determinant() const -> FloatType_ { return _d.determinant(); }
 
   /// \brief Compute inverse in factored form
   ///
@@ -144,7 +152,7 @@ public:
   /// \return Full covariance matrix containing the inverse
   ///
   /// \note Time complexity: O(n^3) where n = Size_
-  auto composed_inverse() const -> compose_type;
+  auto composed_inverse() const -> tl::expected<compose_type, Errors>;
 
   /// \brief Compute A*P*A^T in-place (factored covariance propagation)
   ///
@@ -241,6 +249,31 @@ public:
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
   void setDiagonal(const sint32 idx, const FloatType_ val);
+
+  /// \brief Check if the matrix is symmetric.
+  ///
+  /// The factored covariance is symmetric by design.
+  ///
+  /// \return always true
+  [[nodiscard]] auto isSymmetric() const -> bool { return true; }
+
+  /// \brief Check if the matrix matrix is positive definite.
+  ///
+  /// Tests whether all eigenvalues of the matrix are non-negative.
+  /// A positive definite matrix satisfies x^T * A * x > 0 for all non-zero vectors x.
+  ///
+  /// \return true if the matrix is positive definite, false otherwise
+  [[nodiscard]] auto isPositiveDefinite() const -> bool { return _d.isPositiveDefinite(); }
+
+  /// \brief Checks if the matrix is positive semi-definite.
+  ///
+  /// Tests whether all eigenvalues of the matrix are non-negative.
+  /// A positive semi-definite matrix satisfies x^T * A * x >= 0 for all non-zero vectors x.
+  ///
+  /// This is a key property for covariance matrices in statistics and machine learning.
+  ///
+  /// \return true if the matrix is positive semi-definite, false otherwise
+  [[nodiscard]] auto isPositiveSemiDefinite() const -> bool { return _d.isPositiveSemiDefinite(); }
 
   //////////////////////////////////////////////////
   // unsafe access operators  --->
