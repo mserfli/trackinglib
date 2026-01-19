@@ -166,12 +166,19 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric(ValueType_
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveSemiDefinite() const -> bool
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveDefinite() const -> bool
 {
   // Try Cholesky decomposition - if it succeeds, matrix is positive definite
   const auto choleskyResult = this->decomposeLLT();
   const bool result         = choleskyResult.has_value();
   return result;
+}
+
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveSemiDefinite() const -> bool
+{
+  // we can only use Cholesky decomposition which has more strict checks
+  return isPositiveDefinite();
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>

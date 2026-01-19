@@ -10,40 +10,30 @@ namespace tracking
 namespace motion
 {
 
-template <typename MM_Dst,
-          typename MM_Src,
-          typename FloatType,
-          template <typename FloatType_, sint32 Size_>
-          class CovarianceMatrixType>
+template <typename MM_Dst, typename MM_Src>
 class StateVecConverter;
 
-template <typename MM, typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
-class StateVecConverter<MM, MM, FloatType, CovarianceMatrixType>
+template <typename MM>
+class StateVecConverter<MM, MM>
 {
 public:
   static void convertFrom(typename MM::StateVec& dstVec, const typename MM::StateVec& srcVec);
 };
 
-template <typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
-class StateVecConverter<MotionModelCV<CovarianceMatrixType, FloatType>,
-                        MotionModelCA<CovarianceMatrixType, FloatType>,
-                        FloatType,
-                        CovarianceMatrixType>
+template <typename CovarianceMatrixPolicy_>
+class StateVecConverter<MotionModelCV<CovarianceMatrixPolicy_>, MotionModelCA<CovarianceMatrixPolicy_>>
 {
 public:
-  static void convertFrom(typename MotionModelCV<CovarianceMatrixType, FloatType>::StateVec&       dstVec,
-                          const typename MotionModelCA<CovarianceMatrixType, FloatType>::StateVec& srcVec);
+  static void convertFrom(typename MotionModelCV<CovarianceMatrixPolicy_>::StateVec&       dstVec,
+                          const typename MotionModelCA<CovarianceMatrixPolicy_>::StateVec& srcVec);
 };
 
-template <typename FloatType, template <typename FloatType_, sint32 Size_> class CovarianceMatrixType>
-class StateVecConverter<MotionModelCA<CovarianceMatrixType, FloatType>,
-                        MotionModelCV<CovarianceMatrixType, FloatType>,
-                        FloatType,
-                        CovarianceMatrixType>
+template <typename CovarianceMatrixPolicy_>
+class StateVecConverter<MotionModelCA<CovarianceMatrixPolicy_>, MotionModelCV<CovarianceMatrixPolicy_>>
 {
 public:
-  static void convertFrom(typename MotionModelCA<CovarianceMatrixType, FloatType>::StateVec&       dstVec,
-                          const typename MotionModelCV<CovarianceMatrixType, FloatType>::StateVec& srcVec);
+  static void convertFrom(typename MotionModelCA<CovarianceMatrixPolicy_>::StateVec&       dstVec,
+                          const typename MotionModelCV<CovarianceMatrixPolicy_>::StateVec& srcVec);
 };
 
 } // namespace motion

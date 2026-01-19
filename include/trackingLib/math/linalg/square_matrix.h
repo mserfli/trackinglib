@@ -296,6 +296,15 @@ public:
   /// \note Symmetry checking uses element-wise comparison and may have floating-point precision issues
   [[nodiscard]] auto isSymmetric(ValueType_ tolerance = 1e-6) const -> bool;
 
+  /// \brief Check if the diagonal matrix is positive definite.
+  ///
+  /// A diagonal matrix is positive definite if all diagonal elements are positive.
+  ///
+  /// \return true if all diagonal elements are > 0, false otherwise
+  ///
+  /// \note For diagonal matrices, positive definiteness is equivalent to all elements > 0
+  [[nodiscard]] auto isPositiveDefinite() const -> bool;
+
   /// \brief Checks if the matrix is positive semi-definite.
   ///
   /// Tests whether all eigenvalues of the matrix are non-negative.
@@ -304,7 +313,7 @@ public:
   /// This is a key property for covariance matrices in statistics and machine learning.
   ///
   /// The check is performed using Cholesky decomposition; if it succeeds, the matrix
-  /// is positive definite.
+  /// is positive semi-definite.
   ///
   /// \return true if the matrix is positive semi-definite, false otherwise
   [[nodiscard]] auto isPositiveSemiDefinite() const -> bool;
@@ -362,7 +371,7 @@ public:
   [[nodiscard]] auto hasUnitDiagonal(ValueType_ tolerance = 1e-6) const -> bool;
   // <---
 
-protected:
+private:
   /// \brief Check if all diagonal elements are strictly positive.
   ///
   /// Tests whether all diagonal elements satisfy d_ii > 0.

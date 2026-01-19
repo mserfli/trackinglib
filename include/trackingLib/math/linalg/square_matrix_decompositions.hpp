@@ -88,9 +88,9 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
     -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>
 {
-  if (hasStrictlyPositiveDiagonalElems())
+  if (hasStrictlyPositiveDiagonalElems()) // fail fast
   {
-    if (isSymmetric())
+    if (isSymmetric()) // fail fast
     {
       TriangularMatrix<ValueType_, Size_, true, IsRowMajor_> L{};
       for (auto j = 0; j < Size_; ++j)

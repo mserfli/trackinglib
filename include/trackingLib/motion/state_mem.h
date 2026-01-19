@@ -1,7 +1,9 @@
 #ifndef D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 #define D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 
-#include "base/first_include.h" // IWYU pragma: keep
+#include "base/first_include.h"                                  // IWYU pragma: keep
+#include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_policies.h"              // IWYU pragma: keep
 #include "math/linalg/vector.h"
 #include "motion/contracts/state_mem_intf.h"
 
@@ -14,18 +16,19 @@ namespace motion
 // TODO(matthias): or introduce CTORs from all other motion models to allow conversion
 
 /// \brief StateMem class to represent a state vector with its uncertainty described by the state covariance matrix
-/// \tparam CovarianceMatrixType  Used covariance matrix type
-/// \tparam FloatType             Used floating point type
-/// \tparam Size                  State dimension
-template <template <typename FloatType_, sint32 Size_> class CovarianceMatrixType, typename FloatType_, sint32 Size_>
-class StateMem: public contract::StateMemIntf<StateMem<CovarianceMatrixType, FloatType_, Size_>>
+/// \tparam CovarianceMatrixPolicy_ Policy type that defines the covariance matrix implementation
+/// \tparam Size_                   State dimension
+template <typename CovarianceMatrixPolicy_, sint32 Size_>
+class StateMem
+    : public contract::StateMemIntf<StateMem<CovarianceMatrixPolicy_, Size_>>
+    , public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
 {
 public:
-  using value_type    = FloatType_;
-  using StateVec      = math::Vector<FloatType_, Size_>;
-  using ConstStateVec = const math::Vector<FloatType_, Size_>;
-  using StateCov      = CovarianceMatrixType<FloatType_, Size_>;
-  using ConstStateCov = const CovarianceMatrixType<FloatType_, Size_>;
+  using value_type    = typename CovarianceMatrixPolicy_::FloatType;
+  using StateVec      = math::Vector<value_type, Size_>;
+  using ConstStateVec = const math::Vector<value_type, Size_>;
+  using StateCov      = typename CovarianceMatrixPolicy_::template Instantiate<Size_>;
+  using ConstStateCov = const StateCov;
 
   // rule of 5 declarations
   StateMem()                                         = default;

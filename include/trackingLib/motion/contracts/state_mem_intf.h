@@ -1,11 +1,11 @@
 #ifndef D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47
 #define D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47
 
+
 #include "base/first_include.h" // IWYU pragma: keep
 #include "base/interface_contract.h"
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"
-#include <type_traits>
 
 
 namespace tracking
@@ -54,7 +54,7 @@ concept has_square_brackets_op_int = requires {
 };
 // clang-format on
 } // namespace state_mem
-#endif
+#endif // __cplusplus == 202002L
 
 template <typename ImplType>
 struct StateMemIntf
@@ -78,14 +78,13 @@ struct StateMemIntf
     static_assert(state_mem::has_getVec_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(state_mem::has_getCov_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(state_mem::has_square_brackets_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
-#endif
-#endif
+#endif // TEST_BUILD
+#endif // __cplusplus == 202002L
   }
 };
 
 } // namespace contract
 } // namespace motion
 } // namespace tracking
-
 
 #endif // D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47

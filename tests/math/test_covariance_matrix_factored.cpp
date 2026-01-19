@@ -305,7 +305,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_identity__Success) // NOLINT
   auto cov = CovarianceMatrixFactored<float64, 3>::Identity();
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // For identity matrix, inverse should also be identity
   auto expected = CovarianceMatrixFull<float64, 3>::Identity();
@@ -335,7 +335,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_diagonal__Success) // NOLINT
   // clang-format on
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // For diagonal matrix with values [2, 3, 4], inverse should be [0.5, 1/3, 0.25]
   EXPECT_NEAR(inv.at_unsafe(0, 0), 0.5, 1e-6);
@@ -357,7 +357,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_symmetric_positive_definite__Suc
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // Verify that the inverse is symmetric
   EXPECT_TRUE(inv.isSymmetric());
@@ -370,7 +370,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_consistency__Success) // NOLINT
 {
   // Test that inv * original ≈ identity
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // Multiply inv * original and check if close to identity
   auto product = inv * cov();
@@ -392,7 +392,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_symmetry__Success) // NOLINT
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 4>();
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // Verify that the inverse is symmetric
   EXPECT_TRUE(inv.isSymmetric());
@@ -404,7 +404,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_positive_definite__Success) // N
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // Verify that the inverse is positive definite
   EXPECT_TRUE(inv.isPositiveSemiDefinite());
@@ -416,14 +416,14 @@ TEST(CovarianceMatrixFactored, composed_inverse_different_sizes__Success) // NOL
 
   // Test 3x3
   auto cov3 = CovarianceMatrixFactored<float32, 3>::Identity();
-  auto inv3 = cov3.composed_inverse();
+  auto inv3 = cov3.composed_inverse().value();
   EXPECT_NEAR(inv3.at_unsafe(0, 0), 1.0f, 1e-5);
   EXPECT_NEAR(inv3.at_unsafe(1, 1), 1.0f, 1e-5);
   EXPECT_NEAR(inv3.at_unsafe(2, 2), 1.0f, 1e-5);
 
   // Test 4x4
   auto cov4 = CovarianceMatrixFactored<float32, 4>::Identity();
-  auto inv4 = cov4.composed_inverse();
+  auto inv4 = cov4.composed_inverse().value();
   EXPECT_NEAR(inv4.at_unsafe(0, 0), 1.0f, 1e-5);
   EXPECT_NEAR(inv4.at_unsafe(1, 1), 1.0f, 1e-5);
   EXPECT_NEAR(inv4.at_unsafe(2, 2), 1.0f, 1e-5);

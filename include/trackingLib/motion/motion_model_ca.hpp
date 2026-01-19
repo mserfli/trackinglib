@@ -5,52 +5,52 @@
 
 #include "motion/generic_predict.hpp"     // IWYU pragma: keep
 #include "motion/state_cov_converter.hpp" // IWYU pragma: keep
-#include "motion/state_vec_converter.hpp"
+#include "motion/state_vec_converter.hpp" // IWYU pragma: keep
 
 namespace tracking
 {
 namespace motion
 {
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-MotionModelCA<CovarianceMatrixType, FloatType>::MotionModelCA(const StateVec& vec, const StateCov& cov)
+template <typename CovarianceMatrixPolicy_>
+MotionModelCA<CovarianceMatrixPolicy_>::MotionModelCA(const StateVec& vec, const StateCov& cov)
     : super_extended_mm_type{vec, cov}
     , super_generic_predict_type{}
 {
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCA<CovarianceMatrixType, FloatType>::predict(const FloatType                        dt,
-                                                             const filter::KalmanFilter<FloatType>& filter,
-                                                             const EgoMotion&                       egoMotion)
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCA<CovarianceMatrixPolicy_>::predict(const FloatType         dt,
+                                                     const KalmanFilterType& filter,
+                                                     const EgoMotionType&    egoMotion)
 {
   super_generic_predict_type::run(dt, filter, egoMotion);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCA<CovarianceMatrixType, FloatType>::predict(const FloatType                             dt,
-                                                             const filter::InformationFilter<FloatType>& filter,
-                                                             const EgoMotion&                            egoMotion)
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCA<CovarianceMatrixPolicy_>::predict(const FloatType              dt,
+                                                     const InformationFilterType& filter,
+                                                     const EgoMotionType&         egoMotion)
 {
   super_generic_predict_type::run(dt, filter, egoMotion);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCA<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMotionMappingMatrix& Ge,
-                                                                         StateMatrix&            Go,
-                                                                         const EgoMotion&        egoMotion)
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCA<CovarianceMatrixPolicy_>::compensateEgoMotion(EgoMotionMappingMatrix& Ge,
+                                                                 StateMatrix&            Go,
+                                                                 const EgoMotionType&    egoMotion)
 {
-  FloatType& x  = this->operator[](StateDef::X);
-  FloatType& y  = this->operator[](StateDef::Y);
-  FloatType& vx = this->operator[](StateDef::VX);
-  FloatType& vy = this->operator[](StateDef::VY);
-  FloatType& ax = this->operator[](StateDef::AX);
-  FloatType& ay = this->operator[](StateDef::AY);
+  FloatType& x  = this->operator[](StateDefCA::X);
+  FloatType& y  = this->operator[](StateDefCA::Y);
+  FloatType& vx = this->operator[](StateDefCA::VX);
+  FloatType& vy = this->operator[](StateDefCA::VY);
+  FloatType& ax = this->operator[](StateDefCA::AX);
+  FloatType& ay = this->operator[](StateDefCA::AY);
 
   const FloatType sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
   const FloatType cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
-  const FloatType deltaXEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotion::DS_X);
-  const FloatType deltaYEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotion::DS_Y);
+  const FloatType deltaXEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotionType::DS_X);
+  const FloatType deltaYEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotionType::DS_Y);
   const FloatType distCog2Ego    = egoMotion.getGeometry().distCog2Ego;
 
   Go.setZeros();
@@ -70,16 +70,16 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
   const FloatType x0 = -deltaYEgo + y;
   const FloatType x1 = deltaXEgo - distCog2Ego - x;
   Ge.setZeros();
-  Ge.at_unsafe(X, EgoMotion::DS_X)    = -cosDeltaPsiEgo;
-  Ge.at_unsafe(X, EgoMotion::DS_Y)    = -sinDeltaPsiEgo;
-  Ge.at_unsafe(X, EgoMotion::DS_PSI)  = (x0 * cosDeltaPsiEgo) + (x1 * sinDeltaPsiEgo);
-  Ge.at_unsafe(Y, EgoMotion::DS_X)    = sinDeltaPsiEgo;
-  Ge.at_unsafe(Y, EgoMotion::DS_Y)    = cosDeltaPsiEgo;
-  Ge.at_unsafe(Y, EgoMotion::DS_PSI)  = -(x0 * sinDeltaPsiEgo) + (x1 * cosDeltaPsiEgo);
-  Ge.at_unsafe(VX, EgoMotion::DS_PSI) = -(vx * sinDeltaPsiEgo) + (vy * cosDeltaPsiEgo);
-  Ge.at_unsafe(VY, EgoMotion::DS_PSI) = -(vx * cosDeltaPsiEgo) - (vy * sinDeltaPsiEgo);
-  Ge.at_unsafe(AX, EgoMotion::DS_PSI) = -(ax * sinDeltaPsiEgo) + (ay * cosDeltaPsiEgo);
-  Ge.at_unsafe(AY, EgoMotion::DS_PSI) = -(ax * cosDeltaPsiEgo) - (ay * sinDeltaPsiEgo);
+  Ge.at_unsafe(X, EgoMotionType::DS_X)    = -cosDeltaPsiEgo;
+  Ge.at_unsafe(X, EgoMotionType::DS_Y)    = -sinDeltaPsiEgo;
+  Ge.at_unsafe(X, EgoMotionType::DS_PSI)  = (x0 * cosDeltaPsiEgo) + (x1 * sinDeltaPsiEgo);
+  Ge.at_unsafe(Y, EgoMotionType::DS_X)    = sinDeltaPsiEgo;
+  Ge.at_unsafe(Y, EgoMotionType::DS_Y)    = cosDeltaPsiEgo;
+  Ge.at_unsafe(Y, EgoMotionType::DS_PSI)  = -(x0 * sinDeltaPsiEgo) + (x1 * cosDeltaPsiEgo);
+  Ge.at_unsafe(VX, EgoMotionType::DS_PSI) = -(vx * sinDeltaPsiEgo) + (vy * cosDeltaPsiEgo);
+  Ge.at_unsafe(VY, EgoMotionType::DS_PSI) = -(vx * cosDeltaPsiEgo) - (vy * sinDeltaPsiEgo);
+  Ge.at_unsafe(AX, EgoMotionType::DS_PSI) = -(ax * sinDeltaPsiEgo) + (ay * cosDeltaPsiEgo);
+  Ge.at_unsafe(AY, EgoMotionType::DS_PSI) = -(ax * cosDeltaPsiEgo) - (ay * sinDeltaPsiEgo);
 
   // translate and rotate position
   egoMotion.compensatePosition(x, y, x, y);
@@ -88,43 +88,43 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::compensateEgoMotion(EgoMoti
   egoMotion.compensateDirection(ax, ay, ax, ay);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCA<CovarianceMatrixType, FloatType>::applyProcessModel(const FloatType dt)
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCA<CovarianceMatrixPolicy_>::applyProcessModel(const FloatType dt)
 {
   const StateVec& stateVec = this->getVec();
   const auto      halfDtSq = static_cast<FloatType>(0.5) * dt * dt;
 
-  this->operator[](StateDef::X) += dt * stateVec.at_unsafe(StateDef::VX) + halfDtSq * stateVec.at_unsafe(StateDef::AX);
-  this->operator[](StateDef::Y) += dt * stateVec.at_unsafe(StateDef::VY) + halfDtSq * stateVec.at_unsafe(StateDef::AY);
-  this->operator[](StateDef::VX) += dt * stateVec.at_unsafe(StateDef::AX);
-  this->operator[](StateDef::VY) += dt * stateVec.at_unsafe(StateDef::AY);
+  this->operator[](StateDefCA::X) += dt * stateVec.at_unsafe(StateDefCA::VX) + halfDtSq * stateVec.at_unsafe(StateDefCA::AX);
+  this->operator[](StateDefCA::Y) += dt * stateVec.at_unsafe(StateDefCA::VY) + halfDtSq * stateVec.at_unsafe(StateDefCA::AY);
+  this->operator[](StateDefCA::VX) += dt * stateVec.at_unsafe(StateDefCA::AX);
+  this->operator[](StateDefCA::VY) += dt * stateVec.at_unsafe(StateDefCA::AY);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCA<CovarianceMatrixType, FloatType>::computeA(StateMatrix& A, const FloatType dt) const
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCA<CovarianceMatrixPolicy_>::computeA(StateMatrix& A, const FloatType dt) const
 {
   const auto halfDtSq = static_cast<FloatType>(0.5) * dt * dt;
 
   A.setIdentity();
-  A.at_unsafe(StateDef::X, StateDef::AX)  = halfDtSq;
-  A.at_unsafe(StateDef::X, StateDef::VX)  = dt;
-  A.at_unsafe(StateDef::VX, StateDef::AX) = dt;
+  A.at_unsafe(StateDefCA::X, StateDefCA::AX)  = halfDtSq;
+  A.at_unsafe(StateDefCA::X, StateDefCA::VX)  = dt;
+  A.at_unsafe(StateDefCA::VX, StateDefCA::AX) = dt;
 
-  A.at_unsafe(StateDef::Y, StateDef::AY)  = halfDtSq;
-  A.at_unsafe(StateDef::Y, StateDef::VY)  = dt;
-  A.at_unsafe(StateDef::VY, StateDef::AY) = dt;
+  A.at_unsafe(StateDefCA::Y, StateDefCA::AY)  = halfDtSq;
+  A.at_unsafe(StateDefCA::Y, StateDefCA::VY)  = dt;
+  A.at_unsafe(StateDefCA::VY, StateDefCA::AY) = dt;
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCA<CovarianceMatrixType, FloatType>::computeQ(ProcessNoiseDiagMatrix& Q, const FloatType dt)
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCA<CovarianceMatrixPolicy_>::computeQ(ProcessNoiseDiagMatrix& Q, const FloatType dt)
 {
   // DWPA process, elements in Q define an acceleration increment, i.e. unit is equal to m/s**2
   Q.at_unsafe(Q_AX) = static_cast<FloatType>(100.0 * dt * dt);
   Q.at_unsafe(Q_AY) = static_cast<FloatType>(100.0 * dt * dt);
 }
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType, typename FloatType>
-void MotionModelCA<CovarianceMatrixType, FloatType>::computeG(ProcessNoiseMappingMatrix& G, const FloatType dt)
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCA<CovarianceMatrixPolicy_>::computeG(ProcessNoiseMappingMatrix& G, const FloatType dt)
 {
   const FloatType halfDeltaTimePow2 = static_cast<FloatType>(0.5) * dt * dt;
 
@@ -137,12 +137,12 @@ void MotionModelCA<CovarianceMatrixType, FloatType>::computeG(ProcessNoiseMappin
   G.at_unsafe(AY, Q_AY) = static_cast<FloatType>(1.0);
 }
 
-template <template <typename FloatType_, sint32 Size_> class CovarianceMatrixType, typename FloatType>
-void MotionModelCA<CovarianceMatrixType, FloatType>::convertFrom(const MotionModelCV<CovarianceMatrixType, FloatType>& other)
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCA<CovarianceMatrixPolicy_>::convertFrom(const MotionModelCV<CovarianceMatrixPolicy_>& other)
 {
-  using other_type = MotionModelCV<CovarianceMatrixType, FloatType>;
-  StateVecConverter<instance_type, other_type, FloatType, CovarianceMatrixType>::convertFrom(this->getVec(), other.getVec());
-  StateCovConverter<instance_type, other_type, FloatType>::convertFrom(this->getCov(), other.getCov());
+  using other_type = MotionModelCV<CovarianceMatrixPolicy_>;
+  StateVecConverter<instance_type, other_type>::convertFrom(this->getVec(), other.getVec());
+  StateCovConverter<instance_type, other_type>::convertFrom(this->getCov(), other.getCov());
 }
 
 } // namespace motion
