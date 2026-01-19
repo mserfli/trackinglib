@@ -88,31 +88,35 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
     -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>
 {
-  if (isSymmetric()) // fail fast
+  if (hasStrictlyPositiveDiagonalElems()) // fail fast
   {
-    TriangularMatrix<ValueType_, Size_, true, IsRowMajor_> L{};
-    for (auto j = 0; j < Size_; ++j)
+    if (isSymmetric()) // fail fast
     {
-      ValueType_ sum = this->at_unsafe(j, j);
-      for (auto k = 0; k < j; ++k)
+      TriangularMatrix<ValueType_, Size_, true, IsRowMajor_> L{};
+      for (auto j = 0; j < Size_; ++j)
       {
-        sum -= L.at_unsafe(j, k) * L.at_unsafe(j, k);
-      }
-      L.at_unsafe(j, j) = std::sqrt(sum);
-
-      for (auto i = j + 1; i < Size_; ++i)
-      {
-        sum = this->at_unsafe(i, j);
+        ValueType_ sum = this->at_unsafe(j, j);
         for (auto k = 0; k < j; ++k)
         {
-          sum -= L.at_unsafe(i, k) * L.at_unsafe(j, k);
+          sum -= L.at_unsafe(j, k) * L.at_unsafe(j, k);
         }
-        L.at_unsafe(i, j) = sum / L.at_unsafe(j, j);
+        L.at_unsafe(j, j) = std::sqrt(sum);
+
+        for (auto i = j + 1; i < Size_; ++i)
+        {
+          sum = this->at_unsafe(i, j);
+          for (auto k = 0; k < j; ++k)
+          {
+            sum -= L.at_unsafe(i, k) * L.at_unsafe(j, k);
+          }
+          L.at_unsafe(i, j) = sum / L.at_unsafe(j, j);
+        }
       }
+      return std::move(L);
     }
-    return std::move(L);
+    return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
   }
-  return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
+  return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
 }
 
 // LDLT decomposition
