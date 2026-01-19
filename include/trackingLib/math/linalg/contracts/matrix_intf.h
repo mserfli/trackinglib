@@ -1,7 +1,6 @@
 #ifndef FEFAD5F6_9902_4DB6_B0B1_0F8AC3FE433F
 #define FEFAD5F6_9902_4DB6_B0B1_0F8AC3FE433F
 
-#if __cplusplus == 202002L
 #include "base/first_include.h"      // IWYU pragma: keep
 #include "base/interface_contract.h" // IWYU pragma: keep
 #include "base/require_copy_intf.h"
@@ -14,6 +13,7 @@ namespace math
 {
 namespace contract
 {
+#if __cplusplus == 202002L
 // clang-format off
 namespace matrix
 {
@@ -49,6 +49,7 @@ concept has_round_brackets_op_int_int = requires {
 };
 }
 // clang-format on
+#endif //__cplusplus == 202002L
 
 template <typename ImplType, template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_> class ClassName>
 struct MatrixIntf
@@ -64,6 +65,7 @@ struct MatrixIntf
     static_assert(ImplType::Rows > 0);
     static_assert(ImplType::Cols > 0);
 
+#if __cplusplus == 202002L
     static_assert(matrix::has_setOnes_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(matrix::has_ones_static_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(matrix::has_setZeros_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
@@ -76,6 +78,7 @@ struct MatrixIntf
       static_assert(matrix::has_round_brackets_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);
       static_assert(matrix::has_transpose_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     }
+#endif //__cplusplus == 202002L
   }
 };
 
@@ -83,6 +86,5 @@ struct MatrixIntf
 } // namespace math
 } // namespace tracking
 
-#endif //__cplusplus == 202002L
 
 #endif // FEFAD5F6_9902_4DB6_B0B1_0F8AC3FE433F

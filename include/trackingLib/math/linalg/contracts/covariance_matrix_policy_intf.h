@@ -1,8 +1,8 @@
 #ifndef A9EE36F9_16A8_4666_9CFE_801E34978BAC
 #define A9EE36F9_16A8_4666_9CFE_801E34978BAC
 
-#include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/covariance_matrix_policies.h"
+#include "base/first_include.h"                     // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_policies.h" // IWYU pragma: keep
 
 
 namespace tracking
@@ -17,6 +17,7 @@ struct CovarianceMatrixPolicyIntf
 {
   CovarianceMatrixPolicyIntf()
   {
+#if __cplusplus == 202002L
     // Check inheritance from base policy
     static_assert(std::is_base_of_v<math::CovarianceMatrixPolicyBase, PolicyType>,
                   "CovarianceMatrixPolicy must inherit from CovarianceMatrixPolicyBase");
@@ -35,6 +36,7 @@ struct CovarianceMatrixPolicyIntf
     static_assert(std::is_same_v<PolicyType, math::FullCovarianceMatrixPolicy<typename PolicyType::FloatType>> ||
                       std::is_same_v<PolicyType, math::FactoredCovarianceMatrixPolicy<typename PolicyType::FloatType>>,
                   "CovarianceMatrixPolicy must be either FullCovarianceMatrixPolicy or FactoredCovarianceMatrixPolicy");
+#endif //__cplusplus == 202002L
   }
 };
 

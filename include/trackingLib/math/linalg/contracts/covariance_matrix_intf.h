@@ -1,13 +1,12 @@
 #ifndef C50A72AB_25E1_45C6_93E5_6607B9D345E3
 #define C50A72AB_25E1_45C6_93E5_6607B9D345E3
 
-#if __cplusplus == 202002L
 
-#include "base/first_include.h" // IWYU pragma: keep
-#include "base/interface_contract.h"
+#include "base/first_include.h"      // IWYU pragma: keep
+#include "base/interface_contract.h" // IWYU pragma: keep
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"
-#include "math/linalg/square_matrix.h"
+#include "math/linalg/square_matrix.h" // IWYU pragma: keep
 
 namespace tracking
 {
@@ -15,6 +14,7 @@ namespace math
 {
 namespace contract
 {
+#if __cplusplus == 202002L
 // clang-format off
 namespace covariance
 {
@@ -104,7 +104,7 @@ concept has_isPositiveDefinite_member_func = requires {
 };
 // clang-format on
 } // namespace covariance
-
+#endif // __cplusplus == 202002L
 
 template <typename ImplType>
 struct CovarianceMatrixIntf
@@ -118,6 +118,7 @@ struct CovarianceMatrixIntf
     static_assert(std::is_floating_point<typename ImplType::value_type>());
     static_assert(ImplType::dim > 0);
 
+#if __cplusplus == 202002L
     // mandatory funcs
     static_assert(covariance::has_dim_constant<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_fromDiagonal_static_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
@@ -141,12 +142,12 @@ struct CovarianceMatrixIntf
     static_assert(!covariance::has_round_brackets_op_int_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
     static_assert(!covariance::has_square_brackets_const_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
     static_assert(!covariance::has_square_brackets_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
+#endif // __cplusplus == 202002L
   }
 };
 
 } // namespace contract
 } // namespace math
 } // namespace tracking
-#endif // __cplusplus == 202002L
 
 #endif // C50A72AB_25E1_45C6_93E5_6607B9D345E3
