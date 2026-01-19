@@ -5,6 +5,7 @@
 #include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
+#include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
 #include "math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "math/linalg/errors.h"
 #include "motion/motion_model_traits.h" // IWYU pragma: keep
@@ -21,7 +22,7 @@ namespace motion
 /// \brief Abstract Motion Model interface
 /// \tparam CovarianceMatrixPolicy_  Policy type that defines the covariance matrix implementation
 template <typename CovarianceMatrixPolicy_>
-class IMotionModel
+class IMotionModel: public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
 {
 public:
   using FloatType             = typename CovarianceMatrixPolicy_::FloatType;

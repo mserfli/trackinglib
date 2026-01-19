@@ -1,8 +1,9 @@
 #ifndef EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8
 #define EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8
 
-#include "base/first_include.h"                     // IWYU pragma: keep
-#include "math/linalg/covariance_matrix_policies.h" // IWYU pragma: keep
+#include "base/first_include.h"                                  // IWYU pragma: keep
+#include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_policies.h"              // IWYU pragma: keep
 #include "math/linalg/point2d.h"
 #include "math/linalg/vector.h"
 
@@ -35,7 +36,7 @@ namespace env
 ///
 /// \tparam CovarianceMatrixPolicy_ Policy type that defines the covariance matrix implementation
 template <typename CovarianceMatrixPolicy_>
-class EgoMotion
+class EgoMotion: public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
 {
 public:
   using FloatType = typename CovarianceMatrixPolicy_::FloatType;

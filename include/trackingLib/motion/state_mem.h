@@ -1,8 +1,9 @@
 #ifndef D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 #define D118B69B_C3E7_43F7_A2FC_F44B7ACF965F
 
-#include "base/first_include.h"                     // IWYU pragma: keep
-#include "math/linalg/covariance_matrix_policies.h" // IWYU pragma: keep
+#include "base/first_include.h"                                  // IWYU pragma: keep
+#include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_policies.h"              // IWYU pragma: keep
 #include "math/linalg/vector.h"
 #include "motion/contracts/state_mem_intf.h"
 
@@ -18,7 +19,9 @@ namespace motion
 /// \tparam CovarianceMatrixPolicy_ Policy type that defines the covariance matrix implementation
 /// \tparam Size_                   State dimension
 template <typename CovarianceMatrixPolicy_, sint32 Size_>
-class StateMem: public contract::StateMemIntf<StateMem<CovarianceMatrixPolicy_, Size_>>
+class StateMem
+    : public contract::StateMemIntf<StateMem<CovarianceMatrixPolicy_, Size_>>
+    , public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
 {
 public:
   using value_type    = typename CovarianceMatrixPolicy_::FloatType;

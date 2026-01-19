@@ -1,8 +1,9 @@
 #ifndef CD00E333_97EF_4391_B880_C543B45E2D3F
 #define CD00E333_97EF_4391_B880_C543B45E2D3F
 
-#include "base/first_include.h"                     // IWYU pragma: keep
-#include "math/linalg/covariance_matrix_policies.h" // IWYU pragma: keep
+#include "base/first_include.h"                                  // IWYU pragma: keep
+#include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_policies.h"              // IWYU pragma: keep
 #include "math/linalg/diagonal_matrix.h"
 #include "math/linalg/matrix.h"
 #include "math/linalg/square_matrix.h"
@@ -15,7 +16,7 @@ namespace filter
 // TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
 template <typename CovarianceMatrixPolicy_>
-class InformationFilter
+class InformationFilter: public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
 {
 public:
   using FloatType = typename CovarianceMatrixPolicy_::FloatType;
