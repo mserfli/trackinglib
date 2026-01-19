@@ -1,11 +1,11 @@
 #ifndef D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47
 #define D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47
 
+#if __cplusplus == 202002L
 #include "base/first_include.h" // IWYU pragma: keep
 #include "base/interface_contract.h"
 #include "base/require_copy_intf.h"
 #include "base/require_move_intf.h"
-#include <type_traits>
 
 
 namespace tracking
@@ -14,7 +14,6 @@ namespace motion
 {
 namespace contract
 {
-#if __cplusplus == 202002L
 // clang-format off
 namespace state_mem
 {
@@ -54,7 +53,6 @@ concept has_square_brackets_op_int = requires {
 };
 // clang-format on
 } // namespace state_mem
-#endif
 
 template <typename ImplType>
 struct StateMemIntf
@@ -68,7 +66,6 @@ struct StateMemIntf
   {
     static_assert(std::is_floating_point<typename ImplType::value_type>());
 
-#if __cplusplus == 202002L
     static_assert(state_mem::has_getVec_const_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(state_mem::has_getCov_const_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(state_mem::has_square_brackets_const_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
@@ -79,13 +76,12 @@ struct StateMemIntf
     static_assert(state_mem::has_getCov_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(state_mem::has_square_brackets_op_int<ImplType>, ERR_MSG_DEFINED_UNEXPECTED_FUNCTION);
 #endif
-#endif
   }
 };
 
 } // namespace contract
 } // namespace motion
 } // namespace tracking
-
+#endif // __cplusplus == 202002L
 
 #endif // D8B229A8_8FAA_41E5_AA06_3E1B7FBA4F47

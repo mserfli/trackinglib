@@ -2,6 +2,7 @@
 #define D33C0BB9_EF21_44C6_8DAD_0C38C418D824
 
 #include "base/first_include.h" // IWYU pragma: keep
+#include "base/require_abstract_intf.h"
 #include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
@@ -22,7 +23,9 @@ namespace motion
 /// \brief Abstract Motion Model interface
 /// \tparam CovarianceMatrixPolicy_  Policy type that defines the covariance matrix implementation
 template <typename CovarianceMatrixPolicy_>
-class IMotionModel: public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
+class IMotionModel
+    : public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
+    , public base::contract::RequireAbstractIntf<IMotionModel<CovarianceMatrixPolicy_>>
 {
 public:
   using FloatType             = typename CovarianceMatrixPolicy_::FloatType;
@@ -72,6 +75,7 @@ template <typename MotionModel_, typename MotionModelTrait_>
 class ExtendedMotionModel
     : public IMotionModel<typename MotionModelTrait_::CovarianceMatrixPolicy>
     , public StateMem<typename MotionModelTrait_::CovarianceMatrixPolicy, MotionModelTrait_::Size>
+    , public base::contract::RequireAbstractIntf<ExtendedMotionModel<MotionModel_, MotionModelTrait_>>
 {
 public:
   using FloatType              = typename MotionModelTrait_::FloatType;
