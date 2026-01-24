@@ -94,6 +94,9 @@ public:
                   DiagonalMatrix<ValueType_, Size_>&                      d,
                   ValueType_                                              c,
                   Vector<ValueType_, Size_>                               x);
+
+  /// \brief Contract to restrict usage on floating-point value types
+  static_assert(std::is_floating_point<ValueType_>::value, "Rank1Update requires floating-point value types");
 };
 
 } // namespace math

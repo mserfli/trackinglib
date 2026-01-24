@@ -98,6 +98,9 @@ public:
                   const SquareMatrix<ValueType_, Size_, true>&      Phi,
                   const Matrix<ValueType_, Size_, SizeQ_, true>&    G,
                   const DiagonalMatrix<ValueType_, SizeQ_>&         Q);
+
+  /// \brief Contract to restrict usage on floating-point value types
+  static_assert(std::is_floating_point<ValueType_>::value, "ModifiedGramSchmidt requires floating-point value types");
 };
 
 } // namespace math
