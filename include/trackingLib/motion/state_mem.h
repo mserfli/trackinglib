@@ -24,7 +24,7 @@ class StateMem
     , public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
 {
 public:
-  using value_type    = typename CovarianceMatrixPolicy_::FloatType;
+  using value_type    = typename CovarianceMatrixPolicy_::value_type;
   using StateVec      = math::Vector<value_type, Size_>;
   using ConstStateVec = const math::Vector<value_type, Size_>;
   using StateCov      = typename CovarianceMatrixPolicy_::template Instantiate<Size_>;
@@ -53,13 +53,13 @@ public:
 
   /// \brief Read access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
-  /// \return const FloatType&
+  /// \return const value_type&
   auto operator[](const sint32 idx) const -> value_type { return _vec.at_unsafe(idx); }
 
   /// \brief Read access to indexed element of the state covariance matrix
   /// \param[in,out] row  Row index in the state covariance matrix
   /// \param[in,out] col  Col index in the state covariance matrix
-  /// \return FloatType
+  /// \return value_type
   auto operator()(const sint32 row, const sint32 col) const -> value_type { return _cov.at_unsafe(row, col); }
 
   // clang-format off
@@ -86,7 +86,7 @@ TEST_REMOVE_PROTECTED:
 
   /// \brief Write access to indexed element of the state vector
   /// \param[in] idx  Index in the state vector
-  /// \return FloatType&
+  /// \return value_type&
   auto operator[](const sint32 idx) -> value_type& { return _vec.at_unsafe(idx); }
 
   // clang-format off

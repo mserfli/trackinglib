@@ -22,7 +22,7 @@ class Predict: public PredictCommon<MotionModel_, CovarianceMatrixPolicy_>
 {
 public:
   using super_predict_common_type = PredictCommon<MotionModel_, CovarianceMatrixPolicy_>;
-  using FloatType                 = typename CovarianceMatrixPolicy_::FloatType;
+  using value_type                = typename CovarianceMatrixPolicy_::value_type;
   using KalmanFilterType          = filter::KalmanFilter<CovarianceMatrixPolicy_>;
   using InformationFilterType     = filter::InformationFilter<CovarianceMatrixPolicy_>;
   using EgoMotionType             = env::EgoMotion<CovarianceMatrixPolicy_>;
@@ -31,13 +31,13 @@ public:
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  void run(const FloatType dt, const KalmanFilterType& filter, const EgoMotionType& egoMotion);
+  void run(const value_type dt, const KalmanFilterType& filter, const EgoMotionType& egoMotion);
 
   /// \brief State prediction with ego motion compensation using an InformationFilter
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  void run(const FloatType dt, const InformationFilterType& filter, const EgoMotionType& egoMotion);
+  void run(const value_type dt, const InformationFilterType& filter, const EgoMotionType& egoMotion);
 };
 
 } // namespace generic

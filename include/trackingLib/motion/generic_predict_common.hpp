@@ -14,10 +14,10 @@ namespace generic
 
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
 inline void PredictCommon<MotionModel_, CovarianceMatrixPolicy_>::run(Storage&             data,
-                                                                      const FloatType      dt,
+                                                                      const value_type     dt,
                                                                       const EgoMotionType& egoMotion)
 {
-  assert(dt >= static_cast<FloatType>(0));
+  assert(dt >= static_cast<value_type>(0));
   auto& underlying = static_cast<MotionModel_&>(*this);
 
   // transform posteriori state into current frame

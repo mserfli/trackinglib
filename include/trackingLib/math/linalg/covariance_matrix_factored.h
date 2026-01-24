@@ -26,18 +26,18 @@ class TriangularMatrix;
 template <typename ValueType_, sint32 Size_>
 class Vector;
 
-template <typename FloatType_, sint32 Size_>
+template <typename ValueType_, sint32 Size_>
 class CovarianceMatrixFull;
 
 /// \brief UDU factored covariance matrix for numerical stability
 ///
-/// This class implements the UDU^T factorization of covariance matrices, where
+/// This class implements the UDU^T factorization of covariance matrixes, where
 /// P = U*D*U^T. Here U is a unit upper triangular matrix (diagonal elements = 1)
 /// and D is a diagonal matrix containing the diagonal elements of the factorization.
 ///
 /// UDU factorization provides superior numerical stability compared to full matrix
-/// representations, especially for ill-conditioned covariance matrices. This is
-/// particularly important in Kalman filtering where covariance matrices can become
+/// representations, especially for ill-conditioned covariance matrixes. This is
+/// particularly important in Kalman filtering where covariance matrixes can become
 /// near-singular over time.
 ///
 /// Key algorithms implemented:
@@ -47,7 +47,7 @@ class CovarianceMatrixFull;
 /// The factorization maintains the symmetry and positive semi-definiteness of
 /// the covariance matrix while avoiding matrix inversion operations.
 ///
-/// \tparam FloatType_ Floating-point type (float32 or float64)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ Dimension of the square covariance matrix
 ///
 /// \see CovarianceMatrixFull for standard matrix representation
@@ -55,12 +55,12 @@ class CovarianceMatrixFull;
 /// \see Bierman, G. J. "Factorization Methods for Discrete Sequential Estimation"
 ///
 /// \note Based on academic publications by Thornton, Bierman, and D'Souza
-template <typename FloatType_, sint32 Size_>
-class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<FloatType_, Size_>>
+template <typename ValueType_, sint32 Size_>
+class CovarianceMatrixFactored: public contract::CovarianceMatrixIntf<CovarianceMatrixFactored<ValueType_, Size_>>
 {
 public:
-  using value_type          = FloatType_;
-  using compose_type        = CovarianceMatrixFull<FloatType_, Size_>;
+  using value_type          = ValueType_;
+  using compose_type        = CovarianceMatrixFull<ValueType_, Size_>;
   static constexpr auto dim = Size_;
 
   // rule of 5 declarations
@@ -76,8 +76,8 @@ public:
   /// \brief Construct a new Covariance Matrix Factored object
   /// \param[in] u   Unit upper triangular matrix
   /// \param[in] d   Diagonal matrix
-  explicit CovarianceMatrixFactored(const TriangularMatrix<FloatType_, Size_, false, true>& u,
-                                    const DiagonalMatrix<FloatType_, Size_>&                d);
+  explicit CovarianceMatrixFactored(const TriangularMatrix<ValueType_, Size_, false, true>& u,
+                                    const DiagonalMatrix<ValueType_, Size_>&                d);
 
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFactored
@@ -86,7 +86,7 @@ public:
   /// \brief Construct a diagonal covariance matrix
   /// \param[in] diag  Diagonal matrix
   /// \return CovarianceMatrixFactored
-  static auto FromDiagonal(const DiagonalMatrix<FloatType_, Size_>& diag) -> CovarianceMatrixFactored;
+  static auto FromDiagonal(const DiagonalMatrix<ValueType_, Size_>& diag) -> CovarianceMatrixFactored;
 
   /// \brief Creates a CovarianceMatrixFactored from separate U and D initializer lists
   ///
@@ -96,8 +96,8 @@ public:
   /// \param[in] u Nested initializer list for the upper triangular U matrix
   /// \param[in] d Flat initializer list for the diagonal D matrix
   /// \return CovarianceMatrixFactored instance with the specified U and D components
-  static auto FromList(const std::initializer_list<std::initializer_list<FloatType_>>& u,
-                       const std::initializer_list<FloatType_>&                        d) -> CovarianceMatrixFactored;
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& u,
+                       const std::initializer_list<ValueType_>&                        d) -> CovarianceMatrixFactored;
   // <---
 
   /// \brief Set Identity covariance
@@ -118,18 +118,18 @@ public:
   /// Computes the sum of all diagonal elements of the matrix.
   /// The trace is defined as the sum of elements A_ii for i = 1 to n.
   ///
-  /// \return FloatType_ The trace of the matrix(sum of diagonal elements)
-  [[nodiscard]] auto trace() const -> FloatType_;
+  /// \return ValueType_ The trace of the matrix(sum of diagonal elements)
+  [[nodiscard]] auto trace() const -> ValueType_;
 
   /// \brief Calculate the determinant of the covariance matrix.
   ///
   /// Computes the determinant as the product of the diagonal elements.
   ///     det(cov) = det(U)*det(D)*det(U') = det(D)
   ///
-  /// \return FloatType_ The determinant of the matrix
+  /// \return ValueType_ The determinant of the matrix
   /// \note Time complexity: O(n) where n is the matrix dimension
-  /// \note For singular matrices, the determinant will be zero or very close to zero
-  [[nodiscard]] auto determinant() const -> FloatType_ { return _d.determinant(); }
+  /// \note For singular matrixes, the determinant will be zero or very close to zero
+  [[nodiscard]] auto determinant() const -> ValueType_ { return _d.determinant(); }
 
   /// \brief Compute inverse in factored form
   ///
@@ -166,7 +166,7 @@ public:
   /// \note Used for coordinate transformations in factored Kalman filters
   /// \note Maintains numerical stability of the UDU representation
   template <bool IsRowMajor_>
-  void apaT(const SquareMatrix<FloatType_, Size_, IsRowMajor_>& A);
+  void apaT(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& A);
 
   /// \brief Compute A*P*A^T (factored covariance propagation)
   ///
@@ -180,7 +180,7 @@ public:
   /// \note Used for coordinate transformations in factored Kalman filters
   /// \note Maintains numerical stability of the UDU representation
   template <bool IsRowMajor_>
-  auto apaT(const SquareMatrix<FloatType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFactored;
+  auto apaT(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFactored;
 
   /// \brief Thornton update: Φ*P*Φ^T + G*Q*G^T (Kalman prediction)
   ///
@@ -204,13 +204,13 @@ public:
   ///
   /// \note This is the primary prediction update in factored Kalman filters
   /// \note Time complexity: O(n^2) where n = Size_
-  /// \note Numerically stable for ill-conditioned matrices
+  /// \note Numerically stable for ill-conditioned matrixes
   ///
   /// \see Thornton, C. L. "Triangular Covariance Factorizations for Kalman Filtering"
   template <sint32 SizeQ_>
-  void thornton(const SquareMatrix<FloatType_, Size_, true>&   Phi,
-                const Matrix<FloatType_, Size_, SizeQ_, true>& G,
-                const DiagonalMatrix<FloatType_, SizeQ_>&      Q);
+  void thornton(const SquareMatrix<ValueType_, Size_, true>&   Phi,
+                const Matrix<ValueType_, Size_, SizeQ_, true>& G,
+                const DiagonalMatrix<ValueType_, SizeQ_>&      Q);
 
   /// \brief Agee-Turner rank-1 update: P ± x*x^T
   ///
@@ -231,24 +231,24 @@ public:
   /// \note Time complexity: O(n^2) where n = Size_
   ///
   /// \see Agee, W. H. and Turner, R. C. "Triangular Decomposition of a Positive Definite Matrix Plus a Symmetric Dyad"
-  void rank1Update(const FloatType_ c, const Vector<FloatType_, Size_>& x);
+  void rank1Update(const ValueType_ c, const Vector<ValueType_, Size_>& x);
 
   /// \brief Set the variance at (idx,idx) and clears any correlations
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
-  void setVariance(const sint32 idx, const FloatType_ val);
+  void setVariance(const sint32 idx, const ValueType_ val);
 
   /// \brief Fill the covariance with first N=SrcCount rows and cols of the other covariance
   /// \tparam SrcSize   Size of the other covariance
   /// \tparam SrcCount  Count rows/cols to copy from other
   /// \param[in] other  The other matrix to copy from
   template <sint32 SrcSize_, sint32 SrcCount_>
-  void fill(const CovarianceMatrixFactored<FloatType_, SrcSize_>& other);
+  void fill(const CovarianceMatrixFactored<ValueType_, SrcSize_>& other);
 
   /// \brief Set the Diagonal matrix element to given value
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
-  void setDiagonal(const sint32 idx, const FloatType_ val);
+  void setDiagonal(const sint32 idx, const ValueType_ val);
 
   /// \brief Check if the matrix is symmetric.
   ///
@@ -270,7 +270,7 @@ public:
   /// Tests whether all eigenvalues of the matrix are non-negative.
   /// A positive semi-definite matrix satisfies x^T * A * x >= 0 for all non-zero vectors x.
   ///
-  /// This is a key property for covariance matrices in statistics and machine learning.
+  /// This is a key property for covariance matrixes in statistics and machine learning.
   ///
   /// \return true if the matrix is positive semi-definite, false otherwise
   [[nodiscard]] auto isPositiveSemiDefinite() const -> bool { return _d.isPositiveSemiDefinite(); }
@@ -281,7 +281,7 @@ public:
   /// \param[in] row  row of the element to read
   /// \param[in] col  column of the element to read
   /// \return ValueType_   the value at (row,col)
-  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -> FloatType_;
+  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -> ValueType_;
   /// <---
 
   // clang-format off
@@ -289,8 +289,8 @@ TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
 
-  TriangularMatrix<FloatType_, Size_, false, true> _u{};
-  DiagonalMatrix<FloatType_, Size_>                _d{};
+  TriangularMatrix<ValueType_, Size_, false, true> _u{};
+  DiagonalMatrix<ValueType_, Size_>                _d{};
 };
 
 } // namespace math

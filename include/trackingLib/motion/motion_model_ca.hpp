@@ -20,7 +20,7 @@ MotionModelCA<CovarianceMatrixPolicy_>::MotionModelCA(const StateVec& vec, const
 }
 
 template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::predict(const FloatType         dt,
+void MotionModelCA<CovarianceMatrixPolicy_>::predict(const value_type        dt,
                                                      const KalmanFilterType& filter,
                                                      const EgoMotionType&    egoMotion)
 {
@@ -28,7 +28,7 @@ void MotionModelCA<CovarianceMatrixPolicy_>::predict(const FloatType         dt,
 }
 
 template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::predict(const FloatType              dt,
+void MotionModelCA<CovarianceMatrixPolicy_>::predict(const value_type             dt,
                                                      const InformationFilterType& filter,
                                                      const EgoMotionType&         egoMotion)
 {
@@ -40,18 +40,18 @@ void MotionModelCA<CovarianceMatrixPolicy_>::compensateEgoMotion(EgoMotionMappin
                                                                  StateMatrix&            Go,
                                                                  const EgoMotionType&    egoMotion)
 {
-  FloatType& x  = this->operator[](StateDefCA::X);
-  FloatType& y  = this->operator[](StateDefCA::Y);
-  FloatType& vx = this->operator[](StateDefCA::VX);
-  FloatType& vy = this->operator[](StateDefCA::VY);
-  FloatType& ax = this->operator[](StateDefCA::AX);
-  FloatType& ay = this->operator[](StateDefCA::AY);
+  value_type& x  = this->operator[](StateDefCA::X);
+  value_type& y  = this->operator[](StateDefCA::Y);
+  value_type& vx = this->operator[](StateDefCA::VX);
+  value_type& vy = this->operator[](StateDefCA::VY);
+  value_type& ax = this->operator[](StateDefCA::AX);
+  value_type& ay = this->operator[](StateDefCA::AY);
 
-  const FloatType sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
-  const FloatType cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
-  const FloatType deltaXEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotionType::DS_X);
-  const FloatType deltaYEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotionType::DS_Y);
-  const FloatType distCog2Ego    = egoMotion.getGeometry().distCog2Ego;
+  const value_type sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
+  const value_type cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
+  const value_type deltaXEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotionType::DS_X);
+  const value_type deltaYEgo      = egoMotion.getDisplacementCog().vec.at_unsafe(EgoMotionType::DS_Y);
+  const value_type distCog2Ego    = egoMotion.getGeometry().distCog2Ego;
 
   Go.setZeros();
   Go.at_unsafe(X, X)   = cosDeltaPsiEgo;
@@ -67,8 +67,8 @@ void MotionModelCA<CovarianceMatrixPolicy_>::compensateEgoMotion(EgoMotionMappin
   Go.at_unsafe(AY, AX) = -sinDeltaPsiEgo;
   Go.at_unsafe(AY, AY) = cosDeltaPsiEgo;
 
-  const FloatType x0 = -deltaYEgo + y;
-  const FloatType x1 = deltaXEgo - distCog2Ego - x;
+  const value_type x0 = -deltaYEgo + y;
+  const value_type x1 = deltaXEgo - distCog2Ego - x;
   Ge.setZeros();
   Ge.at_unsafe(X, EgoMotionType::DS_X)    = -cosDeltaPsiEgo;
   Ge.at_unsafe(X, EgoMotionType::DS_Y)    = -sinDeltaPsiEgo;
@@ -89,10 +89,10 @@ void MotionModelCA<CovarianceMatrixPolicy_>::compensateEgoMotion(EgoMotionMappin
 }
 
 template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::applyProcessModel(const FloatType dt)
+void MotionModelCA<CovarianceMatrixPolicy_>::applyProcessModel(const value_type dt)
 {
   const StateVec& stateVec = this->getVec();
-  const auto      halfDtSq = static_cast<FloatType>(0.5) * dt * dt;
+  const auto      halfDtSq = static_cast<value_type>(0.5) * dt * dt;
 
   this->operator[](StateDefCA::X) += dt * stateVec.at_unsafe(StateDefCA::VX) + halfDtSq * stateVec.at_unsafe(StateDefCA::AX);
   this->operator[](StateDefCA::Y) += dt * stateVec.at_unsafe(StateDefCA::VY) + halfDtSq * stateVec.at_unsafe(StateDefCA::AY);
@@ -101,9 +101,9 @@ void MotionModelCA<CovarianceMatrixPolicy_>::applyProcessModel(const FloatType d
 }
 
 template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::computeA(StateMatrix& A, const FloatType dt) const
+void MotionModelCA<CovarianceMatrixPolicy_>::computeA(StateMatrix& A, const value_type dt) const
 {
-  const auto halfDtSq = static_cast<FloatType>(0.5) * dt * dt;
+  const auto halfDtSq = static_cast<value_type>(0.5) * dt * dt;
 
   A.setIdentity();
   A.at_unsafe(StateDefCA::X, StateDefCA::AX)  = halfDtSq;
@@ -116,25 +116,25 @@ void MotionModelCA<CovarianceMatrixPolicy_>::computeA(StateMatrix& A, const Floa
 }
 
 template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::computeQ(ProcessNoiseDiagMatrix& Q, const FloatType dt)
+void MotionModelCA<CovarianceMatrixPolicy_>::computeQ(ProcessNoiseDiagMatrix& Q, const value_type dt)
 {
   // DWPA process, elements in Q define an acceleration increment, i.e. unit is equal to m/s**2
-  Q.at_unsafe(Q_AX) = static_cast<FloatType>(100.0 * dt * dt);
-  Q.at_unsafe(Q_AY) = static_cast<FloatType>(100.0 * dt * dt);
+  Q.at_unsafe(Q_AX) = static_cast<value_type>(100.0 * dt * dt);
+  Q.at_unsafe(Q_AY) = static_cast<value_type>(100.0 * dt * dt);
 }
 
 template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::computeG(ProcessNoiseMappingMatrix& G, const FloatType dt)
+void MotionModelCA<CovarianceMatrixPolicy_>::computeG(ProcessNoiseMappingMatrix& G, const value_type dt)
 {
-  const FloatType halfDeltaTimePow2 = static_cast<FloatType>(0.5) * dt * dt;
+  const value_type halfDeltaTimePow2 = static_cast<value_type>(0.5) * dt * dt;
 
   G.setZeros();
   G.at_unsafe(X, Q_AX)  = halfDeltaTimePow2;
   G.at_unsafe(VX, Q_AX) = dt;
-  G.at_unsafe(AX, Q_AX) = static_cast<FloatType>(1.0);
+  G.at_unsafe(AX, Q_AX) = static_cast<value_type>(1.0);
   G.at_unsafe(Y, Q_AY)  = halfDeltaTimePow2;
   G.at_unsafe(VY, Q_AY) = dt;
-  G.at_unsafe(AY, Q_AY) = static_cast<FloatType>(1.0);
+  G.at_unsafe(AY, Q_AY) = static_cast<value_type>(1.0);
 }
 
 template <typename CovarianceMatrixPolicy_>

@@ -28,7 +28,7 @@ class IMotionModel
     , public base::contract::RequireAbstractIntf<IMotionModel<CovarianceMatrixPolicy_>>
 {
 public:
-  using FloatType             = typename CovarianceMatrixPolicy_::FloatType;
+  using value_type            = typename CovarianceMatrixPolicy_::value_type;
   using EgoMotionType         = env::EgoMotion<CovarianceMatrixPolicy_>;
   using KalmanFilterType      = filter::KalmanFilter<CovarianceMatrixPolicy_>;
   using InformationFilterType = filter::InformationFilter<CovarianceMatrixPolicy_>;
@@ -37,24 +37,24 @@ public:
   IMotionModel()          = default;
   virtual ~IMotionModel() = default;
 
-  virtual auto getX() const -> FloatType  = 0;
-  virtual auto getVx() const -> FloatType = 0;
-  virtual auto getAx() const -> FloatType = 0;
-  virtual auto getY() const -> FloatType  = 0;
-  virtual auto getVy() const -> FloatType = 0;
-  virtual auto getAy() const -> FloatType = 0;
+  virtual auto getX() const -> value_type  = 0;
+  virtual auto getVx() const -> value_type = 0;
+  virtual auto getAx() const -> value_type = 0;
+  virtual auto getY() const -> value_type  = 0;
+  virtual auto getVy() const -> value_type = 0;
+  virtual auto getAy() const -> value_type = 0;
 
   /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  virtual void predict(const FloatType dt, const KalmanFilterType& filter, const EgoMotionType& egoMotion) = 0;
+  virtual void predict(const value_type dt, const KalmanFilterType& filter, const EgoMotionType& egoMotion) = 0;
 
   /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  virtual void predict(const FloatType dt, const InformationFilterType& filter, const EgoMotionType& egoMotion) = 0;
+  virtual void predict(const value_type dt, const InformationFilterType& filter, const EgoMotionType& egoMotion) = 0;
 
   // clang-format off
 TEST_REMOVE_PROTECTED:
@@ -78,7 +78,7 @@ class ExtendedMotionModel
     , public base::contract::RequireAbstractIntf<ExtendedMotionModel<MotionModel_, MotionModelTrait_>>
 {
 public:
-  using FloatType              = typename MotionModelTrait_::FloatType;
+  using value_type             = typename MotionModelTrait_::value_type;
   using StateDef               = typename MotionModelTrait_::StateDef;
   using CovarianceMatrixPolicy = typename MotionModelTrait_::CovarianceMatrixPolicy;
   using BaseIMotionModel       = IMotionModel<CovarianceMatrixPolicy>;
@@ -93,16 +93,16 @@ public:
   /// \brief Create state vector from initializer list
   /// \param[in] list  Initializer list with state values
   /// \return StateVec
-  static auto StateVecFromList(const std::initializer_list<FloatType>& list) -> StateVec { return StateVec::FromList(list); }
+  static auto StateVecFromList(const std::initializer_list<value_type>& list) -> StateVec { return StateVec::FromList(list); }
 
   /// \brief Create state covariance from initializer list
   /// \param[in] list  Nested initializer list with covariance values
   /// \return StateCov
-  static auto StateCovFromList(const std::initializer_list<std::initializer_list<FloatType>>& list) -> StateCov
+  static auto StateCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> StateCov
   {
     if constexpr (CovarianceMatrixPolicy::is_factored)
     {
-      return math::conversions::CovarianceMatrixFactoredFromList<FloatType, MotionModelTrait_::Size>(list);
+      return math::conversions::CovarianceMatrixFactoredFromList<value_type, MotionModelTrait_::Size>(list);
     }
     else
     {
@@ -115,8 +115,8 @@ public:
   /// \param[in] d Flat initializer list for the diagonal D matrix
   /// \return StateCov
   template <typename T = CovarianceMatrixPolicy>
-  static auto StateCovFromList(const std::initializer_list<std::initializer_list<FloatType>>& u,
-                               const std::initializer_list<FloatType>& d) -> std::enable_if_t<T::is_factored, StateCov>
+  static auto StateCovFromList(const std::initializer_list<std::initializer_list<value_type>>& u,
+                               const std::initializer_list<value_type>& d) -> std::enable_if_t<T::is_factored, StateCov>
   {
     return StateCov::FromList(u, d);
   }
@@ -125,8 +125,8 @@ public:
   /// \param[in] vecList  Initializer list for state vector
   /// \param[in] covList  Nested initializer list for covariance matrix
   /// \return ExtendedMotionModel instance
-  static auto FromLists(const std::initializer_list<FloatType>&                        vecList,
-                        const std::initializer_list<std::initializer_list<FloatType>>& covList) -> MotionModel_
+  static auto FromLists(const std::initializer_list<value_type>&                        vecList,
+                        const std::initializer_list<std::initializer_list<value_type>>& covList) -> MotionModel_
   {
     auto vec = StateVecFromList(vecList);
     auto cov = StateCovFromList(covList);
@@ -134,12 +134,12 @@ public:
   }
 
   /// \brief Read access to x position
-  /// \return FloatType
-  auto getX() const -> FloatType final { return this->operator[](StateDef::X); }
+  /// \return value_type
+  auto getX() const -> value_type final { return this->operator[](StateDef::X); }
 
   /// \brief Read access to y position
-  /// \return FloatType
-  auto getY() const -> FloatType final { return this->operator[](StateDef::Y); }
+  /// \return value_type
+  auto getY() const -> value_type final { return this->operator[](StateDef::Y); }
 
   /// \brief Inverts the state covariance matrix into information form and vice versa
   auto invertCov() -> tl::expected<void, math::Errors>;

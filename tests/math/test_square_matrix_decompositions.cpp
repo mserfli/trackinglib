@@ -6,7 +6,7 @@
 
 using namespace tracking::math;
 
-// Helper function to create test matrices
+// Helper function to create test matrixes
 template <typename ValueType_, sint32 Size_>
 auto createSymmetricPositiveDefiniteMatrix() -> SquareMatrix<ValueType_, Size_, true>
 {

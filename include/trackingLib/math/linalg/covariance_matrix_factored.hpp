@@ -18,9 +18,9 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType_, sint32 Size_>
-CovarianceMatrixFactored<FloatType_, Size_>::CovarianceMatrixFactored(const TriangularMatrix<FloatType_, Size_, false, true>& u,
-                                                                      const DiagonalMatrix<FloatType_, Size_>&                d)
+template <typename ValueType_, sint32 Size_>
+CovarianceMatrixFactored<ValueType_, Size_>::CovarianceMatrixFactored(const TriangularMatrix<ValueType_, Size_, false, true>& u,
+                                                                      const DiagonalMatrix<ValueType_, Size_>&                d)
     : _u{u}
     , _d{d}
 {
@@ -28,41 +28,41 @@ CovarianceMatrixFactored<FloatType_, Size_>::CovarianceMatrixFactored(const Tria
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
-template <typename FloatType_, sint32 Size_>
-auto CovarianceMatrixFactored<FloatType_, Size_>::Identity() -> CovarianceMatrixFactored
+template <typename ValueType_, sint32 Size_>
+auto CovarianceMatrixFactored<ValueType_, Size_>::Identity() -> CovarianceMatrixFactored
 {
-  CovarianceMatrixFactored cov{TriangularMatrix<FloatType_, Size_, false, true>::Identity(),
-                               DiagonalMatrix<FloatType_, Size_>::Identity()};
+  CovarianceMatrixFactored cov{TriangularMatrix<ValueType_, Size_, false, true>::Identity(),
+                               DiagonalMatrix<ValueType_, Size_>::Identity()};
   return cov;
 }
 
-template <typename FloatType_, sint32 Size_>
-auto CovarianceMatrixFactored<FloatType_, Size_>::FromDiagonal(const DiagonalMatrix<FloatType_, Size_>& diag)
+template <typename ValueType_, sint32 Size_>
+auto CovarianceMatrixFactored<ValueType_, Size_>::FromDiagonal(const DiagonalMatrix<ValueType_, Size_>& diag)
     -> CovarianceMatrixFactored
 {
   assert(diag.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
-  return CovarianceMatrixFactored{TriangularMatrix<FloatType_, Size_, false, true>::Identity(), diag};
+  return CovarianceMatrixFactored{TriangularMatrix<ValueType_, Size_, false, true>::Identity(), diag};
 }
 
-template <typename FloatType_, sint32 Size_>
-auto CovarianceMatrixFactored<FloatType_, Size_>::FromList(const std::initializer_list<std::initializer_list<FloatType_>>& u,
-                                                           const std::initializer_list<FloatType_>& d) -> CovarianceMatrixFactored
+template <typename ValueType_, sint32 Size_>
+auto CovarianceMatrixFactored<ValueType_, Size_>::FromList(const std::initializer_list<std::initializer_list<ValueType_>>& u,
+                                                           const std::initializer_list<ValueType_>& d) -> CovarianceMatrixFactored
 {
-  auto&& u_ = TriangularMatrix<FloatType_, Size_, false, true>::FromList(u);
-  auto&& d_ = DiagonalMatrix<FloatType_, Size_>::FromList(d);
+  auto&& u_ = TriangularMatrix<ValueType_, Size_, false, true>::FromList(u);
+  auto&& d_ = DiagonalMatrix<ValueType_, Size_>::FromList(d);
   return CovarianceMatrixFactored{std::move(u_), std::move(d_)};
 }
 
 
-template <typename FloatType_, sint32 Size_>
-void CovarianceMatrixFactored<FloatType_, Size_>::setIdentity()
+template <typename ValueType_, sint32 Size_>
+void CovarianceMatrixFactored<ValueType_, Size_>::setIdentity()
 {
   _u.setIdentity();
   _d.setIdentity();
 }
 
-template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()(sint32 row,
+template <typename ValueType_, sint32 Size_>
+inline auto CovarianceMatrixFactored<ValueType_, Size_>::operator()(sint32 row,
                                                                     sint32 col) const -> tl::expected<value_type, Errors>
 {
   if (!(row >= 0 && row < dim))
@@ -77,8 +77,8 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()(sint32 row,
   return at_unsafe(row, col);
 }
 
-template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::at_unsafe(sint32 row, sint32 col) const -> FloatType_
+template <typename ValueType_, sint32 Size_>
+inline auto CovarianceMatrixFactored<ValueType_, Size_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_
 {
   // cov(row,col) == cov(col,row), so we swap row and col if row > col
   if (row > col)
@@ -86,32 +86,32 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::at_unsafe(sint32 row, s
     std::swap(row, col);
   }
 
-  FloatType_ result{};
+  ValueType_ result{};
   // calc row, col element of _u * _d * _u.transpose()
   // calc relevant elements of u*d to be rhs multiplied with uT(col::, col)==u(col, col::)
-  Vector<FloatType_, Size_> ud{};
+  Vector<ValueType_, Size_> ud{};
   for (auto i = col; i < Size_; ++i)
   {
     ud.at_unsafe(i) = _u.at_unsafe(row, i) * _d.at_unsafe(i);
   }
-  MatrixColumnView<FloatType_, Size_, 1, true>  udView{ud, 0, col, Size_ - 1};
-  MatrixRowView<FloatType_, Size_, Size_, true> uTView{_u, col, col, Size_ - 1};
+  MatrixColumnView<ValueType_, Size_, 1, true>  udView{ud, 0, col, Size_ - 1};
+  MatrixRowView<ValueType_, Size_, Size_, true> uTView{_u, col, col, Size_ - 1};
   result = uTView * udView; // calc the scalar product of ud*uT on relevant elements
   return result;
 }
 
-template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::operator()() const -> compose_type
+template <typename ValueType_, sint32 Size_>
+inline auto CovarianceMatrixFactored<ValueType_, Size_>::operator()() const -> compose_type
 {
   math::SquareMatrix cov{_u * _d * _u.transpose()};
   cov.symmetrize();
   return compose_type{std::move(cov)};
 }
 
-template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::trace() const -> FloatType_
+template <typename ValueType_, sint32 Size_>
+inline auto CovarianceMatrixFactored<ValueType_, Size_>::trace() const -> ValueType_
 {
-  auto res = static_cast<FloatType_>(0);
+  auto res = static_cast<ValueType_>(0);
   for (sint32 i = 0; i < Size_; ++i)
   {
     res += at_unsafe(i, i);
@@ -119,11 +119,11 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::trace() const -> FloatT
   return res;
 }
 
-template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>
+template <typename ValueType_, sint32 Size_>
+inline auto CovarianceMatrixFactored<ValueType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>
 {
   // we use the transpose of the input matrix to get a column major matrix
-  const auto composed = tracking::math::SquareMatrix<FloatType_, Size_, false>{this->operator()().transpose()};
+  const auto composed = tracking::math::SquareMatrix<ValueType_, Size_, false>{this->operator()().transpose()};
   // we decompose the input matrix into LDLt form, with L being a column major lower triangular matrix
   const auto ldlt = composed.decomposeLDLT();
   if (ldlt.has_value())
@@ -139,8 +139,8 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::inverse() const -> tl::
   }
 }
 
-template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::composed_inverse() const -> tl::expected<compose_type, Errors>
+template <typename ValueType_, sint32 Size_>
+inline auto CovarianceMatrixFactored<ValueType_, Size_>::composed_inverse() const -> tl::expected<compose_type, Errors>
 {
   auto               inv_u = _u.inverse();
   auto               inv_d = _d.inverse();
@@ -149,18 +149,18 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::composed_inverse() cons
   return compose_type{std::move(cov)};
 }
 
-template <typename FloatType_, sint32 Size_>
+template <typename ValueType_, sint32 Size_>
 template <bool IsRowMajor_>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::apaT(const SquareMatrix<FloatType_, Size_, IsRowMajor_>& A)
+inline void CovarianceMatrixFactored<ValueType_, Size_>::apaT(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& A)
 {
-  math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, A);
+  math::ModifiedGramSchmidt<ValueType_, Size_>::run(_u, _d, A);
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
-template <typename FloatType_, sint32 Size_>
+template <typename ValueType_, sint32 Size_>
 template <bool IsRowMajor_>
-inline auto CovarianceMatrixFactored<FloatType_, Size_>::apaT(const SquareMatrix<FloatType_, Size_, IsRowMajor_>& A) const
+inline auto CovarianceMatrixFactored<ValueType_, Size_>::apaT(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const
     -> CovarianceMatrixFactored
 {
   CovarianceMatrixFactored cov{*this};
@@ -168,40 +168,40 @@ inline auto CovarianceMatrixFactored<FloatType_, Size_>::apaT(const SquareMatrix
   return cov;
 }
 
-template <typename FloatType_, sint32 Size_>
+template <typename ValueType_, sint32 Size_>
 template <sint32 SizeQ_>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::thornton(const SquareMatrix<FloatType_, Size_, true>&   Phi,
-                                                                  const Matrix<FloatType_, Size_, SizeQ_, true>& G,
-                                                                  const DiagonalMatrix<FloatType_, SizeQ_>&      Q)
+inline void CovarianceMatrixFactored<ValueType_, Size_>::thornton(const SquareMatrix<ValueType_, Size_, true>&   Phi,
+                                                                  const Matrix<ValueType_, Size_, SizeQ_, true>& G,
+                                                                  const DiagonalMatrix<ValueType_, SizeQ_>&      Q)
 {
-  math::ModifiedGramSchmidt<FloatType_, Size_>::run(_u, _d, Phi, G, Q);
+  math::ModifiedGramSchmidt<ValueType_, Size_>::run(_u, _d, Phi, G, Q);
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
-template <typename FloatType_, sint32 Size_>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::rank1Update(const FloatType_ c, const Vector<FloatType_, Size_>& x)
+template <typename ValueType_, sint32 Size_>
+inline void CovarianceMatrixFactored<ValueType_, Size_>::rank1Update(const ValueType_ c, const Vector<ValueType_, Size_>& x)
 {
-  math::Rank1Update<FloatType_, Size_, true>::run(_u, _d, c, x);
+  math::Rank1Update<ValueType_, Size_, true>::run(_u, _d, c, x);
 
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
-template <typename FloatType_, sint32 Size_>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::setVariance(const sint32 idx, const FloatType_ val)
+template <typename ValueType_, sint32 Size_>
+inline void CovarianceMatrixFactored<ValueType_, Size_>::setVariance(const sint32 idx, const ValueType_ val)
 {
-  auto A                = SquareMatrix<FloatType_, Size_, true>::Identity();
-  A.at_unsafe(idx, idx) = static_cast<FloatType_>(0.0);
+  auto A                = SquareMatrix<ValueType_, Size_, true>::Identity();
+  A.at_unsafe(idx, idx) = static_cast<ValueType_>(0.0);
   apaT(A);
   setDiagonal(idx, val);
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
-template <typename FloatType_, sint32 Size_>
+template <typename ValueType_, sint32 Size_>
 template <sint32 SrcSize_, sint32 SrcCount_>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::fill(const CovarianceMatrixFactored<FloatType_, SrcSize_>& other)
+inline void CovarianceMatrixFactored<ValueType_, Size_>::fill(const CovarianceMatrixFactored<ValueType_, SrcSize_>& other)
 {
   _u.template setBlock<SrcSize_, SrcCount_, 0, 0, 0, 0>(other._u);
   _d.template setBlock<SrcSize_, SrcCount_, 0, 0>(other._d);
@@ -209,10 +209,10 @@ inline void CovarianceMatrixFactored<FloatType_, Size_>::fill(const CovarianceMa
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
 
-template <typename FloatType_, sint32 Size_>
-inline void CovarianceMatrixFactored<FloatType_, Size_>::setDiagonal(const sint32 idx, const FloatType_ val)
+template <typename ValueType_, sint32 Size_>
+inline void CovarianceMatrixFactored<ValueType_, Size_>::setDiagonal(const sint32 idx, const ValueType_ val)
 {
-  assert(val > static_cast<FloatType_>(0.0) && "Expected variance value greater than 0.0");
+  assert(val > static_cast<ValueType_>(0.0) && "Expected variance value greater than 0.0");
   _d.at_unsafe(idx) = val;
 }
 } // namespace math

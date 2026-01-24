@@ -17,7 +17,7 @@ namespace conversions
 /// This function extracts the elements from a matrix column view to create a vector.
 /// The column view must have the correct dimensions.
 ///
-/// \tparam ValueType_ The value type of vector and matrix elements
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The size of the resulting vector
 /// \param[in] colView The source matrix column view
 /// \return Vector containing the elements from the column view

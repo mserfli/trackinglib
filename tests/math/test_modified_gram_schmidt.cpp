@@ -32,13 +32,13 @@ protected:
     return u * d_ut;
   }
 
-  /// \brief Helper function to check if two matrices are approximately equal
+  /// \brief Helper function to check if two matrixes are approximately equal
   /// \param a First matrix
   /// \param b Second matrix
   /// \param tol Tolerance for comparison
-  /// \return true if matrices are approximately equal
+  /// \return true if matrixes are approximately equal
   template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_, bool IsRowMajor2_>
-  bool matricesApproxEqual(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&  a,
+  bool matrixesApproxEqual(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&  a,
                            const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& b,
                            float64                                               tol = TOLERANCE) const
   {
@@ -75,7 +75,7 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT__Success) // NOLINT
 {
   const sint32 size = GetParam();
 
-  // Create test matrices based on size
+  // Create test matrixes based on size
   if (size == 2)
   {
     // clang-format off
@@ -100,7 +100,7 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT__Success) // NOLINT
 
     // Verify reconstruction
     const auto result = reconstructUDU<2>(u, d);
-    EXPECT_TRUE(matricesApproxEqual(result, expected));
+    EXPECT_TRUE(matrixesApproxEqual(result, expected));
   }
   else if (size == 4)
   {
@@ -130,7 +130,7 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT__Success) // NOLINT
 
     // Verify reconstruction
     const auto result = reconstructUDU<4>(u, d);
-    EXPECT_TRUE(matricesApproxEqual(result, expected));
+    EXPECT_TRUE(matrixesApproxEqual(result, expected));
   }
   else if (size == 6)
   {
@@ -164,7 +164,7 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT__Success) // NOLINT
 
     // Verify reconstruction
     const auto result = reconstructUDU<6>(u, d);
-    EXPECT_TRUE(matricesApproxEqual(result, expected));
+    EXPECT_TRUE(matrixesApproxEqual(result, expected));
   }
 }
 
@@ -205,7 +205,7 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT_PlusGQGT__Success) 
 
     // Verify reconstruction
     const auto result = reconstructUDU<2>(u, d);
-    EXPECT_TRUE(matricesApproxEqual(result, expected));
+    EXPECT_TRUE(matrixesApproxEqual(result, expected));
   }
   else if (size == 4)
   {
@@ -245,7 +245,7 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT_PlusGQGT__Success) 
 
     // Verify reconstruction
     const auto result = reconstructUDU<4>(u, d);
-    EXPECT_TRUE(matricesApproxEqual(result, expected));
+    EXPECT_TRUE(matrixesApproxEqual(result, expected));
   }
   else if (size == 6)
   {
@@ -291,11 +291,11 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT_PlusGQGT__Success) 
 
     // Verify reconstruction
     const auto result = reconstructUDU<6>(u, d);
-    EXPECT_TRUE(matricesApproxEqual(result, expected));
+    EXPECT_TRUE(matrixesApproxEqual(result, expected));
   }
 }
 
-/// \brief Test numerical stability with ill-conditioned matrices
+/// \brief Test numerical stability with ill-conditioned matrixes
 TEST_F(GTestModifiedGramSchmidt, run_NumericalStability__Success) // NOLINT
 {
   // Use a matrix with high condition number
@@ -325,7 +325,7 @@ TEST_F(GTestModifiedGramSchmidt, run_NumericalStability__Success) // NOLINT
 
   // Verify reconstruction with relaxed tolerance for numerical stability
   const auto result = reconstructUDU<4>(u, d);
-  EXPECT_TRUE(matricesApproxEqual(result, expected, 1e-6));
+  EXPECT_TRUE(matrixesApproxEqual(result, expected, 1e-6));
 }
 
 /// \brief Test with identity Phi matrix
@@ -353,7 +353,7 @@ TEST_F(GTestModifiedGramSchmidt, run_IdentityPhi__Success) // NOLINT
 
   // Verify reconstruction
   const auto result = reconstructUDU<3>(u, d);
-  EXPECT_TRUE(matricesApproxEqual(result, expected));
+  EXPECT_TRUE(matrixesApproxEqual(result, expected));
 }
 
 /// \brief Test with zero process noise
@@ -386,5 +386,5 @@ TEST_F(GTestModifiedGramSchmidt, run_ZeroProcessNoise__Success) // NOLINT
 
   // Verify reconstruction
   const auto result = reconstructUDU<2>(u, d);
-  EXPECT_TRUE(matricesApproxEqual(result, expected));
+  EXPECT_TRUE(matrixesApproxEqual(result, expected));
 }

@@ -113,15 +113,15 @@ inline constexpr bool is_matrix_like_v = is_matrix_like<T>::value;
 template <typename M>
 auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix_like_v<M>, std::ostream&>
 {
-  using ValueType_ = typename M::value_type;
+  using value_type = typename M::value_type;
 
   // Access elements via at_unsafe() - works regardless of internal memory layout
-  // This is future-proof for packed triangular matrices
+  // This is future-proof for packed triangular matrixes
   for (sint32 row = 0; row < M::Rows; ++row)
   {
     for (sint32 col = 0; col < M::Cols; ++col)
     {
-      if constexpr (std::is_floating_point_v<ValueType_>)
+      if constexpr (std::is_floating_point_v<value_type>)
       {
         os << std::fixed << std::setprecision(6) << std::showpos << std::setw(12) << matrix.at_unsafe(row, col);
       }
@@ -151,7 +151,7 @@ auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix
 /// - 6 decimal places for floating-point types with sign display
 /// - Triangular elements from stored values, off-diagonal as zero
 ///
-/// \tparam ValueType_ The element type (float32, float64, etc.)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The matrix dimension (compile-time constant)
 /// \tparam IsLower_ Whether the matrix is lower triangular
 /// \tparam IsRowMajor_ Whether the matrix is stored in row-major order
@@ -212,14 +212,14 @@ std::ostream& operator<<(std::ostream&                                          
 /// - 6 decimal places for floating-point types with sign display
 /// - Diagonal elements from stored values, off-diagonal as zero
 ///
-/// \tparam ValueType The element type (float32, float64, etc.)
+/// \tparam value_type The element type (float32, float64, etc.)
 /// \tparam Size The matrix dimension (compile-time constant)
 /// \param[in,out] os The output stream to write to
 /// \param[in] matrix The DiagonalMatrix object to stream
 /// \return Reference to the output stream for chaining
 ///
 /// \note This specialization is necessary because DiagonalMatrix::at_unsafe() takes
-///       only one parameter (diagonal index) unlike general matrices
+///       only one parameter (diagonal index) unlike general matrixes
 ///
 /// \see DiagonalMatrix for the matrix class
 /// \see operator<<(std::ostream&, const M&) for general matrix streaming
@@ -233,14 +233,12 @@ std::ostream& operator<<(std::ostream&                                          
 /// // +0.000000, +2.000000, +0.000000
 /// // +0.000000, +0.000000, +3.000000
 /// \endcode
-template <typename ValueType, sint32 Size>
-std::ostream& operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<ValueType, Size>& matrix)
+template <typename ValueType_, sint32 Size_>
+std::ostream& operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<ValueType_, Size_>& matrix)
 {
-  using ValueType_ = ValueType;
-
-  for (sint32 row = 0; row < Size; ++row)
+  for (sint32 row = 0; row < Size_; ++row)
   {
-    for (sint32 col = 0; col < Size; ++col)
+    for (sint32 col = 0; col < Size_; ++col)
     {
       if constexpr (std::is_floating_point_v<ValueType_>)
       {
@@ -261,7 +259,7 @@ std::ostream& operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<
         os << static_cast<ValueType_>(0);
       }
 
-      if (col < Size - 1)
+      if (col < Size_ - 1)
       {
         os << ", ";
       }
@@ -282,14 +280,14 @@ std::ostream& operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<
 /// - 6 decimal places for floating-point types with sign display
 /// - Vector elements as a single column
 ///
-/// \tparam ValueType_ The element type (float32, float64, etc.)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The vector dimension (compile-time constant)
 /// \param[in,out] os The output stream to write to
 /// \param[in] vector The Vector object to stream
 /// \return Reference to the output stream for chaining
 ///
 /// \note This specialization is necessary because Vector::at_unsafe() takes
-///       only one parameter (vector index) unlike general matrices
+///       only one parameter (vector index) unlike general matrixes
 ///
 /// \see Vector for the vector class
 /// \see operator<<(std::ostream&, const M&) for general matrix streaming

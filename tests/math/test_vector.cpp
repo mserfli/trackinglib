@@ -142,22 +142,22 @@ template <typename TypeParam>
 class GTestVectorArithmetic: public testing::Test
 {
 protected:
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
 };
 
 TYPED_TEST_SUITE(GTestVectorArithmetic, VectorTestTypes);
 
 TYPED_TEST(GTestVectorArithmetic, op_plus__Success) // NOLINT
 {
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<ValueType, 3>::FromList({
+  const auto a = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const auto b = Vector<ValueType, 3>::FromList({
+  const auto b = Vector<value_type, 3>::FromList({
     4, 5, 6
   });
-  const auto expected = Vector<ValueType, 3>::FromList({
+  const auto expected = Vector<value_type, 3>::FromList({
     5, 7, 9
   });
   // clang-format on
@@ -170,15 +170,15 @@ TYPED_TEST(GTestVectorArithmetic, op_plus__Success) // NOLINT
 
 TYPED_TEST(GTestVectorArithmetic, op_minus__Success) // NOLINT
 {
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<ValueType, 3>::FromList({
+  const auto a = Vector<value_type, 3>::FromList({
     5, 7, 9
   });
-  const auto b = Vector<ValueType, 3>::FromList({
+  const auto b = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const auto expected = Vector<ValueType, 3>::FromList({
+  const auto expected = Vector<value_type, 3>::FromList({
     4, 5, 6
   });
   // clang-format on
@@ -191,13 +191,13 @@ TYPED_TEST(GTestVectorArithmetic, op_minus__Success) // NOLINT
 
 TYPED_TEST(GTestVectorArithmetic, op_mul_scalar__Success) // NOLINT
 {
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<ValueType, 3>::FromList({
+  const auto a = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const ValueType scalar = 2;
-  const auto expected = Vector<ValueType, 3>::FromList({
+  const value_type scalar = 2;
+  const auto expected = Vector<value_type, 3>::FromList({
     2, 4, 6
   });
   // clang-format on
@@ -210,13 +210,13 @@ TYPED_TEST(GTestVectorArithmetic, op_mul_scalar__Success) // NOLINT
 
 TYPED_TEST(GTestVectorArithmetic, op_plus_scalar__Success) // NOLINT
 {
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<ValueType, 3>::FromList({
+  const auto a = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const ValueType scalar = 10;
-  const auto expected = Vector<ValueType, 3>::FromList({
+  const value_type scalar = 10;
+  const auto expected = Vector<value_type, 3>::FromList({
     11, 12, 13
   });
   // clang-format on
@@ -229,13 +229,13 @@ TYPED_TEST(GTestVectorArithmetic, op_plus_scalar__Success) // NOLINT
 
 TYPED_TEST(GTestVectorArithmetic, op_minus_scalar__Success) // NOLINT
 {
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<ValueType, 3>::FromList({
+  const auto a = Vector<value_type, 3>::FromList({
     10, 20, 30
   });
-  const ValueType scalar = 5;
-  const auto expected = Vector<ValueType, 3>::FromList({
+  const value_type scalar = 5;
+  const auto expected = Vector<value_type, 3>::FromList({
     5, 15, 25
   });
   // clang-format on
@@ -249,16 +249,16 @@ TYPED_TEST(GTestVectorArithmetic, op_minus_scalar__Success) // NOLINT
 // Vector-matrix multiplication tests
 TYPED_TEST(GTestVectorArithmetic, op_mul_matrix__Success) // NOLINT
 {
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
   // clang-format off
-  const auto vec = Vector<ValueType, 2>::FromList({
+  const auto vec = Vector<value_type, 2>::FromList({
     3, 4
   });
-  const auto mat = Matrix<ValueType, 2, 3, true>::FromList({
+  const auto mat = Matrix<value_type, 2, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6}
   });
-  const auto expected = Vector<ValueType, 3>::FromList({
+  const auto expected = Vector<value_type, 3>::FromList({
     19, 26, 33  // 3*1 + 4*4, 3*2 + 4*5, 3*3 + 4*6
   });
   // clang-format on
@@ -272,15 +272,15 @@ TYPED_TEST(GTestVectorArithmetic, op_mul_matrix__Success) // NOLINT
 // Element-wise operations tests
 TYPED_TEST(GTestVectorArithmetic, op_plus_equals__Success) // NOLINT
 {
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
   // clang-format off
-  auto a = Vector<ValueType, 3>::FromList({
+  auto a = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const auto b = Vector<ValueType, 3>::FromList({
+  const auto b = Vector<value_type, 3>::FromList({
     4, 5, 6
   });
-  const auto expected = Vector<ValueType, 3>::FromList({
+  const auto expected = Vector<value_type, 3>::FromList({
     5, 7, 9
   });
   // clang-format on
@@ -293,15 +293,15 @@ TYPED_TEST(GTestVectorArithmetic, op_plus_equals__Success) // NOLINT
 
 TYPED_TEST(GTestVectorArithmetic, op_minus_equals__Success) // NOLINT
 {
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
   // clang-format off
-  auto a = Vector<ValueType, 3>::FromList({
+  auto a = Vector<value_type, 3>::FromList({
     5, 7, 9
   });
-  const auto b = Vector<ValueType, 3>::FromList({
+  const auto b = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const auto expected = Vector<ValueType, 3>::FromList({
+  const auto expected = Vector<value_type, 3>::FromList({
     4, 5, 6
   });
   // clang-format on
@@ -314,13 +314,13 @@ TYPED_TEST(GTestVectorArithmetic, op_minus_equals__Success) // NOLINT
 
 TYPED_TEST(GTestVectorArithmetic, op_mul_equals_scalar__Success) // NOLINT
 {
-  using ValueType = typename TypeParam::type;
+  using value_type = typename TypeParam::type;
   // clang-format off
-  auto a = Vector<ValueType, 3>::FromList({
+  auto a = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const ValueType scalar = 3;
-  const auto expected = Vector<ValueType, 3>::FromList({
+  const value_type scalar = 3;
+  const auto expected = Vector<value_type, 3>::FromList({
     3, 6, 9
   });
   // clang-format on

@@ -805,7 +805,7 @@ TEST(TriangularMatrix, determinant_UnitTriangular_Upper__Success) // NOLINT
   // call UUT
   const auto result = triuMat.determinant();
 
-  // Expected: 1 * 1 * 1 = 1 (unit triangular matrices have determinant 1)
+  // Expected: 1 * 1 * 1 = 1 (unit triangular matrixes have determinant 1)
   EXPECT_FLOAT_EQ(result, 1.0F);
 }
 
@@ -823,7 +823,7 @@ TEST(TriangularMatrix, determinant_UnitTriangular_Lower__Success) // NOLINT
   // call UUT
   const auto result = trilMat.determinant();
 
-  // Expected: 1 * 1 * 1 = 1 (unit triangular matrices have determinant 1)
+  // Expected: 1 * 1 * 1 = 1 (unit triangular matrixes have determinant 1)
   EXPECT_FLOAT_EQ(result, 1.0F);
 }
 

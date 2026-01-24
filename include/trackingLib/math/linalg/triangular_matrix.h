@@ -17,16 +17,16 @@ template <typename ValueType_, sint32 Size_>
 class DiagonalMatrix;
 
 // TODO(matthias): add interface contract
-// TODO(matthias): use optimized menory storage for triangular matrices
+// TODO(matthias): use optimized menory storage for triangular matrixes
 
 /// \brief A triangular matrix specialization that stores only the upper or lower triangular part.
 ///
-/// This class represents triangular matrices (upper or lower) and provides operations
+/// This class represents triangular matrixes (upper or lower) and provides operations
 /// optimized for triangular structure. It inherits from SquareMatrix but restricts
 /// access to maintain triangular properties. Memory usage is not yet optimized and
 /// still stores the full square matrix internally.
 ///
-/// \tparam ValueType_ The data type of matrix elements (e.g., float32, float64)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The dimension of the triangular matrix (compile-time constant)
 /// \tparam IsLower_ Triangular type flag (true for lower triangular, false for upper triangular)
 /// \tparam IsRowMajor_ Storage layout flag (true for row-major, false for column-major)
@@ -65,7 +65,7 @@ public:
   ///
   /// \return TriangularMatrix An identity matrix respecting triangular constraints
   ///
-  /// \note For unit triangular matrices, this creates a matrix with ones on the diagonal
+  /// \note For unit triangular matrixes, this creates a matrix with ones on the diagonal
   [[nodiscard]] static auto Identity() -> TriangularMatrix { return TriangularMatrix{BaseSquareMatrix::Identity()}; }
 
   /// \brief Creates a TriangularMatrix from a nested initializer list
@@ -75,7 +75,7 @@ public:
   ///
   /// \param[in] list Nested initializer list representing the triangular matrix
   /// \return TriangularMatrix instance initialized with the provided values
-  /// \see TriangularFromSquare() for creating from square matrices
+  /// \see TriangularFromSquare() for creating from square matrixes
   /// \see SquareFromList() for the underlying conversion
   [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix;
 
@@ -115,22 +115,22 @@ public:
 
   /// \brief Multiplication with triangular matrix: Tria * Matrix
   /// \param[in] mat  A triangular matrix
-  /// \return TriangularMatrix<FloatType, Size, isLower>
+  /// \return TriangularMatrix<value_type, Size, isLower>
   [[nodiscard]] auto operator*(const TriangularMatrix& mat) const -> TriangularMatrix;
 
   /// \brief Multiplication with triangular matrix: Tria * Matrix
   /// \param[in] mat  A triangular matrix
-  /// \return SquareMatrix<FloatType, Size>
+  /// \return SquareMatrix<value_type, Size>
   [[nodiscard]] auto operator*(const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> BaseSquareMatrix;
 
   /// \brief Multiplication with diagonal matrix: Tria * Matrix
   /// \param[in] diag  A diagonal matrix
-  /// \return TriangularMatrix<FloatType, Size, isLower>
+  /// \return TriangularMatrix<value_type, Size, isLower>
   [[nodiscard]] auto operator*(const DiagonalMatrix<ValueType_, Size_>& diag) const -> TriangularMatrix;
 
   /// \brief Multiplication with scalar: Tria * scalar
   /// \param[in] scalar  A scalar value
-  /// \return TriangularMatrix<FloatType, Size, isLower>
+  /// \return TriangularMatrix<value_type, Size, isLower>
   [[nodiscard]] auto operator*(const ValueType_ scalar) const -> TriangularMatrix;
 
   /// \brief Inplace Multiplication with scalar: Tria * scalar
@@ -140,13 +140,13 @@ public:
   /// \brief Element read-only access to a scalar triangular value
   /// \param[in] row  Row index of the element
   /// \param[in] col  Col index of the element
-  /// \return FloatType  scalar triangular value
+  /// \return value_type  scalar triangular value
   [[nodiscard]] auto operator()(sint32 row, sint32 col) const -> tl::expected<ValueType_, Errors>;
 
   /// \brief Element access to a scalar triangular value
   /// \param[in] row  Row index of the element
   /// \param[in] col  Col index of the element
-  /// \return FloatType&  Reference to the scalar triangular value
+  /// \return value_type&  Reference to the scalar triangular value
   [[nodiscard]] auto operator()(sint32 row, sint32 col) -> tl::expected<std::reference_wrapper<ValueType_>, Errors>;
 
   /// \brief Calculate the transposed matrix without changing the layout
@@ -161,7 +161,7 @@ public:
   ///
   /// Solves the linear system T*x = b where T is this triangular matrix.
   /// Uses efficient forward substitution for lower triangular or backward
-  /// substitution for upper triangular matrices.
+  /// substitution for upper triangular matrixes.
   ///
   /// \tparam Cols_ Number of columns in the right-hand side matrix b
   /// \tparam IsRowMajor2_ Storage layout of the right-hand side matrix
@@ -191,7 +191,7 @@ public:
   ///
   /// \return ValueType_ The determinant of the matrix
   /// \note Time complexity: O(n) where n is the matrix dimension
-  /// \note For singular matrices, the determinant will be zero or very close to zero
+  /// \note For singular matrixes, the determinant will be zero or very close to zero
   [[nodiscard]] auto determinant() const -> ValueType_;
 
   // TODO(matthias): UnitUpper inplace inverse, Grewal Table 6.7 p.235
@@ -205,13 +205,13 @@ public:
   /// \brief Element read-only access to a scalar triangular value
   /// \param[in] row  Row index of the element
   /// \param[in] col  Col index of the element
-  /// \return FloatType  scalar triangular value
+  /// \return value_type  scalar triangular value
   [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -> ValueType_;
 
   /// \brief Element access to a scalar triangular value
   /// \param[in] row  Row index of the element
   /// \param[in] col  Col index of the element
-  /// \return FloatType&  Reference to the scalar triangular value
+  /// \return value_type&  Reference to the scalar triangular value
   [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
   // <---
 

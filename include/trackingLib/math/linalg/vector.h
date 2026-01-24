@@ -15,13 +15,13 @@ class MatrixColumnView;
 
 // TODO(matthias): add interface contract
 
-/// \brief A column vector class template, specializing Matrix for single-column matrices.
+/// \brief A column vector class template, specializing Matrix for single-column matrixes.
 ///
 /// The Vector class provides a convenient interface for column vectors, inheriting all
 /// matrix operations from Matrix while adding vector-specific operations like dot product,
 /// norm calculations, and normalization.
 ///
-/// \tparam ValueType_ The data type of vector elements (e.g., float32, float64)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The number of elements in the vector (must be > 0)
 ///
 /// \note This class is a specialization of Matrix<ValueType_, Size_, 1, true> where

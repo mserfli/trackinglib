@@ -17,8 +17,8 @@ namespace conversions
 /// This function extracts the triangular part from a square matrix to create a triangular matrix.
 /// The triangular structure (upper or lower) is determined by the IsLower_ template parameter.
 ///
-/// \tparam ValueType_ The value type of matrix elements
-/// \tparam Size_ The dimension of the matrices
+/// \tparam ValueType_ The atomic data type of internal elements
+/// \tparam Size_ The dimension of the matrixes
 /// \tparam IsLower_ Whether to extract lower triangular (true) or upper triangular (false) part
 /// \tparam IsRowMajor_ The storage layout
 /// \param[in] mat The source square matrix

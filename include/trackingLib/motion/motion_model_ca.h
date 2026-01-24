@@ -54,23 +54,23 @@ public:
   using instance_trait             = MotionModelTraits<CovarianceMatrixPolicy_, StateDefCA>;
   using super_extended_mm_type     = ExtendedMotionModel<instance_type, instance_trait>;
   using super_generic_predict_type = generic::Predict<instance_type, CovarianceMatrixPolicy_>;
-  using FloatType                  = typename instance_trait::FloatType;
+  using value_type                 = typename instance_trait::value_type;
   using StateVec                   = typename super_extended_mm_type::StateVec;
   using StateCov                   = typename super_extended_mm_type::StateCov;
 
-  using StateMatrix               = math::SquareMatrix<FloatType, NUM_STATE_VARIABLES>;
-  using ProcessNoiseDiagMatrix    = math::DiagonalMatrix<FloatType, NUM_PROC_NOISE_VARIABLES>;
-  using ProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_PROC_NOISE_VARIABLES>;
+  using StateMatrix               = math::SquareMatrix<value_type, NUM_STATE_VARIABLES>;
+  using ProcessNoiseDiagMatrix    = math::DiagonalMatrix<value_type, NUM_PROC_NOISE_VARIABLES>;
+  using ProcessNoiseMappingMatrix = math::Matrix<value_type, NUM_STATE_VARIABLES, NUM_PROC_NOISE_VARIABLES>;
 
   using KalmanFilterType       = typename super_extended_mm_type::KalmanFilterType;
   using InformationFilterType  = typename super_extended_mm_type::InformationFilterType;
   using EgoMotionType          = typename super_extended_mm_type::EgoMotionType;
-  using EgoMotionMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, EgoMotionType::DS_NUM_VARIABLES>;
+  using EgoMotionMappingMatrix = math::Matrix<value_type, NUM_STATE_VARIABLES, EgoMotionType::DS_NUM_VARIABLES>;
 
   static constexpr sint32 NUM_AUG_PROC_NOISE_VARIABLES =
       NUM_PROC_NOISE_VARIABLES + static_cast<sint32>(EgoMotionType::DS_NUM_VARIABLES);
-  using AugmentedProcessNoiseDiagMatrix    = math::DiagonalMatrix<FloatType, NUM_AUG_PROC_NOISE_VARIABLES>;
-  using AugmentedProcessNoiseMappingMatrix = math::Matrix<FloatType, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
+  using AugmentedProcessNoiseDiagMatrix    = math::DiagonalMatrix<value_type, NUM_AUG_PROC_NOISE_VARIABLES>;
+  using AugmentedProcessNoiseMappingMatrix = math::Matrix<value_type, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
 
   // rule of 5 declarations
   MotionModelCA()                                            = default;
@@ -81,26 +81,26 @@ public:
   virtual ~MotionModelCA()                                   = default;
 
   /// \brief Read access to x velocity
-  /// \return FloatType
-  auto getVx() const -> FloatType final { return this->operator[](StateDefCA::VX); }
+  /// \return value_type
+  auto getVx() const -> value_type final { return this->operator[](StateDefCA::VX); }
   /// \brief Read access to y velocity
-  /// \return FloatType
-  auto getVy() const -> FloatType final { return this->operator[](StateDefCA::VY); }
+  /// \return value_type
+  auto getVy() const -> value_type final { return this->operator[](StateDefCA::VY); }
   /// \brief Read access to x acceleration
-  /// \return FloatType
-  auto getAx() const -> FloatType final { return this->operator[](StateDefCA::AX); }
+  /// \return value_type
+  auto getAx() const -> value_type final { return this->operator[](StateDefCA::AX); }
   /// \brief Read access to y acceleration
-  /// \return FloatType
-  auto getAy() const -> FloatType final { return this->operator[](StateDefCA::AY); }
+  /// \return value_type
+  auto getAy() const -> value_type final { return this->operator[](StateDefCA::AY); }
   // ... all the other virtual functions
 
   /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
   /// \param[in] dt         The delta time from last state to predicted state
   /// \param[in] filter     The filter instance
   /// \param[in] egoMotion  The known egoMotion from last state to predicted state
-  void predict(const FloatType dt, const KalmanFilterType& filter, const EgoMotionType& egoMotion) final;
+  void predict(const value_type dt, const KalmanFilterType& filter, const EgoMotionType& egoMotion) final;
 
-  void predict(const FloatType dt, const InformationFilterType& filter, const EgoMotionType& egoMotion) final;
+  void predict(const value_type dt, const InformationFilterType& filter, const EgoMotionType& egoMotion) final;
 
   /// \brief Creates a CA model based on a CV model
   /// \param[in] other  The CV model
@@ -114,22 +114,22 @@ public:
 
   /// \brief Apply the state transition from k to k+1 defined by the process model
   /// \param[in] dt         The delta time from last state to predicted state
-  void applyProcessModel(const FloatType dt);
+  void applyProcessModel(const value_type dt);
 
   /// \brief Compute matrix A using the 1st order linearisation of the state transition from k to k+1
   /// \param[out] A         Linearisation of the state transition
   /// \param[in]  dt        The delta time from last state to predicted state
-  void computeA(StateMatrix& A, const FloatType dt) const;
+  void computeA(StateMatrix& A, const value_type dt) const;
 
   /// \brief Compute the diagonal process noise matrix Q.
   /// \param[out] Q         The process noise
   /// \param[in]  dt        The delta time from last state to predicted state
-  static void computeQ(ProcessNoiseDiagMatrix& Q, const FloatType dt);
+  static void computeQ(ProcessNoiseDiagMatrix& Q, const value_type dt);
 
   /// \brief Compute the matrix G to map the diagonoal process noise to the full state
   /// \param[out] G         The transformation of the process noise to the full state space
   /// \param[in]  dt        The delta time from last state to predicted state
-  static void computeG(ProcessNoiseMappingMatrix& G, const FloatType dt);
+  static void computeG(ProcessNoiseMappingMatrix& G, const value_type dt);
 
   // clang-format off
 TEST_REMOVE_PRIVATE:

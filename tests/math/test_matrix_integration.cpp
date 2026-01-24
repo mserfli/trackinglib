@@ -107,7 +107,7 @@ TEST(MatrixIntegration, Determinant_Consistency_DiagonalVsTriangular__Success) /
 
 TEST(MatrixIntegration, Determinant_Consistency_UpperVsLowerTriangular__Success) // NOLINT
 {
-  // Create upper and lower triangular matrices with same diagonal
+  // Create upper and lower triangular matrixes with same diagonal
   // clang-format off
   const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
@@ -179,7 +179,7 @@ TEST(MatrixIntegration, Determinant_DoublePrecision_Consistency__Success) // NOL
 
 TEST(MatrixIntegration, Trace_IdentityMatrix_AllTypes__Success) // NOLINT
 {
-  // Test identity matrices of different types
+  // Test identity matrixes of different types
   const auto diagIdentity   = DiagonalMatrix<float32, 3>::Identity();
   const auto squareIdentity = SquareMatrix<float32, 3, true>::Identity();
   const auto triuIdentity   = TriangularMatrix<float32, 3, false, true>::Identity();
@@ -200,7 +200,7 @@ TEST(MatrixIntegration, Trace_IdentityMatrix_AllTypes__Success) // NOLINT
 
 TEST(MatrixIntegration, Determinant_IdentityMatrix_AllTypes__Success) // NOLINT
 {
-  // Test identity matrices of different types
+  // Test identity matrixes of different types
   const auto diagIdentity   = DiagonalMatrix<float32, 3>::Identity();
   const auto squareIdentity = SquareMatrix<float32, 3, true>::Identity();
   const auto triuIdentity   = TriangularMatrix<float32, 3, false, true>::Identity();
@@ -212,7 +212,7 @@ TEST(MatrixIntegration, Determinant_IdentityMatrix_AllTypes__Success) // NOLINT
   const auto triuDet   = triuIdentity.determinant();
   const auto trilDet   = trilIdentity.determinant();
 
-  // All should have the same determinant (1 for identity matrices)
+  // All should have the same determinant (1 for identity matrixes)
   EXPECT_FLOAT_EQ(diagDet, 1.0F);
   EXPECT_FLOAT_EQ(squareDet, 1.0F);
   EXPECT_FLOAT_EQ(triuDet, 1.0F);
@@ -221,7 +221,7 @@ TEST(MatrixIntegration, Determinant_IdentityMatrix_AllTypes__Success) // NOLINT
 
 TEST(MatrixIntegration, Trace_SingularMatrix_AllTypes__Success) // NOLINT
 {
-  // Test singular matrices (with zero diagonal elements)
+  // Test singular matrixes (with zero diagonal elements)
   // clang-format off
   const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
@@ -257,7 +257,7 @@ TEST(MatrixIntegration, Trace_SingularMatrix_AllTypes__Success) // NOLINT
 
 TEST(MatrixIntegration, Determinant_SingularMatrix_AllTypes__Success) // NOLINT
 {
-  // Test singular matrices (with zero diagonal elements)
+  // Test singular matrixes (with zero diagonal elements)
   // clang-format off
   const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
@@ -284,7 +284,7 @@ TEST(MatrixIntegration, Determinant_SingularMatrix_AllTypes__Success) // NOLINT
   const auto triuDet   = triuMat.determinant();
   const auto trilDet   = trilMat.determinant();
 
-  // All should have determinant 0 (singular matrices)
+  // All should have determinant 0 (singular matrixes)
   EXPECT_FLOAT_EQ(diagDet, 0.0F);
   EXPECT_FLOAT_EQ(squareDet, 0.0F);
   EXPECT_FLOAT_EQ(triuDet, 0.0F);
