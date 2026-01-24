@@ -16,7 +16,7 @@ int main()
   using MM = motion::MotionModelCV<math::FullCovarianceMatrixPolicy<float64>>;
 
   // type aliases
-  using FloatType             = typename MM::FloatType;
+  using value_type            = typename MM::value_type;
   using EgoMotionType         = typename MM::EgoMotionType;
   using KalmanFilterType      = typename MM::KalmanFilterType;
   using InformationFilterType = typename MM::InformationFilterType;
@@ -41,27 +41,27 @@ int main()
   // Create ego motion with zero motion (ego vehicle is not moving)
   // This is the scenario where ego vehicle is stationary
   EgoMotionType::InertialMotion motionParams{
-      .v  = static_cast<FloatType>(0.0), // velocity
-      .a  = static_cast<FloatType>(0.0), // acceleration
-      .w  = static_cast<FloatType>(0.0), // yaw rate
-      .sv = static_cast<FloatType>(1e-6), // velocity uncertainty
-      .sa = static_cast<FloatType>(1e-6), // acceleration uncertainty
-      .sw = static_cast<FloatType>(1e-6)  // yaw rate uncertainty
+      .v  = static_cast<value_type>(0.0), // velocity
+      .a  = static_cast<value_type>(0.0), // acceleration
+      .w  = static_cast<value_type>(0.0), // yaw rate
+      .sv = static_cast<value_type>(1e-6), // velocity uncertainty
+      .sa = static_cast<value_type>(1e-6), // acceleration uncertainty
+      .sw = static_cast<value_type>(1e-6)  // yaw rate uncertainty
   };
 
   EgoMotionType::Geometry geometry{
-      .width                  = static_cast<FloatType>(2.0),
-      .length                 = static_cast<FloatType>(4.5),
-      .height                 = static_cast<FloatType>(1.5),
-      .distCog2Ego            = static_cast<FloatType>(0.0),
-      .distFrontAxle2Ego      = static_cast<FloatType>(0.0),
-      .distFrontAxle2RearAxle = static_cast<FloatType>(2.8)
+      .width                  = static_cast<value_type>(2.0),
+      .length                 = static_cast<value_type>(4.5),
+      .height                 = static_cast<value_type>(1.5),
+      .distCog2Ego            = static_cast<value_type>(0.0),
+      .distFrontAxle2Ego      = static_cast<value_type>(0.0),
+      .distFrontAxle2RearAxle = static_cast<value_type>(2.8)
   };
   // clang-format on
 
   // Simulation parameters
-  const FloatType dt       = static_cast<FloatType>(0.1); // time step of 0.1 seconds
-  const sint32    numSteps = 20;                          // simulate 20 time steps (2 seconds total)
+  const value_type dt       = static_cast<value_type>(0.1); // time step of 0.1 seconds
+  const sint32     numSteps = 20;                           // simulate 20 time steps (2 seconds total)
 
   std::cout << "Single Object Tracking Example" << std::endl;
   std::cout << "with combined Information and Kalman Filter usage" << std::endl;
@@ -85,7 +85,7 @@ int main()
   // Simulation loop
   for (sint32 step = 0; step < numSteps; ++step)
   {
-    const FloatType currentTime = step * dt;
+    const value_type currentTime = step * dt;
 
     // Create ego motion for this time step (zero motion)
     EgoMotionType egoMotion(motionParams, geometry, dt);

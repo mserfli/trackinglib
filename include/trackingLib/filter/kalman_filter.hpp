@@ -16,10 +16,10 @@ namespace filter
 
 template <typename CovarianceMatrixPolicy_>
 template <sint32 DimX_, sint32 DimQ_>
-inline void KalmanFilter<CovarianceMatrixPolicy_>::predictCovariance(CovarianceMatrixType<DimX_>&                  P,
-                                                                     const math::SquareMatrix<FloatType, DimX_>&   A,
-                                                                     const math::Matrix<FloatType, DimX_, DimQ_>&  G,
-                                                                     const math::DiagonalMatrix<FloatType, DimQ_>& Q)
+inline void KalmanFilter<CovarianceMatrixPolicy_>::predictCovariance(CovarianceMatrixType<DimX_>&                   P,
+                                                                     const math::SquareMatrix<value_type, DimX_>&   A,
+                                                                     const math::Matrix<value_type, DimX_, DimQ_>&  G,
+                                                                     const math::DiagonalMatrix<value_type, DimQ_>& Q)
 {
   if constexpr (CovarianceMatrixPolicy_::is_factored)
   {
@@ -27,8 +27,8 @@ inline void KalmanFilter<CovarianceMatrixPolicy_>::predictCovariance(CovarianceM
   }
   else
   {
-    P = math::CovarianceMatrixFull<FloatType, DimX_>{
-        typename math::CovarianceMatrixFull<FloatType, DimX_>::SquareMatrix{A * P * A.transpose() + G * Q * G.transpose()}};
+    P = math::CovarianceMatrixFull<value_type, DimX_>{
+        typename math::CovarianceMatrixFull<value_type, DimX_>::SquareMatrix{A * P * A.transpose() + G * Q * G.transpose()}};
   }
 }
 

@@ -196,7 +196,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator+=(const Matr
   else
   {
     // different memory layouts: add element-wise
-    // When both matrices share the same underlying data and are square Matrices (e.g., transposed view),
+    // When both matrixes share the same underlying data and are square Matrixes (e.g., transposed view),
     // we must make a copy to avoid read-after-write corruption.
     // Example: a += a.transpose() would overwrite a[0][1] before reading it as a.transpose()[1][0]
     // clang-format off
@@ -239,7 +239,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator-=(const Matr
   else
   {
     // different memory layouts: subtract element-wise
-    // When both matrices share the same underlying data and are square Matrices (e.g., transposed view),
+    // When both matrixes share the same underlying data and are square Matrixes (e.g., transposed view),
     // we must make a copy to avoid read-after-write corruption.
     // Example: a -= a.transpose() would overwrite a[0][1] before reading it as a.transpose()[1][0]
     auto&& tmp = ((this->data().data() == other.data().data()) && (Rows_ == Cols_))
@@ -265,10 +265,10 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*=(ValueType_
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename IntType, typename std::enable_if_t<std::is_integral<IntType>::value, bool>>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(IntType scalar) -> tl::expected<void, Errors>
+template <typename T, typename std::enable_if_t<std::is_integral<T>::value, bool>>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(T scalar) -> tl::expected<void, Errors>
 {
-  if (std::abs(scalar) > static_cast<IntType>(0))
+  if (std::abs(scalar) > static_cast<T>(0))
   {
     inplace_div_by_int_unsafe(scalar);
     return {};
@@ -277,10 +277,10 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(IntType sc
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename FloatType, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool>>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(FloatType scalar) -> tl::expected<void, Errors>
+template <typename T, typename std::enable_if_t<std::is_floating_point<T>::value, bool>>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(T scalar) -> tl::expected<void, Errors>
 {
-  if (std::abs(scalar) > std::numeric_limits<FloatType>::min())
+  if (std::abs(scalar) > std::numeric_limits<value_type>::min())
   {
     inplace_mul_by_inverse_factor_unsafe(scalar);
     return {};
@@ -339,10 +339,10 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(ValueType_ 
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename IntType, typename std::enable_if_t<std::is_integral<IntType>::value, bool>>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(IntType scalar) const -> tl::expected<Matrix, Errors>
+template <typename T, typename std::enable_if_t<std::is_integral<T>::value, bool>>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(T scalar) const -> tl::expected<Matrix, Errors>
 {
-  if (std::abs(scalar) > static_cast<IntType>(0))
+  if (std::abs(scalar) > static_cast<T>(0))
   {
     Matrix res{*this};
     res.inplace_div_by_int_unsafe(scalar);
@@ -352,10 +352,10 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(IntType sca
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename FloatType, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool>>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(FloatType scalar) const -> tl::expected<Matrix, Errors>
+template <typename T, typename std::enable_if_t<std::is_floating_point<T>::value, bool>>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(T scalar) const -> tl::expected<Matrix, Errors>
 {
-  if (std::abs(scalar) > std::numeric_limits<FloatType>::min())
+  if (std::abs(scalar) > std::numeric_limits<T>::min())
   {
     Matrix res{*this};
     res.inplace_mul_by_inverse_factor_unsafe(scalar);
@@ -394,7 +394,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::minmax() const -> std
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename FloatType, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool>>
+template <typename T, typename std::enable_if_t<std::is_floating_point<T>::value, bool>>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::frobenius_norm() const -> ValueType_
 {
   ValueType_ sum_of_squares = static_cast<ValueType_>(0);
@@ -478,8 +478,8 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setBlock(
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename IntType, typename std::enable_if_t<std::is_integral<IntType>::value, bool>>
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_div_by_int_unsafe(IntType scalar)
+template <typename T, typename std::enable_if_t<std::is_integral<T>::value, bool>>
+inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_div_by_int_unsafe(T scalar)
 {
   for (auto& val : data())
   {
@@ -488,10 +488,10 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_div_by_int_un
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename FloatType, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool>>
-inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_mul_by_inverse_factor_unsafe(FloatType scalar)
+template <typename T, typename std::enable_if_t<std::is_floating_point<T>::value, bool>>
+inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_mul_by_inverse_factor_unsafe(T scalar)
 {
-  const FloatType factor = 1 / scalar;
+  const T factor = 1 / scalar;
   this->operator*=(factor);
 }
 

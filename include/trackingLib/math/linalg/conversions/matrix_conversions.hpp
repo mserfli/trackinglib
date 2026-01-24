@@ -17,12 +17,12 @@ namespace conversions
 /// This function converts a Vector into a Matrix with one column, effectively
 /// representing the vector as a column matrix. The resulting matrix uses row-major storage.
 ///
-/// \tparam ValueType_ The value type of vector and matrix elements
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The size of the vector and number of rows in the matrix
 /// \param[in] vec The source vector to convert
 /// \return Matrix with Size_ rows and 1 column containing the vector elements
 /// \see VectorFromMatrixColumnView() for the reverse conversion
-/// \see MatrixFromList() for creating matrices from initializer lists
+/// \see MatrixFromList() for creating matrixes from initializer lists
 template <typename ValueType_, sint32 Size_>
 inline auto MatrixFromVector(const Vector<ValueType_, Size_>& vec) -> Matrix<ValueType_, Size_, 1, true>
 {

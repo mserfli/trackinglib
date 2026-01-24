@@ -17,7 +17,7 @@ struct MatrixStorageType
 template <typename MatrixType>
 struct MatrixTypeExtractor
 {
-  using ValueType                  = typename MatrixType::value_type;
+  using value_type                 = typename MatrixType::value_type;
   constexpr static auto Rows       = MatrixType::Rows;
   constexpr static auto Cols       = MatrixType::Cols;
   constexpr static auto IsRowMajor = MatrixType::IsRowMajor;
@@ -25,20 +25,20 @@ struct MatrixTypeExtractor
   template <typename... Args>
   static auto MatrixFromList(Args&&... args)
   {
-    return Matrix<ValueType, Rows, Cols, IsRowMajor>::FromList(std::forward<Args>(args)...);
+    return Matrix<value_type, Rows, Cols, IsRowMajor>::FromList(std::forward<Args>(args)...);
   }
 
   // Overload for initializer_list to handle the common case
   template <typename T>
   static auto MatrixFromList(std::initializer_list<std::initializer_list<T>> list)
   {
-    return Matrix<ValueType, Rows, Cols, IsRowMajor>::FromList(list);
+    return Matrix<value_type, Rows, Cols, IsRowMajor>::FromList(list);
   }
 
   // Overload for empty initializer list
-  static auto MatrixFromList(std::initializer_list<std::initializer_list<ValueType>> list = {})
+  static auto MatrixFromList(std::initializer_list<std::initializer_list<value_type>> list = {})
   {
-    return Matrix<ValueType, Rows, Cols, IsRowMajor>::FromList(list);
+    return Matrix<value_type, Rows, Cols, IsRowMajor>::FromList(list);
   }
 };
 
@@ -734,7 +734,7 @@ TEST(GTestMatrixSpecial, minmax_ExtremeValues) // NOLINT
 }
 
 // operator!= Tests
-TEST(GTestMatrixSpecial, op_not_equal__DifferentMatrices) // NOLINT
+TEST(GTestMatrixSpecial, op_not_equal__DifferentMatrixes) // NOLINT
 {
   // clang-format off
   const auto mat1 = Matrix<sint32, 2, 2, true>::FromList({
@@ -750,7 +750,7 @@ TEST(GTestMatrixSpecial, op_not_equal__DifferentMatrices) // NOLINT
   EXPECT_FALSE(mat1 == mat2);
 }
 
-TEST(GTestMatrixSpecial, op_not_equal__SameMatrices) // NOLINT
+TEST(GTestMatrixSpecial, op_not_equal__SameMatrixes) // NOLINT
 {
   // clang-format off
   const auto mat1 = Matrix<sint32, 2, 2, true>::FromList({
@@ -819,7 +819,7 @@ TEST(GTestMatrixSpecial, op_at__NegativeIndices) // NOLINT
 }
 
 // Matrix Multiplication with Different Dimensions
-TEST(GTestMatrixSpecial, op_mul__SquareMatrices) // NOLINT
+TEST(GTestMatrixSpecial, op_mul__SquareMatrixes) // NOLINT
 {
   using MatType       = Matrix<sint32, 3, 3, true>;
   const auto identity = createIdentityMatrix<sint32, 3, true>();

@@ -29,7 +29,7 @@ namespace motion
 /// using MyTraits = MotionModelTraits<FullCovarianceMatrixPolicy<float32>, StateDefCV>;
 ///
 /// // Access type information
-/// using FloatType = MyTraits::FloatType; // float32
+/// using value_type = MyTraits::value_type; // float32
 /// constexpr sint32 stateSize = MyTraits::Size; // StateDefCV::NUM_STATE_VARIABLES
 /// \endcode
 ///
@@ -42,12 +42,12 @@ template <typename CovarianceMatrixPolicy_, typename StateDef_>
 struct MotionModelTraits
 {
   /// \brief Covariance matrix policy type
-  /// The policy type that defines how covariance matrices are implemented
+  /// The policy type that defines how covariance matrixes are implemented
   using CovarianceMatrixPolicy = CovarianceMatrixPolicy_;
 
   /// \brief Floating-point type for calculations
   /// Extracted from the covariance matrix policy
-  using FloatType = typename CovarianceMatrixPolicy::FloatType;
+  using value_type = typename CovarianceMatrixPolicy::value_type;
 
   /// \brief State definition structure
   /// Contains enumeration of state variables and their count

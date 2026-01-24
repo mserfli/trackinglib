@@ -23,22 +23,22 @@ namespace conversions
 /// This function constructs a factored covariance matrix by decomposing the input
 /// covariance matrix into UDU^T form. The input must be symmetric.
 ///
-/// \tparam FloatType_ The floating point type for matrix elements
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The dimension of the covariance matrix
 /// \param[in] other Full covariance matrix to decompose
 /// \return tl::expected containing the CovarianceMatrixFactored instance on success
 /// \see CovarianceMatrixFactoredFromList() (overloaded) for nested initializer list input
-/// \see CovarianceMatrixFullFromList() for full covariance matrices
-template <typename FloatType_, sint32 Size_>
+/// \see CovarianceMatrixFullFromList() for full covariance matrixes
+template <typename ValueType_, sint32 Size_>
 inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(
-    const typename CovarianceMatrixFactored<FloatType_, Size_>::compose_type& other)
-    -> tl::expected<CovarianceMatrixFactored<FloatType_, Size_>, Errors>
+    const typename CovarianceMatrixFactored<ValueType_, Size_>::compose_type& other)
+    -> tl::expected<CovarianceMatrixFactored<ValueType_, Size_>, Errors>
 {
   const auto retVal = other.decomposeUDUT();
   if (retVal.has_value())
   {
-    const auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix<FloatType_, Size_, false, true>::Identity(),
-                                                       DiagonalMatrix<FloatType_, Size_>::Identity()));
+    const auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix<ValueType_, Size_, false, true>::Identity(),
+                                                       DiagonalMatrix<ValueType_, Size_>::Identity()));
     return CovarianceMatrixFactored{std::move(u), std::move(d)};
   }
   return tl::unexpected<Errors>{retVal.error()};
@@ -50,19 +50,19 @@ inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(
 /// This function constructs a factored covariance matrix by decomposing the input
 /// covariance matrix into UDU^T form. The input must be symmetric.
 ///
-/// \tparam FloatType_ The floating point type for matrix elements
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The dimension of the covariance matrix
 /// \param[in] list Nested initializer list representing the full covariance matrix
 /// \return CovarianceMatrixFactored instance with UDU^T decomposition of the input
 /// \note The input matrix must be symmetric, otherwise assertion fails
 /// \see CovarianceMatrixFactoredFromList() (overloaded) for separate U and D input
-/// \see CovarianceMatrixFullFromList() for full covariance matrices
-template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::initializer_list<FloatType_>>& list)
-    -> CovarianceMatrixFactored<FloatType_, Size_>
+/// \see CovarianceMatrixFullFromList() for full covariance matrixes
+template <typename ValueType_, sint32 Size_>
+inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+    -> CovarianceMatrixFactored<ValueType_, Size_>
 {
-  const auto other = CovarianceMatrixFactored<FloatType_, Size_>::compose_type::FromList(list);
-  const auto cov   = CovarianceMatrixFactoredFromCovarianceMatrixFull<FloatType_, Size_>(other);
+  const auto other = CovarianceMatrixFactored<ValueType_, Size_>::compose_type::FromList(list);
+  const auto cov   = CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(other);
   assert(cov.has_value() && "Input matrix cannot be factored into UDUt form");
   return cov.value();
 }

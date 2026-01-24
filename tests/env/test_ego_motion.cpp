@@ -17,13 +17,13 @@ template <typename CovarianceMatrixPolicy_>
 class GTestEgoMotion: public ::testing::Test
 {
 protected:
-  using FloatType     = typename CovarianceMatrixPolicy_::FloatType;
+  using value_type    = typename CovarianceMatrixPolicy_::value_type;
   using EgoMotionType = EgoMotion<CovarianceMatrixPolicy_>;
 
   typename EgoMotionType::InertialMotion motion{};
   typename EgoMotionType::Geometry       geometry{};
-  FloatType                              dt{};
-  const FloatType                        epsilon{1.1 * std::numeric_limits<FloatType>::epsilon()};
+  value_type                             dt{};
+  const value_type                       epsilon{1.1 * std::numeric_limits<value_type>::epsilon()};
 
   void SetUp() override
   {
@@ -46,13 +46,13 @@ protected:
     auto egoMotion = EgoMotionType{motion, geometry, dt};
 
     // Expected displacement values (from derivation)
-    const FloatType expected_dx   = 1.009983166750833e+00; // T*v + 0.5*T²*(a - v*w)
-    const FloatType expected_dy   = 5.049957916806945e-03; // 0.5*T²*v*w
-    const FloatType expected_dpsi = 1.000000000000000e-02; // T*w
+    const value_type expected_dx   = 1.009983166750833e+00; // T*v + 0.5*T²*(a - v*w)
+    const value_type expected_dy   = 5.049957916806945e-03; // 0.5*T²*v*w
+    const value_type expected_dpsi = 1.000000000000000e-02; // T*w
 
     // Expected covariance matrix (from J * Pin * J^T)
     // clang-format off
-    const auto expected_cov = math::SquareMatrix<FloatType, 3, true>::FromList({
+    const auto expected_cov = math::SquareMatrix<value_type, 3, true>::FromList({
       {2.501000000000001e-03,                     0,                     0},
       {                    0, 6.375625000000005e-06, 1.262500000000001e-05},
       {                    0, 1.262500000000001e-05, 2.500000000000001e-05}
@@ -83,9 +83,9 @@ protected:
     auto egoMotion = EgoMotionType{motion, geometry, dt};
 
     // Expected displacement values (from circular motion equations)
-    const FloatType expected_dx   = 1.009579219267702e+00;
-    const FloatType expected_dy   = 2.524474002168182e-02;
-    const FloatType expected_dpsi = 5.000000000000000e-02;
+    const value_type expected_dx   = 1.009579219267702e+00;
+    const value_type expected_dy   = 2.524474002168182e-02;
+    const value_type expected_dpsi = 5.000000000000000e-02;
 
     // Verify displacement vector
     EXPECT_NEAR(egoMotion.getDisplacementCog().vec.at_unsafe(0), expected_dx, epsilon);
@@ -94,7 +94,7 @@ protected:
 
     // Expected covariance matrix (from J * Pin * J^T)
     // clang-format off
-    const auto expected_cov = math::SquareMatrix<FloatType, 3, true>::FromList({
+    const auto expected_cov = math::SquareMatrix<value_type, 3, true>::FromList({
       {+2.498923608418034e-03, +6.227359670916502e-05, -4.207281343930892e-07},
       {+6.227359670916502e-05, +7.930132885369052e-06, +1.261711047085165e-05},
       {-4.207281343930892e-07, +1.261711047085165e-05, +2.500000000000001e-05}

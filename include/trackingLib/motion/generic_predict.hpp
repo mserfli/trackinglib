@@ -16,7 +16,7 @@ namespace generic
 {
 
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
-inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const FloatType         dt,
+inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const value_type        dt,
                                                                 const KalmanFilterType& filter,
                                                                 const EgoMotionType&    egoMotion)
 {
@@ -35,7 +35,7 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const FloatType 
 
     // TODO(matthias): Optimization - provide a new BlockDiagonal matrix class to reduce operations on known zero elements
     static typename MotionModel_::AugmentedProcessNoiseDiagMatrix Qstar; // [De 0; 0 Q]
-    // TODO(matthias): Optimization - we could also have a vector of matrices to avoid constructing augmented matrices with copy
+    // TODO(matthias): Optimization - we could also have a vector of matrixes to avoid constructing augmented matrixes with copy
     // operations
     static typename MotionModel_::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
 
@@ -52,7 +52,7 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const FloatType 
 }
 
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
-inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const FloatType              dt,
+inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const value_type             dt,
                                                                 const InformationFilterType& filter,
                                                                 const EgoMotionType&         egoMotion)
 {
@@ -71,7 +71,7 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const FloatType 
 
     // TODO(matthias): Optimization - provide a new BlockDiagonal matrix class to reduce operations on known zero elements
     static typename MotionModel_::AugmentedProcessNoiseDiagMatrix Qstar; // [De 0; 0 Q]
-    // TODO(matthias): Optimization - we could also have a vector of matrices to avoid constructing augmented matrices with copy
+    // TODO(matthias): Optimization - we could also have a vector of matrixes to avoid constructing augmented matrixes with copy
     // operations
     static typename MotionModel_::AugmentedProcessNoiseMappingMatrix Gstar; // [A*Ge*Ue G]
 

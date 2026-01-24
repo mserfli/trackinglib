@@ -18,7 +18,7 @@ template <typename MotionModel_, typename CovarianceMatrixPolicy_>
 class PredictCommon
 {
 public:
-  using FloatType     = typename CovarianceMatrixPolicy_::FloatType;
+  using value_type    = typename CovarianceMatrixPolicy_::value_type;
   using EgoMotionType = env::EgoMotion<CovarianceMatrixPolicy_>;
 
   /// \brief Structure to store the calculations
@@ -41,7 +41,7 @@ public:
   /// \param[out] data       Output data storage for all precomputed results
   /// \param[in]  dt         The delta time from last state to predicted state
   /// \param[in]  egoMotion  The known egoMotion from last state to predicted state
-  void run(Storage& data, const FloatType dt, const EgoMotionType& egoMotion);
+  void run(Storage& data, const value_type dt, const EgoMotionType& egoMotion);
 };
 
 } // namespace generic

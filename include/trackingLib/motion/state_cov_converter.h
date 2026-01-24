@@ -20,20 +20,20 @@ public:
   static void convertFrom(typename MM::StateCov& dstCov, const typename MM::StateCov& srcCov);
 };
 
-template <typename CovarianceMatricPolicy_>
-class StateCovConverter<MotionModelCV<CovarianceMatricPolicy_>, MotionModelCA<CovarianceMatricPolicy_>>
+template <typename CovarianceMatrixPolicy_>
+class StateCovConverter<MotionModelCV<CovarianceMatrixPolicy_>, MotionModelCA<CovarianceMatrixPolicy_>>
 {
 public:
-  static void convertFrom(typename MotionModelCV<CovarianceMatricPolicy_>::StateCov&       dstCov,
-                          const typename MotionModelCA<CovarianceMatricPolicy_>::StateCov& srcCov);
+  static void convertFrom(typename MotionModelCV<CovarianceMatrixPolicy_>::StateCov&       dstCov,
+                          const typename MotionModelCA<CovarianceMatrixPolicy_>::StateCov& srcCov);
 };
 
-template <typename CovarianceMatricPolicy_>
-class StateCovConverter<MotionModelCA<CovarianceMatricPolicy_>, MotionModelCV<CovarianceMatricPolicy_>>
+template <typename CovarianceMatrixPolicy_>
+class StateCovConverter<MotionModelCA<CovarianceMatrixPolicy_>, MotionModelCV<CovarianceMatrixPolicy_>>
 {
 public:
-  static void convertFrom(typename MotionModelCA<CovarianceMatricPolicy_>::StateCov&       dstCov,
-                          const typename MotionModelCV<CovarianceMatricPolicy_>::StateCov& srcCov);
+  static void convertFrom(typename MotionModelCA<CovarianceMatrixPolicy_>::StateCov&       dstCov,
+                          const typename MotionModelCV<CovarianceMatrixPolicy_>::StateCov& srcCov);
 };
 
 } // namespace motion

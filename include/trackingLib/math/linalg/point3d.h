@@ -29,7 +29,7 @@ namespace math
 ///
 /// All Vector operations are available, plus coordinate-specific accessors.
 ///
-/// \tparam ValueType_ The numeric type for coordinates (e.g., float, double)
+/// \tparam ValueType_ The atomic data type of internal elements
 ///
 /// Example usage:
 /// \code{.cpp}

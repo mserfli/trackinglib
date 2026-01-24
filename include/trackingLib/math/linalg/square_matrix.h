@@ -23,15 +23,15 @@ class DiagonalMatrix;
 // TODO(matthias): add interface contract
 
 /// \brief A square matrix specialization of the Matrix class providing additional operations
-/// specific to square matrices such as decompositions, inverse calculations, symmetry checks,
+/// specific to square matrixes such as decompositions, inverse calculations, symmetry checks,
 /// and matrix property validation.
 ///
 /// This class inherits from Matrix<ValueType_, Size_, Size_, IsRowMajor_> and extends it with
-/// operations that are only meaningful for square matrices. It supports various matrix
+/// operations that are only meaningful for square matrixes. It supports various matrix
 /// decompositions (QR, LLT, LDLT, UDUT), matrix inversion, symmetry operations, and
 /// property checking functions for validation and debugging.
 ///
-/// \tparam ValueType_ The data type of matrix elements (e.g., float32, float64)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The dimension of the square matrix (compile-time constant)
 /// \tparam IsRowMajor_ Storage layout flag (true for row-major, false for column-major)
 ///
@@ -52,14 +52,14 @@ public:
 
   //////////////////////////////////////////////////
   // additional constructors  --->
-  /// \brief Construct a new Square Matrix<FloatType_, Size_> object
+  /// \brief Construct a new Square Matrix<ValueType_, Size_> object
   /// \param[in] other A base class object
   explicit SquareMatrix(const BaseMatrix& other)
       : BaseMatrix{other}
   {
   }
 
-  /// \brief Move construct a new Square Matrix<FloatType_, Size_> object
+  /// \brief Move construct a new Square Matrix<ValueType_, Size_> object
   /// \param[in] other A base class object
   explicit SquareMatrix(BaseMatrix&& other) noexcept
       : BaseMatrix{std::move(other)}
@@ -90,13 +90,13 @@ public:
   /// This function constructs a SquareMatrix from a nested initializer list where each inner list
   /// represents a row of the matrix. The dimensions must be square and match the template parameter.
   ///
-  /// \tparam ValueType_ The value type of matrix elements
+  /// \tparam ValueType_ The atomic data type of internal elements
   /// \tparam Size_ The dimension of the square matrix
   /// \tparam IsRowMajor_ The storage layout (true for row-major, false for column-major)
   /// \param[in] list Nested initializer list in logical row-major format
   /// \return SquareMatrix instance initialized with the provided values
   /// \throws std::runtime_error If the list dimensions don't match the square matrix size
-  /// \see SquareFromDiagonal() for creating from diagonal matrices
+  /// \see SquareFromDiagonal() for creating from diagonal matrixes
   /// \see MatrixFromList() for general matrix creation
   [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix;
 
@@ -124,7 +124,7 @@ public:
   ///
   /// \return ValueType_ The determinant of the matrix
   /// \note Time complexity: O(n^3) where n is the matrix dimension
-  /// \note For singular matrices, the determinant will be zero or very close to zero
+  /// \note For singular matrixes, the determinant will be zero or very close to zero
   /// \note Uses partial pivoting for numerical stability
   [[nodiscard]] auto determinant() const -> ValueType_;
 
@@ -138,15 +138,15 @@ public:
   /// zero out subdiagonal elements column by column. Each Householder reflection is represented
   /// by a vector v and a scalar τ, where the reflection matrix is I - τ*v*v^T.
   ///
-  /// \return std::pair<SquareMatrix, TriangularMatrix> A pair containing Q and R matrices,
+  /// \return std::pair<SquareMatrix, TriangularMatrix> A pair containing Q and R matrixes,
   ///         where Q is orthogonal and R is upper triangular such that A = Q * R
   ///
   /// \note The decomposition satisfies A = Q * R, with Q being orthogonal (Q^T * Q = I)
   ///       and R being upper triangular. This is useful for solving linear systems and
   ///       computing matrix inverses.
   /// \note Time complexity: O(n^3) for an n x n matrix
-  /// \note Space complexity: O(n^2) additional space for Q and R matrices
-  /// \note Numerically stable and suitable for general square matrices
+  /// \note Space complexity: O(n^2) additional space for Q and R matrixes
+  /// \note Numerically stable and suitable for general square matrixes
   ///
   /// \see qrSolve for solving linear systems using this decomposition
   /// \see inverse for matrix inversion using QR decomposition
@@ -156,7 +156,7 @@ public:
   /// \brief Solve the linear system A * x = b using QR decomposition.
   ///
   /// Uses the QR decomposition of this matrix to solve for x in A * x = b.
-  /// This method is numerically stable and suitable for well-conditioned matrices.
+  /// This method is numerically stable and suitable for well-conditioned matrixes.
   ///
   /// \param[in] b The right-hand side matrix of the equation A * x = b
   /// \return SquareMatrix The solution matrix x such that A * x ≈ b
@@ -185,7 +185,7 @@ public:
   /// \note The matrix must be symmetric and positive definite
   /// \note Time complexity: O(n^3) for an n x n matrix
   /// \note Space complexity: O(n^2) for the result matrix
-  /// \note Numerically stable for well-conditioned positive definite matrices
+  /// \note Numerically stable for well-conditioned positive definite matrixes
   ///
   /// \warning The input matrix must be symmetric. Use symmetrize() if needed.
   /// \warning Fails if the matrix is not symmetric or not positive definite
@@ -200,13 +200,13 @@ public:
   /// L is a unit lower triangular matrix (diagonal elements are 1) and D is a diagonal
   /// matrix with positive diagonal elements.
   ///
-  /// This decomposition is more numerically stable than LLT for certain matrices and is
+  /// This decomposition is more numerically stable than LLT for certain matrixes and is
   /// particularly useful in Kalman filtering applications where the matrix structure
   /// needs to be maintained. The LDL^T form separates the triangular structure (L) from
   /// the scaling factors (D).
   ///
   /// \return tl::expected<std::pair<TriangularMatrix, DiagonalMatrix>, Errors>
-  ///         A pair containing L and D matrices on success, or Errors::matrix_not_symmetric
+  ///         A pair containing L and D matrixes on success, or Errors::matrix_not_symmetric
   ///         if not symmetric, or Errors::matrix_not_positive_definite if not positive definite
   ///
   /// \note The matrix must be symmetric and positive definite
@@ -230,21 +230,21 @@ public:
   /// known as the UDU^T factorization.
   ///
   /// This decomposition is particularly important in Kalman filtering for maintaining the
-  /// UDU^T form of covariance matrices, which provides better numerical stability than
+  /// UDU^T form of covariance matrixes, which provides better numerical stability than
   /// standard covariance representations. The algorithm works backwards from the last
   /// column to the first, computing U and D simultaneously.
   ///
   /// The implementation is based on modified Cholesky decomposition and includes numerical
-  /// safeguards to ensure positive definiteness even for near-singular matrices.
+  /// safeguards to ensure positive definiteness even for near-singular matrixes.
   ///
   /// \return tl::expected<std::pair<TriangularMatrix, DiagonalMatrix>, Errors>
-  ///         A pair containing U and D matrices on success, or Errors::matrix_not_symmetric
+  ///         A pair containing U and D matrixes on success, or Errors::matrix_not_symmetric
   ///         if not symmetric
   ///
   /// \note The matrix must be symmetric
   /// \note Time complexity: O(n^3) for an n x n matrix
   /// \note Space complexity: O(n^2) for U and O(n) for D
-  /// \note Numerically stable with safeguards for near-singular matrices
+  /// \note Numerically stable with safeguards for near-singular matrixes
   /// \note U has unit diagonal (all diagonal elements are 1)
   /// \note D diagonal elements are clamped to a minimum value for numerical stability
   ///
@@ -269,7 +269,7 @@ public:
   /// \note Uses QR decomposition internally, which provides good numerical stability
   ///       but has O(n³) complexity. The storage layout is toggled in the result.
   ///
-  /// \warning Fails for singular or near-singular matrices. Check condition number if needed.
+  /// \warning Fails for singular or near-singular matrixes. Check condition number if needed.
   ///
   /// \see householderQR for the underlying decomposition
   [[nodiscard]] auto inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
@@ -302,7 +302,7 @@ public:
   ///
   /// \return true if all diagonal elements are > 0, false otherwise
   ///
-  /// \note For diagonal matrices, positive definiteness is equivalent to all elements > 0
+  /// \note For diagonal matrixes, positive definiteness is equivalent to all elements > 0
   [[nodiscard]] auto isPositiveDefinite() const -> bool;
 
   /// \brief Checks if the matrix is positive semi-definite.
@@ -310,7 +310,7 @@ public:
   /// Tests whether all eigenvalues of the matrix are non-negative.
   /// A positive semi-definite matrix satisfies x^T * A * x >= 0 for all non-zero vectors x.
   ///
-  /// This is a key property for covariance matrices in statistics and machine learning.
+  /// This is a key property for covariance matrixes in statistics and machine learning.
   ///
   /// The check is performed using Cholesky decomposition; if it succeeds, the matrix
   /// is positive semi-definite.
@@ -328,7 +328,7 @@ public:
   ///
   /// \note This is useful for validating QR decomposition results
   /// \note Time complexity: O(n^3) due to matrix multiplication
-  /// \see householderQR() for QR decomposition that produces orthogonal matrices
+  /// \see householderQR() for QR decomposition that produces orthogonal matrixes
   [[nodiscard]] auto isOrthogonal(ValueType_ tolerance = 1e-6) const -> bool;
 
   /// \brief Checks if the matrix is upper triangular within a specified tolerance
@@ -341,7 +341,7 @@ public:
   ///
   /// \note This is useful for validating decomposition results (QR, UDUT)
   /// \note Time complexity: O(n^2)
-  /// \see householderQR() for QR decomposition that produces upper triangular matrices
+  /// \see householderQR() for QR decomposition that produces upper triangular matrixes
   [[nodiscard]] auto isUpperTriangular(ValueType_ tolerance = 1e-6) const -> bool;
 
   /// \brief Checks if the matrix is lower triangular within a specified tolerance
@@ -354,7 +354,7 @@ public:
   ///
   /// \note This is useful for validating decomposition results (LLT, LDLT)
   /// \note Time complexity: O(n^2)
-  /// \see decomposeLLT() for LLT decomposition that produces lower triangular matrices
+  /// \see decomposeLLT() for LLT decomposition that produces lower triangular matrixes
   [[nodiscard]] auto isLowerTriangular(ValueType_ tolerance = 1e-6) const -> bool;
 
   /// \brief Checks if the matrix has a unit diagonal within a specified tolerance
@@ -367,7 +367,7 @@ public:
   ///
   /// \note This is useful for validating decomposition results (LDLT, UDUT)
   /// \note Time complexity: O(n)
-  /// \see decomposeLDLT() for LDLT decomposition that produces unit diagonal matrices
+  /// \see decomposeLDLT() for LDLT decomposition that produces unit diagonal matrixes
   [[nodiscard]] auto hasUnitDiagonal(ValueType_ tolerance = 1e-6) const -> bool;
   // <---
 

@@ -17,12 +17,12 @@ namespace conversions
 /// This function extracts the diagonal elements from a square matrix to create a diagonal matrix.
 /// All off-diagonal elements are discarded, preserving only the main diagonal values.
 ///
-/// \tparam ValueType_ The value type of matrix elements
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The size of the square matrix and resulting diagonal matrix
 /// \tparam IsRowMajor_ The storage layout of the source matrix
 /// \param[in] mat The source square matrix
 /// \return DiagonalMatrix containing the diagonal elements of the input matrix
-/// \see DiagonalFromList() for creating diagonal matrices from initializer lists
+/// \see DiagonalFromList() for creating diagonal matrixes from initializer lists
 /// \see SquareFromDiagonal() for the reverse conversion
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto DiagonalFromSquare(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& mat) -> DiagonalMatrix<ValueType_, Size_>

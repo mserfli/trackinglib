@@ -541,7 +541,7 @@ TEST(DiagonalMatrix, trace_1x1_Consistency__Success) // NOLINT
   const auto traceResult = diagMat.trace();
   const auto detResult   = diagMat.determinant();
 
-  // For 1x1 matrices, trace should equal determinant
+  // For 1x1 matrixes, trace should equal determinant
   EXPECT_FLOAT_EQ(traceResult, detResult);
   EXPECT_FLOAT_EQ(traceResult, 5.0F);
 }

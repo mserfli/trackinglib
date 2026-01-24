@@ -19,15 +19,15 @@ template <typename CovarianceMatrixPolicy_>
 class KalmanFilter: public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
 {
 public:
-  using FloatType = typename CovarianceMatrixPolicy_::FloatType;
+  using value_type = typename CovarianceMatrixPolicy_::value_type;
   template <sint32 DimX_>
   using CovarianceMatrixType = typename CovarianceMatrixPolicy_::template Instantiate<DimX_>;
 
   template <sint32 DimX_, sint32 DimQ_>
-  inline static void predictCovariance(CovarianceMatrixType<DimX_>&                  P,
-                                       const math::SquareMatrix<FloatType, DimX_>&   A,
-                                       const math::Matrix<FloatType, DimX_, DimQ_>&  G,
-                                       const math::DiagonalMatrix<FloatType, DimQ_>& Q);
+  inline static void predictCovariance(CovarianceMatrixType<DimX_>&                   P,
+                                       const math::SquareMatrix<value_type, DimX_>&   A,
+                                       const math::Matrix<value_type, DimX_, DimQ_>&  G,
+                                       const math::DiagonalMatrix<value_type, DimQ_>& Q);
 };
 
 } // namespace filter

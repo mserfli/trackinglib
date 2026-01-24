@@ -17,21 +17,21 @@ inline void StateCovConverter<MM, MM>::convertFrom(typename MM::StateCov& dstCov
   }
 }
 
-template <typename CovarianceMatricPolicy_>
-inline void StateCovConverter<MotionModelCV<CovarianceMatricPolicy_>, MotionModelCA<CovarianceMatricPolicy_>>::convertFrom(
-    typename MotionModelCV<CovarianceMatricPolicy_>::StateCov&       dstCov,
-    const typename MotionModelCA<CovarianceMatricPolicy_>::StateCov& srcCov)
+template <typename CovarianceMatrixPolicy_>
+inline void StateCovConverter<MotionModelCV<CovarianceMatrixPolicy_>, MotionModelCA<CovarianceMatrixPolicy_>>::convertFrom(
+    typename MotionModelCV<CovarianceMatrixPolicy_>::StateCov&       dstCov,
+    const typename MotionModelCA<CovarianceMatrixPolicy_>::StateCov& srcCov)
 {
-  using DstType = MotionModelCV<CovarianceMatricPolicy_>;
-  using SrcType = MotionModelCA<CovarianceMatricPolicy_>;
+  using DstType = MotionModelCV<CovarianceMatrixPolicy_>;
+  using SrcType = MotionModelCA<CovarianceMatrixPolicy_>;
 
-  if constexpr (CovarianceMatricPolicy_::is_factored)
+  if constexpr (CovarianceMatrixPolicy_::is_factored)
   {
-    using FloatType    = typename CovarianceMatricPolicy_::FloatType;
-    constexpr auto one = static_cast<FloatType>(1.0);
+    using value_type   = typename CovarianceMatrixPolicy_::value_type;
+    constexpr auto one = static_cast<value_type>(1.0);
 
     // create a permutation matrix from SrcType to DstType
-    math::SquareMatrix<FloatType, SrcType::NUM_STATE_VARIABLES> A;
+    math::SquareMatrix<value_type, SrcType::NUM_STATE_VARIABLES> A;
     A.setZeros();
     A.at_unsafe(DstType::X, SrcType::X)   = one;
     A.at_unsafe(DstType::VX, SrcType::VX) = one;
@@ -89,20 +89,20 @@ inline void StateCovConverter<MotionModelCV<CovarianceMatricPolicy_>, MotionMode
   }
 }
 
-template <typename CovarianceMatricPolicy_>
-inline void StateCovConverter<MotionModelCA<CovarianceMatricPolicy_>, MotionModelCV<CovarianceMatricPolicy_>>::convertFrom(
-    typename MotionModelCA<CovarianceMatricPolicy_>::StateCov&       dstCov,
-    const typename MotionModelCV<CovarianceMatricPolicy_>::StateCov& srcCov)
+template <typename CovarianceMatrixPolicy_>
+inline void StateCovConverter<MotionModelCA<CovarianceMatrixPolicy_>, MotionModelCV<CovarianceMatrixPolicy_>>::convertFrom(
+    typename MotionModelCA<CovarianceMatrixPolicy_>::StateCov&       dstCov,
+    const typename MotionModelCV<CovarianceMatrixPolicy_>::StateCov& srcCov)
 {
-  using DstType = MotionModelCA<CovarianceMatricPolicy_>;
-  using SrcType = MotionModelCV<CovarianceMatricPolicy_>;
+  using DstType = MotionModelCA<CovarianceMatrixPolicy_>;
+  using SrcType = MotionModelCV<CovarianceMatrixPolicy_>;
 
-  if constexpr (CovarianceMatricPolicy_::is_factored)
+  if constexpr (CovarianceMatrixPolicy_::is_factored)
   {
-    using FloatType    = typename CovarianceMatricPolicy_::FloatType;
-    constexpr auto one = static_cast<FloatType>(1.0);
+    using value_type   = typename CovarianceMatrixPolicy_::value_type;
+    constexpr auto one = static_cast<value_type>(1.0);
 
-    math::SquareMatrix<FloatType, DstType::NUM_STATE_VARIABLES> A;
+    math::SquareMatrix<value_type, DstType::NUM_STATE_VARIABLES> A;
     A.setZeros();
     A.at_unsafe(DstType::X, SrcType::X)   = one;
     A.at_unsafe(DstType::VX, SrcType::VX) = one;

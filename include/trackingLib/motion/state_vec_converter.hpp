@@ -36,16 +36,16 @@ inline void StateVecConverter<MotionModelCA<CovarianceMatrixPolicy_>, MotionMode
     typename MotionModelCA<CovarianceMatrixPolicy_>::StateVec&       dstVec,
     const typename MotionModelCV<CovarianceMatrixPolicy_>::StateVec& srcVec)
 {
-  using DstType   = MotionModelCA<CovarianceMatrixPolicy_>;
-  using SrcType   = MotionModelCV<CovarianceMatrixPolicy_>;
-  using FloatType = typename CovarianceMatrixPolicy_::FloatType;
+  using DstType    = MotionModelCA<CovarianceMatrixPolicy_>;
+  using SrcType    = MotionModelCV<CovarianceMatrixPolicy_>;
+  using value_type = typename CovarianceMatrixPolicy_::value_type;
 
   dstVec.at_unsafe(DstType::X)  = srcVec.at_unsafe(SrcType::X);
   dstVec.at_unsafe(DstType::VX) = srcVec.at_unsafe(SrcType::VX);
-  dstVec.at_unsafe(DstType::AX) = static_cast<FloatType>(0.0);
+  dstVec.at_unsafe(DstType::AX) = static_cast<value_type>(0.0);
   dstVec.at_unsafe(DstType::Y)  = srcVec.at_unsafe(SrcType::Y);
   dstVec.at_unsafe(DstType::VY) = srcVec.at_unsafe(SrcType::VY);
-  dstVec.at_unsafe(DstType::AY) = static_cast<FloatType>(0.0);
+  dstVec.at_unsafe(DstType::AY) = static_cast<value_type>(0.0);
 }
 
 } // namespace motion

@@ -17,39 +17,39 @@ template class tracking::math::CovarianceMatrixFull<float64, 4>;
 using namespace tracking::math;
 
 // Helper function to create a factored symmetric positive definite matrix
-template <typename FloatType, sint32 Size>
-auto createFactoredSymmetricPositiveDefiniteMatrix() -> CovarianceMatrixFactored<FloatType, Size>
+template <typename ValueType_, sint32 Size_>
+auto createFactoredSymmetricPositiveDefiniteMatrix() -> CovarianceMatrixFactored<ValueType_, Size_>
 {
   // Create a diagonal matrix with positive values and add small symmetric perturbations
-  CovarianceMatrixFull<FloatType, Size> result{};
-  for (sint32 i = 0; i < Size; ++i)
+  CovarianceMatrixFull<ValueType_, Size_> result{};
+  for (sint32 i = 0; i < Size_; ++i)
   {
-    result.at_unsafe(i, i) = static_cast<FloatType>(1.0 + i * 0.5); // Diagonal dominance
-    for (sint32 j = i + 1; j < Size; ++j)
+    result.at_unsafe(i, i) = static_cast<ValueType_>(1.0 + i * 0.5); // Diagonal dominance
+    for (sint32 j = i + 1; j < Size_; ++j)
     {
-      FloatType val          = static_cast<FloatType>(0.1 * (i + 1) * (j + 1));
+      ValueType_ val         = static_cast<ValueType_>(0.1 * (i + 1) * (j + 1));
       result.at_unsafe(i, j) = val;
       result.at_unsafe(j, i) = val; // Ensure symmetry
     }
   }
-  auto covFactored = conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<FloatType, Size>(result);
+  auto covFactored = conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(result);
   testing::AssertionResult(covFactored.has_value()) << "Failed to factor symmetric positive definite matrix into UDUt form.";
   return covFactored.value();
 }
 
 // Helper function to create a factored ill-conditioned matrix
-template <typename FloatType, sint32 Size>
-auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<FloatType, Size>
+template <typename ValueType_, sint32 Size_>
+auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<ValueType_, Size_>
 {
-  CovarianceMatrixFull<FloatType, Size> result{};
+  CovarianceMatrixFull<ValueType_, Size_> result{};
 
   // Create a matrix with a mix of very large and very small eigenvalues
-  for (sint32 i = 0; i < Size; ++i)
+  for (sint32 i = 0; i < Size_; ++i)
   {
-    for (sint32 j = 0; j < Size; ++j)
+    for (sint32 j = 0; j < Size_; ++j)
     {
       // Create a matrix that's close to singular
-      FloatType val          = static_cast<FloatType>(1.0) + static_cast<FloatType>(0.001 * (i == j ? Size - i : i + j));
+      ValueType_ val         = static_cast<ValueType_>(1.0) + static_cast<ValueType_>(0.001 * (i == j ? Size_ - i : i + j));
       result.at_unsafe(i, j) = val;
       if (i != j)
       {
@@ -57,7 +57,7 @@ auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<FloatType,
       }
     }
   }
-  auto covFactored = conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<FloatType, Size>(result);
+  auto covFactored = conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(result);
   testing::AssertionResult(covFactored.has_value()) << "Failed to factor symmetric positive definite matrix into UDUt form.";
   return covFactored.value();
 }
@@ -814,7 +814,7 @@ TEST(CovarianceMatrixFactored, Identity_setIdentity_equivalence__Success) // NOL
   auto cov2 = createFactoredSymmetricPositiveDefiniteMatrix<float64, 4>();
   cov2.setIdentity();
 
-  // Verify both result in identity matrices
+  // Verify both result in identity matrixes
   auto result1 = cov1();
   auto result2 = cov2();
 

@@ -17,8 +17,8 @@ namespace conversions
 /// This function creates a square matrix with the diagonal elements from a diagonal matrix.
 /// All off-diagonal elements are set to zero.
 ///
-/// \tparam ValueType_ The value type of matrix elements
-/// \tparam Size_ The dimension of the matrices
+/// \tparam ValueType_ The atomic data type of internal elements
+/// \tparam Size_ The dimension of the matrixes
 /// \tparam IsRowMajor_ The storage layout of the resulting square matrix
 /// \param[in] diag The source diagonal matrix
 /// \return SquareMatrix with diagonal elements from the input and zeros elsewhere
