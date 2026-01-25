@@ -78,13 +78,15 @@ void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Si
   for (sint32 i = Size_ - 1; i >= 0; --i)
   {
     sigma = static_cast<ValueType_>(0.0);
+    // process all state columns
     for (sint32 j = 0; j < Size_; ++j)
     {
       sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);
-      if (j < SizeQ_)
-      {
-        sigma += Gin.at_unsafe(i, j) * Gin.at_unsafe(i, j) * Q.at_unsafe(j);
-      }
+    }
+    // process all process noise columns
+    for (sint32 j = 0; j < SizeQ_; ++j)
+    {
+      sigma += Gin.at_unsafe(i, j) * Gin.at_unsafe(i, j) * Q.at_unsafe(j);
     }
     d.at_unsafe(i) = std::max(sigma, std::numeric_limits<ValueType_>::epsilon());
     for (sint32 j = 0; j < i; ++j)

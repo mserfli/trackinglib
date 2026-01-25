@@ -22,8 +22,8 @@ TEST(MatrixIO, BasicMatrixOutput) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  const std::string expected = "   +1.000000,    +2.000000\n"
-                               "   +3.000000,    +4.000000\n";
+  const std::string expected = "   +1.0000000000,    +2.0000000000\n"
+                               "   +3.0000000000,    +4.0000000000\n";
 
   EXPECT_EQ(ss.str(), expected);
 }
@@ -48,9 +48,9 @@ TEST(MatrixIO, SquareMatrixOutput) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  const std::string expected = "   +1.000000,    +2.000000,    +3.000000\n"
-                               "   +4.000000,    +5.000000,    +6.000000\n"
-                               "   +7.000000,    +8.000000,    +9.000000\n";
+  const std::string expected = "   +1.0000000000,    +2.0000000000,    +3.0000000000\n"
+                               "   +4.0000000000,    +5.0000000000,    +6.0000000000\n"
+                               "   +7.0000000000,    +8.0000000000,    +9.0000000000\n";
 
   EXPECT_EQ(ss.str(), expected);
 }
@@ -62,9 +62,9 @@ TEST(MatrixIO, DiagonalMatrixOutput) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  const std::string expected = "   +1.000000,    +0.000000,    +0.000000\n"
-                               "   +0.000000,    +2.000000,    +0.000000\n"
-                               "   +0.000000,    +0.000000,    +3.000000\n";
+  const std::string expected = "   +1.0000000000,    +0.0000000000,    +0.0000000000\n"
+                               "   +0.0000000000,    +2.0000000000,    +0.0000000000\n"
+                               "   +0.0000000000,    +0.0000000000,    +3.0000000000\n";
 
   EXPECT_EQ(ss.str(), expected);
 }
@@ -77,9 +77,9 @@ TEST(MatrixIO, TriangularMatrixOutput) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  const std::string expected = "   +1.000000,    +0.000000,    +0.000000\n"
-                               "   +2.000000,    +3.000000,    +0.000000\n"
-                               "   +4.000000,    +5.000000,    +6.000000\n";
+  const std::string expected = "   +1.0000000000,    +0.0000000000,    +0.0000000000\n"
+                               "   +2.0000000000,    +3.0000000000,    +0.0000000000\n"
+                               "   +4.0000000000,    +5.0000000000,    +6.0000000000\n";
 
   EXPECT_EQ(ss.str(), expected);
 }
@@ -139,7 +139,7 @@ TEST(MatrixIO, SingleElementMatrix) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  const std::string expected = "  +42.000000\n";
+  const std::string expected = "  +42.0000000000\n";
   EXPECT_EQ(ss.str(), expected);
 }
 
@@ -380,9 +380,9 @@ TEST(MatrixIO, VectorFloat3__Success) // NOLINT
   std::stringstream ss;
   ss << vec;
 
-  const std::string expected = "   +1.000000\n"
-                               "   +2.000000\n"
-                               "   +3.000000\n";
+  const std::string expected = "   +1.0000000000\n"
+                               "   +2.0000000000\n"
+                               "   +3.0000000000\n";
 
   EXPECT_EQ(ss.str(), expected);
 }

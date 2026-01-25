@@ -261,6 +261,10 @@ public:
   /// \brief Sets all elements to one
   void setOnes();
 
+  /// \brief Checks if the matrix is a zero matrix
+  /// \return true if all elements are zero
+  [[nodiscard]] auto isZeros() const -> bool;
+
   /// \brief Get min value of the matrix
   /// \return min value
   [[nodiscard]] auto min() const -> ValueType_ { return *std::min_element(data().begin(), data().end()); }

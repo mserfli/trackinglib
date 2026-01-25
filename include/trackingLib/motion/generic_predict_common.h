@@ -3,6 +3,7 @@
 
 #include "base/first_include.h" // IWYU pragma: keep
 #include "env/ego_motion.h"
+#include <variant>
 
 namespace tracking
 {
@@ -35,6 +36,20 @@ public:
     typename MotionModel_::ProcessNoiseDiagMatrix Q{};
     /// \brief G defines the transformation of the process noise to the full state space
     typename MotionModel_::ProcessNoiseMappingMatrix G{};
+
+    // clang-format off
+    /// \brief AGo defines the combined state transition including ego motion for factored prediction with ego motion in one step
+    std::conditional_t<CovarianceMatrixPolicy_::is_factored, 
+    typename MotionModel_::StateMatrix, std::monostate> AGo{};
+   
+    /// \brief Gstar defines the augmented process noise mapping matrix for factored prediction with ego motion in one step
+    std::conditional_t<CovarianceMatrixPolicy_::is_factored, 
+    typename MotionModel_::AugmentedProcessNoiseMappingMatrix, std::monostate> Gstar{};
+
+    /// \brief Qstar defines the augmented process noise matrix for factored prediction with ego motion in one step
+    std::conditional_t<CovarianceMatrixPolicy_::is_factored, 
+    typename MotionModel_::AugmentedProcessNoiseDiagMatrix, std::monostate> Qstar{};
+    // clang-format on
   };
 
   /// \brief Runner to calculate the common predict data for the predictor

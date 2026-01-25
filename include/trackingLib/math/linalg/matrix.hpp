@@ -386,6 +386,14 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(
   return result;
 }
 
+
+template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::isZeros() const -> bool
+{
+  const auto [min, max] = minmax();
+  return (min == static_cast<ValueType_>(0)) && (max == static_cast<ValueType_>(0));
+}
+
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::minmax() const -> std::tuple<ValueType_, ValueType_>
 {

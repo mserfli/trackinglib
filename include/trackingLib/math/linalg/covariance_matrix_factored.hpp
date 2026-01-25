@@ -191,10 +191,11 @@ inline void CovarianceMatrixFactored<ValueType_, Size_>::rank1Update(const Value
 template <typename ValueType_, sint32 Size_>
 inline void CovarianceMatrixFactored<ValueType_, Size_>::setVariance(const sint32 idx, const ValueType_ val)
 {
+  assert(val > static_cast<ValueType_>(0.0) && "Expected variance value greater than 0.0");
   auto A                = SquareMatrix<ValueType_, Size_, true>::Identity();
   A.at_unsafe(idx, idx) = static_cast<ValueType_>(0.0);
   apaT(A);
-  setDiagonal(idx, val);
+  _d.at_unsafe(idx) = val;
   assert(_u.isUnitUpperTriangular() && "Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular");
   assert(_d.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
 }
@@ -210,7 +211,7 @@ inline void CovarianceMatrixFactored<ValueType_, Size_>::fill(const CovarianceMa
 }
 
 template <typename ValueType_, sint32 Size_>
-inline void CovarianceMatrixFactored<ValueType_, Size_>::setDiagonal(const sint32 idx, const ValueType_ val)
+inline void CovarianceMatrixFactored<ValueType_, Size_>::D(const sint32 idx, const ValueType_ val)
 {
   assert(val > static_cast<ValueType_>(0.0) && "Expected variance value greater than 0.0");
   _d.at_unsafe(idx) = val;

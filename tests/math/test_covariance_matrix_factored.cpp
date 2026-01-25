@@ -714,8 +714,8 @@ TEST(CovarianceMatrixFactored, setDiagonal_double4__Success) // NOLINT
   // Create a factored covariance matrix
   auto cov = CovarianceMatrixFactored<float64, 4>::Identity();
 
-  // Test setDiagonal()
-  cov.setDiagonal(1, 2.5);
+  // Test D(idx, value)
+  cov.D(1, 2.5);
 
   // Verify the diagonal element is set correctly
   auto result = cov(1, 1);
@@ -754,8 +754,8 @@ TEST(CovarianceMatrixFactored, setDiagonal_setVariance_consistency__Success) // 
   auto cov1 = CovarianceMatrixFactored<float64, 4>::Identity();
   auto cov2 = CovarianceMatrixFactored<float64, 4>::Identity();
 
-  // Use setDiagonal on first
-  cov1.setDiagonal(1, 2.5);
+  // Use D(idx, value) on first
+  cov1.D(1, 2.5);
 
   // Use setVariance on second (should give same result for diagonal element)
   cov2.setVariance(1, 2.5);
