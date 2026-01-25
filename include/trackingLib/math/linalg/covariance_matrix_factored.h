@@ -113,6 +113,14 @@ public:
   /// \return compose_type
   auto operator()() const -> compose_type;
 
+  /// \brief Access operator to the triangular matrix U
+  /// \return const reference to the internal triangular matrix U
+  [[nodiscard]] auto U() const -> const TriangularMatrix<ValueType_, Size_, false, true>& { return _u; }
+
+  /// \brief Access operator to the diagonal matrix D
+  /// \return const reference to the internal diagonal matrix D
+  [[nodiscard]] auto D() const -> const DiagonalMatrix<ValueType_, Size_>& { return _d; }
+
   /// \brief Calculate the trace of the square matrix.
   ///
   /// Computes the sum of all diagonal elements of the matrix.
@@ -248,7 +256,7 @@ public:
   /// \brief Set the Diagonal matrix element to given value
   /// \param[in] idx  Index in diagonal matrix
   /// \param[in] val  The value to be set
-  void setDiagonal(const sint32 idx, const ValueType_ val);
+  void D(const sint32 idx, const ValueType_ val);
 
   /// \brief Check if the matrix is symmetric.
   ///

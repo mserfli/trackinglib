@@ -126,7 +126,8 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::determinant() const ->
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix& b) const
+template <bool IsRowMajor2_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix<ValueType_, Size_, IsRowMajor2_>& b) const
     -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
 {
   const auto [Q, R] = householderQR();

@@ -62,7 +62,7 @@ void InformationFilter<CovarianceMatrixPolicy_>::predictCovariance(CovarianceMat
     // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric
     const auto H =
         math::SquareMatrix<value_type, DimX_>(math::SquareMatrix<value_type, DimX_>::Identity() + M * (G * Q * G.transpose()));
-    math::SquareMatrix cov = H.qrSolve(M);
+    math::SquareMatrix cov = H.qrSolve(std::move(M));
     cov.symmetrize();
 
     // prevent destroying the Information matrix, e.g. removing information from a zero Y matrix (no information)

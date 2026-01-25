@@ -107,6 +107,22 @@ public:
   /// \note This operation modifies the matrix in-place and does not change its size or layout
   void setIdentity();
 
+  /// \brief Fast transpose without changing the layout (zero-copy view)
+  /// \return const transpose_type&   const reference to same data as Self, but differently interpreted as transposed
+  /// \note This creates a view with swapped dimensions and opposite layout. No data is copied.
+  [[nodiscard]] auto transpose() const -> const SquareMatrix<ValueType_, Size_, !IsRowMajor_>&
+  {
+    return static_cast<const SquareMatrix<ValueType_, Size_, !IsRowMajor_>&>(BaseMatrix::transpose());
+  };
+
+  /// \brief Fast transpose without changing the layout (zero-copy view)
+  /// \return transpose_type&   reference to same data as Self, but differently interpreted as transposed
+  /// \note This creates a view with swapped dimensions and opposite layout. No data is copied.
+  [[nodiscard]] auto transpose() -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>&
+  {
+    return static_cast<SquareMatrix<ValueType_, Size_, !IsRowMajor_>&>(BaseMatrix::transpose());
+  };
+
   /// \brief Calculate the trace of the square matrix.
   ///
   /// Computes the sum of all diagonal elements of the matrix.
@@ -158,6 +174,7 @@ public:
   /// Uses the QR decomposition of this matrix to solve for x in A * x = b.
   /// This method is numerically stable and suitable for well-conditioned matrixes.
   ///
+  /// \tparam IsRowMajor2_ The row-majority of the right-hand side matrix b
   /// \param[in] b The right-hand side matrix of the equation A * x = b
   /// \return SquareMatrix The solution matrix x such that A * x ≈ b
   ///
@@ -166,7 +183,9 @@ public:
   ///       directly and reusing the decomposition.
   ///
   /// \see householderQR for the underlying decomposition
-  [[nodiscard]] auto qrSolve(const SquareMatrix& b) const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
+  template <bool IsRowMajor2_>
+  [[nodiscard]] auto qrSolve(const SquareMatrix<ValueType_, Size_, IsRowMajor2_>& b) const
+      -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
 
   /// \brief Performs Cholesky decomposition (LLT) of a symmetric positive definite matrix
   ///

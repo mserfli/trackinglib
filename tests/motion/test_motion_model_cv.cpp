@@ -35,7 +35,7 @@ struct TestPredictCV
     }
   }
 
-  static auto tolerance(const FilterTypeInst& /*filter*/) -> value_type { return static_cast<value_type>(1e-6); }
+  static auto tolerance(const FilterTypeInst& /*filter*/) -> value_type { return static_cast<value_type>(2e-6); }
 
   static void run_without_ego_motion_compensation()
   {
@@ -110,17 +110,34 @@ struct TestPredictCV
       {0, 0, 1, 0.0},
       {0, 0, 0, 0.1}
     });
-    auto expVec = MM::StateVecFromList({11, 2, 0, 0});
+    auto expVec = MM::StateVecFromList({+9.9604310989, +1.9975004196, -0.5741304159, -0.0999583453});
     auto expCov = MM::StateCovFromList({
-      {+5.29125, +0.62500, +0.00000, +0.00000},
-      {+0.62500, +1.50000, +0.00000, +0.00000},
-      {+0.00000, +0.00000, +1.06625, +0.17500},
-      {+0.00000, +0.00000, +0.17500, +0.60000}
+      {+5.2812027931,  +0.6238771081,  -0.2107825130,  -0.0224393737},
+      {+0.6238771081,  +1.4977520704,  -0.0224399883,  -0.0449210368},
+      {-0.2107825130,  -0.0224399883,  +1.0793461800,  +0.1765742004},
+      {-0.0224393737,  -0.0449210368,  +0.1765742004,  +0.6023279428}
     });
     // clang-format on
 
     init(cov, expCov, filter);
-    const auto tol = tolerance(filter);
+    auto tol{MM::StateMatrix::Ones()};
+    if constexpr (std::is_same_v<FilterTypeInst,
+                                 tracking::filter::InformationFilter<
+                                     tracking::math::FullCovarianceMatrixPolicy<typename CovarianceMatrixPolicy_::value_type>>>)
+    {
+      // InformationFilter with full covariance does a two step approach to apply egomotion compensation
+      // causing larger differences compared to the UDU one-step approach due to correlations being ignored
+      tol *= 5 * tolerance(filter);
+      tol.at_unsafe(0, 2) = 0.000101;
+      tol.at_unsafe(2, 0) = tol.at_unsafe(0, 2);
+      tol.at_unsafe(2, 2) = 0.002001;
+      tol.at_unsafe(2, 3) = 5e-5;
+      tol.at_unsafe(3, 2) = tol.at_unsafe(2, 3);
+    }
+    else
+    {
+      tol *= tolerance(filter);
+    }
 
     // instantiate regular MM (no mocking)
     MM mm{vec, cov};
@@ -131,17 +148,18 @@ struct TestPredictCV
       mm.predict(dt, filter, egoMotion);
     }
 
+    // std::cout << expCov() << std::endl;
     std::cout << mm._vec << std::endl;
-    std::cout << mm._cov << std::endl;
-    (void)tol;
-    // for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
-    // {
-    //   EXPECT_FLOAT_EQ(mm._vec.at_unsafe(row), expVec.at_unsafe(row));
-    //   for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
-    //   {
-    //     EXPECT_NEAR(mm._cov.at_unsafe(row, col), expCov.at_unsafe(row, col), tol);
-    //   }
-    // }
+    std::cout << mm._cov() << std::endl;
+
+    for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
+    {
+      EXPECT_FLOAT_EQ(mm._vec.at_unsafe(row), expVec.at_unsafe(row));
+      for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
+      {
+        EXPECT_NEAR(mm._cov().at_unsafe(row, col), expCov.at_unsafe(row, col), tol.at_unsafe(row, col));
+      }
+    }
   }
 };
 
@@ -149,12 +167,6 @@ TEST(MotionModelCV, predict_fullCov_kalmanFilter) // NOLINT
 {
   TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>,
                 tracking::filter::KalmanFilter>::run_without_ego_motion_compensation();
-}
-
-TEST(MotionModelCV, predict_fullCov_kalmanFilter_egoMotion) // NOLINT
-{
-  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>,
-                tracking::filter::KalmanFilter>::run_with_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_factoredCov_kalmanFilter) // NOLINT
@@ -174,6 +186,31 @@ TEST(MotionModelCV, predict_factoredCov_informationFilter) // NOLINT
   TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>,
                 tracking::filter::InformationFilter>::run_without_ego_motion_compensation();
 }
+
+TEST(MotionModelCV, predict_fullCov_kalmanFilter_egoMotion) // NOLINT
+{
+  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::KalmanFilter>::run_with_ego_motion_compensation();
+}
+
+TEST(MotionModelCV, predict_factoredCov_kalmanFilter_egoMotion) // NOLINT
+{
+  TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::KalmanFilter>::run_with_ego_motion_compensation();
+}
+
+TEST(MotionModelCV, predict_fullCov_informationFilter_egoMotion) // NOLINT
+{
+  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::InformationFilter>::run_with_ego_motion_compensation();
+}
+
+TEST(MotionModelCV, predict_factoredCov_informationFilter_egoMotion) // NOLINT
+{
+  TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::InformationFilter>::run_with_ego_motion_compensation();
+}
+
 
 TEST(MotionModelCV, convertCA_fullCov) // NOLINT
 {

@@ -21,11 +21,11 @@ template <typename MotionModel_, typename CovarianceMatrixPolicy_>
 class Predict: public PredictCommon<MotionModel_, CovarianceMatrixPolicy_>
 {
 public:
-  using super_predict_common_type = PredictCommon<MotionModel_, CovarianceMatrixPolicy_>;
-  using value_type                = typename CovarianceMatrixPolicy_::value_type;
-  using KalmanFilterType          = filter::KalmanFilter<CovarianceMatrixPolicy_>;
-  using InformationFilterType     = filter::InformationFilter<CovarianceMatrixPolicy_>;
-  using EgoMotionType             = env::EgoMotion<CovarianceMatrixPolicy_>;
+  using value_type            = typename CovarianceMatrixPolicy_::value_type;
+  using BasePredictCommon     = PredictCommon<MotionModel_, CovarianceMatrixPolicy_>;
+  using KalmanFilterType      = filter::KalmanFilter<CovarianceMatrixPolicy_>;
+  using InformationFilterType = filter::InformationFilter<CovarianceMatrixPolicy_>;
+  using EgoMotionType         = env::EgoMotion<CovarianceMatrixPolicy_>;
 
   /// \brief State prediction with ego motion compensation using a KalmanFilter
   /// \param[in] dt         The delta time from last state to predicted state

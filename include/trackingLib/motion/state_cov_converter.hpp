@@ -115,8 +115,8 @@ inline void StateCovConverter<MotionModelCA<CovarianceMatrixPolicy_>, MotionMode
     // remap indeces by applying the permutation
     dstCov.apaT(A);
     // set ax,ay to variance 1.0
-    dstCov.setDiagonal(DstType::AX, one);
-    dstCov.setDiagonal(DstType::AY, one);
+    dstCov.D(DstType::AX, one);
+    dstCov.D(DstType::AY, one);
   }
   else
   {

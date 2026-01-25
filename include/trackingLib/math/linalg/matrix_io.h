@@ -123,7 +123,7 @@ auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix
     {
       if constexpr (std::is_floating_point_v<value_type>)
       {
-        os << std::fixed << std::setprecision(6) << std::showpos << std::setw(12) << matrix.at_unsafe(row, col);
+        os << std::fixed << std::setprecision(10) << std::showpos << std::setw(16) << matrix.at_unsafe(row, col);
       }
       else
       {
@@ -174,7 +174,7 @@ std::ostream& operator<<(std::ostream&                                          
     {
       if constexpr (std::is_floating_point_v<ValueType_>)
       {
-        os << std::fixed << std::setprecision(6) << std::showpos << std::setw(12);
+        os << std::fixed << std::setprecision(10) << std::showpos << std::setw(16);
       }
       else
       {
@@ -242,7 +242,7 @@ std::ostream& operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<
     {
       if constexpr (std::is_floating_point_v<ValueType_>)
       {
-        os << std::fixed << std::setprecision(6) << std::showpos << std::setw(12);
+        os << std::fixed << std::setprecision(10) << std::showpos << std::setw(16);
       }
       else
       {
@@ -308,7 +308,7 @@ std::ostream& operator<<(std::ostream& os, const tracking::math::Vector<ValueTyp
   {
     if constexpr (std::is_floating_point_v<ValueType_>)
     {
-      os << std::fixed << std::setprecision(6) << std::showpos << std::setw(12) << vector.at_unsafe(row);
+      os << std::fixed << std::setprecision(10) << std::showpos << std::setw(16) << vector.at_unsafe(row);
     }
     else
     {
