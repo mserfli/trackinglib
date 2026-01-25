@@ -128,7 +128,12 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const value_type
 
           // final filter prediction step with compensated Ytr
           filter.predictCovariance(Ytr, data.A, data.G, data.Q);
-          Y = std::move(Ytr);
+
+          // prevent destroying the Information matrix, e.g. removing information from a zero Y matrix (no information)
+          if (Ytr.isPositiveSemiDefinite())
+          {
+            Y = std::move(Ytr);
+          }
         }
       }
     }
