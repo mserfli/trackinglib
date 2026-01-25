@@ -9,6 +9,7 @@
 #include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
 #include "math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "math/linalg/errors.h"
+#include "motion/generic_predict.hpp"   // IWYU pragma: keep
 #include "motion/motion_model_traits.h" // IWYU pragma: keep
 #include "motion/state_mem.h"
 
@@ -74,6 +75,7 @@ TEST_REMOVE_PROTECTED:
 template <typename MotionModel_, typename MotionModelTrait_>
 class ExtendedMotionModel
     : public IMotionModel<typename MotionModelTrait_::CovarianceMatrixPolicy>
+    , public generic::Predict<MotionModel_, typename MotionModelTrait_::CovarianceMatrixPolicy>
     , public StateMem<typename MotionModelTrait_::CovarianceMatrixPolicy, MotionModelTrait_::Size>
     , public base::contract::RequireAbstractIntf<ExtendedMotionModel<MotionModel_, MotionModelTrait_>>
 {
@@ -82,6 +84,10 @@ public:
   using StateDef               = typename MotionModelTrait_::StateDef;
   using CovarianceMatrixPolicy = typename MotionModelTrait_::CovarianceMatrixPolicy;
   using BaseIMotionModel       = IMotionModel<CovarianceMatrixPolicy>;
+  using EgoMotionType          = typename BaseIMotionModel::EgoMotionType;
+  using KalmanFilterType       = typename BaseIMotionModel::KalmanFilterType;
+  using InformationFilterType  = typename BaseIMotionModel::InformationFilterType;
+  using BaseGenericPredict     = generic::Predict<MotionModel_, typename MotionModelTrait_::CovarianceMatrixPolicy>;
   using BaseStateMem           = StateMem<CovarianceMatrixPolicy, MotionModelTrait_::Size>;
   using typename BaseStateMem::StateCov;
   using typename BaseStateMem::StateVec;
@@ -143,6 +149,24 @@ public:
 
   /// \brief Inverts the state covariance matrix into information form and vice versa
   auto invertCov() -> tl::expected<void, math::Errors>;
+
+  /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
+  /// \param[in] dt         The delta time from last state to predicted state
+  /// \param[in] filter     The kalman filter instance
+  /// \param[in] egoMotion  The known egoMotion from last state to predicted state
+  void predict(const value_type dt, const KalmanFilterType& filter, const EgoMotionType& egoMotion) final
+  {
+    BaseGenericPredict::run(dt, filter, egoMotion);
+  }
+
+  /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
+  /// \param[in] dt         The delta time from last state to predicted state
+  /// \param[in] filter     The information filter instance
+  /// \param[in] egoMotion  The known egoMotion from last state to predicted state
+  void predict(const value_type dt, const InformationFilterType& filter, const EgoMotionType& egoMotion) final
+  {
+    BaseGenericPredict::run(dt, filter, egoMotion);
+  }
 
   // clang-format off
 TEST_REMOVE_PROTECTED:

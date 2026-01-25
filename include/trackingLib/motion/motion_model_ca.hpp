@@ -3,7 +3,6 @@
 
 #include "motion/motion_model_ca.h"
 
-#include "motion/generic_predict.hpp"     // IWYU pragma: keep
 #include "motion/state_cov_converter.hpp" // IWYU pragma: keep
 #include "motion/state_vec_converter.hpp" // IWYU pragma: keep
 
@@ -14,25 +13,8 @@ namespace motion
 
 template <typename CovarianceMatrixPolicy_>
 MotionModelCA<CovarianceMatrixPolicy_>::MotionModelCA(const StateVec& vec, const StateCov& cov)
-    : super_extended_mm_type{vec, cov}
-    , super_generic_predict_type{}
+    : BaseExtendedMotionModel{vec, cov}
 {
-}
-
-template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::predict(const value_type        dt,
-                                                     const KalmanFilterType& filter,
-                                                     const EgoMotionType&    egoMotion)
-{
-  super_generic_predict_type::run(dt, filter, egoMotion);
-}
-
-template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::predict(const value_type             dt,
-                                                     const InformationFilterType& filter,
-                                                     const EgoMotionType&         egoMotion)
-{
-  super_generic_predict_type::run(dt, filter, egoMotion);
 }
 
 template <typename CovarianceMatrixPolicy_>
