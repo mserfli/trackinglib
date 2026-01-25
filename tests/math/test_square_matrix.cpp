@@ -8,7 +8,7 @@ TEST(SquareMatrix, householderQR) // NOLINT
 {
   // Create a square matrix for testing
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
@@ -33,12 +33,12 @@ TEST(SquareMatrix, inverse) // NOLINT
 {
   // Create a square matrix for testing
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
   });
-  const auto expInvMat = conversions::SquareFromList<float32, 3, true>({
+  const auto expInvMat = SquareMatrix<float32, 3, true>::FromList({
     {1.0,  2.0,  3.0},
     {2.0,  6.0, 14.0},
     {3.0, 14.0, 45.0}
@@ -61,7 +61,7 @@ TEST(SquareMatrix, inverse) // NOLINT
 TEST(SquareMatrix, decomposeLLT) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 6, true>({
+  auto cov = SquareMatrix<float32, 6, true>::FromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
@@ -90,7 +90,7 @@ TEST(SquareMatrix, decomposeLLT) // NOLINT
 TEST(SquareMatrix, decomposeLLT_NotSymmetric_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, -4},
     {-3, 13},
   });
@@ -105,7 +105,7 @@ TEST(SquareMatrix, decomposeLLT_NotSymmetric_ExpectError) // NOLINT
 TEST(SquareMatrix, decomposeLLT_SymmetricNotPositiveDefinite_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, -3},
     {-3, -13},
   });
@@ -120,7 +120,7 @@ TEST(SquareMatrix, decomposeLLT_SymmetricNotPositiveDefinite_ExpectError) // NOL
 TEST(SquareMatrix, symmetrize) // NOLINT
 {
   // clang-format off
-  auto mat = conversions::SquareFromList<float32, 3, true>({
+  auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
@@ -147,7 +147,7 @@ TEST(SquareMatrix, symmetrize) // NOLINT
 TEST(SquareMatrix, decomposeUDUT) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 3, true>({
+  auto cov = SquareMatrix<float32, 3, true>::FromList({
     {10, 2, 1},
     { 2, 5, 1},
     { 1, 1, 2}
@@ -177,7 +177,7 @@ TEST(SquareMatrix, decomposeUDUT) // NOLINT
 TEST(SquareMatrix, decomposeUDUT_NotSymmetric_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, 2},
     { 1, 5}
   });
@@ -192,7 +192,7 @@ TEST(SquareMatrix, decomposeUDUT_NotSymmetric_ExpectError) // NOLINT
 TEST(SquareMatrix, decomposeLDLT) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 6, true>({
+  auto cov = SquareMatrix<float32, 6, true>::FromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
@@ -220,7 +220,7 @@ TEST(SquareMatrix, decomposeLDLT) // NOLINT
 TEST(SquareMatrix, decomposeLDLT_NotSymmetric_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, -4},
     {-3, 13},
   });
@@ -235,7 +235,7 @@ TEST(SquareMatrix, decomposeLDLT_NotSymmetric_ExpectError) // NOLINT
 TEST(SquareMatrix, decomposeLDLT_SymmetricNotPositiveDefinite_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, -3},
     {-3, -13},
   });
@@ -245,6 +245,81 @@ TEST(SquareMatrix, decomposeLDLT_SymmetricNotPositiveDefinite_ExpectError) // NO
   auto retVal = cov.decomposeLDLT();
 
   EXPECT_FALSE(retVal.has_value());
+}
+
+// ============================================================================
+// Matrix FromList ctor tests
+// ============================================================================
+
+/// \brief Helper class to support typed tests which wraps the IsRowMajor param into a type
+template <bool IsRowMajor_>
+struct MatrixStorageType
+{
+  static constexpr auto IsRowMajor = IsRowMajor_;
+};
+
+/// \brief Generic Matrix test class templatized by MatrixStorageType
+template <typename MatrixStorageType>
+class GTestSquareMatrix: public ::testing::Test
+{
+};
+
+using ::testing::Types;
+// The list of types we want to test.
+using MatrixStorageImplementations = Types<MatrixStorageType<true>, MatrixStorageType<false>>;
+TYPED_TEST_SUITE(GTestSquareMatrix, MatrixStorageImplementations);
+
+TYPED_TEST(GTestSquareMatrix, ctor_FromList__Success) // NOLINT
+{
+  // clang-format off
+  // call UUT
+  const auto result = SquareMatrix<sint32, 3, TypeParam::IsRowMajor>::FromList({
+      {1, 2, 3},
+      {4, 5, 6},
+      {7, 8, 9},
+  });
+
+  auto resultExp = std::vector<sint32>{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  // clang-format on
+
+  size_t index = 0;
+  for (sint32 r = 0; r < 3; ++r)
+  {
+    for (sint32 c = 0; c < 3; ++c)
+    {
+      EXPECT_EQ(result.at_unsafe(r, c), resultExp[index]);
+      ++index;
+    }
+  }
+}
+
+TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidRows__ThrowsRuntimeError) // NOLINT
+{
+  // clang-format off
+  auto throwFunc = []() {
+    // call UUT
+    return SquareMatrix<sint32, 3, TypeParam::IsRowMajor>::FromList({
+        {1, 2, 3},
+        {4, 5, 6},
+    });
+  };
+  // clang-format on
+  EXPECT_THROW(throwFunc(), std::runtime_error);
+}
+
+TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidCols__ThrowsRuntimeError) // NOLINT
+{
+  // clang-format off
+  auto throwFunc = []() {
+    // call UUT
+    return SquareMatrix<sint32, 3, TypeParam::IsRowMajor>::FromList({
+        {1, 2},
+        {4, 5},
+        {7, 8},
+    });
+  };
+  // clang-format on
+  EXPECT_THROW(throwFunc(), std::runtime_error);
 }
 
 // ============================================================================
@@ -265,7 +340,7 @@ TEST(SquareMatrix, isOrthogonal_NonOrthogonalMatrix__Fail) // NOLINT
 {
   // Create a non-orthogonal matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 2, true>({
+  const auto mat = SquareMatrix<float32, 2, true>::FromList({
     {1, 2},
     {3, 4}
   });
@@ -284,7 +359,7 @@ TEST(SquareMatrix, isOrthogonal_OrthogonalMatrix__Success) // NOLINT
   const float32 sin_theta = std::sin(0.5F);
 
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 2, true>({
+  const auto mat = SquareMatrix<float32, 2, true>::FromList({
     {cos_theta, -sin_theta},
     {sin_theta, cos_theta}
   });
@@ -310,7 +385,7 @@ TEST(SquareMatrix, isUpperTriangular_UpperTriangularMatrix__Success) // NOLINT
 {
   // Create an upper triangular matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {0, 4, 5},
     {0, 0, 6}
@@ -327,7 +402,7 @@ TEST(SquareMatrix, isUpperTriangular_NonUpperTriangularMatrix__Fail) // NOLINT
 {
   // Create a non-upper triangular matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},  // Has non-zero element below diagonal
     {7, 8, 9}
@@ -354,7 +429,7 @@ TEST(SquareMatrix, isLowerTriangular_LowerTriangularMatrix__Success) // NOLINT
 {
   // Create a lower triangular matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 0, 0},
     {2, 3, 0},
     {4, 5, 6}
@@ -371,7 +446,7 @@ TEST(SquareMatrix, isLowerTriangular_NonLowerTriangularMatrix__Fail) // NOLINT
 {
   // Create a non-lower triangular matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},  // Has non-zero elements above diagonal
     {4, 5, 6},
     {7, 8, 9}
@@ -398,7 +473,7 @@ TEST(SquareMatrix, hasUnitDiagonal_UnitDiagonalMatrix__Success) // NOLINT
 {
   // Create a matrix with unit diagonal
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {4, 1, 6},
     {7, 8, 1}
@@ -415,7 +490,7 @@ TEST(SquareMatrix, hasUnitDiagonal_NonUnitDiagonalMatrix__Fail) // NOLINT
 {
   // Create a matrix without unit diagonal
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {2, 2, 3},  // Diagonal element is 2, not 1
     {4, 1, 6},
     {7, 8, 1}
@@ -432,7 +507,7 @@ TEST(SquareMatrix, isOrthogonal_WithTolerance__Success) // NOLINT
 {
   // Create a matrix that's almost orthogonal but not exactly
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 2, true>({
+  const auto mat = SquareMatrix<float32, 2, true>::FromList({
     {0.999F, -0.01F},
     {0.01F, 0.999F}
   });
@@ -449,7 +524,7 @@ TEST(SquareMatrix, isUpperTriangular_WithTolerance__Success) // NOLINT
 {
   // Create a matrix that's almost upper triangular
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {0.001F, 4, 5},  // Small non-zero element below diagonal
     {0, 0, 6}
@@ -477,7 +552,7 @@ TEST(SquareMatrix, isUpperTriangular_Double__Success) // NOLINT
 {
   // Create an upper triangular matrix with double precision
   // clang-format off
-  const auto mat = conversions::SquareFromList<float64, 3, true>({
+  const auto mat = SquareMatrix<float64, 3, true>::FromList({
     {1.0, 2.0, 3.0},
     {0.0, 4.0, 5.0},
     {0.0, 0.0, 6.0}
@@ -508,7 +583,7 @@ TEST(SquareMatrix, trace_2x2__Success) // NOLINT
 {
   // Create a 2x2 matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 2, true>({
+  const auto mat = SquareMatrix<float32, 2, true>::FromList({
     {1, 2},
     {3, 4}
   });
@@ -525,7 +600,7 @@ TEST(SquareMatrix, trace_3x3__Success) // NOLINT
 {
   // Create a 3x3 matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
@@ -543,7 +618,7 @@ TEST(SquareMatrix, trace_4x4__Success) // NOLINT
 {
   // Create a 4x4 matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 4, true>({
+  const auto mat = SquareMatrix<float32, 4, true>::FromList({
     {1,  2,  3,  4},
     {5,  6,  7,  8},
     {9, 10, 11, 12},
@@ -584,7 +659,7 @@ TEST(SquareMatrix, trace_Double__Success) // NOLINT
 {
   // Create a 3x3 matrix with double precision
   // clang-format off
-  const auto mat = conversions::SquareFromList<float64, 3, true>({
+  const auto mat = SquareMatrix<float64, 3, true>::FromList({
     {1.0, 2.0, 3.0},
     {4.0, 5.0, 6.0},
     {7.0, 8.0, 9.0}
@@ -602,7 +677,7 @@ TEST(SquareMatrix, determinant_2x2__Success) // NOLINT
 {
   // Create a 2x2 matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 2, true>({
+  const auto mat = SquareMatrix<float32, 2, true>::FromList({
     {1, 2},
     {3, 4}
   });
@@ -619,7 +694,7 @@ TEST(SquareMatrix, determinant_3x3__Success) // NOLINT
 {
   // Create a 3x3 matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {0, 1, 4},
     {5, 6, 0}
@@ -650,7 +725,7 @@ TEST(SquareMatrix, determinant_SingularMatrix__Success) // NOLINT
 {
   // Create a singular matrix (determinant should be 0)
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {1, 2, 3},
     {4, 5, 6}
@@ -668,7 +743,7 @@ TEST(SquareMatrix, determinant_IllConditionedMatrix__Success) // NOLINT
 {
   // Create an ill-conditioned matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     {1.0, 2.0, 3.0},
     {2.1, 4.2, 6.3},
     {3.0, 6.0, 9.0}
@@ -686,7 +761,7 @@ TEST(SquareMatrix, determinant_Double__Success) // NOLINT
 {
   // Create a 3x3 matrix with double precision
   // clang-format off
-  const auto mat = conversions::SquareFromList<float64, 3, true>({
+  const auto mat = SquareMatrix<float64, 3, true>::FromList({
     {1.0, 2.0, 3.0},
     {0.0, 1.0, 4.0},
     {5.0, 6.0, 0.0}

@@ -7,8 +7,8 @@
 #include "math/linalg/matrix_types.h" // IWYU pragma: keep
 #include <algorithm>
 #include <array>
+#include <initializer_list>
 #include <tuple>
-#include <type_traits>
 
 namespace tracking
 {
@@ -28,14 +28,14 @@ namespace math
 /// Key features:
 /// - Configurable row-major or column-major storage layout
 /// - Compile-time dimension checking for type safety
-/// - Comprehensive arithmetic operations (+, -, *, /) with matrices and scalars
+/// - Comprehensive arithmetic operations (+, -, *, /) with matrixes and scalars
 /// - Element access with bounds checking using tl::expected
 /// - Block operations for submatrix manipulation
 /// - Matrix multiplication with automatic result type deduction
 /// - Transpose operations with zero-copy views
 /// - Frobenius norm calculation for floating-point types
 ///
-/// \tparam ValueType_ The data type of matrix elements (typically arithmetic types like float32, float64, int)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Rows_ The number of rows in the matrix (must be positive, > 0)
 /// \tparam Cols_ The number of columns in the matrix (must be positive, > 0)
 /// \tparam IsRowMajor_ Storage layout: true for row-major order, false for column-major order
@@ -50,7 +50,7 @@ namespace math
 ///       (e.g., division by zero, out-of-bounds access) return tl::expected containing either the result
 ///       or an error descriptor from the Errors enum.
 ///
-/// \note All arithmetic operations support matrices with different storage layouts but same dimensions.
+/// \note All arithmetic operations support matrixes with different storage layouts but same dimensions.
 ///       The result layout matches the left-hand side operand.
 ///
 /// \see Errors for possible error conditions and their meanings
@@ -118,6 +118,16 @@ public:
   /// \brief Construct a matrix filled with ones
   /// \return One matrix
   [[nodiscard]] static auto Ones() -> Matrix;
+
+  /// \brief Creates a Matrix from a nested initializer list
+  ///
+  /// This function constructs a Matrix from a nested initializer list where each inner list
+  /// represents a row of the matrix. The dimensions must match the template parameters exactly.
+  ///
+  /// \param[in] list Nested initializer list in logical row-major format
+  /// \return Matrix instance initialized with the provided values
+  /// \throws std::runtime_error If the list dimensions don't match the matrix dimensions
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
   // <---
 
   //////////////////////////////////////////////////
@@ -172,19 +182,19 @@ public:
   /// \param[in] scalar   scalar value
   void operator*=(ValueType_ scalar);
 
-  /// \brief Calculates Self = Self / scalar for integral matrices
+  /// \brief Calculates Self = Self / scalar for integral matrixes
   /// \param[in] scalar   integral scalar value
   /// \return tl::expected<void, Errors>   success or divide_by_zero error
   /// \note Division by zero (scalar == 0) returns Errors::DivideByZero
-  template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
-  auto operator/=(IntType scalar) -> tl::expected<void, Errors>;
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_integral<T>::value, bool> = true>
+  auto operator/=(T scalar) -> tl::expected<void, Errors>;
 
-  /// \brief Calculates Self = Self / scalar for floating-point matrices
+  /// \brief Calculates Self = Self / scalar for floating-point matrixes
   /// \param[in] scalar   floating-point scalar value
   /// \return tl::expected<void, Errors>   success or divide_by_zero error
   /// \note Division by zero (scalar == 0.0) returns Errors::DivideByZero
-  template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
-  auto operator/=(FloatType scalar) -> tl::expected<void, Errors>;
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+  auto operator/=(T scalar) -> tl::expected<void, Errors>;
   // <---
 
   //////////////////////////////////////////////////
@@ -218,21 +228,19 @@ public:
   /// \return Matrix   result of Self * scalar
   [[nodiscard]] auto operator*(ValueType_ scalar) const -> Matrix;
 
-  /// \brief Calculates Self / scalar for integral matrices
-  /// \tparam IntType  The integral type of the scalar (automatically deduced)
+  /// \brief Calculates Self / scalar for integral matrixes
   /// \param[in] scalar  a scalar value
   /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
   /// \note Division by zero (scalar == 0) returns Errors::DivideByZero
-  template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
-  [[nodiscard]] auto operator/(IntType scalar) const -> tl::expected<Matrix, Errors>;
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_integral<T>::value, bool> = true>
+  [[nodiscard]] auto operator/(T scalar) const -> tl::expected<Matrix, Errors>;
 
-  /// \brief Calculates Self / scalar for floating-point matrices
-  /// \tparam FloatType  The floating-point type of the scalar (automatically deduced)
+  /// \brief Calculates Self / scalar for floating-point matrixes
   /// \param[in] scalar  a scalar value
   /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
   /// \note Division by zero (scalar == 0.0) returns Errors::DivideByZero
-  template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
-  [[nodiscard]] auto operator/(FloatType scalar) const -> tl::expected<Matrix, Errors>;
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+  [[nodiscard]] auto operator/(T scalar) const -> tl::expected<Matrix, Errors>;
 
   /// \brief Calculates matrix multiplication Self * Other
   /// \tparam Cols2_  Number of columns in the other matrix
@@ -253,6 +261,10 @@ public:
   /// \brief Sets all elements to one
   void setOnes();
 
+  /// \brief Checks if the matrix is a zero matrix
+  /// \return true if all elements are zero
+  [[nodiscard]] auto isZeros() const -> bool;
+
   /// \brief Get min value of the matrix
   /// \return min value
   [[nodiscard]] auto min() const -> ValueType_ { return *std::min_element(data().begin(), data().end()); }
@@ -266,9 +278,8 @@ public:
   [[nodiscard]] auto minmax() const -> std::tuple<ValueType_, ValueType_>;
 
   /// \brief Calculate Frobenius norm (L2 norm): sqrt(sum of squared elements)
-  /// \return ValueType_   the Frobenius norm of the matrix
   /// \note Only available for floating-point types. For integral types, this method is not instantiated.
-  template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
   [[nodiscard]] auto frobenius_norm() const -> ValueType_;
 
   /// \brief Fast transpose without changing the layout (zero-copy view)
@@ -297,7 +308,7 @@ public:
   /// \tparam DstRowBeg_       Begin row index in destination (0-based, must be >= 0)
   /// \tparam DstColBeg_       Begin col index in destination (0-based, must be >= 0)
   /// \param[in] block         Source block matrix to copy from
-  /// \note All indices and counts are compile-time constants. The copied region must fit within both matrices. No runtime bounds
+  /// \note All indices and counts are compile-time constants. The copied region must fit within both matrixes. No runtime bounds
   /// checking.
   template <sint32 SrcRowSize_,
             sint32 SrcColSize_,
@@ -374,11 +385,11 @@ TEST_REMOVE_PROTECTED:
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
-  template <typename IntType = ValueType_, typename std::enable_if_t<std::is_integral<IntType>::value, bool> = true>
-  void inplace_div_by_int_unsafe(IntType scalar);
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_integral<T>::value, bool> = true>
+  void inplace_div_by_int_unsafe(T scalar);
 
-  template <typename FloatType = ValueType_, typename std::enable_if_t<std::is_floating_point<FloatType>::value, bool> = true>
-  void inplace_mul_by_inverse_factor_unsafe(FloatType scalar);
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+  void inplace_mul_by_inverse_factor_unsafe(T scalar);
 
   Storage _data{}; ///< internal data to store the matrix
 };
@@ -387,7 +398,7 @@ TEST_REMOVE_PRIVATE:
 // non member operations  --->
 
 /// \brief Calculates Scalar + Matrix (element-wise addition)
-/// \tparam ValueType_  Element type of the matrix
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Rows_  Number of rows in the matrix
 /// \tparam Cols_  Number of columns in the matrix
 /// \tparam IsRowMajor_  Storage layout of the matrix
@@ -402,7 +413,7 @@ template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 }
 
 /// \brief Calculates Scalar * Matrix (element-wise multiplication)
-/// \tparam ValueType_  Element type of the matrix
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Rows_  Number of rows in the matrix
 /// \tparam Cols_  Number of columns in the matrix
 /// \tparam IsRowMajor_  Storage layout of the matrix

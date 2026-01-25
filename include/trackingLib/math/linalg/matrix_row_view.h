@@ -11,7 +11,7 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class MatrixColumnView TEST_REMOVE_FINAL;
+class MatrixColumnView;
 
 /// \brief Non-owning single-row view providing arithmetic operations on Matrix objects
 ///
@@ -19,7 +19,7 @@ class MatrixColumnView TEST_REMOVE_FINAL;
 /// a single row of a Matrix. It supports matrix multiplication and element access
 /// without copying data.
 ///
-/// \tparam ValueType_ The value type for matrix elements
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Rows_ The number of rows in the source matrix
 /// \tparam Cols_ The number of columns in the source matrix
 /// \tparam IsRowMajor_ The storage layout of the source matrix (default: true)

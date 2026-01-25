@@ -18,7 +18,7 @@ template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 class TriangularMatrix;
 
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL;
+class DiagonalMatrix;
 
 
 /// \brief Modified Gram-Schmidt orthogonalization for UDU factorization
@@ -31,14 +31,14 @@ class DiagonalMatrix TEST_REMOVE_FINAL;
 /// The Modified Gram-Schmidt process orthogonalizes the columns of a matrix
 /// while maintaining the UDU factorization structure. This is crucial for:
 /// - Time propagation (prediction) in Kalman filters
-/// - Maintaining numerical stability with ill-conditioned matrices
+/// - Maintaining numerical stability with ill-conditioned matrixes
 /// - Efficient computation of matrix square roots in factored form
 ///
 /// The algorithm processes columns from right to left, ensuring that the
 /// resulting U matrix is unit upper triangular and D is diagonal, such that
 /// A = U*D*U' for the original matrix A.
 ///
-/// \tparam FloatType_ Floating-point type (float32 or float64)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ Matrix dimension (compile-time constant)
 ///
 /// \note Based on Thornton (1976) and Grewal & Andrews (2014)
@@ -46,7 +46,7 @@ class DiagonalMatrix TEST_REMOVE_FINAL;
 /// \note Maintains numerical stability through weighted orthogonalization
 /// \see CovarianceMatrixFactored for UDU factorization usage
 /// \see Rank1Update for rank-1 modifications to factorizations
-template <typename FloatType_, sint32 Size_>
+template <typename ValueType_, sint32 Size_>
 class ModifiedGramSchmidt
 {
 public:
@@ -68,9 +68,9 @@ public:
   /// \note Phi must be row-major (IsRowMajor_ = true)
   /// \note u is initialized to identity and modified in-place
   /// \note Diagonal elements are clipped to prevent numerical instability
-  static void run(TriangularMatrix<FloatType_, Size_, false, true>& u,
-                  DiagonalMatrix<FloatType_, Size_>&                d,
-                  const SquareMatrix<FloatType_, Size_, true>&      Phi);
+  static void run(TriangularMatrix<ValueType_, Size_, false, true>& u,
+                  DiagonalMatrix<ValueType_, Size_>&                d,
+                  const SquareMatrix<ValueType_, Size_, true>&      Phi);
 
   /// \brief Computes UDU factorization with process noise
   ///
@@ -89,15 +89,18 @@ public:
   /// \param[in] G Process noise coupling matrix
   /// \param[in] Q Diagonal process noise covariance matrix
   ///
-  /// \note All matrices must be row-major (IsRowMajor_ = true)
+  /// \note All matrixes must be row-major (IsRowMajor_ = true)
   /// \note u is initialized to identity and modified in-place
   /// \note Diagonal elements are clipped to ensure positive semi-definiteness
   template <sint32 SizeQ_>
-  static void run(TriangularMatrix<FloatType_, Size_, false, true>& u,
-                  DiagonalMatrix<FloatType_, Size_>&                d,
-                  const SquareMatrix<FloatType_, Size_, true>&      Phi,
-                  const Matrix<FloatType_, Size_, SizeQ_, true>&    G,
-                  const DiagonalMatrix<FloatType_, SizeQ_>&         Q);
+  static void run(TriangularMatrix<ValueType_, Size_, false, true>& u,
+                  DiagonalMatrix<ValueType_, Size_>&                d,
+                  const SquareMatrix<ValueType_, Size_, true>&      Phi,
+                  const Matrix<ValueType_, Size_, SizeQ_, true>&    G,
+                  const DiagonalMatrix<ValueType_, SizeQ_>&         Q);
+
+  /// \brief Contract to restrict usage on floating-point value types
+  static_assert(std::is_floating_point<ValueType_>::value, "ModifiedGramSchmidt requires floating-point value types");
 };
 
 } // namespace math

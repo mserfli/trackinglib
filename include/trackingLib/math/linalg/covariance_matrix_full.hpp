@@ -12,27 +12,35 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType_, sint32 Size_>
-inline auto CovarianceMatrixFull<FloatType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
+template <typename ValueType_, sint32 Size_>
+auto CovarianceMatrixFull<ValueType_, Size_>::FromDiagonal(const DiagonalMatrix<ValueType_, Size_>& diag) -> CovarianceMatrixFull
+{
+  assert(diag.isPositiveDefinite() && "Bad diagonal matrix not fullfilling the constraint isPositiveDefinite");
+  return CovarianceMatrixFull{diag};
+}
+
+template <typename ValueType_, sint32 Size_>
+inline auto CovarianceMatrixFull<ValueType_, Size_>::inverse() const -> tl::expected<CovarianceMatrixFull, Errors>
 {
   const auto retVal = BaseSquareMatrix::decomposeLLT();
   if (retVal.has_value())
   {
     const auto& L = *retVal;
+    // A * Ainv = eye(n,n) with A=L*L' from Cholesky decomposition
     // L*(L'*Ainv) = eye(n,n)
     // L*u = eye(n,n)  -> solve for u using forward substitution on each column vector of eye(n,n)
     const auto u = L.solve(CovarianceMatrixFull::Identity());
     // L'*Ainv = u     -> solve for Ainv using backward substitution
-    math::SquareMatrix<FloatType_, Size_, true> cov{L.transpose().solve(u)};
+    math::SquareMatrix<ValueType_, Size_, true> cov{L.transpose().solve(u)};
     cov.symmetrize();
     return CovarianceMatrixFull{std::move(cov)};
   }
   return tl::unexpected<Errors>{retVal.error()};
 }
 
-template <typename FloatType_, sint32 Size_>
+template <typename ValueType_, sint32 Size_>
 template <bool IsRowMajor_>
-inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A)
+inline void CovarianceMatrixFull<ValueType_, Size_>::apaT(const tracking::math::SquareMatrix<ValueType_, Size_, IsRowMajor_>& A)
 {
   assert(this->isSymmetric() && "Covariance currently not symmetric");
   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
@@ -43,20 +51,20 @@ inline void CovarianceMatrixFull<FloatType_, Size_>::apaT(const tracking::math::
   *this = CovarianceMatrixFull{std::move(cov)};
 }
 
-template <typename FloatType_, sint32 Size_>
+template <typename ValueType_, sint32 Size_>
 template <bool IsRowMajor_>
-inline auto CovarianceMatrixFull<FloatType_, Size_>::apaT(
-    const tracking::math::SquareMatrix<FloatType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull
+inline auto CovarianceMatrixFull<ValueType_, Size_>::apaT(
+    const tracking::math::SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull
 {
   auto copy(*this);
   copy.apaT(A);
   return copy;
 }
 
-template <typename FloatType_, sint32 Size_>
-inline void CovarianceMatrixFull<FloatType_, Size_>::setVariance(const sint32 idx, const FloatType_ val)
+template <typename ValueType_, sint32 Size_>
+inline void CovarianceMatrixFull<ValueType_, Size_>::setVariance(const sint32 idx, const ValueType_ val)
 {
-  constexpr auto zero = static_cast<FloatType_>(0.0);
+  constexpr auto zero = static_cast<ValueType_>(0.0);
   for (sint32 j = 0; j < Size_; ++j)
   {
     BaseSquareMatrix::at_unsafe(idx, j) = zero;

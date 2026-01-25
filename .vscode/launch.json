@@ -8,7 +8,7 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
-            "program": "${command:cmake.launchTargetPath}",
+            "program": "build/examples/single_object_tracking",
             "args": [],
             "cwd": "${workspaceFolder}",
             "initCommands":["settings set target.disable-aslr false"]

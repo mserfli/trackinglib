@@ -12,7 +12,7 @@ template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 class TriangularMatrix;
 
 template <typename ValueType_, sint32 Size_>
-class DiagonalMatrix TEST_REMOVE_FINAL;
+class DiagonalMatrix;
 
 template <typename ValueType_, sint32 Size_>
 class Vector;
@@ -33,7 +33,7 @@ class Vector;
 /// and ensures that diagonal elements remain positive to preserve matrix
 /// conditioning.
 ///
-/// \tparam FloatType_ Floating-point type (float32 or float64)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ Matrix dimension (compile-time constant)
 /// \tparam IsRowMajor_ Storage layout (true for row-major, false for column-major)
 ///
@@ -41,7 +41,7 @@ class Vector;
 /// \note Diagonal elements are clipped to prevent numerical instability
 /// \see CovarianceMatrixFactored for UDU factorization usage
 /// \see ModifiedGramSchmidt for related factorization algorithms
-template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 class Rank1Update
 {
 public:
@@ -54,7 +54,7 @@ public:
   /// The update preserves the UDU factorization numerically, which is crucial for
   /// maintaining numerical stability in Kalman filtering applications.
   ///
-  /// \tparam FloatType_ Floating-point type for matrix elements
+  /// \tparam ValueType_ The atomic data type of internal elements
   /// \tparam Size_ Matrix dimension (compile-time constant)
   /// \tparam IsRowMajor_ Storage layout flag
   /// \param[in,out] u Upper triangular matrix U in UDU factorization
@@ -65,10 +65,10 @@ public:
   /// \note Based on Gill, Golub, Murray and Saunders (1974) algorithm
   /// \note Ensures positive semi-definiteness by clipping diagonal elements
   /// \see run() for LDL factorization variant
-  static void run(TriangularMatrix<FloatType_, Size_, false, IsRowMajor_>& u,
-                  DiagonalMatrix<FloatType_, Size_>&                       d,
-                  FloatType_                                               c,
-                  Vector<FloatType_, Size_>                                x);
+  static void run(TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>& u,
+                  DiagonalMatrix<ValueType_, Size_>&                       d,
+                  ValueType_                                               c,
+                  Vector<ValueType_, Size_>                                x);
 
   /// \brief Performs rank-1 update on LDL factorization (lower triangular form)
   ///
@@ -79,7 +79,7 @@ public:
   /// The update preserves the LDL' factorization numerically, which is crucial for
   /// maintaining numerical stability in Kalman filtering applications.
   ///
-  /// \tparam FloatType_ Floating-point type for matrix elements
+  /// \tparam ValueType_ The atomic data type of internal elements
   /// \tparam Size_ Matrix dimension (compile-time constant)
   /// \tparam IsRowMajor_ Storage layout flag
   /// \param[in,out] l Lower triangular matrix L in LDL' factorization
@@ -90,10 +90,13 @@ public:
   /// \note Based on Gill, Golub, Murray and Saunders (1974) algorithm
   /// \note Handles both rank-1 updates and downdates
   /// \see run() for UDU factorization variant
-  static void run(TriangularMatrix<FloatType_, Size_, true, IsRowMajor_>& l,
-                  DiagonalMatrix<FloatType_, Size_>&                      d,
-                  FloatType_                                              c,
-                  Vector<FloatType_, Size_>                               x);
+  static void run(TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>& l,
+                  DiagonalMatrix<ValueType_, Size_>&                      d,
+                  ValueType_                                              c,
+                  Vector<ValueType_, Size_>                               x);
+
+  /// \brief Contract to restrict usage on floating-point value types
+  static_assert(std::is_floating_point<ValueType_>::value, "Rank1Update requires floating-point value types");
 };
 
 } // namespace math

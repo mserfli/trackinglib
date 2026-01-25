@@ -15,11 +15,11 @@ namespace tracking
 namespace math
 {
 
-template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
-inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<FloatType_, Size_, false, IsRowMajor_>& u,
-                                                             DiagonalMatrix<FloatType_, Size_>&                       d,
-                                                             FloatType_                                               c,
-                                                             Vector<FloatType_, Size_>                                x)
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline void Rank1Update<ValueType_, Size_, IsRowMajor_>::run(TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>& u,
+                                                             DiagonalMatrix<ValueType_, Size_>&                       d,
+                                                             ValueType_                                               c,
+                                                             Vector<ValueType_, Size_>                                x)
 {
   // based on
   // https://scicomp.stackexchange.com/questions/8323/computational-complexity-and-implementation-of-udu-modified-cholesky-rank-1-upda
@@ -28,29 +28,29 @@ inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<Fl
     return; // no update required
 
   // update or downdate ?
-  const FloatType_ sign = (c > 0) ? +1 : -1;
+  const ValueType_ sign = (c > 0) ? +1 : -1;
   c                     = c * sign; // remove the sign
   for (int j = Size_ - 1; j >= 0; --j)
   {
     // Retrieve diagonal and update vector value
-    FloatType_ djj = d.at_unsafe(j);
-    FloatType_ ujx = x.at_unsafe(j);
+    ValueType_ djj = d.at_unsafe(j);
+    ValueType_ ujx = x.at_unsafe(j);
 
     // Compute updated diagonal element with clipping to ensure PSD
-    FloatType_ gamma = djj + sign * c * pow<2>(ujx);
-    gamma            = std::max(gamma, std::numeric_limits<FloatType_>::epsilon());
+    ValueType_ gamma = djj + sign * c * pow<2>(ujx);
+    gamma            = std::max(gamma, std::numeric_limits<ValueType_>::epsilon());
 
     // Update the diagonal
     d.at_unsafe(j) = gamma;
 
     // Compute scaling factors for U update
-    FloatType_ beta = c / gamma;
-    FloatType_ eta  = beta * ujx;
+    ValueType_ beta = c / gamma;
+    ValueType_ eta  = beta * ujx;
 
     // Update the upper triangular matrix
     for (int i = 0; i < j; ++i)
     {
-      FloatType_ uij = u.at_unsafe(i, j);
+      ValueType_ uij = u.at_unsafe(i, j);
       x.at_unsafe(i) -= uij * ujx;                      // Update x for future iterations
       u.at_unsafe(i, j) += sign * eta * x.at_unsafe(i); // Apply correction to U
     }
@@ -61,11 +61,11 @@ inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<Fl
 }
 
 
-template <typename FloatType_, sint32 Size_, bool IsRowMajor_>
-inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<FloatType_, Size_, true, IsRowMajor_>& l,
-                                                             DiagonalMatrix<FloatType_, Size_>&                      d,
-                                                             FloatType_                                              c,
-                                                             Vector<FloatType_, Size_>                               x)
+template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
+inline void Rank1Update<ValueType_, Size_, IsRowMajor_>::run(TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>& l,
+                                                             DiagonalMatrix<ValueType_, Size_>&                      d,
+                                                             ValueType_                                              c,
+                                                             Vector<ValueType_, Size_>                               x)
 {
   // Methods for Modifying Matrix Factorizations in Mathematics of Computation
   // Gill, Golub, Murray and Saunders (1974)
@@ -73,16 +73,16 @@ inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<Fl
   // http://stanford.edu/group/SOL/papers/ggms74.pdf
 
   x *= sqrt(abs(c));
-  c = (c > 0) ? static_cast<FloatType_>(1.0) : -static_cast<FloatType_>(1.0);
+  c = (c > 0) ? static_cast<ValueType_>(1.0) : -static_cast<ValueType_>(1.0);
 
-  FloatType_ dj_{};
-  FloatType_ c_{};
-  FloatType_ beta{};
+  ValueType_ dj_{};
+  ValueType_ c_{};
+  ValueType_ beta{};
 
   if (c > 0)
   {
-    FloatType_ p{};
-    c_ = static_cast<FloatType_>(1.0);
+    ValueType_ p{};
+    c_ = static_cast<ValueType_>(1.0);
     for (auto j = 0; j < Size_; ++j)
     {
       p              = x.at_unsafe(j);
@@ -101,9 +101,10 @@ inline void Rank1Update<FloatType_, Size_, IsRowMajor_>::run(TriangularMatrix<Fl
   else
   {
     const auto  l_{l};
-    decltype(x) p    = Vector<FloatType_, Size_>{l.solve(x)};
-    const auto  dinv = static_cast<const DiagonalMatrix<FloatType_, Size_>&>(d).inverse();
-    c_               = std::max(1 - (p.transpose() * (dinv * p)).at_unsafe(0, 0), std::numeric_limits<FloatType_>::epsilon());
+    decltype(x) p    = Vector<ValueType_, Size_>{l.solve(x)};
+    const auto  dinv = static_cast<const DiagonalMatrix<ValueType_, Size_>&>(d).inverse();
+    // ensure PSD
+    c_ = std::max(1 - (p.transpose() * (dinv * p)).at_unsafe(0, 0), std::numeric_limits<ValueType_>::epsilon());
     for (auto j = Size_ - 1; j >= 0; --j)
     {
       dj_            = d.at_unsafe(j);

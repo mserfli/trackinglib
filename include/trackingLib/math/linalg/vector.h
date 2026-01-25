@@ -3,6 +3,7 @@
 
 #include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/matrix.h" // IWYU pragma: keep
+#include <initializer_list>
 
 namespace tracking
 {
@@ -10,17 +11,17 @@ namespace math
 {
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-class MatrixColumnView TEST_REMOVE_FINAL;
+class MatrixColumnView;
 
 // TODO(matthias): add interface contract
 
-/// \brief A column vector class template, specializing Matrix for single-column matrices.
+/// \brief A column vector class template, specializing Matrix for single-column matrixes.
 ///
 /// The Vector class provides a convenient interface for column vectors, inheriting all
 /// matrix operations from Matrix while adding vector-specific operations like dot product,
 /// norm calculations, and normalization.
 ///
-/// \tparam ValueType_ The data type of vector elements (e.g., float32, float64)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The number of elements in the vector (must be > 0)
 ///
 /// \note This class is a specialization of Matrix<ValueType_, Size_, 1, true> where
@@ -66,6 +67,16 @@ public:
   /// \return A unit vector with 1 at position Row_ and 0 elsewhere
   template <sint32 Row_>
   [[nodiscard]] static auto UnitVector() -> Vector;
+
+  /// \brief Creates a Vector from an initializer list
+  ///
+  /// This function constructs a Vector from a flat initializer list.
+  /// The list size must exactly match the vector size.
+  ///
+  /// \param[in] list Initializer list containing the vector values
+  /// \return Vector instance initialized with the provided values
+  /// \note The list size must equal Size_, otherwise assertion fails
+  [[nodiscard]] static auto FromList(const std::initializer_list<ValueType_>& list) -> Vector;
   // <---
 
   //////////////////////////////////////////////////
