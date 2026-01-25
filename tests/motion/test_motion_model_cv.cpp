@@ -35,7 +35,17 @@ struct TestPredictCV
     }
   }
 
-  static auto tolerance(const FilterTypeInst& /*filter*/) -> value_type { return static_cast<value_type>(2e-6); }
+  static auto tolerance(const FilterTypeInst& /*filter*/) -> value_type
+  {
+    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<CovarianceMatrixPolicy_>>)
+    {
+      return static_cast<value_type>(2e-6);
+    }
+    else
+    {
+      return static_cast<value_type>(1.1e-6);
+    }
+  }
 
   static void run_without_ego_motion_compensation()
   {
@@ -147,10 +157,6 @@ struct TestPredictCV
     {
       mm.predict(dt, filter, egoMotion);
     }
-
-    // std::cout << expCov() << std::endl;
-    std::cout << mm._vec << std::endl;
-    std::cout << mm._cov() << std::endl;
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
