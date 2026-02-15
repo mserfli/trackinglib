@@ -20,8 +20,8 @@ sequenceDiagram
     
     Note over GP: Create static data storage
     
-    rect rgb(230, 255, 230)
-        Note over GP: State Space Transformation
+    rect rgb(40,40,40)
+        Note over GP:  State Space Transformation 
         alt InformationFilter
             GP->>GP: convertStateVecIntoStateSpace()
             Note right of GP: x = Y^-1 * y<br/>Transform state vector to<br/>state space
@@ -30,8 +30,8 @@ sequenceDiagram
     
     GP->>GPC: run(data, dt, egoMotion)
     
-    rect rgb(240, 248, 255)
-        Note over GPC,MM: State Prediction Phase - Same for both filters
+    rect rgb(40,40,40)
+        Note over GPC,MM:  State Prediction Phase 
         GPC->>MM: computeEgoMotionCompensationMatrices(Ge, Go, egoMotion)
         MM-->>GPC: Ge, Go matrices
         
@@ -47,10 +47,8 @@ sequenceDiagram
         GPC->>MM: applyProcessModel(dt)
         Note right of MM: x_k+1 = f(x_k, dt)<br/>Exact nonlinear transition
         MM-->>GPC: State x predicted
-    end
-    
-    rect rgb(255, 250, 240)
-        Note over GPC,MM: Process Noise Phase - Same for both filters
+        
+        Note over GPC,MM:  Process Noise Phase 
         GPC->>MM: computeQ(Q, dt)
         MM-->>GPC: Q diagonal matrix
         GPC->>MM: computeG(G, dt)
@@ -59,8 +57,8 @@ sequenceDiagram
     
     GPC-->>GP: data populated
     
-    rect rgb(240, 255, 240)
-        Note over GP,IF: Covariance Prediction Phase
+    rect rgb(40,40,40)
+        Note over GP,IF:  Covariance Prediction Phase 
         alt KalmanFilter with Factored Covariance
             GP->>GP: Get P from motion model
             alt ego displacement == 0
@@ -103,14 +101,14 @@ sequenceDiagram
         end
     end
     
-    rect rgb(230, 255, 230)
-        Note over GP: State Space Transformation
+    rect rgb(40,40,40)
+        Note over GP:  State Space Transformation 
         alt InformationFilter
             GP->>GP: convertStateVecIntoInformationSpace()
             Note right of GP: y_k+1 = Y_k+1 * x_k+1<br/>Transform state vector to<br/>information space
         end
     end
-    
+
     GP-->>MM: Prediction complete
     MM-->>User: Kalman: x_k+1, P_k+1<br/>Information: y_k+1, Y_k+1
 ```
