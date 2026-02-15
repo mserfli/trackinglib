@@ -92,11 +92,17 @@ public:
   /// \param[in] other  The CV model
   void convertFrom(const MotionModelCV<CovarianceMatrixPolicy_>& other);
 
-  /// \brief Compensates the state according to the known ego motion and calculates Ge and Go for compensation of the covariance
+  /// \brief Compute Ge and Go for compensation of the covariance
   /// \param[out] Ge        The propagated errors of the ego motion to the state space
   /// \param[out] Go        The transformation of the state caused by the ego motion
   /// \param[in]  egoMotion The known egoMotion from last state to predicted state
-  TEST_VIRTUAL void compensateEgoMotion(EgoMotionMappingMatrix& Ge, StateMatrix& Go, const EgoMotionType& egoMotion);
+  TEST_VIRTUAL void computeEgoMotionCompensationMatrices(EgoMotionMappingMatrix& Ge,
+                                                         StateMatrix&            Go,
+                                                         const EgoMotionType&    egoMotion);
+
+  /// \brief Compensate the state with the given ego motion
+  /// \param[in]  egoMotion The known egoMotion from last state to predicted state
+  TEST_VIRTUAL void compensateState(const EgoMotionType& egoMotion);
 
   /// \brief Apply the state transition from k to k+1 defined by the process model
   /// \param[in] dt         The delta time from last state to predicted state

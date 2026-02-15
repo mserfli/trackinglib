@@ -47,11 +47,31 @@ public:
   {
   }
 
+  /// \brief Construct a vector from a compatible matrix with different memory layout
+  /// \param[in] other A matrix with dimensions Size_ x 1
+  explicit Vector(const Matrix<ValueType_, Size_, 1, false>& other)
+      : BaseMatrix{reinterpret_cast<const Vector&>(other)}
+  {
+    // This constructor allows constructing a Vector from a matrix with the same dimensions but different memory layout
+    // (column-major). The reinterpret_cast is safe here because the memory layout of a Size_ x 1 matrix is the same regardless of
+    // row-major or column-major storage, as there is only one column.
+  }
+
   /// \brief Move construct a vector from a compatible matrix
   /// \param[in] other A matrix with dimensions Size_ x 1 (moved from)
   explicit Vector(BaseMatrix&& other) noexcept
       : BaseMatrix{std::move(other)}
   {
+  }
+
+  /// \brief Move construct a vector from a compatible matrix with different memory layout
+  /// \param[in] other A matrix with dimensions Size_ x 1 (moved from)
+  explicit Vector(Matrix<ValueType_, Size_, 1, false>&& other) noexcept
+      : BaseMatrix{std::move(reinterpret_cast<const Vector&&>(other))}
+  {
+    // This constructor allows constructing a Vector from a matrix with the same dimensions but different memory layout
+    // (column-major). The reinterpret_cast is safe here because the memory layout of a Size_ x 1 matrix is the same regardless of
+    // row-major or column-major storage, as there is only one column.
   }
 
   /// \brief Construct a zero vector

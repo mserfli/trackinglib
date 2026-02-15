@@ -1,3 +1,4 @@
+#include <gtest/gtest.h>
 #include "gmock/gmock.h"
 
 #include "mocks/motion_model_no_ego_motion.hpp"   // IWYU pragma: keep
@@ -19,13 +20,22 @@ struct TestPredictCA
   using FilterTypeInst = FilterType<CovarianceMatrixPolicy_>;
   using value_type     = typename CovarianceMatrixPolicy_::value_type;
 
-  static void init(typename MM::StateCov& cov, typename MM::StateCov& expCov, const FilterTypeInst& /*filter*/)
+  static void init(typename MM::StateVec& vec,
+                   typename MM::StateVec& expVec,
+                   typename MM::StateCov& cov,
+                   typename MM::StateCov& expCov,
+                   const FilterTypeInst& /*filter*/)
   {
     if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<CovarianceMatrixPolicy_>>)
     {
-      // InformationFilter behavior: invert covariance matrixes
+      // InformationFilter behavior: transform state and covariance to information space for later comparison
+      // Transform covariance to information space
       cov    = cov.inverse().value();
       expCov = expCov.inverse().value();
+
+      // Transform state vector to information space
+      vec    = static_cast<typename MM::StateVec>(cov() * vec); // y = Y * x
+      expVec = static_cast<typename MM::StateVec>(expCov() * expVec);
     }
     else
     {
@@ -81,13 +91,13 @@ struct TestPredictCA
     });
     // clang-format on
 
-    init(cov, expCov, filter);
+    init(vec, expVec, cov, expCov, filter);
     const auto tol = tolerance(filter);
 
     // instantiate MM with mocked EgoMotion compensation
     testing::NiceMock<test::MotionModelNoEgoMotionMock<MM>> mm{vec, cov};
     mm.delegate();
-    EXPECT_CALL(mm, compensateEgoMotion).Times(steps);
+    EXPECT_CALL(mm, computeEgoMotionCompensationMatrices).Times(steps);
 
     // call UUT
     for (auto i = 0; i < steps; ++i)
@@ -97,7 +107,7 @@ struct TestPredictCA
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
-      EXPECT_FLOAT_EQ(mm._vec.at_unsafe(row), expVec.at_unsafe(row));
+      EXPECT_NEAR(mm._vec.at_unsafe(row), expVec.at_unsafe(row), tol);
       for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
       {
         EXPECT_NEAR(mm._cov.at_unsafe(row, col), expCov.at_unsafe(row, col), tol);
@@ -145,7 +155,7 @@ struct TestPredictCA
     });
     // clang-format on
 
-    init(cov, expCov, filter);
+    init(vec, expVec, cov, expCov, filter);
     auto tol{MM::StateMatrix::Ones()};
     if constexpr (std::is_same_v<FilterTypeInst,
                                  tracking::filter::InformationFilter<
@@ -153,9 +163,7 @@ struct TestPredictCA
     {
       // InformationFilter with full covariance does a two step approach to apply egomotion compensation
       // causing larger differences compared to the UDU one-step approach due to correlations being ignored
-      tol *= 5e-4;
-      // tol.at_unsafe(0, 2) = 0.000101;
-      // tol.at_unsafe(2, 0) = tol.at_unsafe(0, 2);
+      tol *= 4.5e-4;
       tol.at_unsafe(3, 3) = 0.002;
       tol.at_unsafe(3, 4) = 0.0012;
       tol.at_unsafe(4, 3) = tol.at_unsafe(3, 4);
@@ -177,7 +185,7 @@ struct TestPredictCA
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
-      EXPECT_FLOAT_EQ(mm._vec.at_unsafe(row), expVec.at_unsafe(row));
+      EXPECT_NEAR(mm._vec.at_unsafe(row), expVec.at_unsafe(row), tol.at_unsafe(0, 0));
       for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
       {
         EXPECT_NEAR(mm._cov().at_unsafe(row, col), expCov.at_unsafe(row, col), tol.at_unsafe(row, col));

@@ -13,19 +13,22 @@ public:
   using MM::MM;
   using EgoMotionType = typename MM::EgoMotionType;
   MOCK_METHOD(void,
-              compensateEgoMotion,
+              computeEgoMotionCompensationMatrices,
               (typename MM::EgoMotionMappingMatrix&, typename MM::StateMatrix&, const EgoMotionType&),
               (override));
-  void mock_compensateEgoMotion(typename MM::EgoMotionMappingMatrix&, typename MM::StateMatrix& Go, const EgoMotionType&)
+  MOCK_METHOD(void, compensateState, (const EgoMotionType&), (override));
+  void mock_computeEgoMotionCompensationMatrices(typename MM::EgoMotionMappingMatrix&,
+                                                 typename MM::StateMatrix& Go,
+                                                 const EgoMotionType&)
   {
     Go.setIdentity();
   }
   void delegate()
   {
-    ON_CALL(*this, compensateEgoMotion)
+    ON_CALL(*this, computeEgoMotionCompensationMatrices)
         .WillByDefault([this](typename MM::EgoMotionMappingMatrix& Ge,
                               typename MM::StateMatrix&            Go,
-                              const EgoMotionType&                 egoMotion) { mock_compensateEgoMotion(Ge, Go, egoMotion); });
+                              const EgoMotionType& egoMotion) { mock_computeEgoMotionCompensationMatrices(Ge, Go, egoMotion); });
   }
 };
 } // namespace test

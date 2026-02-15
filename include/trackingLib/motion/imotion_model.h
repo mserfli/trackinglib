@@ -168,6 +168,33 @@ public:
     BaseGenericPredict::run(dt, filter, egoMotion);
   }
 
+  /// \brief Transform information space into state space
+  void convertStateVecIntoStateSpace()
+  {
+    const auto& y = this->getVec();
+    const auto& Y = this->getCovForInternalUse();
+    auto&       x = this->getVecForInternalUse();
+    // precondition: y and Y must be in information space (Y = P^-1, y = Y * x)
+    // operation:
+    // Y * result = y
+    // result = Y^-1 * y = Y^-1 * Y * x = x
+    x = Y().qrSolve(y);
+    // postcondition: x is in state space, Y is unchanged (still in information space)
+  }
+
+  /// \brief Transform state space into information space
+  void convertStateVecIntoInformationSpace()
+  {
+    const auto& x = this->getVec();
+    const auto& Y = this->getCovForInternalUse();
+    auto&       y = this->getVecForInternalUse();
+    // precondition: x must be in state space, Y must be in information space (Y = P^-1)
+    // operation:
+    // y = Y * x
+    y = static_cast<StateVec>(Y() * x);
+    // postcondition: y is in information space (y = Y * x), Y is unchanged (still in information space)
+  }
+
   // clang-format off
 TEST_REMOVE_PROTECTED:
   ; // workaround to keep following idententation

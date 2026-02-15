@@ -20,15 +20,21 @@ inline void PredictCommon<MotionModel_, CovarianceMatrixPolicy_>::run(Storage&  
   assert(dt >= static_cast<value_type>(0));
   auto& underlying = static_cast<MotionModel_&>(*this);
 
-  // transform posteriori state into current frame
-  underlying.compensateEgoMotion(data.Ge, data.Go, egoMotion);
+  // Compute ego motion compensation matrices
+  underlying.computeEgoMotionCompensationMatrices(data.Ge, data.Go, egoMotion);
+  if (!egoMotion.getDisplacementCog().vec.isZeros())
+  {
+    // Exact nonlinear compensation in case the model is nonlinear
+    underlying.compensateState(egoMotion);
+  }
 
-  // apply state transition in current frame
+  // Compute state transition matrix on compensated state
   underlying.computeA(data.A, dt);
-  underlying.applyProcessModel(dt);
-  // post: state is predicted
 
-  // calculate process noise and its contribution to the state
+  // Exact nonlinear state prediction in case the model is nonlinear
+  underlying.applyProcessModel(dt);
+
+  // Compute process noise matrices
   underlying.computeQ(data.Q, dt);
   underlying.computeG(data.G, dt);
 

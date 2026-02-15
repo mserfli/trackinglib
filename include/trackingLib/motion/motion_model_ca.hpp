@@ -18,16 +18,16 @@ MotionModelCA<CovarianceMatrixPolicy_>::MotionModelCA(const StateVec& vec, const
 }
 
 template <typename CovarianceMatrixPolicy_>
-void MotionModelCA<CovarianceMatrixPolicy_>::compensateEgoMotion(EgoMotionMappingMatrix& Ge,
-                                                                 StateMatrix&            Go,
-                                                                 const EgoMotionType&    egoMotion)
+void MotionModelCA<CovarianceMatrixPolicy_>::computeEgoMotionCompensationMatrices(EgoMotionMappingMatrix& Ge,
+                                                                                  StateMatrix&            Go,
+                                                                                  const EgoMotionType&    egoMotion)
 {
-  value_type& x  = this->operator[](StateDefCA::X);
-  value_type& y  = this->operator[](StateDefCA::Y);
-  value_type& vx = this->operator[](StateDefCA::VX);
-  value_type& vy = this->operator[](StateDefCA::VY);
-  value_type& ax = this->operator[](StateDefCA::AX);
-  value_type& ay = this->operator[](StateDefCA::AY);
+  const value_type& x  = this->operator[](StateDefCA::X);
+  const value_type& y  = this->operator[](StateDefCA::Y);
+  const value_type& vx = this->operator[](StateDefCA::VX);
+  const value_type& vy = this->operator[](StateDefCA::VY);
+  const value_type& ax = this->operator[](StateDefCA::AX);
+  const value_type& ay = this->operator[](StateDefCA::AY);
 
   const value_type sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
   const value_type cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
@@ -62,6 +62,17 @@ void MotionModelCA<CovarianceMatrixPolicy_>::compensateEgoMotion(EgoMotionMappin
   Ge.at_unsafe(VY, EgoMotionType::DS_PSI) = -(vx * cosDeltaPsiEgo) - (vy * sinDeltaPsiEgo);
   Ge.at_unsafe(AX, EgoMotionType::DS_PSI) = -(ax * sinDeltaPsiEgo) + (ay * cosDeltaPsiEgo);
   Ge.at_unsafe(AY, EgoMotionType::DS_PSI) = -(ax * cosDeltaPsiEgo) - (ay * sinDeltaPsiEgo);
+}
+
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCA<CovarianceMatrixPolicy_>::compensateState(const EgoMotionType& egoMotion)
+{
+  value_type& x  = this->operator[](StateDefCA::X);
+  value_type& y  = this->operator[](StateDefCA::Y);
+  value_type& vx = this->operator[](StateDefCA::VX);
+  value_type& vy = this->operator[](StateDefCA::VY);
+  value_type& ax = this->operator[](StateDefCA::AX);
+  value_type& ay = this->operator[](StateDefCA::AY);
 
   // translate and rotate position
   egoMotion.compensatePosition(x, y, x, y);
