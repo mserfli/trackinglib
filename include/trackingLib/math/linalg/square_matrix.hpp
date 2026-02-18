@@ -126,12 +126,12 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::determinant() const ->
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-template <bool IsRowMajor2_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const SquareMatrix<ValueType_, Size_, IsRowMajor2_>& b) const
-    -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
+template <sint32 Cols_, bool IsRowMajor2_>
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const
+    -> Matrix<ValueType_, Size_, Cols_, !IsRowMajor_>
 {
   const auto [Q, R] = householderQR();
-  return static_cast<SquareMatrix<ValueType_, Size_, !IsRowMajor_>>(R.solve(Q.transpose() * b));
+  return R.solve(Q.transpose() * b);
 }
 
 

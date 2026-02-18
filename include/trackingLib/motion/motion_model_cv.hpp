@@ -3,9 +3,9 @@
 
 #include "motion/motion_model_cv.h"
 
-#include "motion/generic_predict.hpp"     // IWYU pragma: keep
 #include "motion/state_cov_converter.hpp" // IWYU pragma: keep
 #include "motion/state_vec_converter.hpp" // IWYU pragma: keep
+#include <iostream>
 
 namespace tracking
 {
@@ -14,36 +14,19 @@ namespace motion
 
 template <typename CovarianceMatrixPolicy_>
 MotionModelCV<CovarianceMatrixPolicy_>::MotionModelCV(const StateVec& vec, const StateCov& cov)
-    : super_extended_mm_type{vec, cov}
-    , super_generic_predict_type{}
+    : BaseExtendedMotionModel{vec, cov}
 {
 }
 
 template <typename CovarianceMatrixPolicy_>
-void MotionModelCV<CovarianceMatrixPolicy_>::predict(const value_type        dt,
-                                                     const KalmanFilterType& filter,
-                                                     const EgoMotionType&    egoMotion)
+void MotionModelCV<CovarianceMatrixPolicy_>::computeEgoMotionCompensationMatrices(EgoMotionMappingMatrix& Ge,
+                                                                                  StateMatrix&            Go,
+                                                                                  const EgoMotionType&    egoMotion)
 {
-  super_generic_predict_type::run(dt, filter, egoMotion);
-}
-
-template <typename CovarianceMatrixPolicy_>
-void MotionModelCV<CovarianceMatrixPolicy_>::predict(const value_type             dt,
-                                                     const InformationFilterType& filter,
-                                                     const EgoMotionType&         egoMotion)
-{
-  super_generic_predict_type::run(dt, filter, egoMotion);
-}
-
-template <typename CovarianceMatrixPolicy_>
-void MotionModelCV<CovarianceMatrixPolicy_>::compensateEgoMotion(EgoMotionMappingMatrix& Ge,
-                                                                 StateMatrix&            Go,
-                                                                 const EgoMotionType&    egoMotion)
-{
-  value_type& x  = this->operator[](StateDefCV::X);
-  value_type& y  = this->operator[](StateDefCV::Y);
-  value_type& vx = this->operator[](StateDefCV::VX);
-  value_type& vy = this->operator[](StateDefCV::VY);
+  const value_type& x  = this->operator[](StateDefCV::X);
+  const value_type& y  = this->operator[](StateDefCV::Y);
+  const value_type& vx = this->operator[](StateDefCV::VX);
+  const value_type& vy = this->operator[](StateDefCV::VY);
 
   const value_type sinDeltaPsiEgo = egoMotion.getDisplacementCog().sinDeltaPsi;
   const value_type cosDeltaPsiEgo = egoMotion.getDisplacementCog().cosDeltaPsi;
@@ -72,6 +55,15 @@ void MotionModelCV<CovarianceMatrixPolicy_>::compensateEgoMotion(EgoMotionMappin
   Ge.at_unsafe(Y, EgoMotionType::DS_PSI)  = -(x0 * sinDeltaPsiEgo) + (x1 * cosDeltaPsiEgo);
   Ge.at_unsafe(VX, EgoMotionType::DS_PSI) = -(vx * sinDeltaPsiEgo) + (vy * cosDeltaPsiEgo);
   Ge.at_unsafe(VY, EgoMotionType::DS_PSI) = -(vx * cosDeltaPsiEgo) - (vy * sinDeltaPsiEgo);
+}
+
+template <typename CovarianceMatrixPolicy_>
+void MotionModelCV<CovarianceMatrixPolicy_>::compensateState(const EgoMotionType& egoMotion)
+{
+  value_type& x  = this->operator[](StateDefCV::X);
+  value_type& y  = this->operator[](StateDefCV::Y);
+  value_type& vx = this->operator[](StateDefCV::VX);
+  value_type& vy = this->operator[](StateDefCV::VY);
 
   // translate and rotate position
   egoMotion.compensatePosition(x, y, x, y);

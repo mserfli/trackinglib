@@ -4,6 +4,7 @@
 #include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/errors.h" // IWYU pragma: keep
 #include "math/linalg/matrix.h" // IWYU pragma: keep
+#include "math/linalg/vector.h" // IWYU pragma: keep
 #include <initializer_list>
 #include <utility> // std::pair
 
@@ -176,16 +177,28 @@ public:
   ///
   /// \tparam IsRowMajor2_ The row-majority of the right-hand side matrix b
   /// \param[in] b The right-hand side matrix of the equation A * x = b
-  /// \return SquareMatrix The solution matrix x such that A * x ≈ b
+  /// \return Matrix The solution matrix x such that A * x ≈ b
   ///
   /// \note This method internally performs QR decomposition, which has O(n³) complexity.
   ///       For multiple right-hand sides with the same A, consider using householderQR()
   ///       directly and reusing the decomposition.
   ///
   /// \see householderQR for the underlying decomposition
+  template <sint32 Cols_, bool IsRowMajor2_>
+  [[nodiscard]] auto qrSolve(const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const
+      -> Matrix<ValueType_, Size_, Cols_, !IsRowMajor_>;
+
+  [[nodiscard]] auto qrSolve(const Vector<ValueType_, Size_>& b) const -> Vector<ValueType_, Size_>
+  {
+    return Vector<ValueType_, Size_>{qrSolve<1, true>(b)};
+  }
+
   template <bool IsRowMajor2_>
   [[nodiscard]] auto qrSolve(const SquareMatrix<ValueType_, Size_, IsRowMajor2_>& b) const
-      -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>;
+      -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
+  {
+    return static_cast<SquareMatrix<ValueType_, Size_, !IsRowMajor_>>(qrSolve<Size_, IsRowMajor2_>(b));
+  }
 
   /// \brief Performs Cholesky decomposition (LLT) of a symmetric positive definite matrix
   ///

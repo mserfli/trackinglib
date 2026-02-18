@@ -20,12 +20,14 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const value_type
                                                                 const KalmanFilterType& filter,
                                                                 const EgoMotionType&    egoMotion)
 {
-  static typename BasePredictCommon::Storage data{};
-  BasePredictCommon::run(data, dt, egoMotion);
-
+  // Access to MotionModel internals
   auto& underlying = static_cast<MotionModel_&>(*this);
   auto& P          = underlying.getCovForInternalUse();
 
+  static typename BasePredictCommon::Storage data{};
+  BasePredictCommon::run(data, dt, egoMotion);
+
+  // Covariance prediction
   if constexpr (CovarianceMatrixPolicy_::is_factored)
   {
     if (egoMotion.getDisplacementCog().vec.isZeros())
@@ -54,12 +56,22 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const value_type
                                                                 const InformationFilterType& filter,
                                                                 const EgoMotionType&         egoMotion)
 {
-  static typename BasePredictCommon::Storage data{};
-  BasePredictCommon::run(data, dt, egoMotion);
-
+  // Access to MotionModel internals
   auto& underlying = static_cast<MotionModel_&>(*this);
   auto& Y          = underlying.getCovForInternalUse();
 
+  // prepare covariance prediction based on egomotion compensated state
+  static typename BasePredictCommon::Storage data{};
+
+  // Step 1: Transform from information space to state space for state prediction
+  underlying.convertStateVecIntoStateSpace();
+
+  // Step 2: Run state prediction in state space (existing code)
+  BasePredictCommon::run(data, dt, egoMotion);
+
+  // Step 3: Covariance prediction (Y_k → Y_k+1)
+  // NOTE: This MUST happen BEFORE convertStateVecIntoInformationSpace() because
+  // the transformation needs the NEW information matrix Y_k+1
   if constexpr (CovarianceMatrixPolicy_::is_factored)
   {
     if (egoMotion.getDisplacementCog().vec.isZeros())
@@ -128,11 +140,19 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const value_type
 
           // final filter prediction step with compensated Ytr
           filter.predictCovariance(Ytr, data.A, data.G, data.Q);
-          Y = std::move(Ytr);
+
+          // prevent destroying the Information matrix, e.g. removing information from a zero Y matrix (no information)
+          if (Ytr.isPositiveSemiDefinite())
+          {
+            Y = std::move(Ytr);
+          }
         }
       }
     }
   }
+
+  // Step 4: Transform state to information vector using the NEW information matrix Y_k+1
+  underlying.convertStateVecIntoInformationSpace();
 }
 
 } // namespace generic

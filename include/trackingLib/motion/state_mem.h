@@ -42,6 +42,11 @@ public:
   /// \return const StateVec&
   auto getVec() const -> ConstStateVec& { return _vec; }
 
+  /// \brief Read/Write access to state vector
+  /// \return StateVec&
+  /// \note Only for INTERNAL usage! Required in generic::Predict<..>::run().
+  auto getVecForInternalUse() -> StateVec& { return _vec; }
+
   /// \brief Read access to state covariance matrix
   /// \return const StateCov&
   auto getCov() const -> ConstStateCov& { return _cov; }
