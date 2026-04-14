@@ -11,26 +11,24 @@ class MotionModelNoEgoMotionMock: public MM
 {
 public:
   using MM::MM;
+  using EgoMotionType = typename MM::EgoMotionType;
   MOCK_METHOD(void,
-              compensateEgoMotion,
-              (typename MM::EgoMotionMappingMatrix&,
-               typename MM::StateMatrix&,
-               const tracking::env::EgoMotion<typename MM::StateMatrix::value_type>&),
+              computeEgoMotionCompensationMatrices,
+              (typename MM::EgoMotionMappingMatrix&, typename MM::StateMatrix&, const EgoMotionType&),
               (override));
-  void mock_compensateEgoMotion(typename MM::EgoMotionMappingMatrix&,
-                                typename MM::StateMatrix& Go,
-                                const tracking::env::EgoMotion<typename MM::StateMatrix::value_type>&)
+  MOCK_METHOD(void, compensateState, (const EgoMotionType&), (override));
+  void mock_computeEgoMotionCompensationMatrices(typename MM::EgoMotionMappingMatrix&,
+                                                 typename MM::StateMatrix& Go,
+                                                 const EgoMotionType&)
   {
     Go.setIdentity();
   }
   void delegate()
   {
-    ON_CALL(*this, compensateEgoMotion)
-        .WillByDefault([this](typename MM::EgoMotionMappingMatrix&                                  Ge,
-                              typename MM::StateMatrix&                                             Go,
-                              const tracking::env::EgoMotion<typename MM::StateMatrix::value_type>& egoMotion) {
-          mock_compensateEgoMotion(Ge, Go, egoMotion);
-        });
+    ON_CALL(*this, computeEgoMotionCompensationMatrices)
+        .WillByDefault([this](typename MM::EgoMotionMappingMatrix& Ge,
+                              typename MM::StateMatrix&            Go,
+                              const EgoMotionType& egoMotion) { mock_computeEgoMotionCompensationMatrices(Ge, Go, egoMotion); });
   }
 };
 } // namespace test

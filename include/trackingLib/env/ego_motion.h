@@ -1,8 +1,9 @@
 #ifndef EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8
 #define EF810BE3_DCD7_4832_94F8_B3F34EDBC3D8
 
-#include "base/first_include.h" // IWYU pragma: keep
-#include "math/linalg/covariance_matrix_full.h"
+#include "base/first_include.h"                                  // IWYU pragma: keep
+#include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
+#include "math/linalg/covariance_matrix_policies.h"              // IWYU pragma: keep
 #include "math/linalg/point2d.h"
 #include "math/linalg/vector.h"
 
@@ -12,64 +13,234 @@ namespace env
 {
 
 // TODO(matthias): add interface contract
-// TODO(matthias): add doxygen
-template <typename FloatType>
-class EgoMotion
+
+/// \brief Ego motion compensation for moving sensor platforms
+///
+/// This class implements ego motion compensation for object tracking systems where the sensor
+/// platform (typically a vehicle) is moving. It handles the geometric and kinematic transformations
+/// required to compensate for the ego vehicle's motion when tracking objects in the environment.
+///
+/// The implementation is based on circular motion equations and includes:
+/// - Position compensation for objects relative to moving ego vehicle
+/// - Direction compensation for velocity vectors
+/// - Error propagation for uncertainty in motion parameters using UDU decomposition
+/// - Special handling for small angular velocities to avoid numerical issues
+/// - Support for both full and factored covariance matrix representations
+///
+/// Mathematical Background:
+/// - Circular motion with yaw rate ω and speed v for time T
+/// - Secant approximation for small angular displacements
+/// - First-order error propagation for uncertainty in motion parameters
+/// - UDU decomposition for numerical stability in covariance calculations
+/// - Specialized equations for ω→0 limit to maintain numerical stability
+///
+/// \tparam CovarianceMatrixPolicy_ Policy type that defines the covariance matrix implementation
+template <typename CovarianceMatrixPolicy_>
+class EgoMotion: public math::contract::CovarianceMatrixPolicyIntf<CovarianceMatrixPolicy_>
 {
 public:
+  using value_type = typename CovarianceMatrixPolicy_::value_type;
+
+  /// \brief State indices for displacement vector
+  ///
+  /// Defines the order of states in the displacement vector:
+  /// - DS_X: X-position displacement
+  /// - DS_Y: Y-position displacement
+  /// - DS_PSI: Yaw angle displacement (Δψ)
   enum DisplacementStates
   {
-    DS_X = 0,
-    DS_Y,
-    DS_PSI,
-    DS_NUM_VARIABLES
+    DS_X = 0,        ///< X-position displacement index
+    DS_Y,            ///< Y-position displacement index
+    DS_PSI,          ///< Yaw angle displacement index
+    DS_NUM_VARIABLES ///< Total number of displacement states
   };
 
-  using DisplacementVec = math::Vector<FloatType, DS_NUM_VARIABLES>;
-  using DisplacementCov = math::CovarianceMatrixFull<FloatType, DS_NUM_VARIABLES>;
+  /// \brief Displacement vector type
+  ///
+  /// Vector containing [Δx, Δy, Δψ] displacements
+  using DisplacementVec = math::Vector<value_type, DS_NUM_VARIABLES>;
 
-  struct Motion
+  /// \brief Displacement covariance matrix type
+  ///
+  /// Covariance matrix for displacement uncertainties (3×3)
+  using DisplacementCov = typename CovarianceMatrixPolicy_::template Instantiate<DS_NUM_VARIABLES>;
+
+  /// \brief Inertial Motion parameters structure
+  ///
+  /// Contains the inertial motion parameters used in circular motion equations and error propagation.
+  /// These parameters include:
+  /// - Velocity (v) and its uncertainty (σ_v)
+  /// - Acceleration (a) and its uncertainty (σ_a)
+  /// - Yaw rate (ω) and its uncertainty (σ_ω)
+  ///
+  /// These parameters are used to calculate the displacement (dx, dy, dφ) and their covariance
+  /// using the equations:
+  /// @f[
+  ///   dφ = ω·T
+  ///   c = \frac{2·v·T + a·T^2}{dφ}·\sin\frac{dφ}{2}
+  ///   dx = c·\cos\frac{dφ}{2}
+  ///   dy = c·\sin\frac{dφ}{2}
+  /// @f]
+  ///
+  /// For small angular velocities (ω→0), simplified equations (linear motion) are used to avoid numerical issues.
+  struct InertialMotion
   {
+    value_type v{};      ///< Velocity [m/s]
+    value_type a{};      ///< Acceleration [m/s²]
+    value_type w{};      ///< Yaw rate [rad/s]
+    value_type sv{1e-6}; ///< Velocity uncertainty (standard deviation) [m/s]
+    value_type sa{1e-6}; ///< Acceleration uncertainty (standard deviation) [m/s²]
+    value_type sw{1e-6}; ///< Yaw rate uncertainty (standard deviation) [rad/s]
   };
 
+  /// \brief Vehicle geometry parameters
+  ///
+  /// Contains physical dimensions and geometric properties of the ego vehicle
   struct Geometry
   {
-    FloatType width{};
-    FloatType length{};
-    FloatType height{};
+    value_type width{};  ///< Vehicle width [m]
+    value_type length{}; ///< Vehicle length [m]
+    value_type height{}; ///< Vehicle height [m]
 
-    FloatType distCog2Ego{};
-    FloatType distFrontAxle2Ego{};
-    FloatType distFrontAxle2RearAxle{};
+    value_type distCog2Ego{};            ///< Distance from center of gravity to ego reference point [m]
+    value_type distFrontAxle2Ego{};      ///< Distance from front axle to ego reference point [m]
+    value_type distFrontAxle2RearAxle{}; ///< Wheelbase (distance between front and rear axles) [m]
   };
 
+  /// \brief Displacement information structure
+  ///
+  /// Contains displacement vector, covariance, and precomputed trigonometric values
+  /// for efficient compensation calculations
   struct Displacement
   {
-    DisplacementVec vec{};
-    DisplacementCov cov{DisplacementCov::Identity()};
-    FloatType       sinDeltaPsi{0.0};
-    FloatType       cosDeltaPsi{1.0};
+    DisplacementVec vec{};                            ///< Displacement vector [Δx, Δy, Δψ]
+    DisplacementCov cov{DisplacementCov::Identity()}; ///< Displacement covariance matrix
+    value_type      sinDeltaPsi{0.0};                 ///< sin(Δψ) - precomputed for efficiency
+    value_type      cosDeltaPsi{1.0};                 ///< cos(Δψ) - precomputed for efficiency
   };
 
-  auto getDeltaTime() const -> FloatType { return _dt; }
+  // rule of 5 declarations
+  EgoMotion()                                        = delete;
+  EgoMotion(const EgoMotion&)                        = default;
+  EgoMotion(EgoMotion&&) noexcept                    = default;
+  auto operator=(const EgoMotion&) -> EgoMotion&     = default;
+  auto operator=(EgoMotion&&) noexcept -> EgoMotion& = default;
+  virtual ~EgoMotion()                               = default;
+
+  /// \brief Constructor with explicit covariance matrix type
+  /// \tparam CovarianceMatrixType Template template for covariance matrix type
+  /// \param motion Motion parameters
+  /// \param geometry Vehicle geometry
+  /// \param dt Time interval
+  EgoMotion(const InertialMotion& motion, const Geometry& geometry, const value_type dt)
+      : _motion(motion)
+      , _geometry(geometry)
+      , _dt(dt)
+  {
+    calcDisplacement();
+  }
+
+  /// \brief Get the time interval for this ego motion compensation
+  /// \return Time interval Δt [s]
+  auto getDeltaTime() const -> value_type { return _dt; }
+
+  /// \brief Get the displacement information for center of gravity
+  /// \return Constant reference to displacement structure
   auto getDisplacementCog() const -> const Displacement& { return _displacementCog; }
+
+  /// \brief Get the vehicle geometry parameters
+  /// \return Constant reference to geometry structure
   auto getGeometry() const -> const Geometry& { return _geometry; }
 
-  void compensatePosition(FloatType&      posXNewEgo,
-                          FloatType&      posYNewEgo,
-                          const FloatType posXOldEgo,
-                          const FloatType posYOldEgo) const;
+  /// \brief Compensate object position for ego vehicle motion
+  ///
+  /// Transforms object positions from old ego coordinate system to new ego coordinate system
+  /// by applying the inverse of the ego vehicle's motion.
+  ///
+  /// \param[out] posXNewEgo X-position in new ego coordinate system [m]
+  /// \param[out] posYNewEgo Y-position in new ego coordinate system [m]
+  /// \param[in] posXOldEgo X-position in old ego coordinate system [m]
+  /// \param[in] posYOldEgo Y-position in old ego coordinate system [m]
+  void compensatePosition(value_type&      posXNewEgo,
+                          value_type&      posYNewEgo,
+                          const value_type posXOldEgo,
+                          const value_type posYOldEgo) const;
 
-  void compensateDirection(FloatType& dxNewEgo, FloatType& dyNewEgo, const FloatType dxOldEgo, const FloatType dyOldEgo) const;
+  /// \brief Compensate direction vector for ego vehicle motion
+  ///
+  /// Transforms velocity/direction vectors from old ego coordinate system to new ego coordinate system
+  /// by applying the inverse of the ego vehicle's rotational motion.
+  ///
+  /// \param[out] dxNewEgo X-component of direction in new ego coordinate system
+  /// \param[out] dyNewEgo Y-component of direction in new ego coordinate system
+  /// \param[in] dxOldEgo X-component of direction in old ego coordinate system
+  /// \param[in] dyOldEgo Y-component of direction in old ego coordinate system
+  void compensateDirection(value_type&      dxNewEgo,
+                           value_type&      dyNewEgo,
+                           const value_type dxOldEgo,
+                           const value_type dyOldEgo) const;
+
+  /// \brief Get the motion parameters
+  /// \return Constant reference to motion parameters structure
+  auto getMotion() const -> const InertialMotion& { return _motion; }
 
   // clang-format off
-TEST_REMOVE_PRIVATE:
+  TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
-  using Point2d = math::Point2d<FloatType>;
-  Geometry     _geometry{};
-  Displacement _displacementCog{};
-  FloatType    _dt{};
+
+  [[nodiscard]] auto isLinearMotion() const -> bool;
+
+  /// \brief Compute displacement from internal motion parameters
+  ///
+  /// Calculates the displacement (Δx, Δy, Δψ) and covariance using the circular motion equations
+  //  or the linear motion for small angular velocities.
+  void calcDisplacement();
+
+  /// \brief Calculate Jacobian for linear motion case
+  ///
+  /// Computes the Jacobian matrix for linear motion displacement with respect to motion parameters.
+  ///
+  /// @param[in] motion Input motion parameters
+  /// @param[in] dt Time interval for the motion
+  /// @return Jacobian matrix (3x3)
+  static auto calcLinearMotionJacobian(const InertialMotion& motion, value_type dt) -> math::SquareMatrix<value_type, 3, true>;
+
+  /// \brief Calculate Jacobian for circular motion case
+  ///
+  /// Computes the Jacobian matrix for circular motion displacement with respect to motion parameters.
+  ///
+  /// @param[in] motion Input motion parameters
+  /// @param[in] dt Time interval for the motion
+  /// @return Jacobian matrix (3x3)
+  static auto calcCircularMotionJacobian(const InertialMotion& motion, value_type dt) -> math::SquareMatrix<value_type, 3, true>;
+
+  /// \brief Calculate displacement vector
+  ///
+  /// Computes the displacement vector [Δx, Δy, Δψ] from motion parameters.
+  ///
+  /// @param[out] displacement Output displacement structure
+  /// @param[in] motion Input motion parameters
+  /// @param[in] dt Time interval for the motion
+  static void calcDisplacementVector(Displacement& displacement, const InertialMotion& motion, value_type dt);
+
+  /// \brief Calculate displacement covariance
+  ///
+  /// Computes the displacement covariance matrix using the simplified UDU approach.
+  /// This method uses the generic covariance matrix interface to support both full and factored representations.
+  ///
+  /// @param[out] displacement Output displacement structure with computed covariance
+  /// @param[in] J Jacobian matrix
+  /// @param[in] motion Input motion parameters
+  static void calcDisplacementCovariance(Displacement&                                  displacement,
+                                         const math::SquareMatrix<value_type, 3, true>& J,
+                                         const InertialMotion&                          motion);
+
+  using Point2d = math::Point2d<value_type>; ///< 2D point type for geometric calculations
+  InertialMotion _motion{};                  ///< Motion parameters (velocity, acceleration, yaw rate and uncertainties)
+  Geometry       _geometry{};                ///< Vehicle geometry parameters
+  Displacement   _displacementCog{};         ///< Displacement information for center of gravity
+  value_type     _dt{};                      ///< Time interval for this motion compensation [s]
 };
 
 } // namespace env

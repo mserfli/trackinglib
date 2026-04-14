@@ -17,39 +17,39 @@ template class tracking::math::CovarianceMatrixFull<float64, 4>;
 using namespace tracking::math;
 
 // Helper function to create a factored symmetric positive definite matrix
-template <typename FloatType, sint32 Size>
-auto createFactoredSymmetricPositiveDefiniteMatrix() -> CovarianceMatrixFactored<FloatType, Size>
+template <typename ValueType_, sint32 Size_>
+auto createFactoredSymmetricPositiveDefiniteMatrix() -> CovarianceMatrixFactored<ValueType_, Size_>
 {
   // Create a diagonal matrix with positive values and add small symmetric perturbations
-  CovarianceMatrixFull<FloatType, Size> result{};
-  for (sint32 i = 0; i < Size; ++i)
+  CovarianceMatrixFull<ValueType_, Size_> result{};
+  for (sint32 i = 0; i < Size_; ++i)
   {
-    result.at_unsafe(i, i) = static_cast<FloatType>(1.0 + i * 0.5); // Diagonal dominance
-    for (sint32 j = i + 1; j < Size; ++j)
+    result.at_unsafe(i, i) = static_cast<ValueType_>(1.0 + i * 0.5); // Diagonal dominance
+    for (sint32 j = i + 1; j < Size_; ++j)
     {
-      FloatType val          = static_cast<FloatType>(0.1 * (i + 1) * (j + 1));
+      ValueType_ val         = static_cast<ValueType_>(0.1 * (i + 1) * (j + 1));
       result.at_unsafe(i, j) = val;
       result.at_unsafe(j, i) = val; // Ensure symmetry
     }
   }
-  auto covFactored = conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<FloatType, Size>(result);
+  auto covFactored = conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(result);
   testing::AssertionResult(covFactored.has_value()) << "Failed to factor symmetric positive definite matrix into UDUt form.";
   return covFactored.value();
 }
 
 // Helper function to create a factored ill-conditioned matrix
-template <typename FloatType, sint32 Size>
-auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<FloatType, Size>
+template <typename ValueType_, sint32 Size_>
+auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<ValueType_, Size_>
 {
-  CovarianceMatrixFull<FloatType, Size> result{};
+  CovarianceMatrixFull<ValueType_, Size_> result{};
 
   // Create a matrix with a mix of very large and very small eigenvalues
-  for (sint32 i = 0; i < Size; ++i)
+  for (sint32 i = 0; i < Size_; ++i)
   {
-    for (sint32 j = 0; j < Size; ++j)
+    for (sint32 j = 0; j < Size_; ++j)
     {
       // Create a matrix that's close to singular
-      FloatType val          = static_cast<FloatType>(1.0) + static_cast<FloatType>(0.001 * (i == j ? Size - i : i + j));
+      ValueType_ val         = static_cast<ValueType_>(1.0) + static_cast<ValueType_>(0.001 * (i == j ? Size_ - i : i + j));
       result.at_unsafe(i, j) = val;
       if (i != j)
       {
@@ -57,39 +57,57 @@ auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<FloatType,
       }
     }
   }
-  auto covFactored = conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<FloatType, Size>(result);
+  auto covFactored = conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(result);
   testing::AssertionResult(covFactored.has_value()) << "Failed to factor symmetric positive definite matrix into UDUt form.";
   return covFactored.value();
 }
 
-TEST(CovarianceMatrixFactored, ctor_from_full_matrix) // NOLINT
+TEST(CovarianceMatrixFactored, ctor_FromDiagonal__Success) // NOLINT
+{
+  const auto diag = DiagonalMatrix<float, 3>::FromList({1, 2, 3});
+  // call UUT
+  const auto result = CovarianceMatrixFactored<float32, 3>::FromDiagonal(diag);
+
+  // verify
+  for (auto row = 0; row < 3; row++)
+  {
+    // diagonal elements
+    EXPECT_FLOAT_EQ(diag.at_unsafe(row), result.at_unsafe(row, row));
+    for (auto col = row + 1; col < 3; col++)
+    {
+      // off-diagonal elements
+      EXPECT_FLOAT_EQ(0, result.at_unsafe(row, col));
+      EXPECT_FLOAT_EQ(0, result.at_unsafe(col, row));
+    }
+  }
+}
+
+TEST(CovarianceMatrixFactored, ctor_FromList_SeparateLists__Success) // NOLINT
 {
   // clang-format off
-  const auto expCov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
-    {1,2,3},
-    {0,1,4},
-    {0,0,1}}, {1, 2, 4});
-
   // call UUT
-  const auto cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
-    {45, 52, 12},
-    {52, 66, 16},
-    {12, 16,  4}});
+  const auto result = CovarianceMatrixFactored<float32, 3>::FromList({
+      {1.0F, 0.5F, 0.0F},
+      {0.0F, 1.0F, 0.0F},
+      {0.0F, 0.0F, 1.0F},
+  }, {1.0F, 2.0F, 3.0F});
   // clang-format on
 
-  EXPECT_EQ(expCov._u._data, cov._u._data);
-  EXPECT_EQ(expCov._d._data, cov._d._data);
+  EXPECT_FLOAT_EQ(result.at_unsafe(0, 0), 1.5F);
+  EXPECT_FLOAT_EQ(result.at_unsafe(0, 1), 1.0F);
+  EXPECT_FLOAT_EQ(result.at_unsafe(1, 1), 2.0F);
+  EXPECT_FLOAT_EQ(result.at_unsafe(2, 2), 3.0F);
 }
 
 TEST(CovarianceMatrixFactored, compose) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  auto cov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1,2,3},
     {0,1,4},
     {0,0,1}}, {1, 2, 4});
 
-  const auto expMat = conversions::CovarianceMatrixFullFromList<float32, 3>({
+  const auto expMat = CovarianceMatrixFull<float32,3>::FromList({
     {45, 52, 12},
     {52, 66, 16},
     {12, 16,  4}});
@@ -104,7 +122,7 @@ TEST(CovarianceMatrixFactored, compose) // NOLINT
 struct CovarianceMatrixFactoredWithParams: public testing::TestWithParam<std::tuple<int, int>>
 {
   // clang-format off
-  CovarianceMatrixFactored<float32, 3> _cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  CovarianceMatrixFactored<float32, 3> _cov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1, 2, 3},
     {0, 1, 4},
     {0, 0, 1}}, {1, 2, 4});
@@ -130,21 +148,21 @@ INSTANTIATE_TEST_SUITE_P(CovarianceMatrixFactored,
 TEST(CovarianceMatrixFactored, apaT) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 4>({
+  auto cov = CovarianceMatrixFactored<float64,4>::FromList({
     {1.000000000000000,   0.378176125484376,   1.684500252612056,  -2.187010479706283},
     {                0,   1.000000000000000,  -1.241186420682381,   0.272017178830240},
     {                0,                   0,   1.000000000000000,  -0.986409098619786},
     {                0,                   0,                   0,   1.000000000000000}},
     { 0.692626242247276,   0.639133727238215,   0.839636056501929,   0.821337656508534});
 
-  const auto A = conversions::SquareFromList<float64, 4, true>({
+  const auto A = SquareMatrix<float64, 4, true>::FromList({
     {6.240853754330984e-01,   3.581644763169872e-01,   5.385448223130755e-01,   6.122387805324014e-01},
     {9.666405567486658e-04,   9.261665823497265e-01,   5.262033279133882e-02,   4.022802305927367e-01},
     {4.208940256150708e-01,   9.768163860098072e-01,   3.480474524537769e-01,   9.884169020892678e-01},
     {9.687082960197513e-01,   1.310361955580941e-01,   4.530398432949093e-01,   5.183403919872129e-01}});
    
 
-  const auto expCov = conversions::CovarianceMatrixFactoredFromList<float64, 4>({
+  const auto expCov = CovarianceMatrixFactored<float64,4>::FromList({
     {1.000000000000000,  -0.117162650062257,   0.236910463595170,   0.610508812057989},
     {                0,   1.000000000000000,   1.005949148623783,  -0.340655418792931},
     {                0,                   0,   1.000000000000000,   0.056511133324051},
@@ -168,21 +186,21 @@ TEST(CovarianceMatrixFactored, apaT) // NOLINT
 TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
 {
   // clang-format off
-  const auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 4>({
+  const auto cov = CovarianceMatrixFactored<float64,4>::FromList({
     {1.000000000000000,   0.378176125484376,   1.684500252612056,  -2.187010479706283},
     {                0,   1.000000000000000,  -1.241186420682381,   0.272017178830240},
     {                0,                   0,   1.000000000000000,  -0.986409098619786},
     {                0,                   0,                   0,   1.000000000000000}},
     { 0.692626242247276,   0.639133727238215,   0.839636056501929,   0.821337656508534});
 
-  const auto A = conversions::SquareFromList<float64, 4, true>({
+  const auto A = SquareMatrix<float64, 4, true>::FromList({
     {6.240853754330984e-01,   3.581644763169872e-01,   5.385448223130755e-01,   6.122387805324014e-01},
     {9.666405567486658e-04,   9.261665823497265e-01,   5.262033279133882e-02,   4.022802305927367e-01},
     {4.208940256150708e-01,   9.768163860098072e-01,   3.480474524537769e-01,   9.884169020892678e-01},
     {9.687082960197513e-01,   1.310361955580941e-01,   4.530398432949093e-01,   5.183403919872129e-01}});
    
 
-  const auto expCov = conversions::CovarianceMatrixFactoredFromList<float64, 4>({
+  const auto expCov = CovarianceMatrixFactored<float64,4>::FromList({
     {1.000000000000000,  -0.117162650062257,   0.236910463595170,   0.610508812057989},
     {                0,   1.000000000000000,   1.005949148623783,  -0.340655418792931},
     {                0,                   0,   1.000000000000000,   0.056511133324051},
@@ -206,14 +224,14 @@ TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
 TEST(CovarianceMatrixFactored, rank1Update_upper) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  auto cov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1,2,3},
     {0,1,4},
     {0,0,1}}, {1, 2, 4});
 
-  const auto x = conversions::VectorFromList<float32, 3>({1,2,3});
+  const auto x = Vector<float32, 3>::FromList({1,2,3});
 
-  const auto expCov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  const auto expCov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1.000000000000000, 0.894009216589862, 1.588235294117647},
     {                0, 1.000000000000000, 2.235294117647059},
     {                0,                 0, 1.000000000000000}}, {3.654377880184332, 25.52941176470588, 8.5});
@@ -236,12 +254,12 @@ TEST(CovarianceMatrixFactored, rank1Update_upper) // NOLINT
 TEST(CovarianceMatrixFactored, setVariance) // NOLINT
 {
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float32, 3>({
+  auto cov = CovarianceMatrixFactored<float32, 3>::FromList({
     {1,2,3},
     {0,1,4},
     {0,0,1}}, {1, 2, 4});
 
-  const auto expMat = conversions::CovarianceMatrixFullFromList<float32, 3>({
+  const auto expMat = CovarianceMatrixFull<float32,3>::FromList({
     {2,  0,  0},
     {0, 66, 16},
     {0, 16,  4}});
@@ -261,7 +279,7 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_apaT__Success) // NOLINT
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 4>();
 
   // clang-format off
-  auto A = conversions::SquareFromList<float64, 4, true>({
+  auto A = SquareMatrix<float64, 4, true>::FromList({
     {0.9, 0.1, 0.2, 0.3}, 
     {0.1, 0.8, 0.1, 0.2}, 
     {0.2, 0.1, 0.7, 0.1}, 
@@ -287,7 +305,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_identity__Success) // NOLINT
   auto cov = CovarianceMatrixFactored<float64, 3>::Identity();
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // For identity matrix, inverse should also be identity
   auto expected = CovarianceMatrixFull<float64, 3>::Identity();
@@ -307,7 +325,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_diagonal__Success) // NOLINT
 {
   // Test with diagonal matrix
   // clang-format off
-  auto cov = conversions::CovarianceMatrixFactoredFromList<float64, 3>(
+  auto cov = CovarianceMatrixFactored<float64,3>::FromList(
     {
     {1.0, 0.0, 0.0}, 
     {0.0, 1.0, 0.0}, 
@@ -317,7 +335,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_diagonal__Success) // NOLINT
   // clang-format on
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // For diagonal matrix with values [2, 3, 4], inverse should be [0.5, 1/3, 0.25]
   EXPECT_NEAR(inv.at_unsafe(0, 0), 0.5, 1e-6);
@@ -339,7 +357,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_symmetric_positive_definite__Suc
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // Verify that the inverse is symmetric
   EXPECT_TRUE(inv.isSymmetric());
@@ -352,7 +370,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_consistency__Success) // NOLINT
 {
   // Test that inv * original ≈ identity
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // Multiply inv * original and check if close to identity
   auto product = inv * cov();
@@ -374,7 +392,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_symmetry__Success) // NOLINT
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 4>();
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // Verify that the inverse is symmetric
   EXPECT_TRUE(inv.isSymmetric());
@@ -386,7 +404,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_positive_definite__Success) // N
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
 
   // Get the inverse
-  auto inv = cov.composed_inverse();
+  auto inv = cov.composed_inverse().value();
 
   // Verify that the inverse is positive definite
   EXPECT_TRUE(inv.isPositiveSemiDefinite());
@@ -398,14 +416,14 @@ TEST(CovarianceMatrixFactored, composed_inverse_different_sizes__Success) // NOL
 
   // Test 3x3
   auto cov3 = CovarianceMatrixFactored<float32, 3>::Identity();
-  auto inv3 = cov3.composed_inverse();
+  auto inv3 = cov3.composed_inverse().value();
   EXPECT_NEAR(inv3.at_unsafe(0, 0), 1.0f, 1e-5);
   EXPECT_NEAR(inv3.at_unsafe(1, 1), 1.0f, 1e-5);
   EXPECT_NEAR(inv3.at_unsafe(2, 2), 1.0f, 1e-5);
 
   // Test 4x4
   auto cov4 = CovarianceMatrixFactored<float32, 4>::Identity();
-  auto inv4 = cov4.composed_inverse();
+  auto inv4 = cov4.composed_inverse().value();
   EXPECT_NEAR(inv4.at_unsafe(0, 0), 1.0f, 1e-5);
   EXPECT_NEAR(inv4.at_unsafe(1, 1), 1.0f, 1e-5);
   EXPECT_NEAR(inv4.at_unsafe(2, 2), 1.0f, 1e-5);
@@ -416,7 +434,7 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_rank1Update__Success) // NO
 {
   // Test that rank1Update operation preserves symmetry
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float32, 3>();
-  auto x   = conversions::VectorFromList<float32, 3>({1.0f, 2.0f, 3.0f});
+  auto x   = Vector<float32, 3>::FromList({1.0f, 2.0f, 3.0f});
 
   // Verify initial symmetry
   auto initialFull = cov();
@@ -436,19 +454,19 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_thornton__Success) // NOLIN
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
 
   // clang-format off
-  auto Phi = conversions::SquareFromList<float64, 3, true>({
+  auto Phi = SquareMatrix<float64, 3, true>::FromList({
     {0.9, 0.1, 0.2}, 
     {0.1, 0.8, 0.1}, 
     {0.2, 0.1, 0.7}
   });
 
-  auto G = conversions::MatrixFromList<float64, 3, 2, true>({
+  auto G = Matrix<float64, 3, 2, true>::FromList({
     {0.5, 0.1}, 
     {0.1, 0.5}, 
     {0.2, 0.1}
   });
 
-  auto Q = conversions::DiagonalFromList<float64, 2>(
+  auto Q = DiagonalMatrix<float64, 2>::FromList(
     {0.1, 0.1}
   );
   // clang-format on
@@ -469,7 +487,7 @@ TEST(CovarianceMatrixFactored, positive_semi_definite_rank1Update__Success) // N
 {
   // Test that rank1Update operation preserves positive semi-definiteness
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 3>();
-  auto x   = conversions::VectorFromList<float64, 3>({1.0, 2.0, 3.0});
+  auto x   = Vector<float64, 3>::FromList({1.0, 2.0, 3.0});
 
   // Verify initial positive semi-definiteness
   auto initialFull = cov();
@@ -489,21 +507,21 @@ TEST(CovarianceMatrixFactored, positive_semi_definite_thornton__Success) // NOLI
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float64, 4>();
 
   // clang-format off
-  auto Phi = conversions::SquareFromList<float64, 4, true>({
+  auto Phi = SquareMatrix<float64, 4, true>::FromList({
     {0.9, 0.05, 0.05, 0.05}, 
     {0.05, 0.9, 0.05, 0.05}, 
     {0.05, 0.05, 0.9, 0.05}, 
     {0.05, 0.05, 0.05, 0.9}
   });
 
-  auto G = conversions::MatrixFromList<float64, 4, 2, true>({
+  auto G = Matrix<float64, 4, 2, true>::FromList({
     {0.3, 0.1}, 
     {0.1, 0.3}, 
     {0.1, 0.1}, 
     {0.1, 0.1}
   });
 
-  auto Q = conversions::DiagonalFromList<float64, 2>(
+  auto Q = DiagonalMatrix<float64, 2>::FromList(
     {0.05, 0.05}
   );
   // clang-format on
@@ -527,13 +545,13 @@ TEST(CovarianceMatrixFactored, thornton_basic__Success) // NOLINT
 
   // clang-format off
   auto Phi = SquareMatrix<float64, 3, true>::Identity();
-  auto G   = conversions::MatrixFromList<float64, 3, 1, true>({
+  auto G   = Matrix<float64, 3, 1, true>::FromList({
     {0.5}, 
     {0.3}, 
     {0.2}
   });
 
-  auto Q = conversions::DiagonalFromList<float64, 1>(
+  auto Q = DiagonalMatrix<float64, 1>::FromList(
     {0.1}
   );
   // clang-format on
@@ -556,21 +574,21 @@ TEST(CovarianceMatrixFactored, thornton_with_process_noise__Success) // NOLINT
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float32, 4>();
 
   // clang-format off
-  auto Phi = conversions::SquareFromList<float32, 4, true>({
+  auto Phi = SquareMatrix<float32, 4, true>::FromList({
     {0.8, 0.1, 0.1, 0.0}, 
     {0.1, 0.8, 0.1, 0.0}, 
     {0.1, 0.1, 0.8, 0.0}, 
     {0.0, 0.0, 0.0, 1.0}
   });
 
-  auto G = conversions::MatrixFromList<float32, 4, 2, true>({
+  auto G = Matrix<float32, 4, 2, true>::FromList({
     {0.8, 0.1}, 
     {0.1, 0.8}, 
     {0.1, 0.1}, 
     {0.0, 0.0}
   });
 
-  auto Q = conversions::DiagonalFromList<float32, 2>(
+  auto Q = DiagonalMatrix<float32, 2>::FromList(
     {0.5, 0.5}
   );
   // clang-format on
@@ -589,19 +607,19 @@ TEST(CovarianceMatrixFactored, thornton_numerical_stability__Success) // NOLINT
   // Test Thornton update numerical stability with ill-conditioned matrix
   auto cov = createFactoredIllConditionedMatrix<float64, 3>();
   // clang-format off
-  auto Phi = conversions::SquareFromList<float64, 3, true>({
+  auto Phi = SquareMatrix<float64, 3, true>::FromList({
     {0.95, 0.01, 0.01}, 
     {0.01, 0.95, 0.01}, 
     {0.01, 0.01, 0.95}
   });
 
-  auto G = conversions::MatrixFromList<float64, 3, 1, true>({
+  auto G = Matrix<float64, 3, 1, true>::FromList({
     {0.1}, 
     {0.1}, 
     {0.1}
   });
 
-  auto Q = conversions::DiagonalFromList<float64, 1>(
+  auto Q = DiagonalMatrix<float64, 1>::FromList(
     {0.01}
   );
   // clang-format on
@@ -620,7 +638,7 @@ TEST(CovarianceMatrixFactored, numerical_stability_ill_conditioned__Success) // 
   // Test numerical stability with ill-conditioned matrix
   auto cov = createFactoredIllConditionedMatrix<float64, 4>();
   // clang-format off
-  auto A = conversions::SquareFromList<float64, 4, true>({
+  auto A = SquareMatrix<float64, 4, true>::FromList({
     {0.95, 0.01, 0.01, 0.01}, 
     {0.01, 0.95, 0.01, 0.01}, 
     {0.01, 0.01, 0.95, 0.01}, 
@@ -696,8 +714,8 @@ TEST(CovarianceMatrixFactored, setDiagonal_double4__Success) // NOLINT
   // Create a factored covariance matrix
   auto cov = CovarianceMatrixFactored<float64, 4>::Identity();
 
-  // Test setDiagonal()
-  cov.setDiagonal(1, 2.5);
+  // Test D(idx, value)
+  cov.D(1, 2.5);
 
   // Verify the diagonal element is set correctly
   auto result = cov(1, 1);
@@ -736,8 +754,8 @@ TEST(CovarianceMatrixFactored, setDiagonal_setVariance_consistency__Success) // 
   auto cov1 = CovarianceMatrixFactored<float64, 4>::Identity();
   auto cov2 = CovarianceMatrixFactored<float64, 4>::Identity();
 
-  // Use setDiagonal on first
-  cov1.setDiagonal(1, 2.5);
+  // Use D(idx, value) on first
+  cov1.D(1, 2.5);
 
   // Use setVariance on second (should give same result for diagonal element)
   cov2.setVariance(1, 2.5);
@@ -796,7 +814,7 @@ TEST(CovarianceMatrixFactored, Identity_setIdentity_equivalence__Success) // NOL
   auto cov2 = createFactoredSymmetricPositiveDefiniteMatrix<float64, 4>();
   cov2.setIdentity();
 
-  // Verify both result in identity matrices
+  // Verify both result in identity matrixes
   auto result1 = cov1();
   auto result2 = cov2();
 

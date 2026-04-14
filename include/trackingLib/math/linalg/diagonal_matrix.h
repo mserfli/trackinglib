@@ -4,6 +4,7 @@
 #include "base/first_include.h" // IWYU pragma: keep
 #include "math/linalg/errors.h"
 #include "math/linalg/matrix_io.h"
+#include <initializer_list>
 
 namespace tracking
 {
@@ -26,15 +27,15 @@ class Vector;
 
 /// \brief A diagonal matrix that stores only the diagonal elements for memory efficiency.
 ///
-/// This class represents diagonal matrices where only the diagonal elements are stored
+/// This class represents diagonal matrixes where only the diagonal elements are stored
 /// and manipulated. All off-diagonal elements are implicitly zero. Provides optimized
 /// operations for diagonal-specific computations like inversion and multiplication.
 ///
-/// \tparam ValueType_ The data type of diagonal elements (e.g., float32, float64)
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The dimension of the diagonal matrix (compile-time constant)
 ///
 /// \note Memory efficient: stores only Size_ elements instead of Size_²
-/// \note All operations are O(Size_) instead of O(Size_²) for general matrices
+/// \note All operations are O(Size_) instead of O(Size_²) for general matrixes
 ///
 /// \see SquareMatrix for general square matrix operations
 /// \see TriangularMatrix for triangular matrix operations
@@ -64,6 +65,27 @@ public:
   ///
   /// \note This operation modifies the matrix in-place and does not change its size
   void setIdentity();
+
+  /// \brief Creates a DiagonalMatrix from a flat initializer list
+  ///
+  /// This function creates a diagonal matrix where the diagonal elements are taken from
+  /// a flat initializer list. The list size must exactly match the matrix dimension.
+  ///
+  /// \param[in] list Initializer list containing the diagonal values
+  /// \return DiagonalMatrix with the specified diagonal elements
+  /// \note The list size must equal Size_, otherwise assertion fails
+  [[nodiscard]] static auto FromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix;
+
+  /// \brief Creates a DiagonalMatrix from the diagonal of a nested initializer list
+  ///
+  /// This function creates a diagonal matrix by extracting the diagonal elements from
+  /// a nested initializer list representing a full matrix. Only the diagonal elements
+  /// (where row index equals column index) are used.
+  ///
+  /// \param[in] list Nested initializer list representing a square matrix
+  /// \return DiagonalMatrix containing the diagonal elements from the input list
+  /// \note The outer list size must equal Size_, and each inner list size must equal Size_
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> DiagonalMatrix;
 
   /// \brief Set a diagonal block matrix at given position
   /// \tparam SrcSize_    Size_ of the source block
@@ -142,7 +164,7 @@ public:
   /// \return DiagonalMatrix The inverse matrix such that D * D^(-1) = I
   ///
   /// \warning Fails if any diagonal element is zero (singular matrix)
-  /// \note O(Size_) complexity, very efficient for diagonal matrices
+  /// \note O(Size_) complexity, very efficient for diagonal matrixes
   [[nodiscard]] auto inverse() const -> DiagonalMatrix;
 
   /// \brief Compute the inverse in-place.
@@ -150,7 +172,7 @@ public:
   /// Modifies this matrix to contain its inverse by taking reciprocals of diagonal elements.
   ///
   /// \warning Fails if any diagonal element is zero (singular matrix)
-  /// \note More memory efficient than the const version for large matrices
+  /// \note More memory efficient than the const version for large matrixes
   void inverse();
 
   /// \brief Calculate the trace of the diagonal matrix.
@@ -161,13 +183,13 @@ public:
   /// \return ValueType_ The trace of the matrix(sum of diagonal elements)
   [[nodiscard]] auto trace() const -> ValueType_;
 
-  /// \brief Calculate the determinant of the square matrix.
+  /// \brief Calculate the determinant of the diagonal matrix.
   ///
   /// Computes the determinant as the product of the diagonal elements.
   ///
   /// \return ValueType_ The determinant of the matrix
   /// \note Time complexity: O(n) where n is the matrix dimension
-  /// \note For singular matrices, the determinant will be zero or very close to zero
+  /// \note For singular matrixes, the determinant will be zero or very close to zero
   [[nodiscard]] auto determinant() const -> ValueType_;
 
   /// \brief Check if the diagonal matrix is positive definite.
@@ -176,7 +198,7 @@ public:
   ///
   /// \return true if all diagonal elements are > 0, false otherwise
   ///
-  /// \note For diagonal matrices, positive definiteness is equivalent to all elements > 0
+  /// \note For diagonal matrixes, positive definiteness is equivalent to all elements > 0
   [[nodiscard]] auto isPositiveDefinite() const -> bool;
 
   /// \brief Check if the diagonal matrix is positive semi-definite.
@@ -185,7 +207,7 @@ public:
   ///
   /// \return true if all diagonal elements are >= 0, false otherwise
   ///
-  /// \note For diagonal matrices, positive semi-definiteness means all elements >= 0
+  /// \note For diagonal matrixes, positive semi-definiteness means all elements >= 0
   [[nodiscard]] auto isPositiveSemiDefinite() const -> bool;
 
   //////////////////////////////////////////////////

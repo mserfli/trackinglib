@@ -5,5 +5,6 @@
 
 #include "math/linalg/covariance_matrix_factored.hpp"
 #include "math/linalg/covariance_matrix_full.hpp"
+#include "math/linalg/covariance_matrix_policies.h"
 
 #endif // E919344A_10CE_48B9_9473_9C2E3344DD78

@@ -6,7 +6,7 @@
 
 using namespace tracking::math;
 
-// Helper function to create test matrices
+// Helper function to create test matrixes
 template <typename ValueType_, sint32 Size_>
 auto createSymmetricPositiveDefiniteMatrix() -> SquareMatrix<ValueType_, Size_, true>
 {
@@ -53,7 +53,7 @@ TEST(SquareMatrixDecompositions, householderQR__Success) // NOLINT
 {
   // Create a test matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
@@ -78,7 +78,7 @@ TEST(SquareMatrixDecompositions, householderQR_OrthogonalityOfQ__Success) // NOL
 {
   // Create a test matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
@@ -96,7 +96,7 @@ TEST(SquareMatrixDecompositions, householderQR_UpperTriangularR__Success) // NOL
 {
   // Create a test matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
@@ -114,7 +114,7 @@ TEST(SquareMatrixDecompositions, householderQR_Reconstruction__Success) // NOLIN
 {
   // Create a test matrix
   // clang-format off
-  const auto mat = conversions::SquareFromList<float32, 3, true>({
+  const auto mat = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
@@ -187,7 +187,7 @@ TEST(SquareMatrixDecompositions, decomposeLLT_NotSymmetric_ExpectError) // NOLIN
 {
   // Create a non-symmetric matrix
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, -4},
     {-3, 13},
   });
@@ -203,7 +203,7 @@ TEST(SquareMatrixDecompositions, decomposeLLT_SymmetricNotPositiveDefinite_Expec
 {
   // Create a symmetric but not positive definite matrix
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, -3},
     {-3, -13},
   });
@@ -278,7 +278,7 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_NotSymmetric_ExpectError) // NOLI
 {
   // Create a non-symmetric matrix
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, -4},
     {-3, 13},
   });
@@ -294,7 +294,7 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_SymmetricNotPositiveDefinite_Expe
 {
   // Create a symmetric but not positive definite matrix
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, -3},
     {-3, -13},
   });
@@ -399,7 +399,7 @@ TEST(SquareMatrixDecompositions, decomposeUDUT_NotSymmetric_ExpectError) // NOLI
 {
   // Create a non-symmetric matrix
   // clang-format off
-  auto cov = conversions::SquareFromList<float32, 2, true>({
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
     {10, 2},
     { 1, 5}
   });
@@ -419,7 +419,7 @@ TEST(SquareMatrixDecompositions, householderQR_Double__Success) // NOLINT
 {
   // Create a test matrix with double precision
   // clang-format off
-  const auto mat = conversions::SquareFromList<float64, 3, true>({
+  const auto mat = SquareMatrix<float64, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}

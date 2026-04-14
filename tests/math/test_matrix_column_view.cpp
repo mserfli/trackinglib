@@ -9,7 +9,7 @@ TEST(MatrixColumnView, mul_lhs) // NOLINT
 {
   // testing Matrix * MatrixColumnView
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
@@ -36,7 +36,7 @@ TEST(MatrixColumnView, mul_lhs_ranged) // NOLINT
 {
   // testing Matrix * MatrixColumnView
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 3, 3, true>({
+  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
@@ -47,7 +47,7 @@ TEST(MatrixColumnView, mul_lhs_ranged) // NOLINT
 
   // a lhs matrix
   // clang-format off
-  const auto lhs{conversions::MatrixFromList<sint32, 3, 2, true>({
+  const auto lhs{Matrix<sint32, 3, 2, true>::FromList({
     {1, 2}, 
     {3, 4}, 
     {5, 6}}
@@ -69,13 +69,13 @@ TEST(MatrixColumnView, mul_rhs) // NOLINT
 {
   // testing MatrixColumnView * Vector
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 4, 3, true>({
+  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
     { 1,  2,  3},
     { 4,  5,  6},
     { 7,  8,  9},
     {10, 11, 12}
   })};
-  const auto rhs{conversions::VectorFromList<sint32, 4>({
+  const auto rhs{Vector<sint32, 4>::FromList({
     1, 2, 3, 4}
   )};
   // clang-format on
@@ -96,13 +96,13 @@ TEST(MatrixColumnView, mul_rhs_ranged) // NOLINT
 {
   // testing MatrixColumnView * Vector
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 4, 3, true>({
+  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
     { 1,  2,  3},
     { 4,  5,  6},
     { 7,  8,  9},
     {10, 11, 12}
   })};
-  const auto rhs{conversions::VectorFromList<sint32, 2>({
+  const auto rhs{Vector<sint32, 2>::FromList({
     1, 2
   })};
   // clang-format on
@@ -123,13 +123,13 @@ TEST(MatrixColumnView, mul_rhsview) // NOLINT
 {
   // testing MatrixColumnView * MatrixColumnView
   // clang-format off
-  const auto mat{conversions::MatrixFromList<sint32, 4, 3, true>({
+  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
     { 1,  2,  3},
     { 4,  5,  6},
     { 7,  8,  9},
     {10, 11, 12}
   })};
-  const auto rhs{conversions::VectorFromList<sint32, 4>({
+  const auto rhs{Vector<sint32, 4>::FromList({
     1, 2, 3, 4
   })};
   // clang-format on

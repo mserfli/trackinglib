@@ -96,7 +96,10 @@ include(GoogleTest)
 # generate compile_commands.json used by clang-tidy
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# create header only library 
+# Include the header test creation module
+include(create_header_tests)
+
+# create header only library
 # based on https://github.com/bernedom/SI and https://discourse.cmake.org/t/header-only-library/5476
 add_library(${PROJECT_NAME} INTERFACE)
 # add alias so the project can be uses with add_subdirectory
@@ -112,14 +115,29 @@ target_include_directories(
            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+# activate header set verification, headers must exist
+set(CMAKE_VERIFY_INTERFACE_HEADER_SETS ON)
+
+# Create header test applications (optional)
+option(BUILD_HEADER_TESTS "Build header test applications" OFF)
+if(BUILD_HEADER_TESTS)
+    create_header_test_applications()
+endif()
+
 add_subdirectory(tests)
+
+# Define an option to build examples
+option(BUILD_EXAMPLES "Build examples" ON)
+if(BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
 
 if(USE_PYBIND11)
     add_subdirectory(python)
 endif()
 
 if(USE_EIGEN)
-    target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen expected)
+    target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
 
     # Export Eigen target
     install(
@@ -128,10 +146,10 @@ if(USE_EIGEN)
         NAMESPACE Eigen3::
         DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/eigen3/cmake
     )
-    add_subdirectory(examples)
-else()
-    target_link_libraries(${PROJECT_NAME} INTERFACE expected)
+    add_subdirectory(examples_libeigen)    
 endif()
+
+target_link_libraries(${PROJECT_NAME} INTERFACE expected)
 
 # locations are provided by GNUInstallDirs
 install(

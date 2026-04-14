@@ -16,7 +16,7 @@ namespace math
 /// a single column of a Matrix. It supports dot product operations and element access
 /// without copying data.
 ///
-/// \tparam ValueType_ The value type for matrix elements
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Rows_ The number of rows in the source matrix
 /// \tparam Cols_ The number of columns in the source matrix
 /// \tparam IsRowMajor_ The storage layout of the source matrix (default: true)
@@ -103,7 +103,7 @@ private:
 /// The result is a vector where each element is the dot product of the corresponding
 /// matrix row with the column view.
 ///
-/// \tparam ValueType_ Value type of the matrix and view
+/// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Rows_ Rows of the matrix
 /// \tparam Cols_ Cols of the matrix
 /// \tparam IsRowMajor_ Storage layout of the matrix

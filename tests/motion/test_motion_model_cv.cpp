@@ -1,42 +1,72 @@
+#include <gtest/gtest.h>
 #include "gmock/gmock.h"
 
 #include "mocks/motion_model_no_ego_motion.hpp"   // IWYU pragma: keep
+#include "trackingLib/math/linalg/matrix_io.h"    // for operator<<
 #include "trackingLib/motion/motion_model_ca.hpp" // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
+#include <type_traits>                            // for std::is_same_v
 
+using Testvalue_type = float32;
 
 // instatiate all templates for full coverage report
-template class tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
-template class tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
+template class tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
+template class tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>>;
 
-template <template <typename FloatType, sint32 Size> class CovarianceMatrixType,
-          template <typename FloatType>
-          class FilterType,
-          typename FloatType>
+template <typename CovarianceMatrixPolicy_, template <typename CovarianceMatrixPolicy> class FilterType>
 struct TestPredictCV
 {
-  using MM = tracking::motion::MotionModelCV<CovarianceMatrixType, FloatType>;
+  using MM             = tracking::motion::MotionModelCV<CovarianceMatrixPolicy_>;
+  using EgoMotionInst  = tracking::env::EgoMotion<CovarianceMatrixPolicy_>;
+  using FilterTypeInst = FilterType<CovarianceMatrixPolicy_>;
+  using value_type     = typename CovarianceMatrixPolicy_::value_type;
 
-  static void init(typename MM::StateCov&, typename MM::StateCov&, const tracking::filter::KalmanFilter<FloatType>&)
-  {
-    // no change required
-  }
-
-  static void init(typename MM::StateCov& cov,
+  static void init(typename MM::StateVec& vec,
+                   typename MM::StateVec& expVec,
+                   typename MM::StateCov& cov,
                    typename MM::StateCov& expCov,
-                   const tracking::filter::InformationFilter<FloatType>&)
+                   const FilterTypeInst& /*filter*/)
   {
-    cov    = cov.inverse().value();
-    expCov = expCov.inverse().value();
+    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<CovarianceMatrixPolicy_>>)
+    {
+      // InformationFilter behavior: transform state and covariance to information space for later comparison
+      // Transform covariance to information space
+      cov    = cov.inverse().value();
+      expCov = expCov.inverse().value();
+
+      // Transform state vector to information space
+      vec    = static_cast<typename MM::StateVec>(cov() * vec); // y = Y * x
+      expVec = static_cast<typename MM::StateVec>(expCov() * expVec);
+    }
+    else
+    {
+      // KalmanFilter behavior: do nothing (identity)
+      // No change required
+    }
   }
 
-  static void run()
+  static auto tolerance(const FilterTypeInst& /*filter*/) -> value_type
   {
-    tracking::env::EgoMotion<FloatType> egoMotion{};
-    FilterType<FloatType>               filter{};
+    if constexpr (std::is_same_v<FilterTypeInst, tracking::filter::InformationFilter<CovarianceMatrixPolicy_>>)
+    {
+      return static_cast<value_type>(3e-6);
+    }
+    else
+    {
+      return static_cast<value_type>(1.1e-6);
+    }
+  }
+
+  static void run_without_ego_motion_compensation()
+  {
+    const int      steps     = 5;
+    const auto     dt        = static_cast<value_type>(0.1);
+    const auto     motion    = typename EgoMotionInst::InertialMotion{};
+    const auto     geometry  = typename EgoMotionInst::Geometry{};
+    const auto     egoMotion = EgoMotionInst(motion, geometry, dt);
+    FilterTypeInst filter{};
 
     // clang-format off
-    const int steps = 3;
     auto vec = MM::StateVecFromList({10, 2, 0, 0});
     auto cov = MM::StateCovFromList({
       {5, 0, 0, 0.0},
@@ -44,33 +74,106 @@ struct TestPredictCV
       {0, 0, 1, 0.0},
       {0, 0, 0, 0.1}
     });
-    auto expVec = MM::StateVecFromList({10.6, 2, 0, 0});
+    auto expVec = MM::StateVecFromList({11, 2, 0, 0});
     auto expCov = MM::StateCovFromList({
-      {+5.09875, +0.34500, +0.00000, +0.00000},
-      {+0.34500, +1.30000, +0.00000, +0.00000},
-      {+0.00000, +0.00000, +1.01775, +0.07500},
-      {+0.00000, +0.00000, +0.07500, +0.40000}
+      {+5.29125, +0.62500, +0.00000, +0.00000},
+      {+0.62500, +1.50000, +0.00000, +0.00000},
+      {+0.00000, +0.00000, +1.06625, +0.17500},
+      {+0.00000, +0.00000, +0.17500, +0.60000}
     });
     // clang-format on
-    init(cov, expCov, filter);
+
+    init(vec, expVec, cov, expCov, filter);
+    const auto tol = tolerance(filter);
 
     // instantiate MM with mocked EgoMotion compensation
     testing::NiceMock<test::MotionModelNoEgoMotionMock<MM>> mm{vec, cov};
     mm.delegate();
-    EXPECT_CALL(mm, compensateEgoMotion).Times(steps);
+    EXPECT_CALL(mm, computeEgoMotionCompensationMatrices).Times(steps);
 
     // call UUT
     for (auto i = 0; i < steps; ++i)
     {
-      mm.predict(static_cast<FloatType>(0.1), filter, egoMotion);
+      mm.predict(dt, filter, egoMotion);
     }
 
     for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
     {
-      EXPECT_FLOAT_EQ(mm._vec.at_unsafe(row), expVec.at_unsafe(row));
+      EXPECT_NEAR(mm._vec.at_unsafe(row), expVec.at_unsafe(row), tol);
       for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
       {
-        EXPECT_FLOAT_EQ(mm._cov.at_unsafe(row, col), expCov.at_unsafe(row, col));
+        EXPECT_NEAR(mm._cov.at_unsafe(row, col), expCov.at_unsafe(row, col), tol);
+      }
+    }
+  }
+
+  static void run_with_ego_motion_compensation()
+  {
+    const int  steps = 5;
+    const auto dt    = static_cast<value_type>(0.1);
+    // clang-format off
+    const auto motion   = typename EgoMotionInst::InertialMotion{
+        .v = 2.0, .a = 1.0, .w = 0.1, 
+        .sv = 0.1, .sa = 0.1, .sw = 0.02};
+    const auto geometry = typename EgoMotionInst::Geometry{
+        .width = 1.8, .length = 4.5, .height = 1.5, 
+        .distCog2Ego = 1.0, .distFrontAxle2Ego = 2.5, .distFrontAxle2RearAxle = 2.5};
+    const auto     egoMotion = EgoMotionInst(motion, geometry, dt);
+    // clang-format on
+    FilterTypeInst filter{};
+
+    // clang-format off
+    auto vec = MM::StateVecFromList({10, 2, 0, 0});
+    auto cov = MM::StateCovFromList({
+      {5, 0, 0, 0.0},
+      {0, 1, 0, 0.0},
+      {0, 0, 1, 0.0},
+      {0, 0, 0, 0.1}
+    });
+    auto expVec = MM::StateVecFromList({+9.9604310989, +1.9975004196, -0.5741304159, -0.0999583453});
+    auto expCov = MM::StateCovFromList({
+      {+5.2812027931,  +0.6238771081,  -0.2107825130,  -0.0224393737},
+      {+0.6238771081,  +1.4977520704,  -0.0224399883,  -0.0449210368},
+      {-0.2107825130,  -0.0224399883,  +1.0793461800,  +0.1765742004},
+      {-0.0224393737,  -0.0449210368,  +0.1765742004,  +0.6023279428}
+    });
+    // clang-format on
+
+    init(vec, expVec, cov, expCov, filter);
+    auto tol{MM::StateMatrix::Ones()};
+    if constexpr (std::is_same_v<FilterTypeInst,
+                                 tracking::filter::InformationFilter<
+                                     tracking::math::FullCovarianceMatrixPolicy<typename CovarianceMatrixPolicy_::value_type>>>)
+    {
+      // InformationFilter with full covariance does a two step approach to apply egomotion compensation
+      // causing larger differences compared to the UDU one-step approach due to correlations being ignored
+      tol *= 3 * tolerance(filter);
+      tol.at_unsafe(0, 2) = 0.000101;
+      tol.at_unsafe(2, 0) = tol.at_unsafe(0, 2);
+      tol.at_unsafe(2, 2) = 0.002001;
+      tol.at_unsafe(2, 3) = 5e-5;
+      tol.at_unsafe(3, 2) = tol.at_unsafe(2, 3);
+    }
+    else
+    {
+      tol *= tolerance(filter);
+    }
+
+    // instantiate regular MM (no mocking)
+    MM mm{vec, cov};
+
+    // call UUT
+    for (auto i = 0; i < steps; ++i)
+    {
+      mm.predict(dt, filter, egoMotion);
+    }
+
+    for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
+    {
+      EXPECT_NEAR(mm._vec.at_unsafe(row), expVec.at_unsafe(row), tol.at_unsafe(2, 2));
+      for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
+      {
+        EXPECT_NEAR(mm._cov().at_unsafe(row, col), expCov.at_unsafe(row, col), tol.at_unsafe(row, col));
       }
     }
   }
@@ -78,29 +181,58 @@ struct TestPredictCV
 
 TEST(MotionModelCV, predict_fullCov_kalmanFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::KalmanFilter, float64>::run();
+  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::KalmanFilter>::run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_factoredCov_kalmanFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::KalmanFilter, float64>::run();
+  TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::KalmanFilter>::run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_fullCov_informationFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::CovarianceMatrixFull, tracking::filter::InformationFilter, float64>::run();
+  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::InformationFilter>::run_without_ego_motion_compensation();
 }
 
 TEST(MotionModelCV, predict_factoredCov_informationFilter) // NOLINT
 {
-  TestPredictCV<tracking::math::CovarianceMatrixFactored, tracking::filter::InformationFilter, float64>::run();
+  TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::InformationFilter>::run_without_ego_motion_compensation();
 }
+
+TEST(MotionModelCV, predict_fullCov_kalmanFilter_egoMotion) // NOLINT
+{
+  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::KalmanFilter>::run_with_ego_motion_compensation();
+}
+
+TEST(MotionModelCV, predict_factoredCov_kalmanFilter_egoMotion) // NOLINT
+{
+  TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::KalmanFilter>::run_with_ego_motion_compensation();
+}
+
+TEST(MotionModelCV, predict_fullCov_informationFilter_egoMotion) // NOLINT
+{
+  TestPredictCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::InformationFilter>::run_with_ego_motion_compensation();
+}
+
+TEST(MotionModelCV, predict_factoredCov_informationFilter_egoMotion) // NOLINT
+{
+  TestPredictCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>,
+                tracking::filter::InformationFilter>::run_with_ego_motion_compensation();
+}
+
 
 TEST(MotionModelCV, convertCA_fullCov) // NOLINT
 {
   // clang-format off
-  using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFull, float32>;
-  using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFull, float32>;
+  using MMCV = tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
+  using MMCA = tracking::motion::MotionModelCA<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
   auto vec = MMCA::StateVecFromList({10, 2, 0, 0, 2, 0.1});
   auto cov = MMCA::StateCovFromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
@@ -139,14 +271,14 @@ TEST(MotionModelCV, convertCA_fullCov) // NOLINT
   EXPECT_FLOAT_EQ(caFull.at_unsafe(MMCA::VY, MMCA::VX), cvFull.at_unsafe(MMCV::VY, MMCV::VX));
   EXPECT_FLOAT_EQ(caFull.at_unsafe(MMCA::VY, MMCA::Y),  cvFull.at_unsafe(MMCV::VY, MMCV::Y));
   EXPECT_FLOAT_EQ(caFull.at_unsafe(MMCA::VY, MMCA::VY), cvFull.at_unsafe(MMCV::VY, MMCV::VY));
-  // clang-format on}
+  // clang-format on
 }
 
 TEST(MotionModelCV, convertCA_facCov) // NOLINT
 {
   // clang-format off
-  using MMCV = tracking::motion::MotionModelCV<tracking::math::CovarianceMatrixFactored, float32>;
-  using MMCA = tracking::motion::MotionModelCA<tracking::math::CovarianceMatrixFactored, float32>;
+  using MMCV = tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>>;
+  using MMCA = tracking::motion::MotionModelCA<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>>;
   auto vec = MMCA::StateVecFromList({10, 2, 0, 0, 2, 0.1});
   auto cov = MMCA::StateCovFromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},

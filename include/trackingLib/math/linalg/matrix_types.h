@@ -11,7 +11,7 @@ namespace math
 
 /// \brief Specifies the memory layout order for matrix storage
 ///
-/// This enum controls whether matrices store elements in row-major order
+/// This enum controls whether matrixes store elements in row-major order
 /// (elements of a row are contiguous in memory) or column-major order
 /// (elements of a column are contiguous in memory).
 ///
@@ -30,7 +30,7 @@ enum class RowColumnOrder
 
 /// \brief Specifies whether a triangular matrix is upper or lower triangular
 ///
-/// This enum is used to specify the triangular structure of matrices,
+/// This enum is used to specify the triangular structure of matrixes,
 /// particularly for TriangularMatrix specializations.
 ///
 /// \see TriangularMatrix for usage in template parameters
