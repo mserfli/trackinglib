@@ -11,6 +11,8 @@
 [![Doxygen](https://img.shields.io/badge/Doxygen-latest-blue)](https://www.doxygen.nl/)
 [![lcov](https://img.shields.io/badge/lcov-latest-blue)](https://github.com/linux-test-project/lcov)
 
+[![Build and Test](https://github.com/yourusername/trackinglib/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/yourusername/trackinglib/actions/workflows/build-and-test.yml)
+
 Academic C++ header-only library for object tracking using Kalman filter variants.
 
 ## Architecture
@@ -124,6 +126,10 @@ doxygen
 ./report_coverage.sh
 # Open build_cov/coverage/index.html in your browser
 ```
+
+## Coverage Summary
+
+[![Coverage Status](https://img.shields.io/badge/Coverage-XX%25-green)](https://yourusername.github.io/trackinglib/coverage/)
 
 ## License
 
