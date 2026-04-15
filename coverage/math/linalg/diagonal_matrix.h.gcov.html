@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - lcov.info - math/linalg/diagonal_matrix.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - diagonal_matrix.h<span style="font-size: 80%;"> (source / <a href="diagonal_matrix.h.func-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-04-15 22:13:33</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">-</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : #ifndef EDCA948E_6A98_4AF3_8A01_916736E1577B</span>
+<span id="L2"><span class="lineNum">       2</span>              : #define EDCA948E_6A98_4AF3_8A01_916736E1577B</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : #include &quot;base/first_include.h&quot; // IWYU pragma: keep</span>
+<span id="L5"><span class="lineNum">       5</span>              : #include &quot;math/linalg/errors.h&quot;</span>
+<span id="L6"><span class="lineNum">       6</span>              : #include &quot;math/linalg/matrix_io.h&quot;</span>
+<span id="L7"><span class="lineNum">       7</span>              : #include &lt;initializer_list&gt;</span>
+<span id="L8"><span class="lineNum">       8</span>              : </span>
+<span id="L9"><span class="lineNum">       9</span>              : namespace tracking</span>
+<span id="L10"><span class="lineNum">      10</span>              : {</span>
+<span id="L11"><span class="lineNum">      11</span>              : namespace math</span>
+<span id="L12"><span class="lineNum">      12</span>              : {</span>
+<span id="L13"><span class="lineNum">      13</span>              : </span>
+<span id="L14"><span class="lineNum">      14</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L15"><span class="lineNum">      15</span>              : class Matrix;</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
+<span id="L18"><span class="lineNum">      18</span>              : class SquareMatrix;</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : class TriangularMatrix;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : class Vector;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : // TODO(matthias): add interface contract</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : /// \brief A diagonal matrix that stores only the diagonal elements for memory efficiency.</span>
+<span id="L29"><span class="lineNum">      29</span>              : ///</span>
+<span id="L30"><span class="lineNum">      30</span>              : /// This class represents diagonal matrixes where only the diagonal elements are stored</span>
+<span id="L31"><span class="lineNum">      31</span>              : /// and manipulated. All off-diagonal elements are implicitly zero. Provides optimized</span>
+<span id="L32"><span class="lineNum">      32</span>              : /// operations for diagonal-specific computations like inversion and multiplication.</span>
+<span id="L33"><span class="lineNum">      33</span>              : ///</span>
+<span id="L34"><span class="lineNum">      34</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L35"><span class="lineNum">      35</span>              : /// \tparam Size_ The dimension of the diagonal matrix (compile-time constant)</span>
+<span id="L36"><span class="lineNum">      36</span>              : ///</span>
+<span id="L37"><span class="lineNum">      37</span>              : /// \note Memory efficient: stores only Size_ elements instead of Size_²</span>
+<span id="L38"><span class="lineNum">      38</span>              : /// \note All operations are O(Size_) instead of O(Size_²) for general matrixes</span>
+<span id="L39"><span class="lineNum">      39</span>              : ///</span>
+<span id="L40"><span class="lineNum">      40</span>              : /// \see SquareMatrix for general square matrix operations</span>
+<span id="L41"><span class="lineNum">      41</span>              : /// \see TriangularMatrix for triangular matrix operations</span>
+<span id="L42"><span class="lineNum">      42</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC tlaBgGNC">         399 : class DiagonalMatrix TEST_REMOVE_FINAL</span></span>
+<span id="L44"><span class="lineNum">      44</span>              : {</span>
+<span id="L45"><span class="lineNum">      45</span>              : public:</span>
+<span id="L46"><span class="lineNum">      46</span>              :   // rule of 5 declarations</span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">           2 :   DiagonalMatrix()                                             = default;</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         311 :   DiagonalMatrix(const DiagonalMatrix&amp; other)                  = default;</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         111 :   DiagonalMatrix(DiagonalMatrix&amp;&amp;) noexcept                    = default;</span></span>
+<span id="L50"><span class="lineNum">      50</span>              :   auto operator=(const DiagonalMatrix&amp;) -&gt; DiagonalMatrix&amp;     = default;</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">          28 :   auto operator=(DiagonalMatrix&amp;&amp;) noexcept -&gt; DiagonalMatrix&amp; = default;</span></span>
+<span id="L52"><span class="lineNum">      52</span>              : </span>
+<span id="L53"><span class="lineNum">      53</span>              :   /// \brief Construct an identity diagonal matrix.</span>
+<span id="L54"><span class="lineNum">      54</span>              :   ///</span>
+<span id="L55"><span class="lineNum">      55</span>              :   /// Creates a diagonal matrix with ones on the diagonal (identity matrix).</span>
+<span id="L56"><span class="lineNum">      56</span>              :   ///</span>
+<span id="L57"><span class="lineNum">      57</span>              :   /// \return DiagonalMatrix An identity matrix with ones on the diagonal</span>
+<span id="L58"><span class="lineNum">      58</span>              :   ///</span>
+<span id="L59"><span class="lineNum">      59</span>              :   /// \note This is equivalent to a diagonal matrix with all diagonal elements equal to 1</span>
+<span id="L60"><span class="lineNum">      60</span>              :   [[nodiscard]] static auto Identity() -&gt; DiagonalMatrix;</span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span>              :   /// \brief Set the diagonal matrix to identity in-place.</span>
+<span id="L63"><span class="lineNum">      63</span>              :   ///</span>
+<span id="L64"><span class="lineNum">      64</span>              :   /// Modifies the diagonal elements to all be 1, creating an identity matrix.</span>
+<span id="L65"><span class="lineNum">      65</span>              :   ///</span>
+<span id="L66"><span class="lineNum">      66</span>              :   /// \note This operation modifies the matrix in-place and does not change its size</span>
+<span id="L67"><span class="lineNum">      67</span>              :   void setIdentity();</span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span>              :   /// \brief Creates a DiagonalMatrix from a flat initializer list</span>
+<span id="L70"><span class="lineNum">      70</span>              :   ///</span>
+<span id="L71"><span class="lineNum">      71</span>              :   /// This function creates a diagonal matrix where the diagonal elements are taken from</span>
+<span id="L72"><span class="lineNum">      72</span>              :   /// a flat initializer list. The list size must exactly match the matrix dimension.</span>
+<span id="L73"><span class="lineNum">      73</span>              :   ///</span>
+<span id="L74"><span class="lineNum">      74</span>              :   /// \param[in] list Initializer list containing the diagonal values</span>
+<span id="L75"><span class="lineNum">      75</span>              :   /// \return DiagonalMatrix with the specified diagonal elements</span>
+<span id="L76"><span class="lineNum">      76</span>              :   /// \note The list size must equal Size_, otherwise assertion fails</span>
+<span id="L77"><span class="lineNum">      77</span>              :   [[nodiscard]] static auto FromList(const std::initializer_list&lt;ValueType_&gt;&amp; list) -&gt; DiagonalMatrix;</span>
+<span id="L78"><span class="lineNum">      78</span>              : </span>
+<span id="L79"><span class="lineNum">      79</span>              :   /// \brief Creates a DiagonalMatrix from the diagonal of a nested initializer list</span>
+<span id="L80"><span class="lineNum">      80</span>              :   ///</span>
+<span id="L81"><span class="lineNum">      81</span>              :   /// This function creates a diagonal matrix by extracting the diagonal elements from</span>
+<span id="L82"><span class="lineNum">      82</span>              :   /// a nested initializer list representing a full matrix. Only the diagonal elements</span>
+<span id="L83"><span class="lineNum">      83</span>              :   /// (where row index equals column index) are used.</span>
+<span id="L84"><span class="lineNum">      84</span>              :   ///</span>
+<span id="L85"><span class="lineNum">      85</span>              :   /// \param[in] list Nested initializer list representing a square matrix</span>
+<span id="L86"><span class="lineNum">      86</span>              :   /// \return DiagonalMatrix containing the diagonal elements from the input list</span>
+<span id="L87"><span class="lineNum">      87</span>              :   /// \note The outer list size must equal Size_, and each inner list size must equal Size_</span>
+<span id="L88"><span class="lineNum">      88</span>              :   [[nodiscard]] static auto FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) -&gt; DiagonalMatrix;</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              :   /// \brief Set a diagonal block matrix at given position</span>
+<span id="L91"><span class="lineNum">      91</span>              :   /// \tparam SrcSize_    Size_ of the source block</span>
+<span id="L92"><span class="lineNum">      92</span>              :   /// \tparam SrcCount   Number of diagonal elements to copy from source</span>
+<span id="L93"><span class="lineNum">      93</span>              :   /// \tparam SrcIdxBeg  Begin diagonal element index in source</span>
+<span id="L94"><span class="lineNum">      94</span>              :   /// \tparam DstIdxBeg  Begin diagonal element index in dest</span>
+<span id="L95"><span class="lineNum">      95</span>              :   /// \param[in] block   Source block matrix to copy from</span>
+<span id="L96"><span class="lineNum">      96</span>              :   template &lt;sint32 SrcSize_, sint32 SrcCount_, sint32 SrcIdxBeg_, sint32 DstIdxBeg_&gt;</span>
+<span id="L97"><span class="lineNum">      97</span>              :   void setBlock(const DiagonalMatrix&lt;ValueType_, SrcSize_&gt;&amp; block);</span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span>              :   /// \brief Multiplication with generic matrix: D * Matrix</span>
+<span id="L100"><span class="lineNum">     100</span>              :   /// \tparam Cols_</span>
+<span id="L101"><span class="lineNum">     101</span>              :   /// \tparam IsRowMajor_</span>
+<span id="L102"><span class="lineNum">     102</span>              :   /// \param[in] mat</span>
+<span id="L103"><span class="lineNum">     103</span>              :   /// \return Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor_&gt;</span>
+<span id="L104"><span class="lineNum">     104</span>              :   template &lt;sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L105"><span class="lineNum">     105</span>              :   [[nodiscard]] auto operator*(const Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor_&gt;&amp; mat) const</span>
+<span id="L106"><span class="lineNum">     106</span>              :       -&gt; Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor_&gt;;</span>
+<span id="L107"><span class="lineNum">     107</span>              : </span>
+<span id="L108"><span class="lineNum">     108</span>              :   /// \brief Multiplication with triangular matrix: D * Matrix</span>
+<span id="L109"><span class="lineNum">     109</span>              :   /// \tparam isLower_</span>
+<span id="L110"><span class="lineNum">     110</span>              :   /// \tparam isRowMajor_</span>
+<span id="L111"><span class="lineNum">     111</span>              :   /// \param[in] mat  A triangular matrix</span>
+<span id="L112"><span class="lineNum">     112</span>              :   /// \return TriangularMatrix&lt;ValueType_, Size_, isLower_, isRowMajor_&gt;</span>
+<span id="L113"><span class="lineNum">     113</span>              :   template &lt;bool IsLower_, bool IsRowMajor_&gt;</span>
+<span id="L114"><span class="lineNum">     114</span>              :   [[nodiscard]] auto operator*(const TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;&amp; mat) const</span>
+<span id="L115"><span class="lineNum">     115</span>              :       -&gt; TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;;</span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span>              :   /// \brief Multiplication with diagonal matrix: D * Matrix</span>
+<span id="L118"><span class="lineNum">     118</span>              :   /// \param[in] mat  A diagonal matrix</span>
+<span id="L119"><span class="lineNum">     119</span>              :   /// \return DiagonalMatrix&lt;ValueType_, Size_&gt;</span>
+<span id="L120"><span class="lineNum">     120</span>              :   [[nodiscard]] auto operator*(const DiagonalMatrix&amp; mat) const -&gt; DiagonalMatrix;</span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span>              :   /// \brief Multiplication with scalar: D * scalar</span>
+<span id="L123"><span class="lineNum">     123</span>              :   /// \param[in] scalar  A scalar value</span>
+<span id="L124"><span class="lineNum">     124</span>              :   /// \return DiagonalMatrix&lt;ValueType_, Size_&gt;</span>
+<span id="L125"><span class="lineNum">     125</span>              :   [[nodiscard]] auto operator*(const ValueType_ scalar) const -&gt; DiagonalMatrix;</span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span>              :   /// \brief Inplace Multiplication with diagonal matrix: D * Matrix</span>
+<span id="L128"><span class="lineNum">     128</span>              :   /// \param[in] mat  A diagonal matrix</span>
+<span id="L129"><span class="lineNum">     129</span>              :   void operator*=(const DiagonalMatrix&amp; mat);</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              :   /// \brief Inplace Multiplication with scalar: D * scalar</span>
+<span id="L132"><span class="lineNum">     132</span>              :   /// \param[in] scalar  A scalar value</span>
+<span id="L133"><span class="lineNum">     133</span>              :   void operator*=(const ValueType_ scalar);</span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span>              :   /// \brief Element access to a scalar diagonal value</span>
+<span id="L136"><span class="lineNum">     136</span>              :   /// \param[in] idx  Row/Col index of the element</span>
+<span id="L137"><span class="lineNum">     137</span>              :   /// \return tl::expected&lt;std::reference_wrapper&lt;ValueType_&gt;, Errors&gt;   either the reference at (idx) or an Error descriptor</span>
+<span id="L138"><span class="lineNum">     138</span>              :   [[nodiscard]] auto operator[](const sint32 idx) -&gt; tl::expected&lt;std::reference_wrapper&lt;ValueType_&gt;, Errors&gt;</span>
+<span id="L139"><span class="lineNum">     139</span>              :   { // implemented here to solve cyclic includes</span>
+<span id="L140"><span class="lineNum">     140</span>              :     if (!(idx &gt;= 0 &amp;&amp; idx &lt; Size_))</span>
+<span id="L141"><span class="lineNum">     141</span>              :     {</span>
+<span id="L142"><span class="lineNum">     142</span>              :       return tl::unexpected&lt;Errors&gt;{Errors::invalid_access_idx};</span>
+<span id="L143"><span class="lineNum">     143</span>              :     }</span>
+<span id="L144"><span class="lineNum">     144</span>              :     return at_unsafe(idx);</span>
+<span id="L145"><span class="lineNum">     145</span>              :   }</span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span>              :   /// \brief Element read-only access to a scalar diagonal value</span>
+<span id="L148"><span class="lineNum">     148</span>              :   /// \param[in] idx  Row/Col index of the element</span>
+<span id="L149"><span class="lineNum">     149</span>              :   /// \return tl::expected&lt;ValueType_, Errors&gt;   either the value at (idx) or an Error descriptor</span>
+<span id="L150"><span class="lineNum">     150</span>              :   [[nodiscard]] auto operator[](const sint32 idx) const -&gt; tl::expected&lt;ValueType_, Errors&gt;</span>
+<span id="L151"><span class="lineNum">     151</span>              :   { // implemented here to solve cyclic includes</span>
+<span id="L152"><span class="lineNum">     152</span>              :     if (!(idx &gt;= 0 &amp;&amp; idx &lt; Size_))</span>
+<span id="L153"><span class="lineNum">     153</span>              :     {</span>
+<span id="L154"><span class="lineNum">     154</span>              :       return tl::unexpected&lt;Errors&gt;{Errors::invalid_access_idx};</span>
+<span id="L155"><span class="lineNum">     155</span>              :     }</span>
+<span id="L156"><span class="lineNum">     156</span>              :     return at_unsafe(idx);</span>
+<span id="L157"><span class="lineNum">     157</span>              :   }</span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span>              :   /// \brief Compute the inverse of the diagonal matrix.</span>
+<span id="L160"><span class="lineNum">     160</span>              :   ///</span>
+<span id="L161"><span class="lineNum">     161</span>              :   /// Calculates the inverse by taking the reciprocal of each diagonal element.</span>
+<span id="L162"><span class="lineNum">     162</span>              :   /// The result is also a diagonal matrix.</span>
+<span id="L163"><span class="lineNum">     163</span>              :   ///</span>
+<span id="L164"><span class="lineNum">     164</span>              :   /// \return DiagonalMatrix The inverse matrix such that D * D^(-1) = I</span>
+<span id="L165"><span class="lineNum">     165</span>              :   ///</span>
+<span id="L166"><span class="lineNum">     166</span>              :   /// \warning Fails if any diagonal element is zero (singular matrix)</span>
+<span id="L167"><span class="lineNum">     167</span>              :   /// \note O(Size_) complexity, very efficient for diagonal matrixes</span>
+<span id="L168"><span class="lineNum">     168</span>              :   [[nodiscard]] auto inverse() const -&gt; DiagonalMatrix;</span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span>              :   /// \brief Compute the inverse in-place.</span>
+<span id="L171"><span class="lineNum">     171</span>              :   ///</span>
+<span id="L172"><span class="lineNum">     172</span>              :   /// Modifies this matrix to contain its inverse by taking reciprocals of diagonal elements.</span>
+<span id="L173"><span class="lineNum">     173</span>              :   ///</span>
+<span id="L174"><span class="lineNum">     174</span>              :   /// \warning Fails if any diagonal element is zero (singular matrix)</span>
+<span id="L175"><span class="lineNum">     175</span>              :   /// \note More memory efficient than the const version for large matrixes</span>
+<span id="L176"><span class="lineNum">     176</span>              :   void inverse();</span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span>              :   /// \brief Calculate the trace of the diagonal matrix.</span>
+<span id="L179"><span class="lineNum">     179</span>              :   ///</span>
+<span id="L180"><span class="lineNum">     180</span>              :   /// Computes the sum of all diagonal elements of the matrix.</span>
+<span id="L181"><span class="lineNum">     181</span>              :   /// The trace is defined as the sum of elements A_ii for i = 1 to n.</span>
+<span id="L182"><span class="lineNum">     182</span>              :   ///</span>
+<span id="L183"><span class="lineNum">     183</span>              :   /// \return ValueType_ The trace of the matrix(sum of diagonal elements)</span>
+<span id="L184"><span class="lineNum">     184</span>              :   [[nodiscard]] auto trace() const -&gt; ValueType_;</span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span>              :   /// \brief Calculate the determinant of the diagonal matrix.</span>
+<span id="L187"><span class="lineNum">     187</span>              :   ///</span>
+<span id="L188"><span class="lineNum">     188</span>              :   /// Computes the determinant as the product of the diagonal elements.</span>
+<span id="L189"><span class="lineNum">     189</span>              :   ///</span>
+<span id="L190"><span class="lineNum">     190</span>              :   /// \return ValueType_ The determinant of the matrix</span>
+<span id="L191"><span class="lineNum">     191</span>              :   /// \note Time complexity: O(n) where n is the matrix dimension</span>
+<span id="L192"><span class="lineNum">     192</span>              :   /// \note For singular matrixes, the determinant will be zero or very close to zero</span>
+<span id="L193"><span class="lineNum">     193</span>              :   [[nodiscard]] auto determinant() const -&gt; ValueType_;</span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span>              :   /// \brief Check if the diagonal matrix is positive definite.</span>
+<span id="L196"><span class="lineNum">     196</span>              :   ///</span>
+<span id="L197"><span class="lineNum">     197</span>              :   /// A diagonal matrix is positive definite if all diagonal elements are positive.</span>
+<span id="L198"><span class="lineNum">     198</span>              :   ///</span>
+<span id="L199"><span class="lineNum">     199</span>              :   /// \return true if all diagonal elements are &gt; 0, false otherwise</span>
+<span id="L200"><span class="lineNum">     200</span>              :   ///</span>
+<span id="L201"><span class="lineNum">     201</span>              :   /// \note For diagonal matrixes, positive definiteness is equivalent to all elements &gt; 0</span>
+<span id="L202"><span class="lineNum">     202</span>              :   [[nodiscard]] auto isPositiveDefinite() const -&gt; bool;</span>
+<span id="L203"><span class="lineNum">     203</span>              : </span>
+<span id="L204"><span class="lineNum">     204</span>              :   /// \brief Check if the diagonal matrix is positive semi-definite.</span>
+<span id="L205"><span class="lineNum">     205</span>              :   ///</span>
+<span id="L206"><span class="lineNum">     206</span>              :   /// A diagonal matrix is positive semi-definite if all diagonal elements are non-negative.</span>
+<span id="L207"><span class="lineNum">     207</span>              :   ///</span>
+<span id="L208"><span class="lineNum">     208</span>              :   /// \return true if all diagonal elements are &gt;= 0, false otherwise</span>
+<span id="L209"><span class="lineNum">     209</span>              :   ///</span>
+<span id="L210"><span class="lineNum">     210</span>              :   /// \note For diagonal matrixes, positive semi-definiteness means all elements &gt;= 0</span>
+<span id="L211"><span class="lineNum">     211</span>              :   [[nodiscard]] auto isPositiveSemiDefinite() const -&gt; bool;</span>
+<span id="L212"><span class="lineNum">     212</span>              : </span>
+<span id="L213"><span class="lineNum">     213</span>              :   //////////////////////////////////////////////////</span>
+<span id="L214"><span class="lineNum">     214</span>              :   // unsafe access operators  ---&gt;</span>
+<span id="L215"><span class="lineNum">     215</span>              :   /// \brief Element read-only access to a scalar vector value</span>
+<span id="L216"><span class="lineNum">     216</span>              :   /// \param[in] idx  Row index of the element</span>
+<span id="L217"><span class="lineNum">     217</span>              :   /// \return ValueType_  Scalar vector value</span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       10101 :   [[nodiscard]] auto at_unsafe(sint32 idx) const -&gt; ValueType_ { return _data.at_unsafe(idx); }</span></span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span>              :   /// \brief Element access to a scalar vector value</span>
+<span id="L221"><span class="lineNum">     221</span>              :   /// \param[in] idx  Row index of the element</span>
+<span id="L222"><span class="lineNum">     222</span>              :   /// \return ValueType_&amp;  Reference to the scalar vector value</span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">        8480 :   [[nodiscard]] auto at_unsafe(sint32 idx) -&gt; ValueType_&amp; { return _data.at_unsafe(idx); }</span></span>
+<span id="L224"><span class="lineNum">     224</span>              :   // &lt;---</span>
+<span id="L225"><span class="lineNum">     225</span>              : </span>
+<span id="L226"><span class="lineNum">     226</span>              :   // clang-format off</span>
+<span id="L227"><span class="lineNum">     227</span>              : TEST_REMOVE_PRIVATE:</span>
+<span id="L228"><span class="lineNum">     228</span>              :   ; // workaround for correct indentation</span>
+<span id="L229"><span class="lineNum">     229</span>              :   // clang-format on</span>
+<span id="L230"><span class="lineNum">     230</span>              :   Vector&lt;ValueType_, Size_&gt; _data{};</span>
+<span id="L231"><span class="lineNum">     231</span>              : };</span>
+<span id="L232"><span class="lineNum">     232</span>              : </span>
+<span id="L233"><span class="lineNum">     233</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L234"><span class="lineNum">     234</span>              : [[nodiscard]] auto operator*(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; mat,</span>
+<span id="L235"><span class="lineNum">     235</span>              :                              const DiagonalMatrix&lt;ValueType_, Cols_&gt;&amp; diag) -&gt; Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;;</span>
+<span id="L236"><span class="lineNum">     236</span>              : </span>
+<span id="L237"><span class="lineNum">     237</span>              : } // namespace math</span>
+<span id="L238"><span class="lineNum">     238</span>              : } // namespace tracking</span>
+<span id="L239"><span class="lineNum">     239</span>              : </span>
+<span id="L240"><span class="lineNum">     240</span>              : #endif // EDCA948E_6A98_4AF3_8A01_916736E1577B</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

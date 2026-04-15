@@ -1,0 +1,1 @@
+genhtml --demangle-cpp --no-branch-coverage --ignore-errors mismatch --legend -o coverage lcov.info

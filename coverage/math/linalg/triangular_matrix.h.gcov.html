@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - lcov.info - math/linalg/triangular_matrix.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - triangular_matrix.h<span style="font-size: 80%;"> (source / <a href="triangular_matrix.h.func-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-04-15 22:13:33</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : #ifndef BC7FD90F_FBB7_481C_89C4_89BEE41309C5</span>
+<span id="L2"><span class="lineNum">       2</span>              : #define BC7FD90F_FBB7_481C_89C4_89BEE41309C5</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : #include &quot;base/first_include.h&quot;        // IWYU pragma: keep</span>
+<span id="L5"><span class="lineNum">       5</span>              : #include &quot;math/linalg/square_matrix.h&quot; // IWYU pragma: keep</span>
+<span id="L6"><span class="lineNum">       6</span>              : #include &lt;initializer_list&gt;</span>
+<span id="L7"><span class="lineNum">       7</span>              : </span>
+<span id="L8"><span class="lineNum">       8</span>              : namespace tracking</span>
+<span id="L9"><span class="lineNum">       9</span>              : {</span>
+<span id="L10"><span class="lineNum">      10</span>              : namespace math</span>
+<span id="L11"><span class="lineNum">      11</span>              : {</span>
+<span id="L12"><span class="lineNum">      12</span>              : </span>
+<span id="L13"><span class="lineNum">      13</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L14"><span class="lineNum">      14</span>              : class Matrix;</span>
+<span id="L15"><span class="lineNum">      15</span>              : </span>
+<span id="L16"><span class="lineNum">      16</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L17"><span class="lineNum">      17</span>              : class DiagonalMatrix;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : // TODO(matthias): add interface contract</span>
+<span id="L20"><span class="lineNum">      20</span>              : // TODO(matthias): use optimized menory storage for triangular matrixes</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : /// \brief A triangular matrix specialization that stores only the upper or lower triangular part.</span>
+<span id="L23"><span class="lineNum">      23</span>              : ///</span>
+<span id="L24"><span class="lineNum">      24</span>              : /// This class represents triangular matrixes (upper or lower) and provides operations</span>
+<span id="L25"><span class="lineNum">      25</span>              : /// optimized for triangular structure. It inherits from SquareMatrix but restricts</span>
+<span id="L26"><span class="lineNum">      26</span>              : /// access to maintain triangular properties. Memory usage is not yet optimized and</span>
+<span id="L27"><span class="lineNum">      27</span>              : /// still stores the full square matrix internally.</span>
+<span id="L28"><span class="lineNum">      28</span>              : ///</span>
+<span id="L29"><span class="lineNum">      29</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L30"><span class="lineNum">      30</span>              : /// \tparam Size_ The dimension of the triangular matrix (compile-time constant)</span>
+<span id="L31"><span class="lineNum">      31</span>              : /// \tparam IsLower_ Triangular type flag (true for lower triangular, false for upper triangular)</span>
+<span id="L32"><span class="lineNum">      32</span>              : /// \tparam IsRowMajor_ Storage layout flag (true for row-major, false for column-major)</span>
+<span id="L33"><span class="lineNum">      33</span>              : ///</span>
+<span id="L34"><span class="lineNum">      34</span>              : /// \note Currently uses full square matrix storage. Future optimization should use</span>
+<span id="L35"><span class="lineNum">      35</span>              : ///       triangular storage to save memory (Size_*(Size_+1)/2 elements instead of Size_^2).</span>
+<span id="L36"><span class="lineNum">      36</span>              : ///</span>
+<span id="L37"><span class="lineNum">      37</span>              : /// \see SquareMatrix for general square matrix operations</span>
+<span id="L38"><span class="lineNum">      38</span>              : /// \see DiagonalMatrix for diagonal matrix operations</span>
+<span id="L39"><span class="lineNum">      39</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_ = true&gt;</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC tlaBgGNC">        1390 : class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;</span></span>
+<span id="L41"><span class="lineNum">      41</span>              : {</span>
+<span id="L42"><span class="lineNum">      42</span>              : public:</span>
+<span id="L43"><span class="lineNum">      43</span>              :   using BaseSquareMatrix = SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;; ///&lt; type of the parent class</span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span>              :   // unhide ctor of base class to allow implicit call in derived default ctors</span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         155 :   using BaseSquareMatrix::BaseSquareMatrix;</span></span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              :   /// \brief Type of the transposed matrix without changing the memory layout</span>
+<span id="L49"><span class="lineNum">      49</span>              :   using transpose_type = TriangularMatrix&lt;ValueType_, Size_, !IsLower_, !IsRowMajor_&gt;;</span>
+<span id="L50"><span class="lineNum">      50</span>              : </span>
+<span id="L51"><span class="lineNum">      51</span>              :   /// \brief Construct a new Triangular Matrix object</span>
+<span id="L52"><span class="lineNum">      52</span>              :   /// \param[in] other</span>
+<span id="L53"><span class="lineNum">      53</span>              :   explicit TriangularMatrix(const BaseSquareMatrix&amp; other);</span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span>              :   /// \brief Move construct a new Triangular Matrix object</span>
+<span id="L56"><span class="lineNum">      56</span>              :   /// \param[in] other</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">         342 :   explicit TriangularMatrix(BaseSquareMatrix&amp;&amp; other) noexcept</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         304 :       : BaseSquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts</span></span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span>              :   /// \brief Construct an identity triangular matrix.</span>
+<span id="L62"><span class="lineNum">      62</span>              :   ///</span>
+<span id="L63"><span class="lineNum">      63</span>              :   /// Creates a triangular matrix with ones on the diagonal and zeros elsewhere,</span>
+<span id="L64"><span class="lineNum">      64</span>              :   /// maintaining the triangular structure constraint.</span>
+<span id="L65"><span class="lineNum">      65</span>              :   ///</span>
+<span id="L66"><span class="lineNum">      66</span>              :   /// \return TriangularMatrix An identity matrix respecting triangular constraints</span>
+<span id="L67"><span class="lineNum">      67</span>              :   ///</span>
+<span id="L68"><span class="lineNum">      68</span>              :   /// \note For unit triangular matrixes, this creates a matrix with ones on the diagonal</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          88 :   [[nodiscard]] static auto Identity() -&gt; TriangularMatrix { return TriangularMatrix{BaseSquareMatrix::Identity()}; }</span></span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span>              :   /// \brief Creates a TriangularMatrix from a nested initializer list</span>
+<span id="L72"><span class="lineNum">      72</span>              :   ///</span>
+<span id="L73"><span class="lineNum">      73</span>              :   /// This function constructs a TriangularMatrix from a nested initializer list.</span>
+<span id="L74"><span class="lineNum">      74</span>              :   /// The triangular structure (upper or lower) is determined by the IsLower_ template parameter.</span>
+<span id="L75"><span class="lineNum">      75</span>              :   ///</span>
+<span id="L76"><span class="lineNum">      76</span>              :   /// \param[in] list Nested initializer list representing the triangular matrix</span>
+<span id="L77"><span class="lineNum">      77</span>              :   /// \return TriangularMatrix instance initialized with the provided values</span>
+<span id="L78"><span class="lineNum">      78</span>              :   /// \see TriangularFromSquare() for creating from square matrixes</span>
+<span id="L79"><span class="lineNum">      79</span>              :   /// \see SquareFromList() for the underlying conversion</span>
+<span id="L80"><span class="lineNum">      80</span>              :   [[nodiscard]] static auto FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) -&gt; TriangularMatrix;</span>
+<span id="L81"><span class="lineNum">      81</span>              : </span>
+<span id="L82"><span class="lineNum">      82</span>              :   /// \brief Set a triangular block within this triangular matrix.</span>
+<span id="L83"><span class="lineNum">      83</span>              :   ///</span>
+<span id="L84"><span class="lineNum">      84</span>              :   /// Copies a triangular block from the source matrix to the specified position</span>
+<span id="L85"><span class="lineNum">      85</span>              :   /// in this matrix, maintaining triangular structure constraints.</span>
+<span id="L86"><span class="lineNum">      86</span>              :   ///</span>
+<span id="L87"><span class="lineNum">      87</span>              :   /// \tparam SrcSize Size of the source triangular block</span>
+<span id="L88"><span class="lineNum">      88</span>              :   /// \tparam SrcCount Number of diagonal elements to copy</span>
+<span id="L89"><span class="lineNum">      89</span>              :   /// \tparam SrcRowBeg Starting row index in the source block</span>
+<span id="L90"><span class="lineNum">      90</span>              :   /// \tparam SrcColBeg Starting column index in the source block</span>
+<span id="L91"><span class="lineNum">      91</span>              :   /// \tparam DstRowBeg Starting row index in destination (this matrix)</span>
+<span id="L92"><span class="lineNum">      92</span>              :   /// \tparam DstColBeg Starting column index in destination (this matrix)</span>
+<span id="L93"><span class="lineNum">      93</span>              :   /// \param[in] block The source triangular block matrix to copy from</span>
+<span id="L94"><span class="lineNum">      94</span>              :   ///</span>
+<span id="L95"><span class="lineNum">      95</span>              :   /// \note All indices are compile-time constants for efficiency</span>
+<span id="L96"><span class="lineNum">      96</span>              :   template &lt;sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg&gt;</span>
+<span id="L97"><span class="lineNum">      97</span>              :   void setBlock(const TriangularMatrix&lt;ValueType_, SrcSize, IsLower_, IsRowMajor_&gt;&amp; block);</span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span>              :   // TODO(matthias): add setBlock with params defined at runtime</span>
+<span id="L100"><span class="lineNum">     100</span>              : </span>
+<span id="L101"><span class="lineNum">     101</span>              :   /// \brief Multiply triangular matrix with a general matrix.</span>
+<span id="L102"><span class="lineNum">     102</span>              :   ///</span>
+<span id="L103"><span class="lineNum">     103</span>              :   /// Performs matrix multiplication T * M where T is this triangular matrix</span>
+<span id="L104"><span class="lineNum">     104</span>              :   /// and M is a general matrix. Optimized for triangular structure.</span>
+<span id="L105"><span class="lineNum">     105</span>              :   ///</span>
+<span id="L106"><span class="lineNum">     106</span>              :   /// \tparam Cols_ Number of columns in the input matrix</span>
+<span id="L107"><span class="lineNum">     107</span>              :   /// \tparam IsRowMajor2_ Storage layout of the input matrix</span>
+<span id="L108"><span class="lineNum">     108</span>              :   /// \param[in] mat The matrix to multiply with (right-hand side)</span>
+<span id="L109"><span class="lineNum">     109</span>              :   /// \return Matrix The result of the multiplication T * M</span>
+<span id="L110"><span class="lineNum">     110</span>              :   ///</span>
+<span id="L111"><span class="lineNum">     111</span>              :   /// \note Complexity is O(Size_² * Cols_), optimized for triangular operations</span>
+<span id="L112"><span class="lineNum">     112</span>              :   template &lt;sint32 Cols_, bool IsRowMajor2_&gt;</span>
+<span id="L113"><span class="lineNum">     113</span>              :   [[nodiscard]] auto operator*(const Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt;&amp; mat) const</span>
+<span id="L114"><span class="lineNum">     114</span>              :       -&gt; Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt;;</span>
+<span id="L115"><span class="lineNum">     115</span>              : </span>
+<span id="L116"><span class="lineNum">     116</span>              :   /// \brief Multiplication with triangular matrix: Tria * Matrix</span>
+<span id="L117"><span class="lineNum">     117</span>              :   /// \param[in] mat  A triangular matrix</span>
+<span id="L118"><span class="lineNum">     118</span>              :   /// \return TriangularMatrix&lt;value_type, Size, isLower&gt;</span>
+<span id="L119"><span class="lineNum">     119</span>              :   [[nodiscard]] auto operator*(const TriangularMatrix&amp; mat) const -&gt; TriangularMatrix;</span>
+<span id="L120"><span class="lineNum">     120</span>              : </span>
+<span id="L121"><span class="lineNum">     121</span>              :   /// \brief Multiplication with triangular matrix: Tria * Matrix</span>
+<span id="L122"><span class="lineNum">     122</span>              :   /// \param[in] mat  A triangular matrix</span>
+<span id="L123"><span class="lineNum">     123</span>              :   /// \return SquareMatrix&lt;value_type, Size&gt;</span>
+<span id="L124"><span class="lineNum">     124</span>              :   [[nodiscard]] auto operator*(const TriangularMatrix&lt;ValueType_, Size_, !IsLower_, IsRowMajor_&gt;&amp; mat) const -&gt; BaseSquareMatrix;</span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span>              :   /// \brief Multiplication with diagonal matrix: Tria * Matrix</span>
+<span id="L127"><span class="lineNum">     127</span>              :   /// \param[in] diag  A diagonal matrix</span>
+<span id="L128"><span class="lineNum">     128</span>              :   /// \return TriangularMatrix&lt;value_type, Size, isLower&gt;</span>
+<span id="L129"><span class="lineNum">     129</span>              :   [[nodiscard]] auto operator*(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; diag) const -&gt; TriangularMatrix;</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              :   /// \brief Multiplication with scalar: Tria * scalar</span>
+<span id="L132"><span class="lineNum">     132</span>              :   /// \param[in] scalar  A scalar value</span>
+<span id="L133"><span class="lineNum">     133</span>              :   /// \return TriangularMatrix&lt;value_type, Size, isLower&gt;</span>
+<span id="L134"><span class="lineNum">     134</span>              :   [[nodiscard]] auto operator*(const ValueType_ scalar) const -&gt; TriangularMatrix;</span>
+<span id="L135"><span class="lineNum">     135</span>              : </span>
+<span id="L136"><span class="lineNum">     136</span>              :   /// \brief Inplace Multiplication with scalar: Tria * scalar</span>
+<span id="L137"><span class="lineNum">     137</span>              :   /// \param[in] scalar  A scalar value</span>
+<span id="L138"><span class="lineNum">     138</span>              :   void operator*=(const ValueType_ scalar);</span>
+<span id="L139"><span class="lineNum">     139</span>              : </span>
+<span id="L140"><span class="lineNum">     140</span>              :   /// \brief Element read-only access to a scalar triangular value</span>
+<span id="L141"><span class="lineNum">     141</span>              :   /// \param[in] row  Row index of the element</span>
+<span id="L142"><span class="lineNum">     142</span>              :   /// \param[in] col  Col index of the element</span>
+<span id="L143"><span class="lineNum">     143</span>              :   /// \return value_type  scalar triangular value</span>
+<span id="L144"><span class="lineNum">     144</span>              :   [[nodiscard]] auto operator()(sint32 row, sint32 col) const -&gt; tl::expected&lt;ValueType_, Errors&gt;;</span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span>              :   /// \brief Element access to a scalar triangular value</span>
+<span id="L147"><span class="lineNum">     147</span>              :   /// \param[in] row  Row index of the element</span>
+<span id="L148"><span class="lineNum">     148</span>              :   /// \param[in] col  Col index of the element</span>
+<span id="L149"><span class="lineNum">     149</span>              :   /// \return value_type&amp;  Reference to the scalar triangular value</span>
+<span id="L150"><span class="lineNum">     150</span>              :   [[nodiscard]] auto operator()(sint32 row, sint32 col) -&gt; tl::expected&lt;std::reference_wrapper&lt;ValueType_&gt;, Errors&gt;;</span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span>              :   /// \brief Calculate the transposed matrix without changing the layout</span>
+<span id="L153"><span class="lineNum">     153</span>              :   /// \return const transpose_type&amp;   const reference to same data as Self, but differently interpreted</span>
+<span id="L154"><span class="lineNum">     154</span>              :   [[nodiscard]] auto transpose() const -&gt; const transpose_type&amp;;</span>
+<span id="L155"><span class="lineNum">     155</span>              : </span>
+<span id="L156"><span class="lineNum">     156</span>              :   /// \brief Calculate the transposed matrix without changing the layout</span>
+<span id="L157"><span class="lineNum">     157</span>              :   /// \return transpose_type&amp;   reference to same data as Self, but differently interpreted</span>
+<span id="L158"><span class="lineNum">     158</span>              :   [[nodiscard]] auto transpose() -&gt; transpose_type&amp;;</span>
+<span id="L159"><span class="lineNum">     159</span>              : </span>
+<span id="L160"><span class="lineNum">     160</span>              :   /// \brief Solve the triangular system T*x = b using forward/backward substitution.</span>
+<span id="L161"><span class="lineNum">     161</span>              :   ///</span>
+<span id="L162"><span class="lineNum">     162</span>              :   /// Solves the linear system T*x = b where T is this triangular matrix.</span>
+<span id="L163"><span class="lineNum">     163</span>              :   /// Uses efficient forward substitution for lower triangular or backward</span>
+<span id="L164"><span class="lineNum">     164</span>              :   /// substitution for upper triangular matrixes.</span>
+<span id="L165"><span class="lineNum">     165</span>              :   ///</span>
+<span id="L166"><span class="lineNum">     166</span>              :   /// \tparam Cols_ Number of columns in the right-hand side matrix b</span>
+<span id="L167"><span class="lineNum">     167</span>              :   /// \tparam IsRowMajor2_ Storage layout of the right-hand side matrix</span>
+<span id="L168"><span class="lineNum">     168</span>              :   /// \param[in] b Right-hand side matrix of the equation T*x = b</span>
+<span id="L169"><span class="lineNum">     169</span>              :   /// \return Matrix Solution matrix x such that T*x ≈ b</span>
+<span id="L170"><span class="lineNum">     170</span>              :   ///</span>
+<span id="L171"><span class="lineNum">     171</span>              :   /// \note Complexity is O(Size_² * Cols_), much faster than general matrix solving</span>
+<span id="L172"><span class="lineNum">     172</span>              :   /// \note Assumes the triangular matrix is non-singular</span>
+<span id="L173"><span class="lineNum">     173</span>              :   template &lt;sint32 Cols_, bool IsRowMajor2_&gt;</span>
+<span id="L174"><span class="lineNum">     174</span>              :   [[nodiscard]] auto solve(const Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt;&amp; b) const</span>
+<span id="L175"><span class="lineNum">     175</span>              :       -&gt; Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt;;</span>
+<span id="L176"><span class="lineNum">     176</span>              : </span>
+<span id="L177"><span class="lineNum">     177</span>              :   /// \brief Compute the inverse of the triangular matrix.</span>
+<span id="L178"><span class="lineNum">     178</span>              :   ///</span>
+<span id="L179"><span class="lineNum">     179</span>              :   /// Calculates the inverse using specialized triangular matrix inversion algorithms.</span>
+<span id="L180"><span class="lineNum">     180</span>              :   /// The result maintains the triangular structure.</span>
+<span id="L181"><span class="lineNum">     181</span>              :   ///</span>
+<span id="L182"><span class="lineNum">     182</span>              :   /// \return TriangularMatrix The inverse matrix such that T * T^(-1) = I</span>
+<span id="L183"><span class="lineNum">     183</span>              :   ///</span>
+<span id="L184"><span class="lineNum">     184</span>              :   /// \note More efficient than general matrix inversion due to triangular structure</span>
+<span id="L185"><span class="lineNum">     185</span>              :   /// \note Assumes the matrix is non-singular</span>
+<span id="L186"><span class="lineNum">     186</span>              :   [[nodiscard]] auto inverse() const -&gt; TriangularMatrix;</span>
+<span id="L187"><span class="lineNum">     187</span>              : </span>
+<span id="L188"><span class="lineNum">     188</span>              :   /// \brief Calculate the determinant of the triangular matrix.</span>
+<span id="L189"><span class="lineNum">     189</span>              :   ///</span>
+<span id="L190"><span class="lineNum">     190</span>              :   /// Computes the determinant as the product of the diagonal elements.</span>
+<span id="L191"><span class="lineNum">     191</span>              :   ///</span>
+<span id="L192"><span class="lineNum">     192</span>              :   /// \return ValueType_ The determinant of the matrix</span>
+<span id="L193"><span class="lineNum">     193</span>              :   /// \note Time complexity: O(n) where n is the matrix dimension</span>
+<span id="L194"><span class="lineNum">     194</span>              :   /// \note For singular matrixes, the determinant will be zero or very close to zero</span>
+<span id="L195"><span class="lineNum">     195</span>              :   [[nodiscard]] auto determinant() const -&gt; ValueType_;</span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              :   // TODO(matthias): UnitUpper inplace inverse, Grewal Table 6.7 p.235</span>
+<span id="L198"><span class="lineNum">     198</span>              : </span>
+<span id="L199"><span class="lineNum">     199</span>              :   /// \brief Checks for Unit Upper condition</span>
+<span id="L200"><span class="lineNum">     200</span>              :   /// \return true</span>
+<span id="L201"><span class="lineNum">     201</span>              :   [[nodiscard]] auto isUnitUpperTriangular() const -&gt; bool;</span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              :   //////////////////////////////////////////////////</span>
+<span id="L204"><span class="lineNum">     204</span>              :   // unsafe access operators  ---&gt;</span>
+<span id="L205"><span class="lineNum">     205</span>              :   /// \brief Element read-only access to a scalar triangular value</span>
+<span id="L206"><span class="lineNum">     206</span>              :   /// \param[in] row  Row index of the element</span>
+<span id="L207"><span class="lineNum">     207</span>              :   /// \param[in] col  Col index of the element</span>
+<span id="L208"><span class="lineNum">     208</span>              :   /// \return value_type  scalar triangular value</span>
+<span id="L209"><span class="lineNum">     209</span>              :   [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -&gt; ValueType_;</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span>              :   /// \brief Element access to a scalar triangular value</span>
+<span id="L212"><span class="lineNum">     212</span>              :   /// \param[in] row  Row index of the element</span>
+<span id="L213"><span class="lineNum">     213</span>              :   /// \param[in] col  Col index of the element</span>
+<span id="L214"><span class="lineNum">     214</span>              :   /// \return value_type&amp;  Reference to the scalar triangular value</span>
+<span id="L215"><span class="lineNum">     215</span>              :   [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) -&gt; ValueType_&amp;;</span>
+<span id="L216"><span class="lineNum">     216</span>              :   // &lt;---</span>
+<span id="L217"><span class="lineNum">     217</span>              : </span>
+<span id="L218"><span class="lineNum">     218</span>              : private:</span>
+<span id="L219"><span class="lineNum">     219</span>              :   /// \brief hide inherited transpose function</span>
+<span id="L220"><span class="lineNum">     220</span>              :   using BaseSquareMatrix::transpose;</span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span>              :   /// \brief hide inherited determinant function</span>
+<span id="L223"><span class="lineNum">     223</span>              :   using BaseSquareMatrix::determinant;</span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span>              :   /// \brief hide inherited operator() to prevent accessing off-triangular elements</span>
+<span id="L226"><span class="lineNum">     226</span>              :   using BaseSquareMatrix::operator();</span>
+<span id="L227"><span class="lineNum">     227</span>              : };</span>
+<span id="L228"><span class="lineNum">     228</span>              : </span>
+<span id="L229"><span class="lineNum">     229</span>              : } // namespace math</span>
+<span id="L230"><span class="lineNum">     230</span>              : } // namespace tracking</span>
+<span id="L231"><span class="lineNum">     231</span>              : </span>
+<span id="L232"><span class="lineNum">     232</span>              : #endif // BC7FD90F_FBB7_481C_89C4_89BEE41309C5</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

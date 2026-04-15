@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - lcov.info - math/linalg/conversions/matrix_conversions.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">math/linalg/conversions</a> - matrix_conversions.hpp<span style="font-size: 80%;"> (source / <a href="matrix_conversions.hpp.func-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-04-15 22:13:33</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : #ifndef B83EA5A9_DE89_46DE_A570_E875E0EEFC5C</span>
+<span id="L2"><span class="lineNum">       2</span>              : #define B83EA5A9_DE89_46DE_A570_E875E0EEFC5C</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : #include &quot;conversions.h&quot;</span>
+<span id="L5"><span class="lineNum">       5</span>              : #include &quot;math/linalg/matrix_column_view.hpp&quot; // IWYU pragma: keep</span>
+<span id="L6"><span class="lineNum">       6</span>              : #include &quot;math/linalg/vector.hpp&quot;             // IWYU pragma: keep</span>
+<span id="L7"><span class="lineNum">       7</span>              : </span>
+<span id="L8"><span class="lineNum">       8</span>              : namespace tracking</span>
+<span id="L9"><span class="lineNum">       9</span>              : {</span>
+<span id="L10"><span class="lineNum">      10</span>              : namespace math</span>
+<span id="L11"><span class="lineNum">      11</span>              : {</span>
+<span id="L12"><span class="lineNum">      12</span>              : namespace conversions</span>
+<span id="L13"><span class="lineNum">      13</span>              : {</span>
+<span id="L14"><span class="lineNum">      14</span>              : </span>
+<span id="L15"><span class="lineNum">      15</span>              : /// \brief Creates a single-column Matrix from a Vector</span>
+<span id="L16"><span class="lineNum">      16</span>              : ///</span>
+<span id="L17"><span class="lineNum">      17</span>              : /// This function converts a Vector into a Matrix with one column, effectively</span>
+<span id="L18"><span class="lineNum">      18</span>              : /// representing the vector as a column matrix. The resulting matrix uses row-major storage.</span>
+<span id="L19"><span class="lineNum">      19</span>              : ///</span>
+<span id="L20"><span class="lineNum">      20</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L21"><span class="lineNum">      21</span>              : /// \tparam Size_ The size of the vector and number of rows in the matrix</span>
+<span id="L22"><span class="lineNum">      22</span>              : /// \param[in] vec The source vector to convert</span>
+<span id="L23"><span class="lineNum">      23</span>              : /// \return Matrix with Size_ rows and 1 column containing the vector elements</span>
+<span id="L24"><span class="lineNum">      24</span>              : /// \see VectorFromMatrixColumnView() for the reverse conversion</span>
+<span id="L25"><span class="lineNum">      25</span>              : /// \see MatrixFromList() for creating matrixes from initializer lists</span>
+<span id="L26"><span class="lineNum">      26</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC tlaBgGNC">           1 : inline auto MatrixFromVector(const Vector&lt;ValueType_, Size_&gt;&amp; vec) -&gt; Matrix&lt;ValueType_, Size_, 1, true&gt;</span></span>
+<span id="L28"><span class="lineNum">      28</span>              : {</span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           1 :   Matrix&lt;ValueType_, Size_, 1, true&gt; result{};</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           4 :   for (sint32 i = 0; i &lt; Size_; ++i)</span></span>
+<span id="L31"><span class="lineNum">      31</span>              :   {</span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           3 :     result.at_unsafe(i, 0) = vec.at_unsafe(i);</span></span>
+<span id="L33"><span class="lineNum">      33</span>              :   }</span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           1 :   return result;</span></span>
+<span id="L35"><span class="lineNum">      35</span>              : }</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span>              : } // namespace conversions</span>
+<span id="L39"><span class="lineNum">      39</span>              : } // namespace math</span>
+<span id="L40"><span class="lineNum">      40</span>              : } // namespace tracking</span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span>              : #endif // B83EA5A9_DE89_46DE_A570_E875E0EEFC5C</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

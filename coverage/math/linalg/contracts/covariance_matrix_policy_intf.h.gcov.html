@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - lcov.info - math/linalg/contracts/covariance_matrix_policy_intf.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">math/linalg/contracts</a> - covariance_matrix_policy_intf.h<span style="font-size: 80%;"> (source / <a href="covariance_matrix_policy_intf.h.func-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-04-15 22:13:33</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">-</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : #ifndef A9EE36F9_16A8_4666_9CFE_801E34978BAC</span>
+<span id="L2"><span class="lineNum">       2</span>              : #define A9EE36F9_16A8_4666_9CFE_801E34978BAC</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : #include &quot;base/first_include.h&quot;                     // IWYU pragma: keep</span>
+<span id="L5"><span class="lineNum">       5</span>              : #include &quot;math/linalg/covariance_matrix_policies.h&quot; // IWYU pragma: keep</span>
+<span id="L6"><span class="lineNum">       6</span>              : </span>
+<span id="L7"><span class="lineNum">       7</span>              : </span>
+<span id="L8"><span class="lineNum">       8</span>              : namespace tracking</span>
+<span id="L9"><span class="lineNum">       9</span>              : {</span>
+<span id="L10"><span class="lineNum">      10</span>              : namespace math</span>
+<span id="L11"><span class="lineNum">      11</span>              : {</span>
+<span id="L12"><span class="lineNum">      12</span>              : namespace contract</span>
+<span id="L13"><span class="lineNum">      13</span>              : {</span>
+<span id="L14"><span class="lineNum">      14</span>              : </span>
+<span id="L15"><span class="lineNum">      15</span>              : template &lt;typename PolicyType&gt;</span>
+<span id="L16"><span class="lineNum">      16</span>              : struct CovarianceMatrixPolicyIntf</span>
+<span id="L17"><span class="lineNum">      17</span>              : {</span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC tlaBgGNC">          68 :   CovarianceMatrixPolicyIntf()</span></span>
+<span id="L19"><span class="lineNum">      19</span>              :   {</span>
+<span id="L20"><span class="lineNum">      20</span>              : #if __cplusplus == 202002L</span>
+<span id="L21"><span class="lineNum">      21</span>              :     // Check inheritance from base policy</span>
+<span id="L22"><span class="lineNum">      22</span>              :     static_assert(std::is_base_of_v&lt;math::CovarianceMatrixPolicyBase, PolicyType&gt;,</span>
+<span id="L23"><span class="lineNum">      23</span>              :                   &quot;CovarianceMatrixPolicy must inherit from CovarianceMatrixPolicyBase&quot;);</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              :     // Check that it has the required value_type alias</span>
+<span id="L26"><span class="lineNum">      26</span>              :     static_assert(requires { PolicyType::is_factored; }, &quot;CovarianceMatrixPolicy must define is_factored flag&quot;);</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              :     // Check that it has the required value_type alias</span>
+<span id="L29"><span class="lineNum">      29</span>              :     static_assert(requires { typename PolicyType::value_type; }, &quot;CovarianceMatrixPolicy must define value_type&quot;);</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              :     // Check that it has the required Instantiate template</span>
+<span id="L32"><span class="lineNum">      32</span>              :     static_assert(</span>
+<span id="L33"><span class="lineNum">      33</span>              :         requires { typename PolicyType::template Instantiate&lt;4&gt;; }, &quot;CovarianceMatrixPolicy must define Instantiate template&quot;);</span>
+<span id="L34"><span class="lineNum">      34</span>              : </span>
+<span id="L35"><span class="lineNum">      35</span>              :     // Additional check to ensure it's one of the concrete policy types</span>
+<span id="L36"><span class="lineNum">      36</span>              :     static_assert(std::is_same_v&lt;PolicyType, math::FullCovarianceMatrixPolicy&lt;typename PolicyType::value_type&gt;&gt; ||</span>
+<span id="L37"><span class="lineNum">      37</span>              :                       std::is_same_v&lt;PolicyType, math::FactoredCovarianceMatrixPolicy&lt;typename PolicyType::value_type&gt;&gt;,</span>
+<span id="L38"><span class="lineNum">      38</span>              :                   &quot;CovarianceMatrixPolicy must be either FullCovarianceMatrixPolicy or FactoredCovarianceMatrixPolicy&quot;);</span>
+<span id="L39"><span class="lineNum">      39</span>              : #endif //__cplusplus == 202002L</span>
+<span id="L40"><span class="lineNum">      40</span>              :   }</span>
+<span id="L41"><span class="lineNum">      41</span>              : };</span>
+<span id="L42"><span class="lineNum">      42</span>              : </span>
+<span id="L43"><span class="lineNum">      43</span>              : } // namespace contract</span>
+<span id="L44"><span class="lineNum">      44</span>              : } // namespace math</span>
+<span id="L45"><span class="lineNum">      45</span>              : } // namespace tracking</span>
+<span id="L46"><span class="lineNum">      46</span>              : </span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              : #endif // A9EE36F9_16A8_4666_9CFE_801E34978BAC</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

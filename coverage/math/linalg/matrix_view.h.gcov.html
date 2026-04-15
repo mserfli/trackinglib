@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - lcov.info - math/linalg/matrix_view.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - matrix_view.h<span style="font-size: 80%;"> (source / <a href="matrix_view.h.func-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-04-15 22:13:33</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">-</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : #ifndef EE3A9F55_5D25_4810_82B7_406BD09800A1</span>
+<span id="L2"><span class="lineNum">       2</span>              : #define EE3A9F55_5D25_4810_82B7_406BD09800A1</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : #include &quot;base/first_include.h&quot; // IWYU pragma: keep</span>
+<span id="L5"><span class="lineNum">       5</span>              : #include &quot;math/linalg/matrix.h&quot;</span>
+<span id="L6"><span class="lineNum">       6</span>              : #include &quot;math/linalg/vector.h&quot; // IWYU pragma: keep</span>
+<span id="L7"><span class="lineNum">       7</span>              : </span>
+<span id="L8"><span class="lineNum">       8</span>              : namespace tracking</span>
+<span id="L9"><span class="lineNum">       9</span>              : {</span>
+<span id="L10"><span class="lineNum">      10</span>              : namespace math</span>
+<span id="L11"><span class="lineNum">      11</span>              : {</span>
+<span id="L12"><span class="lineNum">      12</span>              : </span>
+<span id="L13"><span class="lineNum">      13</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L14"><span class="lineNum">      14</span>              : class MatrixColumnView;</span>
+<span id="L15"><span class="lineNum">      15</span>              : </span>
+<span id="L16"><span class="lineNum">      16</span>              : /// \brief Non-owning submatrix view providing arithmetic operations on Matrix objects</span>
+<span id="L17"><span class="lineNum">      17</span>              : ///</span>
+<span id="L18"><span class="lineNum">      18</span>              : /// MatrixView provides a lightweight, zero-copy interface to access and manipulate</span>
+<span id="L19"><span class="lineNum">      19</span>              : /// rectangular subregions of a Matrix. It supports arithmetic operations, matrix</span>
+<span id="L20"><span class="lineNum">      20</span>              : /// multiplication, and element access without copying data.</span>
+<span id="L21"><span class="lineNum">      21</span>              : ///</span>
+<span id="L22"><span class="lineNum">      22</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L23"><span class="lineNum">      23</span>              : /// \tparam Rows_ The number of rows in the viewed matrix</span>
+<span id="L24"><span class="lineNum">      24</span>              : /// \tparam Cols_ The number of columns in the viewed matrix</span>
+<span id="L25"><span class="lineNum">      25</span>              : ///</span>
+<span id="L26"><span class="lineNum">      26</span>              : /// \note This is a non-owning view - the lifetime of the MatrixView must not exceed</span>
+<span id="L27"><span class="lineNum">      27</span>              : ///       the lifetime of the underlying Matrix object.</span>
+<span id="L28"><span class="lineNum">      28</span>              : /// \note All operations are performed in-place on the viewed subregion.</span>
+<span id="L29"><span class="lineNum">      29</span>              : /// \note Performance: Zero-copy operations, minimal overhead compared to direct matrix access.</span>
+<span id="L30"><span class="lineNum">      30</span>              : ///</span>
+<span id="L31"><span class="lineNum">      31</span>              : /// \see Matrix for the underlying matrix implementation</span>
+<span id="L32"><span class="lineNum">      32</span>              : /// \see MatrixRowView for single-row views</span>
+<span id="L33"><span class="lineNum">      33</span>              : /// \see MatrixColumnView for single-column views</span>
+<span id="L34"><span class="lineNum">      34</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_&gt;</span>
+<span id="L35"><span class="lineNum">      35</span>              : class MatrixView TEST_REMOVE_FINAL</span>
+<span id="L36"><span class="lineNum">      36</span>              : {</span>
+<span id="L37"><span class="lineNum">      37</span>              : public:</span>
+<span id="L38"><span class="lineNum">      38</span>              :   /// \brief Construct a submatrix view on an existing Matrix</span>
+<span id="L39"><span class="lineNum">      39</span>              :   ///</span>
+<span id="L40"><span class="lineNum">      40</span>              :   /// Creates a non-owning view of a rectangular subregion of the given matrix.</span>
+<span id="L41"><span class="lineNum">      41</span>              :   /// The view covers rows from rowBegin to rowEnd-1 and columns from colBegin to colEnd-1.</span>
+<span id="L42"><span class="lineNum">      42</span>              :   ///</span>
+<span id="L43"><span class="lineNum">      43</span>              :   /// \param[in] matrix The matrix to view (must outlive the view)</span>
+<span id="L44"><span class="lineNum">      44</span>              :   /// \param[in] rowBegin Starting row index (inclusive, 0-based)</span>
+<span id="L45"><span class="lineNum">      45</span>              :   /// \param[in] colBegin Starting column index (inclusive, 0-based)</span>
+<span id="L46"><span class="lineNum">      46</span>              :   /// \param[in] rowEnd Ending row index (inclusive, 0-based)</span>
+<span id="L47"><span class="lineNum">      47</span>              :   /// \param[in] colEnd Ending column index (inclusive, 0-based)</span>
+<span id="L48"><span class="lineNum">      48</span>              :   ///</span>
+<span id="L49"><span class="lineNum">      49</span>              :   /// \note The view does not own the data - ensure the matrix lifetime exceeds the view's</span>
+<span id="L50"><span class="lineNum">      50</span>              :   /// \note Bounds are not checked at runtime - invalid indices may cause undefined behavior</span>
+<span id="L51"><span class="lineNum">      51</span>              :   /// \note For full matrix views, use rowBegin=0, colBegin=0, rowEnd=Rows-1, colEnd=Cols-1</span>
+<span id="L52"><span class="lineNum">      52</span>              :   explicit MatrixView(const Matrix&lt;ValueType_, Rows_, Cols_&gt;&amp; matrix,</span>
+<span id="L53"><span class="lineNum">      53</span>              :                       const sint32                            rowBegin,</span>
+<span id="L54"><span class="lineNum">      54</span>              :                       const sint32                            colBegin,</span>
+<span id="L55"><span class="lineNum">      55</span>              :                       const sint32                            rowEnd,</span>
+<span id="L56"><span class="lineNum">      56</span>              :                       const sint32                            colEnd);</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span>              :   /// \brief Access element at specified position within the view</span>
+<span id="L59"><span class="lineNum">      59</span>              :   ///</span>
+<span id="L60"><span class="lineNum">      60</span>              :   /// \param[in] row Row index relative to the view (0 to getRowCount()-1)</span>
+<span id="L61"><span class="lineNum">      61</span>              :   /// \param[in] col Column index relative to the view (0 to getColCount()-1)</span>
+<span id="L62"><span class="lineNum">      62</span>              :   /// \return The element value</span>
+<span id="L63"><span class="lineNum">      63</span>              :   ///</span>
+<span id="L64"><span class="lineNum">      64</span>              :   /// \note No bounds checking - invalid indices cause undefined behavior</span>
+<span id="L65"><span class="lineNum">      65</span>              :   [[nodiscard]] auto operator()(sint32 row, sint32 col) const -&gt; ValueType_;</span>
+<span id="L66"><span class="lineNum">      66</span>              : </span>
+<span id="L67"><span class="lineNum">      67</span>              :   /// \brief Get the number of rows in this view</span>
+<span id="L68"><span class="lineNum">      68</span>              :   /// \return Number of rows</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC tlaBgGNC">           9 :   [[nodiscard]] auto getRowCount() const -&gt; sint32 { return _rowCount; }</span></span>
+<span id="L70"><span class="lineNum">      70</span>              :   /// \brief Get the number of columns in this view</span>
+<span id="L71"><span class="lineNum">      71</span>              :   /// \return Number of columns</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">          23 :   [[nodiscard]] auto getColCount() const -&gt; sint32 { return _colCount; }</span></span>
+<span id="L73"><span class="lineNum">      73</span>              : </span>
+<span id="L74"><span class="lineNum">      74</span>              :   /// \brief Add this view to a full matrix</span>
+<span id="L75"><span class="lineNum">      75</span>              :   ///</span>
+<span id="L76"><span class="lineNum">      76</span>              :   /// Performs element-wise addition of the view's elements to the corresponding</span>
+<span id="L77"><span class="lineNum">      77</span>              :   /// positions in the other matrix. The result is a full matrix.</span>
+<span id="L78"><span class="lineNum">      78</span>              :   ///</span>
+<span id="L79"><span class="lineNum">      79</span>              :   /// \param[in] other The matrix to add to</span>
+<span id="L80"><span class="lineNum">      80</span>              :   /// \return New matrix containing the result</span>
+<span id="L81"><span class="lineNum">      81</span>              :   [[nodiscard]] auto operator+(const Matrix&lt;ValueType_, Rows_, Cols_&gt;&amp; other) const -&gt; Matrix&lt;ValueType_, Rows_, Cols_&gt;;</span>
+<span id="L82"><span class="lineNum">      82</span>              :   /// \brief Subtract a full matrix from this view</span>
+<span id="L83"><span class="lineNum">      83</span>              :   ///</span>
+<span id="L84"><span class="lineNum">      84</span>              :   /// Performs element-wise subtraction: view - other</span>
+<span id="L85"><span class="lineNum">      85</span>              :   ///</span>
+<span id="L86"><span class="lineNum">      86</span>              :   /// \param[in] other The matrix to subtract</span>
+<span id="L87"><span class="lineNum">      87</span>              :   /// \return New matrix containing the result</span>
+<span id="L88"><span class="lineNum">      88</span>              :   [[nodiscard]] auto operator-(const Matrix&lt;ValueType_, Rows_, Cols_&gt;&amp; other) const -&gt; Matrix&lt;ValueType_, Rows_, Cols_&gt;;</span>
+<span id="L89"><span class="lineNum">      89</span>              :   /// \brief Multiply this view by another matrix</span>
+<span id="L90"><span class="lineNum">      90</span>              :   ///</span>
+<span id="L91"><span class="lineNum">      91</span>              :   /// Performs matrix multiplication: view * other</span>
+<span id="L92"><span class="lineNum">      92</span>              :   ///</span>
+<span id="L93"><span class="lineNum">      93</span>              :   /// \tparam Cols2 Number of columns in the other matrix</span>
+<span id="L94"><span class="lineNum">      94</span>              :   /// \param[in] other Matrix to multiply with</span>
+<span id="L95"><span class="lineNum">      95</span>              :   /// \return Result matrix of size Rows x Cols2</span>
+<span id="L96"><span class="lineNum">      96</span>              :   template &lt;sint32 Cols2_&gt;</span>
+<span id="L97"><span class="lineNum">      97</span>              :   [[nodiscard]] auto operator*(const Matrix&lt;ValueType_, Cols_, Cols2_&gt;&amp; other) const -&gt; Matrix&lt;ValueType_, Rows_, Cols2_&gt;;</span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span>              :   /// \brief Add a scalar to all elements of this view</span>
+<span id="L100"><span class="lineNum">     100</span>              :   ///</span>
+<span id="L101"><span class="lineNum">     101</span>              :   /// \param[in] other Scalar value to add</span>
+<span id="L102"><span class="lineNum">     102</span>              :   /// \return New matrix with scalar added to all elements</span>
+<span id="L103"><span class="lineNum">     103</span>              :   [[nodiscard]] auto operator+(const ValueType_&amp; other) const -&gt; Matrix&lt;ValueType_, Rows_, Cols_&gt;;</span>
+<span id="L104"><span class="lineNum">     104</span>              :   /// \brief Subtract a scalar from all elements of this view</span>
+<span id="L105"><span class="lineNum">     105</span>              :   ///</span>
+<span id="L106"><span class="lineNum">     106</span>              :   /// \param[in] other Scalar value to subtract</span>
+<span id="L107"><span class="lineNum">     107</span>              :   /// \return New matrix with scalar subtracted from all elements</span>
+<span id="L108"><span class="lineNum">     108</span>              :   [[nodiscard]] auto operator-(const ValueType_&amp; other) const -&gt; Matrix&lt;ValueType_, Rows_, Cols_&gt;;</span>
+<span id="L109"><span class="lineNum">     109</span>              :   /// \brief Multiply all elements of this view by a scalar</span>
+<span id="L110"><span class="lineNum">     110</span>              :   ///</span>
+<span id="L111"><span class="lineNum">     111</span>              :   /// \param[in] other Scalar value to multiply by</span>
+<span id="L112"><span class="lineNum">     112</span>              :   /// \return New matrix with all elements multiplied by the scalar</span>
+<span id="L113"><span class="lineNum">     113</span>              :   [[nodiscard]] auto operator*(const ValueType_&amp; other) const -&gt; Matrix&lt;ValueType_, Rows_, Cols_&gt;;</span>
+<span id="L114"><span class="lineNum">     114</span>              :   /// \brief Divide all elements of this view by a scalar</span>
+<span id="L115"><span class="lineNum">     115</span>              :   ///</span>
+<span id="L116"><span class="lineNum">     116</span>              :   /// \param[in] other Scalar value to divide by</span>
+<span id="L117"><span class="lineNum">     117</span>              :   /// \return New matrix with all elements divided by the scalar</span>
+<span id="L118"><span class="lineNum">     118</span>              :   [[nodiscard]] auto operator/(const ValueType_&amp; other) const -&gt; Matrix&lt;ValueType_, Rows_, Cols_&gt;;</span>
+<span id="L119"><span class="lineNum">     119</span>              : </span>
+<span id="L120"><span class="lineNum">     120</span>              :   // clang-format off</span>
+<span id="L121"><span class="lineNum">     121</span>              : TEST_REMOVE_PROTECTED:</span>
+<span id="L122"><span class="lineNum">     122</span>              :   ; // workaround for correct indentation</span>
+<span id="L123"><span class="lineNum">     123</span>              :   // clang-format on</span>
+<span id="L124"><span class="lineNum">     124</span>              :   const Matrix&lt;ValueType_, Rows_, Cols_&gt;&amp; _matrix;</span>
+<span id="L125"><span class="lineNum">     125</span>              :   const sint32                            _rowBegin;</span>
+<span id="L126"><span class="lineNum">     126</span>              :   const sint32                            _colBegin;</span>
+<span id="L127"><span class="lineNum">     127</span>              :   const sint32                            _rowCount;</span>
+<span id="L128"><span class="lineNum">     128</span>              :   const sint32                            _colCount;</span>
+<span id="L129"><span class="lineNum">     129</span>              : };</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              : /// \brief Add two matrix views element-wise</span>
+<span id="L132"><span class="lineNum">     132</span>              : ///</span>
+<span id="L133"><span class="lineNum">     133</span>              : /// Performs element-wise addition on the overlapping region.</span>
+<span id="L134"><span class="lineNum">     134</span>              : /// The result dimensions are the minimum of the input dimensions.</span>
+<span id="L135"><span class="lineNum">     135</span>              : ///</span>
+<span id="L136"><span class="lineNum">     136</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L137"><span class="lineNum">     137</span>              : /// \tparam RowsA_ Rows of first view</span>
+<span id="L138"><span class="lineNum">     138</span>              : /// \tparam ColsA_ Cols of first view</span>
+<span id="L139"><span class="lineNum">     139</span>              : /// \tparam RowsB_ Rows of second view</span>
+<span id="L140"><span class="lineNum">     140</span>              : /// \tparam ColsB_ Cols of second view</span>
+<span id="L141"><span class="lineNum">     141</span>              : /// \param[in] a First view</span>
+<span id="L142"><span class="lineNum">     142</span>              : /// \param[in] b Second view</span>
+<span id="L143"><span class="lineNum">     143</span>              : /// \return Matrix containing the element-wise sum</span>
+<span id="L144"><span class="lineNum">     144</span>              : template &lt;typename ValueType_, sint32 RowsA_, sint32 ColsA_, sint32 RowsB_, sint32 ColsB_&gt;</span>
+<span id="L145"><span class="lineNum">     145</span>              : [[nodiscard]] auto operator+(const MatrixView&lt;ValueType_, RowsA_, ColsA_&gt;&amp; a, const MatrixView&lt;ValueType_, RowsB_, ColsB_&gt;&amp; b)</span>
+<span id="L146"><span class="lineNum">     146</span>              :     -&gt; Matrix&lt;ValueType_, std::min(RowsA_, RowsB_), std::min(ColsA_, ColsB_)&gt;;</span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span>              : /// \brief Subtract two matrix views element-wise</span>
+<span id="L149"><span class="lineNum">     149</span>              : ///</span>
+<span id="L150"><span class="lineNum">     150</span>              : /// Performs element-wise subtraction: a - b</span>
+<span id="L151"><span class="lineNum">     151</span>              : ///</span>
+<span id="L152"><span class="lineNum">     152</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L153"><span class="lineNum">     153</span>              : /// \tparam RowsA_ Rows of first view</span>
+<span id="L154"><span class="lineNum">     154</span>              : /// \tparam ColsA_ Cols of first view</span>
+<span id="L155"><span class="lineNum">     155</span>              : /// \tparam RowsB_ Rows of second view</span>
+<span id="L156"><span class="lineNum">     156</span>              : /// \tparam ColsB_ Cols of second view</span>
+<span id="L157"><span class="lineNum">     157</span>              : /// \param[in] a First view</span>
+<span id="L158"><span class="lineNum">     158</span>              : /// \param[in] b Second view</span>
+<span id="L159"><span class="lineNum">     159</span>              : /// \return Matrix containing the element-wise difference</span>
+<span id="L160"><span class="lineNum">     160</span>              : template &lt;typename ValueType_, sint32 RowsA_, sint32 ColsA_, sint32 RowsB_, sint32 ColsB_&gt;</span>
+<span id="L161"><span class="lineNum">     161</span>              : [[nodiscard]] auto operator-(const MatrixView&lt;ValueType_, RowsA_, ColsA_&gt;&amp; a, const MatrixView&lt;ValueType_, RowsB_, ColsB_&gt;&amp; b)</span>
+<span id="L162"><span class="lineNum">     162</span>              :     -&gt; Matrix&lt;ValueType_, std::min(RowsA_, RowsB_), std::min(ColsA_, ColsB_)&gt;;</span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span>              : /// \brief Multiply two matrix views</span>
+<span id="L165"><span class="lineNum">     165</span>              : ///</span>
+<span id="L166"><span class="lineNum">     166</span>              : /// Performs matrix multiplication: a * b</span>
+<span id="L167"><span class="lineNum">     167</span>              : /// Requires that ColsA == RowsB</span>
+<span id="L168"><span class="lineNum">     168</span>              : ///</span>
+<span id="L169"><span class="lineNum">     169</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L170"><span class="lineNum">     170</span>              : /// \tparam RowsA_ Rows of first view</span>
+<span id="L171"><span class="lineNum">     171</span>              : /// \tparam ColsA_ Cols of first view</span>
+<span id="L172"><span class="lineNum">     172</span>              : /// \tparam RowsB_ Rows of second view</span>
+<span id="L173"><span class="lineNum">     173</span>              : /// \tparam ColsB_ Cols of second view</span>
+<span id="L174"><span class="lineNum">     174</span>              : /// \param[in] a First view</span>
+<span id="L175"><span class="lineNum">     175</span>              : /// \param[in] b Second view</span>
+<span id="L176"><span class="lineNum">     176</span>              : /// \return Matrix containing the product</span>
+<span id="L177"><span class="lineNum">     177</span>              : template &lt;typename ValueType_, sint32 RowsA_, sint32 ColsA_, sint32 RowsB_, sint32 ColsB_&gt;</span>
+<span id="L178"><span class="lineNum">     178</span>              : [[nodiscard]] auto operator*(const MatrixView&lt;ValueType_, RowsA_, ColsA_&gt;&amp; a,</span>
+<span id="L179"><span class="lineNum">     179</span>              :                              const MatrixView&lt;ValueType_, RowsB_, ColsB_&gt;&amp; b) -&gt; Matrix&lt;ValueType_, RowsA_, ColsB_&gt;;</span>
+<span id="L180"><span class="lineNum">     180</span>              : </span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span>              : } // namespace math</span>
+<span id="L183"><span class="lineNum">     183</span>              : } // namespace tracking</span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span>              : #endif // EE3A9F55_5D25_4810_82B7_406BD09800A1</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

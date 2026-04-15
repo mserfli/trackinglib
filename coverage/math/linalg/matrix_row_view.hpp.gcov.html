@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - lcov.info - math/linalg/matrix_row_view.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - matrix_row_view.hpp<span style="font-size: 80%;"> (source / <a href="matrix_row_view.hpp.func-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntry">24</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-04-15 22:13:33</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">89.7&nbsp;%</td>
+            <td class="headerCovTableEntry">29</td>
+            <td class="headerCovTableEntry">26</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : #ifndef E2428903_D53A_4EC7_89B5_8C772C073887</span>
+<span id="L2"><span class="lineNum">       2</span>              : #define E2428903_D53A_4EC7_89B5_8C772C073887</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : #include &quot;math/linalg/matrix_row_view.h&quot;</span>
+<span id="L5"><span class="lineNum">       5</span>              : </span>
+<span id="L6"><span class="lineNum">       6</span>              : #include &quot;math/linalg/matrix.hpp&quot;             // IWYU pragma: keep</span>
+<span id="L7"><span class="lineNum">       7</span>              : #include &quot;math/linalg/matrix_column_view.hpp&quot; // IWYU pragma: keep</span>
+<span id="L8"><span class="lineNum">       8</span>              : #include &quot;math/linalg/vector.hpp&quot;             // IWYU pragma: keep</span>
+<span id="L9"><span class="lineNum">       9</span>              : </span>
+<span id="L10"><span class="lineNum">      10</span>              : </span>
+<span id="L11"><span class="lineNum">      11</span>              : namespace tracking</span>
+<span id="L12"><span class="lineNum">      12</span>              : {</span>
+<span id="L13"><span class="lineNum">      13</span>              : namespace math</span>
+<span id="L14"><span class="lineNum">      14</span>              : {</span>
+<span id="L15"><span class="lineNum">      15</span>              : </span>
+<span id="L16"><span class="lineNum">      16</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC tlaBgGNC">        3700 : MatrixRowView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::MatrixRowView(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; matrix,</span></span>
+<span id="L18"><span class="lineNum">      18</span>              :                                                                     const sint32                                         row,</span>
+<span id="L19"><span class="lineNum">      19</span>              :                                                                     const sint32                                         colBegin,</span>
+<span id="L20"><span class="lineNum">      20</span>              :                                                                     const sint32                                         colEnd)</span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">        3700 :     : _matrix{matrix}</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">        3700 :     , _row{row}</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">        3700 :     , _colBegin{colBegin}</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">        3700 :     , _colCount{colEnd - colBegin + 1}</span></span>
+<span id="L25"><span class="lineNum">      25</span>              : {</span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">        3700 :   assert(_colBegin &gt;= 0);</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">        3700 :   assert(_colCount &lt;= Cols_);</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">        3700 : }</span></span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">       11282 : inline auto MatrixRowView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::at_unsafe(const sint32 idx) const -&gt; ValueType_</span></span>
+<span id="L32"><span class="lineNum">      32</span>              : {</span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">       11282 :   assert(idx &lt; _colCount);</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">       11282 :   const auto col = _colBegin + idx;</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">       11282 :   return _matrix.at_unsafe(_row, col);</span></span>
+<span id="L36"><span class="lineNum">      36</span>              : }</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L39"><span class="lineNum">      39</span>              : template &lt;sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_&gt;</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">           2 : inline auto MatrixRowView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::operator*(</span></span>
+<span id="L41"><span class="lineNum">      41</span>              :     const Matrix&lt;ValueType_, Rows2_, Cols2_, IsRowMajor2_&gt;&amp; other) const -&gt; Matrix&lt;ValueType_, 1, Cols2_, IsRowMajor2_&gt;</span>
+<span id="L42"><span class="lineNum">      42</span>              : {</span>
+<span id="L43"><span class="lineNum">      43</span>              :   static_assert(Rows2_ &lt;= Cols_);</span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">           2 :   assert(Rows2_ == _colCount);</span></span>
+<span id="L45"><span class="lineNum">      45</span>              : </span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">           2 :   Matrix&lt;ValueType_, 1, Cols2_, IsRowMajor2_&gt; result{};</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">           6 :   for (auto col = 0; col &lt; Cols2_; ++col)</span></span>
+<span id="L48"><span class="lineNum">      48</span>              :   {</span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          14 :     for (auto row = 0; row &lt; Rows2_; ++row)</span></span>
+<span id="L50"><span class="lineNum">      50</span>              :     {</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">          10 :       result.at_unsafe(0, col) += at_unsafe(row) * other.at_unsafe(row, col);</span></span>
+<span id="L52"><span class="lineNum">      52</span>              :     }</span>
+<span id="L53"><span class="lineNum">      53</span>              :   }</span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">           2 :   return result;</span></span>
+<span id="L55"><span class="lineNum">      55</span>              : }</span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L58"><span class="lineNum">      58</span>              : template &lt;sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_&gt;</span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        3698 : inline auto MatrixRowView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::operator*(</span></span>
+<span id="L60"><span class="lineNum">      60</span>              :     const MatrixColumnView&lt;ValueType_, Rows2_, Cols2_, IsRowMajor2_&gt;&amp; other) const -&gt; ValueType_</span>
+<span id="L61"><span class="lineNum">      61</span>              : {</span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        3698 :   assert(_colCount == other.getRowCount());</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :   // calc dot product</span>
+<span id="L64"><span class="lineNum">      64</span>              :   ValueType_ result{};</span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       14970 :   for (auto idx = 0; idx &lt; _colCount; ++idx)</span></span>
+<span id="L66"><span class="lineNum">      66</span>              :   {</span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       11272 :     result += at_unsafe(idx) * other.at_unsafe(idx);</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :   }</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        3698 :   return result;</span></span>
+<span id="L70"><span class="lineNum">      70</span>              : }</span>
+<span id="L71"><span class="lineNum">      71</span>              : </span>
+<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L73"><span class="lineNum">      73</span>              : } // namespace math</span>
+<span id="L74"><span class="lineNum">      74</span>              : } // namespace tracking</span>
+<span id="L75"><span class="lineNum">      75</span>              : </span>
+<span id="L76"><span class="lineNum">      76</span>              : #endif // E2428903_D53A_4EC7_89B5_8C772C073887</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

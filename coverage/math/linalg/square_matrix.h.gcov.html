@@ -1,0 +1,504 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - lcov.info - math/linalg/square_matrix.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - square_matrix.h<span style="font-size: 80%;"> (source / <a href="square_matrix.h.func-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">81.8&nbsp;%</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">9</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-04-15 22:13:33</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">10</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : #ifndef BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08</span>
+<span id="L2"><span class="lineNum">       2</span>              : #define BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08</span>
+<span id="L3"><span class="lineNum">       3</span>              : </span>
+<span id="L4"><span class="lineNum">       4</span>              : #include &quot;base/first_include.h&quot; // IWYU pragma: keep</span>
+<span id="L5"><span class="lineNum">       5</span>              : #include &quot;math/linalg/errors.h&quot; // IWYU pragma: keep</span>
+<span id="L6"><span class="lineNum">       6</span>              : #include &quot;math/linalg/matrix.h&quot; // IWYU pragma: keep</span>
+<span id="L7"><span class="lineNum">       7</span>              : #include &quot;math/linalg/vector.h&quot; // IWYU pragma: keep</span>
+<span id="L8"><span class="lineNum">       8</span>              : #include &lt;initializer_list&gt;</span>
+<span id="L9"><span class="lineNum">       9</span>              : #include &lt;utility&gt; // std::pair</span>
+<span id="L10"><span class="lineNum">      10</span>              : </span>
+<span id="L11"><span class="lineNum">      11</span>              : namespace tracking</span>
+<span id="L12"><span class="lineNum">      12</span>              : {</span>
+<span id="L13"><span class="lineNum">      13</span>              : namespace math</span>
+<span id="L14"><span class="lineNum">      14</span>              : {</span>
+<span id="L15"><span class="lineNum">      15</span>              : </span>
+<span id="L16"><span class="lineNum">      16</span>              : // forward declaration to prevent cyclic includes</span>
+<span id="L17"><span class="lineNum">      17</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
+<span id="L18"><span class="lineNum">      18</span>              : class TriangularMatrix;</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : // forward declaration to prevent cyclic includes</span>
+<span id="L21"><span class="lineNum">      21</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : class DiagonalMatrix;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : // TODO(matthias): add interface contract</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : /// \brief A square matrix specialization of the Matrix class providing additional operations</span>
+<span id="L27"><span class="lineNum">      27</span>              : /// specific to square matrixes such as decompositions, inverse calculations, symmetry checks,</span>
+<span id="L28"><span class="lineNum">      28</span>              : /// and matrix property validation.</span>
+<span id="L29"><span class="lineNum">      29</span>              : ///</span>
+<span id="L30"><span class="lineNum">      30</span>              : /// This class inherits from Matrix&lt;ValueType_, Size_, Size_, IsRowMajor_&gt; and extends it with</span>
+<span id="L31"><span class="lineNum">      31</span>              : /// operations that are only meaningful for square matrixes. It supports various matrix</span>
+<span id="L32"><span class="lineNum">      32</span>              : /// decompositions (QR, LLT, LDLT, UDUT), matrix inversion, symmetry operations, and</span>
+<span id="L33"><span class="lineNum">      33</span>              : /// property checking functions for validation and debugging.</span>
+<span id="L34"><span class="lineNum">      34</span>              : ///</span>
+<span id="L35"><span class="lineNum">      35</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L36"><span class="lineNum">      36</span>              : /// \tparam Size_ The dimension of the square matrix (compile-time constant)</span>
+<span id="L37"><span class="lineNum">      37</span>              : /// \tparam IsRowMajor_ Storage layout flag (true for row-major, false for column-major)</span>
+<span id="L38"><span class="lineNum">      38</span>              : ///</span>
+<span id="L39"><span class="lineNum">      39</span>              : /// \note All operations maintain the square property and may change storage layout for</span>
+<span id="L40"><span class="lineNum">      40</span>              : ///       optimal performance (e.g., inverse operations may toggle IsRowMajor_)</span>
+<span id="L41"><span class="lineNum">      41</span>              : ///</span>
+<span id="L42"><span class="lineNum">      42</span>              : /// \see Matrix for the base matrix functionality</span>
+<span id="L43"><span class="lineNum">      43</span>              : /// \see TriangularMatrix for triangular matrix operations</span>
+<span id="L44"><span class="lineNum">      44</span>              : /// \see DiagonalMatrix for diagonal matrix operations</span>
+<span id="L45"><span class="lineNum">      45</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_ = true&gt;</span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC tlaBgGNC">        2529 : class SquareMatrix: public Matrix&lt;ValueType_, Size_, Size_, IsRowMajor_&gt;</span></span>
+<span id="L47"><span class="lineNum">      47</span>              : {</span>
+<span id="L48"><span class="lineNum">      48</span>              : public:</span>
+<span id="L49"><span class="lineNum">      49</span>              :   using BaseMatrix = Matrix&lt;ValueType_, Size_, Size_, IsRowMajor_&gt;; ///&lt; type of the parent class</span>
+<span id="L50"><span class="lineNum">      50</span>              : </span>
+<span id="L51"><span class="lineNum">      51</span>              :   // unhide ctor of base class to allow implicit call in derived default ctors</span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         264 :   using BaseMatrix::BaseMatrix;</span></span>
+<span id="L53"><span class="lineNum">      53</span>              : </span>
+<span id="L54"><span class="lineNum">      54</span>              :   //////////////////////////////////////////////////</span>
+<span id="L55"><span class="lineNum">      55</span>              :   // additional constructors  ---&gt;</span>
+<span id="L56"><span class="lineNum">      56</span>              :   /// \brief Construct a new Square Matrix&lt;ValueType_, Size_&gt; object</span>
+<span id="L57"><span class="lineNum">      57</span>              :   /// \param[in] other A base class object</span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaUNC tlaBgUNC">           0 :   explicit SquareMatrix(const BaseMatrix&amp; other)</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaUNC">           0 :       : BaseMatrix{other}</span></span>
+<span id="L60"><span class="lineNum">      60</span>              :   {</span>
+<span id="L61"><span class="lineNum">      61</span>              :   }</span>
+<span id="L62"><span class="lineNum">      62</span>              : </span>
+<span id="L63"><span class="lineNum">      63</span>              :   /// \brief Move construct a new Square Matrix&lt;ValueType_, Size_&gt; object</span>
+<span id="L64"><span class="lineNum">      64</span>              :   /// \param[in] other A base class object</span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC tlaBgGNC">        1173 :   explicit SquareMatrix(BaseMatrix&amp;&amp; other) noexcept</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         974 :       : BaseMatrix{std::move(other)}</span></span>
+<span id="L67"><span class="lineNum">      67</span>              :   {</span>
+<span id="L68"><span class="lineNum">      68</span>              :   }</span>
+<span id="L69"><span class="lineNum">      69</span>              : </span>
+<span id="L70"><span class="lineNum">      70</span>              :   /// \brief Construct a square matrix from a diagonal matrix.</span>
+<span id="L71"><span class="lineNum">      71</span>              :   ///</span>
+<span id="L72"><span class="lineNum">      72</span>              :   /// Creates a square matrix with the diagonal elements from the input diagonal matrix</span>
+<span id="L73"><span class="lineNum">      73</span>              :   /// and zeros elsewhere.</span>
+<span id="L74"><span class="lineNum">      74</span>              :   ///</span>
+<span id="L75"><span class="lineNum">      75</span>              :   /// \param[in] other The diagonal matrix to convert from</span>
+<span id="L76"><span class="lineNum">      76</span>              :   ///</span>
+<span id="L77"><span class="lineNum">      77</span>              :   /// \note This is an implicit conversion constructor for convenience</span>
+<span id="L78"><span class="lineNum">      78</span>              :   /// \note This constructor is defined in the implementation file to avoid circular dependencies</span>
+<span id="L79"><span class="lineNum">      79</span>              :   SquareMatrix(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; other); // NOLINT(google-explicit-constructor)</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span>              : </span>
+<span id="L82"><span class="lineNum">      82</span>              :   /// \brief Construct an identity matrix with ones on the diagonal and zeros elsewhere.</span>
+<span id="L83"><span class="lineNum">      83</span>              :   ///</span>
+<span id="L84"><span class="lineNum">      84</span>              :   /// \return SquareMatrix An identity matrix of the specified size and storage layout</span>
+<span id="L85"><span class="lineNum">      85</span>              :   ///</span>
+<span id="L86"><span class="lineNum">      86</span>              :   /// \note The identity matrix I satisfies I * A = A * I = A for any square matrix A</span>
+<span id="L87"><span class="lineNum">      87</span>              :   [[nodiscard]] static auto Identity() -&gt; SquareMatrix;</span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span>              :   /// \brief Creates a SquareMatrix from a nested initializer list</span>
+<span id="L90"><span class="lineNum">      90</span>              :   ///</span>
+<span id="L91"><span class="lineNum">      91</span>              :   /// This function constructs a SquareMatrix from a nested initializer list where each inner list</span>
+<span id="L92"><span class="lineNum">      92</span>              :   /// represents a row of the matrix. The dimensions must be square and match the template parameter.</span>
+<span id="L93"><span class="lineNum">      93</span>              :   ///</span>
+<span id="L94"><span class="lineNum">      94</span>              :   /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L95"><span class="lineNum">      95</span>              :   /// \tparam Size_ The dimension of the square matrix</span>
+<span id="L96"><span class="lineNum">      96</span>              :   /// \tparam IsRowMajor_ The storage layout (true for row-major, false for column-major)</span>
+<span id="L97"><span class="lineNum">      97</span>              :   /// \param[in] list Nested initializer list in logical row-major format</span>
+<span id="L98"><span class="lineNum">      98</span>              :   /// \return SquareMatrix instance initialized with the provided values</span>
+<span id="L99"><span class="lineNum">      99</span>              :   /// \throws std::runtime_error If the list dimensions don't match the square matrix size</span>
+<span id="L100"><span class="lineNum">     100</span>              :   /// \see SquareFromDiagonal() for creating from diagonal matrixes</span>
+<span id="L101"><span class="lineNum">     101</span>              :   /// \see MatrixFromList() for general matrix creation</span>
+<span id="L102"><span class="lineNum">     102</span>              :   [[nodiscard]] static auto FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) -&gt; SquareMatrix;</span>
+<span id="L103"><span class="lineNum">     103</span>              : </span>
+<span id="L104"><span class="lineNum">     104</span>              :   /// \brief Set the matrix to the identity matrix in-place.</span>
+<span id="L105"><span class="lineNum">     105</span>              :   ///</span>
+<span id="L106"><span class="lineNum">     106</span>              :   /// Modifies the current matrix to have ones on the diagonal and zeros elsewhere.</span>
+<span id="L107"><span class="lineNum">     107</span>              :   ///</span>
+<span id="L108"><span class="lineNum">     108</span>              :   /// \note This operation modifies the matrix in-place and does not change its size or layout</span>
+<span id="L109"><span class="lineNum">     109</span>              :   void setIdentity();</span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              :   /// \brief Fast transpose without changing the layout (zero-copy view)</span>
+<span id="L112"><span class="lineNum">     112</span>              :   /// \return const transpose_type&amp;   const reference to same data as Self, but differently interpreted as transposed</span>
+<span id="L113"><span class="lineNum">     113</span>              :   /// \note This creates a view with swapped dimensions and opposite layout. No data is copied.</span>
+<span id="L114"><span class="lineNum">     114</span>              :   [[nodiscard]] auto transpose() const -&gt; const SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&amp;</span>
+<span id="L115"><span class="lineNum">     115</span>              :   {</span>
+<span id="L116"><span class="lineNum">     116</span>              :     return static_cast&lt;const SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&amp;&gt;(BaseMatrix::transpose());</span>
+<span id="L117"><span class="lineNum">     117</span>              :   };</span>
+<span id="L118"><span class="lineNum">     118</span>              : </span>
+<span id="L119"><span class="lineNum">     119</span>              :   /// \brief Fast transpose without changing the layout (zero-copy view)</span>
+<span id="L120"><span class="lineNum">     120</span>              :   /// \return transpose_type&amp;   reference to same data as Self, but differently interpreted as transposed</span>
+<span id="L121"><span class="lineNum">     121</span>              :   /// \note This creates a view with swapped dimensions and opposite layout. No data is copied.</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">          10 :   [[nodiscard]] auto transpose() -&gt; SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&amp;</span></span>
+<span id="L123"><span class="lineNum">     123</span>              :   {</span>
+<span id="L124"><span class="lineNum">     124</span>              :     return static_cast&lt;SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&amp;&gt;(BaseMatrix::transpose());</span>
+<span id="L125"><span class="lineNum">     125</span>              :   };</span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span>              :   /// \brief Calculate the trace of the square matrix.</span>
+<span id="L128"><span class="lineNum">     128</span>              :   ///</span>
+<span id="L129"><span class="lineNum">     129</span>              :   /// Computes the sum of all diagonal elements of the matrix.</span>
+<span id="L130"><span class="lineNum">     130</span>              :   /// The trace is defined as the sum of elements A_ii for i = 1 to n.</span>
+<span id="L131"><span class="lineNum">     131</span>              :   ///</span>
+<span id="L132"><span class="lineNum">     132</span>              :   /// \return ValueType_ The trace of the matrix(sum of diagonal elements)</span>
+<span id="L133"><span class="lineNum">     133</span>              :   [[nodiscard]] auto trace() const -&gt; ValueType_;</span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span>              :   /// \brief Calculate the determinant of the square matrix.</span>
+<span id="L136"><span class="lineNum">     136</span>              :   ///</span>
+<span id="L137"><span class="lineNum">     137</span>              :   /// Computes the determinant using LU decomposition with partial pivoting.</span>
+<span id="L138"><span class="lineNum">     138</span>              :   /// The determinant is the product of the diagonal elements of the upper triangular</span>
+<span id="L139"><span class="lineNum">     139</span>              :   /// matrix from the LU decomposition, multiplied by (-1)^k where k is the number</span>
+<span id="L140"><span class="lineNum">     140</span>              :   /// of row permutations.</span>
+<span id="L141"><span class="lineNum">     141</span>              :   ///</span>
+<span id="L142"><span class="lineNum">     142</span>              :   /// \return ValueType_ The determinant of the matrix</span>
+<span id="L143"><span class="lineNum">     143</span>              :   /// \note Time complexity: O(n^3) where n is the matrix dimension</span>
+<span id="L144"><span class="lineNum">     144</span>              :   /// \note For singular matrixes, the determinant will be zero or very close to zero</span>
+<span id="L145"><span class="lineNum">     145</span>              :   /// \note Uses partial pivoting for numerical stability</span>
+<span id="L146"><span class="lineNum">     146</span>              :   [[nodiscard]] auto determinant() const -&gt; ValueType_;</span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span>              :   /// \brief Performs Householder QR decomposition of a square matrix</span>
+<span id="L149"><span class="lineNum">     149</span>              :   ///</span>
+<span id="L150"><span class="lineNum">     150</span>              :   /// Decomposes a square matrix A into the product A = Q*R, where Q is an orthogonal matrix</span>
+<span id="L151"><span class="lineNum">     151</span>              :   /// and R is an upper triangular matrix. This implementation uses Householder reflections</span>
+<span id="L152"><span class="lineNum">     152</span>              :   /// for numerical stability.</span>
+<span id="L153"><span class="lineNum">     153</span>              :   ///</span>
+<span id="L154"><span class="lineNum">     154</span>              :   /// The Householder QR decomposition is based on successive Householder transformations that</span>
+<span id="L155"><span class="lineNum">     155</span>              :   /// zero out subdiagonal elements column by column. Each Householder reflection is represented</span>
+<span id="L156"><span class="lineNum">     156</span>              :   /// by a vector v and a scalar τ, where the reflection matrix is I - τ*v*v^T.</span>
+<span id="L157"><span class="lineNum">     157</span>              :   ///</span>
+<span id="L158"><span class="lineNum">     158</span>              :   /// \return std::pair&lt;SquareMatrix, TriangularMatrix&gt; A pair containing Q and R matrixes,</span>
+<span id="L159"><span class="lineNum">     159</span>              :   ///         where Q is orthogonal and R is upper triangular such that A = Q * R</span>
+<span id="L160"><span class="lineNum">     160</span>              :   ///</span>
+<span id="L161"><span class="lineNum">     161</span>              :   /// \note The decomposition satisfies A = Q * R, with Q being orthogonal (Q^T * Q = I)</span>
+<span id="L162"><span class="lineNum">     162</span>              :   ///       and R being upper triangular. This is useful for solving linear systems and</span>
+<span id="L163"><span class="lineNum">     163</span>              :   ///       computing matrix inverses.</span>
+<span id="L164"><span class="lineNum">     164</span>              :   /// \note Time complexity: O(n^3) for an n x n matrix</span>
+<span id="L165"><span class="lineNum">     165</span>              :   /// \note Space complexity: O(n^2) additional space for Q and R matrixes</span>
+<span id="L166"><span class="lineNum">     166</span>              :   /// \note Numerically stable and suitable for general square matrixes</span>
+<span id="L167"><span class="lineNum">     167</span>              :   ///</span>
+<span id="L168"><span class="lineNum">     168</span>              :   /// \see qrSolve for solving linear systems using this decomposition</span>
+<span id="L169"><span class="lineNum">     169</span>              :   /// \see inverse for matrix inversion using QR decomposition</span>
+<span id="L170"><span class="lineNum">     170</span>              :   /// \see https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf for algorithm reference</span>
+<span id="L171"><span class="lineNum">     171</span>              :   [[nodiscard]] auto householderQR() const -&gt; std::pair&lt;SquareMatrix, TriangularMatrix&lt;ValueType_, Size_, false, IsRowMajor_&gt;&gt;;</span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span>              :   /// \brief Solve the linear system A * x = b using QR decomposition.</span>
+<span id="L174"><span class="lineNum">     174</span>              :   ///</span>
+<span id="L175"><span class="lineNum">     175</span>              :   /// Uses the QR decomposition of this matrix to solve for x in A * x = b.</span>
+<span id="L176"><span class="lineNum">     176</span>              :   /// This method is numerically stable and suitable for well-conditioned matrixes.</span>
+<span id="L177"><span class="lineNum">     177</span>              :   ///</span>
+<span id="L178"><span class="lineNum">     178</span>              :   /// \tparam IsRowMajor2_ The row-majority of the right-hand side matrix b</span>
+<span id="L179"><span class="lineNum">     179</span>              :   /// \param[in] b The right-hand side matrix of the equation A * x = b</span>
+<span id="L180"><span class="lineNum">     180</span>              :   /// \return Matrix The solution matrix x such that A * x ≈ b</span>
+<span id="L181"><span class="lineNum">     181</span>              :   ///</span>
+<span id="L182"><span class="lineNum">     182</span>              :   /// \note This method internally performs QR decomposition, which has O(n³) complexity.</span>
+<span id="L183"><span class="lineNum">     183</span>              :   ///       For multiple right-hand sides with the same A, consider using householderQR()</span>
+<span id="L184"><span class="lineNum">     184</span>              :   ///       directly and reusing the decomposition.</span>
+<span id="L185"><span class="lineNum">     185</span>              :   ///</span>
+<span id="L186"><span class="lineNum">     186</span>              :   /// \see householderQR for the underlying decomposition</span>
+<span id="L187"><span class="lineNum">     187</span>              :   template &lt;sint32 Cols_, bool IsRowMajor2_&gt;</span>
+<span id="L188"><span class="lineNum">     188</span>              :   [[nodiscard]] auto qrSolve(const Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt;&amp; b) const</span>
+<span id="L189"><span class="lineNum">     189</span>              :       -&gt; Matrix&lt;ValueType_, Size_, Cols_, !IsRowMajor_&gt;;</span>
+<span id="L190"><span class="lineNum">     190</span>              : </span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">          40 :   [[nodiscard]] auto qrSolve(const Vector&lt;ValueType_, Size_&gt;&amp; b) const -&gt; Vector&lt;ValueType_, Size_&gt;</span></span>
+<span id="L192"><span class="lineNum">     192</span>              :   {</span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">          40 :     return Vector&lt;ValueType_, Size_&gt;{qrSolve&lt;1, true&gt;(b)};</span></span>
+<span id="L194"><span class="lineNum">     194</span>              :   }</span>
+<span id="L195"><span class="lineNum">     195</span>              : </span>
+<span id="L196"><span class="lineNum">     196</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">          82 :   [[nodiscard]] auto qrSolve(const SquareMatrix&lt;ValueType_, Size_, IsRowMajor2_&gt;&amp; b) const</span></span>
+<span id="L198"><span class="lineNum">     198</span>              :       -&gt; SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;</span>
+<span id="L199"><span class="lineNum">     199</span>              :   {</span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">          82 :     return static_cast&lt;SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&gt;(qrSolve&lt;Size_, IsRowMajor2_&gt;(b));</span></span>
+<span id="L201"><span class="lineNum">     201</span>              :   }</span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              :   /// \brief Performs Cholesky decomposition (LLT) of a symmetric positive definite matrix</span>
+<span id="L204"><span class="lineNum">     204</span>              :   ///</span>
+<span id="L205"><span class="lineNum">     205</span>              :   /// Decomposes a symmetric positive definite matrix A into the product A = L*L^T, where L</span>
+<span id="L206"><span class="lineNum">     206</span>              :   /// is a lower triangular matrix with positive diagonal elements. This is also known as</span>
+<span id="L207"><span class="lineNum">     207</span>              :   /// the Cholesky decomposition.</span>
+<span id="L208"><span class="lineNum">     208</span>              :   ///</span>
+<span id="L209"><span class="lineNum">     209</span>              :   /// The algorithm uses a recursive approach where each column of L is computed using</span>
+<span id="L210"><span class="lineNum">     210</span>              :   /// previous columns. For a symmetric positive definite matrix, the Cholesky factor L</span>
+<span id="L211"><span class="lineNum">     211</span>              :   /// satisfies L*L^T = A, with L being lower triangular.</span>
+<span id="L212"><span class="lineNum">     212</span>              :   ///</span>
+<span id="L213"><span class="lineNum">     213</span>              :   /// \return tl::expected&lt;TriangularMatrix, Errors&gt; The lower triangular matrix L on success,</span>
+<span id="L214"><span class="lineNum">     214</span>              :   ///         or Errors::matrix_not_symmetric if not symmetric, or</span>
+<span id="L215"><span class="lineNum">     215</span>              :   ///         Errors::matrix_not_positive_definite if not positive definite</span>
+<span id="L216"><span class="lineNum">     216</span>              :   ///</span>
+<span id="L217"><span class="lineNum">     217</span>              :   /// \note The matrix must be symmetric and positive definite</span>
+<span id="L218"><span class="lineNum">     218</span>              :   /// \note Time complexity: O(n^3) for an n x n matrix</span>
+<span id="L219"><span class="lineNum">     219</span>              :   /// \note Space complexity: O(n^2) for the result matrix</span>
+<span id="L220"><span class="lineNum">     220</span>              :   /// \note Numerically stable for well-conditioned positive definite matrixes</span>
+<span id="L221"><span class="lineNum">     221</span>              :   ///</span>
+<span id="L222"><span class="lineNum">     222</span>              :   /// \warning The input matrix must be symmetric. Use symmetrize() if needed.</span>
+<span id="L223"><span class="lineNum">     223</span>              :   /// \warning Fails if the matrix is not symmetric or not positive definite</span>
+<span id="L224"><span class="lineNum">     224</span>              :   ///</span>
+<span id="L225"><span class="lineNum">     225</span>              :   /// \see decomposeLDLT for a more numerically stable variant</span>
+<span id="L226"><span class="lineNum">     226</span>              :   /// \see isSymmetric for symmetry checking</span>
+<span id="L227"><span class="lineNum">     227</span>              :   [[nodiscard]] auto decomposeLLT() const -&gt; tl::expected&lt;TriangularMatrix&lt;ValueType_, Size_, true, IsRowMajor_&gt;, Errors&gt;;</span>
+<span id="L228"><span class="lineNum">     228</span>              : </span>
+<span id="L229"><span class="lineNum">     229</span>              :   /// \brief Performs LDL^T decomposition of a symmetric positive definite matrix</span>
+<span id="L230"><span class="lineNum">     230</span>              :   ///</span>
+<span id="L231"><span class="lineNum">     231</span>              :   /// Decomposes a symmetric positive definite matrix A into the product A = L*D*L^T, where</span>
+<span id="L232"><span class="lineNum">     232</span>              :   /// L is a unit lower triangular matrix (diagonal elements are 1) and D is a diagonal</span>
+<span id="L233"><span class="lineNum">     233</span>              :   /// matrix with positive diagonal elements.</span>
+<span id="L234"><span class="lineNum">     234</span>              :   ///</span>
+<span id="L235"><span class="lineNum">     235</span>              :   /// This decomposition is more numerically stable than LLT for certain matrixes and is</span>
+<span id="L236"><span class="lineNum">     236</span>              :   /// particularly useful in Kalman filtering applications where the matrix structure</span>
+<span id="L237"><span class="lineNum">     237</span>              :   /// needs to be maintained. The LDL^T form separates the triangular structure (L) from</span>
+<span id="L238"><span class="lineNum">     238</span>              :   /// the scaling factors (D).</span>
+<span id="L239"><span class="lineNum">     239</span>              :   ///</span>
+<span id="L240"><span class="lineNum">     240</span>              :   /// \return tl::expected&lt;std::pair&lt;TriangularMatrix, DiagonalMatrix&gt;, Errors&gt;</span>
+<span id="L241"><span class="lineNum">     241</span>              :   ///         A pair containing L and D matrixes on success, or Errors::matrix_not_symmetric</span>
+<span id="L242"><span class="lineNum">     242</span>              :   ///         if not symmetric, or Errors::matrix_not_positive_definite if not positive definite</span>
+<span id="L243"><span class="lineNum">     243</span>              :   ///</span>
+<span id="L244"><span class="lineNum">     244</span>              :   /// \note The matrix must be symmetric and positive definite</span>
+<span id="L245"><span class="lineNum">     245</span>              :   /// \note Time complexity: O(n^3) for an n x n matrix</span>
+<span id="L246"><span class="lineNum">     246</span>              :   /// \note Space complexity: O(n^2) for L and O(n) for D</span>
+<span id="L247"><span class="lineNum">     247</span>              :   /// \note More numerically stable than LLT for some applications</span>
+<span id="L248"><span class="lineNum">     248</span>              :   /// \note L has unit diagonal (all diagonal elements are 1)</span>
+<span id="L249"><span class="lineNum">     249</span>              :   ///</span>
+<span id="L250"><span class="lineNum">     250</span>              :   /// \warning Fails if the matrix is not symmetric or not positive definite</span>
+<span id="L251"><span class="lineNum">     251</span>              :   ///</span>
+<span id="L252"><span class="lineNum">     252</span>              :   /// \see decomposeLLT for the standard Cholesky decomposition</span>
+<span id="L253"><span class="lineNum">     253</span>              :   /// \see decomposeUDUT for the UDU^T variant</span>
+<span id="L254"><span class="lineNum">     254</span>              :   [[nodiscard]] auto decomposeLDLT() const</span>
+<span id="L255"><span class="lineNum">     255</span>              :       -&gt; tl::expected&lt;std::pair&lt;TriangularMatrix&lt;ValueType_, Size_, true, IsRowMajor_&gt;, DiagonalMatrix&lt;ValueType_, Size_&gt;&gt;,</span>
+<span id="L256"><span class="lineNum">     256</span>              :                       Errors&gt;;</span>
+<span id="L257"><span class="lineNum">     257</span>              : </span>
+<span id="L258"><span class="lineNum">     258</span>              :   /// \brief Performs UDU^T decomposition of a symmetric matrix</span>
+<span id="L259"><span class="lineNum">     259</span>              :   ///</span>
+<span id="L260"><span class="lineNum">     260</span>              :   /// Decomposes a symmetric matrix A into the product A = U*D*U^T, where U is a unit upper</span>
+<span id="L261"><span class="lineNum">     261</span>              :   /// triangular matrix (diagonal elements are 1) and D is a diagonal matrix. This is also</span>
+<span id="L262"><span class="lineNum">     262</span>              :   /// known as the UDU^T factorization.</span>
+<span id="L263"><span class="lineNum">     263</span>              :   ///</span>
+<span id="L264"><span class="lineNum">     264</span>              :   /// This decomposition is particularly important in Kalman filtering for maintaining the</span>
+<span id="L265"><span class="lineNum">     265</span>              :   /// UDU^T form of covariance matrixes, which provides better numerical stability than</span>
+<span id="L266"><span class="lineNum">     266</span>              :   /// standard covariance representations. The algorithm works backwards from the last</span>
+<span id="L267"><span class="lineNum">     267</span>              :   /// column to the first, computing U and D simultaneously.</span>
+<span id="L268"><span class="lineNum">     268</span>              :   ///</span>
+<span id="L269"><span class="lineNum">     269</span>              :   /// The implementation is based on modified Cholesky decomposition and includes numerical</span>
+<span id="L270"><span class="lineNum">     270</span>              :   /// safeguards to ensure positive definiteness even for near-singular matrixes.</span>
+<span id="L271"><span class="lineNum">     271</span>              :   ///</span>
+<span id="L272"><span class="lineNum">     272</span>              :   /// \return tl::expected&lt;std::pair&lt;TriangularMatrix, DiagonalMatrix&gt;, Errors&gt;</span>
+<span id="L273"><span class="lineNum">     273</span>              :   ///         A pair containing U and D matrixes on success, or Errors::matrix_not_symmetric</span>
+<span id="L274"><span class="lineNum">     274</span>              :   ///         if not symmetric</span>
+<span id="L275"><span class="lineNum">     275</span>              :   ///</span>
+<span id="L276"><span class="lineNum">     276</span>              :   /// \note The matrix must be symmetric</span>
+<span id="L277"><span class="lineNum">     277</span>              :   /// \note Time complexity: O(n^3) for an n x n matrix</span>
+<span id="L278"><span class="lineNum">     278</span>              :   /// \note Space complexity: O(n^2) for U and O(n) for D</span>
+<span id="L279"><span class="lineNum">     279</span>              :   /// \note Numerically stable with safeguards for near-singular matrixes</span>
+<span id="L280"><span class="lineNum">     280</span>              :   /// \note U has unit diagonal (all diagonal elements are 1)</span>
+<span id="L281"><span class="lineNum">     281</span>              :   /// \note D diagonal elements are clamped to a minimum value for numerical stability</span>
+<span id="L282"><span class="lineNum">     282</span>              :   ///</span>
+<span id="L283"><span class="lineNum">     283</span>              :   /// \warning Fails if the matrix is not symmetric</span>
+<span id="L284"><span class="lineNum">     284</span>              :   ///</span>
+<span id="L285"><span class="lineNum">     285</span>              :   /// \see decomposeLDLT for the lower triangular variant</span>
+<span id="L286"><span class="lineNum">     286</span>              :   /// \see CovarianceMatrixFactored for UDU usage in Kalman filters</span>
+<span id="L287"><span class="lineNum">     287</span>              :   /// \see Grewal &amp; Andrews, Kalman Filtering Theory and Practice Using MATLAB, 4th Edition, Wiley, 2014</span>
+<span id="L288"><span class="lineNum">     288</span>              :   /// \see Gerald J. Bierman, &quot;Factorization Methods for Discrete Sequential Estimation&quot;, 1977</span>
+<span id="L289"><span class="lineNum">     289</span>              :   /// \see Catherine L. Thornton, &quot;Triangular Covariance Factorizations for Kalman Filtering&quot;, 1976</span>
+<span id="L290"><span class="lineNum">     290</span>              :   [[nodiscard]] auto decomposeUDUT() const</span>
+<span id="L291"><span class="lineNum">     291</span>              :       -&gt; tl::expected&lt;std::pair&lt;TriangularMatrix&lt;ValueType_, Size_, false, IsRowMajor_&gt;, DiagonalMatrix&lt;ValueType_, Size_&gt;&gt;,</span>
+<span id="L292"><span class="lineNum">     292</span>              :                       Errors&gt;;</span>
+<span id="L293"><span class="lineNum">     293</span>              : </span>
+<span id="L294"><span class="lineNum">     294</span>              :   /// \brief Compute the matrix inverse using QR decomposition.</span>
+<span id="L295"><span class="lineNum">     295</span>              :   ///</span>
+<span id="L296"><span class="lineNum">     296</span>              :   /// Calculates the inverse of the matrix using QR decomposition for numerical stability.</span>
+<span id="L297"><span class="lineNum">     297</span>              :   /// The result has toggled storage layout for optimal performance.</span>
+<span id="L298"><span class="lineNum">     298</span>              :   ///</span>
+<span id="L299"><span class="lineNum">     299</span>              :   /// \return SquareMatrix The inverse matrix such that A * A^(-1) = I</span>
+<span id="L300"><span class="lineNum">     300</span>              :   ///</span>
+<span id="L301"><span class="lineNum">     301</span>              :   /// \note Uses QR decomposition internally, which provides good numerical stability</span>
+<span id="L302"><span class="lineNum">     302</span>              :   ///       but has O(n³) complexity. The storage layout is toggled in the result.</span>
+<span id="L303"><span class="lineNum">     303</span>              :   ///</span>
+<span id="L304"><span class="lineNum">     304</span>              :   /// \warning Fails for singular or near-singular matrixes. Check condition number if needed.</span>
+<span id="L305"><span class="lineNum">     305</span>              :   ///</span>
+<span id="L306"><span class="lineNum">     306</span>              :   /// \see householderQR for the underlying decomposition</span>
+<span id="L307"><span class="lineNum">     307</span>              :   [[nodiscard]] auto inverse() const -&gt; SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;;</span>
+<span id="L308"><span class="lineNum">     308</span>              : </span>
+<span id="L309"><span class="lineNum">     309</span>              :   /// \brief Symmetrize the matrix by averaging with its transpose.</span>
+<span id="L310"><span class="lineNum">     310</span>              :   ///</span>
+<span id="L311"><span class="lineNum">     311</span>              :   /// Modifies the matrix to be symmetric by computing (A + A^T) / 2.</span>
+<span id="L312"><span class="lineNum">     312</span>              :   /// This is useful for ensuring symmetry when small numerical errors</span>
+<span id="L313"><span class="lineNum">     313</span>              :   /// have made a theoretically symmetric matrix asymmetric.</span>
+<span id="L314"><span class="lineNum">     314</span>              :   ///</span>
+<span id="L315"><span class="lineNum">     315</span>              :   /// \note This operation modifies the matrix in-place and ensures perfect symmetry</span>
+<span id="L316"><span class="lineNum">     316</span>              :   ///       at the cost of slightly changing the original values.</span>
+<span id="L317"><span class="lineNum">     317</span>              :   void symmetrize();</span>
+<span id="L318"><span class="lineNum">     318</span>              : </span>
+<span id="L319"><span class="lineNum">     319</span>              :   //////////////////////////////////////////////////</span>
+<span id="L320"><span class="lineNum">     320</span>              :   // square matrix property checks  ---&gt;</span>
+<span id="L321"><span class="lineNum">     321</span>              :   /// \brief Check if the matrix is symmetric.</span>
+<span id="L322"><span class="lineNum">     322</span>              :   ///</span>
+<span id="L323"><span class="lineNum">     323</span>              :   /// Tests whether the matrix equals its transpose (A = A^T).</span>
+<span id="L324"><span class="lineNum">     324</span>              :   ///</span>
+<span id="L325"><span class="lineNum">     325</span>              :   /// \param tolerance Tolerance for numerical comparison (default: 1e-6)</span>
+<span id="L326"><span class="lineNum">     326</span>              :   /// \return true if the matrix is symmetric, false otherwise</span>
+<span id="L327"><span class="lineNum">     327</span>              :   ///</span>
+<span id="L328"><span class="lineNum">     328</span>              :   /// \note Symmetry checking uses element-wise comparison and may have floating-point precision issues</span>
+<span id="L329"><span class="lineNum">     329</span>              :   [[nodiscard]] auto isSymmetric(ValueType_ tolerance = 1e-6) const -&gt; bool;</span>
+<span id="L330"><span class="lineNum">     330</span>              : </span>
+<span id="L331"><span class="lineNum">     331</span>              :   /// \brief Check if the diagonal matrix is positive definite.</span>
+<span id="L332"><span class="lineNum">     332</span>              :   ///</span>
+<span id="L333"><span class="lineNum">     333</span>              :   /// A diagonal matrix is positive definite if all diagonal elements are positive.</span>
+<span id="L334"><span class="lineNum">     334</span>              :   ///</span>
+<span id="L335"><span class="lineNum">     335</span>              :   /// \return true if all diagonal elements are &gt; 0, false otherwise</span>
+<span id="L336"><span class="lineNum">     336</span>              :   ///</span>
+<span id="L337"><span class="lineNum">     337</span>              :   /// \note For diagonal matrixes, positive definiteness is equivalent to all elements &gt; 0</span>
+<span id="L338"><span class="lineNum">     338</span>              :   [[nodiscard]] auto isPositiveDefinite() const -&gt; bool;</span>
+<span id="L339"><span class="lineNum">     339</span>              : </span>
+<span id="L340"><span class="lineNum">     340</span>              :   /// \brief Checks if the matrix is positive semi-definite.</span>
+<span id="L341"><span class="lineNum">     341</span>              :   ///</span>
+<span id="L342"><span class="lineNum">     342</span>              :   /// Tests whether all eigenvalues of the matrix are non-negative.</span>
+<span id="L343"><span class="lineNum">     343</span>              :   /// A positive semi-definite matrix satisfies x^T * A * x &gt;= 0 for all non-zero vectors x.</span>
+<span id="L344"><span class="lineNum">     344</span>              :   ///</span>
+<span id="L345"><span class="lineNum">     345</span>              :   /// This is a key property for covariance matrixes in statistics and machine learning.</span>
+<span id="L346"><span class="lineNum">     346</span>              :   ///</span>
+<span id="L347"><span class="lineNum">     347</span>              :   /// The check is performed using Cholesky decomposition; if it succeeds, the matrix</span>
+<span id="L348"><span class="lineNum">     348</span>              :   /// is positive semi-definite.</span>
+<span id="L349"><span class="lineNum">     349</span>              :   ///</span>
+<span id="L350"><span class="lineNum">     350</span>              :   /// \return true if the matrix is positive semi-definite, false otherwise</span>
+<span id="L351"><span class="lineNum">     351</span>              :   [[nodiscard]] auto isPositiveSemiDefinite() const -&gt; bool;</span>
+<span id="L352"><span class="lineNum">     352</span>              : </span>
+<span id="L353"><span class="lineNum">     353</span>              :   /// \brief Checks if the matrix is orthogonal within a specified tolerance</span>
+<span id="L354"><span class="lineNum">     354</span>              :   ///</span>
+<span id="L355"><span class="lineNum">     355</span>              :   /// Tests whether the matrix is orthogonal by checking if Q^T * Q = I within tolerance.</span>
+<span id="L356"><span class="lineNum">     356</span>              :   /// An orthogonal matrix satisfies Q^T * Q = I, where I is the identity matrix.</span>
+<span id="L357"><span class="lineNum">     357</span>              :   ///</span>
+<span id="L358"><span class="lineNum">     358</span>              :   /// \param tolerance Tolerance for numerical comparison (default: 1e-6)</span>
+<span id="L359"><span class="lineNum">     359</span>              :   /// \return true if matrix is orthogonal within tolerance, false otherwise</span>
+<span id="L360"><span class="lineNum">     360</span>              :   ///</span>
+<span id="L361"><span class="lineNum">     361</span>              :   /// \note This is useful for validating QR decomposition results</span>
+<span id="L362"><span class="lineNum">     362</span>              :   /// \note Time complexity: O(n^3) due to matrix multiplication</span>
+<span id="L363"><span class="lineNum">     363</span>              :   /// \see householderQR() for QR decomposition that produces orthogonal matrixes</span>
+<span id="L364"><span class="lineNum">     364</span>              :   [[nodiscard]] auto isOrthogonal(ValueType_ tolerance = 1e-6) const -&gt; bool;</span>
+<span id="L365"><span class="lineNum">     365</span>              : </span>
+<span id="L366"><span class="lineNum">     366</span>              :   /// \brief Checks if the matrix is upper triangular within a specified tolerance</span>
+<span id="L367"><span class="lineNum">     367</span>              :   ///</span>
+<span id="L368"><span class="lineNum">     368</span>              :   /// Tests whether all elements below the main diagonal are zero within tolerance.</span>
+<span id="L369"><span class="lineNum">     369</span>              :   /// An upper triangular matrix has all elements below the diagonal equal to zero.</span>
+<span id="L370"><span class="lineNum">     370</span>              :   ///</span>
+<span id="L371"><span class="lineNum">     371</span>              :   /// \param tolerance Tolerance for numerical comparison (default: 1e-6)</span>
+<span id="L372"><span class="lineNum">     372</span>              :   /// \return true if matrix is upper triangular within tolerance, false otherwise</span>
+<span id="L373"><span class="lineNum">     373</span>              :   ///</span>
+<span id="L374"><span class="lineNum">     374</span>              :   /// \note This is useful for validating decomposition results (QR, UDUT)</span>
+<span id="L375"><span class="lineNum">     375</span>              :   /// \note Time complexity: O(n^2)</span>
+<span id="L376"><span class="lineNum">     376</span>              :   /// \see householderQR() for QR decomposition that produces upper triangular matrixes</span>
+<span id="L377"><span class="lineNum">     377</span>              :   [[nodiscard]] auto isUpperTriangular(ValueType_ tolerance = 1e-6) const -&gt; bool;</span>
+<span id="L378"><span class="lineNum">     378</span>              : </span>
+<span id="L379"><span class="lineNum">     379</span>              :   /// \brief Checks if the matrix is lower triangular within a specified tolerance</span>
+<span id="L380"><span class="lineNum">     380</span>              :   ///</span>
+<span id="L381"><span class="lineNum">     381</span>              :   /// Tests whether all elements above the main diagonal are zero within tolerance.</span>
+<span id="L382"><span class="lineNum">     382</span>              :   /// A lower triangular matrix has all elements above the diagonal equal to zero.</span>
+<span id="L383"><span class="lineNum">     383</span>              :   ///</span>
+<span id="L384"><span class="lineNum">     384</span>              :   /// \param tolerance Tolerance for numerical comparison (default: 1e-6)</span>
+<span id="L385"><span class="lineNum">     385</span>              :   /// \return true if matrix is lower triangular within tolerance, false otherwise</span>
+<span id="L386"><span class="lineNum">     386</span>              :   ///</span>
+<span id="L387"><span class="lineNum">     387</span>              :   /// \note This is useful for validating decomposition results (LLT, LDLT)</span>
+<span id="L388"><span class="lineNum">     388</span>              :   /// \note Time complexity: O(n^2)</span>
+<span id="L389"><span class="lineNum">     389</span>              :   /// \see decomposeLLT() for LLT decomposition that produces lower triangular matrixes</span>
+<span id="L390"><span class="lineNum">     390</span>              :   [[nodiscard]] auto isLowerTriangular(ValueType_ tolerance = 1e-6) const -&gt; bool;</span>
+<span id="L391"><span class="lineNum">     391</span>              : </span>
+<span id="L392"><span class="lineNum">     392</span>              :   /// \brief Checks if the matrix has a unit diagonal within a specified tolerance</span>
+<span id="L393"><span class="lineNum">     393</span>              :   ///</span>
+<span id="L394"><span class="lineNum">     394</span>              :   /// Tests whether all diagonal elements are equal to 1 within tolerance.</span>
+<span id="L395"><span class="lineNum">     395</span>              :   /// A unit diagonal matrix has all diagonal elements equal to 1.</span>
+<span id="L396"><span class="lineNum">     396</span>              :   ///</span>
+<span id="L397"><span class="lineNum">     397</span>              :   /// \param tolerance Tolerance for numerical comparison (default: 1e-6)</span>
+<span id="L398"><span class="lineNum">     398</span>              :   /// \return true if all diagonal elements are 1 within tolerance, false otherwise</span>
+<span id="L399"><span class="lineNum">     399</span>              :   ///</span>
+<span id="L400"><span class="lineNum">     400</span>              :   /// \note This is useful for validating decomposition results (LDLT, UDUT)</span>
+<span id="L401"><span class="lineNum">     401</span>              :   /// \note Time complexity: O(n)</span>
+<span id="L402"><span class="lineNum">     402</span>              :   /// \see decomposeLDLT() for LDLT decomposition that produces unit diagonal matrixes</span>
+<span id="L403"><span class="lineNum">     403</span>              :   [[nodiscard]] auto hasUnitDiagonal(ValueType_ tolerance = 1e-6) const -&gt; bool;</span>
+<span id="L404"><span class="lineNum">     404</span>              :   // &lt;---</span>
+<span id="L405"><span class="lineNum">     405</span>              : </span>
+<span id="L406"><span class="lineNum">     406</span>              : private:</span>
+<span id="L407"><span class="lineNum">     407</span>              :   /// \brief Check if all diagonal elements are strictly positive.</span>
+<span id="L408"><span class="lineNum">     408</span>              :   ///</span>
+<span id="L409"><span class="lineNum">     409</span>              :   /// Tests whether all diagonal elements satisfy d_ii &gt; 0.</span>
+<span id="L410"><span class="lineNum">     410</span>              :   /// This is used internally for positive definiteness checks.</span>
+<span id="L411"><span class="lineNum">     411</span>              :   ///</span>
+<span id="L412"><span class="lineNum">     412</span>              :   /// \return true if all diagonal elements are positive, false otherwise</span>
+<span id="L413"><span class="lineNum">     413</span>              :   ///</span>
+<span id="L414"><span class="lineNum">     414</span>              :   /// \note This is a necessary but not sufficient condition for positive definiteness</span>
+<span id="L415"><span class="lineNum">     415</span>              :   [[nodiscard]] auto hasStrictlyPositiveDiagonalElems() const -&gt; bool;</span>
+<span id="L416"><span class="lineNum">     416</span>              : };</span>
+<span id="L417"><span class="lineNum">     417</span>              : </span>
+<span id="L418"><span class="lineNum">     418</span>              : } // namespace math</span>
+<span id="L419"><span class="lineNum">     419</span>              : } // namespace tracking</span>
+<span id="L420"><span class="lineNum">     420</span>              : #endif // BE2AA4BF_8A4F_4A6D_8DFB_4E140C9F0A08</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>
