@@ -82,7 +82,6 @@ if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQ
             "build_cov/*" 
             "_deps/*" 
             "examples/*" 
-            "python/*" 
             "tests/*"
     )
 endif()

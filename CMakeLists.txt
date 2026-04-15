@@ -29,37 +29,6 @@ endif()
 
 include(FetchContent)
 
-# Define an option to activate dependency and linkage to Eigen
-option(USE_EIGEN "Activate dependency and linkage to Eigen" OFF)
-if(USE_EIGEN)
-    FetchContent_Declare (
-        Eigen
-        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-        GIT_TAG 3.4
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE 
-    )
-    FetchContent_MakeAvailable(Eigen)
-    
-    option(EIGEN_BUILD_DOC OFF)
-    option(EIGEN_BUILD_PKGCONFIG OFF)
-endif()
-
-# Define an option to activate dependency and linkage to Pybind11
-option(USE_PYBIND11 "Activate dependency and linkage to Pybind11 (experimental)" OFF)
-if(USE_PYBIND11)
-    FetchContent_Declare (
-        pybind11
-        GIT_REPOSITORY https://github.com/pybind/pybind11
-        GIT_TAG stable
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE 
-    )
-    FetchContent_MakeAvailable(pybind11)
-
-    option(PYBIND11_TEST OFF)
-endif()
-
 FetchContent_Declare (
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
@@ -130,23 +99,6 @@ add_subdirectory(tests)
 option(BUILD_EXAMPLES "Build examples" ON)
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
-endif()
-
-if(USE_PYBIND11)
-    add_subdirectory(python)
-endif()
-
-if(USE_EIGEN)
-    target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
-
-    # Export Eigen target
-    install(
-        EXPORT Eigen3Targets
-        FILE Eigen3Targets.cmake
-        NAMESPACE Eigen3::
-        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/eigen3/cmake
-    )
-    add_subdirectory(examples_libeigen)    
 endif()
 
 target_link_libraries(${PROJECT_NAME} INTERFACE expected)
