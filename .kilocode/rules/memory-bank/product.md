@@ -50,7 +50,5 @@ The library is organized into several key components:
 
 ## Integration Points
 
-- **Optional Eigen Support**: Can use Eigen for development/comparison purposes
-- **Python Bindings**: Experimental pybind11 support for Python integration
 - **Testing Framework**: GoogleTest for comprehensive unit testing
 - **Documentation**: Doxygen for API documentation generation

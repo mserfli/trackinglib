@@ -16,11 +16,6 @@ Key features:
 * motion models support all filter models and have a built-in ego motion compensation during the prediction
 
 
-Features currently in draft mode:
-* class contracts in C++20 builds
-* Python extension using pybind11
-
-
 Non-functional requirements:
 * The library is compliant to AUTOSAR-C++14 guidelines, https://sbmueller.github.io/autosar_cpp_guidelines/index.html
 * The minimum required C++ standard is C++17
@@ -29,4 +24,3 @@ Non-functional requirements:
 * The library is comprehensivly tested and all tests are written in GoogleTest
 * Test coverage is measured using lcov
 * The project uses additionally cmake, clang-format, clang-tidy and doxygen
-* libEigen is only used for development
