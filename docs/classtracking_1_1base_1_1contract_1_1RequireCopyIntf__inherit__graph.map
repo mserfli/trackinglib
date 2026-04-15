@@ -1,0 +1,75 @@
+<map id="tracking::base::contract::RequireCopyIntf&lt; ImplType &gt;" name="tracking::base::contract::RequireCopyIntf&lt; ImplType &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1186,5,1402,85"/>
+<area shape="rect" id="Node000002" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixIntf.html" title=" " alt="" coords="88,133,287,243"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1172,52,1008,59,802,73,575,98,461,115,349,136,288,152,286,147,348,131,460,110,574,93,801,68,1008,53,1172,46"/>
+<area shape="rect" id="Node000004" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixIntf.html" title=" " alt="" coords="250,518,429,627"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1172,50,1007,55,820,69,730,80,649,95,582,113,533,136,488,173,450,218,420,269,395,323,377,377,363,430,347,518,342,517,358,429,372,376,390,321,415,267,446,215,484,169,530,131,580,108,648,89,729,75,819,64,1007,50,1172,45"/>
+<area shape="rect" id="Node000006" href="$structtracking_1_1math_1_1contract_1_1MatrixIntf.html" title=" " alt="" coords="543,133,767,243"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1173,61,986,89,882,110,780,136,768,140,767,135,779,131,881,104,985,84,1172,56"/>
+<area shape="rect" id="Node000019" href="$structtracking_1_1math_1_1contract_1_1MatrixIntf.html" title=" " alt="" coords="792,141,1020,235"/>
+<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="1174,87,1034,136,1015,143,1013,138,1032,131,1172,82"/>
+<area shape="rect" id="Node000020" href="$structtracking_1_1math_1_1contract_1_1MatrixIntf.html" title=" " alt="" coords="1045,133,1271,243"/>
+<area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="1249,97,1212,135,1208,131,1245,93"/>
+<area shape="rect" id="Node000021" href="$structtracking_1_1motion_1_1contract_1_1StateMemIntf.html" title=" " alt="" coords="1295,133,1567,243"/>
+<area shape="poly" id="edge21_Node000001_Node000021" title=" " alt="" coords="1344,93,1381,131,1377,135,1340,97"/>
+<area shape="rect" id="Node000022" href="$structtracking_1_1motion_1_1contract_1_1StateMemIntf.html" title=" " alt="" coords="1592,133,1785,243"/>
+<area shape="poly" id="edge22_Node000001_Node000022" title=" " alt="" coords="1416,76,1497,101,1580,131,1593,136,1591,141,1578,136,1496,106,1414,81"/>
+<area shape="rect" id="Node000024" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixIntf.html" title=" " alt="" coords="1810,141,1986,235"/>
+<area shape="poly" id="edge24_Node000001_Node000024" title=" " alt="" coords="1416,54,1502,65,1598,81,1699,102,1798,131,1816,138,1814,143,1796,136,1698,107,1597,86,1501,70,1416,60"/>
+<area shape="rect" id="Node000025" href="$structtracking_1_1math_1_1contract_1_1MatrixIntf.html" title=" " alt="" coords="2010,141,2181,235"/>
+<area shape="poly" id="edge25_Node000001_Node000025" title=" " alt="" coords="1416,45,1539,51,1687,66,1844,91,1923,109,1999,131,2018,138,2016,143,1997,136,1922,114,1843,96,1686,71,1539,57,1416,50"/>
+<area shape="rect" id="Node000031" href="$structtracking_1_1motion_1_1contract_1_1StateMemIntf.html" title=" " alt="" coords="2246,148,2446,228"/>
+<area shape="poly" id="edge31_Node000001_Node000031" title=" " alt="" coords="1416,47,1573,54,1767,68,1981,93,2088,110,2193,131,2247,145,2245,151,2192,136,2087,115,1980,98,1767,74,1572,59,1416,52"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html" title="UDU factored covariance matrix for numerical stability." alt="" coords="5,375,225,770"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="177,257,155,376,150,375,172,256"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html" title="Full covariance matrix representation for Kalman filtering." alt="" coords="121,1544,312,1899"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="329,641,316,691,297,747,271,804,239,856,221,872,203,880,187,888,174,904,142,982,122,1064,113,1149,112,1234,118,1318,129,1398,161,1543,156,1544,124,1399,112,1318,106,1234,107,1148,117,1063,137,980,169,901,184,884,201,875,218,868,235,853,267,801,292,745,311,690,324,640"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1Matrix.html" title=" " alt="" coords="453,291,639,855"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="639,257,629,291,624,290,634,255"/>
+<area shape="rect" id="Node000011" href="$classtracking_1_1math_1_1Matrix.html" title=" " alt="" coords="668,291,853,855"/>
+<area shape="poly" id="edge11_Node000006_Node000011" title=" " alt="" coords="676,255,686,290,681,291,671,257"/>
+<area shape="rect" id="Node000017" href="$classtracking_1_1math_1_1Matrix.html" title=" " alt="" coords="877,291,1063,855"/>
+<area shape="poly" id="edge17_Node000006_Node000017" title=" " alt="" coords="781,243,836,270,866,289,879,304,875,307,863,293,834,274,779,247"/>
+<area shape="rect" id="Node000018" href="$classtracking_1_1math_1_1Matrix.html" title=" " alt="" coords="1087,291,1275,855"/>
+<area shape="poly" id="edge18_Node000006_Node000018" title=" " alt="" coords="781,240,827,248,867,250,939,246,972,246,1005,251,1039,264,1076,289,1088,300,1084,304,1072,293,1037,269,1004,256,972,251,939,251,867,255,826,253,780,245"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1math_1_1SquareMatrix.html" title=" " alt="" coords="183,972,391,1327"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="449,844,443,856,424,881,406,904,367,973,362,971,401,901,420,877,438,853,445,842"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1math_1_1SquareMatrix.html" title=" " alt="" coords="415,972,666,1327"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="546,868,545,972,540,972,541,868"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="266,1341,241,1544,236,1543,261,1340"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html" title="A diagonal matrix that stores only the diagonal elements for memory efficiency." alt="" coords="439,1444,642,1999"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="543,1340,543,1444,538,1444,538,1340"/>
+<area shape="rect" id="Node000012" href="$classtracking_1_1math_1_1Vector.html" title=" " alt="" coords="691,949,849,1349"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="768,868,769,949,764,949,763,868"/>
+<area shape="rect" id="Node000014" href="$classtracking_1_1math_1_1Vector.html" title=" " alt="" coords="873,949,1032,1349"/>
+<area shape="poly" id="edge14_Node000011_Node000014" title=" " alt="" coords="860,863,889,948,884,950,855,865"/>
+<area shape="rect" id="Node000016" href="$classtracking_1_1math_1_1Vector.html" title="A column vector class template, specializing Matrix for single&#45;column matrixes." alt="" coords="1056,949,1215,1349"/>
+<area shape="poly" id="edge16_Node000011_Node000016" title=" " alt="" coords="865,851,866,853,888,868,910,875,954,876,999,877,1022,885,1045,901,1066,923,1083,947,1078,951,1062,926,1042,905,1019,889,998,882,954,881,909,880,886,873,863,857,861,855"/>
+<area shape="rect" id="Node000013" href="$classtracking_1_1math_1_1Point2d.html" title="2D point with named coordinate access" alt="" coords="683,1621,849,1821"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="771,1363,769,1621,764,1621,766,1363"/>
+<area shape="rect" id="Node000015" href="$classtracking_1_1math_1_1Point3d.html" title="3D point with named coordinate access" alt="" coords="873,1601,1040,1841"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="957,1363,958,1601,953,1601,951,1363"/>
+<area shape="rect" id="Node000023" href="$classtracking_1_1motion_1_1StateMem.html" title="StateMem class to represent a state vector with its uncertainty described by the state covariance mat..." alt="" coords="1581,365,1777,780"/>
+<area shape="poly" id="edge23_Node000022_Node000023" title=" " alt="" coords="1690,257,1687,365,1682,365,1684,256"/>
+<area shape="rect" id="Node000026" href="$classtracking_1_1math_1_1Matrix.html" title=" " alt="" coords="1801,291,1987,855"/>
+<area shape="poly" id="edge26_Node000025_Node000026" title=" " alt="" coords="2036,247,2000,292,1989,311,1984,308,1996,289,2032,244"/>
+<area shape="rect" id="Node000027" href="$classtracking_1_1math_1_1Matrix.html" title="Compliant to AUTOSAR C++14, A8&#45;4&#45;8: Output parameters shall not be used, making use of RVO and NRVO." alt="" coords="2011,291,2199,855"/>
+<area shape="poly" id="edge27_Node000025_Node000027" title=" " alt="" coords="2099,249,2100,291,2095,291,2094,249"/>
+<area shape="rect" id="Node000028" href="$classtracking_1_1math_1_1Vector.html" title=" " alt="" coords="1652,949,1811,1349"/>
+<area shape="poly" id="edge28_Node000027_Node000028" title=" " alt="" coords="2003,854,2000,857,1977,872,1954,880,1911,881,1868,883,1847,890,1825,905,1805,926,1788,951,1784,948,1801,923,1822,901,1844,885,1867,877,1911,876,1953,875,1975,868,1996,853,1999,850"/>
+<area shape="rect" id="Node000029" href="$classtracking_1_1math_1_1Vector.html" title=" " alt="" coords="1835,949,2094,1349"/>
+<area shape="poly" id="edge29_Node000027_Node000029" title=" " alt="" coords="2036,868,2016,950,2011,948,2030,867"/>
+<area shape="rect" id="Node000030" href="$classtracking_1_1math_1_1SquareMatrix.html" title="A square matrix specialization of the Matrix class providing additional operations specific to square..." alt="" coords="2118,972,2369,1327"/>
+<area shape="poly" id="edge30_Node000027_Node000030" title=" " alt="" coords="2178,867,2203,971,2198,973,2173,868"/>
+<area shape="rect" id="Node000032" href="$classtracking_1_1motion_1_1StateMem.html" title=" " alt="" coords="2576,358,2807,787"/>
+<area shape="poly" id="edge32_Node000031_Node000032" title=" " alt="" coords="2392,237,2578,442,2574,445,2389,240"/>
+<area shape="rect" id="Node000033" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="2393,903,2680,1396"/>
+<area shape="poly" id="edge33_Node000032_Node000033" title=" " alt="" coords="2633,802,2605,903,2600,902,2628,800"/>
+<area shape="rect" id="Node000035" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="2704,903,2991,1396"/>
+<area shape="poly" id="edge35_Node000032_Node000035" title=" " alt="" coords="2756,800,2783,902,2778,903,2750,802"/>
+<area shape="rect" id="Node000036" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance." alt="" coords="3015,917,3251,1381"/>
+<area shape="poly" id="edge37_Node000032_Node000036" title=" " alt="" coords="2819,688,2914,789,2962,844,3005,901,3017,917,3012,920,3001,904,2958,847,2910,792,2815,692"/>
+<area shape="rect" id="Node000034" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html" title=" " alt="" coords="2565,1517,2817,1926"/>
+<area shape="poly" id="edge34_Node000033_Node000034" title=" " alt="" coords="2610,1409,2639,1516,2633,1517,2604,1410"/>
+<area shape="poly" id="edge36_Node000035_Node000034" title=" " alt="" coords="2779,1410,2750,1517,2745,1516,2774,1409"/>
+</map>

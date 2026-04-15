@@ -1,0 +1,5 @@
+<map id="tracking::math::SquareMatrix::isOrthogonal" name="tracking::math::SquareMatrix::isOrthogonal">
+<area shape="rect" id="Node000001" title="Checks if the matrix is orthogonal within a specified tolerance." alt="" coords="5,5,217,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#a1767678675efd8983ce5beab4c53b2d7" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="265,5,477,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,23,252,23,252,28,217,28"/>
+</map>

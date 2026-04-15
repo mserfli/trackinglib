@@ -1,0 +1,11 @@
+<map id="tracking::math::SquareMatrix&lt; ValueType_, Size_, IsRowMajor_ &gt;" name="tracking::math::SquareMatrix&lt; ValueType_, Size_, IsRowMajor_ &gt;">
+<area shape="rect" id="Node000001" title="A square matrix specialization of the Matrix class providing additional operations specific to square..." alt="" coords="108,888,359,1243"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html" title="Compliant to AUTOSAR C++14, A8&#45;4&#45;8: Output parameters shall not be used, making use of RVO and NRVO." alt="" coords="139,276,327,840"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,854,236,888,231,888,231,854"/>
+<area shape="rect" id="Node000003" href="$structtracking_1_1math_1_1contract_1_1MatrixIntf.html" title=" " alt="" coords="148,133,319,228"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="236,242,236,276,231,276,231,242"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1base_1_1contract_1_1RequireCopyIntf.html" title=" " alt="" coords="5,5,221,85"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="160,94,194,131,190,135,156,97"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html" title=" " alt="" coords="245,5,464,85"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="312,97,277,135,273,131,308,94"/>
+</map>

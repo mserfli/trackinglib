@@ -1,0 +1,7 @@
+<map id="tracking::math::CovarianceMatrixPolicyBase" name="tracking::math::CovarianceMatrixPolicyBase">
+<area shape="rect" id="Node000001" title="Base class for covariance matrix policy types." alt="" coords="104,5,295,85"/>
+<area shape="rect" id="Node000002" href="$structtracking_1_1math_1_1FactoredCovarianceMatrixPolicy.html" title="Policy for using UDU factored covariance matrix representation." alt="" coords="5,133,177,228"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,98,131,135,127,132,157,94"/>
+<area shape="rect" id="Node000003" href="$structtracking_1_1math_1_1FullCovarianceMatrixPolicy.html" title="Policy for using full covariance matrix representation." alt="" coords="202,141,415,221"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="242,94,279,139,274,142,238,98"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="tracking::math::Matrix::transpose" name="tracking::math::Matrix::transpose">
+<area shape="rect" id="Node000001" title="Fast transpose without changing the layout (zero&#45;copy view)" alt="" coords="537,84,704,124"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1filter_1_1KalmanFilter.html#ab66a65941a9b1adbdd6d2ed0c37c4dc8" title=" " alt="" coords="300,20,481,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="534,83,462,63,464,57,536,78"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" title=" " alt="" coords="292,84,489,124"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="524,107,489,107,489,101,524,101"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="32,120,217,160"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="538,130,490,139,419,145,347,148,217,147,218,142,347,143,418,140,489,133,537,125"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter." alt="" coords="5,5,244,75"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="286,43,244,43,244,37,286,37"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="279,122,218,130,217,125,278,117"/>
+</map>

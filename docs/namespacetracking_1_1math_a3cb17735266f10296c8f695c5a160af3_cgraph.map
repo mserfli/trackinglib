@@ -1,0 +1,8 @@
+<map id="tracking::math::operator*" name="tracking::math::operator*">
+<area shape="rect" id="Node000001" title="Multiply two matrix views." alt="" coords="5,13,192,38"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a103ed8d3af53ba865c6a00784ed62de6" title="Unsafe element read&#45;only access (no bounds checking)" alt="" coords="475,5,641,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,23,461,23,461,28,192,28"/>
+<area shape="rect" id="Node000003" href="$namespacetracking_1_1math.html#ae8c2f6288ea8b30c11b8f6d055edbc06" title=" " alt="" coords="240,38,427,63"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,33,227,36,226,42,192,38"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="427,37,461,34,462,39,427,43"/>
+</map>

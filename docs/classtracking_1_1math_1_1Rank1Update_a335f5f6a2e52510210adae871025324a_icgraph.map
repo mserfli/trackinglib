@@ -1,0 +1,5 @@
+<map id="tracking::math::Rank1Update::run" name="tracking::math::Rank1Update::run">
+<area shape="rect" id="Node000001" title="Performs rank&#45;1 update on UDU factorization (upper triangular form)" alt="" coords="264,13,507,38"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a8d64779f4ed5705bc05fd9768f00e36b" title="Agee&#45;Turner rank&#45;1 update: P ± x*x^T." alt="" coords="5,5,216,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,28,216,28,216,23,250,23"/>
+</map>

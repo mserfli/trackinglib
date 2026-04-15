@@ -1,0 +1,5 @@
+<map id="tracking::env::EgoMotion&lt; CovarianceMatrixPolicy_ &gt;" name="tracking::env::EgoMotion&lt; CovarianceMatrixPolicy_ &gt;">
+<area shape="rect" id="Node000001" title="Ego motion compensation for moving sensor platforms." alt="" coords="5,148,233,648"/>
+<area shape="rect" id="Node000002" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf.html" title=" " alt="" coords="12,5,227,100"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,114,122,148,117,148,117,114"/>
+</map>

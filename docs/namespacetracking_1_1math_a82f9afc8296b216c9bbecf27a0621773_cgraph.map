@@ -1,0 +1,7 @@
+<map id="tracking::math::operator&lt;&lt;" name="tracking::math::operator&lt;&lt;">
+<area shape="rect" id="Node000001" title="Specialization of operator&lt;&lt; for Vector." alt="" coords="5,20,208,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="256,13,423,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,30,242,30,242,35,208,35"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html#a103ed8d3af53ba865c6a00784ed62de6" title="Unsafe element read&#45;only access (no bounds checking)" alt="" coords="471,5,643,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="423,30,457,30,457,35,423,35"/>
+</map>

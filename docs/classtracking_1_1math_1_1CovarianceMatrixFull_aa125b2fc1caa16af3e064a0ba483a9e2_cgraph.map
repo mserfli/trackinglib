@@ -1,0 +1,5 @@
+<map id="tracking::math::CovarianceMatrixFull::CovarianceMatrixFull" name="tracking::math::CovarianceMatrixFull::CovarianceMatrixFull">
+<area shape="rect" id="Node000001" title="Move construct a new Covariance Matrix Full&lt;ValueType_, Size_&gt; object from a transposed SquareMatrix." alt="" coords="5,5,239,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a2a4920359f492ed892a54377b69743ac" title="Fast transpose without changing the layout (rvalue version)" alt="" coords="287,5,453,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="239,23,273,23,273,28,239,28"/>
+</map>

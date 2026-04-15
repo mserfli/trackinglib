@@ -1,0 +1,5 @@
+<map id="tracking::math::CovarianceMatrixFactored::thornton" name="tracking::math::CovarianceMatrixFactored::thornton">
+<area shape="rect" id="Node000001" title="Thornton update: Φ*P*Φ^T + G*Q*G^T (Kalman prediction)" alt="" coords="5,5,204,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1ModifiedGramSchmidt.html#aa94a1cdbd89ad957fcd7da9df3860ce0" title="Computes UDU factorization of Phi matrix." alt="" coords="252,5,433,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,23,238,23,238,28,204,28"/>
+</map>

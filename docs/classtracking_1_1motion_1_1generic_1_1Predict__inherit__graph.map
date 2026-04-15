@@ -1,0 +1,12 @@
+<map id="tracking::motion::generic::Predict&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;" name="tracking::motion::generic::Predict&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;">
+<area shape="rect" id="Node000001" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern." alt="" coords="201,148,406,263"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="5,311,292,804"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="275,276,260,311,255,309,271,274"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="316,311,603,804"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="336,274,352,309,347,311,332,276"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1generic_1_1PredictCommon.html" title="Base class for common calculations needed for any prediction." alt="" coords="190,5,417,100"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="306,114,306,148,301,148,301,114"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html" title=" " alt="" coords="177,852,429,1261"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="232,816,243,851,237,853,227,818"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="381,818,370,853,365,851,376,816"/>
+</map>

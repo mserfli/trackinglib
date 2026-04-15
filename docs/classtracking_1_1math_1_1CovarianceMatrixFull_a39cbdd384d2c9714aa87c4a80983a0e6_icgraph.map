@@ -1,0 +1,9 @@
+<map id="tracking::math::CovarianceMatrixFull::Identity" name="tracking::math::CovarianceMatrixFull::Identity">
+<area shape="rect" id="Node000001" title="Construct an Identity matrix." alt="" coords="517,49,716,89"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a3ca0f4a537a5362a74ef765ef46c1986" title="Calculates the matrix inverse using Cholesky decomposition." alt="" coords="271,49,469,89"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="503,71,470,71,470,66,503,66"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#acadfdd5893de13e8177427e3cf1b7784" title="Compute inverse as full covariance matrix." alt="" coords="15,5,213,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="257,55,213,49,214,44,258,50"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a2b6eac9001311d011d12a2ce79706938" title="Compute inverse as full covariance matrix." alt="" coords="5,85,223,125"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="257,87,223,92,222,87,257,82"/>
+</map>

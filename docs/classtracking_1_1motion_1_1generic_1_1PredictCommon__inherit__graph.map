@@ -1,0 +1,20 @@
+<map id="tracking::motion::generic::PredictCommon&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;" name="tracking::motion::generic::PredictCommon&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;">
+<area shape="rect" id="Node000001" title="Base class for common calculations needed for any prediction." alt="" coords="407,5,634,100"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1generic_1_1Predict.html" title=" " alt="" coords="8,155,239,285"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="395,96,324,121,252,150,237,158,235,153,250,146,322,116,393,91"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1generic_1_1Predict.html" title=" " alt="" coords="263,148,509,292"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="476,113,446,149,442,146,472,109"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1generic_1_1Predict.html" title=" " alt="" coords="533,148,778,292"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="569,109,599,146,595,149,565,113"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern." alt="" coords="802,163,1007,277"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="648,89,720,115,791,146,819,160,817,165,789,150,718,120,646,94"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance." alt="" coords="5,355,241,819"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,298,126,355,121,355,121,298"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="605,340,892,833"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="878,291,856,341,851,339,873,289"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="916,340,1203,833"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="936,289,958,339,953,341,931,291"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html" title=" " alt="" coords="777,881,1029,1291"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="832,845,843,880,837,882,827,847"/>
+<area shape="poly" id="edge9_Node000009_Node000008" title=" " alt="" coords="981,847,970,882,965,880,976,845"/>
+</map>

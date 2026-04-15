@@ -1,0 +1,7 @@
+<map id="tracking::math::CovarianceMatrixFactored::apaT" name="tracking::math::CovarianceMatrixFactored::apaT">
+<area shape="rect" id="Node000001" title="Compute A*P*A^T (factored covariance propagation)" alt="" coords="5,5,204,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ac25112b654af737bc4d1eb973cd72b86" title="Compute A*P*A^T in&#45;place (factored covariance propagation)" alt="" coords="252,5,451,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,23,238,23,238,28,204,28"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1ModifiedGramSchmidt.html#aa94a1cdbd89ad957fcd7da9df3860ce0" title="Computes UDU factorization of Phi matrix." alt="" coords="499,5,680,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="451,23,485,23,485,28,451,28"/>
+</map>

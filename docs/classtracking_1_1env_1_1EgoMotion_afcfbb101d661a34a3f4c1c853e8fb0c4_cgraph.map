@@ -1,0 +1,5 @@
+<map id="tracking::env::EgoMotion::EgoMotion" name="tracking::env::EgoMotion::EgoMotion">
+<area shape="rect" id="Node000001" title="Constructor with explicit covariance matrix type." alt="" coords="5,5,188,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1env_1_1EgoMotion.html#af757959575cb1711704b3a150dca3403" title="Compute displacement from internal motion parameters." alt="" coords="236,5,419,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,23,222,23,222,28,188,28"/>
+</map>

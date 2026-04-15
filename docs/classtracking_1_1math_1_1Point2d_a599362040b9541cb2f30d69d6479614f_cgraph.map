@@ -1,0 +1,10 @@
+<map id="tracking::math::Point2d::FromValues" name="tracking::math::Point2d::FromValues">
+<area shape="rect" id="Node000001" title="Create a 2D point from coordinate values." alt="" coords="5,23,180,63"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Point2d.html#a745132e4965e317a57e1df605327e910" title="Read access to x&#45;coordinate." alt="" coords="228,5,419,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,31,214,27,215,33,180,36"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Point2d.html#a18c015f1396d1a2f385a2e2716c4943a" title="Read access to y&#45;coordinate." alt="" coords="228,55,419,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="180,50,215,53,214,59,180,55"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="467,16,633,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="419,26,453,30,453,35,419,31"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="419,55,453,51,453,56,419,60"/>
+</map>

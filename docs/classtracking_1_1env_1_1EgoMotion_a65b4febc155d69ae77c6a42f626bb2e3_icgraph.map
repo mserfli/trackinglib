@@ -1,0 +1,9 @@
+<map id="tracking::env::EgoMotion::getDisplacementCog" name="tracking::env::EgoMotion::getDisplacementCog">
+<area shape="rect" id="Node000001" title="Get the displacement information for center of gravity." alt="" coords="239,69,421,109"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="5,5,191,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,68,170,48,172,43,244,63"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter." alt="" coords="5,69,191,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="224,92,191,92,191,87,224,87"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1generic_1_1PredictCommon.html#a33663fa4093f1be2990b48cd46176ed4" title="Runner to calculate the common predict data for the predictor." alt="" coords="5,133,191,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="244,116,172,136,170,131,243,110"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$structtracking_1_1math_1_1CovarianceMatrixPolicyBase.html" title="Base class for covariance matrix policy types." alt="" coords="5,49,204,89"/>
+<area shape="rect" id="Node000001" href="$structtracking_1_1math_1_1FactoredCovarianceMatrixPolicy.html" title="Policy for using UDU factored covariance matrix representation." alt="" coords="273,5,453,60"/>
+<area shape="poly" id="edge74_Node000000_Node000001" title=" " alt="" coords="217,50,272,43,273,48,218,56"/>
+<area shape="rect" id="Node000002" href="$structtracking_1_1math_1_1FullCovarianceMatrixPolicy.html" title="Policy for using full covariance matrix representation." alt="" coords="252,85,473,125"/>
+<area shape="poly" id="edge75_Node000000_Node000002" title=" " alt="" coords="218,82,252,87,252,92,217,87"/>
+</map>

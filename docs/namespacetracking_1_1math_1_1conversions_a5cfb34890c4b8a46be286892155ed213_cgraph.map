@@ -1,0 +1,5 @@
+<map id="tracking::math::conversions::MatrixFromVector" name="tracking::math::conversions::MatrixFromVector">
+<area shape="rect" id="Node000001" title="Creates a single&#45;column Matrix from a Vector." alt="" coords="5,5,208,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a103ed8d3af53ba865c6a00784ed62de6" title="Unsafe element read&#45;only access (no bounds checking)" alt="" coords="256,5,423,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,23,242,23,242,28,208,28"/>
+</map>

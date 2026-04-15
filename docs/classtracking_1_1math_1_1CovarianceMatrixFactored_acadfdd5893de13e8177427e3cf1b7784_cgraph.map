@@ -1,0 +1,14 @@
+<map id="tracking::math::CovarianceMatrixFactored::composed_inverse" name="tracking::math::CovarianceMatrixFactored::composed_inverse">
+<area shape="rect" id="Node000001" title="Compute inverse as full covariance matrix." alt="" coords="5,49,204,104"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a3ca0f4a537a5362a74ef765ef46c1986" title="Calculates the matrix inverse using Cholesky decomposition." alt="" coords="252,27,451,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,62,238,58,239,63,205,68"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1SquareMatrix.html#a83aee3d96b9a570cf86fd8b82151f1a3" title="Fast transpose without changing the layout (zero&#45;copy view)" alt="" coords="499,85,711,125"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="204,80,485,95,485,101,204,85"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a39cbdd384d2c9714aa87c4a80983a0e6" title="Construct an Identity matrix." alt="" coords="505,17,704,57"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="451,40,492,39,492,44,451,46"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="441,65,503,79,502,84,440,70"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1SquareMatrix.html#a1767678675efd8983ce5beab4c53b2d7" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="759,5,971,60"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="704,32,745,32,745,37,704,38"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1Matrix.html#a478f0eea63246477537c07d88584371d" title="Fast transpose without changing the layout (zero&#45;copy view)" alt="" coords="761,84,968,139"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="711,105,748,106,748,111,711,110"/>
+</map>

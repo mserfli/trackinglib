@@ -1,0 +1,15 @@
+<map id="tracking::math::SquareMatrix::Identity" name="tracking::math::SquareMatrix::Identity">
+<area shape="rect" id="Node000001" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="744,101,956,141"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b" title="Performs Householder QR decomposition of a square matrix." alt="" coords="484,5,696,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="790,98,695,60,659,48,661,43,697,55,792,93"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1SquareMatrix.html#a911f645174c9ebb677deeeef12a71a34" title="Compute the matrix inverse using QR decomposition." alt="" coords="484,69,696,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="730,109,696,105,697,100,731,104"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1SquareMatrix.html#aedb954fb72fb9da713fe0d36b826b681" title="Checks if the matrix is orthogonal within a specified tolerance." alt="" coords="484,133,696,173"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="731,139,697,143,696,138,730,133"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ade6e7f2800cf91037769424fb92dccd6" title="Set the variance at (idx,idx) and clears any correlations." alt="" coords="489,197,691,237"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="792,150,697,188,661,200,659,195,695,183,790,145"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" title=" " alt="" coords="239,69,436,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="470,92,436,92,436,87,470,87"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="5,69,191,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="225,92,191,92,191,87,225,87"/>
+</map>

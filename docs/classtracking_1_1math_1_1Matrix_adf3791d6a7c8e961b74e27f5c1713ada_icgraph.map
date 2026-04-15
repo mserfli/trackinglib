@@ -1,0 +1,5 @@
+<map id="tracking::math::Matrix::minmax" name="tracking::math::Matrix::minmax">
+<area shape="rect" id="Node000001" title="Get min and max value of the matrix." alt="" coords="265,5,432,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b" title="Performs Householder QR decomposition of a square matrix." alt="" coords="5,5,217,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,28,217,28,217,23,252,23"/>
+</map>

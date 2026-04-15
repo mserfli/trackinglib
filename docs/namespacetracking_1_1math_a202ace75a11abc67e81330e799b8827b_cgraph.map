@@ -1,0 +1,6 @@
+<map id="tracking::math::operator&#45;" name="tracking::math::operator&#45;">
+<area shape="rect" id="Node000001" title="Subtract two matrix views element&#45;wise." alt="" coords="5,29,191,55"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="61,31,54,21,58,11,73,5,98,3,130,7,142,16,138,20,128,11,98,8,74,10,61,15,59,20,66,27"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a103ed8d3af53ba865c6a00784ed62de6" title="Unsafe element read&#45;only access (no bounds checking)" alt="" coords="239,22,405,62"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,39,225,39,225,45,191,45"/>
+</map>

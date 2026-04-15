@@ -1,0 +1,5 @@
+<map id="tracking::math::CovarianceMatrixFull::Identity" name="tracking::math::CovarianceMatrixFull::Identity">
+<area shape="rect" id="Node000001" title="Construct an Identity matrix." alt="" coords="5,13,204,53"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#a1767678675efd8983ce5beab4c53b2d7" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="252,5,464,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,30,239,30,239,35,204,35"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="tracking::math::Point3d::z" name="tracking::math::Point3d::z">
+<area shape="rect" id="Node000001" title="Read access to z&#45;coordinate." alt="" coords="5,20,195,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="243,5,409,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,30,229,30,229,35,195,35"/>
+</map>

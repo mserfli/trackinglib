@@ -1,0 +1,9 @@
+<map id="tracking::math::CovarianceMatrixFactored&lt; ValueType_, Size_ &gt;" name="tracking::math::CovarianceMatrixFactored&lt; ValueType_, Size_ &gt;">
+<area shape="rect" id="Node000001" title="UDU factored covariance matrix for numerical stability." alt="" coords="123,291,343,685"/>
+<area shape="rect" id="Node000002" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixIntf.html" title=" " alt="" coords="134,133,333,243"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,256,236,290,231,290,231,256"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1base_1_1contract_1_1RequireCopyIntf.html" title=" " alt="" coords="5,5,221,85"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="158,94,190,131,186,135,154,98"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html" title=" " alt="" coords="245,5,464,85"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="314,98,282,135,278,131,310,94"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="tracking::base::contract::RequireAbstractIntf&lt; ImplType &gt;" name="tracking::base::contract::RequireAbstractIntf&lt; ImplType &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="351,5,517,100"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="576,551,863,1044"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="515,108,548,146,600,243,640,346,671,450,692,550,687,551,665,451,635,347,595,245,544,150,511,111"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="5,551,292,1044"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="359,111,326,150,274,245,234,348,204,452,182,551,176,550,198,450,229,346,269,243,321,146,354,107"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1IMotionModel.html" title=" " alt="" coords="335,148,533,503"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="437,114,437,147,431,147,431,114"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html" title=" " alt="" coords="308,1092,560,1501"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="574,1057,553,1093,549,1091,569,1054"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="299,1054,319,1091,315,1093,294,1057"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="543,501,578,559,574,561,538,503"/>
+<area shape="poly" id="edge7_Node000005_Node000004" title=" " alt="" coords="330,503,294,561,290,559,325,501"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance." alt="" coords="316,565,552,1029"/>
+<area shape="poly" id="edge8_Node000005_Node000006" title=" " alt="" coords="437,516,437,565,431,565,431,516"/>
+</map>

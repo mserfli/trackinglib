@@ -1,0 +1,18 @@
+<map id="tracking::motion::contract::StateMemIntf&lt; ImplType &gt;" name="tracking::motion::contract::StateMemIntf&lt; ImplType &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="359,133,559,213"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1StateMem.html" title=" " alt="" coords="344,261,575,691"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="462,227,462,261,457,261,457,227"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1base_1_1contract_1_1RequireCopyIntf.html" title=" " alt="" coords="231,5,447,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="388,94,424,131,420,135,384,97"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html" title=" " alt="" coords="471,5,690,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="535,97,499,135,495,131,532,94"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="5,739,292,1232"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="339,679,295,751,290,748,334,676"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="316,739,603,1232"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="462,704,462,739,457,739,457,704"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance." alt="" coords="627,753,863,1217"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="584,678,618,737,629,757,624,760,613,740,579,681"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html" title=" " alt="" coords="177,1280,429,1689"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="232,1244,243,1279,237,1281,227,1246"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="381,1246,370,1281,365,1279,376,1244"/>
+</map>

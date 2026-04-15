@@ -1,0 +1,39 @@
+<map id="tracking::motion::TEST_REMOVE_FINAL&lt; CovarianceMatrixPolicy_ &gt;" name="tracking::motion::TEST_REMOVE_FINAL&lt; CovarianceMatrixPolicy_ &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="385,1295,637,1704"/>
+<area shape="rect" id="Node000002" href="$structtracking_1_1motion_1_1StateDefCA.html" title=" " alt="" coords="5,967,209,1033"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,1045,162,1141,190,1195,223,1245,260,1290,301,1332,387,1406,383,1410,297,1336,256,1293,219,1248,185,1197,157,1143,119,1047"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="233,753,520,1247"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="449,1259,459,1294,454,1295,444,1261"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1IMotionModel.html" title=" " alt="" coords="656,313,855,668"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="670,681,645,707,616,726,588,733,562,739,533,755,522,765,518,761,530,751,560,734,587,727,614,721,642,703,666,677"/>
+<area shape="rect" id="Node000015" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="772,753,1059,1247"/>
+<area shape="poly" id="edge16_Node000015_Node000004" title=" " alt="" coords="818,680,840,752,835,754,813,682"/>
+<area shape="rect" id="Node000005" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf.html" title=" " alt="" coords="759,133,973,228"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="847,242,821,314,816,312,842,240"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1motion_1_1StateMem.html" title=" " alt="" coords="879,276,1109,705"/>
+<area shape="poly" id="edge12_Node000009_Node000005" title=" " alt="" coords="893,240,907,275,903,277,888,242"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="568,133,735,228"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="674,240,698,312,693,314,669,242"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern." alt="" coords="197,433,402,548"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="313,561,342,752,337,753,307,562"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1generic_1_1PredictCommon.html" title="Base class for common calculations needed for any prediction." alt="" coords="303,133,530,228"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="397,242,323,434,318,432,392,240"/>
+<area shape="rect" id="Node000016" href="$classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern." alt="" coords="426,433,631,548"/>
+<area shape="poly" id="edge18_Node000016_Node000008" title=" " alt="" coords="441,240,511,432,506,434,436,242"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="869,707,869,708,823,731,780,739,739,738,699,733,660,727,620,726,578,734,533,756,522,763,519,759,530,751,576,729,619,720,660,722,700,727,739,733,779,734,821,726,866,703,866,703"/>
+<area shape="poly" id="edge19_Node000015_Node000009" title=" " alt="" coords="961,719,956,754,951,753,956,718"/>
+<area shape="rect" id="Node000010" href="$structtracking_1_1motion_1_1contract_1_1StateMemIntf.html" title=" " alt="" coords="998,141,1198,221"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1083,235,1069,277,1064,275,1078,233"/>
+<area shape="rect" id="Node000011" href="$classtracking_1_1base_1_1contract_1_1RequireCopyIntf.html" title=" " alt="" coords="869,5,1085,85"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="1023,94,1064,139,1060,142,1019,97"/>
+<area shape="rect" id="Node000012" href="$classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html" title=" " alt="" coords="1109,5,1327,85"/>
+<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="1176,97,1135,142,1131,139,1172,94"/>
+<area shape="rect" id="Node000013" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="5,443,172,538"/>
+<area shape="poly" id="edge13_Node000003_Node000013" title=" " alt="" coords="114,550,146,625,187,704,204,728,223,752,235,770,231,773,219,755,200,731,182,707,141,627,109,552"/>
+<area shape="rect" id="Node000014" href="$structtracking_1_1motion_1_1StateDefCV.html" title=" " alt="" coords="544,967,748,1033"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="637,1046,569,1295,564,1294,631,1045"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="766,1245,763,1248,703,1318,639,1383,636,1380,699,1314,759,1245,761,1241"/>
+<area shape="poly" id="edge17_Node000015_Node000016" title=" " alt="" coords="555,560,591,634,617,671,646,703,675,721,703,727,731,733,762,751,773,761,770,765,759,755,729,738,702,732,673,726,643,707,612,674,587,637,550,562"/>
+<area shape="rect" id="Node000017" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="1133,443,1300,538"/>
+<area shape="poly" id="edge20_Node000015_Node000017" title=" " alt="" coords="1197,552,1165,627,1124,707,1061,808,1056,805,1120,704,1160,624,1192,550"/>
+</map>

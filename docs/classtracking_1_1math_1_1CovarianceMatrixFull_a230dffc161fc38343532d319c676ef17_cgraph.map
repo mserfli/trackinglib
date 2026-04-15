@@ -1,0 +1,5 @@
+<map id="tracking::math::CovarianceMatrixFull::setIdentity" name="tracking::math::CovarianceMatrixFull::setIdentity">
+<area shape="rect" id="Node000001" title="Set internal matrix to the Identity matrix." alt="" coords="5,13,204,53"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#a83902e3fce462fb8250d0dc6f812a714" title="Set the matrix to the identity matrix in&#45;place." alt="" coords="252,5,464,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,30,239,30,239,35,204,35"/>
+</map>
