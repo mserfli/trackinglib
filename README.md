@@ -11,7 +11,7 @@
 [![Doxygen](https://img.shields.io/badge/Doxygen-latest-blue)](https://www.doxygen.nl/)
 [![lcov](https://img.shields.io/badge/lcov-latest-blue)](https://github.com/linux-test-project/lcov)
 
-[![Build and Test](https://github.com/yourusername/trackinglib/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/yourusername/trackinglib/actions/workflows/build-and-test.yml)
+[![Build and Test](https://github.com/mserfli/trackinglib/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/mserfli/trackinglib/actions/workflows/build-and-test.yml)
 
 Academic C++ header-only library for object tracking using Kalman filter variants.
 
