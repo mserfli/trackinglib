@@ -24,15 +24,6 @@
   - Repository: https://github.com/TartanLlama/expected
   - Provides `tl::expected<T, E>` for safe error propagation
 
-#### Optional
-- **Eigen**: 3.4
-  - Linear algebra library
-  - Used for development/comparison only
-  - Enabled via `USE_EIGEN` CMake option
-  
-- **pybind11**: stable branch
-  - Python bindings (experimental)
-  - Enabled via `USE_PYBIND11` CMake option
 
 ## Development Tools
 
@@ -153,9 +144,9 @@
   - **clang-format Control**: Disable locally for matrix definitions to improve readability
     - Use `// clang-format off` and `// clang-format on` around matrix initializer lists
   - **Comprehensive Coverage**: Edge cases (aliasing, transpose, block operations)
-  - **Test Count**: 333+ tests (as of 2026-01-06)
-  - **Test Coverage Plan**: Comprehensive plan created in [`plans/math_layer_test_coverage_plan.md`](plans/math_layer_test_coverage_plan.md)
-  - **Target**: 310+ tests for math layer with >90% line coverage and >85% branch coverage
+- **Test Count**: 493 tests (as of 2026-04-19)
+- **Coverage Targets**: >95% line coverage and >90% branch coverage
+- **GitHub Integration**: Automated coverage reporting via GitHub Actions and Pages
   
 #### Code Coverage
 - **Tool**: lcov
@@ -198,19 +189,7 @@
 - **std::expected**: Error handling (via tl::expected)
 - **Type traits**: SFINAE and enable_if for template specialization
 
-## Python Integration (Experimental)
 
-### Setup
-- **Build System**: setuptools with CMake extension
-- **Configuration**: [`setup.py`](setup.py)
-- **Package Name**: pytracking
-- **Version**: 0.0.1
-- **Installation**: `pip install .`
-
-### Requirements
-- Python 3.6+
-- pybind11 (fetched automatically)
-- CMake build system integration
 
 ## Docker Support
 
@@ -226,6 +205,21 @@
 - **Implementation Files**: `.hpp` files alongside `.h` headers
 - **Installation**: Headers copied to system include directory
 
+### Project Structure (Updated)
+```
+include/trackingLib/
+├── base/          # Foundation types and contracts
+├── env/           # Environment models (ego motion)
+├── math/          # Linear algebra and analysis
+├── filter/        # Kalman filter implementations
+├── motion/        # Motion models with ego motion compensation
+└── ...
+
+examples/          # Application examples
+tests/             # Comprehensive test suite (493 tests)
+cmake/             # Build system configuration
+```
+
 ### CMake Integration
 - **Config File**: [`cmake/trackingLibConfig.cmake.in`](cmake/trackingLibConfig.cmake.in)
 - **Export**: Targets exported for use with `find_package()`
@@ -240,11 +234,7 @@ mkdir build && cd build
 cmake ..
 cmake --build .
 
-# With Eigen support
-cmake -DUSE_EIGEN=ON ..
 
-# With Python bindings
-cmake -DUSE_PYBIND11=ON ..
 
 # Coverage build
 cmake -DCMAKE_BUILD_TYPE=Coverage ..
