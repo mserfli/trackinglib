@@ -1,4 +1,4 @@
-A generic C++ object tracking header only library for academical use to work with different filter types Extended Kalman Filter, Unscented Kalman Filter, Information Filter on the available motion models. All motion models can be configured to use a factored or normal covariance matrix and have a predictor with built-in support for the ego motion compensation. 
+A generic C++ object tracking header-only library for academic use to work with different filter types Extended Kalman Filter, Unscented Kalman Filter, Information Filter on the available motion models. All motion models can be configured to use a factored or normal covariance matrix and have a predictor with built-in support for the ego motion compensation. 
 
 The factored implementations are mainly based on publications from D'Souza, Bierman, Thornton, Carlson.
 * C. D'Souza and R. Zanetti, "Information Formulation of the UDU Kalman Filter," in IEEE Transactions on Aerospace and Electronic Systems, vol. 55, no. 1, pp. 493-498, Feb. 2019, doi: 10.1109/TAES.2018.2850379.
@@ -9,11 +9,14 @@ The factored implementations are mainly based on publications from D'Souza, Bier
 
 
 Key features:
-* self-contained matrix library
+* self-contained matrix library with comprehensive operations
 * standard and UDU factored covariance matrix support
-* filter implementations for EKF, IF, UKF
+* filter implementations for EKF, IF, UKF (measurement update in development)
 * standard motion models CV and CA with configurable covariance matrix type
-* motion models support all filter models and have a built-in ego motion compensation during the prediction
+* motion models support all filter models and have full ego motion compensation
+* policy-based design for flexible covariance handling
+* comprehensive test suite (493 tests) with high coverage
+* application examples and CI/CD infrastructure
 
 
 Non-functional requirements:

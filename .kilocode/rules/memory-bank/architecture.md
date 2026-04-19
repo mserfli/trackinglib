@@ -13,6 +13,8 @@ include/trackingLib/
 │   ├── first_include.h      # Must be first include in all files
 │   ├── interface_contract.h # Contract definitions
 │   └── reject_*/require_*   # Interface contracts for rule of 5
+├── env/                     # Environment models
+│   ├── ego_motion.h/.hpp    # Ego motion compensation for moving sensors
 ├── math/                    # Mathematics layer
 │   ├── analysis/
 │   │   └── functions.h      # Mathematical functions
@@ -46,13 +48,14 @@ include/trackingLib/
 │   ├── unscented_kalman_filter.h      # UKF (stub)
 │   ├── information_filter.h/.hpp      # Information Filter
 │   └── covariance_intersection.h      # Covariance intersection
-└── motion/                  # Motion models
-    ├── imotion_model.h      # Motion model interface with factory methods
-    ├── motion_model_cv.h/.hpp  # Constant Velocity
-    ├── motion_model_ca.h/.hpp  # Constant Acceleration
-    ├── generic_predict.h/.hpp  # Generic prediction logic
-    ├── state_mem.h/.hpp     # State memory management
-    └── contracts/           # Motion model contracts
+├── motion/                  # Motion models
+│   ├── imotion_model.h      # Motion model interface with factory methods
+│   ├── motion_model_cv.h/.hpp  # Constant Velocity
+│   ├── motion_model_ca.h/.hpp  # Constant Acceleration
+│   ├── generic_predict.h/.hpp  # Generic prediction logic
+│   ├── state_mem.h/.hpp     # State memory management
+│   ├── motion_model_traits.h # Motion model traits and policies
+│   └── contracts/           # Motion model contracts
 ```
 
 ## Key Components
@@ -67,6 +70,16 @@ include/trackingLib/
 - [`first_include.h`](include/trackingLib/base/first_include.h): Must be included first in all headers
 - [`interface_contract.h`](include/trackingLib/base/interface_contract.h): C++20 contract support
 - Interface contracts: `reject_copy_intf.h`, `require_move_intf.h`, etc.
+
+### 1.5. Environment Layer (`include/trackingLib/env/`)
+
+**Purpose**: Models external environment factors affecting tracking
+
+**Key Classes**:
+- [`EgoMotion<CovarianceMatrixPolicy>`](include/trackingLib/env/ego_motion.h): Represents sensor platform motion
+  - Supports both full and factored covariance representations
+  - Used for motion compensation during prediction
+  - Template parameter allows flexible covariance handling
 
 ### 2. Math Layer (`include/trackingLib/math/linalg/`)
 
@@ -166,33 +179,36 @@ static void predictCovariance(
 **Purpose**: Motion models with ego motion compensation
 
 **Key Classes**:
-- [`IMotionModel<FloatType>`](include/trackingLib/motion/imotion_model.h): Base interface
+- [`IMotionModel<CovarianceMatrixPolicy>`](include/trackingLib/motion/imotion_model.h): Base interface
+  - Policy-based design using `CovarianceMatrixPolicy`
   - Virtual methods: `getX()`, `getVx()`, `getAx()`, `getY()`, `getVy()`, `getAy()`
-  - Virtual `predict()` methods for different filters
-  
-- [`ExtendedMotionModel<MotionModel, CovarianceMatrixType, FloatType, Size>`](include/trackingLib/motion/imotion_model.h): CRTP base
-  - Combines `IMotionModel` and `StateMem`
+  - Virtual `predict()` methods for different filters with ego motion compensation
+
+- [`ExtendedMotionModel<MotionModel, CovarianceMatrixPolicy>`](include/trackingLib/motion/imotion_model.h): CRTP base
+  - Combines `IMotionModel` and `StateMem` with policy-based covariance
   - Provides common position accessors
-  - Factory methods for convenient initialization:
+  - Enhanced factory methods for convenient initialization:
     - `StateVecFromList()` - Create state vector from initializer list
     - `StateCovFromList()` - Create covariance from initializer list
     - `FromLists()` - Create complete motion model from lists
-  
-- [`MotionModelCV<CovarianceMatrixType, FloatType>`](include/trackingLib/motion/motion_model_cv.h): Constant Velocity
+
+- [`MotionModelCV<CovarianceMatrixPolicy>`](include/trackingLib/motion/motion_model_cv.h): Constant Velocity
   - State: `[X, VX, Y, VY]` (4D)
   - Process noise: `[Q_VX, Q_VY]` (2D)
   - Methods: `predict()`, `compensateEgoMotion()`, `applyProcessModel()`, `computeA()`, `computeQ()`, `computeG()`
+  - Full ego motion compensation support
   - Supports conversion from CA model
-  
-- [`MotionModelCA<CovarianceMatrixType, FloatType>`](include/trackingLib/motion/motion_model_ca.h): Constant Acceleration
+
+- [`MotionModelCA<CovarianceMatrixPolicy>`](include/trackingLib/motion/motion_model_ca.h): Constant Acceleration
   - State: `[X, VX, AX, Y, VY, AY]` (6D)
   - Process noise: `[Q_AX, Q_AY]` (2D)
   - Similar interface to CV model
+  - Full ego motion compensation support
   - Supports conversion from CV model
-  
-- [`generic::Predict<MotionModel, FloatType, CovarianceMatrixType>`](include/trackingLib/motion/generic_predict.h): CRTP mixin
+
+- [`generic::Predict<MotionModel, CovarianceMatrixPolicy>`](include/trackingLib/motion/generic_predict.h): CRTP mixin
   - Provides generic prediction logic
-  - Handles ego motion compensation
+  - Handles ego motion compensation via `EgoMotion` class
   - Works with both KalmanFilter and InformationFilter
 
 **Motion Model Design**:
@@ -219,6 +235,12 @@ static void predictCovariance(
 - Dimension checking at compile time
 - Support for different floating-point types (`float32`, `float64`)
 - Zero runtime overhead for abstractions
+
+### 2.5. Policy-Based Design
+- Covariance matrix policies for flexible implementations
+- Environment models (ego motion) supporting multiple covariance types
+- Template policies for compile-time configuration
+- Improved code reusability and maintainability
 
 ### 3. Error Handling
 - Uses `tl::expected<T, Errors>` pattern (Rust-style)
@@ -280,22 +302,20 @@ static void predictCovariance(
 - Comprehensive unit tests in [`tests/`](tests/)
 - GoogleTest framework
 - Typed tests for template instantiations
-- Coverage measured with lcov
+- Coverage measured with lcov and automated reporting
 - Test organization mirrors source structure:
-  - [`tests/math/`](tests/math/): Math library tests
-  - [`tests/motion/`](tests/motion/): Motion model tests
+  - [`tests/math/`](tests/math/): Math library tests (300+ tests)
+  - [`tests/motion/`](tests/motion/): Motion model tests (150+ tests)
+  - [`tests/env/`](tests/env/): Environment model tests (50+ tests)
   - Mock objects in [`tests/motion/mocks/`](tests/motion/mocks/)
-- Comprehensive test coverage plan in [`plans/math_layer_test_coverage_plan.md`](plans/math_layer_test_coverage_plan.md)
-- Target: 310+ tests with >90% line coverage and >85% branch coverage
+- Current: 493 tests with >95% line coverage target
+- GitHub Actions integration for automated testing and coverage reporting
 
 ## Build System
 
 - CMake-based build system ([`CMakeLists.txt`](CMakeLists.txt:1))
 - Version: 0.3.0
 - Minimum C++ standard: C++17
-- Optional dependencies:
-  - Eigen (development only, via `USE_EIGEN` option)
-  - pybind11 (Python bindings, via `USE_PYBIND11` option)
 - Required dependencies:
   - GoogleTest (fetched automatically)
   - tl::expected (fetched automatically)

@@ -11,35 +11,70 @@
 [![Doxygen](https://img.shields.io/badge/Doxygen-latest-blue)](https://www.doxygen.nl/)
 [![lcov](https://img.shields.io/badge/lcov-latest-blue)](https://github.com/linux-test-project/lcov)
 
+## About
+
 [![Build and Test](https://github.com/mserfli/trackinglib/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/mserfli/trackinglib/actions/workflows/build-and-test.yml)
 [![Coverage Status](https://img.shields.io/badge/Coverage-98%25-green)](https://mserfli.github.io/trackinglib/coverage/)
 [![Doxygen Docs](https://img.shields.io/badge/docs-gh--pages-blue)](https://mserfli.github.io/trackinglib/docs/)
 
 Academic C++ header-only library for object tracking using Kalman filter variants.
 
-## Architecture
+The [architecture overview](doc/info_architecture.md) shows a class diagram of the core tracking classes and their relationships.
 
-For an overview of the core classes and their relationships, see [Architecture Diagram](doc/info_architecture.md).
+The state and covariance prediction flow depending on the used filter (Kalman, Informationfilter) and used covariance representation (full, factored) is documented in the [sequence diagram](doc/info_filter_prediction.md).
 
-## Prediction Flow
-
-The sequence flow for filter predictions, including differences between Kalman and Information filters, is documented in [Prediction Flow](doc/info_filter_prediction.md).
 
 ## Key Concepts
 
 **Library Design**: Header-only C++ library for academic object tracking using Extended Kalman Filter (EKF) and Information Filter (IF) variants on the available motion models. All motion models can be configured to use a factored or normal covariance matrix and have a predictor with built-in support for the ego motion compensation. 
 
-The factored implementations are mainly based on publications from D'Souza, Bierman, Thornton, Carlson.
-* C. D'Souza and R. Zanetti, "Information Formulation of the UDU Kalman Filter," in IEEE Transactions on Aerospace and Electronic Systems, vol. 55, no. 1, pp. 493-498, Feb. 2019, doi: 10.1109/TAES.2018.2850379.
-* Pourtakdoust, Seid H. "Ud Covariance Factorization For Unscented Kalman Filter Using Sequential Measurements Update," 2007, doi:10.5281/ZENODO.1071229.
-* Gerald J. Bierman, "Factorization Methods for Discrete Sequential Estimation", 1977
-* Catherine L. Thornton, "Triangular Covariance Factorizations for Kalman Filtering", 1976
-* Philip E. Gill, "Practical optimization", 2019, doi.org/10.1137/1.9781611975604
+The factored implementations are mainly based on publications from D'Souza, Bierman, Thornton, Carlson (see References).
+
+### Code Example: Interchangeable Filters and Covariance Types
+
+The library's advanced architecture allows seamless interchangeability between Kalman and Information filters, as well as between full and factored covariance matrices during prediction. Below is a minimal example demonstrating this flexibility:
+
+```cpp
+#include "trackingLib/motion/motion_model_cv.hpp"
+#include "trackingLib/filter/kalman_filter.hpp"
+#include "trackingLib/filter/information_filter.hpp"
+
+using namespace tracking;
+
+// CV motion models with different covariance types
+using MMCV_Full     = motion::MotionModelCV<math::FullCovarianceMatrixPolicy<float64>>;
+using MMCV_Factored = motion::MotionModelCV<math::FactoredCovarianceMatrixPolicy<float64>>;
+
+// Corresponding filter types supported by the motion model
+using KalmanFilter         = MMCV_Full::KalmanFilterType;
+// using InformationFilter = MMCV_Full::InformationFilterType;
+
+// using KalmanFilter   = MMCV_Factored::KalmanFilterType;
+using InformationFilter = MMCV_Factored::InformationFilterType;
+
+// Create filter instances
+KalmanFilter      kalmanFilter{};
+InformationFilter informationFilter{};
+
+// Corresponding ego motion types (stationary for simplicity)
+auto egoMotion_full     = MMCV_Full::EgoMotionType{/* parameters */};
+auto egoMotion_factored = MMCV_Factored::EgoMotionType{/* parameters */};
+
+// Initialize motion models with initial state and covariance
+auto mm_full = MMCV_Full::FromLists({/* State ... */}, {/* Covariance ... */ });
+auto mm_factored = MMCV_Factored::FromLists({/* State ... */}, {/* Covariance ..., will be factored */ });
+
+// Perform predictions with different filter-covariance combinations
+mm_full.predict(0.1, kalmanFilter, egoMotion_full);       // Kalman + Full Covariance
+mm_factored.predict(0.1, informationFilter, egoMotion_factored); // Information + Factored Covariance
+```
+
+This example highlights the template-based design enabling compile-time selection of filter types and covariance representations, ensuring optimal performance and numerical stability.
 
 
 **Core Components**:
 - **Motion Models**: Constant Velocity (CV) and Constant Acceleration (CA) with ego motion compensation
-- **Matrix Library**: Self-contained linear algebra library with UDU factored covariance matrices for enhanced numerical stability, ensuring positive semidefiniteness by design
+- **Matrix Library**: Self-contained linear algebra library with UDU factored covariance matrices for enhanced numerical stability, ensuring positive semi-definiteness by design
 - **Filter Variants**: EKF and IF with both full and factored covariance support
 
 **Key Requirements**:
@@ -66,7 +101,7 @@ The factored implementations are mainly based on publications from D'Souza, Bier
 - **Error Handling**: tl::expected (Rust-style Result pattern)
 
 
-## Planned Functionalities
+## Planned Features
 
 ### Measurement Update Implementation (In Progress)
 
@@ -75,6 +110,12 @@ The library is undergoing a comprehensive update to implement measurement update
 - **GenericUpdate Implementation**: Support for sequential, block, and composed update modes.
 - **Filter-Specific Updates**: Optimized measurement updates for both Kalman and Information filters.
 - **Motion Model Integration**: Extended motion models with update methods supporting multiple observation models.
+
+### UKF and non-linear Motion Models
+Future plans include adding support for Unscented Kalman Filters and extending the currently linear Motion Models with non-linear models like CTRV and CTRA.
+
+### Examples using the library based on 3D simulation frameworks
+Future plans include the usage of the library in one of the famous 3D simulation robotics/autononmous driving frameworks
 
 ## Building
 
@@ -128,6 +169,14 @@ doxygen
 ./report_coverage.sh
 # Open build_cov/coverage/index.html in your browser
 ```
+
+## References
+
+* C. D'Souza and R. Zanetti, "Information Formulation of the UDU Kalman Filter," in IEEE Transactions on Aerospace and Electronic Systems, vol. 55, no. 1, pp. 493-498, Feb. 2019, doi: 10.1109/TAES.2018.2850379.
+* Pourtakdoust, Seid H. "Ud Covariance Factorization For Unscented Kalman Filter Using Sequential Measurements Update," 2007, doi:10.5281/ZENODO.1071229.
+* Gerald J. Bierman, "Factorization Methods for Discrete Sequential Estimation", 1977
+* Catherine L. Thornton, "Triangular Covariance Factorizations for Kalman Filtering", 1976
+* Philip E. Gill, "Practical optimization", 2019, doi.org/10.1137/1.9781611975604
 
 ## License
 

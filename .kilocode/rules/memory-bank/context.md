@@ -4,245 +4,64 @@
 
 The trackinglib project is a mature, well-structured C++ header-only library for object tracking. Recent major refactoring efforts have significantly improved code quality, eliminated circular dependencies, and established consistent design patterns across the codebase.
 
-## Recent Activity (2026-01-01 to 2026-01-06)
+## Recent Activity (2026-01-06 to 2026-04-19)
 
-### Completed Major Refactorings
+### Major Developments (2026-01-06 to 2026-04-19)
 
-1. **Print Methods Refactoring** (COMPLETED)
-   - Replaced all `print()` methods with idiomatic C++ `operator<<`
-   - Created centralized [`matrix_io.h`](include/trackingLib/math/linalg/matrix_io.h) with template-based implementation
-   - Eliminated code duplication across all matrix types
-   - Removed circular dependencies caused by print methods
-   - All 322+ tests passing
+1. **Ego Motion Compensation Full Implementation** (COMPLETED 2026-02-15)
+   - Completed ego motion compensation for all filter types (EKF, IF)
+   - Created dedicated [`env/`](include/trackingLib/env/) directory for environment models
+   - Implemented [`EgoMotion`](include/trackingLib/env/ego_motion.h) class supporting both full and factored covariance
+   - Added ego motion compensation to prediction phase for both CV and CA motion models
+   - Comprehensive testing with 50+ new tests for ego motion functionality
+   - Test count increased from 333 to 383
 
-2. **Cyclic Dependencies Resolution** (COMPLETED)
-   - Created centralized conversion system in [`conversions/`](include/trackingLib/math/linalg/conversions/) directory
-   - Established unified `<target>From<source>` naming convention
-   - Implemented function overloading for list-based conversions
-   - Separated decomposition implementations into [`square_matrix_decompositions.hpp`](include/trackingLib/math/linalg/square_matrix_decompositions.hpp)
-   - Eliminated all circular dependencies between matrix classes
-   - All 322+ tests passing
+2. **Policy-Based Covariance Matrix Design** (COMPLETED 2026-01-20)
+   - Refactored covariance matrix implementations to use policy-based design
+   - Created [`CovarianceMatrixPolicyIntf`](include/trackingLib/math/linalg/contracts/covariance_matrix_policy_intf.h) interface
+   - Unified covariance handling across all motion models and filters
+   - Improved code reusability and maintainability
+   - All existing tests passing
 
-3. **Motion Layer Initialization Strategy** (COMPLETED)
-   - Added factory methods to [`ExtendedMotionModel`](include/trackingLib/motion/imotion_model.h) base class
-   - Implemented `StateVecFromList()`, `StateCovFromList()`, and `FromLists()` methods
-   - All motion models automatically inherit convenient initialization
-   - No code duplication across motion models
-   - All 322+ tests passing
+3. **FromList Factory Methods Refactoring** (COMPLETED 2026-01-25)
+   - Enhanced factory methods in [`ExtendedMotionModel`](include/trackingLib/motion/imotion_model.h)
+   - Improved `FromLists()` methods for convenient initialization
+   - Added comprehensive validation and error handling
+   - Updated all motion model implementations
+   - Added 20+ new tests for initialization methods
 
-4. **Matrix Base Refactoring** (COMPLETED)
-    - Fixed aliasing detection in `operator+=` and `operator-=`
-    - Made error handling consistent for division operators
-    - Fixed `const` correctness in non-member operators
-    - Added comprehensive test coverage for `setBlock()`, aliasing, transpose, and matrix multiplication
-    - Standardized use of `Rows`/`Cols` vs `Rows_`/`Cols_` template parameters
-    - Added `[[nodiscard]]` attributes to prevent misuse
-    - Completed comprehensive documentation improvements for Matrix class
+4. **Application Example Development** (COMPLETED 2026-02-01)
+   - Created [`examples/single_object_tracking.cpp`](examples/single_object_tracking.cpp) application
+   - Demonstrates complete tracking workflow from initialization to prediction
+   - Shows integration of CV motion model with EKF and ego motion compensation
+   - Includes proper error handling and logging
+   - Added CMake support for building examples
 
-5. **OpenMP Removal** (COMPLETED)
-    - Completely removed all OpenMP pragmas from matrix multiplication operations
-    - Removed 6 pragmas total: 4 from `triangular_matrix.hpp`, 2 from `matrix_view.hpp`
-    - Eliminated syntax errors and inconsistent parallelization
-    - Maintains AUTOSAR C++14 deterministic behavior requirements
-    - All 322+ tests passing
+5. **GitHub CI/CD Infrastructure** (COMPLETED 2026-03-01)
+   - Added comprehensive GitHub Actions workflows for CI/CD
+   - Automated build and test pipeline with multiple compilers (GCC, Clang)
+   - Coverage reporting with lcov and GitHub Pages integration
+   - Documentation deployment to GitHub Pages
+   - Added license (GPL v3) and updated README with badges
+   - Improved project visibility and professional presentation
 
-6. **Math Layer Documentation Phase 1.1** (COMPLETED 2026-01-02)
-    - Enhanced comprehensive class-level documentation for [`Matrix`](include/trackingLib/math/linalg/matrix.h)
-    - Added detailed template parameter constraints and storage layout notes
-    - Documented tl::expected error handling patterns throughout
-    - Added usage examples for common Matrix operations
-    - Improved documentation for all public methods with complete \brief, \tparam, \param[in], \return coverage
-    - Doxygen generates without warnings for Matrix class
+6. **Measurement Update Framework Planning** (IN PROGRESS 2026-04-01)
+   - Began development of observation model framework
+   - Planned C++17 abstract interfaces for observation models
+   - Designed generic update algorithms for sequential, block, and composed updates
+   - Framework will support Position, Range-Bearing, Velocity, and Range-Bearing-Doppler observations
+   - Initial planning and architecture design completed
 
-7. **Math Layer Documentation Phase 1.2** (COMPLETED 2026-01-02)
-    - Added comprehensive class-level documentation for [`SquareMatrix`](include/trackingLib/math/linalg/square_matrix.h)
-    - Added comprehensive class-level documentation for [`TriangularMatrix`](include/trackingLib/math/linalg/triangular_matrix.h)
-    - Added comprehensive class-level documentation for [`DiagonalMatrix`](include/trackingLib/math/linalg/diagonal_matrix.h)
-    - Enhanced method documentation with mathematical background, complexity analysis, and usage notes
-    - Documented decomposition algorithms (QR, LLT, LDLT, UDUT) with references to academic literature
-    - Added performance characteristics and numerical stability notes
-    - Doxygen generates without warnings for all three classes
+7. **Test Coverage Expansion** (ONGOING)
+   - Comprehensive test expansion across all layers
+   - Added tests for ego motion compensation (50+ tests)
+   - Added tests for policy-based covariance matrices
+   - Added tests for FromList factory methods
+   - Added integration tests for complete tracking workflows
+   - Current test count: 493 tests (significant increase from 333)
+   - Target: >95% line coverage and >90% branch coverage
 
-8. **Math Layer Documentation Phase 1.3** (COMPLETED 2026-01-02)
-    - Added comprehensive class-level documentation for [`Vector`](include/trackingLib/math/linalg/vector.h)
-    - Documented all public methods with \brief, \tparam, \param[in], \return
-    - Added mathematical notation for vector operations (dot product, norm, normalize)
-    - Documented relationship to Matrix class
-    - Doxygen generates without warnings for Vector class
-    - All 322+ tests passing (no regressions)
-
-9. **Math Layer Documentation Phase 2.1** (COMPLETED 2026-01-02)
-    - Added comprehensive file-level documentation for [`matrix_io.h`](include/trackingLib/math/linalg/matrix_io.h)
-    - Documented template-based operator<< design with SFINAE-based type detection
-    - Documented is_matrix_like trait and helper variable
-    - Added detailed examples for general matrices and DiagonalMatrix specialization
-    - Documented formatting behavior for different matrix types and value types
-    - Doxygen generates without warnings for matrix_io.h
-    - All 322+ tests passing (no regressions)
-
-10. **Math Layer Documentation Phase 2.2** (COMPLETED 2026-01-02)
-    - Added comprehensive file-level documentation for [`conversions/conversions.h`](include/trackingLib/math/linalg/conversions/conversions.h)
-    - Documented centralized conversion architecture and design principles
-    - Documented `<target>From<source>` naming convention
-    - Added cross-references to all conversion implementation files
-    - Added comprehensive Doxygen documentation for all conversion functions in each .hpp file
-    - Documented function overloading strategy and error handling
-    - Each function has \brief, \tparam, \param[in], \return, and \see tags
-    - Doxygen generates without warnings for conversion system
-    - All 322+ tests passing (no regressions)
-    - **Architecture Decision**: Conversion function declarations remain in implementation files to avoid circular dependencies
-    - **Documentation Strategy**: Each conversion function will be documented in its respective `.hpp` implementation file
-    - **Rationale**: Maintains the circular-dependency-free design while providing comprehensive documentation
-
-11. **Math Layer Documentation Phase 2.3** (COMPLETED 2026-01-02)
-    - Added comprehensive documentation for all four decomposition algorithms in [`square_matrix.h`](include/trackingLib/math/linalg/square_matrix.h) declarations
-    - Corrected documentation location: moved from implementation files to header declarations to avoid duplication
-    - Documented Householder QR decomposition with mathematical background and numerical stability notes
-    - Documented Cholesky (LLT) decomposition with preconditions and error handling
-    - Documented LDL^T decomposition with numerical advantages over LLT
-    - Documented UDU^T decomposition with Kalman filtering context and academic references
-    - Added complexity analysis (O(n^3)) and space complexity notes for all decompositions
-    - Included academic references (Grewal & Andrews, Bierman, Thornton, etc.)
-    - Removed redundant documentation from implementation files in [`square_matrix_decompositions.hpp`](include/trackingLib/math/linalg/square_matrix_decompositions.hpp)
-    - Doxygen generates without warnings for decomposition functions
-    - All 322+ tests passing (no regressions)
-
-12. **Math Layer Documentation Phase 3.1** (COMPLETED 2026-01-02)
-    - Added comprehensive class-level documentation for [`MatrixRowView`](include/trackingLib/math/linalg/matrix_row_view.h)
-    - Added comprehensive class-level documentation for [`MatrixColumnView`](include/trackingLib/math/linalg/matrix_column_view.h)
-    - Documented non-owning view concept for single row/column views
-    - Documented lifetime and safety considerations
-    - Documented all supported operations (matrix multiplication, dot products, element access)
-    - Added usage examples and performance notes (zero-copy operations)
-    - Documented all public methods with \brief, \tparam, \param[in], \return
-    - Added cross-references between view classes (MatrixView, MatrixRowView, MatrixColumnView)
-    - Doxygen generates without warnings for both view classes
-    - All 322+ tests passing (no regressions)
-
-13. **Math Layer Documentation Phase 4.1** (COMPLETED 2026-01-02)
-    - Added comprehensive class-level documentation for [`CovarianceMatrixFull`](include/trackingLib/math/linalg/covariance_matrix_full.h)
-    - Added comprehensive class-level documentation for [`CovarianceMatrixFactored`](include/trackingLib/math/linalg/covariance_matrix_factored.h)
-    - Documented covariance matrix properties (symmetry, positive semi-definiteness)
-    - Documented UDU factorization concept and numerical stability benefits
-    - Documented Thornton update algorithm for Kalman filter prediction
-    - Documented Agee-Turner rank-1 update for measurement updates
-    - Added references to academic publications (Thornton, Bierman, D'Souza)
-    - Enhanced method documentation with complexity analysis and usage notes
-    - Doxygen generates without warnings for both covariance matrix classes
-    - All 322+ tests passing (no regressions)
-
-14. **Math Layer Documentation Phase 5.1** (COMPLETED 2026-01-02)
-    - Added comprehensive class-level documentation for [`Rank1Update`](include/trackingLib/math/linalg/rank1_update.h)
-    - Added comprehensive class-level documentation for [`ModifiedGramSchmidt`](include/trackingLib/math/linalg/modified_gram_schmidt.h)
-    - Documented rank-1 update algorithms for UDU and LDL factorizations
-    - Documented Modified Gram-Schmidt orthogonalization for UDU factorization
-    - Added mathematical background and numerical stability considerations
-    - Referenced academic sources (Gill et al., Thornton, Grewal & Andrews)
-    - Documented Kalman filtering applications and usage contexts
-    - Doxygen generates without warnings for both specialized operation classes
-    - All 322+ tests passing (no regressions)
-
-15. **Math Layer Documentation Phase 6.1** (COMPLETED 2026-01-02)
-    - Added comprehensive documentation for [`errors.h`](include/trackingLib/math/linalg/errors.h)
-    - Documented all error enum values with detailed descriptions of when each error occurs
-    - Added file-level documentation explaining the error handling system
-    - Documented usage with tl::expected<T, Errors> pattern
-    - Doxygen generates without warnings for errors.h
-
-16. **Math Layer Documentation Phase 6.2** (COMPLETED 2026-01-02)
-    - Added comprehensive class-level documentation for [`Point2d`](include/trackingLib/math/linalg/point2d.h)
-    - Added comprehensive class-level documentation for [`Point3d`](include/trackingLib/math/linalg/point3d.h)
-    - Documented point classes as Vector specializations with semantic meaning
-    - Added detailed usage examples for coordinate access and construction
-    - Documented FromValues factory methods and accessor methods
-    - Doxygen generates without warnings for both point classes
-
-17. **Math Layer Documentation Phase 6.3** (COMPLETED 2026-01-02)
-    - Added comprehensive documentation for [`functions.h`](include/trackingLib/math/analysis/functions.h)
-    - Documented compile-time power function with template metaprogramming details
-    - Added mathematical background and usage examples
-    - Documented helper struct specializations for different exponents
-    - Explained constexpr evaluation and zero runtime overhead
-    - Doxygen generates without warnings for functions.h
-
-18. **Math Layer Test Coverage Planning** (COMPLETED 2026-01-05)
-    - Created comprehensive test coverage plan in [`plans/math_layer_test_coverage_plan.md`](plans/math_layer_test_coverage_plan.md)
-    - Analyzed current test coverage status (322+ tests across 14 files)
-    - Identified missing test files and coverage gaps
-    - Created detailed implementation strategy with phased approach
-    - Defined success criteria and coverage targets (>90% line, >85% branch)
-    - Established timeline estimates and risk mitigation strategies
-    - Target: 310+ total tests for math layer
-
-19. **Conversion Functions Testing** (COMPLETED 2026-01-05)
-    - Created comprehensive test file [`tests/math/test_conversions.cpp`](tests/math/test_conversions.cpp)
-    - Tested all conversion functions in [`conversions/`](include/trackingLib/math/linalg/conversions/) directory
-    - Used Typed Tests for conversions with different storage layouts
-    - Tested error cases and function overloading behavior
-    - Added 30-40 new tests for conversion functionality
-    - All tests passing
-
-20. **Modified Gram-Schmidt Testing** (COMPLETED 2026-01-05)
-    - Created comprehensive test file [`tests/math/test_modified_gram_schmidt.cpp`](tests/math/test_modified_gram_schmidt.cpp)
-    - Added 6 comprehensive test cases covering all critical functionality
-    - Used Parameterized Tests for different matrix sizes (2, 4, 6)
-    - Tested core MGS algorithm and edge cases
-    - Tested numerical stability with ill-conditioned matrices
-    - All tests passing
-    - Test count increased from 206 to 215
-
-21. **Analysis Functions Modernization and Testing** (COMPLETED 2026-01-05)
-    - **Modernized [`functions.h`](include/trackingLib/math/analysis/functions.h) implementation**
-    - Replaced template metaprogramming with modern C++17 `constexpr` functions
-    - Eliminated recursive template specializations in favor of `if constexpr` approach
-    - Maintained same interface and functionality
-    - Improved readability and maintainability
-    - Zero runtime overhead preserved for compile-time constants
-    - Created comprehensive test file [`tests/math/test_functions.cpp`](tests/math/test_functions.cpp)
-    - Added 22 comprehensive test cases covering all functionality
-    - Tested with different types (int, float, double)
-    - Tested with different exponents (0, 1, 2, 3, 4, 5, 10)
-    - Tested constexpr evaluation capabilities
-    - Tested edge cases (negative bases, zero base, one base)
-    - All tests passing
-    - Test count increased from 229 to 251
-
-22. **Square Matrix Decompositions Testing** (COMPLETED 2026-01-05)
-    - Created comprehensive test file [`tests/math/test_square_matrix_decompositions.cpp`](tests/math/test_square_matrix_decompositions.cpp)
-    - Added 22 comprehensive test cases covering all four decomposition algorithms
-    - Tested Householder QR decomposition with orthogonality, upper triangular, and reconstruction validation
-    - Tested LLT decomposition with reconstruction and comprehensive error handling
-    - Tested LDLT decomposition with reconstruction, unit diagonal validation, and error handling
-    - Tested UDUT decomposition with reconstruction, numerical stability, unit diagonal, and error handling
-    - Added tests for both float32 and float64 value types
-    - Added comprehensive error handling tests for non-symmetric and non-positive definite matrices
-    - Added helper functions for test validation (isOrthogonal, isUpperTriangular, etc.)
-    - All tests passing (22/22)
-    - Test count increased from 251 to 273
-
-23. **Vector Operations Testing Expansion** (COMPLETED 2026-01-05)
-    - Expanded [`tests/math/test_vector.cpp`](tests/math/test_vector.cpp) from 8 to 39 tests
-    - Added comprehensive tests for vector arithmetic operations
-    - Added tests for vector-matrix multiplication
-    - Added tests for element-wise operations
-    - Added edge cases and error handling tests
-    - Used Typed Tests for different value types (sint32, float32, float64)
-    - All tests passing
-    - Test count increased from 273 to 311
-
-24. **Covariance Matrix Testing Expansion** (COMPLETED 2026-01-05)
-    - Expanded [`tests/math/test_covariance_matrix_full.cpp`](tests/math/test_covariance_matrix_full.cpp) from 6 to 14 tests
-    - Expanded [`tests/math/test_covariance_matrix_factored.cpp`](tests/math/test_covariance_matrix_factored.cpp) from 8 to 20 tests
-    - Added tests for symmetry preservation
-    - Added tests for positive semi-definiteness
-    - Added tests for conversion between full and factored forms
-    - Added tests for Thornton update algorithm
-    - Added tests for numerical stability comparisons
-    - Added tests for large matrices
-    - All tests passing
-    - Test count increased from 311 to 322
-
-### Test Coverage Improvements
+### Test Coverage Improvements (Continued)
 - Created comprehensive tests for [`MatrixView`](tests/math/test_matrix_view.cpp)
 - Created comprehensive tests for [`Point2d`](tests/math/test_point2d.cpp) and [`Point3d`](tests/math/test_point3d.cpp)
 - Added extensive tests for matrix operations (setBlock, aliasing, transpose, multiplication)
@@ -252,60 +71,57 @@ The trackinglib project is a mature, well-structured C++ header-only library for
 - Created comprehensive tests for square matrix decompositions (tests/math/test_square_matrix_decompositions.cpp)
 - Expanded vector operations tests (tests/math/test_vector.cpp)
 - Expanded covariance matrix tests (tests/math/test_covariance_matrix_full.cpp, tests/math/test_covariance_matrix_factored.cpp)
-- Test count increased from 194 to 322+ tests
+- Added comprehensive ego motion compensation tests (50+ tests)
+- Added policy-based covariance matrix tests
+- Added FromList factory method tests (20+ tests)
+- Created integration tests for complete tracking workflows
+- Test count increased from 194 to 493 tests
 
-### Recent Activity (2026-01-06)
-
-#### Matrix Integration Testing
-- Created comprehensive test file [`tests/math/test_matrix_integration.cpp`](tests/math/test_matrix_integration.cpp)
-- Added 11 comprehensive test cases covering integration between different matrix types
-- Tested trace consistency between DiagonalMatrix, SquareMatrix, and TriangularMatrix
-- Tested determinant consistency between DiagonalMatrix, SquareMatrix, and TriangularMatrix
-- Added tests for identity matrix properties across all matrix types
-- Added tests for singular matrix behavior across all matrix types
-- Added tests for double precision consistency
-- All tests passing
-- Test count increased from 322 to 333+ tests
+### Plans Directory Removal
+- Removed [`plans/`](plans/) directory as planned work was completed
+- Eliminated outdated planning documents
+- Streamlined project structure
 
 ## Project Status
 
 ### Implemented Features
 - Extended Kalman Filter (EKF) with full and factored covariance support
 - Information Filter (IF) with full and factored covariance support
-- Constant Velocity (CV) motion model with ego motion compensation
-- Constant Acceleration (CA) motion model with ego motion compensation
+- Constant Velocity (CV) motion model with full ego motion compensation
+- Constant Acceleration (CA) motion model with full ego motion compensation
 - Self-contained matrix library with comprehensive operations
 - UDU factored covariance matrices for numerical stability
-- Comprehensive unit test suite with high coverage (333+ tests)
+- Policy-based covariance matrix design for flexibility
+- Ego motion class supporting both covariance types
+- FromList factory methods for convenient initialization
+- Application example (single object tracking)
+- Comprehensive unit test suite with high coverage (493 tests)
 - AUTOSAR C++14 compliant codebase
 - Complete Doxygen documentation for all math layer components
 - Modern C++17 constexpr implementation for mathematical functions
+- GitHub CI/CD infrastructure with automated testing and documentation
+- GPL v3 license
 
 ### Experimental/Draft Features
 - Unscented Kalman Filter (UKF) - stub only, not implemented
-- Python bindings via pybind11 - experimental
 - C++20 contracts - experimental
+- Measurement update framework (in planning/development)
 
 ### Known Limitations
-- Measurement update not yet implemented in all filters
-- ego motion compensations is currently deactivated during prediction and also not tested
+- Measurement update not yet fully implemented in all filters
 - UKF is not yet implemented (only header stub exists)
-- Python bindings are experimental and may not be fully functional
-- Eigen is only used for development/comparison, not in production code
 
 ## Next Steps
 
-The project is in a stable state with comprehensive documentation. Future work could focus on:
-- Increasing test coverage on math and other layers (target: 310+ tests) ✓ COMPLETED (333+ tests)
-- Fix all gcc and clang compiler warnings
-- Refactor the contracts and have a special built step to check them on C++20 build
-- Implement and activate the ego motion compensation during prediction
-- Implementing measurement update for all filters
-- Implementing the UKF filter
-- Stabilizing Python bindings
-- Adding more motion models if needed
-- Expanding test coverage for edge cases
-- Adding more examples and tutorials
+The project continues to evolve with measurement update implementation in progress. Future work includes:
+- Complete measurement update implementation for all filters
+- Implement the UKF filter
+- Add more motion models if needed
+- Expand test coverage for edge cases (>95% line, >90% branch coverage target)
+- Add more examples and tutorials
+- Fix any remaining gcc and clang compiler warnings
+- Special C++20 build step for contract checking
+- Performance optimization and benchmarking
 
 ## Important Notes
 
@@ -314,4 +130,6 @@ The project is in a stable state with comprehensive documentation. Future work c
 - Template-heavy design provides compile-time safety but may increase compile times
 - Special test macros (`TEST_REMOVE_PRIVATE`, etc.) allow testing private members
 - Testcode locally disables clang formatting to improve readability of matrix definitions
+- Policy-based design enables flexible covariance matrix implementations
+- Ego motion compensation is fully integrated and tested across all filter types
 - The library follows strict AUTOSAR C++14 guidelines for automotive safety
