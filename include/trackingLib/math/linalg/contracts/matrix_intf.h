@@ -51,7 +51,7 @@ concept has_round_brackets_op_int_int = requires {
 // clang-format on
 #endif //__cplusplus == 202002L
 
-template <typename ImplType, template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_> class ClassName>
+template <typename ImplType>
 struct MatrixIntf
     : public base::contract::RequireCopyIntf<ImplType>
     , public base::contract::RequireMoveIntf<ImplType>
