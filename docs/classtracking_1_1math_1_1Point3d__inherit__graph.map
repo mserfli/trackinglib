@@ -1,13 +1,13 @@
 <map id="tracking::math::Point3d&lt; ValueType_ &gt;" name="tracking::math::Point3d&lt; ValueType_ &gt;">
-<area shape="rect" id="Node000001" title="3D point with named coordinate access" alt="" coords="150,1351,317,1591"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html" title=" " alt="" coords="154,903,313,1303"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,1316,236,1350,231,1350,231,1316"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html" title=" " alt="" coords="141,291,326,855"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="236,868,236,902,231,902,231,868"/>
-<area shape="rect" id="Node000004" href="$structtracking_1_1math_1_1contract_1_1MatrixIntf.html" title=" " alt="" coords="121,133,345,243"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="236,256,236,291,231,291,231,256"/>
+<area shape="rect" id="Node000001" title="3D point with named coordinate access" alt="" coords="150,1336,317,1576"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html" title=" " alt="" coords="154,888,313,1288"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,1302,236,1336,231,1336,231,1302"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html" title=" " alt="" coords="141,276,326,840"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="236,854,236,888,231,888,231,854"/>
+<area shape="rect" id="Node000004" href="$structtracking_1_1math_1_1contract_1_1MatrixIntf.html" title=" " alt="" coords="116,133,351,228"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="236,242,236,276,231,276,231,242"/>
 <area shape="rect" id="Node000005" href="$classtracking_1_1base_1_1contract_1_1RequireCopyIntf.html" title=" " alt="" coords="5,5,221,85"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="158,94,190,131,186,135,154,98"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="160,94,194,131,190,135,156,97"/>
 <area shape="rect" id="Node000006" href="$classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html" title=" " alt="" coords="245,5,464,85"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="314,98,282,135,278,131,310,94"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="312,97,277,135,273,131,308,94"/>
 </map>

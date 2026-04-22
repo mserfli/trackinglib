@@ -46,7 +46,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 2442;
+var viewWidth = 2471;
 var viewHeight = 1503;
 var sectionId = 'dynsection-0';
 </script>
@@ -58,15 +58,15 @@ var sectionId = 'dynsection-0';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title=" ">
-<polygon fill="#999999" stroke="transparent" points="1047.5,-1495 885.5,-1495 885.5,-1435 1047.5,-1435 1047.5,-1495"/>
-<text text-anchor="start" x="890.5" y="-1483" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::base::contract</text>
-<text text-anchor="start" x="890.5" y="-1472" font-family="Helvetica,sans-Serif" font-size="10.00">::RequireCopyIntf&lt; ImplType &gt;</text>
-<text text-anchor="start" x="964.5" y="-1457" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="903" y="-1442" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="929.5" y="-1442" font-family="Helvetica,sans-Serif" font-size="10.00">RequireCopyIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="885.5,-1467 885.5,-1467 1047.5,-1467 1047.5,-1467 885.5,-1467"/>
-<polygon fill="#666666" stroke="#666666" points="885.5,-1452 885.5,-1452 1047.5,-1452 1047.5,-1452 885.5,-1452"/>
-<polygon fill="none" stroke="#666666" points="885.5,-1435 885.5,-1495 1047.5,-1495 1047.5,-1435 885.5,-1435"/>
+<polygon fill="#999999" stroke="transparent" points="1068.5,-1495 906.5,-1495 906.5,-1435 1068.5,-1435 1068.5,-1495"/>
+<text text-anchor="start" x="911.5" y="-1483" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::base::contract</text>
+<text text-anchor="start" x="911.5" y="-1472" font-family="Helvetica,sans-Serif" font-size="10.00">::RequireCopyIntf&lt; ImplType &gt;</text>
+<text text-anchor="start" x="985.5" y="-1457" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="924" y="-1442" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="950.5" y="-1442" font-family="Helvetica,sans-Serif" font-size="10.00">RequireCopyIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="906.5,-1467 906.5,-1467 1068.5,-1467 1068.5,-1467 906.5,-1467"/>
+<polygon fill="#666666" stroke="#666666" points="906.5,-1452 906.5,-1452 1068.5,-1452 1068.5,-1452 906.5,-1452"/>
+<polygon fill="none" stroke="#666666" points="906.5,-1435 906.5,-1495 1068.5,-1495 1068.5,-1435 906.5,-1435"/>
 </a>
 </g>
 </g>
@@ -74,17 +74,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="structtracking_1_1math_1_1contract_1_1CovarianceMatrixIntf.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="211,-1399 62,-1399 62,-1317 211,-1317 211,-1399"/>
-<text text-anchor="start" x="67.5" y="-1387" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
-<text text-anchor="start" x="67.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">::CovarianceMatrixIntf</text>
-<text text-anchor="start" x="67.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixFactored</text>
-<text text-anchor="start" x="76.5" y="-1354" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ValueType_, Size_ &gt; &gt;</text>
-<text text-anchor="start" x="135" y="-1339" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="70.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="87.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">CovarianceMatrixIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="62.5,-1349 62.5,-1349 211.5,-1349 211.5,-1349 62.5,-1349"/>
-<polygon fill="#666666" stroke="#666666" points="62.5,-1334 62.5,-1334 211.5,-1334 211.5,-1334 62.5,-1334"/>
-<polygon fill="none" stroke="#666666" points="62,-1317 62,-1399 211,-1399 211,-1317 62,-1317"/>
+<polygon fill="white" stroke="transparent" points="209,-1399 60,-1399 60,-1317 209,-1317 209,-1399"/>
+<text text-anchor="start" x="65.5" y="-1387" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
+<text text-anchor="start" x="65.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">::CovarianceMatrixIntf</text>
+<text text-anchor="start" x="65.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixFactored</text>
+<text text-anchor="start" x="74.5" y="-1354" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ValueType_, Size_ &gt; &gt;</text>
+<text text-anchor="start" x="133" y="-1339" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="68.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="85.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">CovarianceMatrixIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="60.5,-1349 60.5,-1349 209.5,-1349 209.5,-1349 60.5,-1349"/>
+<polygon fill="#666666" stroke="#666666" points="60.5,-1334 60.5,-1334 209.5,-1334 209.5,-1334 60.5,-1334"/>
+<polygon fill="none" stroke="#666666" points="60,-1317 60,-1399 209,-1399 209,-1317 60,-1317"/>
 </a>
 </g>
 </g>
@@ -92,8 +92,8 @@ var sectionId = 'dynsection-0';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M874.97,-1462.25C738.94,-1458.15 475.98,-1444.51 257.5,-1399 242.34,-1395.84 226.42,-1391.42 211.29,-1386.66"/>
-<polygon fill="none" stroke="#63b8ff" points="875.24,-1465.76 885.34,-1462.55 875.45,-1458.76 875.24,-1465.76"/>
+<path fill="none" stroke="#63b8ff" d="M896.25,-1462.63C756.78,-1459.03 482.82,-1446.01 255.5,-1399 240.33,-1395.86 224.41,-1391.45 209.29,-1386.7"/>
+<polygon fill="none" stroke="#63b8ff" points="896.38,-1466.13 906.46,-1462.88 896.55,-1459.14 896.38,-1466.13"/>
 </a>
 </g>
 </g>
@@ -119,8 +119,8 @@ var sectionId = 'dynsection-0';
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M875.06,-1463.45C733.99,-1460.98 471.49,-1449.51 394.5,-1399 295.05,-1333.76 263.84,-1183.01 254.4,-1110.66"/>
-<polygon fill="none" stroke="#63b8ff" points="875.37,-1466.95 885.42,-1463.61 875.48,-1459.95 875.37,-1466.95"/>
+<path fill="none" stroke="#63b8ff" d="M896.14,-1464.2C749.78,-1462.87 471.02,-1453.05 390.5,-1399 292.18,-1333.01 262.64,-1182.63 253.98,-1110.52"/>
+<polygon fill="none" stroke="#63b8ff" points="896.42,-1467.7 906.45,-1464.28 896.47,-1460.7 896.42,-1467.7"/>
 </a>
 </g>
 </g>
@@ -128,17 +128,16 @@ var sectionId = 'dynsection-0';
 <g id="Node000006" class="node">
 <title>Node6</title>
 <g id="a_Node000006"><a xlink:href="structtracking_1_1math_1_1contract_1_1MatrixIntf.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="571.5,-1399 403.5,-1399 403.5,-1317 571.5,-1317 571.5,-1399"/>
-<text text-anchor="start" x="408.5" y="-1387" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
-<text text-anchor="start" x="408.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">::MatrixIntf&lt; Matrix&lt; ValueType</text>
-<text text-anchor="start" x="408.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">_, Rows_, Cols_, IsRowMajor</text>
-<text text-anchor="start" x="454.5" y="-1354" font-family="Helvetica,sans-Serif" font-size="10.00">_ &gt;, Matrix &gt;</text>
-<text text-anchor="start" x="485.5" y="-1339" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="430" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="465.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="403.5,-1349 403.5,-1349 571.5,-1349 571.5,-1349 403.5,-1349"/>
-<polygon fill="#666666" stroke="#666666" points="403.5,-1334 403.5,-1334 571.5,-1334 571.5,-1334 403.5,-1334"/>
-<polygon fill="none" stroke="#666666" points="403.5,-1317 403.5,-1399 571.5,-1399 571.5,-1317 403.5,-1317"/>
+<polygon fill="white" stroke="transparent" points="575.5,-1393.5 399.5,-1393.5 399.5,-1322.5 575.5,-1322.5 575.5,-1393.5"/>
+<text text-anchor="start" x="404.5" y="-1381" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
+<text text-anchor="start" x="404.5" y="-1370" font-family="Helvetica,sans-Serif" font-size="10.00">::MatrixIntf&lt; Matrix&lt; ValueType</text>
+<text text-anchor="start" x="404.5" y="-1359" font-family="Helvetica,sans-Serif" font-size="10.00">_, Rows_, Cols_, IsRowMajor_ &gt; &gt;</text>
+<text text-anchor="start" x="485.5" y="-1344" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="428" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="465.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="399.5,-1354 399.5,-1354 575.5,-1354 575.5,-1354 399.5,-1354"/>
+<polygon fill="#666666" stroke="#666666" points="399.5,-1339 399.5,-1339 575.5,-1339 575.5,-1339 399.5,-1339"/>
+<polygon fill="none" stroke="#666666" points="399.5,-1322.5 399.5,-1393.5 575.5,-1393.5 575.5,-1322.5 399.5,-1322.5"/>
 </a>
 </g>
 </g>
@@ -146,8 +145,8 @@ var sectionId = 'dynsection-0';
 <g id="edge5_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
 <g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M875.45,-1454.9C796.34,-1445.52 679.27,-1428.1 580.5,-1399 577.55,-1398.13 574.57,-1397.19 571.57,-1396.2"/>
-<polygon fill="none" stroke="#63b8ff" points="875.05,-1458.37 885.39,-1456.06 875.86,-1451.42 875.05,-1458.37"/>
+<path fill="none" stroke="#63b8ff" d="M896.3,-1455.38C813.76,-1446.14 689.41,-1428.66 584.5,-1399 578.8,-1397.39 572.99,-1395.54 567.18,-1393.55"/>
+<polygon fill="none" stroke="#63b8ff" points="896.08,-1458.87 906.41,-1456.49 896.85,-1451.92 896.08,-1458.87"/>
 </a>
 </g>
 </g>
@@ -155,16 +154,16 @@ var sectionId = 'dynsection-0';
 <g id="Node000019" class="node">
 <title>Node19</title>
 <g id="a_Node000019"><a xlink:href="structtracking_1_1math_1_1contract_1_1MatrixIntf.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="761,-1393.5 590,-1393.5 590,-1322.5 761,-1322.5 761,-1393.5"/>
-<text text-anchor="start" x="595.5" y="-1381" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
-<text text-anchor="start" x="595.5" y="-1370" font-family="Helvetica,sans-Serif" font-size="10.00">::MatrixIntf&lt; Matrix&lt; ValueType</text>
-<text text-anchor="start" x="595.5" y="-1359" font-family="Helvetica,sans-Serif" font-size="10.00">_, Rows_, Cols_, true &gt;, Matrix &gt;</text>
-<text text-anchor="start" x="674" y="-1344" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="618" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="654.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="590.5,-1354 590.5,-1354 761.5,-1354 761.5,-1354 590.5,-1354"/>
-<polygon fill="#666666" stroke="#666666" points="590.5,-1339 590.5,-1339 761.5,-1339 761.5,-1339 590.5,-1339"/>
-<polygon fill="none" stroke="#666666" points="590,-1322.5 590,-1393.5 761,-1393.5 761,-1322.5 590,-1322.5"/>
+<polygon fill="white" stroke="transparent" points="761.5,-1393.5 593.5,-1393.5 593.5,-1322.5 761.5,-1322.5 761.5,-1393.5"/>
+<text text-anchor="start" x="598.5" y="-1381" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
+<text text-anchor="start" x="598.5" y="-1370" font-family="Helvetica,sans-Serif" font-size="10.00">::MatrixIntf&lt; Matrix&lt; ValueType</text>
+<text text-anchor="start" x="615.5" y="-1359" font-family="Helvetica,sans-Serif" font-size="10.00">_, Rows_, Cols_, true &gt; &gt;</text>
+<text text-anchor="start" x="675.5" y="-1344" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="620" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="655.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="593.5,-1354 593.5,-1354 761.5,-1354 761.5,-1354 593.5,-1354"/>
+<polygon fill="#666666" stroke="#666666" points="593.5,-1339 593.5,-1339 761.5,-1339 761.5,-1339 593.5,-1339"/>
+<polygon fill="none" stroke="#666666" points="593.5,-1322.5 593.5,-1393.5 761.5,-1393.5 761.5,-1322.5 593.5,-1322.5"/>
 </a>
 </g>
 </g>
@@ -172,8 +171,8 @@ var sectionId = 'dynsection-0';
 <g id="edge19_Node000001_Node000019" class="edge">
 <title>Node1&#45;&gt;Node19</title>
 <g id="a_edge19_Node000001_Node000019"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M875.7,-1435.53C842.41,-1424.66 804.56,-1411.79 770.5,-1399 765.89,-1397.27 761.18,-1395.45 756.44,-1393.58"/>
-<polygon fill="none" stroke="#63b8ff" points="874.83,-1438.92 885.42,-1438.69 876.99,-1432.27 874.83,-1438.92"/>
+<path fill="none" stroke="#63b8ff" d="M896.6,-1439.3C857.46,-1428.02 811.39,-1413.86 770.5,-1399 765.79,-1397.29 760.98,-1395.46 756.14,-1393.57"/>
+<polygon fill="none" stroke="#63b8ff" points="895.82,-1442.72 906.4,-1442.11 897.75,-1435.99 895.82,-1442.72"/>
 </a>
 </g>
 </g>
@@ -181,17 +180,16 @@ var sectionId = 'dynsection-0';
 <g id="Node000020" class="node">
 <title>Node20</title>
 <g id="a_Node000020"><a xlink:href="structtracking_1_1math_1_1contract_1_1MatrixIntf.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="949.5,-1399 779.5,-1399 779.5,-1317 949.5,-1317 949.5,-1399"/>
-<text text-anchor="start" x="784.5" y="-1387" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
-<text text-anchor="start" x="784.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">::MatrixIntf&lt; Matrix&lt; value</text>
-<text text-anchor="start" x="784.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">_type, Rows_, Cols_, IsRowMajor</text>
-<text text-anchor="start" x="831.5" y="-1354" font-family="Helvetica,sans-Serif" font-size="10.00">_ &gt;, Matrix &gt;</text>
-<text text-anchor="start" x="862.5" y="-1339" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="806.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="842.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="779.5,-1349 779.5,-1349 949.5,-1349 949.5,-1349 779.5,-1349"/>
-<polygon fill="#666666" stroke="#666666" points="779.5,-1334 779.5,-1334 949.5,-1334 949.5,-1334 779.5,-1334"/>
-<polygon fill="none" stroke="#666666" points="779.5,-1317 779.5,-1399 949.5,-1399 949.5,-1317 779.5,-1317"/>
+<polygon fill="white" stroke="transparent" points="977.5,-1393.5 779.5,-1393.5 779.5,-1322.5 977.5,-1322.5 977.5,-1393.5"/>
+<text text-anchor="start" x="784.5" y="-1381" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
+<text text-anchor="start" x="784.5" y="-1370" font-family="Helvetica,sans-Serif" font-size="10.00">::MatrixIntf&lt; Matrix&lt; value</text>
+<text text-anchor="start" x="784.5" y="-1359" font-family="Helvetica,sans-Serif" font-size="10.00">_type, Rows_, Cols_, IsRowMajor_ &gt; &gt;</text>
+<text text-anchor="start" x="876.5" y="-1344" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="813.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="856.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="779.5,-1354 779.5,-1354 977.5,-1354 977.5,-1354 779.5,-1354"/>
+<polygon fill="#666666" stroke="#666666" points="779.5,-1339 779.5,-1339 977.5,-1339 977.5,-1339 779.5,-1339"/>
+<polygon fill="none" stroke="#666666" points="779.5,-1322.5 779.5,-1393.5 977.5,-1393.5 977.5,-1322.5 779.5,-1322.5"/>
 </a>
 </g>
 </g>
@@ -199,8 +197,8 @@ var sectionId = 'dynsection-0';
 <g id="edge20_Node000001_Node000020" class="edge">
 <title>Node1&#45;&gt;Node20</title>
 <g id="a_edge20_Node000001_Node000020"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M931.1,-1427.56C922.17,-1418.36 912.53,-1408.44 903.43,-1399.08"/>
-<polygon fill="none" stroke="#63b8ff" points="928.61,-1430.02 938.09,-1434.75 933.63,-1425.14 928.61,-1430.02"/>
+<path fill="none" stroke="#63b8ff" d="M949.8,-1427.68C938.36,-1416.66 925.82,-1404.59 914.5,-1393.67"/>
+<polygon fill="none" stroke="#63b8ff" points="947.51,-1430.33 957.14,-1434.75 952.36,-1425.29 947.51,-1430.33"/>
 </a>
 </g>
 </g>
@@ -208,17 +206,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000021" class="node">
 <title>Node21</title>
 <g id="a_Node000021"><a xlink:href="structtracking_1_1motion_1_1contract_1_1StateMemIntf.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="1171.5,-1399 967.5,-1399 967.5,-1317 1171.5,-1317 1171.5,-1399"/>
-<text text-anchor="start" x="972.5" y="-1387" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::contract</text>
-<text text-anchor="start" x="972.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">::StateMemIntf&lt; StateMem</text>
-<text text-anchor="start" x="972.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; MotionModelTrait_::CovarianceMatrix</text>
-<text text-anchor="start" x="1027.5" y="-1354" font-family="Helvetica,sans-Serif" font-size="10.00">Policy, Size_ &gt; &gt;</text>
-<text text-anchor="start" x="1067.5" y="-1339" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="998.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1038.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">StateMemIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="967.5,-1349 967.5,-1349 1171.5,-1349 1171.5,-1349 967.5,-1349"/>
-<polygon fill="#666666" stroke="#666666" points="967.5,-1334 967.5,-1334 1171.5,-1334 1171.5,-1334 967.5,-1334"/>
-<polygon fill="none" stroke="#666666" points="967.5,-1317 967.5,-1399 1171.5,-1399 1171.5,-1317 967.5,-1317"/>
+<polygon fill="white" stroke="transparent" points="1199.5,-1399 995.5,-1399 995.5,-1317 1199.5,-1317 1199.5,-1399"/>
+<text text-anchor="start" x="1000.5" y="-1387" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::contract</text>
+<text text-anchor="start" x="1000.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">::StateMemIntf&lt; StateMem</text>
+<text text-anchor="start" x="1000.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; MotionModelTrait_::CovarianceMatrix</text>
+<text text-anchor="start" x="1055.5" y="-1354" font-family="Helvetica,sans-Serif" font-size="10.00">Policy, Size_ &gt; &gt;</text>
+<text text-anchor="start" x="1095.5" y="-1339" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="1026.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1066.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">StateMemIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="995.5,-1349 995.5,-1349 1199.5,-1349 1199.5,-1349 995.5,-1349"/>
+<polygon fill="#666666" stroke="#666666" points="995.5,-1334 995.5,-1334 1199.5,-1334 1199.5,-1334 995.5,-1334"/>
+<polygon fill="none" stroke="#666666" points="995.5,-1317 995.5,-1399 1199.5,-1399 1199.5,-1317 995.5,-1317"/>
 </a>
 </g>
 </g>
@@ -226,8 +224,8 @@ var sectionId = 'dynsection-0';
 <g id="edge21_Node000001_Node000021" class="edge">
 <title>Node1&#45;&gt;Node21</title>
 <g id="a_edge21_Node000001_Node000021"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1002.25,-1427.56C1011.27,-1418.36 1021,-1408.44 1030.19,-1399.08"/>
-<polygon fill="none" stroke="#63b8ff" points="999.7,-1425.16 995.19,-1434.75 1004.69,-1430.06 999.7,-1425.16"/>
+<path fill="none" stroke="#63b8ff" d="M1025.39,-1427.83C1035.1,-1418.56 1045.61,-1408.53 1055.51,-1399.08"/>
+<polygon fill="none" stroke="#63b8ff" points="1022.96,-1425.32 1018.14,-1434.75 1027.79,-1430.38 1022.96,-1425.32"/>
 </a>
 </g>
 </g>
@@ -235,17 +233,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000022" class="node">
 <title>Node22</title>
 <g id="a_Node000022"><a xlink:href="structtracking_1_1motion_1_1contract_1_1StateMemIntf.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="1335,-1399 1190,-1399 1190,-1317 1335,-1317 1335,-1399"/>
-<text text-anchor="start" x="1195.5" y="-1387" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::contract</text>
-<text text-anchor="start" x="1195.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">::StateMemIntf&lt; StateMem</text>
-<text text-anchor="start" x="1195.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixPolicy</text>
-<text text-anchor="start" x="1233" y="-1354" font-family="Helvetica,sans-Serif" font-size="10.00">_, Size_ &gt; &gt;</text>
-<text text-anchor="start" x="1261" y="-1339" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="1206.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1231.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">StateMemIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="1190.5,-1349 1190.5,-1349 1335.5,-1349 1335.5,-1349 1190.5,-1349"/>
-<polygon fill="#666666" stroke="#666666" points="1190.5,-1334 1190.5,-1334 1335.5,-1334 1335.5,-1334 1190.5,-1334"/>
-<polygon fill="none" stroke="#666666" points="1190,-1317 1190,-1399 1335,-1399 1335,-1317 1190,-1317"/>
+<polygon fill="white" stroke="transparent" points="1363,-1399 1218,-1399 1218,-1317 1363,-1317 1363,-1399"/>
+<text text-anchor="start" x="1223.5" y="-1387" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::contract</text>
+<text text-anchor="start" x="1223.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">::StateMemIntf&lt; StateMem</text>
+<text text-anchor="start" x="1223.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixPolicy</text>
+<text text-anchor="start" x="1261" y="-1354" font-family="Helvetica,sans-Serif" font-size="10.00">_, Size_ &gt; &gt;</text>
+<text text-anchor="start" x="1289" y="-1339" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="1234.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1259.5" y="-1324" font-family="Helvetica,sans-Serif" font-size="10.00">StateMemIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="1218.5,-1349 1218.5,-1349 1363.5,-1349 1363.5,-1349 1218.5,-1349"/>
+<polygon fill="#666666" stroke="#666666" points="1218.5,-1334 1218.5,-1334 1363.5,-1334 1363.5,-1334 1218.5,-1334"/>
+<polygon fill="none" stroke="#666666" points="1218,-1317 1218,-1399 1363,-1399 1363,-1317 1218,-1317"/>
 </a>
 </g>
 </g>
@@ -253,8 +251,8 @@ var sectionId = 'dynsection-0';
 <g id="edge22_Node000001_Node000022" class="edge">
 <title>Node1&#45;&gt;Node22</title>
 <g id="a_edge22_Node000001_Node000022"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1057.2,-1439.91C1095.7,-1428.8 1140.77,-1414.61 1180.5,-1399 1183.6,-1397.78 1186.74,-1396.5 1189.89,-1395.16"/>
-<polygon fill="none" stroke="#63b8ff" points="1056.21,-1436.55 1047.56,-1442.67 1058.14,-1443.28 1056.21,-1436.55"/>
+<path fill="none" stroke="#63b8ff" d="M1078.46,-1440.95C1118.81,-1429.78 1166.56,-1415.26 1208.5,-1399 1211.6,-1397.8 1214.75,-1396.52 1217.9,-1395.2"/>
+<polygon fill="none" stroke="#63b8ff" points="1077.35,-1437.63 1068.63,-1443.65 1079.2,-1444.38 1077.35,-1437.63"/>
 </a>
 </g>
 </g>
@@ -262,16 +260,16 @@ var sectionId = 'dynsection-0';
 <g id="Node000024" class="node">
 <title>Node24</title>
 <g id="a_Node000024"><a xlink:href="structtracking_1_1math_1_1contract_1_1CovarianceMatrixIntf.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="1485.5,-1393.5 1353.5,-1393.5 1353.5,-1322.5 1485.5,-1322.5 1485.5,-1393.5"/>
-<text text-anchor="start" x="1360.5" y="-1381" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
-<text text-anchor="start" x="1360.5" y="-1370" font-family="Helvetica,sans-Serif" font-size="10.00">::CovarianceMatrixIntf</text>
-<text text-anchor="start" x="1386" y="-1359" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ImplType &gt;</text>
-<text text-anchor="start" x="1417.5" y="-1344" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="1357.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1370.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">CovarianceMatrixIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="1353.5,-1354 1353.5,-1354 1485.5,-1354 1485.5,-1354 1353.5,-1354"/>
-<polygon fill="#666666" stroke="#666666" points="1353.5,-1339 1353.5,-1339 1485.5,-1339 1485.5,-1339 1353.5,-1339"/>
-<polygon fill="none" stroke="#666666" points="1353.5,-1322.5 1353.5,-1393.5 1485.5,-1393.5 1485.5,-1322.5 1353.5,-1322.5"/>
+<polygon fill="white" stroke="transparent" points="1513.5,-1393.5 1381.5,-1393.5 1381.5,-1322.5 1513.5,-1322.5 1513.5,-1393.5"/>
+<text text-anchor="start" x="1388.5" y="-1381" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
+<text text-anchor="start" x="1388.5" y="-1370" font-family="Helvetica,sans-Serif" font-size="10.00">::CovarianceMatrixIntf</text>
+<text text-anchor="start" x="1414" y="-1359" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ImplType &gt;</text>
+<text text-anchor="start" x="1445.5" y="-1344" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="1385.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1398.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">CovarianceMatrixIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="1381.5,-1354 1381.5,-1354 1513.5,-1354 1513.5,-1354 1381.5,-1354"/>
+<polygon fill="#666666" stroke="#666666" points="1381.5,-1339 1381.5,-1339 1513.5,-1339 1513.5,-1339 1381.5,-1339"/>
+<polygon fill="none" stroke="#666666" points="1381.5,-1322.5 1381.5,-1393.5 1513.5,-1393.5 1513.5,-1322.5 1381.5,-1322.5"/>
 </a>
 </g>
 </g>
@@ -279,8 +277,8 @@ var sectionId = 'dynsection-0';
 <g id="edge24_Node000001_Node000024" class="edge">
 <title>Node1&#45;&gt;Node24</title>
 <g id="a_edge24_Node000001_Node000024"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1057.97,-1456.33C1135.57,-1447.92 1249.01,-1431.11 1343.5,-1399 1348.16,-1397.42 1352.88,-1395.58 1357.57,-1393.57"/>
-<polygon fill="none" stroke="#63b8ff" points="1057.32,-1452.88 1047.74,-1457.41 1058.05,-1459.84 1057.32,-1452.88"/>
+<path fill="none" stroke="#63b8ff" d="M1079.16,-1456.71C1158.24,-1448.49 1274.65,-1431.75 1371.5,-1399 1376.16,-1397.42 1380.88,-1395.59 1385.57,-1393.59"/>
+<polygon fill="none" stroke="#63b8ff" points="1078.34,-1453.27 1068.74,-1457.76 1079.05,-1460.24 1078.34,-1453.27"/>
 </a>
 </g>
 </g>
@@ -288,16 +286,15 @@ var sectionId = 'dynsection-0';
 <g id="Node000025" class="node">
 <title>Node25</title>
 <g id="a_Node000025"><a xlink:href="structtracking_1_1math_1_1contract_1_1MatrixIntf.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="1631.5,-1393.5 1503.5,-1393.5 1503.5,-1322.5 1631.5,-1322.5 1631.5,-1393.5"/>
-<text text-anchor="start" x="1508.5" y="-1381" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
-<text text-anchor="start" x="1508.5" y="-1370" font-family="Helvetica,sans-Serif" font-size="10.00">::MatrixIntf&lt; ImplType,</text>
-<text text-anchor="start" x="1532.5" y="-1359" font-family="Helvetica,sans-Serif" font-size="10.00"> ClassName &gt;</text>
-<text text-anchor="start" x="1565.5" y="-1344" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="1520" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1545.5" y="-1329" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="1503.5,-1354 1503.5,-1354 1631.5,-1354 1631.5,-1354 1503.5,-1354"/>
-<polygon fill="#666666" stroke="#666666" points="1503.5,-1339 1503.5,-1339 1631.5,-1339 1631.5,-1339 1503.5,-1339"/>
-<polygon fill="none" stroke="#666666" points="1503.5,-1322.5 1503.5,-1393.5 1631.5,-1393.5 1631.5,-1322.5 1503.5,-1322.5"/>
+<polygon fill="white" stroke="transparent" points="1663,-1388 1532,-1388 1532,-1328 1663,-1328 1663,-1388"/>
+<text text-anchor="start" x="1537.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::contract</text>
+<text text-anchor="start" x="1537.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">::MatrixIntf&lt; ImplType &gt;</text>
+<text text-anchor="start" x="1596" y="-1350" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="1550" y="-1335" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1576.5" y="-1335" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="1532.5,-1360 1532.5,-1360 1663.5,-1360 1663.5,-1360 1532.5,-1360"/>
+<polygon fill="#666666" stroke="#666666" points="1532.5,-1345 1532.5,-1345 1663.5,-1345 1663.5,-1345 1532.5,-1345"/>
+<polygon fill="none" stroke="#666666" points="1532,-1328 1532,-1388 1663,-1388 1663,-1328 1532,-1328"/>
 </a>
 </g>
 </g>
@@ -305,8 +302,8 @@ var sectionId = 'dynsection-0';
 <g id="edge25_Node000001_Node000025" class="edge">
 <title>Node1&#45;&gt;Node25</title>
 <g id="a_edge25_Node000001_Node000025"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1057.82,-1463.14C1164.89,-1459.78 1346.54,-1446.7 1494.5,-1399 1499.18,-1397.49 1503.9,-1395.68 1508.57,-1393.67"/>
-<polygon fill="none" stroke="#63b8ff" points="1057.58,-1459.64 1047.69,-1463.43 1057.79,-1466.64 1057.58,-1459.64"/>
+<path fill="none" stroke="#63b8ff" d="M1078.99,-1463.04C1187.27,-1459.62 1371.87,-1446.49 1522.5,-1399 1531.37,-1396.2 1540.41,-1392.36 1549.01,-1388.16"/>
+<polygon fill="none" stroke="#63b8ff" points="1078.65,-1459.55 1068.76,-1463.35 1078.86,-1466.55 1078.65,-1459.55"/>
 </a>
 </g>
 </g>
@@ -314,15 +311,15 @@ var sectionId = 'dynsection-0';
 <g id="Node000031" class="node">
 <title>Node31</title>
 <g id="a_Node000031"><a xlink:href="structtracking_1_1motion_1_1contract_1_1StateMemIntf.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="1830.5,-1388 1680.5,-1388 1680.5,-1328 1830.5,-1328 1830.5,-1388"/>
-<text text-anchor="start" x="1685.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::contract</text>
-<text text-anchor="start" x="1685.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">::StateMemIntf&lt; ImplType &gt;</text>
-<text text-anchor="start" x="1753.5" y="-1350" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="1698" y="-1335" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1724.5" y="-1335" font-family="Helvetica,sans-Serif" font-size="10.00">StateMemIntf()</text>
-<polygon fill="#666666" stroke="#666666" points="1680.5,-1360 1680.5,-1360 1830.5,-1360 1830.5,-1360 1680.5,-1360"/>
-<polygon fill="#666666" stroke="#666666" points="1680.5,-1345 1680.5,-1345 1830.5,-1345 1830.5,-1345 1680.5,-1345"/>
-<polygon fill="none" stroke="#666666" points="1680.5,-1328 1680.5,-1388 1830.5,-1388 1830.5,-1328 1680.5,-1328"/>
+<polygon fill="white" stroke="transparent" points="2033.5,-1388 1883.5,-1388 1883.5,-1328 2033.5,-1328 2033.5,-1388"/>
+<text text-anchor="start" x="1888.5" y="-1376" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::contract</text>
+<text text-anchor="start" x="1888.5" y="-1365" font-family="Helvetica,sans-Serif" font-size="10.00">::StateMemIntf&lt; ImplType &gt;</text>
+<text text-anchor="start" x="1956.5" y="-1350" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="1901" y="-1335" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1927.5" y="-1335" font-family="Helvetica,sans-Serif" font-size="10.00">StateMemIntf()</text>
+<polygon fill="#666666" stroke="#666666" points="1883.5,-1360 1883.5,-1360 2033.5,-1360 2033.5,-1360 1883.5,-1360"/>
+<polygon fill="#666666" stroke="#666666" points="1883.5,-1345 1883.5,-1345 2033.5,-1345 2033.5,-1345 1883.5,-1345"/>
+<polygon fill="none" stroke="#666666" points="1883.5,-1328 1883.5,-1388 2033.5,-1388 2033.5,-1328 1883.5,-1328"/>
 </a>
 </g>
 </g>
@@ -330,8 +327,8 @@ var sectionId = 'dynsection-0';
 <g id="edge31_Node000001_Node000031" class="edge">
 <title>Node1&#45;&gt;Node31</title>
 <g id="a_edge31_Node000001_Node000031"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1057.96,-1462.07C1188.59,-1457.77 1435.47,-1443.87 1640.5,-1399 1653.61,-1396.13 1667.3,-1392.22 1680.46,-1387.97"/>
-<polygon fill="none" stroke="#63b8ff" points="1057.49,-1458.59 1047.61,-1462.4 1057.72,-1465.58 1057.49,-1458.59"/>
+<path fill="none" stroke="#63b8ff" d="M1078.71,-1456.61C1209.96,-1445.68 1459.62,-1423.82 1671.5,-1399 1743.58,-1390.56 1825.55,-1378.93 1883.38,-1370.39"/>
+<polygon fill="none" stroke="#63b8ff" points="1078.37,-1453.13 1068.7,-1457.44 1078.95,-1460.1 1078.37,-1453.13"/>
 </a>
 </g>
 </g>
@@ -387,8 +384,8 @@ var sectionId = 'dynsection-0';
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node2&#45;&gt;Node3</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M127.05,-1306.88C122.32,-1281.75 116.31,-1249.87 110.25,-1217.73"/>
-<polygon fill="none" stroke="#63b8ff" points="123.64,-1307.68 128.93,-1316.86 130.52,-1306.39 123.64,-1307.68"/>
+<path fill="none" stroke="#63b8ff" d="M125.4,-1306.88C120.84,-1281.75 115.06,-1249.87 109.22,-1217.73"/>
+<polygon fill="none" stroke="#63b8ff" points="121.99,-1307.65 127.21,-1316.86 128.87,-1306.4 121.99,-1307.65"/>
 </a>
 </g>
 </g>
@@ -513,8 +510,8 @@ var sectionId = 'dynsection-0';
 <g id="edge6_Node000006_Node000007" class="edge">
 <title>Node6&#45;&gt;Node7</title>
 <g id="a_edge6_Node000006_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M473.21,-1307.06C470.91,-1299.02 468.41,-1290.28 465.77,-1281.07"/>
-<polygon fill="none" stroke="#63b8ff" points="469.9,-1308.21 476.01,-1316.86 476.63,-1306.28 469.9,-1308.21"/>
+<path fill="none" stroke="#63b8ff" d="M474.79,-1312.59C472.07,-1303.08 469.02,-1292.44 465.77,-1281.07"/>
+<polygon fill="none" stroke="#63b8ff" points="471.49,-1313.79 477.61,-1322.44 478.22,-1311.86 471.49,-1313.79"/>
 </a>
 </g>
 </g>
@@ -586,8 +583,8 @@ var sectionId = 'dynsection-0';
 <g id="edge11_Node000006_Node000011" class="edge">
 <title>Node6&#45;&gt;Node11</title>
 <g id="a_edge11_Node000006_Node000011"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M501.27,-1307.06C503.49,-1299.02 505.9,-1290.28 508.44,-1281.07"/>
-<polygon fill="none" stroke="#63b8ff" points="497.85,-1306.29 498.57,-1316.86 504.6,-1308.15 497.85,-1306.29"/>
+<path fill="none" stroke="#63b8ff" d="M499.75,-1312.59C502.37,-1303.08 505.3,-1292.44 508.44,-1281.07"/>
+<polygon fill="none" stroke="#63b8ff" points="496.31,-1311.87 497.03,-1322.44 503.06,-1313.73 496.31,-1311.87"/>
 </a>
 </g>
 </g>
@@ -659,8 +656,8 @@ var sectionId = 'dynsection-0';
 <g id="edge17_Node000006_Node000017" class="edge">
 <title>Node6&#45;&gt;Node17</title>
 <g id="a_edge17_Node000006_Node000017"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M580.84,-1315.23C611.47,-1300.87 639.11,-1286.91 644.5,-1281 647.79,-1277.4 650.94,-1273.64 653.97,-1269.76"/>
-<polygon fill="none" stroke="#63b8ff" points="579.28,-1312.1 571.7,-1319.49 582.24,-1318.44 579.28,-1312.1"/>
+<path fill="none" stroke="#63b8ff" d="M574.84,-1318.03C607.78,-1302.71 638.76,-1287.29 644.5,-1281 647.79,-1277.4 650.94,-1273.64 653.97,-1269.76"/>
+<polygon fill="none" stroke="#63b8ff" points="573.12,-1314.97 565.52,-1322.35 576.06,-1321.33 573.12,-1314.97"/>
 </a>
 </g>
 </g>
@@ -732,8 +729,8 @@ var sectionId = 'dynsection-0';
 <g id="edge18_Node000006_Node000018" class="edge">
 <title>Node6&#45;&gt;Node18</title>
 <g id="a_edge18_Node000006_Node000018"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M581.5,-1317.07C679.18,-1292.54 726.89,-1341.9 801.5,-1281 804.68,-1278.4 807.73,-1275.67 810.67,-1272.81"/>
-<polygon fill="none" stroke="#63b8ff" points="580.3,-1313.77 571.57,-1319.78 582.14,-1320.53 580.3,-1313.77"/>
+<path fill="none" stroke="#63b8ff" d="M576.7,-1319.34C579.32,-1318.52 581.92,-1317.74 584.5,-1317 678.52,-1290.19 725.85,-1342.93 801.5,-1281 804.68,-1278.4 807.73,-1275.66 810.66,-1272.79"/>
+<polygon fill="none" stroke="#63b8ff" points="575.59,-1316.02 567.19,-1322.48 577.78,-1322.67 575.59,-1316.02"/>
 </a>
 </g>
 </g>
@@ -1174,50 +1171,50 @@ var sectionId = 'dynsection-0';
 <g id="Node000023" class="node">
 <title>Node23</title>
 <g id="a_Node000023"><a xlink:href="classtracking_1_1motion_1_1StateMem.html" target="_top" xlink:title="StateMem class to represent a state vector with its uncertainty described by the state covariance mat...">
-<polygon fill="white" stroke="transparent" points="1329,-1225 1182,-1225 1182,-914 1329,-914 1329,-1225"/>
-<text text-anchor="start" x="1187.5" y="-1212.5" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::StateMem</text>
-<text text-anchor="start" x="1187.5" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixPolicy</text>
-<text text-anchor="start" x="1231.5" y="-1190.5" font-family="Helvetica,sans-Serif" font-size="10.00">_, Size_ &gt;</text>
-<text text-anchor="start" x="1192" y="-1175.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1205.5" y="-1175.5" font-family="Helvetica,sans-Serif" font-size="10.00">_vec</text>
-<text text-anchor="start" x="1192" y="-1160.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1205.5" y="-1160.5" font-family="Helvetica,sans-Serif" font-size="10.00">_cov</text>
-<text text-anchor="start" x="1189.5" y="-1145.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1145.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
-<text text-anchor="start" x="1189.5" y="-1130.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1130.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
-<text text-anchor="start" x="1189.5" y="-1115.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1115.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
-<text text-anchor="start" x="1189.5" y="-1100.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1100.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1189.5" y="-1085.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1085.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1189.5" y="-1070.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1070.5" font-family="Helvetica,sans-Serif" font-size="10.00">~StateMem()</text>
-<text text-anchor="start" x="1189.5" y="-1055.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1055.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVec()</text>
-<text text-anchor="start" x="1189.5" y="-1040.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1040.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVecForInternalUse()</text>
-<text text-anchor="start" x="1189.5" y="-1025.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1025.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCov()</text>
-<text text-anchor="start" x="1189.5" y="-1010.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-1010.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCovForInternalUse()</text>
-<text text-anchor="start" x="1189.5" y="-995.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-995.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
-<text text-anchor="start" x="1189.5" y="-980.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1205.5" y="-980.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
-<text text-anchor="start" x="1189.5" y="-965.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1205.5" y="-965.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
-<text text-anchor="start" x="1189.5" y="-950.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1205.5" y="-950.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVec()</text>
-<text text-anchor="start" x="1189.5" y="-935.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1205.5" y="-935.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCov()</text>
-<text text-anchor="start" x="1189.5" y="-920.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1205.5" y="-920.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
-<polygon fill="#666666" stroke="#666666" points="1182.5,-1185.5 1182.5,-1185.5 1329.5,-1185.5 1329.5,-1185.5 1182.5,-1185.5"/>
-<polygon fill="#666666" stroke="#666666" points="1182.5,-1155.5 1182.5,-1155.5 1203.5,-1155.5 1203.5,-1155.5 1182.5,-1155.5"/>
-<polygon fill="#666666" stroke="#666666" points="1203.5,-1155.5 1203.5,-1155.5 1329.5,-1155.5 1329.5,-1155.5 1203.5,-1155.5"/>
-<polygon fill="none" stroke="#666666" points="1182,-914 1182,-1225 1329,-1225 1329,-914 1182,-914"/>
+<polygon fill="white" stroke="transparent" points="1358,-1225 1211,-1225 1211,-914 1358,-914 1358,-1225"/>
+<text text-anchor="start" x="1216.5" y="-1212.5" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::StateMem</text>
+<text text-anchor="start" x="1216.5" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixPolicy</text>
+<text text-anchor="start" x="1260.5" y="-1190.5" font-family="Helvetica,sans-Serif" font-size="10.00">_, Size_ &gt;</text>
+<text text-anchor="start" x="1221" y="-1175.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1234.5" y="-1175.5" font-family="Helvetica,sans-Serif" font-size="10.00">_vec</text>
+<text text-anchor="start" x="1221" y="-1160.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1234.5" y="-1160.5" font-family="Helvetica,sans-Serif" font-size="10.00">_cov</text>
+<text text-anchor="start" x="1218.5" y="-1145.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1145.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
+<text text-anchor="start" x="1218.5" y="-1130.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1130.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
+<text text-anchor="start" x="1218.5" y="-1115.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1115.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
+<text text-anchor="start" x="1218.5" y="-1100.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1100.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1218.5" y="-1085.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1085.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1218.5" y="-1070.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1070.5" font-family="Helvetica,sans-Serif" font-size="10.00">~StateMem()</text>
+<text text-anchor="start" x="1218.5" y="-1055.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1055.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVec()</text>
+<text text-anchor="start" x="1218.5" y="-1040.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1040.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVecForInternalUse()</text>
+<text text-anchor="start" x="1218.5" y="-1025.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1025.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCov()</text>
+<text text-anchor="start" x="1218.5" y="-1010.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-1010.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCovForInternalUse()</text>
+<text text-anchor="start" x="1218.5" y="-995.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-995.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
+<text text-anchor="start" x="1218.5" y="-980.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1234.5" y="-980.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
+<text text-anchor="start" x="1218.5" y="-965.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1234.5" y="-965.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
+<text text-anchor="start" x="1218.5" y="-950.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1234.5" y="-950.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVec()</text>
+<text text-anchor="start" x="1218.5" y="-935.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1234.5" y="-935.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCov()</text>
+<text text-anchor="start" x="1218.5" y="-920.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1234.5" y="-920.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
+<polygon fill="#666666" stroke="#666666" points="1211.5,-1185.5 1211.5,-1185.5 1358.5,-1185.5 1358.5,-1185.5 1211.5,-1185.5"/>
+<polygon fill="#666666" stroke="#666666" points="1211.5,-1155.5 1211.5,-1155.5 1232.5,-1155.5 1232.5,-1155.5 1211.5,-1155.5"/>
+<polygon fill="#666666" stroke="#666666" points="1232.5,-1155.5 1232.5,-1155.5 1358.5,-1155.5 1358.5,-1155.5 1232.5,-1155.5"/>
+<polygon fill="none" stroke="#666666" points="1211,-914 1211,-1225 1358,-1225 1358,-914 1211,-914"/>
 </a>
 </g>
 </g>
@@ -1225,8 +1222,8 @@ var sectionId = 'dynsection-0';
 <g id="edge23_Node000022_Node000023" class="edge">
 <title>Node22&#45;&gt;Node23</title>
 <g id="a_edge23_Node000022_Node000023"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1261.27,-1306.64C1260.7,-1283.47 1260,-1254.61 1259.28,-1225.1"/>
-<polygon fill="none" stroke="#63b8ff" points="1257.78,-1306.95 1261.52,-1316.86 1264.77,-1306.78 1257.78,-1306.95"/>
+<path fill="none" stroke="#63b8ff" d="M1289.45,-1306.64C1288.96,-1283.47 1288.36,-1254.61 1287.74,-1225.1"/>
+<polygon fill="none" stroke="#63b8ff" points="1285.95,-1306.94 1289.66,-1316.86 1292.95,-1306.79 1285.95,-1306.94"/>
 </a>
 </g>
 </g>
@@ -1234,63 +1231,63 @@ var sectionId = 'dynsection-0';
 <g id="Node000026" class="node">
 <title>Node26</title>
 <g id="a_Node000026"><a xlink:href="classtracking_1_1math_1_1Matrix.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="1486,-1281 1347,-1281 1347,-858 1486,-858 1486,-1281"/>
-<text text-anchor="start" x="1361" y="-1268.5" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Matrix</text>
-<text text-anchor="start" x="1361" y="-1257.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; value_type, Size_, 1,</text>
-<text text-anchor="start" x="1400" y="-1246.5" font-family="Helvetica,sans-Serif" font-size="10.00"> true &gt;</text>
-<text text-anchor="start" x="1351.5" y="-1231.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1231.5" font-family="Helvetica,sans-Serif" font-size="10.00">Rows</text>
-<text text-anchor="start" x="1351.5" y="-1216.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1216.5" font-family="Helvetica,sans-Serif" font-size="10.00">Cols</text>
-<text text-anchor="start" x="1351.5" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsRowMajor</text>
-<text text-anchor="start" x="1351.5" y="-1186.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1364.5" y="-1186.5" font-family="Helvetica,sans-Serif" font-size="10.00">RowsInMem</text>
-<text text-anchor="start" x="1351.5" y="-1171.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1364.5" y="-1171.5" font-family="Helvetica,sans-Serif" font-size="10.00">ColsInMem</text>
-<text text-anchor="start" x="1354" y="-1156.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1364.5" y="-1156.5" font-family="Helvetica,sans-Serif" font-size="10.00">_data</text>
-<text text-anchor="start" x="1351.5" y="-1141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1141.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
-<text text-anchor="start" x="1351.5" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
-<text text-anchor="start" x="1351.5" y="-1111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
-<text text-anchor="start" x="1351.5" y="-1096.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1096.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1351.5" y="-1081.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1081.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1351.5" y="-1066.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1066.5" font-family="Helvetica,sans-Serif" font-size="10.00">~Matrix()</text>
-<text text-anchor="start" x="1351.5" y="-1051.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1051.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
-<text text-anchor="start" x="1351.5" y="-1036.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1036.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
-<text text-anchor="start" x="1351.5" y="-1021.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1021.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator==()</text>
-<text text-anchor="start" x="1351.5" y="-1006.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-1006.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator!=()</text>
-<text text-anchor="start" x="1364.5" y="-991.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 27 more...</text>
-<text text-anchor="start" x="1351.5" y="-976.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-976.5" font-family="Helvetica,sans-Serif" font-size="10.00">Zeros()</text>
-<text text-anchor="start" x="1351.5" y="-961.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-961.5" font-family="Helvetica,sans-Serif" font-size="10.00">Ones()</text>
-<text text-anchor="start" x="1351.5" y="-946.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1364.5" y="-946.5" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
-<text text-anchor="start" x="1351.5" y="-931.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1364.5" y="-931.5" font-family="Helvetica,sans-Serif" font-size="10.00">data()</text>
-<text text-anchor="start" x="1351.5" y="-916.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1364.5" y="-916.5" font-family="Helvetica,sans-Serif" font-size="10.00">data()</text>
-<text text-anchor="start" x="1354" y="-901.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1364.5" y="-901.5" font-family="Helvetica,sans-Serif" font-size="10.00">inplace_div_by_int</text>
-<text text-anchor="start" x="1364.5" y="-890.5" font-family="Helvetica,sans-Serif" font-size="10.00">_unsafe()</text>
-<text text-anchor="start" x="1354" y="-875.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1364.5" y="-875.5" font-family="Helvetica,sans-Serif" font-size="10.00">inplace_mul_by_inverse</text>
-<text text-anchor="start" x="1364.5" y="-864.5" font-family="Helvetica,sans-Serif" font-size="10.00">_factor_unsafe()</text>
-<polygon fill="#666666" stroke="#666666" points="1347.5,-1241.5 1347.5,-1241.5 1486.5,-1241.5 1486.5,-1241.5 1347.5,-1241.5"/>
-<polygon fill="#666666" stroke="#666666" points="1347.5,-1151.5 1347.5,-1151.5 1362.5,-1151.5 1362.5,-1151.5 1347.5,-1151.5"/>
-<polygon fill="#666666" stroke="#666666" points="1362.5,-1151.5 1362.5,-1151.5 1486.5,-1151.5 1486.5,-1151.5 1362.5,-1151.5"/>
-<polygon fill="none" stroke="#666666" points="1347,-858 1347,-1281 1486,-1281 1486,-858 1347,-858"/>
+<polygon fill="white" stroke="transparent" points="1515,-1281 1376,-1281 1376,-858 1515,-858 1515,-1281"/>
+<text text-anchor="start" x="1390" y="-1268.5" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Matrix</text>
+<text text-anchor="start" x="1390" y="-1257.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; value_type, Size_, 1,</text>
+<text text-anchor="start" x="1429" y="-1246.5" font-family="Helvetica,sans-Serif" font-size="10.00"> true &gt;</text>
+<text text-anchor="start" x="1380.5" y="-1231.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1231.5" font-family="Helvetica,sans-Serif" font-size="10.00">Rows</text>
+<text text-anchor="start" x="1380.5" y="-1216.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1216.5" font-family="Helvetica,sans-Serif" font-size="10.00">Cols</text>
+<text text-anchor="start" x="1380.5" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsRowMajor</text>
+<text text-anchor="start" x="1380.5" y="-1186.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1393.5" y="-1186.5" font-family="Helvetica,sans-Serif" font-size="10.00">RowsInMem</text>
+<text text-anchor="start" x="1380.5" y="-1171.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1393.5" y="-1171.5" font-family="Helvetica,sans-Serif" font-size="10.00">ColsInMem</text>
+<text text-anchor="start" x="1383" y="-1156.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1393.5" y="-1156.5" font-family="Helvetica,sans-Serif" font-size="10.00">_data</text>
+<text text-anchor="start" x="1380.5" y="-1141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1141.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
+<text text-anchor="start" x="1380.5" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
+<text text-anchor="start" x="1380.5" y="-1111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
+<text text-anchor="start" x="1380.5" y="-1096.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1096.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1380.5" y="-1081.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1081.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1380.5" y="-1066.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1066.5" font-family="Helvetica,sans-Serif" font-size="10.00">~Matrix()</text>
+<text text-anchor="start" x="1380.5" y="-1051.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1051.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
+<text text-anchor="start" x="1380.5" y="-1036.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1036.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
+<text text-anchor="start" x="1380.5" y="-1021.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1021.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator==()</text>
+<text text-anchor="start" x="1380.5" y="-1006.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-1006.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator!=()</text>
+<text text-anchor="start" x="1393.5" y="-991.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 27 more...</text>
+<text text-anchor="start" x="1380.5" y="-976.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-976.5" font-family="Helvetica,sans-Serif" font-size="10.00">Zeros()</text>
+<text text-anchor="start" x="1380.5" y="-961.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-961.5" font-family="Helvetica,sans-Serif" font-size="10.00">Ones()</text>
+<text text-anchor="start" x="1380.5" y="-946.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1393.5" y="-946.5" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
+<text text-anchor="start" x="1380.5" y="-931.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1393.5" y="-931.5" font-family="Helvetica,sans-Serif" font-size="10.00">data()</text>
+<text text-anchor="start" x="1380.5" y="-916.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1393.5" y="-916.5" font-family="Helvetica,sans-Serif" font-size="10.00">data()</text>
+<text text-anchor="start" x="1383" y="-901.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1393.5" y="-901.5" font-family="Helvetica,sans-Serif" font-size="10.00">inplace_div_by_int</text>
+<text text-anchor="start" x="1393.5" y="-890.5" font-family="Helvetica,sans-Serif" font-size="10.00">_unsafe()</text>
+<text text-anchor="start" x="1383" y="-875.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1393.5" y="-875.5" font-family="Helvetica,sans-Serif" font-size="10.00">inplace_mul_by_inverse</text>
+<text text-anchor="start" x="1393.5" y="-864.5" font-family="Helvetica,sans-Serif" font-size="10.00">_factor_unsafe()</text>
+<polygon fill="#666666" stroke="#666666" points="1376.5,-1241.5 1376.5,-1241.5 1515.5,-1241.5 1515.5,-1241.5 1376.5,-1241.5"/>
+<polygon fill="#666666" stroke="#666666" points="1376.5,-1151.5 1376.5,-1151.5 1391.5,-1151.5 1391.5,-1151.5 1376.5,-1151.5"/>
+<polygon fill="#666666" stroke="#666666" points="1391.5,-1151.5 1391.5,-1151.5 1515.5,-1151.5 1515.5,-1151.5 1391.5,-1151.5"/>
+<polygon fill="none" stroke="#666666" points="1376,-858 1376,-1281 1515,-1281 1515,-858 1376,-858"/>
 </a>
 </g>
 </g>
@@ -1298,8 +1295,8 @@ var sectionId = 'dynsection-0';
 <g id="edge26_Node000025_Node000026" class="edge">
 <title>Node25&#45;&gt;Node26</title>
 <g id="a_edge26_Node000025_Node000026"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1521.41,-1315.1C1511.63,-1304.64 1502.01,-1292.97 1494.5,-1281 1491.6,-1276.38 1488.79,-1271.63 1486.06,-1266.79"/>
-<polygon fill="none" stroke="#63b8ff" points="1519.07,-1317.71 1528.53,-1322.48 1524.11,-1312.86 1519.07,-1317.71"/>
+<path fill="none" stroke="#63b8ff" d="M1556.1,-1320.68C1544.41,-1308.89 1532.46,-1295.18 1523.5,-1281 1520.59,-1276.39 1517.76,-1271.65 1515.01,-1266.81"/>
+<polygon fill="none" stroke="#63b8ff" points="1553.71,-1323.24 1563.3,-1327.75 1558.62,-1318.25 1553.71,-1323.24"/>
 </a>
 </g>
 </g>
@@ -1307,63 +1304,63 @@ var sectionId = 'dynsection-0';
 <g id="Node000027" class="node">
 <title>Node27</title>
 <g id="a_Node000027"><a xlink:href="classtracking_1_1math_1_1Matrix.html" target="_top" xlink:title="Compliant to AUTOSAR C++14, A8&#45;4&#45;8: Output parameters shall not be used, making use of RVO and NRVO.">
-<polygon fill="white" stroke="transparent" points="1645,-1281 1504,-1281 1504,-858 1645,-858 1645,-1281"/>
-<text text-anchor="start" x="1509.5" y="-1268.5" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Matrix</text>
-<text text-anchor="start" x="1509.5" y="-1257.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ValueType_, Rows_, Cols</text>
-<text text-anchor="start" x="1532.5" y="-1246.5" font-family="Helvetica,sans-Serif" font-size="10.00">_, IsRowMajor_ &gt;</text>
-<text text-anchor="start" x="1509" y="-1231.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1231.5" font-family="Helvetica,sans-Serif" font-size="10.00">Rows</text>
-<text text-anchor="start" x="1509" y="-1216.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1216.5" font-family="Helvetica,sans-Serif" font-size="10.00">Cols</text>
-<text text-anchor="start" x="1509" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsRowMajor</text>
-<text text-anchor="start" x="1509" y="-1186.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1522.5" y="-1186.5" font-family="Helvetica,sans-Serif" font-size="10.00">RowsInMem</text>
-<text text-anchor="start" x="1509" y="-1171.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1522.5" y="-1171.5" font-family="Helvetica,sans-Serif" font-size="10.00">ColsInMem</text>
-<text text-anchor="start" x="1511.5" y="-1156.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1522.5" y="-1156.5" font-family="Helvetica,sans-Serif" font-size="10.00">_data</text>
-<text text-anchor="start" x="1509" y="-1141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1141.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
-<text text-anchor="start" x="1509" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
-<text text-anchor="start" x="1509" y="-1111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
-<text text-anchor="start" x="1509" y="-1096.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1096.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1509" y="-1081.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1081.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1509" y="-1066.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1066.5" font-family="Helvetica,sans-Serif" font-size="10.00">~Matrix()</text>
-<text text-anchor="start" x="1509" y="-1051.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1051.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
-<text text-anchor="start" x="1509" y="-1036.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1036.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
-<text text-anchor="start" x="1509" y="-1021.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1021.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator==()</text>
-<text text-anchor="start" x="1509" y="-1006.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-1006.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator!=()</text>
-<text text-anchor="start" x="1522.5" y="-991.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 27 more...</text>
-<text text-anchor="start" x="1509" y="-976.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-976.5" font-family="Helvetica,sans-Serif" font-size="10.00">Zeros()</text>
-<text text-anchor="start" x="1509" y="-961.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-961.5" font-family="Helvetica,sans-Serif" font-size="10.00">Ones()</text>
-<text text-anchor="start" x="1509" y="-946.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1522.5" y="-946.5" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
-<text text-anchor="start" x="1509" y="-931.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1522.5" y="-931.5" font-family="Helvetica,sans-Serif" font-size="10.00">data()</text>
-<text text-anchor="start" x="1509" y="-916.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1522.5" y="-916.5" font-family="Helvetica,sans-Serif" font-size="10.00">data()</text>
-<text text-anchor="start" x="1511.5" y="-901.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1522.5" y="-901.5" font-family="Helvetica,sans-Serif" font-size="10.00">inplace_div_by_int</text>
-<text text-anchor="start" x="1522.5" y="-890.5" font-family="Helvetica,sans-Serif" font-size="10.00">_unsafe()</text>
-<text text-anchor="start" x="1511.5" y="-875.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1522.5" y="-875.5" font-family="Helvetica,sans-Serif" font-size="10.00">inplace_mul_by_inverse</text>
-<text text-anchor="start" x="1522.5" y="-864.5" font-family="Helvetica,sans-Serif" font-size="10.00">_factor_unsafe()</text>
-<polygon fill="#666666" stroke="#666666" points="1504.5,-1241.5 1504.5,-1241.5 1645.5,-1241.5 1645.5,-1241.5 1504.5,-1241.5"/>
-<polygon fill="#666666" stroke="#666666" points="1504.5,-1151.5 1504.5,-1151.5 1520.5,-1151.5 1520.5,-1151.5 1504.5,-1151.5"/>
-<polygon fill="#666666" stroke="#666666" points="1520.5,-1151.5 1520.5,-1151.5 1645.5,-1151.5 1645.5,-1151.5 1520.5,-1151.5"/>
-<polygon fill="none" stroke="#666666" points="1504,-858 1504,-1281 1645,-1281 1645,-858 1504,-858"/>
+<polygon fill="white" stroke="transparent" points="1674,-1281 1533,-1281 1533,-858 1674,-858 1674,-1281"/>
+<text text-anchor="start" x="1538.5" y="-1268.5" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Matrix</text>
+<text text-anchor="start" x="1538.5" y="-1257.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ValueType_, Rows_, Cols</text>
+<text text-anchor="start" x="1561.5" y="-1246.5" font-family="Helvetica,sans-Serif" font-size="10.00">_, IsRowMajor_ &gt;</text>
+<text text-anchor="start" x="1538" y="-1231.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1231.5" font-family="Helvetica,sans-Serif" font-size="10.00">Rows</text>
+<text text-anchor="start" x="1538" y="-1216.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1216.5" font-family="Helvetica,sans-Serif" font-size="10.00">Cols</text>
+<text text-anchor="start" x="1538" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1201.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsRowMajor</text>
+<text text-anchor="start" x="1538" y="-1186.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1551.5" y="-1186.5" font-family="Helvetica,sans-Serif" font-size="10.00">RowsInMem</text>
+<text text-anchor="start" x="1538" y="-1171.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1551.5" y="-1171.5" font-family="Helvetica,sans-Serif" font-size="10.00">ColsInMem</text>
+<text text-anchor="start" x="1540.5" y="-1156.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1551.5" y="-1156.5" font-family="Helvetica,sans-Serif" font-size="10.00">_data</text>
+<text text-anchor="start" x="1538" y="-1141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1141.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
+<text text-anchor="start" x="1538" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
+<text text-anchor="start" x="1538" y="-1111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Matrix()</text>
+<text text-anchor="start" x="1538" y="-1096.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1096.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1538" y="-1081.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1081.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1538" y="-1066.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1066.5" font-family="Helvetica,sans-Serif" font-size="10.00">~Matrix()</text>
+<text text-anchor="start" x="1538" y="-1051.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1051.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
+<text text-anchor="start" x="1538" y="-1036.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1036.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
+<text text-anchor="start" x="1538" y="-1021.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1021.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator==()</text>
+<text text-anchor="start" x="1538" y="-1006.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-1006.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator!=()</text>
+<text text-anchor="start" x="1551.5" y="-991.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 27 more...</text>
+<text text-anchor="start" x="1538" y="-976.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-976.5" font-family="Helvetica,sans-Serif" font-size="10.00">Zeros()</text>
+<text text-anchor="start" x="1538" y="-961.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-961.5" font-family="Helvetica,sans-Serif" font-size="10.00">Ones()</text>
+<text text-anchor="start" x="1538" y="-946.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1551.5" y="-946.5" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
+<text text-anchor="start" x="1538" y="-931.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1551.5" y="-931.5" font-family="Helvetica,sans-Serif" font-size="10.00">data()</text>
+<text text-anchor="start" x="1538" y="-916.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1551.5" y="-916.5" font-family="Helvetica,sans-Serif" font-size="10.00">data()</text>
+<text text-anchor="start" x="1540.5" y="-901.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1551.5" y="-901.5" font-family="Helvetica,sans-Serif" font-size="10.00">inplace_div_by_int</text>
+<text text-anchor="start" x="1551.5" y="-890.5" font-family="Helvetica,sans-Serif" font-size="10.00">_unsafe()</text>
+<text text-anchor="start" x="1540.5" y="-875.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1551.5" y="-875.5" font-family="Helvetica,sans-Serif" font-size="10.00">inplace_mul_by_inverse</text>
+<text text-anchor="start" x="1551.5" y="-864.5" font-family="Helvetica,sans-Serif" font-size="10.00">_factor_unsafe()</text>
+<polygon fill="#666666" stroke="#666666" points="1533.5,-1241.5 1533.5,-1241.5 1674.5,-1241.5 1674.5,-1241.5 1533.5,-1241.5"/>
+<polygon fill="#666666" stroke="#666666" points="1533.5,-1151.5 1533.5,-1151.5 1549.5,-1151.5 1549.5,-1151.5 1533.5,-1151.5"/>
+<polygon fill="#666666" stroke="#666666" points="1549.5,-1151.5 1549.5,-1151.5 1674.5,-1151.5 1674.5,-1151.5 1549.5,-1151.5"/>
+<polygon fill="none" stroke="#666666" points="1533,-858 1533,-1281 1674,-1281 1674,-858 1533,-858"/>
 </a>
 </g>
 </g>
@@ -1371,8 +1368,8 @@ var sectionId = 'dynsection-0';
 <g id="edge27_Node000025_Node000027" class="edge">
 <title>Node25&#45;&gt;Node27</title>
 <g id="a_edge27_Node000025_Node000027"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1568.59,-1312.29C1568.82,-1302.86 1569.08,-1292.32 1569.36,-1281.07"/>
-<polygon fill="none" stroke="#63b8ff" points="1565.09,-1312.36 1568.34,-1322.44 1572.09,-1312.53 1565.09,-1312.36"/>
+<path fill="none" stroke="#63b8ff" d="M1598.32,-1317.79C1598.55,-1307.03 1598.81,-1294.58 1599.09,-1281.09"/>
+<polygon fill="none" stroke="#63b8ff" points="1594.82,-1317.88 1598.11,-1327.95 1601.82,-1318.03 1594.82,-1317.88"/>
 </a>
 </g>
 </g>
@@ -1380,47 +1377,47 @@ var sectionId = 'dynsection-0';
 <g id="Node000028" class="node">
 <title>Node28</title>
 <g id="a_Node000028"><a xlink:href="classtracking_1_1math_1_1Vector.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="1354,-787 1235,-787 1235,-487 1354,-487 1354,-787"/>
-<text text-anchor="start" x="1240.5" y="-775" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Vector</text>
-<text text-anchor="start" x="1240.5" y="-764" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; value_type, Size_ &gt;</text>
-<text text-anchor="start" x="1293" y="-749" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="1249" y="-734" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-734" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
-<text text-anchor="start" x="1249" y="-719" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-719" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
-<text text-anchor="start" x="1249" y="-704" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-704" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
-<text text-anchor="start" x="1249" y="-689" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-689" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
-<text text-anchor="start" x="1249" y="-674" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-674" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
-<text text-anchor="start" x="1249" y="-659" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-659" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
-<text text-anchor="start" x="1249" y="-644" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-644" font-family="Helvetica,sans-Serif" font-size="10.00">operator*()</text>
-<text text-anchor="start" x="1249" y="-629" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-629" font-family="Helvetica,sans-Serif" font-size="10.00">normSq()</text>
-<text text-anchor="start" x="1249" y="-614" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-614" font-family="Helvetica,sans-Serif" font-size="10.00">norm()</text>
-<text text-anchor="start" x="1249" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00">normalize()</text>
-<text text-anchor="start" x="1249" y="-584" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-584" font-family="Helvetica,sans-Serif" font-size="10.00">normalize()</text>
-<text text-anchor="start" x="1249" y="-569" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-569" font-family="Helvetica,sans-Serif" font-size="10.00">at_unsafe()</text>
-<text text-anchor="start" x="1249" y="-554" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-554" font-family="Helvetica,sans-Serif" font-size="10.00">at_unsafe()</text>
-<text text-anchor="start" x="1249" y="-539" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-539" font-family="Helvetica,sans-Serif" font-size="10.00">Zeros()</text>
-<text text-anchor="start" x="1249" y="-524" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-524" font-family="Helvetica,sans-Serif" font-size="10.00">Ones()</text>
-<text text-anchor="start" x="1249" y="-509" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-509" font-family="Helvetica,sans-Serif" font-size="10.00">UnitVector()</text>
-<text text-anchor="start" x="1249" y="-494" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1271.5" y="-494" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
-<polygon fill="#666666" stroke="#666666" points="1235.5,-759 1235.5,-759 1354.5,-759 1354.5,-759 1235.5,-759"/>
-<polygon fill="#666666" stroke="#666666" points="1235.5,-744 1235.5,-744 1354.5,-744 1354.5,-744 1235.5,-744"/>
-<polygon fill="none" stroke="#666666" points="1235,-487 1235,-787 1354,-787 1354,-487 1235,-487"/>
+<polygon fill="white" stroke="transparent" points="1383,-787 1264,-787 1264,-487 1383,-487 1383,-787"/>
+<text text-anchor="start" x="1269.5" y="-775" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Vector</text>
+<text text-anchor="start" x="1269.5" y="-764" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; value_type, Size_ &gt;</text>
+<text text-anchor="start" x="1322" y="-749" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="1278" y="-734" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-734" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
+<text text-anchor="start" x="1278" y="-719" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-719" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
+<text text-anchor="start" x="1278" y="-704" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-704" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
+<text text-anchor="start" x="1278" y="-689" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-689" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
+<text text-anchor="start" x="1278" y="-674" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-674" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
+<text text-anchor="start" x="1278" y="-659" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-659" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
+<text text-anchor="start" x="1278" y="-644" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-644" font-family="Helvetica,sans-Serif" font-size="10.00">operator*()</text>
+<text text-anchor="start" x="1278" y="-629" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-629" font-family="Helvetica,sans-Serif" font-size="10.00">normSq()</text>
+<text text-anchor="start" x="1278" y="-614" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-614" font-family="Helvetica,sans-Serif" font-size="10.00">norm()</text>
+<text text-anchor="start" x="1278" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00">normalize()</text>
+<text text-anchor="start" x="1278" y="-584" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-584" font-family="Helvetica,sans-Serif" font-size="10.00">normalize()</text>
+<text text-anchor="start" x="1278" y="-569" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-569" font-family="Helvetica,sans-Serif" font-size="10.00">at_unsafe()</text>
+<text text-anchor="start" x="1278" y="-554" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-554" font-family="Helvetica,sans-Serif" font-size="10.00">at_unsafe()</text>
+<text text-anchor="start" x="1278" y="-539" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-539" font-family="Helvetica,sans-Serif" font-size="10.00">Zeros()</text>
+<text text-anchor="start" x="1278" y="-524" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-524" font-family="Helvetica,sans-Serif" font-size="10.00">Ones()</text>
+<text text-anchor="start" x="1278" y="-509" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-509" font-family="Helvetica,sans-Serif" font-size="10.00">UnitVector()</text>
+<text text-anchor="start" x="1278" y="-494" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1300.5" y="-494" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
+<polygon fill="#666666" stroke="#666666" points="1264.5,-759 1264.5,-759 1383.5,-759 1383.5,-759 1264.5,-759"/>
+<polygon fill="#666666" stroke="#666666" points="1264.5,-744 1264.5,-744 1383.5,-744 1383.5,-744 1264.5,-744"/>
+<polygon fill="none" stroke="#666666" points="1264,-487 1264,-787 1383,-787 1383,-487 1264,-487"/>
 </a>
 </g>
 </g>
@@ -1428,8 +1425,8 @@ var sectionId = 'dynsection-0';
 <g id="edge28_Node000027_Node000028" class="edge">
 <title>Node27&#45;&gt;Node28</title>
 <g id="a_edge28_Node000027_Node000028"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1496.57,-859.92C1495.89,-859.27 1495.2,-858.63 1494.5,-858 1449.83,-817.38 1408.08,-862.72 1363.5,-822 1352.54,-811.99 1343.32,-800.07 1335.55,-787.18"/>
-<polygon fill="none" stroke="#63b8ff" points="1494.15,-862.45 1503.67,-867.08 1499.12,-857.52 1494.15,-862.45"/>
+<path fill="none" stroke="#63b8ff" d="M1525.57,-859.92C1524.89,-859.27 1524.2,-858.63 1523.5,-858 1478.83,-817.38 1437.08,-862.72 1392.5,-822 1381.54,-811.99 1372.32,-800.07 1364.55,-787.18"/>
+<polygon fill="none" stroke="#63b8ff" points="1523.15,-862.45 1532.67,-867.08 1528.12,-857.52 1523.15,-862.45"/>
 </a>
 </g>
 </g>
@@ -1437,47 +1434,47 @@ var sectionId = 'dynsection-0';
 <g id="Node000029" class="node">
 <title>Node29</title>
 <g id="a_Node000029"><a xlink:href="classtracking_1_1math_1_1Vector.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="1566.5,-787 1372.5,-787 1372.5,-487 1566.5,-487 1566.5,-787"/>
-<text text-anchor="start" x="1377.5" y="-775" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Vector</text>
-<text text-anchor="start" x="1377.5" y="-764" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; value_type, DS_NUM_VARIABLES &gt;</text>
-<text text-anchor="start" x="1467.5" y="-749" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="1405" y="-734" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-734" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
-<text text-anchor="start" x="1405" y="-719" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-719" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
-<text text-anchor="start" x="1405" y="-704" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-704" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
-<text text-anchor="start" x="1405" y="-689" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-689" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
-<text text-anchor="start" x="1405" y="-674" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-674" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
-<text text-anchor="start" x="1405" y="-659" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-659" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
-<text text-anchor="start" x="1405" y="-644" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-644" font-family="Helvetica,sans-Serif" font-size="10.00">operator*()</text>
-<text text-anchor="start" x="1405" y="-629" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-629" font-family="Helvetica,sans-Serif" font-size="10.00">normSq()</text>
-<text text-anchor="start" x="1405" y="-614" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-614" font-family="Helvetica,sans-Serif" font-size="10.00">norm()</text>
-<text text-anchor="start" x="1405" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00">normalize()</text>
-<text text-anchor="start" x="1405" y="-584" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-584" font-family="Helvetica,sans-Serif" font-size="10.00">normalize()</text>
-<text text-anchor="start" x="1405" y="-569" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-569" font-family="Helvetica,sans-Serif" font-size="10.00">at_unsafe()</text>
-<text text-anchor="start" x="1405" y="-554" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-554" font-family="Helvetica,sans-Serif" font-size="10.00">at_unsafe()</text>
-<text text-anchor="start" x="1405" y="-539" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-539" font-family="Helvetica,sans-Serif" font-size="10.00">Zeros()</text>
-<text text-anchor="start" x="1405" y="-524" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-524" font-family="Helvetica,sans-Serif" font-size="10.00">Ones()</text>
-<text text-anchor="start" x="1405" y="-509" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-509" font-family="Helvetica,sans-Serif" font-size="10.00">UnitVector()</text>
-<text text-anchor="start" x="1405" y="-494" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1446.5" y="-494" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
-<polygon fill="#666666" stroke="#666666" points="1372.5,-759 1372.5,-759 1566.5,-759 1566.5,-759 1372.5,-759"/>
-<polygon fill="#666666" stroke="#666666" points="1372.5,-744 1372.5,-744 1566.5,-744 1566.5,-744 1372.5,-744"/>
-<polygon fill="none" stroke="#666666" points="1372.5,-487 1372.5,-787 1566.5,-787 1566.5,-487 1372.5,-487"/>
+<polygon fill="white" stroke="transparent" points="1595.5,-787 1401.5,-787 1401.5,-487 1595.5,-487 1595.5,-787"/>
+<text text-anchor="start" x="1406.5" y="-775" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Vector</text>
+<text text-anchor="start" x="1406.5" y="-764" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; value_type, DS_NUM_VARIABLES &gt;</text>
+<text text-anchor="start" x="1496.5" y="-749" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="1434" y="-734" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-734" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
+<text text-anchor="start" x="1434" y="-719" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-719" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
+<text text-anchor="start" x="1434" y="-704" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-704" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
+<text text-anchor="start" x="1434" y="-689" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-689" font-family="Helvetica,sans-Serif" font-size="10.00">Vector()</text>
+<text text-anchor="start" x="1434" y="-674" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-674" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
+<text text-anchor="start" x="1434" y="-659" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-659" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
+<text text-anchor="start" x="1434" y="-644" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-644" font-family="Helvetica,sans-Serif" font-size="10.00">operator*()</text>
+<text text-anchor="start" x="1434" y="-629" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-629" font-family="Helvetica,sans-Serif" font-size="10.00">normSq()</text>
+<text text-anchor="start" x="1434" y="-614" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-614" font-family="Helvetica,sans-Serif" font-size="10.00">norm()</text>
+<text text-anchor="start" x="1434" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00">normalize()</text>
+<text text-anchor="start" x="1434" y="-584" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-584" font-family="Helvetica,sans-Serif" font-size="10.00">normalize()</text>
+<text text-anchor="start" x="1434" y="-569" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-569" font-family="Helvetica,sans-Serif" font-size="10.00">at_unsafe()</text>
+<text text-anchor="start" x="1434" y="-554" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-554" font-family="Helvetica,sans-Serif" font-size="10.00">at_unsafe()</text>
+<text text-anchor="start" x="1434" y="-539" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-539" font-family="Helvetica,sans-Serif" font-size="10.00">Zeros()</text>
+<text text-anchor="start" x="1434" y="-524" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-524" font-family="Helvetica,sans-Serif" font-size="10.00">Ones()</text>
+<text text-anchor="start" x="1434" y="-509" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-509" font-family="Helvetica,sans-Serif" font-size="10.00">UnitVector()</text>
+<text text-anchor="start" x="1434" y="-494" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1475.5" y="-494" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
+<polygon fill="#666666" stroke="#666666" points="1401.5,-759 1401.5,-759 1595.5,-759 1595.5,-759 1401.5,-759"/>
+<polygon fill="#666666" stroke="#666666" points="1401.5,-744 1401.5,-744 1595.5,-744 1595.5,-744 1401.5,-744"/>
+<polygon fill="none" stroke="#666666" points="1401.5,-487 1401.5,-787 1595.5,-787 1595.5,-487 1401.5,-487"/>
 </a>
 </g>
 </g>
@@ -1485,8 +1482,8 @@ var sectionId = 'dynsection-0';
 <g id="edge29_Node000027_Node000029" class="edge">
 <title>Node27&#45;&gt;Node29</title>
 <g id="a_edge29_Node000027_Node000029"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1520.76,-848.18C1515.74,-827.57 1510.72,-807.01 1505.91,-787.27"/>
-<polygon fill="none" stroke="#63b8ff" points="1517.38,-849.09 1523.15,-857.98 1524.18,-847.43 1517.38,-849.09"/>
+<path fill="none" stroke="#63b8ff" d="M1549.76,-848.18C1544.74,-827.57 1539.72,-807.01 1534.91,-787.27"/>
+<polygon fill="none" stroke="#63b8ff" points="1546.38,-849.09 1552.15,-857.98 1553.18,-847.43 1546.38,-849.09"/>
 </a>
 </g>
 </g>
@@ -1494,41 +1491,41 @@ var sectionId = 'dynsection-0';
 <g id="Node000030" class="node">
 <title>Node30</title>
 <g id="a_Node000030"><a xlink:href="classtracking_1_1math_1_1SquareMatrix.html" target="_top" xlink:title="A square matrix specialization of the Matrix class providing additional operations specific to square...">
-<polygon fill="white" stroke="transparent" points="1772.5,-770 1584.5,-770 1584.5,-504 1772.5,-504 1772.5,-770"/>
-<text text-anchor="start" x="1589.5" y="-758" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
-<text text-anchor="start" x="1589.5" y="-747" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ValueType_, Size_, IsRowMajor_ &gt;</text>
-<text text-anchor="start" x="1676.5" y="-732" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="1596.5" y="-717" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-717" font-family="Helvetica,sans-Serif" font-size="10.00">SquareMatrix()</text>
-<text text-anchor="start" x="1596.5" y="-702" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-702" font-family="Helvetica,sans-Serif" font-size="10.00">SquareMatrix()</text>
-<text text-anchor="start" x="1596.5" y="-687" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-687" font-family="Helvetica,sans-Serif" font-size="10.00">SquareMatrix()</text>
-<text text-anchor="start" x="1596.5" y="-672" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-672" font-family="Helvetica,sans-Serif" font-size="10.00">setIdentity()</text>
-<text text-anchor="start" x="1596.5" y="-657" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-657" font-family="Helvetica,sans-Serif" font-size="10.00">transpose()</text>
-<text text-anchor="start" x="1596.5" y="-642" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-642" font-family="Helvetica,sans-Serif" font-size="10.00">transpose()</text>
-<text text-anchor="start" x="1596.5" y="-627" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-627" font-family="Helvetica,sans-Serif" font-size="10.00">trace()</text>
-<text text-anchor="start" x="1596.5" y="-612" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-612" font-family="Helvetica,sans-Serif" font-size="10.00">determinant()</text>
-<text text-anchor="start" x="1596.5" y="-597" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-597" font-family="Helvetica,sans-Serif" font-size="10.00">householderQR()</text>
-<text text-anchor="start" x="1596.5" y="-582" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-582" font-family="Helvetica,sans-Serif" font-size="10.00">qrSolve()</text>
-<text text-anchor="start" x="1617.5" y="-567" font-family="Helvetica,sans-Serif" font-size="10.00">and 14 more...</text>
-<text text-anchor="start" x="1596.5" y="-552" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-552" font-family="Helvetica,sans-Serif" font-size="10.00">Identity()</text>
-<text text-anchor="start" x="1596.5" y="-537" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1617.5" y="-537" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
-<text text-anchor="start" x="1599" y="-522" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1617.5" y="-522" font-family="Helvetica,sans-Serif" font-size="10.00">hasStrictlyPositiveDiagonal</text>
-<text text-anchor="start" x="1617.5" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00">Elems()</text>
-<polygon fill="#666666" stroke="#666666" points="1584.5,-742 1584.5,-742 1772.5,-742 1772.5,-742 1584.5,-742"/>
-<polygon fill="#666666" stroke="#666666" points="1584.5,-727 1584.5,-727 1772.5,-727 1772.5,-727 1584.5,-727"/>
-<polygon fill="none" stroke="#666666" points="1584.5,-504 1584.5,-770 1772.5,-770 1772.5,-504 1584.5,-504"/>
+<polygon fill="white" stroke="transparent" points="1801.5,-770 1613.5,-770 1613.5,-504 1801.5,-504 1801.5,-770"/>
+<text text-anchor="start" x="1618.5" y="-758" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
+<text text-anchor="start" x="1618.5" y="-747" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ValueType_, Size_, IsRowMajor_ &gt;</text>
+<text text-anchor="start" x="1705.5" y="-732" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="1625.5" y="-717" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-717" font-family="Helvetica,sans-Serif" font-size="10.00">SquareMatrix()</text>
+<text text-anchor="start" x="1625.5" y="-702" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-702" font-family="Helvetica,sans-Serif" font-size="10.00">SquareMatrix()</text>
+<text text-anchor="start" x="1625.5" y="-687" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-687" font-family="Helvetica,sans-Serif" font-size="10.00">SquareMatrix()</text>
+<text text-anchor="start" x="1625.5" y="-672" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-672" font-family="Helvetica,sans-Serif" font-size="10.00">setIdentity()</text>
+<text text-anchor="start" x="1625.5" y="-657" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-657" font-family="Helvetica,sans-Serif" font-size="10.00">transpose()</text>
+<text text-anchor="start" x="1625.5" y="-642" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-642" font-family="Helvetica,sans-Serif" font-size="10.00">transpose()</text>
+<text text-anchor="start" x="1625.5" y="-627" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-627" font-family="Helvetica,sans-Serif" font-size="10.00">trace()</text>
+<text text-anchor="start" x="1625.5" y="-612" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-612" font-family="Helvetica,sans-Serif" font-size="10.00">determinant()</text>
+<text text-anchor="start" x="1625.5" y="-597" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-597" font-family="Helvetica,sans-Serif" font-size="10.00">householderQR()</text>
+<text text-anchor="start" x="1625.5" y="-582" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-582" font-family="Helvetica,sans-Serif" font-size="10.00">qrSolve()</text>
+<text text-anchor="start" x="1646.5" y="-567" font-family="Helvetica,sans-Serif" font-size="10.00">and 14 more...</text>
+<text text-anchor="start" x="1625.5" y="-552" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-552" font-family="Helvetica,sans-Serif" font-size="10.00">Identity()</text>
+<text text-anchor="start" x="1625.5" y="-537" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1646.5" y="-537" font-family="Helvetica,sans-Serif" font-size="10.00">FromList()</text>
+<text text-anchor="start" x="1628" y="-522" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1646.5" y="-522" font-family="Helvetica,sans-Serif" font-size="10.00">hasStrictlyPositiveDiagonal</text>
+<text text-anchor="start" x="1646.5" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00">Elems()</text>
+<polygon fill="#666666" stroke="#666666" points="1613.5,-742 1613.5,-742 1801.5,-742 1801.5,-742 1613.5,-742"/>
+<polygon fill="#666666" stroke="#666666" points="1613.5,-727 1613.5,-727 1801.5,-727 1801.5,-727 1613.5,-727"/>
+<polygon fill="none" stroke="#666666" points="1613.5,-504 1613.5,-770 1801.5,-770 1801.5,-504 1613.5,-504"/>
 </a>
 </g>
 </g>
@@ -1536,8 +1533,8 @@ var sectionId = 'dynsection-0';
 <g id="edge30_Node000027_Node000030" class="edge">
 <title>Node27&#45;&gt;Node30</title>
 <g id="a_edge30_Node000027_Node000030"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1627.73,-848.15C1634.18,-821.47 1640.6,-794.89 1646.6,-770.06"/>
-<polygon fill="none" stroke="#63b8ff" points="1624.3,-847.44 1625.36,-857.98 1631.11,-849.08 1624.3,-847.44"/>
+<path fill="none" stroke="#63b8ff" d="M1656.73,-848.15C1663.18,-821.47 1669.6,-794.89 1675.6,-770.06"/>
+<polygon fill="none" stroke="#63b8ff" points="1653.3,-847.44 1654.36,-857.98 1660.11,-849.08 1653.3,-847.44"/>
 </a>
 </g>
 </g>
@@ -1545,51 +1542,51 @@ var sectionId = 'dynsection-0';
 <g id="Node000032" class="node">
 <title>Node32</title>
 <g id="a_Node000032"><a xlink:href="classtracking_1_1motion_1_1StateMem.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="2101,-1230.5 1928,-1230.5 1928,-908.5 2101,-908.5 2101,-1230.5"/>
-<text text-anchor="start" x="1933.5" y="-1218.5" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::StateMem</text>
-<text text-anchor="start" x="1933.5" y="-1207.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; MotionModelTrait_::Covariance</text>
-<text text-anchor="start" x="1933.5" y="-1196.5" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixPolicy, MotionModelTrait</text>
-<text text-anchor="start" x="1993.5" y="-1185.5" font-family="Helvetica,sans-Serif" font-size="10.00">_::Size &gt;</text>
-<text text-anchor="start" x="1944.5" y="-1170.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1964.5" y="-1170.5" font-family="Helvetica,sans-Serif" font-size="10.00">_vec</text>
-<text text-anchor="start" x="1944.5" y="-1155.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1964.5" y="-1155.5" font-family="Helvetica,sans-Serif" font-size="10.00">_cov</text>
-<text text-anchor="start" x="1942" y="-1140.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1140.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
-<text text-anchor="start" x="1942" y="-1125.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1125.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
-<text text-anchor="start" x="1942" y="-1110.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1110.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
-<text text-anchor="start" x="1942" y="-1095.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1095.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1942" y="-1080.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1080.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1942" y="-1065.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1065.5" font-family="Helvetica,sans-Serif" font-size="10.00">~StateMem()</text>
-<text text-anchor="start" x="1942" y="-1050.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1050.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVec()</text>
-<text text-anchor="start" x="1942" y="-1035.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1035.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVecForInternalUse()</text>
-<text text-anchor="start" x="1942" y="-1020.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1020.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCov()</text>
-<text text-anchor="start" x="1942" y="-1005.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-1005.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCovForInternalUse()</text>
-<text text-anchor="start" x="1942" y="-990.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-990.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
-<text text-anchor="start" x="1942" y="-975.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1964.5" y="-975.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
-<text text-anchor="start" x="1942" y="-960.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1964.5" y="-960.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
-<text text-anchor="start" x="1942" y="-945.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1964.5" y="-945.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVec()</text>
-<text text-anchor="start" x="1942" y="-930.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1964.5" y="-930.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCov()</text>
-<text text-anchor="start" x="1942" y="-915.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1964.5" y="-915.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
-<polygon fill="#666666" stroke="#666666" points="1928.5,-1180.5 1928.5,-1180.5 2101.5,-1180.5 2101.5,-1180.5 1928.5,-1180.5"/>
-<polygon fill="#666666" stroke="#666666" points="1928.5,-1150.5 1928.5,-1150.5 1962.5,-1150.5 1962.5,-1150.5 1928.5,-1150.5"/>
-<polygon fill="#666666" stroke="#666666" points="1962.5,-1150.5 1962.5,-1150.5 2101.5,-1150.5 2101.5,-1150.5 1962.5,-1150.5"/>
-<polygon fill="none" stroke="#666666" points="1928,-908.5 1928,-1230.5 2101,-1230.5 2101,-908.5 1928,-908.5"/>
+<polygon fill="white" stroke="transparent" points="2130,-1230.5 1957,-1230.5 1957,-908.5 2130,-908.5 2130,-1230.5"/>
+<text text-anchor="start" x="1962.5" y="-1218.5" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::StateMem</text>
+<text text-anchor="start" x="1962.5" y="-1207.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; MotionModelTrait_::Covariance</text>
+<text text-anchor="start" x="1962.5" y="-1196.5" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixPolicy, MotionModelTrait</text>
+<text text-anchor="start" x="2022.5" y="-1185.5" font-family="Helvetica,sans-Serif" font-size="10.00">_::Size &gt;</text>
+<text text-anchor="start" x="1973.5" y="-1170.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1993.5" y="-1170.5" font-family="Helvetica,sans-Serif" font-size="10.00">_vec</text>
+<text text-anchor="start" x="1973.5" y="-1155.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1993.5" y="-1155.5" font-family="Helvetica,sans-Serif" font-size="10.00">_cov</text>
+<text text-anchor="start" x="1971" y="-1140.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1140.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
+<text text-anchor="start" x="1971" y="-1125.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1125.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
+<text text-anchor="start" x="1971" y="-1110.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1110.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
+<text text-anchor="start" x="1971" y="-1095.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1095.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1971" y="-1080.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1080.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1971" y="-1065.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1065.5" font-family="Helvetica,sans-Serif" font-size="10.00">~StateMem()</text>
+<text text-anchor="start" x="1971" y="-1050.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1050.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVec()</text>
+<text text-anchor="start" x="1971" y="-1035.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1035.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVecForInternalUse()</text>
+<text text-anchor="start" x="1971" y="-1020.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1020.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCov()</text>
+<text text-anchor="start" x="1971" y="-1005.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-1005.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCovForInternalUse()</text>
+<text text-anchor="start" x="1971" y="-990.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-990.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
+<text text-anchor="start" x="1971" y="-975.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1993.5" y="-975.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator()()</text>
+<text text-anchor="start" x="1971" y="-960.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1993.5" y="-960.5" font-family="Helvetica,sans-Serif" font-size="10.00">StateMem()</text>
+<text text-anchor="start" x="1971" y="-945.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1993.5" y="-945.5" font-family="Helvetica,sans-Serif" font-size="10.00">getVec()</text>
+<text text-anchor="start" x="1971" y="-930.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1993.5" y="-930.5" font-family="Helvetica,sans-Serif" font-size="10.00">getCov()</text>
+<text text-anchor="start" x="1971" y="-915.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1993.5" y="-915.5" font-family="Helvetica,sans-Serif" font-size="10.00">operator[]()</text>
+<polygon fill="#666666" stroke="#666666" points="1957.5,-1180.5 1957.5,-1180.5 2130.5,-1180.5 2130.5,-1180.5 1957.5,-1180.5"/>
+<polygon fill="#666666" stroke="#666666" points="1957.5,-1150.5 1957.5,-1150.5 1991.5,-1150.5 1991.5,-1150.5 1957.5,-1150.5"/>
+<polygon fill="#666666" stroke="#666666" points="1991.5,-1150.5 1991.5,-1150.5 2130.5,-1150.5 2130.5,-1150.5 1991.5,-1150.5"/>
+<polygon fill="none" stroke="#666666" points="1957,-908.5 1957,-1230.5 2130,-1230.5 2130,-908.5 1957,-908.5"/>
 </a>
 </g>
 </g>
@@ -1597,8 +1594,8 @@ var sectionId = 'dynsection-0';
 <g id="edge32_Node000031_Node000032" class="edge">
 <title>Node31&#45;&gt;Node32</title>
 <g id="a_edge32_Node000031_Node000032"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1788.88,-1320.07C1823.83,-1281.41 1880.15,-1219.12 1927.77,-1166.44"/>
-<polygon fill="none" stroke="#63b8ff" points="1785.87,-1318.19 1781.76,-1327.95 1791.06,-1322.88 1785.87,-1318.19"/>
+<path fill="none" stroke="#63b8ff" d="M1970.03,-1318.13C1976.96,-1294.76 1986.3,-1263.28 1995.99,-1230.62"/>
+<polygon fill="none" stroke="#63b8ff" points="1966.61,-1317.37 1967.12,-1327.95 1973.32,-1319.36 1966.61,-1317.37"/>
 </a>
 </g>
 </g>
@@ -1606,54 +1603,54 @@ var sectionId = 'dynsection-0';
 <g id="Node000033" class="node">
 <title>Node33</title>
 <g id="a_Node000033"><a xlink:href="classtracking_1_1motion_1_1ExtendedMotionModel.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="2006,-822 1791,-822 1791,-452 2006,-452 2006,-822"/>
-<text text-anchor="start" x="1796.5" y="-810" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::Extended</text>
-<text text-anchor="start" x="1796.5" y="-799" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModel&lt; MotionModelCA</text>
-<text text-anchor="start" x="1796.5" y="-788" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixPolicy_</text>
-<text text-anchor="start" x="1796.5" y="-777" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt;, MotionModelTraits&lt; CovarianceMatrix</text>
-<text text-anchor="start" x="1839" y="-766" font-family="Helvetica,sans-Serif" font-size="10.00">Policy_, StateDefCA &gt; &gt;</text>
-<text text-anchor="start" x="1897" y="-751" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="1805" y="-736" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-736" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="1805" y="-721" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-721" font-family="Helvetica,sans-Serif" font-size="10.00">~ExtendedMotionModel()</text>
-<text text-anchor="start" x="1805" y="-706" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-706" font-family="Helvetica,sans-Serif" font-size="10.00">getX()</text>
-<text text-anchor="start" x="1805" y="-691" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-691" font-family="Helvetica,sans-Serif" font-size="10.00">getY()</text>
-<text text-anchor="start" x="1805" y="-676" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-676" font-family="Helvetica,sans-Serif" font-size="10.00">invertCov()</text>
-<text text-anchor="start" x="1805" y="-661" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-661" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
-<text text-anchor="start" x="1805" y="-646" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-646" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
-<text text-anchor="start" x="1805" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoState</text>
-<text text-anchor="start" x="1827.5" y="-620" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
-<text text-anchor="start" x="1805" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoInformation</text>
-<text text-anchor="start" x="1827.5" y="-594" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
-<text text-anchor="start" x="1805" y="-579" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-579" font-family="Helvetica,sans-Serif" font-size="10.00">StateVecFromList()</text>
-<text text-anchor="start" x="1805" y="-564" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-564" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
-<text text-anchor="start" x="1805" y="-549" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-549" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
-<text text-anchor="start" x="1805" y="-534" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1827.5" y="-534" font-family="Helvetica,sans-Serif" font-size="10.00">FromLists()</text>
-<text text-anchor="start" x="1805" y="-519" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1827.5" y="-519" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="1805" y="-504" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1827.5" y="-504" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="1805" y="-489" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1827.5" y="-489" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="1805" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1827.5" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1805" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="1827.5" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<polygon fill="#666666" stroke="#666666" points="1791.5,-761 1791.5,-761 2006.5,-761 2006.5,-761 1791.5,-761"/>
-<polygon fill="#666666" stroke="#666666" points="1791.5,-746 1791.5,-746 2006.5,-746 2006.5,-746 1791.5,-746"/>
-<polygon fill="none" stroke="#666666" points="1791,-452 1791,-822 2006,-822 2006,-452 1791,-452"/>
+<polygon fill="white" stroke="transparent" points="2035,-822 1820,-822 1820,-452 2035,-452 2035,-822"/>
+<text text-anchor="start" x="1825.5" y="-810" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::Extended</text>
+<text text-anchor="start" x="1825.5" y="-799" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModel&lt; MotionModelCA</text>
+<text text-anchor="start" x="1825.5" y="-788" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixPolicy_</text>
+<text text-anchor="start" x="1825.5" y="-777" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt;, MotionModelTraits&lt; CovarianceMatrix</text>
+<text text-anchor="start" x="1868" y="-766" font-family="Helvetica,sans-Serif" font-size="10.00">Policy_, StateDefCA &gt; &gt;</text>
+<text text-anchor="start" x="1926" y="-751" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="1834" y="-736" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-736" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="1834" y="-721" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-721" font-family="Helvetica,sans-Serif" font-size="10.00">~ExtendedMotionModel()</text>
+<text text-anchor="start" x="1834" y="-706" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-706" font-family="Helvetica,sans-Serif" font-size="10.00">getX()</text>
+<text text-anchor="start" x="1834" y="-691" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-691" font-family="Helvetica,sans-Serif" font-size="10.00">getY()</text>
+<text text-anchor="start" x="1834" y="-676" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-676" font-family="Helvetica,sans-Serif" font-size="10.00">invertCov()</text>
+<text text-anchor="start" x="1834" y="-661" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-661" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
+<text text-anchor="start" x="1834" y="-646" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-646" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
+<text text-anchor="start" x="1834" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoState</text>
+<text text-anchor="start" x="1856.5" y="-620" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
+<text text-anchor="start" x="1834" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoInformation</text>
+<text text-anchor="start" x="1856.5" y="-594" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
+<text text-anchor="start" x="1834" y="-579" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-579" font-family="Helvetica,sans-Serif" font-size="10.00">StateVecFromList()</text>
+<text text-anchor="start" x="1834" y="-564" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-564" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
+<text text-anchor="start" x="1834" y="-549" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-549" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
+<text text-anchor="start" x="1834" y="-534" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1856.5" y="-534" font-family="Helvetica,sans-Serif" font-size="10.00">FromLists()</text>
+<text text-anchor="start" x="1834" y="-519" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1856.5" y="-519" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="1834" y="-504" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1856.5" y="-504" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="1834" y="-489" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1856.5" y="-489" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="1834" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1856.5" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1834" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="1856.5" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<polygon fill="#666666" stroke="#666666" points="1820.5,-761 1820.5,-761 2035.5,-761 2035.5,-761 1820.5,-761"/>
+<polygon fill="#666666" stroke="#666666" points="1820.5,-746 1820.5,-746 2035.5,-746 2035.5,-746 1820.5,-746"/>
+<polygon fill="none" stroke="#666666" points="1820,-452 1820,-822 2035,-822 2035,-452 1820,-452"/>
 </a>
 </g>
 </g>
@@ -1661,8 +1658,8 @@ var sectionId = 'dynsection-0';
 <g id="edge33_Node000032_Node000033" class="edge">
 <title>Node32&#45;&gt;Node33</title>
 <g id="a_edge33_Node000032_Node000033"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1968.63,-898.27C1961.88,-873.22 1954.9,-847.32 1948.08,-822.01"/>
-<polygon fill="none" stroke="#63b8ff" points="1965.32,-899.45 1971.31,-908.2 1972.08,-897.63 1965.32,-899.45"/>
+<path fill="none" stroke="#63b8ff" d="M1997.63,-898.27C1990.88,-873.22 1983.9,-847.32 1977.08,-822.01"/>
+<polygon fill="none" stroke="#63b8ff" points="1994.32,-899.45 2000.31,-908.2 2001.08,-897.63 1994.32,-899.45"/>
 </a>
 </g>
 </g>
@@ -1670,54 +1667,54 @@ var sectionId = 'dynsection-0';
 <g id="Node000035" class="node">
 <title>Node35</title>
 <g id="a_Node000035"><a xlink:href="classtracking_1_1motion_1_1ExtendedMotionModel.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="2239,-822 2024,-822 2024,-452 2239,-452 2239,-822"/>
-<text text-anchor="start" x="2029.5" y="-810" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::Extended</text>
-<text text-anchor="start" x="2029.5" y="-799" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModel&lt; MotionModelCV</text>
-<text text-anchor="start" x="2029.5" y="-788" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixPolicy_</text>
-<text text-anchor="start" x="2029.5" y="-777" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt;, MotionModelTraits&lt; CovarianceMatrix</text>
-<text text-anchor="start" x="2072" y="-766" font-family="Helvetica,sans-Serif" font-size="10.00">Policy_, StateDefCV &gt; &gt;</text>
-<text text-anchor="start" x="2130" y="-751" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="2038" y="-736" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-736" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="2038" y="-721" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-721" font-family="Helvetica,sans-Serif" font-size="10.00">~ExtendedMotionModel()</text>
-<text text-anchor="start" x="2038" y="-706" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-706" font-family="Helvetica,sans-Serif" font-size="10.00">getX()</text>
-<text text-anchor="start" x="2038" y="-691" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-691" font-family="Helvetica,sans-Serif" font-size="10.00">getY()</text>
-<text text-anchor="start" x="2038" y="-676" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-676" font-family="Helvetica,sans-Serif" font-size="10.00">invertCov()</text>
-<text text-anchor="start" x="2038" y="-661" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-661" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
-<text text-anchor="start" x="2038" y="-646" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-646" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
-<text text-anchor="start" x="2038" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoState</text>
-<text text-anchor="start" x="2060.5" y="-620" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
-<text text-anchor="start" x="2038" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoInformation</text>
-<text text-anchor="start" x="2060.5" y="-594" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
-<text text-anchor="start" x="2038" y="-579" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-579" font-family="Helvetica,sans-Serif" font-size="10.00">StateVecFromList()</text>
-<text text-anchor="start" x="2038" y="-564" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-564" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
-<text text-anchor="start" x="2038" y="-549" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-549" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
-<text text-anchor="start" x="2038" y="-534" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2060.5" y="-534" font-family="Helvetica,sans-Serif" font-size="10.00">FromLists()</text>
-<text text-anchor="start" x="2038" y="-519" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2060.5" y="-519" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="2038" y="-504" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2060.5" y="-504" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="2038" y="-489" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2060.5" y="-489" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="2038" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2060.5" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="2038" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2060.5" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<polygon fill="#666666" stroke="#666666" points="2024.5,-761 2024.5,-761 2239.5,-761 2239.5,-761 2024.5,-761"/>
-<polygon fill="#666666" stroke="#666666" points="2024.5,-746 2024.5,-746 2239.5,-746 2239.5,-746 2024.5,-746"/>
-<polygon fill="none" stroke="#666666" points="2024,-452 2024,-822 2239,-822 2239,-452 2024,-452"/>
+<polygon fill="white" stroke="transparent" points="2268,-822 2053,-822 2053,-452 2268,-452 2268,-822"/>
+<text text-anchor="start" x="2058.5" y="-810" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::Extended</text>
+<text text-anchor="start" x="2058.5" y="-799" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModel&lt; MotionModelCV</text>
+<text text-anchor="start" x="2058.5" y="-788" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixPolicy_</text>
+<text text-anchor="start" x="2058.5" y="-777" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt;, MotionModelTraits&lt; CovarianceMatrix</text>
+<text text-anchor="start" x="2101" y="-766" font-family="Helvetica,sans-Serif" font-size="10.00">Policy_, StateDefCV &gt; &gt;</text>
+<text text-anchor="start" x="2159" y="-751" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="2067" y="-736" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-736" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="2067" y="-721" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-721" font-family="Helvetica,sans-Serif" font-size="10.00">~ExtendedMotionModel()</text>
+<text text-anchor="start" x="2067" y="-706" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-706" font-family="Helvetica,sans-Serif" font-size="10.00">getX()</text>
+<text text-anchor="start" x="2067" y="-691" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-691" font-family="Helvetica,sans-Serif" font-size="10.00">getY()</text>
+<text text-anchor="start" x="2067" y="-676" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-676" font-family="Helvetica,sans-Serif" font-size="10.00">invertCov()</text>
+<text text-anchor="start" x="2067" y="-661" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-661" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
+<text text-anchor="start" x="2067" y="-646" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-646" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
+<text text-anchor="start" x="2067" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoState</text>
+<text text-anchor="start" x="2089.5" y="-620" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
+<text text-anchor="start" x="2067" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoInformation</text>
+<text text-anchor="start" x="2089.5" y="-594" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
+<text text-anchor="start" x="2067" y="-579" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-579" font-family="Helvetica,sans-Serif" font-size="10.00">StateVecFromList()</text>
+<text text-anchor="start" x="2067" y="-564" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-564" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
+<text text-anchor="start" x="2067" y="-549" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-549" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
+<text text-anchor="start" x="2067" y="-534" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2089.5" y="-534" font-family="Helvetica,sans-Serif" font-size="10.00">FromLists()</text>
+<text text-anchor="start" x="2067" y="-519" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2089.5" y="-519" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="2067" y="-504" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2089.5" y="-504" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="2067" y="-489" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2089.5" y="-489" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="2067" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2089.5" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="2067" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2089.5" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<polygon fill="#666666" stroke="#666666" points="2053.5,-761 2053.5,-761 2268.5,-761 2268.5,-761 2053.5,-761"/>
+<polygon fill="#666666" stroke="#666666" points="2053.5,-746 2053.5,-746 2268.5,-746 2268.5,-746 2053.5,-746"/>
+<polygon fill="none" stroke="#666666" points="2053,-452 2053,-822 2268,-822 2268,-452 2053,-452"/>
 </a>
 </g>
 </g>
@@ -1725,8 +1722,8 @@ var sectionId = 'dynsection-0';
 <g id="edge35_Node000032_Node000035" class="edge">
 <title>Node32&#45;&gt;Node35</title>
 <g id="a_edge35_Node000032_Node000035"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M2060.76,-898.27C2067.57,-873.22 2074.61,-847.32 2081.49,-822.01"/>
-<polygon fill="none" stroke="#63b8ff" points="2057.31,-897.63 2058.07,-908.2 2064.07,-899.47 2057.31,-897.63"/>
+<path fill="none" stroke="#63b8ff" d="M2089.76,-898.27C2096.57,-873.22 2103.61,-847.32 2110.49,-822.01"/>
+<polygon fill="none" stroke="#63b8ff" points="2086.31,-897.63 2087.07,-908.2 2093.07,-899.47 2086.31,-897.63"/>
 </a>
 </g>
 </g>
@@ -1734,52 +1731,52 @@ var sectionId = 'dynsection-0';
 <g id="Node000036" class="node">
 <title>Node36</title>
 <g id="a_Node000036"><a xlink:href="classtracking_1_1motion_1_1ExtendedMotionModel.html" target="_top" xlink:title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance.">
-<polygon fill="white" stroke="transparent" points="2434,-811 2257,-811 2257,-463 2434,-463 2434,-811"/>
-<text text-anchor="start" x="2276.5" y="-799" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::Extended</text>
-<text text-anchor="start" x="2276.5" y="-788" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModel&lt; MotionModel</text>
-<text text-anchor="start" x="2289.5" y="-777" font-family="Helvetica,sans-Serif" font-size="10.00">_, MotionModelTrait_ &gt;</text>
-<text text-anchor="start" x="2344" y="-762" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="2261.5" y="-747" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-747" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="2261.5" y="-732" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-732" font-family="Helvetica,sans-Serif" font-size="10.00">~ExtendedMotionModel()</text>
-<text text-anchor="start" x="2261.5" y="-717" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-717" font-family="Helvetica,sans-Serif" font-size="10.00">getX()</text>
-<text text-anchor="start" x="2261.5" y="-702" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-702" font-family="Helvetica,sans-Serif" font-size="10.00">getY()</text>
-<text text-anchor="start" x="2261.5" y="-687" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-687" font-family="Helvetica,sans-Serif" font-size="10.00">invertCov()</text>
-<text text-anchor="start" x="2261.5" y="-672" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-672" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
-<text text-anchor="start" x="2261.5" y="-657" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-657" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
-<text text-anchor="start" x="2261.5" y="-642" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-642" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoState</text>
-<text text-anchor="start" x="2274.5" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
-<text text-anchor="start" x="2261.5" y="-616" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-616" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoInformation</text>
-<text text-anchor="start" x="2274.5" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
-<text text-anchor="start" x="2261.5" y="-590" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-590" font-family="Helvetica,sans-Serif" font-size="10.00">StateVecFromList()</text>
-<text text-anchor="start" x="2261.5" y="-575" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-575" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
-<text text-anchor="start" x="2261.5" y="-560" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-560" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
-<text text-anchor="start" x="2261.5" y="-545" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2274.5" y="-545" font-family="Helvetica,sans-Serif" font-size="10.00">FromLists()</text>
-<text text-anchor="start" x="2261.5" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2274.5" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="2261.5" y="-515" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2274.5" y="-515" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<text text-anchor="start" x="2261.5" y="-500" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2274.5" y="-500" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="2261.5" y="-485" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2274.5" y="-485" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="2261.5" y="-470" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
-<text text-anchor="start" x="2274.5" y="-470" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
-<polygon fill="#666666" stroke="#666666" points="2257.5,-772 2257.5,-772 2434.5,-772 2434.5,-772 2257.5,-772"/>
-<polygon fill="#666666" stroke="#666666" points="2257.5,-757 2257.5,-757 2434.5,-757 2434.5,-757 2257.5,-757"/>
-<polygon fill="none" stroke="#666666" points="2257,-463 2257,-811 2434,-811 2434,-463 2257,-463"/>
+<polygon fill="white" stroke="transparent" points="2463,-811 2286,-811 2286,-463 2463,-463 2463,-811"/>
+<text text-anchor="start" x="2305.5" y="-799" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::Extended</text>
+<text text-anchor="start" x="2305.5" y="-788" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModel&lt; MotionModel</text>
+<text text-anchor="start" x="2318.5" y="-777" font-family="Helvetica,sans-Serif" font-size="10.00">_, MotionModelTrait_ &gt;</text>
+<text text-anchor="start" x="2373" y="-762" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="2290.5" y="-747" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-747" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="2290.5" y="-732" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-732" font-family="Helvetica,sans-Serif" font-size="10.00">~ExtendedMotionModel()</text>
+<text text-anchor="start" x="2290.5" y="-717" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-717" font-family="Helvetica,sans-Serif" font-size="10.00">getX()</text>
+<text text-anchor="start" x="2290.5" y="-702" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-702" font-family="Helvetica,sans-Serif" font-size="10.00">getY()</text>
+<text text-anchor="start" x="2290.5" y="-687" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-687" font-family="Helvetica,sans-Serif" font-size="10.00">invertCov()</text>
+<text text-anchor="start" x="2290.5" y="-672" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-672" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
+<text text-anchor="start" x="2290.5" y="-657" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-657" font-family="Helvetica,sans-Serif" font-size="10.00">predict()</text>
+<text text-anchor="start" x="2290.5" y="-642" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-642" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoState</text>
+<text text-anchor="start" x="2303.5" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
+<text text-anchor="start" x="2290.5" y="-616" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-616" font-family="Helvetica,sans-Serif" font-size="10.00">convertStateVecIntoInformation</text>
+<text text-anchor="start" x="2303.5" y="-605" font-family="Helvetica,sans-Serif" font-size="10.00">Space()</text>
+<text text-anchor="start" x="2290.5" y="-590" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-590" font-family="Helvetica,sans-Serif" font-size="10.00">StateVecFromList()</text>
+<text text-anchor="start" x="2290.5" y="-575" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-575" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
+<text text-anchor="start" x="2290.5" y="-560" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-560" font-family="Helvetica,sans-Serif" font-size="10.00">StateCovFromList()</text>
+<text text-anchor="start" x="2290.5" y="-545" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2303.5" y="-545" font-family="Helvetica,sans-Serif" font-size="10.00">FromLists()</text>
+<text text-anchor="start" x="2290.5" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2303.5" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="2290.5" y="-515" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2303.5" y="-515" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<text text-anchor="start" x="2290.5" y="-500" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2303.5" y="-500" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="2290.5" y="-485" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2303.5" y="-485" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="2290.5" y="-470" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="2303.5" y="-470" font-family="Helvetica,sans-Serif" font-size="10.00">ExtendedMotionModel()</text>
+<polygon fill="#666666" stroke="#666666" points="2286.5,-772 2286.5,-772 2463.5,-772 2463.5,-772 2286.5,-772"/>
+<polygon fill="#666666" stroke="#666666" points="2286.5,-757 2286.5,-757 2463.5,-757 2463.5,-757 2286.5,-757"/>
+<polygon fill="none" stroke="#666666" points="2286,-463 2286,-811 2463,-811 2463,-463 2286,-463"/>
 </a>
 </g>
 </g>
@@ -1787,8 +1784,8 @@ var sectionId = 'dynsection-0';
 <g id="edge37_Node000032_Node000036" class="edge">
 <title>Node32&#45;&gt;Node36</title>
 <g id="a_edge37_Node000032_Node000036"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M2108.51,-981.44C2154.02,-936.45 2207.53,-879.12 2248.5,-822 2251.34,-818.04 2254.15,-813.98 2256.93,-809.86"/>
-<polygon fill="none" stroke="#63b8ff" points="2105.95,-979.04 2101.28,-988.55 2110.86,-984.03 2105.95,-979.04"/>
+<path fill="none" stroke="#63b8ff" d="M2137.51,-981.44C2183.02,-936.45 2236.53,-879.12 2277.5,-822 2280.34,-818.04 2283.15,-813.98 2285.93,-809.86"/>
+<polygon fill="none" stroke="#63b8ff" points="2134.95,-979.04 2130.28,-988.55 2139.86,-984.03 2134.95,-979.04"/>
 </a>
 </g>
 </g>
@@ -1796,48 +1793,48 @@ var sectionId = 'dynsection-0';
 <g id="Node000034" class="node">
 <title>Node34</title>
 <g id="a_Node000034"><a xlink:href="classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="2109,-361.5 1920,-361.5 1920,-54.5 2109,-54.5 2109,-361.5"/>
-<text text-anchor="start" x="1925.5" y="-349" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::TEST</text>
-<text text-anchor="start" x="1925.5" y="-338" font-family="Helvetica,sans-Serif" font-size="10.00">_REMOVE_FINAL&lt; CovarianceMatrix</text>
-<text text-anchor="start" x="1992" y="-327" font-family="Helvetica,sans-Serif" font-size="10.00">Policy_ &gt;</text>
-<text text-anchor="start" x="1936.5" y="-312" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-312" font-family="Helvetica,sans-Serif" font-size="10.00">NUM_AUG_PROC_NOISE</text>
-<text text-anchor="start" x="1961.5" y="-301" font-family="Helvetica,sans-Serif" font-size="10.00">_VARIABLES</text>
-<text text-anchor="start" x="1936.5" y="-286" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-286" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModelCA()</text>
-<text text-anchor="start" x="1936.5" y="-271" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-271" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModelCA()</text>
-<text text-anchor="start" x="1936.5" y="-256" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-256" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModelCA()</text>
-<text text-anchor="start" x="1936.5" y="-241" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-241" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1936.5" y="-226" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-226" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
-<text text-anchor="start" x="1936.5" y="-211" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-211" font-family="Helvetica,sans-Serif" font-size="10.00">~MotionModelCA()</text>
-<text text-anchor="start" x="1936.5" y="-196" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-196" font-family="Helvetica,sans-Serif" font-size="10.00">getVx()</text>
-<text text-anchor="start" x="1936.5" y="-181" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-181" font-family="Helvetica,sans-Serif" font-size="10.00">getVy()</text>
-<text text-anchor="start" x="1936.5" y="-166" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-166" font-family="Helvetica,sans-Serif" font-size="10.00">getAx()</text>
-<text text-anchor="start" x="1936.5" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">getAy()</text>
-<text text-anchor="start" x="1961.5" y="-136" font-family="Helvetica,sans-Serif" font-size="10.00">and 21 more...</text>
-<text text-anchor="start" x="1936.5" y="-121" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-121" font-family="Helvetica,sans-Serif" font-size="10.00">computeQ()</text>
-<text text-anchor="start" x="1936.5" y="-106" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-106" font-family="Helvetica,sans-Serif" font-size="10.00">computeG()</text>
-<text text-anchor="start" x="1936.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">computeQ()</text>
-<text text-anchor="start" x="1936.5" y="-76" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1961.5" y="-76" font-family="Helvetica,sans-Serif" font-size="10.00">computeG()</text>
-<text text-anchor="start" x="1939" y="-61" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
-<text text-anchor="start" x="1961.5" y="-61" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModelCA()</text>
-<polygon fill="#666666" stroke="#666666" points="1920.5,-322 1920.5,-322 2109.5,-322 2109.5,-322 1920.5,-322"/>
-<polygon fill="#666666" stroke="#666666" points="1920.5,-296 1920.5,-296 1959.5,-296 1959.5,-296 1920.5,-296"/>
-<polygon fill="#666666" stroke="#666666" points="1959.5,-296 1959.5,-296 2109.5,-296 2109.5,-296 1959.5,-296"/>
-<polygon fill="none" stroke="#666666" points="1920,-54.5 1920,-361.5 2109,-361.5 2109,-54.5 1920,-54.5"/>
+<polygon fill="white" stroke="transparent" points="2138,-361.5 1949,-361.5 1949,-54.5 2138,-54.5 2138,-361.5"/>
+<text text-anchor="start" x="1954.5" y="-349" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::TEST</text>
+<text text-anchor="start" x="1954.5" y="-338" font-family="Helvetica,sans-Serif" font-size="10.00">_REMOVE_FINAL&lt; CovarianceMatrix</text>
+<text text-anchor="start" x="2021" y="-327" font-family="Helvetica,sans-Serif" font-size="10.00">Policy_ &gt;</text>
+<text text-anchor="start" x="1965.5" y="-312" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-312" font-family="Helvetica,sans-Serif" font-size="10.00">NUM_AUG_PROC_NOISE</text>
+<text text-anchor="start" x="1990.5" y="-301" font-family="Helvetica,sans-Serif" font-size="10.00">_VARIABLES</text>
+<text text-anchor="start" x="1965.5" y="-286" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-286" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModelCA()</text>
+<text text-anchor="start" x="1965.5" y="-271" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-271" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModelCA()</text>
+<text text-anchor="start" x="1965.5" y="-256" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-256" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModelCA()</text>
+<text text-anchor="start" x="1965.5" y="-241" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-241" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1965.5" y="-226" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-226" font-family="Helvetica,sans-Serif" font-size="10.00">operator=()</text>
+<text text-anchor="start" x="1965.5" y="-211" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-211" font-family="Helvetica,sans-Serif" font-size="10.00">~MotionModelCA()</text>
+<text text-anchor="start" x="1965.5" y="-196" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-196" font-family="Helvetica,sans-Serif" font-size="10.00">getVx()</text>
+<text text-anchor="start" x="1965.5" y="-181" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-181" font-family="Helvetica,sans-Serif" font-size="10.00">getVy()</text>
+<text text-anchor="start" x="1965.5" y="-166" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-166" font-family="Helvetica,sans-Serif" font-size="10.00">getAx()</text>
+<text text-anchor="start" x="1965.5" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">getAy()</text>
+<text text-anchor="start" x="1990.5" y="-136" font-family="Helvetica,sans-Serif" font-size="10.00">and 21 more...</text>
+<text text-anchor="start" x="1965.5" y="-121" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-121" font-family="Helvetica,sans-Serif" font-size="10.00">computeQ()</text>
+<text text-anchor="start" x="1965.5" y="-106" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-106" font-family="Helvetica,sans-Serif" font-size="10.00">computeG()</text>
+<text text-anchor="start" x="1965.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">computeQ()</text>
+<text text-anchor="start" x="1965.5" y="-76" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1990.5" y="-76" font-family="Helvetica,sans-Serif" font-size="10.00">computeG()</text>
+<text text-anchor="start" x="1968" y="-61" font-family="Helvetica,sans-Serif" font-size="10.00">&#45;</text>
+<text text-anchor="start" x="1990.5" y="-61" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModelCA()</text>
+<polygon fill="#666666" stroke="#666666" points="1949.5,-322 1949.5,-322 2138.5,-322 2138.5,-322 1949.5,-322"/>
+<polygon fill="#666666" stroke="#666666" points="1949.5,-296 1949.5,-296 1988.5,-296 1988.5,-296 1949.5,-296"/>
+<polygon fill="#666666" stroke="#666666" points="1988.5,-296 1988.5,-296 2138.5,-296 2138.5,-296 1988.5,-296"/>
+<polygon fill="none" stroke="#666666" points="1949,-54.5 1949,-361.5 2138,-361.5 2138,-54.5 1949,-54.5"/>
 </a>
 </g>
 </g>
@@ -1845,8 +1842,8 @@ var sectionId = 'dynsection-0';
 <g id="edge34_Node000033_Node000034" class="edge">
 <title>Node33&#45;&gt;Node34</title>
 <g id="a_edge34_Node000033_Node000034"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1951.22,-441.94C1958.52,-415.08 1965.93,-387.8 1972.98,-361.82"/>
-<polygon fill="none" stroke="#63b8ff" points="1947.78,-441.25 1948.54,-451.82 1954.54,-443.08 1947.78,-441.25"/>
+<path fill="none" stroke="#63b8ff" d="M1980.22,-441.94C1987.52,-415.08 1994.93,-387.8 2001.98,-361.82"/>
+<polygon fill="none" stroke="#63b8ff" points="1976.78,-441.25 1977.54,-451.82 1983.54,-443.08 1976.78,-441.25"/>
 </a>
 </g>
 </g>
@@ -1854,8 +1851,8 @@ var sectionId = 'dynsection-0';
 <g id="edge36_Node000035_Node000034" class="edge">
 <title>Node35&#45;&gt;Node34</title>
 <g id="a_edge36_Node000035_Node000034"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M2078.33,-441.94C2070.97,-415.08 2063.49,-387.8 2056.37,-361.82"/>
-<polygon fill="none" stroke="#63b8ff" points="2075.01,-443.1 2081.03,-451.82 2081.77,-441.25 2075.01,-443.1"/>
+<path fill="none" stroke="#63b8ff" d="M2107.33,-441.94C2099.97,-415.08 2092.49,-387.8 2085.37,-361.82"/>
+<polygon fill="none" stroke="#63b8ff" points="2104.01,-443.1 2110.03,-451.82 2110.77,-441.25 2104.01,-443.1"/>
 </a>
 </g>
 </g>
