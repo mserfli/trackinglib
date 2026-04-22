@@ -84,7 +84,7 @@ namespace math
 /// auto transposed = mat.transpose(); // Type: Matrix<float32, 2, 3, false>
 /// \endcode
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_ = true>
-class Matrix: public contract::MatrixIntf<Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>, Matrix>
+class Matrix: public contract::MatrixIntf<Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>>
 {
 public:
   //////////////////////////////////////////////////
