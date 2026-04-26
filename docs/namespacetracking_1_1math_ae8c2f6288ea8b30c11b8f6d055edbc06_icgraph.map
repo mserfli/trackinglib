@@ -1,11 +1,9 @@
 <map id="tracking::math::operator*" name="tracking::math::operator*">
-<area shape="rect" id="Node000001" title=" " alt="" coords="252,106,439,131"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a70d258c33ab8284534f22683e26ec06e" title="Compute A*P*A^T in&#45;place (covariance propagation)" alt="" coords="5,5,204,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="304,103,203,60,170,48,172,43,205,55,306,98"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Vector.html#a0f839b3b261c9a949ba0f0dfa133f7ca" title="Compute the squared Euclidean norm (L2 norm squared) of the vector." alt="" coords="21,69,188,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="238,108,188,102,188,97,239,103"/>
-<area shape="rect" id="Node000004" href="$namespacetracking_1_1math.html#a5da1defd9816130013342221228abf76" title="Multiply a matrix by a column view." alt="" coords="11,134,198,159"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="239,134,198,138,198,133,238,128"/>
-<area shape="rect" id="Node000005" href="$namespacetracking_1_1math.html#a3cb17735266f10296c8f695c5a160af3" title="Multiply two matrix views." alt="" coords="11,183,198,209"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="301,139,205,173,160,186,158,181,203,168,299,134"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="240,70,427,95"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a0f839b3b261c9a949ba0f0dfa133f7ca" title="Compute the squared Euclidean norm (L2 norm squared) of the vector." alt="" coords="15,5,182,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="267,69,180,48,182,43,268,64"/>
+<area shape="rect" id="Node000003" href="$namespacetracking_1_1math.html#a5da1defd9816130013342221228abf76" title="Multiply a matrix by a column view." alt="" coords="5,70,192,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,85,192,85,192,80,227,80"/>
+<area shape="rect" id="Node000004" href="$namespacetracking_1_1math.html#a3cb17735266f10296c8f695c5a160af3" title="Multiply two matrix views." alt="" coords="5,119,192,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="259,101,161,122,159,117,258,96"/>
 </map>
