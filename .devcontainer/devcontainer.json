@@ -1,0 +1,60 @@
+{
+    "name": "Tracking Library Workspace",
+    "image": "trackinglib:latest",
+    //"build": {
+    //    "dockerfile": "../Dockerfile", // Path relative to this JSON file
+    //    "context": ".."                // The folder where the build runs
+    //},
+    
+    // 1. Replicates your SSH-agent forwarding
+    "runArgs": [
+        "--mount", "type=bind,source=/run/host-services/ssh-auth.sock,target=/run/host-services/ssh-auth.sock"
+    ],
+    "containerEnv": {
+        "SSH_AUTH_SOCK": "/run/host-services/ssh-auth.sock"
+    },
+
+    // 2. Replicates your workspace mount
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "workspaceFolder": "/workspace",
+
+    // Extensions the AI Agent might need to work better
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "akiramiyakoda.cppincludeguard",
+                "aslamanver.vsc-export",
+                "bierner.markdown-mermaid",
+                "cschlosser.doxdocgen",
+                "donjayamanne.githistory",
+                "github.copilot-chat",
+                "github.vscode-github-actions",
+                "gruntfuggly.todo-tree",
+                "ibm.output-colorizer",
+                "jbockle.jbockle-format-files",
+                "jeff-hykin.better-cpp-syntax",
+                "kilocode.kilo-code",
+                "lacroixdavid1.vscode-format-context-menu",
+                "llvm-vs-code-extensions.vscode-clangd",
+                "markis.code-coverage",
+                "matepek.vscode-catch2-test-adapter",
+                "mhutchie.git-graph",
+                "misq.toggleformatonsave",
+                "ms-azuretools.vscode-containers",
+                "ms-azuretools.vscode-docker",
+                "ms-vscode.cmake-tools",
+                "ms-vscode.cpp-devtools",
+                "ms-vscode.hexeditor",
+                "ms-vscode.live-server",
+                "twxs.cmake",
+                "vadimcn.vscode-lldb",
+                "waderyan.gitblame",
+                "zchrissirhcz.cmake-highlight"
+            ]
+        }
+    },
+    // CRITICAL: This runs every time the container is created
+    // too large: ctags -R --languages=C++ --map-C++=+.h.hpp.tcc.cpp.cxx --kinds-C++=+p+l+x+t+u+v --fields=+iaSzn --extras=+q+r --exclude=build --exclude=.git --output-format=u-ctags -f .repo.tags .
+    // optimized: ctags -R --languages=C++ --map-C++=+.h.hpp.tcc.cpp.cxx --kinds-C++=+p+t+u+v-l --fields=+iaS --extras=+q --exclude=build --exclude=.git --exclude=tests -f .repo.tags .
+    "postCreateCommand": "apt-get update && apt-get install -y universal-ctags ripgrep && ctags -R --languages=C++ --map-C++=+.h.hpp.tcc.cpp.cxx --kinds-C++=+p+t+u+v-l --fields=+iaS --extras=+q --exclude=build --exclude=.git --exclude=tests -f .repo.tags ."
+}
