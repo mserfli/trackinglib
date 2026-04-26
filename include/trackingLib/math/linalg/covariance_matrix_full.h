@@ -150,6 +150,8 @@ public:
   ///
   /// \note This is a key operation in Kalman filter prediction
   /// \note Time complexity: O(n^3) where n = Size_
+  // TODO(matthias): optimization - add in-place variants for common ops like apaT to avoid copies
+  // improving cache efficiency for small data; beneficial for small n without complexity overhead
   template <bool IsRowMajor_>
   void apaT(const tracking::math::SquareMatrix<ValueType_, Size_, IsRowMajor_>& A);
 

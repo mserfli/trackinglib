@@ -81,7 +81,7 @@ auto EgoMotion<CovarianceMatrixPolicy_>::calcLinearMotionJacobian(const Inertial
   J.at_unsafe(1, 2) = (0.25) * pow(T, 3) * a + (0.5) * pow(T, 2) * v;
   J.at_unsafe(2, 2) = T;
 
-  return std::move(J);
+  return J;
 }
 
 template <typename CovarianceMatrixPolicy_>
@@ -106,7 +106,7 @@ auto EgoMotion<CovarianceMatrixPolicy_>::calcCircularMotionJacobian(const Inerti
                       (T * a + 2 * v) * math::pow<2>(std::sin((0.5) * T * w)) / (w * w);
   J.at_unsafe(2, 2) = T;
 
-  return std::move(J);
+  return J;
 }
 
 template <typename CovarianceMatrixPolicy_>

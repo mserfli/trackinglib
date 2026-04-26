@@ -14,8 +14,8 @@ namespace math
 {
 template <typename ValueType_, sint32 Size_>
 void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Size_, false, true>& u,
-                                                 DiagonalMatrix<ValueType_, Size_>&                d,
-                                                 const SquareMatrix<ValueType_, Size_, true>&      Phi)
+                                                  DiagonalMatrix<ValueType_, Size_>&                d,
+                                                  const SquareMatrix<ValueType_, Size_, true>&      Phi)
 {
   // M. S. Grewal and A. P. Andrews
   // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
@@ -23,6 +23,8 @@ void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Si
   //
   // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
   // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
+  // TODO(matthias): optimization - eliminate allocations in modified Gram-Schmidt for in-place updates
+  // beneficial for small n without complexity overhead; add template-based loop unrolling for Size_ <= 10
   auto PhiU = Phi * u;
   auto Din  = d;
   u.setIdentity();
@@ -56,10 +58,10 @@ void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Si
 template <typename ValueType_, sint32 Size_>
 template <sint32 SizeQ_>
 void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Size_, false, true>& u,
-                                                 DiagonalMatrix<ValueType_, Size_>&                d,
-                                                 const SquareMatrix<ValueType_, Size_, true>&      Phi,
-                                                 const Matrix<ValueType_, Size_, SizeQ_, true>&    G,
-                                                 const DiagonalMatrix<ValueType_, SizeQ_>&         Q)
+                                                  DiagonalMatrix<ValueType_, Size_>&                d,
+                                                  const SquareMatrix<ValueType_, Size_, true>&      Phi,
+                                                  const Matrix<ValueType_, Size_, SizeQ_, true>&    G,
+                                                  const DiagonalMatrix<ValueType_, SizeQ_>&         Q)
 {
   // M. S. Grewal and A. P. Andrews
   // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
@@ -70,6 +72,8 @@ void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Si
   // of estimation uncertainty in Kalman filtering
 
   // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
+  // TODO(matthias): optimization - eliminate allocations in modified Gram-Schmidt for in-place updates
+  // beneficial for small n without complexity overhead; add template-based loop unrolling for Size_ <= 10
   auto PhiU = Phi * u;
   auto Din  = d;
   auto Gin  = G;

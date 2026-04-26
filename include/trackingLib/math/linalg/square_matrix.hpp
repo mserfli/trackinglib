@@ -138,20 +138,32 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::qrSolve(const Matrix<V
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::inverse() const -> SquareMatrix<ValueType_, Size_, !IsRowMajor_>
 {
+  // TODO(matthias): optimization - implement SPD detection and prefer Cholesky over QR for small sizes (Size_ <= 10)
+  // saves time without complexity overhead; add in-place variant to avoid copies and improve cache efficiency
   return qrSolve(SquareMatrix::Identity());
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline void SquareMatrix<ValueType_, Size_, IsRowMajor_>::symmetrize()
 {
-  *this += this->transpose();
-  *this *= static_cast<ValueType_>(0.5);
+  // keep diagonal elements unchanged, average upper and lower triangle elements to enforce symmetry
+  for (sint32 row = 0; row < Size_; ++row)
+  {
+    for (sint32 col = row + 1; col < Size_; ++col)
+    {
+      const ValueType_ avg      = (this->at_unsafe(row, col) + this->at_unsafe(col, row)) * static_cast<ValueType_>(0.5);
+      this->at_unsafe(row, col) = avg;
+      this->at_unsafe(col, row) = avg;
+    }
+  }
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric(ValueType_ tolerance) const -> bool
 {
   // check all off diagonal elements
+  // TODO(matthias): optimization - use template-based loop unrolling for fixed small sizes (Size_ <= 10)
+  // to reduce loop overhead; optimize cache access in matrix ops, prioritize simplicity since n is small
   for (auto row = 0; row < Size_; ++row)
   {
     for (auto col = row + 1; col < Size_; ++col)
