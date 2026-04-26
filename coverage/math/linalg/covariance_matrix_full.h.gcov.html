@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-04-22 19:12:11</td>
+            <td class="headerValue">2026-04-26 21:52:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">59.0&nbsp;%</td>
@@ -220,42 +220,44 @@
 <span id="L150"><span class="lineNum">     150</span>              :   ///</span>
 <span id="L151"><span class="lineNum">     151</span>              :   /// \note This is a key operation in Kalman filter prediction</span>
 <span id="L152"><span class="lineNum">     152</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
-<span id="L153"><span class="lineNum">     153</span>              :   template &lt;bool IsRowMajor_&gt;</span>
-<span id="L154"><span class="lineNum">     154</span>              :   void apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A);</span>
-<span id="L155"><span class="lineNum">     155</span>              : </span>
-<span id="L156"><span class="lineNum">     156</span>              :   /// \brief Compute A*P*A^T (covariance propagation)</span>
-<span id="L157"><span class="lineNum">     157</span>              :   ///</span>
-<span id="L158"><span class="lineNum">     158</span>              :   /// Performs the matrix operation A*P*A^T where P is this covariance matrix.</span>
-<span id="L159"><span class="lineNum">     159</span>              :   /// This operation propagates covariance through a linear transformation A.</span>
-<span id="L160"><span class="lineNum">     160</span>              :   /// Returns a new covariance matrix without modifying this one.</span>
-<span id="L161"><span class="lineNum">     161</span>              :   ///</span>
-<span id="L162"><span class="lineNum">     162</span>              :   /// \tparam IsRowMajor_ Storage layout of the transformation matrix A</span>
-<span id="L163"><span class="lineNum">     163</span>              :   /// \param[in] A Square transformation matrix</span>
-<span id="L164"><span class="lineNum">     164</span>              :   /// \return New covariance matrix containing A*P*A^T</span>
-<span id="L165"><span class="lineNum">     165</span>              :   ///</span>
-<span id="L166"><span class="lineNum">     166</span>              :   /// \note This is a key operation in Kalman filter prediction</span>
-<span id="L167"><span class="lineNum">     167</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
-<span id="L168"><span class="lineNum">     168</span>              :   template &lt;bool IsRowMajor_&gt;</span>
-<span id="L169"><span class="lineNum">     169</span>              :   auto apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull;</span>
-<span id="L170"><span class="lineNum">     170</span>              : </span>
-<span id="L171"><span class="lineNum">     171</span>              :   /// \brief Set diagonal variance element and clear correlations</span>
-<span id="L172"><span class="lineNum">     172</span>              :   ///</span>
-<span id="L173"><span class="lineNum">     173</span>              :   /// Sets the variance (diagonal element) at position (idx, idx) to the given value</span>
-<span id="L174"><span class="lineNum">     174</span>              :   /// and clears all off-diagonal correlations involving this state variable.</span>
-<span id="L175"><span class="lineNum">     175</span>              :   /// This effectively makes the idx-th state variable uncorrelated with others.</span>
-<span id="L176"><span class="lineNum">     176</span>              :   ///</span>
-<span id="L177"><span class="lineNum">     177</span>              :   /// \param[in] idx Zero-based index of the state variable (0 &lt;= idx &lt; Size_)</span>
-<span id="L178"><span class="lineNum">     178</span>              :   /// \param[in] val New variance value (must be positive)</span>
-<span id="L179"><span class="lineNum">     179</span>              :   ///</span>
-<span id="L180"><span class="lineNum">     180</span>              :   /// \note This operation modifies both the diagonal and off-diagonal elements</span>
-<span id="L181"><span class="lineNum">     181</span>              :   /// \note Commonly used to reinitialize uncertainty for specific state components</span>
-<span id="L182"><span class="lineNum">     182</span>              :   void setVariance(const sint32 idx, const ValueType_ val);</span>
-<span id="L183"><span class="lineNum">     183</span>              : };</span>
-<span id="L184"><span class="lineNum">     184</span>              : </span>
-<span id="L185"><span class="lineNum">     185</span>              : } // namespace math</span>
-<span id="L186"><span class="lineNum">     186</span>              : } // namespace tracking</span>
-<span id="L187"><span class="lineNum">     187</span>              : </span>
-<span id="L188"><span class="lineNum">     188</span>              : #endif // DD2B2494_7486_42BA_84E2_32308E26DBBC</span>
+<span id="L153"><span class="lineNum">     153</span>              :   // TODO(matthias): optimization - add in-place variants for common ops like apaT to avoid copies</span>
+<span id="L154"><span class="lineNum">     154</span>              :   // improving cache efficiency for small data; beneficial for small n without complexity overhead</span>
+<span id="L155"><span class="lineNum">     155</span>              :   template &lt;bool IsRowMajor_&gt;</span>
+<span id="L156"><span class="lineNum">     156</span>              :   void apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A);</span>
+<span id="L157"><span class="lineNum">     157</span>              : </span>
+<span id="L158"><span class="lineNum">     158</span>              :   /// \brief Compute A*P*A^T (covariance propagation)</span>
+<span id="L159"><span class="lineNum">     159</span>              :   ///</span>
+<span id="L160"><span class="lineNum">     160</span>              :   /// Performs the matrix operation A*P*A^T where P is this covariance matrix.</span>
+<span id="L161"><span class="lineNum">     161</span>              :   /// This operation propagates covariance through a linear transformation A.</span>
+<span id="L162"><span class="lineNum">     162</span>              :   /// Returns a new covariance matrix without modifying this one.</span>
+<span id="L163"><span class="lineNum">     163</span>              :   ///</span>
+<span id="L164"><span class="lineNum">     164</span>              :   /// \tparam IsRowMajor_ Storage layout of the transformation matrix A</span>
+<span id="L165"><span class="lineNum">     165</span>              :   /// \param[in] A Square transformation matrix</span>
+<span id="L166"><span class="lineNum">     166</span>              :   /// \return New covariance matrix containing A*P*A^T</span>
+<span id="L167"><span class="lineNum">     167</span>              :   ///</span>
+<span id="L168"><span class="lineNum">     168</span>              :   /// \note This is a key operation in Kalman filter prediction</span>
+<span id="L169"><span class="lineNum">     169</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
+<span id="L170"><span class="lineNum">     170</span>              :   template &lt;bool IsRowMajor_&gt;</span>
+<span id="L171"><span class="lineNum">     171</span>              :   auto apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull;</span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span>              :   /// \brief Set diagonal variance element and clear correlations</span>
+<span id="L174"><span class="lineNum">     174</span>              :   ///</span>
+<span id="L175"><span class="lineNum">     175</span>              :   /// Sets the variance (diagonal element) at position (idx, idx) to the given value</span>
+<span id="L176"><span class="lineNum">     176</span>              :   /// and clears all off-diagonal correlations involving this state variable.</span>
+<span id="L177"><span class="lineNum">     177</span>              :   /// This effectively makes the idx-th state variable uncorrelated with others.</span>
+<span id="L178"><span class="lineNum">     178</span>              :   ///</span>
+<span id="L179"><span class="lineNum">     179</span>              :   /// \param[in] idx Zero-based index of the state variable (0 &lt;= idx &lt; Size_)</span>
+<span id="L180"><span class="lineNum">     180</span>              :   /// \param[in] val New variance value (must be positive)</span>
+<span id="L181"><span class="lineNum">     181</span>              :   ///</span>
+<span id="L182"><span class="lineNum">     182</span>              :   /// \note This operation modifies both the diagonal and off-diagonal elements</span>
+<span id="L183"><span class="lineNum">     183</span>              :   /// \note Commonly used to reinitialize uncertainty for specific state components</span>
+<span id="L184"><span class="lineNum">     184</span>              :   void setVariance(const sint32 idx, const ValueType_ val);</span>
+<span id="L185"><span class="lineNum">     185</span>              : };</span>
+<span id="L186"><span class="lineNum">     186</span>              : </span>
+<span id="L187"><span class="lineNum">     187</span>              : } // namespace math</span>
+<span id="L188"><span class="lineNum">     188</span>              : } // namespace tracking</span>
+<span id="L189"><span class="lineNum">     189</span>              : </span>
+<span id="L190"><span class="lineNum">     190</span>              : #endif // DD2B2494_7486_42BA_84E2_32308E26DBBC</span>
         </pre>
               </td>
             </tr>

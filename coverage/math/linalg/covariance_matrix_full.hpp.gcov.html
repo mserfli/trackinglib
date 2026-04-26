@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">31</td>
-            <td class="headerCovTableEntry">31</td>
+            <td class="headerCovTableEntry">36</td>
+            <td class="headerCovTableEntry">36</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-04-22 19:12:11</td>
+            <td class="headerValue">2026-04-26 21:52:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">86.7&nbsp;%</td>
@@ -113,40 +113,54 @@
 <span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">          60 : inline void CovarianceMatrixFull&lt;ValueType_, Size_&gt;::apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A)</span></span>
 <span id="L44"><span class="lineNum">      44</span>              : {</span>
 <span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          60 :   assert(this-&gt;isSymmetric() &amp;&amp; &quot;Covariance currently not symmetric&quot;);</span></span>
-<span id="L46"><span class="lineNum">      46</span>              :   // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part</span>
-<span id="L47"><span class="lineNum">      47</span>              :   // for normal covariance matrix P, the calculation is P = A*P*A'</span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          60 :   const auto       paT = this-&gt;operator*(A.transpose());</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          60 :   BaseSquareMatrix cov{A.operator*(paT)};</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          60 :   cov.symmetrize();</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">          60 :   *this = CovarianceMatrixFull{std::move(cov)};</span></span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">          60 : }</span></span>
-<span id="L53"><span class="lineNum">      53</span>              : </span>
-<span id="L54"><span class="lineNum">      54</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L55"><span class="lineNum">      55</span>              : template &lt;bool IsRowMajor_&gt;</span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">           2 : inline auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::apaT(</span></span>
-<span id="L57"><span class="lineNum">      57</span>              :     const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull</span>
-<span id="L58"><span class="lineNum">      58</span>              : {</span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">           3 :   auto copy(*this);</span></span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">           2 :   copy.apaT(A);</span></span>
-<span id="L61"><span class="lineNum">      61</span>              :   return copy;</span>
-<span id="L62"><span class="lineNum">      62</span>              : }</span>
-<span id="L63"><span class="lineNum">      63</span>              : </span>
-<span id="L64"><span class="lineNum">      64</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">           2 : inline void CovarianceMatrixFull&lt;ValueType_, Size_&gt;::setVariance(const sint32 idx, const ValueType_ val)</span></span>
-<span id="L66"><span class="lineNum">      66</span>              : {</span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">           2 :   constexpr auto zero = static_cast&lt;ValueType_&gt;(0.0);</span></span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">           8 :   for (sint32 j = 0; j &lt; Size_; ++j)</span></span>
-<span id="L69"><span class="lineNum">      69</span>              :   {</span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           6 :     BaseSquareMatrix::at_unsafe(idx, j) = zero;</span></span>
-<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">           6 :     BaseSquareMatrix::at_unsafe(j, idx) = zero;</span></span>
-<span id="L72"><span class="lineNum">      72</span>              :   }</span>
-<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">           2 :   BaseSquareMatrix::at_unsafe(idx, idx) = val;</span></span>
-<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">           2 : }</span></span>
-<span id="L75"><span class="lineNum">      75</span>              : </span>
-<span id="L76"><span class="lineNum">      76</span>              : } // namespace math</span>
-<span id="L77"><span class="lineNum">      77</span>              : } // namespace tracking</span>
-<span id="L78"><span class="lineNum">      78</span>              : </span>
-<span id="L79"><span class="lineNum">      79</span>              : #endif // E4324F70_8D26_4E47_B84E_1A44466A0FBB</span>
+<span id="L46"><span class="lineNum">      46</span>              :   // calculate only the upper triangle part of P and fill lower triangle part</span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          60 :   BaseSquareMatrix cov{};</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         329 :   for (sint32 i = 0; i &lt; Size_; ++i)</span></span>
+<span id="L49"><span class="lineNum">      49</span>              :   {</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">        1048 :     for (sint32 j = i; j &lt; Size_; ++j)</span></span>
+<span id="L51"><span class="lineNum">      51</span>              :     {</span>
+<span id="L52"><span class="lineNum">      52</span>              :       ValueType_ element = static_cast&lt;ValueType_&gt;(0);</span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        4699 :       for (sint32 k = 0; k &lt; Size_; ++k)</span></span>
+<span id="L54"><span class="lineNum">      54</span>              :       {</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       24658 :         for (sint32 l = 0; l &lt; Size_; ++l)</span></span>
+<span id="L56"><span class="lineNum">      56</span>              :         {</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       20738 :           element += A.at_unsafe(i, k) * this-&gt;at_unsafe(k, l) * A.at_unsafe(j, l);</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :         }</span>
+<span id="L59"><span class="lineNum">      59</span>              :       }</span>
+<span id="L60"><span class="lineNum">      60</span>              :       // construct symmetric covariance matrix by filling both upper and lower triangle</span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">         779 :       cov.at_unsafe(i, j) = element;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         779 :       cov.at_unsafe(j, i) = element;</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :     }</span>
+<span id="L64"><span class="lineNum">      64</span>              :   }</span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">          60 :   *this = CovarianceMatrixFull{std::move(cov)};</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          60 : }</span></span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L69"><span class="lineNum">      69</span>              : template &lt;bool IsRowMajor_&gt;</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           2 : inline auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::apaT(</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :     const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull</span>
+<span id="L72"><span class="lineNum">      72</span>              : {</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">           3 :   auto copy(*this);</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">           2 :   copy.apaT(A);</span></span>
+<span id="L75"><span class="lineNum">      75</span>              :   return copy;</span>
+<span id="L76"><span class="lineNum">      76</span>              : }</span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">           2 : inline void CovarianceMatrixFull&lt;ValueType_, Size_&gt;::setVariance(const sint32 idx, const ValueType_ val)</span></span>
+<span id="L80"><span class="lineNum">      80</span>              : {</span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">           2 :   constexpr auto zero = static_cast&lt;ValueType_&gt;(0.0);</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">           8 :   for (sint32 j = 0; j &lt; Size_; ++j)</span></span>
+<span id="L83"><span class="lineNum">      83</span>              :   {</span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">           6 :     BaseSquareMatrix::at_unsafe(idx, j) = zero;</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">           6 :     BaseSquareMatrix::at_unsafe(j, idx) = zero;</span></span>
+<span id="L86"><span class="lineNum">      86</span>              :   }</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">           2 :   BaseSquareMatrix::at_unsafe(idx, idx) = val;</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">           2 : }</span></span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              : } // namespace math</span>
+<span id="L91"><span class="lineNum">      91</span>              : } // namespace tracking</span>
+<span id="L92"><span class="lineNum">      92</span>              : </span>
+<span id="L93"><span class="lineNum">      93</span>              : #endif // E4324F70_8D26_4E47_B84E_1A44466A0FBB</span>
         </pre>
               </td>
             </tr>
