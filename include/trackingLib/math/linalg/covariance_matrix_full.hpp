@@ -43,11 +43,25 @@ template <bool IsRowMajor_>
 inline void CovarianceMatrixFull<ValueType_, Size_>::apaT(const tracking::math::SquareMatrix<ValueType_, Size_, IsRowMajor_>& A)
 {
   assert(this->isSymmetric() && "Covariance currently not symmetric");
-  // TODO(matthias): optimization - calculate only the upper triangle part of P and fill lower triangle part
-  // for normal covariance matrix P, the calculation is P = A*P*A'
-  const auto       paT = this->operator*(A.transpose());
-  BaseSquareMatrix cov{A.operator*(paT)};
-  cov.symmetrize();
+  // calculate only the upper triangle part of P and fill lower triangle part
+  BaseSquareMatrix cov{};
+  for (sint32 i = 0; i < Size_; ++i)
+  {
+    for (sint32 j = i; j < Size_; ++j)
+    {
+      ValueType_ element = static_cast<ValueType_>(0);
+      for (sint32 k = 0; k < Size_; ++k)
+      {
+        for (sint32 l = 0; l < Size_; ++l)
+        {
+          element += A.at_unsafe(i, k) * this->at_unsafe(k, l) * A.at_unsafe(j, l);
+        }
+      }
+      // construct symmetric covariance matrix by filling both upper and lower triangle
+      cov.at_unsafe(i, j) = element;
+      cov.at_unsafe(j, i) = element;
+    }
+  }
   *this = CovarianceMatrixFull{std::move(cov)};
 }
 

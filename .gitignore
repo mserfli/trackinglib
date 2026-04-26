@@ -1,5 +1,9 @@
 .cache
 .DS_store
+.repo.tags
+compile_commands.json
+dev-env.sh
+DockerfileMac
 build
 build_cov
 doxydoc

@@ -23,6 +23,8 @@ void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Si
   //
   // Catherine Thornton's modified weighted Gram-Schmidt orthogonalization method
   // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
+  // TODO(matthias): optimization - eliminate allocations in modified Gram-Schmidt for in-place updates
+  // beneficial for small n without complexity overhead; add template-based loop unrolling for Size_ <= 10
   auto PhiU = Phi * u;
   auto Din  = d;
   u.setIdentity();
@@ -70,6 +72,8 @@ void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Si
   // of estimation uncertainty in Kalman filtering
 
   // TODO(matthias): Grewal, p. 260 -> inplace product Phi*U
+  // TODO(matthias): optimization - eliminate allocations in modified Gram-Schmidt for in-place updates
+  // beneficial for small n without complexity overhead; add template-based loop unrolling for Size_ <= 10
   auto PhiU = Phi * u;
   auto Din  = d;
   auto Gin  = G;

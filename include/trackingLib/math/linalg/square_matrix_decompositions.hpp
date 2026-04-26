@@ -1,6 +1,7 @@
 #ifndef C5DC5CCE_5C5B_4EAF_813E_3F6FEDDF09FA
 #define C5DC5CCE_5C5B_4EAF_813E_3F6FEDDF09FA
 
+#include "math/analysis/functions.h"
 #include "math/linalg/diagonal_matrix.hpp"
 #include "math/linalg/matrix_column_view.hpp"
 #include "math/linalg/matrix_row_view.hpp" // IWYU pragma: keep
@@ -88,6 +89,8 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
     -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>
 {
+  // TODO(matthias): optimization - for small sizes (Size_ <= 10), leverage compile-time features
+  // like constexpr computations where possible; add condition number checks for diagnostics
   if (hasStrictlyPositiveDiagonalElems()) // fail fast
   {
     if (isSymmetric()) // fail fast
@@ -98,7 +101,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
         ValueType_ sum = this->at_unsafe(j, j);
         for (auto k = 0; k < j; ++k)
         {
-          sum -= L.at_unsafe(j, k) * L.at_unsafe(j, k);
+          sum -= math::pow<2>(L.at_unsafe(j, k));
         }
         L.at_unsafe(j, j) = std::sqrt(sum);
 

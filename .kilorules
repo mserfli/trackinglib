@@ -1,0 +1,2 @@
+"When exploring the codebase, refer to .repo.tags for symbols. NEVER use read_file on .repo.tags. Always use ripgrep to find symbol locations within it first. This saves token usage."
+
