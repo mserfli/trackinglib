@@ -14,8 +14,8 @@ namespace math
 {
 template <typename ValueType_, sint32 Size_>
 void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Size_, false, true>& u,
-                                                  DiagonalMatrix<ValueType_, Size_>&                d,
-                                                  const SquareMatrix<ValueType_, Size_, true>&      Phi)
+                                                 DiagonalMatrix<ValueType_, Size_>&                d,
+                                                 const SquareMatrix<ValueType_, Size_, true>&      Phi)
 {
   // M. S. Grewal and A. P. Andrews
   // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
@@ -58,10 +58,10 @@ void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Si
 template <typename ValueType_, sint32 Size_>
 template <sint32 SizeQ_>
 void ModifiedGramSchmidt<ValueType_, Size_>::run(TriangularMatrix<ValueType_, Size_, false, true>& u,
-                                                  DiagonalMatrix<ValueType_, Size_>&                d,
-                                                  const SquareMatrix<ValueType_, Size_, true>&      Phi,
-                                                  const Matrix<ValueType_, Size_, SizeQ_, true>&    G,
-                                                  const DiagonalMatrix<ValueType_, SizeQ_>&         Q)
+                                                 DiagonalMatrix<ValueType_, Size_>&                d,
+                                                 const SquareMatrix<ValueType_, Size_, true>&      Phi,
+                                                 const Matrix<ValueType_, Size_, SizeQ_, true>&    G,
+                                                 const DiagonalMatrix<ValueType_, SizeQ_>&         Q)
 {
   // M. S. Grewal and A. P. Andrews
   // Kalman Filtering: Theory and Practice Using MATLAB, 4th Edition
