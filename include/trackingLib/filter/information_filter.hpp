@@ -3,12 +3,14 @@
 
 #include "filter/information_filter.h"
 
+#include "filter/measurement_decorrelation.hpp"
 #include "math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_full.hpp"     // IWYU pragma: keep
 #include "math/linalg/diagonal_matrix.hpp"            // IWYU pragma: keep
 #include "math/linalg/matrix_column_view.hpp"         // IWYU pragma: keep
 #include "math/linalg/square_matrix.hpp"              // IWYU pragma: keep
 #include "math/linalg/vector.hpp"                     // IWYU pragma: keep
+#include <type_traits>                                // IWYU pragma: keep
 
 
 namespace tracking
@@ -70,6 +72,68 @@ void InformationFilter<CovarianceMatrixPolicy_>::predictCovariance(CovarianceMat
     {
       Y = math::CovarianceMatrixFull<value_type, DimX_>{std::move(cov)};
     }
+  }
+}
+
+template <typename CovarianceMatrixPolicy_>
+template <typename UpdateMode_, sint32 DimX_, sint32 DimZ_>
+inline void InformationFilter<CovarianceMatrixPolicy_>::updateState(math::Vector<value_type, DimX_>&              y,
+                                                                    CovarianceMatrixType<DimX_>&                  Y,
+                                                                    const math::Vector<value_type, DimZ_>&        z,
+                                                                    const math::Matrix<value_type, DimZ_, DimX_>& H,
+                                                                    const CovarianceMatrixType<DimZ_>&            R)
+{
+  static_assert(std::is_same_v<UpdateMode_, update_mode::Block> || std::is_same_v<UpdateMode_, update_mode::Sequential>,
+                "UpdateMode_ must be update_mode::Block or update_mode::Sequential");
+  static_assert(!(CovarianceMatrixPolicy_::is_factored && std::is_same_v<UpdateMode_, update_mode::Block>),
+                "Block update would destroy the UDU factorization; use update_mode::Sequential for the factored policy");
+
+  if constexpr (CovarianceMatrixPolicy_::is_factored)
+  {
+    // decorrelate the measurement system first (no-op for an already diagonal R):
+    //   z' = inv(U)*z ;  H' = inv(U)*H ;  R' = D   with R = U*D*U'
+    // then apply DimZ times the additive rank-1 update Y = Y + c*h*h' with c = 1/d_ii
+    // (measurement adds information)
+    math::Vector<value_type, DimZ_>         zEff{z};
+    math::Matrix<value_type, DimZ_, DimX_>  Heff{H};
+    math::DiagonalMatrix<value_type, DimZ_> rDiag{};
+    if (!detail::decorrelateMeasurement<CovarianceMatrixPolicy_>(zEff, Heff, rDiag, R))
+    {
+      return; // defensive: R could not be decomposed, skip the update
+    }
+
+    math::Vector<value_type, DimX_> hi{};
+    for (sint32 i = 0; i < DimZ_; ++i)
+    {
+      const value_type dii = rDiag.at_unsafe(i);
+      if (!(dii > static_cast<value_type>(0.0)))
+      {
+        continue; // defensive: skip measurement rows with a non-positive variance
+      }
+
+      for (sint32 col = 0; col < DimX_; ++col)
+      {
+        hi.at_unsafe(col) = Heff.at_unsafe(i, col);
+      }
+
+      const value_type ci = static_cast<value_type>(1.0) / dii;
+      Y.rank1Update(ci, hi);
+      y += (ci * zEff.at_unsafe(i)) * hi;
+    }
+  }
+  else
+  {
+    // matrix-form additive update: y += H'*inv(R)*z ;  Y += H'*inv(R)*H
+    const auto invR = R.inverse();
+    if (!invR.has_value())
+    {
+      return; // skip the update if R is not invertible
+    }
+
+    const auto HtInvR = H.transpose() * invR.value();
+    y += HtInvR * z;
+    Y += HtInvR * H;
+    Y.symmetrize();
   }
 }
 

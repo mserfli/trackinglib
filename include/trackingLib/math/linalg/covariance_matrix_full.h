@@ -149,6 +149,8 @@ public:
   /// \param[in] A Square transformation matrix
   ///
   /// \note This is a key operation in Kalman filter prediction
+  /// \note Computed in two stages: AP = A*P is evaluated in full, then only the upper triangle of
+  ///       AP*A^T is computed and mirrored into the lower triangle, since the result is symmetric
   /// \note Time complexity: O(n^3) where n = Size_
   // TODO(matthias): optimization - add in-place variants for common ops like apaT to avoid copies
   // improving cache efficiency for small data; beneficial for small n without complexity overhead

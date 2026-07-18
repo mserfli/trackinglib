@@ -6,10 +6,12 @@
 #include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
+#include "filter/update_mode.h"
 #include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
 #include "math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "math/linalg/errors.h"
 #include "motion/generic_predict.hpp"   // IWYU pragma: keep
+#include "motion/generic_update.hpp"    // IWYU pragma: keep
 #include "motion/motion_model_traits.h" // IWYU pragma: keep
 #include "motion/state_mem.h"
 
@@ -166,6 +168,42 @@ public:
   void predict(const value_type dt, const InformationFilterType& filter, const EgoMotionType& egoMotion) final
   {
     BaseGenericPredict::run(dt, filter, egoMotion);
+  }
+
+  /// \brief Updates the underlying MotionModel with the given observation model measurements
+  ///
+  /// A single observation model performs a plain measurement update; multiple models are
+  /// composed into one joint (stacked) update. The update mode is selected at compile time
+  /// (see filter::update_mode) and defaults to the policy-appropriate mode: Block for the
+  /// full covariance policy, Sequential for the UDU-factored policy.
+  ///
+  /// \tparam UpdateMode_         Update mode tag (filter::update_mode::Block or ::Sequential)
+  /// \tparam ObservationModels_  One or more observation model types (composed if multiple)
+  /// \param[in] filter             The kalman filter instance
+  /// \param[in] observationModels  Observation models carrying measurement z and covariance R
+  template <typename UpdateMode_ = filter::update_mode::Default<CovarianceMatrixPolicy>, typename... ObservationModels_>
+  void update(const KalmanFilterType& filter, const ObservationModels_&... observationModels)
+  {
+    generic::Update<MotionModel_, CovarianceMatrixPolicy>::template run<UpdateMode_>(
+        filter, static_cast<MotionModel_&>(*this), observationModels...);
+  }
+
+  /// \brief Updates the underlying MotionModel with the given observation model measurements
+  ///
+  /// A single observation model performs a plain measurement update; multiple models are
+  /// composed into one joint (stacked) update. The update mode is selected at compile time
+  /// (see filter::update_mode) and defaults to the policy-appropriate mode: Block for the
+  /// full covariance policy, Sequential for the UDU-factored policy.
+  ///
+  /// \tparam UpdateMode_         Update mode tag (filter::update_mode::Block or ::Sequential)
+  /// \tparam ObservationModels_  One or more observation model types (composed if multiple)
+  /// \param[in] filter             The information filter instance
+  /// \param[in] observationModels  Observation models carrying measurement z and covariance R
+  template <typename UpdateMode_ = filter::update_mode::Default<CovarianceMatrixPolicy>, typename... ObservationModels_>
+  void update(const InformationFilterType& filter, const ObservationModels_&... observationModels)
+  {
+    generic::Update<MotionModel_, CovarianceMatrixPolicy>::template run<UpdateMode_>(
+        filter, static_cast<MotionModel_&>(*this), observationModels...);
   }
 
   /// \brief Transform information space into state space
