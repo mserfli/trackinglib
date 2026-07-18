@@ -8,6 +8,7 @@
 #include "math/linalg/vector.h"
 #include "motion/state_def_traits.h"
 #include "motion/state_mem.h"
+#include "observation/contracts/observation_model_intf.h"
 #include "observation/iobservation_model.h"
 
 namespace tracking
@@ -22,9 +23,14 @@ namespace observation
 /// motion::StateMem for the measurement memory: getVec() returns the measurement vector z and
 /// getCov() returns the measurement covariance R.
 ///
-/// Concrete models implement predictMeasurement() (the observation function h(x)) and
-/// computeJacobian() (H = dh/dx) and may shadow computeInnovation() for measurement components
-/// that need special innovation handling (e.g. angle wrapping).
+/// Static contract (no virtual dispatch, mirroring the motion side's computeA/applyProcessModel
+/// hooks): concrete models must provide
+///   - predictMeasurement(const StateVec&) const -> MeasurementVec   (observation function h(x))
+///   - computeJacobian(JacobianMatrix&, const StateVec&) const       (H = dh/dx)
+/// and may shadow computeInnovation() for measurement components that need special innovation
+/// handling (e.g. angle wrapping). These hooks are resolved statically on the concrete model type
+/// by generic::Update (no vtable entry is involved); the mandatory two are enforced at compile time
+/// by contract::ObservationModelIntf (this class's CRTP contract base).
 ///
 /// \tparam ObservationModel_       The underlying concrete ObservationModel (CRTP)
 /// \tparam ObservationModelTrait_  ObservationModelTraits instantiation describing the model
@@ -32,6 +38,7 @@ template <typename ObservationModel_, typename ObservationModelTrait_>
 class ExtendedObservationModel
     : public IObservationModel<typename ObservationModelTrait_::CovarianceMatrixPolicy>
     , public motion::StateMem<typename ObservationModelTrait_::CovarianceMatrixPolicy, ObservationModelTrait_::DimZ>
+    , public contract::ObservationModelIntf<ObservationModel_>
     , public base::contract::RequireAbstractIntf<ExtendedObservationModel<ObservationModel_, ObservationModelTrait_>>
 {
 public:
@@ -52,8 +59,10 @@ public:
   using JacobianMatrix = math::Matrix<value_type, DimZ, DimX>;
 
   // rule of 5 declarations
-  ExtendedObservationModel()          = default;
-  virtual ~ExtendedObservationModel() = default;
+  ExtendedObservationModel() = default;
+  /// \brief Pure virtual destructor keeping this CRTP layer abstract (RequireAbstractIntf
+  ///        contract) without introducing vtable entries for the statically dispatched hooks
+  virtual ~ExtendedObservationModel() = 0;
 
   /// \brief Create measurement vector from initializer list
   /// \param[in] list  Initializer list with measurement values
@@ -106,21 +115,12 @@ public:
   /// \return sint32  Number of measurement components
   auto getDim() const -> sint32 final { return DimZ; }
 
-  /// \brief Predict the measurement h(x) for the given state
-  /// \param[in] state  State vector (state space) the measurement is predicted for
-  /// \return MeasurementVec  Predicted measurement h(x)
-  virtual auto predictMeasurement(const StateVec& state) const -> MeasurementVec = 0;
-
-  /// \brief Compute the measurement Jacobian H = dh/dx at the given state
-  /// \param[out] jacobian  The measurement Jacobian to be filled
-  /// \param[in]  state     State vector (state space) the Jacobian is linearized at
-  virtual void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const = 0;
-
   /// \brief Compute the innovation nu = z - h(x)
   ///
   /// Default component-wise difference. Concrete models may shadow this method for measurement
   /// components that need special innovation handling (e.g. angle wrapping for bearings);
-  /// generic::Update resolves the call statically on the concrete model type.
+  /// generic::Update resolves the call statically on the concrete model type — the same static
+  /// mechanism as the predictMeasurement/computeJacobian contract (see class description).
   ///
   /// \param[in] measurement  Measurement vector z
   /// \param[in] predicted    Predicted measurement h(x)
@@ -151,6 +151,11 @@ TEST_REMOVE_PROTECTED:
     assert(cov.determinant() > 0);
   }
 };
+
+// out-of-class definition of the pure virtual destructor (keeps the class abstract while
+// still providing the destructor implementation required by the concrete models)
+template <typename ObservationModel_, typename ObservationModelTrait_>
+ExtendedObservationModel<ObservationModel_, ObservationModelTrait_>::~ExtendedObservationModel() = default;
 
 } // namespace observation
 } // namespace tracking

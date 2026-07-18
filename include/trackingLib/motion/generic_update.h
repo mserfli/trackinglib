@@ -45,6 +45,9 @@ public:
   /// \param[in]     filter             The filter instance
   /// \param[in,out] motionModel        The motion model whose state and covariance are updated
   /// \param[in]     observationModels  Observation models carrying measurement z and covariance R
+  /// \note Defensive skips are silent: degenerate measurement rows are dropped and a stacked R
+  ///       that cannot be factorized/decomposed skips the whole update — the void return gives
+  ///       the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = DefaultUpdateMode, typename... ObservationModels_>
   static void run(const KalmanFilterType& filter, MotionModel_& motionModel, const ObservationModels_&... observationModels);
 
@@ -54,6 +57,9 @@ public:
   /// \param[in]     filter             The filter instance
   /// \param[in,out] motionModel        The motion model whose information vector and matrix are updated
   /// \param[in]     observationModels  Observation models carrying measurement z and covariance R
+  /// \note Defensive skips are silent: degenerate measurement rows are dropped and a stacked R
+  ///       that cannot be inverted/factorized skips the whole update — the void return gives
+  ///       the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = DefaultUpdateMode, typename... ObservationModels_>
   static void run(const InformationFilterType& filter, MotionModel_& motionModel, const ObservationModels_&... observationModels);
 

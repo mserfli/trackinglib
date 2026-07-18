@@ -61,7 +61,7 @@ public:
   /// \brief Predict the measurement h(x) = [vx, vy]' for the given state
   /// \param[in] state  State vector the measurement is predicted for
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurement(const StateVec& state) const -> MeasurementVec final
+  auto predictMeasurement(const StateVec& state) const -> MeasurementVec
   {
     MeasurementVec predicted{};
     predicted.at_unsafe(MEAS_VX) = state.at_unsafe(StateDef_::VX);
@@ -72,7 +72,7 @@ public:
   /// \brief Compute the measurement Jacobian H = dh/dx at the given state
   /// \param[out] jacobian  The measurement Jacobian to be filled
   /// \param[in]  state     State vector the Jacobian is linearized at (unused, model is linear)
-  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const final
+  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const
   {
     static_cast<void>(state);
     jacobian.setZeros();

@@ -102,18 +102,10 @@ inline void KalmanFilter<CovarianceMatrixPolicy_>::updateState(math::Vector<valu
       const value_type                      nuCorr = nuEff.at_unsafe(i) - (hi * dx);
       x += (nuCorr / s) * v;
 
-      if constexpr (CovarianceMatrixPolicy_::is_factored)
-      {
-        // Agee-Turner rank-1 downdate keeps the UDU factorization intact
-        P.rank1Update(static_cast<value_type>(-1.0) / s, v);
-      }
-      else
-      {
-        // outer product through the Matrix base as Vector::operator* is the dot product
-        const typename math::Vector<value_type, DimX_>::BaseMatrix& vMat = v;
-        P -= (static_cast<value_type>(1.0) / s) * (vMat * v.transpose());
-        P.symmetrize();
-      }
+      // rank-1 downdate P -= v*v'/s via the shared covariance contract: Agee-Turner keeps the
+      // UDU factorization intact for the factored policy, the full policy subtracts the
+      // symmetric outer product directly
+      P.rank1Update(static_cast<value_type>(-1.0) / s, v);
     }
   }
 }

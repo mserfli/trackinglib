@@ -54,8 +54,9 @@ public:
   /// \param[in]     z  Effective measurement z = nu + H*x of the linearized observation model
   /// \param[in]     H  Measurement Jacobian dh/dx evaluated at the state estimate
   /// \param[in]     R  Measurement covariance
-  /// \note If R is not invertible (full policy) the update is skipped; measurement rows with a
-  ///       non-positive variance are skipped defensively (factored policy).
+  /// \note If R is not invertible (full policy) or cannot be decomposed for decorrelation
+  ///       (factored policy) the update is skipped; measurement rows with a non-positive
+  ///       variance are skipped defensively (factored policy). All skips are silent (void return).
   template <typename UpdateMode_ = update_mode::Default<CovarianceMatrixPolicy_>, sint32 DimX_, sint32 DimZ_>
   inline static void updateState(math::Vector<value_type, DimX_>&              y,
                                  CovarianceMatrixType<DimX_>&                  Y,

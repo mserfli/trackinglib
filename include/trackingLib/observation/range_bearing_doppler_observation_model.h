@@ -21,7 +21,10 @@ namespace observation
 ///
 /// The bearing innovation is wrapped into [-pi, pi] by the shadowed computeInnovation().
 /// If the StateDef provides no velocity, the doppler component is predicted as zero with a zero
-/// Jacobian row (the doppler measurement then only contributes via its variance).
+/// Jacobian row: the zero row yields a zero gain column, so the doppler measurement contributes
+/// nothing to the state update (it is effectively ignored, it does NOT contribute via its
+/// variance). With a correlated R the decorrelation may still mix the doppler component into the
+/// range/bearing rows - that is correct conditioning on the correlated component, not a defect.
 ///
 /// \tparam CovarianceMatrixPolicy_ Policy type that defines the covariance matrix implementation
 /// \tparam StateDef_ State definition structure of the observed motion model (requires X and Y)
@@ -72,7 +75,7 @@ public:
   /// \brief Predict the measurement h(x) = [range, bearing, doppler]' for the given state
   /// \param[in] state  State vector the measurement is predicted for
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurement(const StateVec& state) const -> MeasurementVec final
+  auto predictMeasurement(const StateVec& state) const -> MeasurementVec
   {
     const value_type x     = state.at_unsafe(StateDef_::X);
     const value_type y     = state.at_unsafe(StateDef_::Y);
@@ -98,7 +101,7 @@ public:
   /// \param[out] jacobian  The measurement Jacobian to be filled
   /// \param[in]  state     State vector the Jacobian is linearized at
   /// \note The squared range is clamped to RANGE_SQ_MIN to protect against division by zero
-  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const final
+  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const
   {
     const value_type x       = state.at_unsafe(StateDef_::X);
     const value_type y       = state.at_unsafe(StateDef_::Y);

@@ -68,7 +68,7 @@ public:
   /// \brief Predict the measurement h(x) = [sqrt(x^2+y^2), atan2(y,x)]' for the given state
   /// \param[in] state  State vector the measurement is predicted for
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurement(const StateVec& state) const -> MeasurementVec final
+  auto predictMeasurement(const StateVec& state) const -> MeasurementVec
   {
     const value_type x = state.at_unsafe(StateDef_::X);
     const value_type y = state.at_unsafe(StateDef_::Y);
@@ -83,7 +83,7 @@ public:
   /// \param[out] jacobian  The measurement Jacobian to be filled
   /// \param[in]  state     State vector the Jacobian is linearized at
   /// \note The squared range is clamped to RANGE_SQ_MIN to protect against division by zero
-  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const final
+  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const
   {
     const value_type x       = state.at_unsafe(StateDef_::X);
     const value_type y       = state.at_unsafe(StateDef_::Y);

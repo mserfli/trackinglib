@@ -54,7 +54,14 @@ public:
   /// \param[in]     innovation  Innovation nu = z - h(x) evaluated at the given state
   /// \param[in]     H           Measurement Jacobian dh/dx evaluated at the given state
   /// \param[in]     R           Measurement covariance
-  /// \note Measurement rows with a non-positive innovation variance are skipped defensively.
+  /// \note Measurement rows with a non-positive innovation variance are skipped defensively;
+  ///       if R cannot be decomposed for decorrelation (Sequential path) the whole update is
+  ///       skipped. Both skips are silent (void return).
+  /// \note The full-policy Sequential path applies the conventional scalar downdate P -= v*v'/s.
+  ///       It is algebraically equal to the Block (Joseph) result but numerically less robust
+  ///       when a measurement is much more precise than the prior (gain -> 1): the subtractive
+  ///       form can lose positive definiteness under roundoff. Block is the robust default for
+  ///       the full policy; the UDU-factored policy is inherently stable.
   template <typename UpdateMode_ = update_mode::Default<CovarianceMatrixPolicy_>, sint32 DimX_, sint32 DimZ_>
   inline static void updateState(math::Vector<value_type, DimX_>&              x,
                                  CovarianceMatrixType<DimX_>&                  P,

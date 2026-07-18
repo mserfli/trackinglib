@@ -76,6 +76,22 @@ inline auto CovarianceMatrixFull<ValueType_, Size_>::apaT(
 }
 
 template <typename ValueType_, sint32 Size_>
+inline void CovarianceMatrixFull<ValueType_, Size_>::rank1Update(const ValueType_ c, const Vector<ValueType_, Size_>& x)
+{
+  assert(this->isSymmetric() && "Covariance currently not symmetric");
+  // only the upper triangle of c*x*x' is accumulated; the lower triangle is mirrored to keep
+  // the covariance exactly symmetric
+  for (sint32 i = 0; i < Size_; ++i)
+  {
+    for (sint32 j = i; j < Size_; ++j)
+    {
+      BaseSquareMatrix::at_unsafe(i, j) += c * x.at_unsafe(i) * x.at_unsafe(j);
+      BaseSquareMatrix::at_unsafe(j, i) = BaseSquareMatrix::at_unsafe(i, j);
+    }
+  }
+}
+
+template <typename ValueType_, sint32 Size_>
 inline void CovarianceMatrixFull<ValueType_, Size_>::setVariance(const sint32 idx, const ValueType_ val)
 {
   constexpr auto zero = static_cast<ValueType_>(0.0);

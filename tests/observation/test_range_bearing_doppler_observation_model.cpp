@@ -18,6 +18,27 @@ using RbdModel = tracking::observation::RangeBearingDopplerObservationModel<Full
 namespace
 {
 
+/// \brief Position-only StateDef exercising the has_velocity_v == false branch
+struct StateDefPosOnly
+{
+  enum
+  {
+    X = 0,
+    Y,
+    NUM_STATE_VARIABLES
+  };
+};
+
+} // namespace
+
+// instatiate the no-velocity branch for full coverage report
+template class tracking::observation::RangeBearingDopplerObservationModel<FullPolicy, StateDefPosOnly>;
+
+using RbdModelPosOnly = tracking::observation::RangeBearingDopplerObservationModel<FullPolicy, StateDefPosOnly>;
+
+namespace
+{
+
 /// \brief Compare the analytic Jacobian against a central finite difference of predictMeasurement
 template <typename ObservationModel_>
 void expectJacobianMatchesFiniteDifference(const ObservationModel_&                    obs,
@@ -97,4 +118,47 @@ TEST(RangeBearingDopplerObservationModel, computeInnovation__WrapsBearing) // NO
   EXPECT_NEAR(innovation.at_unsafe(RbdModel::MEAS_RANGE), 0.0, 1e-12);
   EXPECT_NEAR(innovation.at_unsafe(RbdModel::MEAS_BEARING), -0.2, 1e-9);
   EXPECT_NEAR(innovation.at_unsafe(RbdModel::MEAS_DOPPLER), 0.5, 1e-12);
+}
+
+TEST(RangeBearingDopplerObservationModel, predictMeasurement__DopplerZeroWithoutVelocity) // NOLINT
+{
+  // clang-format off
+  const auto obs = RbdModelPosOnly::FromLists({0, 0, 0}, {
+    {1, 0, 0},
+    {0, 1, 0},
+    {0, 0, 1}
+  });
+  // clang-format on
+  const auto state = RbdModelPosOnly::StateVec::FromList({3.0, 4.0}); // {X, Y}
+
+  const auto predicted = obs.predictMeasurement(state);
+
+  EXPECT_NEAR(predicted.at_unsafe(RbdModelPosOnly::MEAS_RANGE), 5.0, 1e-12);
+  EXPECT_NEAR(predicted.at_unsafe(RbdModelPosOnly::MEAS_BEARING), std::atan2(4.0, 3.0), 1e-12);
+  // without velocity states the doppler cannot be predicted: it is zero by definition
+  EXPECT_NEAR(predicted.at_unsafe(RbdModelPosOnly::MEAS_DOPPLER), 0.0, 1e-12);
+}
+
+TEST(RangeBearingDopplerObservationModel, computeJacobian__DopplerRowZeroWithoutVelocity) // NOLINT
+{
+  // clang-format off
+  const auto obs = RbdModelPosOnly::FromLists({0, 0, 0}, {
+    {1, 0, 0},
+    {0, 1, 0},
+    {0, 0, 1}
+  });
+  // clang-format on
+  const auto state = RbdModelPosOnly::StateVec::FromList({3.0, 4.0});
+
+  typename RbdModelPosOnly::JacobianMatrix H{};
+  obs.computeJacobian(H, state);
+
+  // range/bearing rows are still populated
+  EXPECT_NEAR(H.at_unsafe(RbdModelPosOnly::MEAS_RANGE, StateDefPosOnly::X), 3.0 / 5.0, 1e-12);
+  EXPECT_NEAR(H.at_unsafe(RbdModelPosOnly::MEAS_BEARING, StateDefPosOnly::Y), 3.0 / 25.0, 1e-12);
+  // the doppler row is all-zero: zero gain column, the doppler contributes nothing to the update
+  for (auto col = 0; col < RbdModelPosOnly::DimX; ++col)
+  {
+    EXPECT_NEAR(H.at_unsafe(RbdModelPosOnly::MEAS_DOPPLER, col), 0.0, 1e-12) << "col " << col;
+  }
 }

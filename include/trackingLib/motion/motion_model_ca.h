@@ -13,7 +13,6 @@ namespace tracking
 namespace motion
 {
 
-// TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
 
 // forward declaration to avoid recursive inclusion

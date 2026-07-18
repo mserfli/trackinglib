@@ -13,6 +13,7 @@
 #include "math/linalg/square_matrix.hpp"              // IWYU pragma: keep
 #include "math/linalg/vector.hpp"                     // IWYU pragma: keep
 #include <type_traits>
+#include <utility>
 
 namespace tracking
 {

@@ -172,6 +172,25 @@ public:
   template <bool IsRowMajor_>
   auto apaT(const tracking::math::SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull;
 
+  /// \brief Rank-1 update: P ± c*x*x^T
+  ///
+  /// Performs a rank-1 update of the covariance matrix: P = P + c*x*x^T
+  /// where c is a scalar and x is a vector. This operation is fundamental
+  /// to sequential Kalman filter measurement updates.
+  ///
+  /// When c > 0: rank-1 update (increases uncertainty)
+  /// When c < 0: rank-1 downdate (decreases uncertainty)
+  ///
+  /// \param[in] c Scalar multiplier (positive for update, negative for downdate)
+  /// \param[in] x Update vector defining the outer product x*x^T
+  ///
+  /// \note Part of the covariance contract shared with CovarianceMatrixFactored, allowing
+  ///       policy-independent sequential measurement updates
+  /// \note Only the upper triangle is computed and mirrored into the lower triangle
+  ///       (the result is symmetric by construction)
+  /// \note Time complexity: O(n^2) where n = Size_
+  void rank1Update(const ValueType_ c, const Vector<ValueType_, Size_>& x);
+
   /// \brief Set diagonal variance element and clear correlations
   ///
   /// Sets the variance (diagonal element) at position (idx, idx) to the given value

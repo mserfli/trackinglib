@@ -10,6 +10,7 @@
 #include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
 #include "math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "math/linalg/errors.h"
+#include "motion/contracts/motion_model_intf.h"
 #include "motion/generic_predict.hpp"   // IWYU pragma: keep
 #include "motion/generic_update.hpp"    // IWYU pragma: keep
 #include "motion/motion_model_traits.h" // IWYU pragma: keep
@@ -20,7 +21,6 @@ namespace tracking
 namespace motion
 {
 
-// TODO(matthias): add interface contract
 // TODO(matthias): add doxygen
 
 /// \brief Abstract Motion Model interface
@@ -79,6 +79,7 @@ class ExtendedMotionModel
     : public IMotionModel<typename MotionModelTrait_::CovarianceMatrixPolicy>
     , public generic::Predict<MotionModel_, typename MotionModelTrait_::CovarianceMatrixPolicy>
     , public StateMem<typename MotionModelTrait_::CovarianceMatrixPolicy, MotionModelTrait_::Size>
+    , public contract::MotionModelIntf<MotionModel_>
     , public base::contract::RequireAbstractIntf<ExtendedMotionModel<MotionModel_, MotionModelTrait_>>
 {
 public:
@@ -170,17 +171,21 @@ public:
     BaseGenericPredict::run(dt, filter, egoMotion);
   }
 
-  /// \brief Updates the underlying MotionModel with the given observation model measurements
+  /// \brief Kalman measurement update of the underlying MotionModel (state space)
   ///
-  /// A single observation model performs a plain measurement update; multiple models are
-  /// composed into one joint (stacked) update. The update mode is selected at compile time
-  /// (see filter::update_mode) and defaults to the policy-appropriate mode: Block for the
+  /// Applies the (extended) Kalman measurement update directly on the stored state vector x and
+  /// state covariance P. A single observation model performs a plain measurement update; multiple
+  /// models are composed into one joint (stacked) update. The update mode is selected at compile
+  /// time (see filter::update_mode) and defaults to the policy-appropriate mode: Block for the
   /// full covariance policy, Sequential for the UDU-factored policy.
   ///
   /// \tparam UpdateMode_         Update mode tag (filter::update_mode::Block or ::Sequential)
   /// \tparam ObservationModels_  One or more observation model types (composed if multiple)
   /// \param[in] filter             The kalman filter instance
   /// \param[in] observationModels  Observation models carrying measurement z and covariance R
+  /// \note Defensive skips are silent: measurement rows with a non-positive innovation variance
+  ///       are dropped, and a measurement covariance R that cannot be decomposed skips the whole
+  ///       update — the void return gives the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = filter::update_mode::Default<CovarianceMatrixPolicy>, typename... ObservationModels_>
   void update(const KalmanFilterType& filter, const ObservationModels_&... observationModels)
   {
@@ -188,17 +193,23 @@ public:
         filter, static_cast<MotionModel_&>(*this), observationModels...);
   }
 
-  /// \brief Updates the underlying MotionModel with the given observation model measurements
+  /// \brief Information measurement update of the underlying MotionModel (information space)
   ///
-  /// A single observation model performs a plain measurement update; multiple models are
-  /// composed into one joint (stacked) update. The update mode is selected at compile time
-  /// (see filter::update_mode) and defaults to the policy-appropriate mode: Block for the
-  /// full covariance policy, Sequential for the UDU-factored policy.
+  /// Applies the purely additive information-form measurement update on the stored information
+  /// vector y = Y*x and information matrix Y = inv(P). To evaluate the observation models at the
+  /// state estimate, one info->state->info round-trip is performed internally
+  /// (convertStateVecIntoStateSpace / convertStateVecIntoInformationSpace with the prior Y) and
+  /// the effective measurement z_eff = nu + H*x of the linearized observation model is used
+  /// (equal to the raw measurement for linear models). Multiple models are composed into one
+  /// joint (stacked) update; the update mode defaults to the policy-appropriate mode.
   ///
   /// \tparam UpdateMode_         Update mode tag (filter::update_mode::Block or ::Sequential)
   /// \tparam ObservationModels_  One or more observation model types (composed if multiple)
   /// \param[in] filter             The information filter instance
   /// \param[in] observationModels  Observation models carrying measurement z and covariance R
+  /// \note Defensive skips are silent: measurement rows with a non-positive variance are dropped,
+  ///       and a non-invertible / non-decomposable measurement covariance R skips the whole
+  ///       update — the void return gives the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = filter::update_mode::Default<CovarianceMatrixPolicy>, typename... ObservationModels_>
   void update(const InformationFilterType& filter, const ObservationModels_&... observationModels)
   {

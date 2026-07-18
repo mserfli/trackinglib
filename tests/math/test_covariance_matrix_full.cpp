@@ -787,3 +787,95 @@ TEST(CovarianceMatrixFull, inverse_NegativeDefiniteMatrix_ExpectError) // NOLINT
     auto result = negDef.inverse();
     EXPECT_FALSE(result.has_value());
 }
+
+TEST(CovarianceMatrixFull, rank1Update__MatchesOuterProductReference) // NOLINT
+{
+  // clang-format off
+  auto cov = CovarianceMatrixFull<float64, 3>::FromList({
+    {4.0, 1.0, 0.5},
+    {1.0, 3.0, 0.2},
+    {0.5, 0.2, 2.0}
+  });
+  // P + c*x*x' with c = 2 and x = {1, 2, 3}
+  const auto expCov = CovarianceMatrixFull<float64, 3>::FromList({
+    {6.0,  5.0,  6.5},
+    {5.0, 11.0, 12.2},
+    {6.5, 12.2, 20.0}
+  });
+  // clang-format on
+  const auto x = Vector<float64, 3>::FromList({1.0, 2.0, 3.0});
+
+  // call UUT
+  cov.rank1Update(2.0, x);
+
+  // verify
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = 0; col < 3; ++col)
+    {
+      EXPECT_FLOAT_EQ(cov.at_unsafe(row, col), expCov.at_unsafe(row, col));
+    }
+  }
+  EXPECT_TRUE(cov.isSymmetric());
+}
+
+TEST(CovarianceMatrixFull, rank1Update_downdate__SymmetricAndMatchesReference) // NOLINT
+{
+  // clang-format off
+  auto cov = CovarianceMatrixFull<float64, 3>::FromList({
+    {4.0, 1.0, 0.5},
+    {1.0, 3.0, 0.2},
+    {0.5, 0.2, 2.0}
+  });
+  // P + c*x*x' with c = -0.5 and x = {2, 1, 0} (sequential measurement update style downdate)
+  const auto expCov = CovarianceMatrixFull<float64, 3>::FromList({
+    {2.0, 0.0, 0.5},
+    {0.0, 2.5, 0.2},
+    {0.5, 0.2, 2.0}
+  });
+  // clang-format on
+  const auto x = Vector<float64, 3>::FromList({2.0, 1.0, 0.0});
+
+  // call UUT
+  cov.rank1Update(-0.5, x);
+
+  // verify
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = 0; col < 3; ++col)
+    {
+      EXPECT_FLOAT_EQ(cov.at_unsafe(row, col), expCov.at_unsafe(row, col));
+    }
+  }
+  EXPECT_TRUE(cov.isSymmetric());
+  EXPECT_TRUE(cov.isPositiveDefinite());
+}
+
+TEST(CovarianceMatrixFull, rank1Update_fullVsFactored__SameComposedResult) // NOLINT
+{
+  // the rank1Update contract must produce the same covariance for both representations
+  // clang-format off
+  auto covFull = CovarianceMatrixFull<float64, 3>::FromList({
+    {4.0, 1.0, 0.5},
+    {1.0, 3.0, 0.2},
+    {0.5, 0.2, 2.0}
+  });
+  // clang-format on
+  auto covFact = tracking::math::conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<float64, 3>(covFull);
+  ASSERT_TRUE(covFact.has_value());
+  const auto x = Vector<float64, 3>::FromList({0.3, -1.2, 2.1});
+
+  // call UUT on both representations
+  covFull.rank1Update(0.7, x);
+  covFact.value().rank1Update(0.7, x);
+
+  // verify the composed factored result equals the full result
+  const auto composed = covFact.value()();
+  for (auto row = 0; row < 3; ++row)
+  {
+    for (auto col = 0; col < 3; ++col)
+    {
+      EXPECT_NEAR(composed.at_unsafe(row, col), covFull.at_unsafe(row, col), 1e-12);
+    }
+  }
+}
