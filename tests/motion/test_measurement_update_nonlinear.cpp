@@ -85,7 +85,7 @@ TEST(MeasurementUpdateNonlinear, update_KalmanFullRangeBearing__MatchesManualEkf
   obs.computeJacobian(H, x0);
   const auto nu = obs.computeInnovation(obs.getVec(), obs.predictMeasurement(x0));
 
-  const tracking::math::Matrix<Testvalue_type, 4, 2>   PHt{P0 * H.transpose()};
+  const tracking::math::Matrix<Testvalue_type, 4, 2>    PHt{P0 * H.transpose()};
   const tracking::math::SquareMatrix<Testvalue_type, 2> S{(H * PHt) + obs.getCov()()};
   const auto                                            Sinv = S.inverse();
   const tracking::math::Matrix<Testvalue_type, 4, 2>    K{PHt * Sinv};
@@ -166,9 +166,9 @@ TEST(MeasurementUpdateNonlinear, update_InformationFactoredVsKalmanFactored_Rang
 
 TEST(MeasurementUpdateNonlinear, update_KalmanFullSequentialVsBlock_RangeBearing__SamePosterior) // NOLINT
 {
-  auto       mmBlock      = makePrior<MMFull>();
-  auto       mmSequential = makePrior<MMFull>();
-  const auto obs          = makeRangeBearingObs<RbFull>();
+  auto             mmBlock      = makePrior<MMFull>();
+  auto             mmSequential = makePrior<MMFull>();
+  const auto       obs          = makeRangeBearingObs<RbFull>();
   const KalmanFull filter{};
 
   // H is evaluated once at the prior and the sequential path re-linearizes later innovations
