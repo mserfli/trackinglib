@@ -21,12 +21,14 @@ Academic C++ header-only library for object tracking using Kalman filter variant
 
 The [architecture overview](doc/info_architecture.md) shows a class diagram of the core tracking classes and their relationships.
 
-The state and covariance prediction flow depending on the used filter (Kalman, Informationfilter) and used covariance representation (full, factored) is documented in the [sequence diagram](doc/info_filter_prediction.md).
+The state and covariance prediction flow depending on the used filter (Kalman, Informationfilter) and used covariance representation (full, factored) is documented in the [prediction sequence diagram](doc/info_filter_prediction.md).
+
+The measurement update flow — how the observation models are evaluated and how the update differs between the filters and covariance representations — is documented in the [update sequence diagram](doc/info_filter_update.md).
 
 
 ## Key Concepts
 
-**Library Design**: Header-only C++ library for academic object tracking using Extended Kalman Filter (EKF) and Information Filter (IF) variants on the available motion models. All motion models can be configured to use a factored or normal covariance matrix and have a predictor with built-in support for the ego motion compensation. 
+**Library Design**: Header-only C++ library for academic object tracking using Extended Kalman Filter (EKF) and Information Filter (IF) variants on the available motion models. All motion models can be configured to use a factored or normal covariance matrix and have a predictor with built-in support for the ego motion compensation. Measurement updates are driven by interchangeable observation models (position, velocity, range-bearing, range-bearing-doppler) that can be composed into a single joint update, with the block or sequential update algorithm selected at compile time to match the covariance representation.
 
 The factored implementations are mainly based on publications from D'Souza, Bierman, Thornton, Carlson (see References).
 
@@ -71,11 +73,64 @@ mm_factored.predict(0.1, informationFilter, egoMotion_factored); // Information 
 
 This example highlights the template-based design enabling compile-time selection of filter types and covariance representations, ensuring optimal performance and numerical stability.
 
+### Code Example: Measurement Update with Observation Models
+
+Correcting a motion model with a measurement mirrors the prediction path: an observation model
+carries the measurement `z` and its covariance `R`, and `update()` applies the (extended) Kalman or
+information-form update in place. Each observation model describes *one* measured quantity — e.g.
+position (`X, Y`) and velocity (`VX, VY`) are separate models. A single observation model performs a
+plain update; passing multiple models composes them into one joint (stacked) update. The update
+algorithm (block vs. sequential) defaults to the covariance policy and can be overridden at the call
+site.
+
+When a single measurement device delivers several quantities at the same time step (e.g. a sensor
+reporting both position and velocity), list all of its observation models in **one** `update()`
+call. They are then stacked into a single joint update (`H`, `z` and the block-diagonal `R` are
+composed together) — this is the correct way to fuse simultaneous measurements, not two consecutive
+`update()` calls.
+
+```cpp
+#include "trackingLib/motion/motion_model_cv.hpp"
+#include "trackingLib/filter/kalman_filter.hpp"
+#include "trackingLib/observation/position_observation_model.h"
+#include "trackingLib/observation/velocity_observation_model.h"
+
+using namespace tracking;
+
+using Policy = math::FullCovarianceMatrixPolicy<float64>;
+using MM     = motion::MotionModelCV<Policy>;
+
+// Observation models observing the CV state definition
+using PositionObs = observation::PositionObservationModel<Policy, motion::StateDefCV>;
+using VelocityObs = observation::VelocityObservationModel<Policy, motion::StateDefCV>;
+
+MM::KalmanFilterType kalmanFilter{};
+auto motionModel = MM::FromLists({/* State ... */}, {/* Covariance ... */});
+
+// Measurement vector z and covariance R per observation model
+auto posObs = PositionObs::FromLists({/* x, y */},     {/* R ... */});
+auto velObs = VelocityObs::FromLists({/* vx, vy */},   {/* R ... */});
+
+// Single-model update (block for full, sequential for factored — chosen automatically)
+motionModel.update(kalmanFilter, posObs);
+
+// One device measuring BOTH position and velocity at this time step: list both models in a
+// single call so they are fused as one joint (stacked) update — NOT two consecutive update() calls
+motionModel.update(kalmanFilter, posObs, velObs);
+```
+
+For the Information filter the same call operates in information space; the observation models are
+evaluated on the state mean internally and the update accumulates information additively
+(`Y += H'*inv(R)*H`). See the [update sequence diagram](doc/info_filter_update.md) for the full
+flow and the [single object tracking example](examples/single_object_tracking.cpp) for a runnable
+scenario combining prediction and updates.
+
 
 **Core Components**:
 - **Motion Models**: Constant Velocity (CV) and Constant Acceleration (CA) with ego motion compensation
+- **Observation Models**: Position, Velocity, Range-Bearing and Range-Bearing-Doppler, composable into a single joint measurement update
 - **Matrix Library**: Self-contained linear algebra library with UDU factored covariance matrices for enhanced numerical stability, ensuring positive semi-definiteness by design
-- **Filter Variants**: EKF and IF with both full and factored covariance support
+- **Filter Variants**: EKF and IF with both full and factored covariance support, with block and sequential measurement update modes
 
 **Key Requirements**:
 - **Standards**: C++17 minimum, AUTOSAR C++14 compliant
@@ -101,15 +156,18 @@ This example highlights the template-based design enabling compile-time selectio
 - **Error Handling**: tl::expected (Rust-style Result pattern)
 
 
+## Measurement Update
+
+The measurement update mirrors the prediction path and is fully implemented for both filter and
+covariance variants:
+- **Observation Model Framework**: C++17 framework with the pure abstract `IObservationModel`, the CRTP `ExtendedObservationModel`, and concrete models (Position, Range-Bearing, Velocity, Range-Bearing-Doppler).
+- **GenericUpdate Implementation**: Supports sequential, block, and composed (multi-model) update modes, selected at compile time to match the covariance representation.
+- **Filter-Specific Updates**: Dedicated measurement updates for both Kalman (gain-based, Joseph-stabilized) and Information (additive) filters.
+- **Motion Model Integration**: Extended motion models expose `update()` methods accepting one or more observation models.
+
+See the [update sequence diagram](doc/info_filter_update.md) for the detailed flow.
+
 ## Planned Features
-
-### Measurement Update Implementation (In Progress)
-
-The library is undergoing a comprehensive update to implement measurement updates.
-- **Observation Model Framework**: New C++17 framework with pure abstract `IObservationModel`, `ExtendedObservationModel`, and concrete models (Position, Range-Bearing, Velocity, Range-Bearing-Doppler).
-- **GenericUpdate Implementation**: Support for sequential, block, and composed update modes.
-- **Filter-Specific Updates**: Optimized measurement updates for both Kalman and Information filters.
-- **Motion Model Integration**: Extended motion models with update methods supporting multiple observation models.
 
 ### UKF and non-linear Motion Models
 Future plans include adding support for Unscented Kalman Filters and extending the currently linear Motion Models with non-linear models like CTRV and CTRA.

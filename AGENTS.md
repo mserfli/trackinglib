@@ -110,6 +110,7 @@ folder summary above.
   just a style preference.
 - **Symbol lookup**: `.repo.tags` at the repo root is a ctags-style index. Never read it directly
   (it's large) — grep/ripgrep it for symbol locations first to save context.
+- **Plan location**: all plans created in planning mode shall be stored in the folder  plans/recent
 
 ## Testing
 
@@ -146,4 +147,7 @@ Ask first:
 
 ## Known limitations
 
+- out-of-sequence-measurements
+- sensor frame vs. modelling frame
+- block update of multiple synchronized sensors without exploding branching
 - `UnscentedKalmanFilter` is a header stub — not implemented.
