@@ -43,14 +43,24 @@ math/     Self-contained linear algebra (Matrix, SquareMatrix, TriangularMatrix,
           Vector, CovarianceMatrixFull/Factored) + analysis functions.
           math/linalg/conversions/ centralizes all cross-type conversions.
 filter/   KalmanFilter (EKF), InformationFilter, UnscentedKalmanFilter (stub, unimplemented).
-motion/   MotionModelCV / MotionModelCA, built via CRTP on generic::Predict, policy-based over
-          the covariance representation (full vs. UDU-factored).
+motion/   MotionModelCV / MotionModelCA, built via CRTP on generic::Predict / generic::Update,
+          policy-based over the covariance representation (full vs. UDU-factored).
+observation/  Observation models (position, velocity, range-bearing, range-bearing-doppler),
+          built via CRTP on ExtendedObservationModel, feeding generic::Update.
 ```
 
 Prediction flow (CV + EKF, representative of the other combinations): `MotionModelCV::predict()`
 → `generic::Predict::predict()` → `compensateEgoMotion()` → `applyProcessModel()` →
 `computeA/G/Q()` → `KalmanFilter::predictCovariance()`. Factored covariance updates go through
 `CovarianceMatrixFactored::thornton()` (Thornton's algorithm, keeps the UDU factorization intact).
+
+Measurement-update flow (mirrors prediction): `MotionModelCV::update()` → `generic::Update::run()`
+→ observation model's `predictMeasurement()`/`computeJacobian()` → `KalmanFilter::updateState()` /
+`InformationFilter::updateState()`, selectable at compile time via `filter/update_mode.h`
+(`Block` vs. `Sequential`, defaulted per covariance policy) and composable across multiple
+observation models in one call. Sequential (scalar/rank-1) updates support a correlated R by
+decorrelating first via UDU (`filter/measurement_decorrelation.hpp`); an already-diagonal R takes
+a no-transform fast path.
 
 In-flight design docs for larger features live in `plans/recent/` (moved to `plans/archive/`
 once done); this directory is gitignored, so treat it as local working notes, not source of truth.
@@ -100,6 +110,7 @@ folder summary above.
   just a style preference.
 - **Symbol lookup**: `.repo.tags` at the repo root is a ctags-style index. Never read it directly
   (it's large) — grep/ripgrep it for symbol locations first to save context.
+- **Plan location**: all plans created in planning mode shall be stored in the folder  plans/recent
 
 ## Testing
 
@@ -136,7 +147,7 @@ Ask first:
 
 ## Known limitations
 
+- out-of-sequence-measurements
+- sensor frame vs. modelling frame
+- block update of multiple synchronized sensors without exploding branching
 - `UnscentedKalmanFilter` is a header stub — not implemented.
-- A measurement-update / observation-model framework is planned (see README's "Planned
-  Features") but no `include/trackingLib/` code for it exists yet — check before assuming it's
-  in progress or done.

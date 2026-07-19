@@ -55,6 +55,10 @@ concept has_apaT_inplace_member_func = requires {
   { std::declval<T>().apaT(std::declval<SquareMatrix<typename T::value_type, T::dim, true>>()) } -> std::same_as<void>;
 };
 template<typename T>
+concept has_rank1Update_member_func = requires {
+  { std::declval<T>().rank1Update(std::declval<typename T::value_type>(), std::declval<Vector<typename T::value_type, T::dim>>()) } -> std::same_as<void>;
+};
+template<typename T>
 concept has_round_brackets_op = requires {
   { std::declval<T>().operator()() } -> std::convertible_to<typename T::compose_type&>;
 };
@@ -129,6 +133,7 @@ struct CovarianceMatrixIntf
     static_assert(covariance::has_composed_inverse_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_apaT_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_apaT_inplace_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(covariance::has_rank1Update_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_round_brackets_const_op<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_round_brackets_const_op_int_int<ImplType>, ERR_MSG_MISSING_FUNCTION);
     static_assert(covariance::has_determinant_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);

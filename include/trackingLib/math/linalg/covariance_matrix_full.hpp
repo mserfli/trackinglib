@@ -43,7 +43,10 @@ template <bool IsRowMajor_>
 inline void CovarianceMatrixFull<ValueType_, Size_>::apaT(const tracking::math::SquareMatrix<ValueType_, Size_, IsRowMajor_>& A)
 {
   assert(this->isSymmetric() && "Covariance currently not symmetric");
-  // calculate only the upper triangle part of P and fill lower triangle part
+  // Stage 1: AP = A*P in full - every row of AP is needed to compute any output pair below - O(n^3)
+  const auto AP = A * (*this);
+
+  // Stage 2: only the upper triangle of AP*A^T is needed, mirrored into the lower triangle - O(n^3/2)
   BaseSquareMatrix cov{};
   for (sint32 i = 0; i < Size_; ++i)
   {
@@ -52,10 +55,7 @@ inline void CovarianceMatrixFull<ValueType_, Size_>::apaT(const tracking::math::
       ValueType_ element = static_cast<ValueType_>(0);
       for (sint32 k = 0; k < Size_; ++k)
       {
-        for (sint32 l = 0; l < Size_; ++l)
-        {
-          element += A.at_unsafe(i, k) * this->at_unsafe(k, l) * A.at_unsafe(j, l);
-        }
+        element += AP.at_unsafe(i, k) * A.at_unsafe(j, k);
       }
       // construct symmetric covariance matrix by filling both upper and lower triangle
       cov.at_unsafe(i, j) = element;
@@ -73,6 +73,22 @@ inline auto CovarianceMatrixFull<ValueType_, Size_>::apaT(
   auto copy(*this);
   copy.apaT(A);
   return copy;
+}
+
+template <typename ValueType_, sint32 Size_>
+inline void CovarianceMatrixFull<ValueType_, Size_>::rank1Update(const ValueType_ c, const Vector<ValueType_, Size_>& x)
+{
+  assert(this->isSymmetric() && "Covariance currently not symmetric");
+  // only the upper triangle of c*x*x' is accumulated; the lower triangle is mirrored to keep
+  // the covariance exactly symmetric
+  for (sint32 i = 0; i < Size_; ++i)
+  {
+    for (sint32 j = i; j < Size_; ++j)
+    {
+      BaseSquareMatrix::at_unsafe(i, j) += c * x.at_unsafe(i) * x.at_unsafe(j);
+      BaseSquareMatrix::at_unsafe(j, i) = BaseSquareMatrix::at_unsafe(i, j);
+    }
+  }
 }
 
 template <typename ValueType_, sint32 Size_>
