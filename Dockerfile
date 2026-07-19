@@ -20,6 +20,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     gdb \
     wget \
     git \
+    gh \
     ca-certificates \
     python3 \
     python3-dev \
