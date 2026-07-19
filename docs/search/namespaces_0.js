@@ -5,10 +5,15 @@ var searchData=
   ['tracking_3a_3abase_3a_3acontract_2',['contract',['../namespacetracking_1_1base_1_1contract.html',1,'tracking::base']]],
   ['tracking_3a_3aenv_3',['env',['../namespacetracking_1_1env.html',1,'tracking']]],
   ['tracking_3a_3afilter_4',['filter',['../namespacetracking_1_1filter.html',1,'tracking']]],
-  ['tracking_3a_3amath_5',['math',['../namespacetracking_1_1math.html',1,'tracking']]],
-  ['tracking_3a_3amath_3a_3acontract_6',['contract',['../namespacetracking_1_1math_1_1contract.html',1,'tracking::math']]],
-  ['tracking_3a_3amath_3a_3aconversions_7',['conversions',['../namespacetracking_1_1math_1_1conversions.html',1,'tracking::math']]],
-  ['tracking_3a_3amotion_8',['motion',['../namespacetracking_1_1motion.html',1,'tracking']]],
-  ['tracking_3a_3amotion_3a_3acontract_9',['contract',['../namespacetracking_1_1motion_1_1contract.html',1,'tracking::motion']]],
-  ['tracking_3a_3amotion_3a_3ageneric_10',['generic',['../namespacetracking_1_1motion_1_1generic.html',1,'tracking::motion']]]
+  ['tracking_3a_3afilter_3a_3adetail_5',['detail',['../namespacetracking_1_1filter_1_1detail.html',1,'tracking::filter']]],
+  ['tracking_3a_3afilter_3a_3aupdate_5fmode_6',['update_mode',['../namespacetracking_1_1filter_1_1update__mode.html',1,'tracking::filter']]],
+  ['tracking_3a_3amath_7',['math',['../namespacetracking_1_1math.html',1,'tracking']]],
+  ['tracking_3a_3amath_3a_3acontract_8',['contract',['../namespacetracking_1_1math_1_1contract.html',1,'tracking::math']]],
+  ['tracking_3a_3amath_3a_3aconversions_9',['conversions',['../namespacetracking_1_1math_1_1conversions.html',1,'tracking::math']]],
+  ['tracking_3a_3amotion_10',['motion',['../namespacetracking_1_1motion.html',1,'tracking']]],
+  ['tracking_3a_3amotion_3a_3acontract_11',['contract',['../namespacetracking_1_1motion_1_1contract.html',1,'tracking::motion']]],
+  ['tracking_3a_3amotion_3a_3adetail_12',['detail',['../namespacetracking_1_1motion_1_1detail.html',1,'tracking::motion']]],
+  ['tracking_3a_3amotion_3a_3ageneric_13',['generic',['../namespacetracking_1_1motion_1_1generic.html',1,'tracking::motion']]],
+  ['tracking_3a_3aobservation_14',['observation',['../namespacetracking_1_1observation.html',1,'tracking']]],
+  ['tracking_3a_3aobservation_3a_3acontract_15',['contract',['../namespacetracking_1_1observation_1_1contract.html',1,'tracking::observation']]]
 ];

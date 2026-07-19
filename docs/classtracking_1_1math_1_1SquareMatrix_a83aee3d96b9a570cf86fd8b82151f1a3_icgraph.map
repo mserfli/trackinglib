@@ -1,22 +1,24 @@
 <map id="tracking::math::SquareMatrix::transpose" name="tracking::math::SquareMatrix::transpose">
-<area shape="rect" id="Node000001" title="Fast transpose without changing the layout (zero&#45;copy view)" alt="" coords="539,141,751,181"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#acadfdd5893de13e8177427e3cf1b7784" title="Compute inverse as full covariance matrix." alt="" coords="25,5,224,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="617,132,563,79,528,54,490,35,423,18,353,11,286,12,225,18,224,12,285,7,354,6,424,13,492,30,531,49,566,75,621,128"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ab1b0b450b5e2daae321027ca80605dca" title="Compute inverse in factored form." alt="" coords="292,45,491,85"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="585,138,490,99,456,87,458,82,492,94,587,133"/>
-<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a3ca0f4a537a5362a74ef765ef46c1986" title="Calculates the matrix inverse using Cholesky decomposition." alt="" coords="292,109,491,149"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="525,148,490,144,491,139,525,143"/>
-<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a1714e069ca1f44b5b2bc0fbe47df7922" title="Creates the composed covariance." alt="" coords="292,173,491,213"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="525,178,491,183,490,178,525,173"/>
-<area shape="rect" id="Node000007" href="$classtracking_1_1filter_1_1KalmanFilter.html#ab66a65941a9b1adbdd6d2ed0c37c4dc8" title=" " alt="" coords="301,237,482,277"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="587,189,492,227,458,239,456,234,490,222,585,184"/>
-<area shape="rect" id="Node000009" href="$classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" title=" " alt="" coords="293,305,490,345"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="616,192,561,242,492,291,459,307,456,302,489,286,558,238,613,188"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="313,107,291,99,194,63,196,58,293,94,314,102"/>
-<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a2b6eac9001311d011d12a2ce79706938" title="Compute inverse as full covariance matrix." alt="" coords="16,109,233,149"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="278,131,234,131,234,126,278,126"/>
-<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter." alt="" coords="5,218,244,287"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="287,258,244,257,244,252,287,252"/>
-<area shape="rect" id="Node000010" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="32,311,217,351"/>
-<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="279,330,218,332,217,326,279,325"/>
+<area shape="rect" id="Node000001" title="Fast transpose without changing the layout (zero&#45;copy view)" alt="" coords="539,174,751,214"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#acadfdd5893de13e8177427e3cf1b7784" title="Compute inverse as full covariance matrix." alt="" coords="25,7,224,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="622,164,600,131,569,95,532,62,490,37,424,17,354,9,286,10,225,16,224,11,286,5,354,4,425,12,492,32,535,58,573,92,604,128,627,161"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ab1b0b450b5e2daae321027ca80605dca" title="Compute inverse in factored form." alt="" coords="292,46,491,86"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="603,168,550,134,490,101,461,89,463,84,492,96,553,129,606,164"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a3ca0f4a537a5362a74ef765ef46c1986" title="Calculates the matrix inverse using Cholesky decomposition." alt="" coords="292,110,491,150"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="551,173,470,153,472,148,552,168"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a1714e069ca1f44b5b2bc0fbe47df7922" title="Creates the composed covariance." alt="" coords="292,174,491,214"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="525,197,491,197,491,191,525,191"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1filter_1_1KalmanFilter.html#ab66a65941a9b1adbdd6d2ed0c37c4dc8" title=" " alt="" coords="301,238,482,278"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="552,220,472,241,470,236,551,215"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" title=" " alt="" coords="293,302,490,342"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="606,224,553,259,492,293,463,305,461,300,490,288,550,255,603,220"/>
+<area shape="rect" id="Node000011" href="$classtracking_1_1filter_1_1KalmanFilter.html#a4df70b5fa33fdf85a95d6a528da0344f" title="Kalman measurement update of state and covariance." alt="" coords="306,366,477,406"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="623,227,568,292,532,327,492,356,469,368,467,364,489,352,529,322,564,288,619,223"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="313,108,291,101,194,64,196,59,293,96,314,103"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a2b6eac9001311d011d12a2ce79706938" title="Compute inverse as full covariance matrix." alt="" coords="16,110,233,150"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="278,133,234,133,234,127,278,127"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter." alt="" coords="5,215,244,285"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="287,258,244,256,244,251,287,252"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="32,309,217,349"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="279,328,218,329,217,324,279,322"/>
 </map>

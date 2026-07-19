@@ -1,0 +1,7 @@
+<map id="tracking::observation::IObservationModel&lt; CovarianceMatrixPolicy_ &gt;" name="tracking::observation::IObservationModel&lt; CovarianceMatrixPolicy_ &gt;">
+<area shape="rect" id="Node000001" title="Abstract Observation Model interface." alt="" coords="149,163,343,377"/>
+<area shape="rect" id="Node000002" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf.html" title=" " alt="" coords="5,13,220,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,118,180,161,176,164,147,120"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="244,5,515,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="340,127,317,164,312,161,335,125"/>
+</map>

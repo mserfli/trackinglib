@@ -175,6 +175,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6915335b50e2836d7073f88769c74944" id="r_a6915335b50e2836d7073f88769c74944"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a6915335b50e2836d7073f88769c74944">predict</a> (const <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> dt, const <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a6875e171ca793d40df445f80493c34c1">InformationFilterType</a> &amp;filter, const <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#af0188bba97085d066fe947bbbe81a09d">EgoMotionType</a> &amp;egoMotion) final</td></tr>
 <tr class="memdesc:a6915335b50e2836d7073f88769c74944"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts the underlying MotionModel with the given filter (includes ego motion compensation)  <br /></td></tr>
 <tr class="separator:a6915335b50e2836d7073f88769c74944"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69e327a057819ba99c1a1ce0a4e13a60" id="r_a69e327a057819ba99c1a1ce0a4e13a60"><td class="memTemplParams" colspan="2">template&lt;typename UpdateMode_  = filter::update_mode::Default&lt;CovarianceMatrixPolicy&gt;, typename... ObservationModels_&gt; </td></tr>
+<tr class="memitem:a69e327a057819ba99c1a1ce0a4e13a60"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a69e327a057819ba99c1a1ce0a4e13a60">update</a> (const <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a8eb45f716e3d884d61a5e54ff45bb555">KalmanFilterType</a> &amp;filter, const ObservationModels_ &amp;... observationModels)</td></tr>
+<tr class="memdesc:a69e327a057819ba99c1a1ce0a4e13a60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kalman measurement update of the underlying MotionModel (state space)  <br /></td></tr>
+<tr class="separator:a69e327a057819ba99c1a1ce0a4e13a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a878e8fc3b152f5c48bd769ee9cdc3c18" id="r_a878e8fc3b152f5c48bd769ee9cdc3c18"><td class="memTemplParams" colspan="2">template&lt;typename UpdateMode_  = filter::update_mode::Default&lt;CovarianceMatrixPolicy&gt;, typename... ObservationModels_&gt; </td></tr>
+<tr class="memitem:a878e8fc3b152f5c48bd769ee9cdc3c18"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a878e8fc3b152f5c48bd769ee9cdc3c18">update</a> (const <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a6875e171ca793d40df445f80493c34c1">InformationFilterType</a> &amp;filter, const ObservationModels_ &amp;... observationModels)</td></tr>
+<tr class="memdesc:a878e8fc3b152f5c48bd769ee9cdc3c18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information measurement update of the underlying MotionModel (information space)  <br /></td></tr>
+<tr class="separator:a878e8fc3b152f5c48bd769ee9cdc3c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a218377d15dc50c0dec3d98d5f8e59d" id="r_a4a218377d15dc50c0dec3d98d5f8e59d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a4a218377d15dc50c0dec3d98d5f8e59d">convertStateVecIntoStateSpace</a> ()</td></tr>
 <tr class="memdesc:a4a218377d15dc50c0dec3d98d5f8e59d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform information space into state space.  <br /></td></tr>
 <tr class="separator:a4a218377d15dc50c0dec3d98d5f8e59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,6 +265,9 @@ Public Member Functions</h2></td></tr>
 <tr class="inherit_header pub_methods_classtracking_1_1base_1_1contract_1_1RequireMoveIntf"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classtracking_1_1base_1_1contract_1_1RequireMoveIntf')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html">tracking::base::contract::RequireMoveIntf&lt; ImplType &gt;</a></td></tr>
 <tr class="memitem:afe5013cb45bd3372a5234577e2cc7ee8 inherit pub_methods_classtracking_1_1base_1_1contract_1_1RequireMoveIntf" id="r_afe5013cb45bd3372a5234577e2cc7ee8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html#afe5013cb45bd3372a5234577e2cc7ee8">RequireMoveIntf</a> ()</td></tr>
 <tr class="separator:afe5013cb45bd3372a5234577e2cc7ee8 inherit pub_methods_classtracking_1_1base_1_1contract_1_1RequireMoveIntf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structtracking_1_1motion_1_1contract_1_1MotionModelIntf"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structtracking_1_1motion_1_1contract_1_1MotionModelIntf')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structtracking_1_1motion_1_1contract_1_1MotionModelIntf.html">tracking::motion::contract::MotionModelIntf&lt; MotionModel_ &gt;</a></td></tr>
+<tr class="memitem:aeb32dca68b3784e5cf1767f2b4a04be0 inherit pub_methods_structtracking_1_1motion_1_1contract_1_1MotionModelIntf" id="r_aeb32dca68b3784e5cf1767f2b4a04be0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtracking_1_1motion_1_1contract_1_1MotionModelIntf.html#aeb32dca68b3784e5cf1767f2b4a04be0">MotionModelIntf</a> ()</td></tr>
+<tr class="separator:aeb32dca68b3784e5cf1767f2b4a04be0 inherit pub_methods_structtracking_1_1motion_1_1contract_1_1MotionModelIntf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classtracking_1_1base_1_1contract_1_1RequireAbstractIntf"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classtracking_1_1base_1_1contract_1_1RequireAbstractIntf')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html">tracking::base::contract::RequireAbstractIntf&lt; ExtendedMotionModel&lt; MotionModel_, MotionModelTrait_ &gt; &gt;</a></td></tr>
 <tr class="memitem:a87bfdb0ff4b18749cc033731d3380bb4 inherit pub_methods_classtracking_1_1base_1_1contract_1_1RequireAbstractIntf" id="r_a87bfdb0ff4b18749cc033731d3380bb4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html#a87bfdb0ff4b18749cc033731d3380bb4">RequireAbstractIntf</a> ()</td></tr>
 <tr class="separator:a87bfdb0ff4b18749cc033731d3380bb4 inherit pub_methods_classtracking_1_1base_1_1contract_1_1RequireAbstractIntf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1138,6 +1149,122 @@ template&lt;typename MotionModel_ , typename MotionModelTrait_ &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>StateVec </dd></dl>
+
+</div>
+</div>
+<a id="a878e8fc3b152f5c48bd769ee9cdc3c18" name="a878e8fc3b152f5c48bd769ee9cdc3c18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a878e8fc3b152f5c48bd769ee9cdc3c18">&#9670;&#160;</a></span>update() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MotionModel_ , typename MotionModelTrait_ &gt; </div>
+<div class="memtemplate">
+template&lt;typename UpdateMode_  = filter::update_mode::Default&lt;CovarianceMatrixPolicy&gt;, typename... ObservationModels_&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html">tracking::motion::ExtendedMotionModel</a>&lt; MotionModel_, MotionModelTrait_ &gt;::update </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a6875e171ca793d40df445f80493c34c1">InformationFilterType</a> &amp;&#160;</td>
+          <td class="paramname"><em>filter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ObservationModels_ &amp;...&#160;</td>
+          <td class="paramname"><em>observationModels</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Information measurement update of the underlying MotionModel (information space) </p>
+<p>Applies the purely additive information-form measurement update on the stored information vector y = Y*x and information matrix Y = inv(P). To evaluate the observation models at the state estimate, one info-&gt;state-&gt;info round-trip is performed internally (convertStateVecIntoStateSpace / convertStateVecIntoInformationSpace with the prior Y) and the effective measurement z_eff = nu + H*x of the linearized observation model is used (equal to the raw measurement for linear models). Multiple models are composed into one joint (stacked) update; the update mode defaults to the policy-appropriate mode.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">UpdateMode_</td><td>Update mode tag (<a class="el" href="structtracking_1_1filter_1_1update__mode_1_1Block.html" title="Tag type selecting the block measurement update.">filter::update_mode::Block</a> or ::Sequential) </td></tr>
+    <tr><td class="paramname">ObservationModels_</td><td>One or more observation model types (composed if multiple) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">filter</td><td>The information filter instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">observationModels</td><td>Observation models carrying measurement z and covariance R </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Defensive skips are silent: measurement rows with a non-positive variance are dropped, and a non-invertible / non-decomposable measurement covariance R skips the whole update — the void return gives the caller no indication of a partial or skipped update. </dd></dl>
+
+</div>
+</div>
+<a id="a69e327a057819ba99c1a1ce0a4e13a60" name="a69e327a057819ba99c1a1ce0a4e13a60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69e327a057819ba99c1a1ce0a4e13a60">&#9670;&#160;</a></span>update() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MotionModel_ , typename MotionModelTrait_ &gt; </div>
+<div class="memtemplate">
+template&lt;typename UpdateMode_  = filter::update_mode::Default&lt;CovarianceMatrixPolicy&gt;, typename... ObservationModels_&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html">tracking::motion::ExtendedMotionModel</a>&lt; MotionModel_, MotionModelTrait_ &gt;::update </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a8eb45f716e3d884d61a5e54ff45bb555">KalmanFilterType</a> &amp;&#160;</td>
+          <td class="paramname"><em>filter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ObservationModels_ &amp;...&#160;</td>
+          <td class="paramname"><em>observationModels</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Kalman measurement update of the underlying MotionModel (state space) </p>
+<p>Applies the (extended) Kalman measurement update directly on the stored state vector x and state covariance P. A single observation model performs a plain measurement update; multiple models are composed into one joint (stacked) update. The update mode is selected at compile time (see <a class="el" href="namespacetracking_1_1filter_1_1update__mode.html">filter::update_mode</a>) and defaults to the policy-appropriate mode: Block for the full covariance policy, Sequential for the UDU-factored policy.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">UpdateMode_</td><td>Update mode tag (<a class="el" href="structtracking_1_1filter_1_1update__mode_1_1Block.html" title="Tag type selecting the block measurement update.">filter::update_mode::Block</a> or ::Sequential) </td></tr>
+    <tr><td class="paramname">ObservationModels_</td><td>One or more observation model types (composed if multiple) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">filter</td><td>The kalman filter instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">observationModels</td><td>Observation models carrying measurement z and covariance R </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Defensive skips are silent: measurement rows with a non-positive innovation variance are dropped, and a measurement covariance R that cannot be decomposed skips the whole update — the void return gives the caller no indication of a partial or skipped update. </dd></dl>
 
 </div>
 </div>

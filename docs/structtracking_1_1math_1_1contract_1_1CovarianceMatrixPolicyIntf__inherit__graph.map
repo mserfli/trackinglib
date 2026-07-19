@@ -1,19 +1,51 @@
 <map id="tracking::math::contract::CovarianceMatrixPolicyIntf&lt; PolicyType &gt;" name="tracking::math::contract::CovarianceMatrixPolicyIntf&lt; PolicyType &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="351,5,565,100"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1IMotionModel.html" title=" " alt="" coords="240,185,439,540"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="438,114,410,186,405,184,433,112"/>
-<area shape="rect" id="Node000007" href="$classtracking_1_1motion_1_1StateMem.html" title=" " alt="" coords="463,148,693,577"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="483,112,497,147,492,149,478,114"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="316,625,603,1119"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="387,553,404,624,399,626,382,554"/>
-<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="5,625,292,1119"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="271,554,244,626,239,624,266,552"/>
-<area shape="rect" id="Node000006" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance." alt="" coords="627,640,863,1104"/>
-<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="426,549,453,575,474,589,494,596,534,599,574,602,595,609,617,623,633,638,630,642,614,627,593,614,573,607,533,604,493,601,472,594,450,579,423,553"/>
-<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html" title=" " alt="" coords="177,1167,429,1576"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="381,1132,370,1167,365,1166,376,1131"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="232,1131,243,1166,237,1167,227,1132"/>
-<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="528,591,519,626,514,625,522,590"/>
-<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="454,578,452,579,432,592,413,600,377,604,342,609,324,615,305,627,294,637,291,632,302,623,322,611,341,603,377,599,411,594,429,588,448,575,450,574"/>
-<area shape="poly" id="edge10_Node000007_Node000006" title=" " alt="" coords="655,590,671,639,666,641,650,591"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1100,5,1315,100"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1IMotionModel.html" title=" " alt="" coords="372,185,571,540"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1087,63,955,73,812,90,683,116,632,132,596,150,556,187,552,183,592,146,630,127,681,111,811,85,955,68,1086,58"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1motion_1_1StateMem.html" title=" " alt="" coords="607,148,837,577"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="1125,109,839,290,836,286,1122,105"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1StateMem.html" title=" " alt="" coords="1625,148,1856,577"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="1300,105,1627,292,1624,297,1298,109"/>
+<area shape="rect" id="Node000017" href="$classtracking_1_1observation_1_1IObservationModel.html" title=" " alt="" coords="1932,248,2131,477"/>
+<area shape="poly" id="edge25_Node000001_Node000017" title=" " alt="" coords="1329,58,1470,69,1627,86,1769,111,1826,127,1869,146,1898,166,1925,191,1971,246,1967,249,1921,194,1895,170,1866,150,1824,132,1768,116,1626,91,1469,74,1328,63"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="5,625,292,1159"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="367,529,306,627,294,645,290,642,301,624,362,526"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="316,625,603,1159"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="470,554,468,625,463,625,464,554"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance." alt="" coords="627,640,863,1144"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="578,551,616,624,629,648,624,651,612,627,573,553"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html" title=" " alt="" coords="179,1207,431,1616"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="235,1171,246,1206,241,1207,230,1173"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="378,1173,368,1207,363,1206,373,1171"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="598,569,583,580,545,599,509,606,475,607,442,603,409,599,376,600,342,608,305,628,294,636,291,631,302,623,340,603,375,595,409,594,442,598,475,601,508,601,543,594,581,575,594,565"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="612,591,594,626,589,624,607,588"/>
+<area shape="poly" id="edge10_Node000007_Node000006" title=" " alt="" coords="734,591,737,640,731,640,729,591"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="2836,693,3144,1091"/>
+<area shape="poly" id="edge12_Node000008_Node000009" title=" " alt="" coords="1868,538,1894,558,1922,575,1959,589,2004,598,2113,606,2240,602,2374,594,2509,586,2635,585,2691,588,2743,595,2788,606,2825,623,2865,653,2899,691,2895,694,2861,657,2822,628,2786,612,2742,600,2691,593,2634,590,2509,592,2375,599,2240,608,2113,611,2004,604,1958,594,1920,580,1891,563,1865,542"/>
+<area shape="rect" id="Node000011" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="887,693,1195,1091"/>
+<area shape="poly" id="edge14_Node000008_Node000011" title=" " alt="" coords="1613,406,1517,443,1411,492,1305,554,1254,589,1208,627,1177,659,1148,694,1144,691,1173,655,1204,623,1251,585,1302,549,1409,487,1515,438,1611,401"/>
+<area shape="rect" id="Node000012" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="1219,693,1527,1091"/>
+<area shape="poly" id="edge16_Node000008_Node000012" title=" " alt="" coords="1619,521,1542,627,1496,694,1492,691,1537,624,1615,518"/>
+<area shape="rect" id="Node000013" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="1551,693,1879,1091"/>
+<area shape="poly" id="edge18_Node000008_Node000013" title=" " alt="" coords="1732,591,1728,693,1722,693,1727,591"/>
+<area shape="rect" id="Node000014" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="1904,693,2212,1091"/>
+<area shape="poly" id="edge20_Node000008_Node000014" title=" " alt="" coords="1865,566,1941,691,1936,694,1861,569"/>
+<area shape="rect" id="Node000015" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="2236,693,2544,1091"/>
+<area shape="poly" id="edge22_Node000008_Node000015" title=" " alt="" coords="1868,535,1894,557,1922,575,1964,593,2003,600,2039,599,2074,596,2110,592,2146,593,2185,602,2226,623,2264,654,2296,691,2292,694,2260,658,2223,628,2183,607,2145,598,2110,597,2075,601,2039,605,2002,605,1963,598,1919,580,1891,561,1864,539"/>
+<area shape="rect" id="Node000016" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title="Abstract ObservationModel with known dimensions, keeping the model memory for the measurement vector ..." alt="" coords="2569,707,2811,1077"/>
+<area shape="poly" id="edge24_Node000008_Node000016" title=" " alt="" coords="1868,538,1894,558,1922,575,1948,585,1980,592,2057,598,2146,597,2242,593,2337,590,2426,591,2501,601,2532,610,2558,623,2599,660,2632,706,2627,709,2595,664,2555,628,2531,615,2500,606,2425,596,2337,595,2242,599,2146,603,2057,604,1979,597,1947,590,1919,580,1891,563,1865,542"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html" title="Observation model for a polar bearing&#45;only measurement." alt="" coords="1777,1257,1995,1566"/>
+<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="2883,1104,2856,1134,2825,1161,2776,1195,2724,1225,2614,1277,2500,1319,2385,1351,2273,1375,2169,1391,1996,1409,1995,1403,2168,1386,2272,1369,2384,1346,2498,1314,2612,1272,2721,1220,2773,1190,2822,1157,2852,1131,2879,1100"/>
+<area shape="poly" id="edge15_Node000011_Node000010" title=" " alt="" coords="1154,1101,1179,1130,1208,1157,1275,1205,1348,1248,1424,1284,1502,1315,1651,1361,1777,1390,1776,1395,1649,1366,1500,1320,1422,1289,1346,1252,1272,1210,1204,1161,1176,1134,1150,1104"/>
+<area shape="poly" id="edge17_Node000012_Node000010" title=" " alt="" coords="1495,1101,1541,1157,1597,1211,1658,1261,1778,1344,1775,1348,1655,1265,1594,1215,1537,1160,1491,1104"/>
+<area shape="poly" id="edge19_Node000013_Node000010" title=" " alt="" coords="1788,1104,1838,1256,1833,1257,1783,1105"/>
+<area shape="poly" id="edge21_Node000014_Node000010" title=" " alt="" coords="1990,1105,1940,1257,1935,1256,1985,1104"/>
+<area shape="poly" id="edge23_Node000015_Node000010" title=" " alt="" coords="2272,1104,2227,1160,2172,1214,2113,1264,1997,1346,1994,1342,2110,1259,2169,1210,2223,1157,2268,1101"/>
+<area shape="poly" id="edge26_Node000017_Node000009" title=" " alt="" coords="2145,374,2292,400,2378,421,2470,447,2563,480,2655,520,2743,567,2825,623,2859,655,2890,691,2886,694,2856,659,2822,627,2741,572,2653,524,2561,485,2468,452,2377,426,2291,406,2144,379"/>
+<area shape="poly" id="edge27_Node000017_Node000011" title=" " alt="" coords="1965,491,1922,540,1896,562,1869,580,1841,591,1807,599,1727,606,1634,606,1535,602,1436,598,1344,598,1266,607,1234,616,1207,628,1169,657,1135,694,1131,691,1165,653,1205,623,1232,611,1265,602,1344,593,1437,592,1535,596,1634,600,1727,601,1806,594,1839,586,1866,575,1893,558,1918,536,1961,487"/>
+<area shape="poly" id="edge28_Node000017_Node000012" title=" " alt="" coords="1963,490,1920,540,1895,561,1869,580,1823,600,1780,608,1740,607,1702,602,1664,597,1625,597,1585,606,1541,628,1503,658,1471,694,1467,690,1500,654,1538,623,1583,601,1625,592,1664,592,1702,596,1740,601,1780,602,1821,595,1866,575,1892,557,1916,536,1959,487"/>
+<area shape="poly" id="edge29_Node000017_Node000013" title=" " alt="" coords="1959,491,1837,694,1832,691,1954,488"/>
+<area shape="poly" id="edge30_Node000017_Node000014" title=" " alt="" coords="2040,491,2051,692,2045,692,2035,491"/>
+<area shape="poly" id="edge31_Node000017_Node000015" title=" " alt="" coords="2129,487,2227,624,2271,691,2267,694,2222,627,2124,490"/>
+<area shape="poly" id="edge32_Node000017_Node000016" title=" " alt="" coords="2145,394,2242,429,2351,479,2406,509,2460,544,2512,581,2559,623,2592,662,2620,706,2615,709,2587,666,2555,627,2508,586,2457,548,2404,514,2348,484,2240,434,2143,399"/>
 </map>

@@ -1,5 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,124,38"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,125,124,150"/>
 <area shape="rect" id="Node000001" href="$structtracking_1_1math_1_1is__matrix__like.html" title="SFINAE helper to detect matrix&#45;like types at compile time." alt="" coords="172,5,387,45"/>
-<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="138,23,172,23,172,28,138,28"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="89,113,126,83,171,55,199,43,201,48,173,60,129,88,92,117"/>
+<area shape="rect" id="Node000002" href="$structtracking_1_1motion_1_1detail_1_1has__acceleration.html" title="Detection trait for StateDefs providing an acceleration (AX and AY enumerators)" alt="" coords="173,70,385,125"/>
+<area shape="poly" id="edge2_Node000000_Node000002" title=" " alt="" coords="137,121,173,114,174,120,138,126"/>
+<area shape="rect" id="Node000003" href="$structtracking_1_1motion_1_1detail_1_1has__position.html" title="Detection trait for StateDefs providing a position (X and Y enumerators)" alt="" coords="187,149,371,203"/>
+<area shape="poly" id="edge3_Node000000_Node000003" title=" " alt="" coords="139,148,188,157,187,162,138,153"/>
+<area shape="rect" id="Node000004" href="$structtracking_1_1motion_1_1detail_1_1has__velocity.html" title="Detection trait for StateDefs providing a velocity (VX and VY enumerators)" alt="" coords="187,227,371,282"/>
+<area shape="poly" id="edge4_Node000000_Node000004" title=" " alt="" coords="93,157,130,185,173,212,199,225,197,230,171,217,127,189,90,161"/>
 </map>

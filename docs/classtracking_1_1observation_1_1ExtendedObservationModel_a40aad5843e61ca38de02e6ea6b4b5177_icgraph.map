@@ -1,0 +1,5 @@
+<map id="tracking::observation::ExtendedObservationModel::MeasurementCovFromList" name="tracking::observation::ExtendedObservationModel::MeasurementCovFromList">
+<area shape="rect" id="Node000001" title="Create measurement covariance from initializer list." alt="" coords="264,5,475,60"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#af26cd587341e97a9cdb8b44b1e32adf9" title="Create complete ObservationModel from initializer lists." alt="" coords="5,5,216,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,35,216,35,216,30,250,30"/>
+</map>

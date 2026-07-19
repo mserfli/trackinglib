@@ -1,0 +1,5 @@
+<map id="tracking::motion::detail::has_position&lt; StateDef_, std::void_t&lt; decltype(StateDef_::X), decltype(StateDef_::Y)&gt; &gt;" name="tracking::motion::detail::has_position&lt; StateDef_, std::void_t&lt; decltype(StateDef_::X), decltype(StateDef_::Y)&gt; &gt;">
+<area shape="rect" id="Node000001" title="Specialization matching StateDefs that provide X and Y enumerators." alt="" coords="5,119,291,228"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="96,5,200,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,84,151,118,145,118,145,84"/>
+</map>

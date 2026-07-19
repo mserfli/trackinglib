@@ -12,11 +12,13 @@ var searchData=
   ['matrix_5ftypes_2eh_9',['matrix_types.h',['../matrix__types_8h.html',1,'']]],
   ['matrix_5fview_2eh_10',['matrix_view.h',['../matrix__view_8h.html',1,'']]],
   ['matrix_5fview_2ehpp_11',['matrix_view.hpp',['../matrix__view_8hpp.html',1,'']]],
-  ['modified_5fgram_5fschmidt_2eh_12',['modified_gram_schmidt.h',['../modified__gram__schmidt_8h.html',1,'']]],
-  ['modified_5fgram_5fschmidt_2ehpp_13',['modified_gram_schmidt.hpp',['../modified__gram__schmidt_8hpp.html',1,'']]],
-  ['motion_5fmodel_5fca_2eh_14',['motion_model_ca.h',['../motion__model__ca_8h.html',1,'']]],
-  ['motion_5fmodel_5fca_2ehpp_15',['motion_model_ca.hpp',['../motion__model__ca_8hpp.html',1,'']]],
-  ['motion_5fmodel_5fcv_2eh_16',['motion_model_cv.h',['../motion__model__cv_8h.html',1,'']]],
-  ['motion_5fmodel_5fcv_2ehpp_17',['motion_model_cv.hpp',['../motion__model__cv_8hpp.html',1,'']]],
-  ['motion_5fmodel_5ftraits_2eh_18',['motion_model_traits.h',['../motion__model__traits_8h.html',1,'']]]
+  ['measurement_5fdecorrelation_2ehpp_12',['measurement_decorrelation.hpp',['../measurement__decorrelation_8hpp.html',1,'']]],
+  ['modified_5fgram_5fschmidt_2eh_13',['modified_gram_schmidt.h',['../modified__gram__schmidt_8h.html',1,'']]],
+  ['modified_5fgram_5fschmidt_2ehpp_14',['modified_gram_schmidt.hpp',['../modified__gram__schmidt_8hpp.html',1,'']]],
+  ['motion_5fmodel_5fca_2eh_15',['motion_model_ca.h',['../motion__model__ca_8h.html',1,'']]],
+  ['motion_5fmodel_5fca_2ehpp_16',['motion_model_ca.hpp',['../motion__model__ca_8hpp.html',1,'']]],
+  ['motion_5fmodel_5fcv_2eh_17',['motion_model_cv.h',['../motion__model__cv_8h.html',1,'']]],
+  ['motion_5fmodel_5fcv_2ehpp_18',['motion_model_cv.hpp',['../motion__model__cv_8hpp.html',1,'']]],
+  ['motion_5fmodel_5fintf_2eh_19',['motion_model_intf.h',['../motion__model__intf_8h.html',1,'']]],
+  ['motion_5fmodel_5ftraits_2eh_20',['motion_model_traits.h',['../motion__model__traits_8h.html',1,'']]]
 ];

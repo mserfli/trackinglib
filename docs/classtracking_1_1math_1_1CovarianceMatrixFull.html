@@ -168,6 +168,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a14173bc9c592c53a49675cd26dac6720"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFull.html#a14173bc9c592c53a49675cd26dac6720">apaT</a> (const <a class="el" href="classtracking_1_1math_1_1SquareMatrix.html">tracking::math::SquareMatrix</a>&lt; ValueType_, Size_, IsRowMajor_ &gt; &amp;A) const -&gt; <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFull.html">CovarianceMatrixFull</a></td></tr>
 <tr class="memdesc:a14173bc9c592c53a49675cd26dac6720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute A*P*A^T (covariance propagation)  <br /></td></tr>
 <tr class="separator:a14173bc9c592c53a49675cd26dac6720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34cd544de76b4730f4ce492e33de2b7f" id="r_a34cd544de76b4730f4ce492e33de2b7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFull.html#a34cd544de76b4730f4ce492e33de2b7f">rank1Update</a> (const ValueType_ c, const <a class="el" href="classtracking_1_1math_1_1Vector.html">Vector</a>&lt; ValueType_, Size_ &gt; &amp;x)</td></tr>
+<tr class="memdesc:a34cd544de76b4730f4ce492e33de2b7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rank-1 update: P ± c*x*x^T.  <br /></td></tr>
+<tr class="separator:a34cd544de76b4730f4ce492e33de2b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affba4a7f5c8620e11af83ec4824c2861" id="r_affba4a7f5c8620e11af83ec4824c2861"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFull.html#affba4a7f5c8620e11af83ec4824c2861">setVariance</a> (const <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> idx, const ValueType_ val)</td></tr>
 <tr class="memdesc:affba4a7f5c8620e11af83ec4824c2861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set diagonal variance element and clear correlations.  <br /></td></tr>
 <tr class="separator:affba4a7f5c8620e11af83ec4824c2861"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -806,6 +809,8 @@ template&lt;bool IsRowMajor_&gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is a key operation in Kalman filter prediction </dd>
 <dd>
+Computed in two stages: AP = A*P is evaluated in full, then only the upper triangle of AP*A^T is computed and mirrored into the lower triangle, since the result is symmetric </dd>
+<dd>
 Time complexity: O(n^3) where n = Size_ </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1185,6 +1190,65 @@ template&lt;typename ValueType_ , <a class="el" href="atomic__types_8h.html#a82d
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a34cd544de76b4730f4ce492e33de2b7f" name="a34cd544de76b4730f4ce492e33de2b7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34cd544de76b4730f4ce492e33de2b7f">&#9670;&#160;</a></span>rank1Update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ValueType_ , <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFull.html">tracking::math::CovarianceMatrixFull</a>&lt; ValueType_, Size_ &gt;::rank1Update </td>
+          <td>(</td>
+          <td class="paramtype">const ValueType_&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1Vector.html">Vector</a>&lt; ValueType_, Size_ &gt; &amp;&#160;</td>
+          <td class="paramname"><em>x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Rank-1 update: P ± c*x*x^T. </p>
+<p>Performs a rank-1 update of the covariance matrix: P = P + c*x*x^T where c is a scalar and x is a vector. This operation is fundamental to sequential Kalman filter measurement updates.</p>
+<p>When c &gt; 0: rank-1 update (increases uncertainty) When c &lt; 0: rank-1 downdate (decreases uncertainty)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>Scalar multiplier (positive for update, negative for downdate) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>Update vector defining the outer product x*x^T</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Part of the covariance contract shared with <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFactored.html" title="UDU factored covariance matrix for numerical stability.">CovarianceMatrixFactored</a>, allowing policy-independent sequential measurement updates </dd>
+<dd>
+Only the upper triangle is computed and mirrored into the lower triangle (the result is symmetric by construction) </dd>
+<dd>
+Time complexity: O(n^2) where n = Size_ </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1math_1_1CovarianceMatrixFull_a34cd544de76b4730f4ce492e33de2b7f_cgraph.svg" width="644" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

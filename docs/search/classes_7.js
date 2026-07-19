@@ -1,19 +1,11 @@
 var searchData=
 [
-  ['matrix_0',['Matrix',['../classtracking_1_1math_1_1Matrix.html',1,'tracking::math']]],
-  ['matrix_3c_20value_5ftype_2c_20size_5f_2c_201_2c_20true_20_3e_1',['Matrix&lt; value_type, Size_, 1, true &gt;',['../classtracking_1_1math_1_1Matrix.html',1,'tracking::math']]],
-  ['matrix_3c_20valuetype_5f_2c_20rows_5f_2c_20cols_5f_2c_20isrowmajor_5f_20_3e_2',['Matrix&lt; ValueType_, Rows_, Cols_, IsRowMajor_ &gt;',['../classtracking_1_1math_1_1Matrix.html',1,'tracking::math']]],
-  ['matrix_3c_20valuetype_5f_2c_20size_5f_2c_201_2c_20true_20_3e_3',['Matrix&lt; ValueType_, Size_, 1, true &gt;',['../classtracking_1_1math_1_1Matrix.html',1,'tracking::math']]],
-  ['matrix_3c_20valuetype_5f_2c_20size_5f_2c_20size_5f_2c_20isrowmajor_5f_20_3e_4',['Matrix&lt; ValueType_, Size_, Size_, IsRowMajor_ &gt;',['../classtracking_1_1math_1_1Matrix.html',1,'tracking::math']]],
-  ['matrix_3c_20valuetype_5f_2c_20size_5f_2c_20size_5f_2c_20true_20_3e_5',['Matrix&lt; ValueType_, Size_, Size_, true &gt;',['../classtracking_1_1math_1_1Matrix.html',1,'tracking::math']]],
-  ['matrixcolumnview_6',['MatrixColumnView',['../classtracking_1_1math_1_1MatrixColumnView.html',1,'tracking::math']]],
-  ['matrixintf_7',['MatrixIntf',['../structtracking_1_1math_1_1contract_1_1MatrixIntf.html',1,'tracking::math::contract']]],
-  ['matrixintf_3c_20matrix_3c_20value_5ftype_2c_20rows_5f_2c_20cols_5f_2c_20isrowmajor_5f_20_3e_20_3e_8',['MatrixIntf&lt; Matrix&lt; value_type, Rows_, Cols_, IsRowMajor_ &gt; &gt;',['../structtracking_1_1math_1_1contract_1_1MatrixIntf.html',1,'tracking::math::contract']]],
-  ['matrixintf_3c_20matrix_3c_20valuetype_5f_2c_20rows_5f_2c_20cols_5f_2c_20isrowmajor_5f_20_3e_20_3e_9',['MatrixIntf&lt; Matrix&lt; ValueType_, Rows_, Cols_, IsRowMajor_ &gt; &gt;',['../structtracking_1_1math_1_1contract_1_1MatrixIntf.html',1,'tracking::math::contract']]],
-  ['matrixintf_3c_20matrix_3c_20valuetype_5f_2c_20rows_5f_2c_20cols_5f_2c_20true_20_3e_20_3e_10',['MatrixIntf&lt; Matrix&lt; ValueType_, Rows_, Cols_, true &gt; &gt;',['../structtracking_1_1math_1_1contract_1_1MatrixIntf.html',1,'tracking::math::contract']]],
-  ['matrixrowview_11',['MatrixRowView',['../classtracking_1_1math_1_1MatrixRowView.html',1,'tracking::math']]],
-  ['modifiedgramschmidt_12',['ModifiedGramSchmidt',['../classtracking_1_1math_1_1ModifiedGramSchmidt.html',1,'tracking::math']]],
-  ['motionmodelca_13',['MotionModelCA',['../classtracking_1_1motion_1_1MotionModelCA.html',1,'tracking::motion']]],
-  ['motionmodelcv_14',['MotionModelCV',['../classtracking_1_1motion_1_1MotionModelCV.html',1,'tracking::motion']]],
-  ['motionmodeltraits_15',['MotionModelTraits',['../structtracking_1_1motion_1_1MotionModelTraits.html',1,'tracking::motion']]]
+  ['imotionmodel_0',['IMotionModel',['../classtracking_1_1motion_1_1IMotionModel.html',1,'tracking::motion']]],
+  ['imotionmodel_3c_20motionmodeltrait_5f_3a_3acovariancematrixpolicy_20_3e_1',['IMotionModel&lt; MotionModelTrait_::CovarianceMatrixPolicy &gt;',['../classtracking_1_1motion_1_1IMotionModel.html',1,'tracking::motion']]],
+  ['inertialmotion_2',['InertialMotion',['../structtracking_1_1env_1_1EgoMotion_1_1InertialMotion.html',1,'tracking::env::EgoMotion']]],
+  ['informationfilter_3',['InformationFilter',['../classtracking_1_1filter_1_1InformationFilter.html',1,'tracking::filter']]],
+  ['iobservationmodel_4',['IObservationModel',['../classtracking_1_1observation_1_1IObservationModel.html',1,'tracking::observation']]],
+  ['iobservationmodel_3c_20observationmodeltrait_5f_3a_3acovariancematrixpolicy_20_3e_5',['IObservationModel&lt; ObservationModelTrait_::CovarianceMatrixPolicy &gt;',['../classtracking_1_1observation_1_1IObservationModel.html',1,'tracking::observation']]],
+  ['is_5fmatrix_5flike_6',['is_matrix_like',['../structtracking_1_1math_1_1is__matrix__like.html',1,'tracking::math']]],
+  ['is_5fmatrix_5flike_3c_20t_2c_20std_3a_3avoid_5ft_3c_20decltype_28std_3a_3adeclval_3c_20const_20t_20_26_20_3e_28_29_2eat_5funsafe_28sint32_7b_7d_2c_20sint32_7b_7d_29_29_2c_20typename_20t_3a_3avalue_5ftype_2c_20decltype_28t_3a_3arows_29_2c_20decltype_28t_3a_3acols_29_3e_20_3e_7',['is_matrix_like&lt; T, std::void_t&lt; decltype(std::declval&lt; const T &amp; &gt;().at_unsafe(sint32{}, sint32{})), typename T::value_type, decltype(T::Rows), decltype(T::Cols)&gt; &gt;',['../structtracking_1_1math_1_1is__matrix__like_3_01T_00_01std_1_1void__t_3_01decltype_07std_1_1declv8d1fac557ead71a78e0fc84cf1d19214.html',1,'tracking::math']]]
 ];

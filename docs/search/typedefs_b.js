@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['transpose_5ftype_0',['transpose_type',['../classtracking_1_1math_1_1Matrix.html#acd53bf25d79a6eeaaa603599d03074c9',1,'tracking::math::Matrix::transpose_type'],['../classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#ae92f43276131c2d1172c8f90dc6ec832',1,'tracking::math::TEST_REMOVE_FINAL::transpose_type']]],
-  ['transpose_5ftype_5frow_5fmajor_1',['transpose_type_row_major',['../classtracking_1_1math_1_1Matrix.html#a5e9026b7f5f0b3246bbc12ea7c497214',1,'tracking::math::Matrix']]]
+  ['point2d_0',['Point2d',['../classtracking_1_1env_1_1EgoMotion.html#ab1925133d65caeb42b5a812fbce2410d',1,'tracking::env::EgoMotion']]],
+  ['processnoisediagmatrix_1',['processnoisediagmatrix',['../classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#aafd085734a8b84a59fec6094174f320f',1,'tracking::motion::TEST_REMOVE_FINAL::ProcessNoiseDiagMatrix'],['../classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#aafd085734a8b84a59fec6094174f320f',1,'tracking::motion::TEST_REMOVE_FINAL::ProcessNoiseDiagMatrix']]],
+  ['processnoisemappingmatrix_2',['processnoisemappingmatrix',['../classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#ad872f52a0f02578cbfd968162fbbc6da',1,'tracking::motion::TEST_REMOVE_FINAL::ProcessNoiseMappingMatrix'],['../classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#ad872f52a0f02578cbfd968162fbbc6da',1,'tracking::motion::TEST_REMOVE_FINAL::ProcessNoiseMappingMatrix']]]
 ];

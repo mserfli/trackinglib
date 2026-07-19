@@ -1,0 +1,22 @@
+<map id="tracking::observation::ExtendedObservationModel&lt; ObservationModel_, ObservationModelTrait_ &gt;" name="tracking::observation::ExtendedObservationModel&lt; ObservationModel_, ObservationModelTrait_ &gt;">
+<area shape="rect" id="Node000001" title="Abstract ObservationModel with known dimensions, keeping the model memory for the measurement vector ..." alt="" coords="430,753,673,1123"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1IObservationModel.html" title=" " alt="" coords="93,376,292,605"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,616,277,661,305,704,366,773,431,836,428,840,362,777,301,707,272,664,246,619"/>
+<area shape="rect" id="Node000003" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf.html" title=" " alt="" coords="196,133,411,228"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="285,242,236,377,231,375,280,240"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1StateMem.html" title=" " alt="" coords="316,276,547,705"/>
+<area shape="poly" id="edge8_Node000005_Node000003" title=" " alt="" coords="330,240,345,275,340,277,325,242"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="5,133,172,228"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="111,240,157,375,152,377,106,242"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="495,718,504,752,499,754,490,720"/>
+<area shape="rect" id="Node000006" href="$structtracking_1_1motion_1_1contract_1_1StateMemIntf.html" title=" " alt="" coords="435,141,635,221"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="520,235,506,277,501,275,515,233"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1base_1_1contract_1_1RequireCopyIntf.html" title=" " alt="" coords="307,5,523,85"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="461,94,502,139,498,142,457,97"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html" title=" " alt="" coords="547,5,766,85"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="614,97,573,142,569,139,610,94"/>
+<area shape="rect" id="Node000009" href="$structtracking_1_1observation_1_1contract_1_1ObservationModelIntf.html" title=" " alt="" coords="571,443,774,538"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="659,552,604,754,599,753,654,551"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="798,429,1081,553"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="894,566,845,635,788,707,732,768,675,826,671,823,729,765,784,704,840,632,890,562"/>
+</map>

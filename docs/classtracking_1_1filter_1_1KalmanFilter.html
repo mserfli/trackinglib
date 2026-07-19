@@ -85,7 +85,7 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for tracking::filter::KalmanFilter&lt; CovarianceMatrixPolicy_ &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1filter_1_1KalmanFilter__inherit__graph.svg" width="250" height="234"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1filter_1_1KalmanFilter__inherit__graph.svg" width="250" height="254"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
@@ -101,6 +101,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ab66a65941a9b1adbdd6d2ed0c37c4dc8" id="r_ab66a65941a9b1adbdd6d2ed0c37c4dc8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimX_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimQ_&gt; </td></tr>
 <tr class="memitem:ab66a65941a9b1adbdd6d2ed0c37c4dc8"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#ab66a65941a9b1adbdd6d2ed0c37c4dc8">predictCovariance</a> (<a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a1110f9c40709eb7e3d182f7a2e101096">CovarianceMatrixType</a>&lt; DimX_ &gt; &amp;P, const <a class="el" href="classtracking_1_1math_1_1SquareMatrix.html">math::SquareMatrix</a>&lt; <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a7917b893fa7d637e7fbedba66dded9bd">value_type</a>, DimX_ &gt; &amp;A, const <a class="el" href="classtracking_1_1math_1_1Matrix.html">math::Matrix</a>&lt; <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a7917b893fa7d637e7fbedba66dded9bd">value_type</a>, DimX_, DimQ_ &gt; &amp;G, const <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">math::DiagonalMatrix</a>&lt; <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a7917b893fa7d637e7fbedba66dded9bd">value_type</a>, DimQ_ &gt; &amp;Q)</td></tr>
 <tr class="separator:ab66a65941a9b1adbdd6d2ed0c37c4dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4df70b5fa33fdf85a95d6a528da0344f" id="r_a4df70b5fa33fdf85a95d6a528da0344f"><td class="memTemplParams" colspan="2">template&lt;typename UpdateMode_  = update_mode::Default&lt;CovarianceMatrixPolicy_&gt;, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimX_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimZ_&gt; </td></tr>
+<tr class="memitem:a4df70b5fa33fdf85a95d6a528da0344f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a4df70b5fa33fdf85a95d6a528da0344f">updateState</a> (<a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a7917b893fa7d637e7fbedba66dded9bd">value_type</a>, DimX_ &gt; &amp;x, <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a1110f9c40709eb7e3d182f7a2e101096">CovarianceMatrixType</a>&lt; DimX_ &gt; &amp;P, const <a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a7917b893fa7d637e7fbedba66dded9bd">value_type</a>, DimZ_ &gt; &amp;innovation, const <a class="el" href="classtracking_1_1math_1_1Matrix.html">math::Matrix</a>&lt; <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a7917b893fa7d637e7fbedba66dded9bd">value_type</a>, DimZ_, DimX_ &gt; &amp;H, const <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a1110f9c40709eb7e3d182f7a2e101096">CovarianceMatrixType</a>&lt; DimZ_ &gt; &amp;R)</td></tr>
+<tr class="memdesc:a4df70b5fa33fdf85a95d6a528da0344f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kalman measurement update of state and covariance.  <br /></td></tr>
+<tr class="separator:a4df70b5fa33fdf85a95d6a528da0344f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -202,6 +206,97 @@ Here is the call graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1filter_1_1KalmanFilter_ab66a65941a9b1adbdd6d2ed0c37c4dc8_icgraph.svg" width="479" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a4df70b5fa33fdf85a95d6a528da0344f" name="a4df70b5fa33fdf85a95d6a528da0344f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4df70b5fa33fdf85a95d6a528da0344f">&#9670;&#160;</a></span>updateState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CovarianceMatrixPolicy_ &gt; </div>
+<div class="memtemplate">
+template&lt;typename UpdateMode_ , <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimX_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimZ_&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html">tracking::filter::KalmanFilter</a>&lt; CovarianceMatrixPolicy_ &gt;::updateState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a7917b893fa7d637e7fbedba66dded9bd">value_type</a>, DimX_ &gt; &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a1110f9c40709eb7e3d182f7a2e101096">CovarianceMatrixType</a>&lt; DimX_ &gt; &amp;&#160;</td>
+          <td class="paramname"><em>P</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a7917b893fa7d637e7fbedba66dded9bd">value_type</a>, DimZ_ &gt; &amp;&#160;</td>
+          <td class="paramname"><em>innovation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1Matrix.html">math::Matrix</a>&lt; <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a7917b893fa7d637e7fbedba66dded9bd">value_type</a>, DimZ_, DimX_ &gt; &amp;&#160;</td>
+          <td class="paramname"><em>H</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1filter_1_1KalmanFilter.html#a1110f9c40709eb7e3d182f7a2e101096">CovarianceMatrixType</a>&lt; DimZ_ &gt; &amp;&#160;</td>
+          <td class="paramname"><em>R</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Kalman measurement update of state and covariance. </p>
+<p>Applies the (extended) Kalman measurement update to the given state vector x and state covariance P using the innovation nu = z - h(x), the measurement Jacobian H = dh/dx and the measurement covariance R.</p>
+<p>Update modes:</p><ul>
+<li><a class="el" href="structtracking_1_1filter_1_1update__mode_1_1Block.html" title="Tag type selecting the block measurement update.">update_mode::Block</a>: single DimZ-sized update with Joseph stabilized covariance; supports correlated R; full covariance policy only.</li>
+<li><a class="el" href="structtracking_1_1filter_1_1update__mode_1_1Sequential.html" title="Tag type selecting the sequential measurement update.">update_mode::Sequential</a>: scalar row-by-row updates (rank-1 covariance modifications); keeps the UDU factorization intact for the factored policy. A correlated R is decorrelated first via R = U*D*U' (nu' = inv(U)*nu, H' = inv(U)*H, R' = D), making the result equivalent to the block update.</li>
+</ul>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">UpdateMode_</td><td>Update mode tag (<a class="el" href="structtracking_1_1filter_1_1update__mode_1_1Block.html" title="Tag type selecting the block measurement update.">update_mode::Block</a> or <a class="el" href="structtracking_1_1filter_1_1update__mode_1_1Sequential.html" title="Tag type selecting the sequential measurement update.">update_mode::Sequential</a>) </td></tr>
+    <tr><td class="paramname">DimX_</td><td>State dimension </td></tr>
+    <tr><td class="paramname">DimZ_</td><td>Measurement dimension </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">x</td><td>State vector to be updated </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">P</td><td>State covariance to be updated </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">innovation</td><td>Innovation nu = z - h(x) evaluated at the given state </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">H</td><td>Measurement Jacobian dh/dx evaluated at the given state </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">R</td><td>Measurement covariance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Measurement rows with a non-positive innovation variance are skipped defensively; if R cannot be decomposed for decorrelation (Sequential path) the whole update is skipped. Both skips are silent (void return). </dd>
+<dd>
+The full-policy Sequential path applies the conventional scalar downdate P -= v*v'/s. It is algebraically equal to the Block (Joseph) result but numerically less robust when a measurement is much more precise than the prior (gain -&gt; 1): the subtractive form can lose positive definiteness under roundoff. Block is the robust default for the full policy; the UDU-factored policy is inherently stable. </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classtracking_1_1filter_1_1KalmanFilter_a4df70b5fa33fdf85a95d6a528da0344f_cgraph.svg" width="100%" height="514"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

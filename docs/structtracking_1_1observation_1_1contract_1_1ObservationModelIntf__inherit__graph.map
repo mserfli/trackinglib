@@ -1,0 +1,22 @@
+<map id="tracking::observation::contract::ObservationModelIntf&lt; ImplType &gt;" name="tracking::observation::contract::ObservationModelIntf&lt; ImplType &gt;">
+<area shape="rect" id="Node000001" title="Static interface contract for concrete observation models (CRTP)" alt="" coords="893,5,1095,100"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="5,148,313,547"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="879,63,736,74,575,91,428,117,369,132,326,150,315,157,312,152,323,146,367,127,427,111,574,86,735,68,879,58"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="337,148,645,547"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="880,71,825,83,768,99,711,122,658,150,647,158,644,153,655,146,709,117,766,94,824,78,879,66"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="669,148,977,547"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="962,113,942,149,937,146,958,111"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="1002,148,1330,547"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="1031,111,1051,146,1047,149,1026,113"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="1355,148,1663,547"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="1109,65,1166,76,1227,93,1287,116,1343,146,1356,154,1353,159,1341,150,1285,121,1225,98,1165,81,1108,70"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html" title=" " alt="" coords="1687,148,1995,547"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="1109,57,1256,68,1420,85,1571,111,1632,127,1677,146,1688,152,1685,157,1674,150,1630,132,1570,116,1419,91,1255,73,1109,63"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html" title="Observation model for a polar bearing&#45;only measurement." alt="" coords="885,595,1103,904"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="326,544,326,544,395,585,468,620,543,649,619,674,763,710,885,732,884,737,762,715,617,679,541,654,465,624,392,590,323,549,323,549"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="657,544,658,545,713,588,772,627,886,693,883,697,769,632,710,592,655,549,654,548"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="916,559,931,593,926,595,911,561"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="1078,560,1063,595,1058,593,1073,558"/>
+<area shape="poly" id="edge10_Node000007_Node000003" title=" " alt="" coords="1346,547,1344,549,1286,593,1224,634,1105,699,1102,695,1221,629,1283,589,1340,545,1342,543"/>
+<area shape="poly" id="edge12_Node000008_Node000003" title=" " alt="" coords="1677,549,1677,549,1606,590,1531,625,1454,655,1376,680,1228,717,1104,738,1103,733,1227,711,1375,675,1452,650,1529,621,1604,585,1674,544,1674,544"/>
+</map>

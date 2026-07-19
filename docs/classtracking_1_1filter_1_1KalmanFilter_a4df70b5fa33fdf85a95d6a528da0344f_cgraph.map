@@ -1,0 +1,16 @@
+<map id="tracking::filter::KalmanFilter::updateState" name="tracking::filter::KalmanFilter::updateState">
+<area shape="rect" id="Node000001" title="Kalman measurement update of state and covariance." alt="" coords="5,141,176,181"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="247,13,413,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,138,162,100,223,62,238,55,241,60,225,67,165,104,116,143"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1SquareMatrix.html#a1767678675efd8983ce5beab4c53b2d7" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="224,77,436,117"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="166,138,241,118,242,123,167,143"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1SquareMatrix.html#aa28cafb64caa7a86fd8871ecb30e993d" title="Symmetrize the matrix by averaging with its transpose." alt="" coords="224,141,436,181"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="176,158,210,158,210,163,176,163"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1SquareMatrix.html#a83aee3d96b9a570cf86fd8b82151f1a3" title="Fast transpose without changing the layout (zero&#45;copy view)" alt="" coords="224,205,436,245"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="167,178,242,199,241,204,166,183"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1Matrix.html#a478f0eea63246477537c07d88584371d" title="Fast transpose without changing the layout (zero&#45;copy view)" alt="" coords="484,225,691,280"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="113,179,161,220,192,239,225,254,286,269,350,275,413,274,470,270,471,275,413,280,350,280,285,274,223,259,189,244,158,224,109,183"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html#a103ed8d3af53ba865c6a00784ed62de6" title="Unsafe element read&#45;only access (no bounds checking)" alt="" coords="501,5,673,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="414,30,488,30,488,35,414,35"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="436,234,471,237,470,243,436,239"/>
+</map>
