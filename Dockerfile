@@ -1,4 +1,4 @@
-ARG DEFAULT_PLATFORM=linux/amd64
+ARG DEFAULT_PLATFORM=linux/arm64
 FROM --platform=${DEFAULT_PLATFORM} ubuntu:24.04
 LABEL Description="Build environment"
 
@@ -13,7 +13,6 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     clang \
     clangd \
     cmake \
-    ninja-build \
     doxygen \
     graphviz \
     octave \
