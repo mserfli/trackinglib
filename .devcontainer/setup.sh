@@ -15,6 +15,9 @@ curl -fsSL https://claude.ai/install.sh | bash
 echo "=== Installing Rust Token Killer ==="
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | BINDIR=/usr/local/bin sh
 
+echo "=== Registering RTK Claude Code Hook ==="
+rtk init -g --auto-patch
+
 echo "=== Installing Python Dependencies ==="
 pip3 install --break-system-packages fastapi "httpx[http2]" "headroom-ai[mcp]"
 
