@@ -1,13 +1,17 @@
-FROM --platform=linux/amd64 ubuntu:22.04
+ARG DEFAULT_PLATFORM=linux/arm64
+FROM --platform=${DEFAULT_PLATFORM} ubuntu:24.04
 LABEL Description="Build environment"
 
-ENV HOME /root
+# Standard key=value syntax fixes the LegacyKeyValueFormat warning
+ENV HOME=/root
 
 SHELL ["/bin/bash", "-c"]
 
+# Pure system dependencies - keeping python3-pip for Headroom
 RUN apt-get update && apt-get -y --no-install-recommends install \
     build-essential \
     clang \
+    clang-format \
     clangd \
     cmake \
     doxygen \
@@ -19,11 +23,9 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     ca-certificates \
     python3 \
     python3-dev \
-    lcov
-
-RUN cd ${HOME} && \
-    wget --no-check-certificate --quiet \
-        https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-        sh Miniconda3-latest-Linux-x86_64.sh -b -p ${HOME}/miniconda3 && \
-        rm -rf Miniconda3-latest-Linux-x86_64.sh && \
-        miniconda3/bin/conda init bash
+    python3-pip \
+    lcov \
+    curl \
+    ripgrep \
+    && rm -rf /var/lib/apt/lists/*
+    
