@@ -17,6 +17,8 @@ Constraints below) despite being a research/education target, not a shipped prod
 # Configure + build + test (CI does this across g++/clang++ x C++17/20 x Debug/Release)
 mkdir -p build && cd build
 cmake .. -DCMAKE_CXX_STANDARD=17 -DCMAKE_BUILD_TYPE=Debug
+# alternatively using Ninja
+cmake .. -G Ninja -DCMAKE_CXX_STANDARD=17 -DCMAKE_BUILD_TYPE=Debug
 cmake --build .
 ctest --output-on-failure
 

@@ -1,5 +1,5 @@
 ARG DEFAULT_PLATFORM=linux/amd64
-FROM --platform=${DEFAULT_PLATFORM} ubuntu:22.04
+FROM --platform=${DEFAULT_PLATFORM} ubuntu:24.04
 LABEL Description="Build environment"
 
 # Standard key=value syntax fixes the LegacyKeyValueFormat warning
@@ -13,6 +13,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     clang \
     clangd \
     cmake \
+    ninja-build \
     doxygen \
     graphviz \
     octave \

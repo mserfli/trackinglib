@@ -12,8 +12,11 @@ ctags -R --languages=C++ --map-C++=+.h.hpp.tcc.cpp.cxx --kinds-C++=+p+t+u+v-l --
 echo "=== Installing Claude Code ==="
 curl -fsSL https://claude.ai/install.sh | bash
 
+echo "=== Installing Rust Token Killer ==="
+curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | BINDIR=/usr/local/bin sh
+
 echo "=== Installing Python Dependencies ==="
-pip3 install fastapi "httpx[http2]" "headroom-ai[mcp]"
+pip3 install --break-system-packages fastapi "httpx[http2]" "headroom-ai[mcp]"
 
 echo "=== Configuring Headroom MCP ==="
 headroom mcp install
