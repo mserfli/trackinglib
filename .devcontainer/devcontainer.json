@@ -1,10 +1,8 @@
 {
     "name": "Tracking Library Workspace",
+    // use pre-build image for faster startup
+    // docker build --no-cache -t trackinglib:latest .
     "image": "trackinglib:latest",
-    //"build": {
-    //    "dockerfile": "../Dockerfile", // Path relative to this JSON file
-    //    "context": ".."                // The folder where the build runs
-    //},
     
     // 1. Replicates your SSH-agent forwarding
     "runArgs": [
@@ -12,6 +10,11 @@
     ],
     "containerEnv": {
         "SSH_AUTH_SOCK": "/run/host-services/ssh-auth.sock"
+    },
+
+    // AUTOMATION: Injects the path and configures the wrapper alias automatically
+    "remoteEnv": {
+        "PATH": "/root/.local/bin:${containerEnv:PATH}"
     },
 
     // 2. Replicates your workspace mount
@@ -26,6 +29,7 @@
                 "aslamanver.vsc-export",
                 "cschlosser.doxdocgen",
                 "donjayamanne.githistory",
+                "Anthropic.claude-code",
                 "github.copilot-chat",
                 "github.vscode-github-actions",
                 "gruntfuggly.todo-tree",
@@ -53,7 +57,5 @@
         }
     },
     // CRITICAL: This runs every time the container is created
-    // too large: ctags -R --languages=C++ --map-C++=+.h.hpp.tcc.cpp.cxx --kinds-C++=+p+l+x+t+u+v --fields=+iaSzn --extras=+q+r --exclude=build --exclude=.git --output-format=u-ctags -f .repo.tags .
-    // optimized: ctags -R --languages=C++ --map-C++=+.h.hpp.tcc.cpp.cxx --kinds-C++=+p+t+u+v-l --fields=+iaS --extras=+q --exclude=build --exclude=.git --exclude=tests -f .repo.tags .
-    "postCreateCommand": "apt-get update && apt-get install -y universal-ctags ripgrep && ctags -R --languages=C++ --map-C++=+.h.hpp.tcc.cpp.cxx --kinds-C++=+p+t+u+v-l --fields=+iaS --extras=+q --exclude=build --exclude=.git --exclude=tests -f .repo.tags ."
+    "postCreateCommand": "bash .devcontainer/setup.sh"
 }

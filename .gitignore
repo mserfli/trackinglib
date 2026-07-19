@@ -9,3 +9,5 @@ build_cov
 doxydoc
 pytracking.*
 plans
+.claude/.headroom_wrap_marker.json
+.tokensave/
