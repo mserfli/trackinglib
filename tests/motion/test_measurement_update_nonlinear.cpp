@@ -1,9 +1,11 @@
 #include <gtest/gtest.h>
 
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
+#include "trackingLib/observation/bearing_observation_model.h"
 #include "trackingLib/observation/position_observation_model.h"
 #include "trackingLib/observation/range_bearing_doppler_observation_model.h"
 #include "trackingLib/observation/range_bearing_observation_model.h"
+#include "trackingLib/observation/range_observation_model.h"
 #include <cmath>
 
 using Testvalue_type = float64;
@@ -11,13 +13,15 @@ using FullPolicy     = tracking::math::FullCovarianceMatrixPolicy<Testvalue_type
 using FactoredPolicy = tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>;
 using StateDefCV     = tracking::motion::StateDefCV;
 
-using MMFull  = tracking::motion::MotionModelCV<FullPolicy>;
-using MMFact  = tracking::motion::MotionModelCV<FactoredPolicy>;
-using RbFull  = tracking::observation::RangeBearingObservationModel<FullPolicy, StateDefCV>;
-using RbFact  = tracking::observation::RangeBearingObservationModel<FactoredPolicy, StateDefCV>;
-using RbdFull = tracking::observation::RangeBearingDopplerObservationModel<FullPolicy, StateDefCV>;
-using PosFull = tracking::observation::PositionObservationModel<FullPolicy, StateDefCV>;
-using PosFact = tracking::observation::PositionObservationModel<FactoredPolicy, StateDefCV>;
+using MMFull      = tracking::motion::MotionModelCV<FullPolicy>;
+using MMFact      = tracking::motion::MotionModelCV<FactoredPolicy>;
+using RbFull      = tracking::observation::RangeBearingObservationModel<FullPolicy, StateDefCV>;
+using RbFact      = tracking::observation::RangeBearingObservationModel<FactoredPolicy, StateDefCV>;
+using RbdFull     = tracking::observation::RangeBearingDopplerObservationModel<FullPolicy, StateDefCV>;
+using PosFull     = tracking::observation::PositionObservationModel<FullPolicy, StateDefCV>;
+using PosFact     = tracking::observation::PositionObservationModel<FactoredPolicy, StateDefCV>;
+using RangeFull   = tracking::observation::RangeObservationModel<FullPolicy, StateDefCV>;
+using BearingFull = tracking::observation::BearingObservationModel<FullPolicy, StateDefCV>;
 
 using KalmanFull      = tracking::filter::KalmanFilter<FullPolicy>;
 using KalmanFact      = tracking::filter::KalmanFilter<FactoredPolicy>;
@@ -228,6 +232,26 @@ TEST(MeasurementUpdateNonlinear, update_ComposedRangeBearingPlusPosition_Factore
   mmFact.update(KalmanFact{}, rbFact, posFact);
 
   expectSamePosterior(mmFact, mmFull, 1e-9, 1e-9);
+}
+
+TEST(MeasurementUpdateNonlinear, update_ComposedRangeBearing_MatchesJointRangeBearing_BlockAndSequential) // NOLINT
+{
+  auto             mmJoint      = makePrior<MMFull>();
+  auto             mmBlock      = makePrior<MMFull>();
+  auto             mmSequential = makePrior<MMFull>();
+  const auto       joint        = makeRangeBearingObs<RbFull>();
+  const auto       range        = RangeFull::FromLists({11.3}, {{0.04}});
+  const auto       bearing      = BearingFull::FromLists({0.50}, {{0.0025}});
+  const KalmanFull filter{};
+
+  // the diagonal R of makeRangeBearingObs() splits exactly into these two scalar model
+  // covariances, so both stacking modes must reproduce the joint posterior
+  mmJoint.update(filter, joint);
+  mmBlock.update<update_mode::Block>(filter, range, bearing);
+  mmSequential.update<update_mode::Sequential>(filter, range, bearing);
+
+  expectSamePosterior(mmBlock, mmJoint, 1e-10, 1e-10);
+  expectSamePosterior(mmSequential, mmJoint, 1e-10, 1e-10);
 }
 
 TEST(MeasurementUpdateNonlinear, predictUpdateLoop_RangeBearingDoppler__ConvergesToGroundTruth) // NOLINT

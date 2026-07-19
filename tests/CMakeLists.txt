@@ -30,6 +30,8 @@ set(TEST_SOURCES
     observation/test_velocity_observation_model.cpp
     observation/test_range_bearing_observation_model.cpp
     observation/test_range_bearing_doppler_observation_model.cpp
+    observation/test_bearing_observation_model.cpp
+    observation/test_range_observation_model.cpp
 )
 
 set(ALL_TEST_EXECUTABLES "")
