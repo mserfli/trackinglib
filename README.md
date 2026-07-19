@@ -14,7 +14,7 @@
 ## About
 
 [![Build and Test](https://github.com/mserfli/trackinglib/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/mserfli/trackinglib/actions/workflows/build-and-test.yml)
-[![Coverage Status](https://img.shields.io/badge/Coverage-98%25-green)](https://mserfli.github.io/trackinglib/coverage/)
+[![Coverage Status](https://img.shields.io/endpoint?url=https://mserfli.github.io/trackinglib/coverage/coverage-badge.json)](https://mserfli.github.io/trackinglib/coverage/)
 [![Doxygen Docs](https://img.shields.io/badge/docs-gh--pages-blue)](https://mserfli.github.io/trackinglib/docs/)
 
 Academic C++ header-only library for object tracking using Kalman filter variants.
@@ -224,7 +224,7 @@ doxygen
 
 ```bash
 # Generate coverage report
-./report_coverage.sh
+./coverage_report.sh
 # Open build_cov/coverage/index.html in your browser
 ```
 

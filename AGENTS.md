@@ -24,7 +24,7 @@ ctest --output-on-failure
 cmake .. -DBUILD_HEADER_TESTS=ON && cmake --build . --target header_tests && ctest -R "header_test_" --output-on-failure
 
 # Coverage report -> build_cov/coverage/index.html
-./report_coverage.sh   # from repo root
+./coverage_report.sh   # from repo root
 
 # Docs -> doxydoc/html/index.html
 doxygen   # from repo root
