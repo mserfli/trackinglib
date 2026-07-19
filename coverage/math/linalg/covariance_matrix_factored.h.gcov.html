@@ -31,17 +31,17 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">60.0&nbsp;%</td>
+            <td class="headerCovTableEntryLo">70.0&nbsp;%</td>
             <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">7</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">0.0&nbsp;%</td>
-            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">21</td>
             <td class="headerCovTableEntry">0</td>
           </tr>
           <tr>
@@ -135,11 +135,11 @@
 <span id="L65"><span class="lineNum">      65</span>              : </span>
 <span id="L66"><span class="lineNum">      66</span>              :   // rule of 5 declarations</span>
 <span id="L67"><span class="lineNum">      67</span>              :   CovarianceMatrixFactored()                                                       = default;</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC tlaBgGNC">          46 :   CovarianceMatrixFactored(const CovarianceMatrixFactored&amp;)                        = default;</span></span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          19 :   CovarianceMatrixFactored(CovarianceMatrixFactored&amp;&amp;) noexcept                    = default;</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC tlaBgGNC">          77 :   CovarianceMatrixFactored(const CovarianceMatrixFactored&amp;)                        = default;</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          38 :   CovarianceMatrixFactored(CovarianceMatrixFactored&amp;&amp;) noexcept                    = default;</span></span>
 <span id="L70"><span class="lineNum">      70</span>              :   auto operator=(const CovarianceMatrixFactored&amp;) -&gt; CovarianceMatrixFactored&amp;     = default;</span>
-<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">          20 :   auto operator=(CovarianceMatrixFactored&amp;&amp;) noexcept -&gt; CovarianceMatrixFactored&amp; = default;</span></span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">         171 :   virtual ~CovarianceMatrixFactored()                                              = default;</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">          26 :   auto operator=(CovarianceMatrixFactored&amp;&amp;) noexcept -&gt; CovarianceMatrixFactored&amp; = default;</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">         278 :   virtual ~CovarianceMatrixFactored()                                              = default;</span></span>
 <span id="L73"><span class="lineNum">      73</span>              : </span>
 <span id="L74"><span class="lineNum">      74</span>              :   //////////////////////////////////////////////////</span>
 <span id="L75"><span class="lineNum">      75</span>              :   // additional constructors  ---&gt;</span>
@@ -185,11 +185,11 @@
 <span id="L115"><span class="lineNum">     115</span>              : </span>
 <span id="L116"><span class="lineNum">     116</span>              :   /// \brief Access operator to the triangular matrix U</span>
 <span id="L117"><span class="lineNum">     117</span>              :   /// \return const reference to the internal triangular matrix U</span>
-<span id="L118"><span class="lineNum">     118</span> <span class="tlaUNC tlaBgUNC">           0 :   [[nodiscard]] auto U() const -&gt; const TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; { return _u; }</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">          24 :   [[nodiscard]] auto U() const -&gt; const TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; { return _u; }</span></span>
 <span id="L119"><span class="lineNum">     119</span>              : </span>
 <span id="L120"><span class="lineNum">     120</span>              :   /// \brief Access operator to the diagonal matrix D</span>
 <span id="L121"><span class="lineNum">     121</span>              :   /// \return const reference to the internal diagonal matrix D</span>
-<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC tlaBgGNC">          40 :   [[nodiscard]] auto D() const -&gt; const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; { return _d; }</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">          51 :   [[nodiscard]] auto D() const -&gt; const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; { return _d; }</span></span>
 <span id="L123"><span class="lineNum">     123</span>              : </span>
 <span id="L124"><span class="lineNum">     124</span>              :   /// \brief Calculate the trace of the square matrix.</span>
 <span id="L125"><span class="lineNum">     125</span>              :   ///</span>
@@ -207,7 +207,7 @@
 <span id="L137"><span class="lineNum">     137</span>              :   /// \return ValueType_ The determinant of the matrix</span>
 <span id="L138"><span class="lineNum">     138</span>              :   /// \note Time complexity: O(n) where n is the matrix dimension</span>
 <span id="L139"><span class="lineNum">     139</span>              :   /// \note For singular matrixes, the determinant will be zero or very close to zero</span>
-<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">          10 :   [[nodiscard]] auto determinant() const -&gt; ValueType_ { return _d.determinant(); }</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">          31 :   [[nodiscard]] auto determinant() const -&gt; ValueType_ { return _d.determinant(); }</span></span>
 <span id="L141"><span class="lineNum">     141</span>              : </span>
 <span id="L142"><span class="lineNum">     142</span>              :   /// \brief Compute inverse in factored form</span>
 <span id="L143"><span class="lineNum">     143</span>              :   ///</span>

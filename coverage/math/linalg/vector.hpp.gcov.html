@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">32</td>
-            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntry">35</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -105,14 +105,14 @@
 <span id="L35"><span class="lineNum">      35</span>              : }</span>
 <span id="L36"><span class="lineNum">      36</span>              : </span>
 <span id="L37"><span class="lineNum">      37</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">         138 : inline auto Vector&lt;ValueType_, Size_&gt;::FromList(const std::initializer_list&lt;ValueType_&gt;&amp; list) -&gt; Vector</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">         254 : inline auto Vector&lt;ValueType_, Size_&gt;::FromList(const std::initializer_list&lt;ValueType_&gt;&amp; list) -&gt; Vector</span></span>
 <span id="L39"><span class="lineNum">      39</span>              : {</span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">         138 :   assert(list.size() == Size_);</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">         254 :   assert(list.size() == Size_);</span></span>
 <span id="L41"><span class="lineNum">      41</span>              : </span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         138 :   Vector tmp;</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         138 :   auto   iter = tmp.data().begin();</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">         138 :   std::copy(list.begin(), list.end(), iter);</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         138 :   return tmp;</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         254 :   Vector tmp;</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         254 :   auto   iter = tmp.data().begin();</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">         254 :   std::copy(list.begin(), list.end(), iter);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         254 :   return tmp;</span></span>
 <span id="L46"><span class="lineNum">      46</span>              : }</span>
 <span id="L47"><span class="lineNum">      47</span>              : </span>
 <span id="L48"><span class="lineNum">      48</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
@@ -128,25 +128,25 @@
 <span id="L58"><span class="lineNum">      58</span>              : }</span>
 <span id="L59"><span class="lineNum">      59</span>              : </span>
 <span id="L60"><span class="lineNum">      60</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">         636 : inline auto Vector&lt;ValueType_, Size_&gt;::operator*(const Vector&amp; other) const -&gt; ValueType_</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        1356 : inline auto Vector&lt;ValueType_, Size_&gt;::operator*(const Vector&amp; other) const -&gt; ValueType_</span></span>
 <span id="L62"><span class="lineNum">      62</span>              : {</span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">         636 :   auto sum = static_cast&lt;ValueType_&gt;(0);</span></span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">        3867 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">        1356 :   auto sum = static_cast&lt;ValueType_&gt;(0);</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">        6603 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
 <span id="L65"><span class="lineNum">      65</span>              :   {</span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        3231 :     sum += at_unsafe(idx) * other.at_unsafe(idx);</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        5247 :     sum += at_unsafe(idx) * other.at_unsafe(idx);</span></span>
 <span id="L67"><span class="lineNum">      67</span>              :   }</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">         636 :   return sum;</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        1356 :   return sum;</span></span>
 <span id="L69"><span class="lineNum">      69</span>              : }</span>
 <span id="L70"><span class="lineNum">      70</span>              : </span>
 <span id="L71"><span class="lineNum">      71</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">         634 : inline auto Vector&lt;ValueType_, Size_&gt;::normSq() const -&gt; ValueType_</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">        1298 : inline auto Vector&lt;ValueType_, Size_&gt;::normSq() const -&gt; ValueType_</span></span>
 <span id="L73"><span class="lineNum">      73</span>              : {</span>
-<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">         629 :   return this-&gt;operator*(*this);</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">        1293 :   return this-&gt;operator*(*this);</span></span>
 <span id="L75"><span class="lineNum">      75</span>              : }</span>
 <span id="L76"><span class="lineNum">      76</span>              : </span>
 <span id="L77"><span class="lineNum">      77</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
 <span id="L78"><span class="lineNum">      78</span>              : template &lt;typename U, std::enable_if_t&lt;std::is_floating_point&lt;U&gt;::value, int&gt;&gt;</span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">         632 : inline auto Vector&lt;ValueType_, Size_&gt;::norm() const -&gt; ValueType_</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">        1296 : inline auto Vector&lt;ValueType_, Size_&gt;::norm() const -&gt; ValueType_</span></span>
 <span id="L80"><span class="lineNum">      80</span>              : {</span>
 <span id="L81"><span class="lineNum">      81</span>              :   if constexpr (Size_ == 1)</span>
 <span id="L82"><span class="lineNum">      82</span>              :   {</span>
@@ -154,7 +154,7 @@
 <span id="L84"><span class="lineNum">      84</span>              :   }</span>
 <span id="L85"><span class="lineNum">      85</span>              :   else</span>
 <span id="L86"><span class="lineNum">      86</span>              :   {</span>
-<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">         632 :     return std::sqrt(normSq());</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">        1296 :     return std::sqrt(normSq());</span></span>
 <span id="L88"><span class="lineNum">      88</span>              :   }</span>
 <span id="L89"><span class="lineNum">      89</span>              : }</span>
 <span id="L90"><span class="lineNum">      90</span>              : </span>

@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryHi">99.7&nbsp;%</td>
-            <td class="headerCovTableEntry">335</td>
-            <td class="headerCovTableEntry">334</td>
+            <td class="headerCovTableEntryHi">95.2&nbsp;%</td>
+            <td class="headerCovTableEntry">414</td>
+            <td class="headerCovTableEntry">394</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -227,7 +227,28 @@
             <tr>
               <td class="coverFn"><a href="matrix.hpp.gcov.html#L182">void tracking::math::Matrix&lt;int, 2, 3, false&gt;::operator+=&lt;true&gt;(tracking::math::Matrix&lt;int, 2, 3, true&gt; const&amp;)</a></td>
               
-              <td class="coverFnHi">22</td>
+              <td class="coverFnHi">26</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L182">void tracking::math::Matrix<double, 3, 3, true>::operator+=<false>(tracking::math::Matrix<double, 3, 3, false> const&)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L182">void tracking::math::Matrix<double, 4, 1, true>::operator+=<false>(tracking::math::Matrix<double, 4, 1, false> const&)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L182">void tracking::math::Matrix<double, 4, 4, true>::operator+=<false>(tracking::math::Matrix<double, 4, 4, false> const&)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
               
               
             </tr>
@@ -269,7 +290,28 @@
             <tr>
               <td class="coverFn"><a href="matrix.hpp.gcov.html#L148">bool tracking::math::Matrix&lt;int, 2, 3, false&gt;::operator==&lt;true&gt;(tracking::math::Matrix&lt;int, 2, 3, true&gt; const&amp;) const</a></td>
               
-              <td class="coverFnHi">24</td>
+              <td class="coverFnHi">28</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L148">bool tracking::math::Matrix<double, 3, 3, true>::operator==<false>(tracking::math::Matrix<double, 3, 3, false> const&) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L148">bool tracking::math::Matrix<double, 4, 1, true>::operator==<false>(tracking::math::Matrix<double, 4, 1, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L148">bool tracking::math::Matrix<double, 4, 4, true>::operator==<false>(tracking::math::Matrix<double, 4, 4, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
               
               
             </tr>
@@ -309,21 +351,35 @@
               
             </tr>
             <tr>
+              <td class="coverFn"><a href="matrix.hpp.gcov.html#L389">tracking::math::Matrix&lt;float, 3, 1, true&gt;::isZeros() const</a></td>
+              
+              <td class="coverFnHi">370</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L389">tracking::math::Matrix<float, 3, 1, true>::isZeros() const</a></td>
+              
+              <td class="coverFnAliasHi">140</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L389">tracking::math::Matrix<double, 3, 1, true>::isZeros() const</a></td>
+              
+              <td class="coverFnAliasHi">230</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="matrix.hpp.gcov.html#L291">tracking::math::Matrix&lt;int, 2, 3, true&gt; tracking::math::Matrix&lt;int, 2, 3, true&gt;::operator+&lt;true&gt;(tracking::math::Matrix&lt;int, 2, 3, true&gt; const&amp;) const</a></td>
               
-              <td class="coverFnHi">45</td>
+              <td class="coverFnHi">399</td>
               
               
             </tr>
             <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L291">tracking::math::Matrix<double, 3, 1, true> tracking::math::Matrix<double, 3, 1, true>::operator+<true>(tracking::math::Matrix<double, 3, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L291">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 4, true>::operator+<true>(tracking::math::Matrix<double, 4, 4, true> const&) const</a></td>
               
               <td class="coverFnAliasHi">1</td>
               
@@ -365,9 +421,23 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L291">tracking::math::Matrix<double, 3, 3, true> tracking::math::Matrix<double, 3, 3, true>::operator+<true>(tracking::math::Matrix<double, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">120</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L291">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 4, true>::operator+<true>(tracking::math::Matrix<double, 4, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">235</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix&lt;int, 2, 2, true&gt;::operator-=&lt;true&gt;(tracking::math::Matrix&lt;int, 2, 2, true&gt; const&amp;)</a></td>
               
-              <td class="coverFnHi">66</td>
+              <td class="coverFnHi">620</td>
               
               
             </tr>
@@ -382,13 +452,6 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix<int, 3, 3, true>::operator-=<false>(tracking::math::Matrix<int, 3, 3, false> const&)</a></td>
               
               <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix<double, 3, 1, true>::operator-=<true>(tracking::math::Matrix<double, 3, 1, true> const&)</a></td>
-              
-              <td class="coverFnAliasHi">2</td>
               
               
             </tr>
@@ -435,6 +498,13 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix<double, 1, 1, true>::operator-=<true>(tracking::math::Matrix<double, 1, 1, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix<float, 4, 4, true>::operator-=<true>(tracking::math::Matrix<float, 4, 4, true> const&)</a></td>
               
               <td class="coverFnAliasHi">5</td>
@@ -449,6 +519,13 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix<double, 4, 1, true>::operator-=<true>(tracking::math::Matrix<double, 4, 1, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">28</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix<float, 2, 1, true>::operator-=<true>(tracking::math::Matrix<float, 2, 1, true> const&)</a></td>
               
               <td class="coverFnAliasHi">40</td>
@@ -456,9 +533,44 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix<double, 3, 1, true>::operator-=<true>(tracking::math::Matrix<double, 3, 1, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">123</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix<double, 2, 1, true>::operator-=<true>(tracking::math::Matrix<double, 2, 1, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">151</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L217">void tracking::math::Matrix<double, 4, 4, true>::operator-=<true>(tracking::math::Matrix<double, 4, 4, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">249</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix&lt;int, 1, 2, true&gt;::setBlock&lt;4, 3, 1, 2, 2, 1, true, 0, 0&gt;(tracking::math::Matrix&lt;int, 4, 3, true&gt; const&amp;)</a></td>
               
-              <td class="coverFnHi">99</td>
+              <td class="coverFnHi">643</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 4, 5, true>::setBlock<4, 2, 4, 2, 0, 0, true, 0, 3>(tracking::math::Matrix<double, 4, 2, true> const&)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 4, 5, true>::setBlock<4, 3, 4, 3, 0, 0, true, 0, 0>(tracking::math::Matrix<double, 4, 3, true> const&)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -561,6 +673,34 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 2, 2, true>::setBlock<1, 1, 1, 1, 0, 0, true, 0, 0>(tracking::math::Matrix<double, 1, 1, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 2, 2, true>::setBlock<1, 1, 1, 1, 0, 0, true, 1, 1>(tracking::math::Matrix<double, 1, 1, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 2, 4, true>::setBlock<1, 4, 1, 4, 0, 0, true, 0, 0>(tracking::math::Matrix<double, 1, 4, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 2, 4, true>::setBlock<1, 4, 1, 4, 0, 0, true, 1, 0>(tracking::math::Matrix<double, 1, 4, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<int, 1, 2, true>::setBlock<4, 3, 1, 2, 2, 1, true, 0, 0>(tracking::math::Matrix<int, 4, 3, true> const&)</a></td>
               
               <td class="coverFnAliasHi">2</td>
@@ -571,6 +711,34 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<int, 2, 1, true>::setBlock<4, 3, 2, 1, 1, 2, true, 0, 0>(tracking::math::Matrix<int, 4, 3, true> const&)</a></td>
               
               <td class="coverFnAliasHi">3</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 4, 4, true>::setBlock<2, 2, 2, 2, 0, 0, true, 0, 0>(tracking::math::Matrix<double, 2, 2, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 4, 4, true>::setBlock<2, 2, 2, 2, 0, 0, true, 2, 2>(tracking::math::Matrix<double, 2, 2, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 4, 4, true>::setBlock<2, 4, 2, 4, 0, 0, true, 0, 0>(tracking::math::Matrix<double, 2, 4, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 4, 4, true>::setBlock<2, 4, 2, 4, 0, 0, true, 2, 0>(tracking::math::Matrix<double, 2, 4, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
               
               
             </tr>
@@ -603,569 +771,37 @@
               
             </tr>
             <tr>
-              <td class="coverFn"><a href="matrix.hpp.gcov.html#L389">tracking::math::Matrix&lt;float, 3, 1, true&gt;::isZeros() const</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 3, 3, true>::setBlock<3, 3, 3, 3, 0, 0, true, 0, 0>(tracking::math::Matrix<double, 3, 3, true> const&)</a></td>
               
-              <td class="coverFnHi">140</td>
+              <td class="coverFnAliasHi">120</td>
               
               
             </tr>
             <tr>
-              <td class="coverFn"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix&lt;int, 1, 1, true&gt;::minmax() const</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 3, 4, true>::setBlock<3, 4, 3, 4, 0, 0, true, 0, 0>(tracking::math::Matrix<double, 3, 4, true> const&)</a></td>
               
-              <td class="coverFnHi">274</td>
+              <td class="coverFnAliasHi">120</td>
               
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<double, 3, 3, true>::minmax() const</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 2, 2, true>::setBlock<2, 2, 2, 2, 0, 0, true, 0, 0>(tracking::math::Matrix<double, 2, 2, true> const&)</a></td>
               
-              <td class="coverFnAliasHi">1</td>
+              <td class="coverFnAliasHi">138</td>
               
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<double, 4, 4, true>::minmax() const</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L442">void tracking::math::Matrix<double, 2, 4, true>::setBlock<2, 4, 2, 4, 0, 0, true, 0, 0>(tracking::math::Matrix<double, 2, 4, true> const&)</a></td>
               
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<int, 1, 1, true>::minmax() const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<int, 2, 3, true>::minmax() const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<int, 2, 2, true>::minmax() const</a></td>
-              
-              <td class="coverFnAliasHi">4</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 3, 3, true>::minmax() const</a></td>
-              
-              <td class="coverFnAliasHi">6</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 4, 4, false>::minmax() const</a></td>
-              
-              <td class="coverFnAliasHi">10</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 6, 6, false>::minmax() const</a></td>
-              
-              <td class="coverFnAliasHi">10</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 4, 4, true>::minmax() const</a></td>
-              
-              <td class="coverFnAliasHi">50</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 6, 6, true>::minmax() const</a></td>
-              
-              <td class="coverFnAliasHi">50</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 3, 1, true>::minmax() const</a></td>
-              
-              <td class="coverFnAliasHi">140</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFn"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix&lt;int, 3, 3, true&gt;::setBlock&lt;2, 2, true&gt;(int, int, int, int, int, int, tracking::math::Matrix&lt;int, 2, 2, true&gt; const&amp;)</a></td>
-              
-              <td class="coverFnHi">626</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<int, 3, 3, true>::setBlock<2, 2, true>(int, int, int, int, int, int, tracking::math::Matrix<int, 2, 2, true> const&)</a></td>
-              
-              <td class="coverFnAliasLo">0</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<int, 4, 4, true>::setBlock<2, 2, true>(int, int, int, int, int, int, tracking::math::Matrix<int, 2, 2, true> const&)</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<double, 3, 1, true>::setBlock<3, 3, true>(int, int, int, int, int, int, tracking::math::Matrix<double, 3, 3, true> const&)</a></td>
-              
-              <td class="coverFnAliasHi">3</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<double, 4, 1, true>::setBlock<4, 4, true>(int, int, int, int, int, int, tracking::math::Matrix<double, 4, 4, true> const&)</a></td>
-              
-              <td class="coverFnAliasHi">4</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 3, 1, true>::setBlock<3, 3, true>(int, int, int, int, int, int, tracking::math::Matrix<float, 3, 3, true> const&)</a></td>
-              
-              <td class="coverFnAliasHi">18</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 4, 1, true>::setBlock<4, 4, false>(int, int, int, int, int, int, tracking::math::Matrix<float, 4, 4, false> const&)</a></td>
-              
-              <td class="coverFnAliasHi">40</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 6, 1, true>::setBlock<6, 6, false>(int, int, int, int, int, int, tracking::math::Matrix<float, 6, 6, false> const&)</a></td>
-              
-              <td class="coverFnAliasHi">60</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 4, 1, true>::setBlock<4, 4, true>(int, int, int, int, int, int, tracking::math::Matrix<float, 4, 4, true> const&)</a></td>
-              
-              <td class="coverFnAliasHi">200</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 6, 1, true>::setBlock<6, 6, true>(int, int, int, int, int, int, tracking::math::Matrix<float, 6, 6, true> const&)</a></td>
-              
-              <td class="coverFnAliasHi">300</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFn"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix&lt;int, 1, 1, true&gt; tracking::math::Matrix&lt;int, 1, 2, true&gt;::operator*&lt;1, true&gt;(tracking::math::Matrix&lt;int, 2, 1, true&gt; const&amp;) const</a></td>
-              
-              <td class="coverFnHi">633</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 1, 3, false> tracking::math::Matrix<double, 1, 2, false>::operator*<3, true>(tracking::math::Matrix<double, 2, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 2, 2, true> tracking::math::Matrix<double, 2, 1, true>::operator*<2, false>(tracking::math::Matrix<double, 1, 2, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 3, 3, false> tracking::math::Matrix<double, 3, 3, false>::operator*<3, true>(tracking::math::Matrix<double, 3, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, false> tracking::math::Matrix<double, 4, 4, false>::operator*<4, true>(tracking::math::Matrix<double, 4, 4, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 2, true>::operator*<4, false>(tracking::math::Matrix<double, 2, 4, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 6, 6, true> tracking::math::Matrix<double, 6, 3, true>::operator*<6, false>(tracking::math::Matrix<double, 3, 6, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 1, 3, false> tracking::math::Matrix<float, 1, 2, false>::operator*<3, true>(tracking::math::Matrix<float, 2, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 1, false> tracking::math::Matrix<int, 1, 4, false>::operator*<1, true>(tracking::math::Matrix<int, 4, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 1, true> tracking::math::Matrix<int, 1, 2, true>::operator*<1, true>(tracking::math::Matrix<int, 2, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 2, true> tracking::math::Matrix<int, 1, 2, true>::operator*<2, true>(tracking::math::Matrix<int, 2, 2, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 2, true> tracking::math::Matrix<int, 1, 3, true>::operator*<2, true>(tracking::math::Matrix<int, 3, 2, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 3, false> tracking::math::Matrix<int, 1, 2, false>::operator*<3, true>(tracking::math::Matrix<int, 2, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 3, true> tracking::math::Matrix<int, 1, 3, true>::operator*<3, true>(tracking::math::Matrix<int, 3, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 2, 4, false> tracking::math::Matrix<int, 2, 3, false>::operator*<4, false>(tracking::math::Matrix<int, 3, 4, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 3, 1, true> tracking::math::Matrix<int, 3, 2, true>::operator*<1, true>(tracking::math::Matrix<int, 2, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 3, 3, true> tracking::math::Matrix<int, 3, 3, true>::operator*<3, true>(tracking::math::Matrix<int, 3, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 1, 1, false> tracking::math::Matrix<double, 1, 4, false>::operator*<1, true>(tracking::math::Matrix<double, 4, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">2</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 6, 6, true> tracking::math::Matrix<double, 6, 6, true>::operator*<6, true>(tracking::math::Matrix<double, 6, 6, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">2</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 1, false> tracking::math::Matrix<int, 1, 2, false>::operator*<1, true>(tracking::math::Matrix<int, 2, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">2</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 2, 4, true> tracking::math::Matrix<int, 2, 3, true>::operator*<4, true>(tracking::math::Matrix<int, 3, 4, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">2</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 3, 1, true> tracking::math::Matrix<int, 3, 3, true>::operator*<1, true>(tracking::math::Matrix<int, 3, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">2</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 2, 2, true> tracking::math::Matrix<double, 2, 2, true>::operator*<2, true>(tracking::math::Matrix<double, 2, 2, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">3</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 3, false> tracking::math::Matrix<float, 3, 3, false>::operator*<3, true>(tracking::math::Matrix<float, 3, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">3</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 6, 6, true> tracking::math::Matrix<double, 6, 6, true>::operator*<6, false>(tracking::math::Matrix<double, 6, 6, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">4</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 2, 2, false> tracking::math::Matrix<float, 2, 2, false>::operator*<2, true>(tracking::math::Matrix<float, 2, 2, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">4</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 3, false> tracking::math::Matrix<float, 3, 4, false>::operator*<3, true>(tracking::math::Matrix<float, 4, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 3, false> tracking::math::Matrix<float, 3, 6, false>::operator*<3, true>(tracking::math::Matrix<float, 6, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 4, false> tracking::math::Matrix<float, 3, 4, false>::operator*<4, true>(tracking::math::Matrix<float, 4, 4, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 6, false> tracking::math::Matrix<float, 3, 6, false>::operator*<6, true>(tracking::math::Matrix<float, 6, 6, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 2, false> tracking::math::Matrix<float, 4, 4, false>::operator*<2, true>(tracking::math::Matrix<float, 4, 2, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 5, false> tracking::math::Matrix<float, 4, 4, false>::operator*<5, true>(tracking::math::Matrix<float, 4, 5, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 2, false> tracking::math::Matrix<float, 6, 6, false>::operator*<2, true>(tracking::math::Matrix<float, 6, 2, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 5, false> tracking::math::Matrix<float, 6, 6, false>::operator*<5, true>(tracking::math::Matrix<float, 6, 5, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 2, 2, true> tracking::math::Matrix<double, 2, 2, true>::operator*<2, false>(tracking::math::Matrix<double, 2, 2, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">6</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 4, true>::operator*<4, false>(tracking::math::Matrix<double, 4, 4, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">6</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 3, 3, true> tracking::math::Matrix<double, 3, 3, true>::operator*<3, true>(tracking::math::Matrix<double, 3, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">8</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 4, true>::operator*<4, true>(tracking::math::Matrix<double, 4, 4, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">10</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 3, true> tracking::math::Matrix<float, 3, 3, true>::operator*<3, true>(tracking::math::Matrix<float, 3, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">14</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, true> tracking::math::Matrix<float, 4, 3, true>::operator*<4, false>(tracking::math::Matrix<float, 3, 4, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">15</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, true> tracking::math::Matrix<float, 4, 4, true>::operator*<4, false>(tracking::math::Matrix<float, 4, 4, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">15</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, true> tracking::math::Matrix<float, 6, 3, true>::operator*<6, false>(tracking::math::Matrix<float, 3, 6, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">15</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, true> tracking::math::Matrix<float, 6, 6, true>::operator*<6, false>(tracking::math::Matrix<float, 6, 6, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">15</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 1, false> tracking::math::Matrix<float, 4, 4, false>::operator*<1, true>(tracking::math::Matrix<float, 4, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">20</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, true> tracking::math::Matrix<float, 4, 2, true>::operator*<4, false>(tracking::math::Matrix<float, 2, 4, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">20</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 1, false> tracking::math::Matrix<float, 6, 6, false>::operator*<1, true>(tracking::math::Matrix<float, 6, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">20</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, true> tracking::math::Matrix<float, 6, 2, true>::operator*<6, false>(tracking::math::Matrix<float, 2, 6, false> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">20</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 3, true> tracking::math::Matrix<float, 4, 4, true>::operator*<3, true>(tracking::math::Matrix<float, 4, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">25</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 3, true> tracking::math::Matrix<float, 6, 6, true>::operator*<3, true>(tracking::math::Matrix<float, 6, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">25</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 1, true> tracking::math::Matrix<float, 4, 4, true>::operator*<1, true>(tracking::math::Matrix<float, 4, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">28</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 1, true> tracking::math::Matrix<float, 6, 6, true>::operator*<1, true>(tracking::math::Matrix<float, 6, 1, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">28</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, false> tracking::math::Matrix<float, 4, 4, false>::operator*<4, true>(tracking::math::Matrix<float, 4, 4, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">30</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, false> tracking::math::Matrix<float, 6, 6, false>::operator*<6, true>(tracking::math::Matrix<float, 6, 6, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">30</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 3, true> tracking::math::Matrix<float, 4, 3, true>::operator*<3, true>(tracking::math::Matrix<float, 3, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">35</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 3, true> tracking::math::Matrix<float, 6, 3, true>::operator*<3, true>(tracking::math::Matrix<float, 3, 3, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">35</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, true> tracking::math::Matrix<float, 4, 4, true>::operator*<4, true>(tracking::math::Matrix<float, 4, 4, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">66</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, true> tracking::math::Matrix<float, 6, 6, true>::operator*<6, true>(tracking::math::Matrix<float, 6, 6, true> const&) const</a></td>
-              
-              <td class="coverFnAliasHi">67</td>
+              <td class="coverFnAliasHi">138</td>
               
               
             </tr>
             <tr>
               <td class="coverFn"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix&lt;int, 1, 1, true&gt;::FromList(std::initializer_list&lt;std::initializer_list&lt;int&gt; &gt; const&amp;)</a></td>
               
-              <td class="coverFnHi">643</td>
+              <td class="coverFnHi">744</td>
               
               
             </tr>
@@ -1303,7 +939,7 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<double, 2, 2, true>::FromList(std::initializer_list<std::initializer_list<double> > const&)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<double, 1, 1, true>::FromList(std::initializer_list<std::initializer_list<double> > const&)</a></td>
               
               <td class="coverFnAliasHi">9</td>
               
@@ -1327,13 +963,6 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<int, 2, 2, true>::FromList(std::initializer_list<std::initializer_list<int> > const&)</a></td>
               
               <td class="coverFnAliasHi">18</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<double, 3, 3, true>::FromList(std::initializer_list<std::initializer_list<double> > const&)</a></td>
-              
-              <td class="coverFnAliasHi">20</td>
               
               
             </tr>
@@ -1401,6 +1030,13 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<double, 3, 3, true>::FromList(std::initializer_list<std::initializer_list<double> > const&)</a></td>
+              
+              <td class="coverFnAliasHi">32</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<float, 2, 2, true>::FromList(std::initializer_list<std::initializer_list<float> > const&)</a></td>
               
               <td class="coverFnAliasHi">39</td>
@@ -1411,13 +1047,6 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<int, 3, 3, true>::FromList(std::initializer_list<std::initializer_list<int> > const&)</a></td>
               
               <td class="coverFnAliasHi">39</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<double, 4, 4, true>::FromList(std::initializer_list<std::initializer_list<double> > const&)</a></td>
-              
-              <td class="coverFnAliasHi">42</td>
               
               
             </tr>
@@ -1436,6 +1065,20 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<double, 2, 2, true>::FromList(std::initializer_list<std::initializer_list<double> > const&)</a></td>
+              
+              <td class="coverFnAliasHi">51</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<double, 4, 4, true>::FromList(std::initializer_list<std::initializer_list<double> > const&)</a></td>
+              
+              <td class="coverFnAliasHi">80</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L46">tracking::math::Matrix<float, 3, 3, true>::FromList(std::initializer_list<std::initializer_list<float> > const&)</a></td>
               
               <td class="coverFnAliasHi">123</td>
@@ -1443,23 +1086,205 @@
               
             </tr>
             <tr>
+              <td class="coverFn"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix&lt;int, 1, 1, true&gt;::minmax() const</a></td>
+              
+              <td class="coverFnHi">763</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<double, 4, 4, false>::minmax() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<int, 1, 1, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<int, 2, 3, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<int, 2, 2, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">4</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 3, 3, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">6</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 4, 4, false>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">10</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 6, 6, false>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">10</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<double, 4, 4, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">14</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 4, 4, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">50</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 6, 6, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">50</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<double, 3, 3, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">121</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<double, 2, 2, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">126</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<float, 3, 1, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">140</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L396">tracking::math::Matrix<double, 3, 1, true>::minmax() const</a></td>
+              
+              <td class="coverFnAliasHi">230</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix&lt;int, 3, 3, true&gt;::setBlock&lt;2, 2, true&gt;(int, int, int, int, int, int, tracking::math::Matrix&lt;int, 2, 2, true&gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">1290</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<double, 4, 1, true>::setBlock<4, 4, false>(int, int, int, int, int, int, tracking::math::Matrix<double, 4, 4, false> const&)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<int, 3, 3, true>::setBlock<2, 2, true>(int, int, int, int, int, int, tracking::math::Matrix<int, 2, 2, true> const&)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<int, 4, 4, true>::setBlock<2, 2, true>(int, int, int, int, int, int, tracking::math::Matrix<int, 2, 2, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 3, 1, true>::setBlock<3, 3, true>(int, int, int, int, int, int, tracking::math::Matrix<float, 3, 3, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">18</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 4, 1, true>::setBlock<4, 4, false>(int, int, int, int, int, int, tracking::math::Matrix<float, 4, 4, false> const&)</a></td>
+              
+              <td class="coverFnAliasHi">40</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<double, 4, 1, true>::setBlock<4, 4, true>(int, int, int, int, int, int, tracking::math::Matrix<double, 4, 4, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">56</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 6, 1, true>::setBlock<6, 6, false>(int, int, int, int, int, int, tracking::math::Matrix<float, 6, 6, false> const&)</a></td>
+              
+              <td class="coverFnAliasHi">60</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 4, 1, true>::setBlock<4, 4, true>(int, int, int, int, int, int, tracking::math::Matrix<float, 4, 4, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">200</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<double, 2, 1, true>::setBlock<2, 2, true>(int, int, int, int, int, int, tracking::math::Matrix<double, 2, 2, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">252</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<float, 6, 1, true>::setBlock<6, 6, true>(int, int, int, int, int, int, tracking::math::Matrix<float, 6, 6, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">300</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L462">void tracking::math::Matrix<double, 3, 1, true>::setBlock<3, 3, true>(int, int, int, int, int, int, tracking::math::Matrix<double, 3, 3, true> const&)</a></td>
+              
+              <td class="coverFnAliasHi">363</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="matrix.hpp.gcov.html#L279">tl::expected&lt;void, tracking::math::Errors&gt; tracking::math::Matrix&lt;float, 2, 1, true&gt;::operator/=&lt;float, true&gt;(float)</a></td>
               
-              <td class="coverFnHi">757</td>
+              <td class="coverFnHi">1680</td>
               
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 3, 3, true>::operator/=<double, true>(double)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 4, 4, false>::operator/=<double, true>(double)</a></td>
               
-              <td class="coverFnAliasHi">1</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 4, 4, true>::operator/=<double, true>(double)</a></td>
-              
-              <td class="coverFnAliasHi">1</td>
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -1485,20 +1310,6 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 3, 1, true>::operator/=<double, true>(double)</a></td>
-              
-              <td class="coverFnAliasHi">3</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 4, 1, true>::operator/=<double, true>(double)</a></td>
-              
-              <td class="coverFnAliasHi">4</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<float, 3, 3, true>::operator/=<float, true>(float)</a></td>
               
               <td class="coverFnAliasHi">6</td>
@@ -1516,6 +1327,13 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<float, 6, 6, false>::operator/=<float, true>(float)</a></td>
               
               <td class="coverFnAliasHi">10</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 4, 4, true>::operator/=<double, true>(double)</a></td>
+              
+              <td class="coverFnAliasHi">14</td>
               
               
             </tr>
@@ -1541,9 +1359,37 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 4, 1, true>::operator/=<double, true>(double)</a></td>
+              
+              <td class="coverFnAliasHi">56</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 3, 3, true>::operator/=<double, true>(double)</a></td>
+              
+              <td class="coverFnAliasHi">121</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 2, 2, true>::operator/=<double, true>(double)</a></td>
+              
+              <td class="coverFnAliasHi">126</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<float, 4, 1, true>::operator/=<float, true>(float)</a></td>
               
               <td class="coverFnAliasHi">240</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 2, 1, true>::operator/=<double, true>(double)</a></td>
+              
+              <td class="coverFnAliasHi">252</td>
               
               
             </tr>
@@ -1555,9 +1401,618 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L279">tl::expected<void, tracking::math::Errors> tracking::math::Matrix<double, 3, 1, true>::operator/=<double, true>(double)</a></td>
+              
+              <td class="coverFnAliasHi">363</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix&lt;int, 1, 1, true&gt; tracking::math::Matrix&lt;int, 1, 2, true&gt;::operator*&lt;1, true&gt;(tracking::math::Matrix&lt;int, 2, 1, true&gt; const&amp;) const</a></td>
+              
+              <td class="coverFnHi">4377</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 3, 3, false> tracking::math::Matrix<double, 3, 4, false>::operator*<3, true>(tracking::math::Matrix<double, 4, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 3, 4, false> tracking::math::Matrix<double, 3, 4, false>::operator*<4, true>(tracking::math::Matrix<double, 4, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 2, false> tracking::math::Matrix<double, 4, 4, false>::operator*<2, true>(tracking::math::Matrix<double, 4, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 3, true> tracking::math::Matrix<double, 4, 4, true>::operator*<3, true>(tracking::math::Matrix<double, 4, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 5, false> tracking::math::Matrix<double, 4, 4, false>::operator*<5, true>(tracking::math::Matrix<double, 4, 5, true> const&) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 1, 3, false> tracking::math::Matrix<double, 1, 2, false>::operator*<3, true>(tracking::math::Matrix<double, 2, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 2, 2, true> tracking::math::Matrix<double, 2, 1, true>::operator*<2, false>(tracking::math::Matrix<double, 1, 2, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 6, 6, true> tracking::math::Matrix<double, 6, 3, true>::operator*<6, false>(tracking::math::Matrix<double, 3, 6, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 1, 3, false> tracking::math::Matrix<float, 1, 2, false>::operator*<3, true>(tracking::math::Matrix<float, 2, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 1, false> tracking::math::Matrix<int, 1, 4, false>::operator*<1, true>(tracking::math::Matrix<int, 4, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 1, true> tracking::math::Matrix<int, 1, 2, true>::operator*<1, true>(tracking::math::Matrix<int, 2, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 2, true> tracking::math::Matrix<int, 1, 2, true>::operator*<2, true>(tracking::math::Matrix<int, 2, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 2, true> tracking::math::Matrix<int, 1, 3, true>::operator*<2, true>(tracking::math::Matrix<int, 3, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 3, false> tracking::math::Matrix<int, 1, 2, false>::operator*<3, true>(tracking::math::Matrix<int, 2, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 3, true> tracking::math::Matrix<int, 1, 3, true>::operator*<3, true>(tracking::math::Matrix<int, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 2, 4, false> tracking::math::Matrix<int, 2, 3, false>::operator*<4, false>(tracking::math::Matrix<int, 3, 4, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 3, 1, true> tracking::math::Matrix<int, 3, 2, true>::operator*<1, true>(tracking::math::Matrix<int, 2, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 3, 3, true> tracking::math::Matrix<int, 3, 3, true>::operator*<3, true>(tracking::math::Matrix<int, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">1</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 1, 1, false> tracking::math::Matrix<double, 1, 4, false>::operator*<1, true>(tracking::math::Matrix<double, 4, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 1, false> tracking::math::Matrix<double, 4, 2, false>::operator*<1, true>(tracking::math::Matrix<double, 2, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 2, false> tracking::math::Matrix<double, 4, 2, false>::operator*<2, true>(tracking::math::Matrix<double, 2, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, false> tracking::math::Matrix<double, 4, 2, false>::operator*<4, true>(tracking::math::Matrix<double, 2, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 6, 6, true> tracking::math::Matrix<double, 6, 6, true>::operator*<6, true>(tracking::math::Matrix<double, 6, 6, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 1, 1, false> tracking::math::Matrix<int, 1, 2, false>::operator*<1, true>(tracking::math::Matrix<int, 2, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 2, 4, true> tracking::math::Matrix<int, 2, 3, true>::operator*<4, true>(tracking::math::Matrix<int, 3, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<int, 3, 1, true> tracking::math::Matrix<int, 3, 3, true>::operator*<1, true>(tracking::math::Matrix<int, 3, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 2, 2, true> tracking::math::Matrix<double, 2, 2, true>::operator*<2, true>(tracking::math::Matrix<double, 2, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">3</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 3, false> tracking::math::Matrix<float, 3, 3, false>::operator*<3, true>(tracking::math::Matrix<float, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">3</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, false> tracking::math::Matrix<double, 4, 4, false>::operator*<4, true>(tracking::math::Matrix<double, 4, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">4</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 6, 6, true> tracking::math::Matrix<double, 6, 6, true>::operator*<6, false>(tracking::math::Matrix<double, 6, 6, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">4</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 2, 2, false> tracking::math::Matrix<float, 2, 2, false>::operator*<2, true>(tracking::math::Matrix<float, 2, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">4</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 2, 1, true> tracking::math::Matrix<double, 2, 4, true>::operator*<1, true>(tracking::math::Matrix<double, 4, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 3, false> tracking::math::Matrix<float, 3, 4, false>::operator*<3, true>(tracking::math::Matrix<float, 4, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 3, false> tracking::math::Matrix<float, 3, 6, false>::operator*<3, true>(tracking::math::Matrix<float, 6, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 4, false> tracking::math::Matrix<float, 3, 4, false>::operator*<4, true>(tracking::math::Matrix<float, 4, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 6, false> tracking::math::Matrix<float, 3, 6, false>::operator*<6, true>(tracking::math::Matrix<float, 6, 6, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 2, false> tracking::math::Matrix<float, 4, 4, false>::operator*<2, true>(tracking::math::Matrix<float, 4, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 5, false> tracking::math::Matrix<float, 4, 4, false>::operator*<5, true>(tracking::math::Matrix<float, 4, 5, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 2, false> tracking::math::Matrix<float, 6, 6, false>::operator*<2, true>(tracking::math::Matrix<float, 6, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 5, false> tracking::math::Matrix<float, 6, 6, false>::operator*<5, true>(tracking::math::Matrix<float, 6, 5, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 2, 2, true> tracking::math::Matrix<double, 2, 2, true>::operator*<2, false>(tracking::math::Matrix<double, 2, 2, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">6</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 1, false> tracking::math::Matrix<double, 4, 4, false>::operator*<1, true>(tracking::math::Matrix<double, 4, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">10</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 3, 3, true> tracking::math::Matrix<double, 3, 3, true>::operator*<3, true>(tracking::math::Matrix<double, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">14</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, true> tracking::math::Matrix<float, 4, 3, true>::operator*<4, false>(tracking::math::Matrix<float, 3, 4, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">15</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, true> tracking::math::Matrix<float, 4, 4, true>::operator*<4, false>(tracking::math::Matrix<float, 4, 4, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">15</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, true> tracking::math::Matrix<float, 6, 3, true>::operator*<6, false>(tracking::math::Matrix<float, 3, 6, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">15</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, true> tracking::math::Matrix<float, 6, 6, true>::operator*<6, false>(tracking::math::Matrix<float, 6, 6, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">15</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 1, false> tracking::math::Matrix<float, 4, 4, false>::operator*<1, true>(tracking::math::Matrix<float, 4, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">20</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, true> tracking::math::Matrix<float, 4, 2, true>::operator*<4, false>(tracking::math::Matrix<float, 2, 4, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">20</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 1, false> tracking::math::Matrix<float, 6, 6, false>::operator*<1, true>(tracking::math::Matrix<float, 6, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">20</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, true> tracking::math::Matrix<float, 6, 2, true>::operator*<6, false>(tracking::math::Matrix<float, 2, 6, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">20</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 3, 3, true> tracking::math::Matrix<float, 3, 3, true>::operator*<3, true>(tracking::math::Matrix<float, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">24</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 3, true> tracking::math::Matrix<float, 4, 4, true>::operator*<3, true>(tracking::math::Matrix<float, 4, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">25</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 3, true> tracking::math::Matrix<float, 6, 6, true>::operator*<3, true>(tracking::math::Matrix<float, 6, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">25</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 1, true> tracking::math::Matrix<float, 4, 4, true>::operator*<1, true>(tracking::math::Matrix<float, 4, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">28</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 1, true> tracking::math::Matrix<float, 6, 6, true>::operator*<1, true>(tracking::math::Matrix<float, 6, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">28</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, false> tracking::math::Matrix<float, 4, 4, false>::operator*<4, true>(tracking::math::Matrix<float, 4, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">30</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, false> tracking::math::Matrix<float, 6, 6, false>::operator*<6, true>(tracking::math::Matrix<float, 6, 6, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">30</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 3, true> tracking::math::Matrix<float, 4, 3, true>::operator*<3, true>(tracking::math::Matrix<float, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">35</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 3, true> tracking::math::Matrix<float, 6, 3, true>::operator*<3, true>(tracking::math::Matrix<float, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">35</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 1, true> tracking::math::Matrix<double, 4, 4, true>::operator*<1, true>(tracking::math::Matrix<double, 4, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">41</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 4, 4, true> tracking::math::Matrix<float, 4, 4, true>::operator*<4, true>(tracking::math::Matrix<float, 4, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">86</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<float, 6, 6, true> tracking::math::Matrix<float, 6, 6, true>::operator*<6, true>(tracking::math::Matrix<float, 6, 6, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">88</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 3, 3, true> tracking::math::Matrix<double, 3, 4, true>::operator*<3, true>(tracking::math::Matrix<double, 4, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">120</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 1, true> tracking::math::Matrix<double, 4, 3, true>::operator*<1, true>(tracking::math::Matrix<double, 3, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">120</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 3, true> tracking::math::Matrix<double, 4, 3, true>::operator*<3, false>(tracking::math::Matrix<double, 3, 3, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">120</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 3, true> tracking::math::Matrix<double, 4, 4, true>::operator*<3, false>(tracking::math::Matrix<double, 4, 3, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">120</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 3, true>::operator*<4, true>(tracking::math::Matrix<double, 3, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">120</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 3, 3, false> tracking::math::Matrix<double, 3, 3, false>::operator*<3, true>(tracking::math::Matrix<double, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">121</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 2, 2, false> tracking::math::Matrix<double, 2, 2, false>::operator*<2, true>(tracking::math::Matrix<double, 2, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">126</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 2, 2, true> tracking::math::Matrix<double, 2, 4, true>::operator*<2, true>(tracking::math::Matrix<double, 4, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">126</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 1, true> tracking::math::Matrix<double, 4, 2, true>::operator*<1, true>(tracking::math::Matrix<double, 2, 1, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">126</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 2, true> tracking::math::Matrix<double, 4, 2, true>::operator*<2, false>(tracking::math::Matrix<double, 2, 2, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">126</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 2, true> tracking::math::Matrix<double, 4, 2, true>::operator*<2, true>(tracking::math::Matrix<double, 2, 2, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">126</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 2, true> tracking::math::Matrix<double, 4, 4, true>::operator*<2, false>(tracking::math::Matrix<double, 4, 2, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">126</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 2, true>::operator*<4, true>(tracking::math::Matrix<double, 2, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">126</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 4, true>::operator*<4, false>(tracking::math::Matrix<double, 4, 4, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">246</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 3, true> tracking::math::Matrix<double, 4, 3, true>::operator*<3, true>(tracking::math::Matrix<double, 3, 3, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">350</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 3, true>::operator*<4, false>(tracking::math::Matrix<double, 3, 4, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">350</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 2, true>::operator*<4, false>(tracking::math::Matrix<double, 2, 4, false> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">357</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L367">tracking::math::Matrix<double, 4, 4, true> tracking::math::Matrix<double, 4, 4, true>::operator*<4, true>(tracking::math::Matrix<double, 4, 4, true> const&) const</a></td>
+              
+              <td class="coverFnAliasHi">734</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix&lt;int, 1, 1, true&gt;::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnHi">200749</td>
+              <td class="coverFnHi">394312</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 4, false>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 5, false>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 5, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 5, 1, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -1572,13 +2027,6 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<int, 1, 1, true>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">2</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 1, 1, true>::at_unsafe(int, int)</a></td>
-              
-              <td class="coverFnAliasHi">4</td>
               
               
             </tr>
@@ -1653,6 +2101,13 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 1, 4, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">16</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<int, 2, 4, false>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">24</td>
@@ -1681,16 +2136,23 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 2, true>::at_unsafe(int, int)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<int, 3, 2, true>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">30</td>
               
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<int, 3, 2, true>::at_unsafe(int, int)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 2, true>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">30</td>
+              <td class="coverFnAliasHi">32</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 2, false>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">32</td>
               
               
             </tr>
@@ -1723,20 +2185,6 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 2, 1, true>::at_unsafe(int, int)</a></td>
-              
-              <td class="coverFnAliasHi">53</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 2, 2, false>::at_unsafe(int, int)</a></td>
-              
-              <td class="coverFnAliasHi">54</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 2, 2, true>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">54</td>
@@ -1744,16 +2192,16 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<int, 3, 1, true>::at_unsafe(int, int)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 1, 1, true>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">84</td>
+              <td class="coverFnAliasHi">56</td>
               
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 2, true>::at_unsafe(int, int)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<int, 3, 1, true>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">120</td>
+              <td class="coverFnAliasHi">84</td>
               
               
             </tr>
@@ -1768,13 +2216,6 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 3, 4, true>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">126</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 2, 2, true>::at_unsafe(int, int)</a></td>
-              
-              <td class="coverFnAliasHi">149</td>
               
               
             </tr>
@@ -1807,6 +2248,13 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 1, false>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">276</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 6, 1, true>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">306</td>
@@ -1821,13 +2269,6 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 1, true>::at_unsafe(int, int)</a></td>
-              
-              <td class="coverFnAliasHi">389</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 4, 5, false>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">400</td>
@@ -1838,13 +2279,6 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 2, 1, true>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">409</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 3, false>::at_unsafe(int, int)</a></td>
-              
-              <td class="coverFnAliasHi">486</td>
               
               
             </tr>
@@ -1898,13 +2332,6 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 1, true>::at_unsafe(int, int)</a></td>
-              
-              <td class="coverFnAliasHi">1077</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 4, 5, true>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">1100</td>
@@ -1926,16 +2353,23 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 4, false>::at_unsafe(int, int)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 2, 4, true>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">1208</td>
+              <td class="coverFnAliasHi">1304</td>
               
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 3, true>::at_unsafe(int, int)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 4, true>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">1811</td>
+              <td class="coverFnAliasHi">1452</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 2, 2, false>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">1935</td>
               
               
             </tr>
@@ -1943,6 +2377,13 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 6, 5, true>::at_unsafe(int, int)</a></td>
               
               <td class="coverFnAliasHi">2250</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 2, 1, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">2386</td>
               
               
             </tr>
@@ -1961,16 +2402,30 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 6, 3, true>::at_unsafe(int, int)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 1, true>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">4590</td>
+              <td class="coverFnAliasHi">3097</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 4, false>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">4196</td>
               
               
             </tr>
             <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 3, 3, true>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">4746</td>
+              <td class="coverFnAliasHi">4476</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 6, 3, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">4590</td>
               
               
             </tr>
@@ -1982,9 +2437,30 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 4, true>::at_unsafe(int, int)</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 3, false>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">5554</td>
+              <td class="coverFnAliasHi">5913</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 1, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">7431</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 2, 2, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">8077</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 2, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">10024</td>
               
               
             </tr>
@@ -2003,9 +2479,23 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 3, 3, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">19439</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 4, 4, true>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">22118</td>
+              <td class="coverFnAliasHi">20198</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 3, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">22680</td>
               
               
             </tr>
@@ -2019,14 +2509,42 @@
             <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<float, 6, 6, true>::at_unsafe(int, int)</a></td>
               
-              <td class="coverFnAliasHi">73682</td>
+              <td class="coverFnAliasHi">62342</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L108">tracking::math::Matrix<double, 4, 4, true>::at_unsafe(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">129682</td>
               
               
             </tr>
             <tr>
               <td class="coverFn"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix&lt;int, 1, 2, true&gt;::at_unsafe(int, int) const</a></td>
               
-              <td class="coverFnHi">308036</td>
+              <td class="coverFnHi">680318</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 5, false>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 5, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 5, 1, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -2101,13 +2619,6 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 3, false>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">12</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<int, 2, 1, true>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">14</td>
@@ -2122,9 +2633,9 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 1, 1, true>::at_unsafe(int, int) const</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 1, 4, true>::at_unsafe(int, int) const</a></td>
               
-              <td class="coverFnAliasHi">20</td>
+              <td class="coverFnAliasHi">16</td>
               
               
             </tr>
@@ -2150,30 +2661,9 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 2, 4, false>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">32</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 2, true>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">32</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<int, 4, 1, true>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">33</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 3, true>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">36</td>
               
               
             </tr>
@@ -2199,6 +2689,13 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 1, 1, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">47</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<int, 3, 1, true>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">48</td>
@@ -2209,6 +2706,13 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<int, 3, 4, true>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">48</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 1, false>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">50</td>
               
               
             </tr>
@@ -2227,13 +2731,6 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 2, 1, true>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">84</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<float, 3, 4, true>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">90</td>
@@ -2244,13 +2741,6 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<int, 2, 3, false>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">91</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 2, 2, false>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">96</td>
               
               
             </tr>
@@ -2297,13 +2787,6 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 2, 2, true>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">170</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<float, 4, 2, false>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">200</td>
@@ -2332,20 +2815,6 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 3, 1, true>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">499</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 3, 3, false>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">500</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<float, 4, 5, false>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">500</td>
@@ -2363,13 +2832,6 @@
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<float, 5, 1, true>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">825</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 1, true>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">892</td>
               
               
             </tr>
@@ -2430,23 +2892,9 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 4, false>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">1528</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<float, 3, 1, true>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">1741</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 3, 3, true>::at_unsafe(int, int) const</a></td>
-              
-              <td class="coverFnAliasHi">2028</td>
               
               
             </tr>
@@ -2479,9 +2927,23 @@
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 4, true>::at_unsafe(int, int) const</a></td>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 2, 2, false>::at_unsafe(int, int) const</a></td>
               
-              <td class="coverFnAliasHi">6740</td>
+              <td class="coverFnAliasHi">3714</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 2, false>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">4144</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 3, false>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">5772</td>
               
               
             </tr>
@@ -2493,9 +2955,44 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 2, 2, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">7077</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 2, 4, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">7368</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 2, 1, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">7741</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<float, 3, 3, true>::at_unsafe(int, int) const</a></td>
               
-              <td class="coverFnAliasHi">8784</td>
+              <td class="coverFnAliasHi">8604</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 3, 3, false>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">9158</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 1, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">10082</td>
               
               
             </tr>
@@ -2507,6 +3004,27 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 2, 4, false>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">11424</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 3, 4, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">11520</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 3, 1, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">13430</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<float, 4, 1, true>::at_unsafe(int, int) const</a></td>
               
               <td class="coverFnAliasHi">13766</td>
@@ -2514,9 +3032,37 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 3, 4, false>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">16800</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 4, false>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">19494</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 2, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">22512</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 3, 3, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">26862</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<float, 4, 4, true>::at_unsafe(int, int) const</a></td>
               
-              <td class="coverFnAliasHi">33578</td>
+              <td class="coverFnAliasHi">31338</td>
               
               
             </tr>
@@ -2535,9 +3081,23 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 3, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">45276</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<float, 6, 6, true>::at_unsafe(int, int) const</a></td>
               
-              <td class="coverFnAliasHi">121422</td>
+              <td class="coverFnAliasHi">104034</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="matrix.hpp.gcov.html#L99">tracking::math::Matrix<double, 4, 4, true>::at_unsafe(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">182272</td>
               
               
             </tr>

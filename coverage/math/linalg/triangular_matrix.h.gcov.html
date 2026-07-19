@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -107,13 +107,13 @@
 <span id="L37"><span class="lineNum">      37</span>              : /// \see SquareMatrix for general square matrix operations</span>
 <span id="L38"><span class="lineNum">      38</span>              : /// \see DiagonalMatrix for diagonal matrix operations</span>
 <span id="L39"><span class="lineNum">      39</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_ = true&gt;</span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC tlaBgGNC">        1390 : class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC tlaBgGNC">        1797 : class TriangularMatrix TEST_REMOVE_FINAL: public SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;</span></span>
 <span id="L41"><span class="lineNum">      41</span>              : {</span>
 <span id="L42"><span class="lineNum">      42</span>              : public:</span>
 <span id="L43"><span class="lineNum">      43</span>              :   using BaseSquareMatrix = SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;; ///&lt; type of the parent class</span>
 <span id="L44"><span class="lineNum">      44</span>              : </span>
 <span id="L45"><span class="lineNum">      45</span>              :   // unhide ctor of base class to allow implicit call in derived default ctors</span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         155 :   using BaseSquareMatrix::BaseSquareMatrix;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         202 :   using BaseSquareMatrix::BaseSquareMatrix;</span></span>
 <span id="L47"><span class="lineNum">      47</span>              : </span>
 <span id="L48"><span class="lineNum">      48</span>              :   /// \brief Type of the transposed matrix without changing the memory layout</span>
 <span id="L49"><span class="lineNum">      49</span>              :   using transpose_type = TriangularMatrix&lt;ValueType_, Size_, !IsLower_, !IsRowMajor_&gt;;</span>
@@ -124,8 +124,8 @@
 <span id="L54"><span class="lineNum">      54</span>              : </span>
 <span id="L55"><span class="lineNum">      55</span>              :   /// \brief Move construct a new Triangular Matrix object</span>
 <span id="L56"><span class="lineNum">      56</span>              :   /// \param[in] other</span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">         342 :   explicit TriangularMatrix(BaseSquareMatrix&amp;&amp; other) noexcept</span></span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         304 :       : BaseSquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">         634 :   explicit TriangularMatrix(BaseSquareMatrix&amp;&amp; other) noexcept</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         563 :       : BaseSquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts</span></span>
 <span id="L59"><span class="lineNum">      59</span>              : </span>
 <span id="L60"><span class="lineNum">      60</span>              : </span>
 <span id="L61"><span class="lineNum">      61</span>              :   /// \brief Construct an identity triangular matrix.</span>
@@ -136,7 +136,7 @@
 <span id="L66"><span class="lineNum">      66</span>              :   /// \return TriangularMatrix An identity matrix respecting triangular constraints</span>
 <span id="L67"><span class="lineNum">      67</span>              :   ///</span>
 <span id="L68"><span class="lineNum">      68</span>              :   /// \note For unit triangular matrixes, this creates a matrix with ones on the diagonal</span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          88 :   [[nodiscard]] static auto Identity() -&gt; TriangularMatrix { return TriangularMatrix{BaseSquareMatrix::Identity()}; }</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">         121 :   [[nodiscard]] static auto Identity() -&gt; TriangularMatrix { return TriangularMatrix{BaseSquareMatrix::Identity()}; }</span></span>
 <span id="L70"><span class="lineNum">      70</span>              : </span>
 <span id="L71"><span class="lineNum">      71</span>              :   /// \brief Creates a TriangularMatrix from a nested initializer list</span>
 <span id="L72"><span class="lineNum">      72</span>              :   ///</span>

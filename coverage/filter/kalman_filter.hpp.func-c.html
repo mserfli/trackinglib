@@ -31,18 +31,18 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">97.2&nbsp;%</td>
+            <td class="headerCovTableEntry">36</td>
+            <td class="headerCovTableEntry">35</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -71,23 +71,79 @@
               
             </tr>
             <tr>
-              <td class="coverFn"><a href="kalman_filter.hpp.gcov.html#L17">void tracking::filter::KalmanFilter&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::predictCovariance&lt;4, 2&gt;(tracking::math::CovarianceMatrixFull&lt;float, 4&gt;&amp;, tracking::math::SquareMatrix&lt;float, 4, true&gt; const&amp;, tracking::math::Matrix&lt;float, 4, 2, true&gt; const&amp;, tracking::math::DiagonalMatrix&lt;float, 2&gt; const&amp;)</a></td>
+              <td class="coverFn"><a href="kalman_filter.hpp.gcov.html#L20">void tracking::filter::KalmanFilter&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::predictCovariance&lt;4, 2&gt;(tracking::math::CovarianceMatrixFull&lt;float, 4&gt;&amp;, tracking::math::SquareMatrix&lt;float, 4, true&gt; const&amp;, tracking::math::Matrix&lt;float, 4, 2, true&gt; const&amp;, tracking::math::DiagonalMatrix&lt;float, 2&gt; const&amp;)</a></td>
               
-              <td class="coverFnHi">20</td>
+              <td class="coverFnHi">250</td>
               
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L17">void tracking::filter::KalmanFilter<tracking::math::FullCovarianceMatrixPolicy<float> >::predictCovariance<4, 2>(tracking::math::CovarianceMatrixFull<float, 4>&, tracking::math::SquareMatrix<float, 4, true> const&, tracking::math::Matrix<float, 4, 2, true> const&, tracking::math::DiagonalMatrix<float, 2> const&)</a></td>
+              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L20">void tracking::filter::KalmanFilter<tracking::math::FullCovarianceMatrixPolicy<float> >::predictCovariance<4, 2>(tracking::math::CovarianceMatrixFull<float, 4>&, tracking::math::SquareMatrix<float, 4, true> const&, tracking::math::Matrix<float, 4, 2, true> const&, tracking::math::DiagonalMatrix<float, 2> const&)</a></td>
               
               <td class="coverFnAliasHi">10</td>
               
               
             </tr>
             <tr>
-              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L17">void tracking::filter::KalmanFilter<tracking::math::FullCovarianceMatrixPolicy<float> >::predictCovariance<6, 2>(tracking::math::CovarianceMatrixFull<float, 6>&, tracking::math::SquareMatrix<float, 6, true> const&, tracking::math::Matrix<float, 6, 2, true> const&, tracking::math::DiagonalMatrix<float, 2> const&)</a></td>
+              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L20">void tracking::filter::KalmanFilter<tracking::math::FullCovarianceMatrixPolicy<float> >::predictCovariance<6, 2>(tracking::math::CovarianceMatrixFull<float, 6>&, tracking::math::SquareMatrix<float, 6, true> const&, tracking::math::Matrix<float, 6, 2, true> const&, tracking::math::DiagonalMatrix<float, 2> const&)</a></td>
               
               <td class="coverFnAliasHi">10</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L20">void tracking::filter::KalmanFilter<tracking::math::FullCovarianceMatrixPolicy<double> >::predictCovariance<4, 2>(tracking::math::CovarianceMatrixFull<double, 4>&, tracking::math::SquareMatrix<double, 4, true> const&, tracking::math::Matrix<double, 4, 2, true> const&, tracking::math::DiagonalMatrix<double, 2> const&)</a></td>
+              
+              <td class="coverFnAliasHi">230</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="kalman_filter.hpp.gcov.html#L38">void tracking::filter::KalmanFilter&lt;tracking::math::FullCovarianceMatrixPolicy&lt;double&gt; &gt;::updateState&lt;tracking::filter::update_mode::Block, 4, 2&gt;(tracking::math::Vector&lt;double, 4&gt;&amp;, tracking::math::CovarianceMatrixFull&lt;double, 4&gt;&amp;, tracking::math::Vector&lt;double, 2&gt; const&amp;, tracking::math::Matrix&lt;double, 2, 4, true&gt; const&amp;, tracking::math::CovarianceMatrixFull&lt;double, 2&gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">260</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L38">void tracking::filter::KalmanFilter<tracking::math::FactoredCovarianceMatrixPolicy<double> >::updateState<tracking::filter::update_mode::Sequential, 4, 4>(tracking::math::Vector<double, 4>&, tracking::math::CovarianceMatrixFactored<double, 4>&, tracking::math::Vector<double, 4> const&, tracking::math::Matrix<double, 4, 4, true> const&, tracking::math::CovarianceMatrixFactored<double, 4> const&)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L38">void tracking::filter::KalmanFilter<tracking::math::FullCovarianceMatrixPolicy<double> >::updateState<tracking::filter::update_mode::Block, 4, 4>(tracking::math::Vector<double, 4>&, tracking::math::CovarianceMatrixFull<double, 4>&, tracking::math::Vector<double, 4> const&, tracking::math::Matrix<double, 4, 4, true> const&, tracking::math::CovarianceMatrixFull<double, 4> const&)</a></td>
+              
+              <td class="coverFnAliasHi">3</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L38">void tracking::filter::KalmanFilter<tracking::math::FullCovarianceMatrixPolicy<double> >::updateState<tracking::filter::update_mode::Sequential, 4, 2>(tracking::math::Vector<double, 4>&, tracking::math::CovarianceMatrixFull<double, 4>&, tracking::math::Vector<double, 2> const&, tracking::math::Matrix<double, 2, 4, true> const&, tracking::math::CovarianceMatrixFull<double, 2> const&)</a></td>
+              
+              <td class="coverFnAliasHi">4</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L38">void tracking::filter::KalmanFilter<tracking::math::FactoredCovarianceMatrixPolicy<double> >::updateState<tracking::filter::update_mode::Sequential, 4, 2>(tracking::math::Vector<double, 4>&, tracking::math::CovarianceMatrixFactored<double, 4>&, tracking::math::Vector<double, 2> const&, tracking::math::Matrix<double, 2, 4, true> const&, tracking::math::CovarianceMatrixFactored<double, 2> const&)</a></td>
+              
+              <td class="coverFnAliasHi">6</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L38">void tracking::filter::KalmanFilter<tracking::math::FullCovarianceMatrixPolicy<double> >::updateState<tracking::filter::update_mode::Block, 4, 3>(tracking::math::Vector<double, 4>&, tracking::math::CovarianceMatrixFull<double, 4>&, tracking::math::Vector<double, 3> const&, tracking::math::Matrix<double, 3, 4, true> const&, tracking::math::CovarianceMatrixFull<double, 3> const&)</a></td>
+              
+              <td class="coverFnAliasHi">120</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="kalman_filter.hpp.gcov.html#L38">void tracking::filter::KalmanFilter<tracking::math::FullCovarianceMatrixPolicy<double> >::updateState<tracking::filter::update_mode::Block, 4, 2>(tracking::math::Vector<double, 4>&, tracking::math::CovarianceMatrixFull<double, 4>&, tracking::math::Vector<double, 2> const&, tracking::math::Matrix<double, 2, 4, true> const&, tracking::math::CovarianceMatrixFull<double, 2> const&)</a></td>
+              
+              <td class="coverFnAliasHi">125</td>
               
               
             </tr>

@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">16</td>
-            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntryMed">76.7&nbsp;%</td>
+            <td class="headerCovTableEntry">30</td>
+            <td class="headerCovTableEntry">23</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -92,30 +92,23 @@
               
             </tr>
             <tr>
-              <td class="coverFn"><a href="motion_model_cv.hpp.gcov.html#L14">tracking::motion::MotionModelCV&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::MotionModelCV(tracking::math::Vector&lt;float, 4&gt; const&amp;, tracking::math::CovarianceMatrixFull&lt;float, 4&gt; const&amp;)</a></td>
-              
-              <td class="coverFnHi">10</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L14">tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<float> >::MotionModelCV(tracking::math::Vector<float, 4> const&, tracking::math::CovarianceMatrixFactored<float, 4> const&)</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
-              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L14">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<float> >::MotionModelCV(tracking::math::Vector<float, 4> const&, tracking::math::CovarianceMatrixFull<float, 4> const&)</a></td>
-              
-              <td class="coverFnAliasHi">5</td>
-              
-              
-            </tr>
-            <tr>
               <td class="coverFn"><a href="motion_model_cv.hpp.gcov.html#L59">tracking::motion::MotionModelCV&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::compensateState(tracking::env::EgoMotion&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt; const&amp;)</a></td>
               
               <td class="coverFnHi">20</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L59">tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<double> >::compensateState(tracking::env::EgoMotion<tracking::math::FactoredCovarianceMatrixPolicy<double> > const&)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L59">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<double> >::compensateState(tracking::env::EgoMotion<tracking::math::FullCovarianceMatrixPolicy<double> > const&)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -134,9 +127,51 @@
               
             </tr>
             <tr>
+              <td class="coverFn"><a href="motion_model_cv.hpp.gcov.html#L14">tracking::motion::MotionModelCV&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::MotionModelCV(tracking::math::Vector&lt;float, 4&gt; const&amp;, tracking::math::CovarianceMatrixFull&lt;float, 4&gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">48</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L14">tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<float> >::MotionModelCV(tracking::math::Vector<float, 4> const&, tracking::math::CovarianceMatrixFactored<float, 4> const&)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L14">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<float> >::MotionModelCV(tracking::math::Vector<float, 4> const&, tracking::math::CovarianceMatrixFull<float, 4> const&)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L14">tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<double> >::MotionModelCV(tracking::math::Vector<double, 4> const&, tracking::math::CovarianceMatrixFactored<double, 4> const&)</a></td>
+              
+              <td class="coverFnAliasHi">11</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L14">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<double> >::MotionModelCV(tracking::math::Vector<double, 4> const&, tracking::math::CovarianceMatrixFull<double, 4> const&)</a></td>
+              
+              <td class="coverFnAliasHi">27</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="motion_model_cv.hpp.gcov.html#L20">tracking::motion::MotionModelCV&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::computeEgoMotionCompensationMatrices(tracking::math::Matrix&lt;float, 4, 3, true&gt;&amp;, tracking::math::SquareMatrix&lt;float, 4, true&gt;&amp;, tracking::env::EgoMotion&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt; const&amp;)</a></td>
               
-              <td class="coverFnHi">20</td>
+              <td class="coverFnHi">250</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L20">tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<double> >::computeEgoMotionCompensationMatrices(tracking::math::Matrix<double, 4, 3, true>&, tracking::math::SquareMatrix<double, 4, true>&, tracking::env::EgoMotion<tracking::math::FactoredCovarianceMatrixPolicy<double> > const&)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -155,9 +190,23 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L20">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<double> >::computeEgoMotionCompensationMatrices(tracking::math::Matrix<double, 4, 3, true>&, tracking::math::SquareMatrix<double, 4, true>&, tracking::env::EgoMotion<tracking::math::FullCovarianceMatrixPolicy<double> > const&)</a></td>
+              
+              <td class="coverFnAliasHi">230</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="motion_model_cv.hpp.gcov.html#L73">tracking::motion::MotionModelCV&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::applyProcessModel(float)</a></td>
               
-              <td class="coverFnHi">40</td>
+              <td class="coverFnHi">270</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L73">tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<double> >::applyProcessModel(double)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -176,9 +225,23 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L73">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<double> >::applyProcessModel(double)</a></td>
+              
+              <td class="coverFnAliasHi">230</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="motion_model_cv.hpp.gcov.html#L82">tracking::motion::MotionModelCV&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::computeA(tracking::math::SquareMatrix&lt;float, 4, true&gt;&amp;, float) const</a></td>
               
-              <td class="coverFnHi">40</td>
+              <td class="coverFnHi">270</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L82">tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<double> >::computeA(tracking::math::SquareMatrix<double, 4, true>&, double) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -197,9 +260,23 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L82">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<double> >::computeA(tracking::math::SquareMatrix<double, 4, true>&, double) const</a></td>
+              
+              <td class="coverFnAliasHi">230</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="motion_model_cv.hpp.gcov.html#L98">tracking::motion::MotionModelCV&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::computeG(tracking::math::Matrix&lt;float, 4, 2, true&gt;&amp;, float)</a></td>
               
-              <td class="coverFnHi">40</td>
+              <td class="coverFnHi">270</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L98">tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<double> >::computeG(tracking::math::Matrix<double, 4, 2, true>&, double)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -218,9 +295,23 @@
               
             </tr>
             <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L98">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<double> >::computeG(tracking::math::Matrix<double, 4, 2, true>&, double)</a></td>
+              
+              <td class="coverFnAliasHi">230</td>
+              
+              
+            </tr>
+            <tr>
               <td class="coverFn"><a href="motion_model_cv.hpp.gcov.html#L90">tracking::motion::MotionModelCV&lt;tracking::math::FullCovarianceMatrixPolicy&lt;float&gt; &gt;::computeQ(tracking::math::DiagonalMatrix&lt;float, 2&gt;&amp;, float)</a></td>
               
-              <td class="coverFnHi">40</td>
+              <td class="coverFnHi">270</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L90">tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<double> >::computeQ(tracking::math::DiagonalMatrix<double, 2>&, double)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
               
               
             </tr>
@@ -235,6 +326,13 @@
               <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L90">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<float> >::computeQ(tracking::math::DiagonalMatrix<float, 2>&, float)</a></td>
               
               <td class="coverFnAliasHi">20</td>
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="motion_model_cv.hpp.gcov.html#L90">tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<double> >::computeQ(tracking::math::DiagonalMatrix<double, 2>&, double)</a></td>
+              
+              <td class="coverFnAliasHi">230</td>
               
               
             </tr>

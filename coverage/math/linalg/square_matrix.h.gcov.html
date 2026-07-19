@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryMed">86.7&nbsp;%</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">13</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -113,13 +113,13 @@
 <span id="L43"><span class="lineNum">      43</span>              : /// \see TriangularMatrix for triangular matrix operations</span>
 <span id="L44"><span class="lineNum">      44</span>              : /// \see DiagonalMatrix for diagonal matrix operations</span>
 <span id="L45"><span class="lineNum">      45</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_ = true&gt;</span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC tlaBgGNC">        2529 : class SquareMatrix: public Matrix&lt;ValueType_, Size_, Size_, IsRowMajor_&gt;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC tlaBgGNC">        5570 : class SquareMatrix: public Matrix&lt;ValueType_, Size_, Size_, IsRowMajor_&gt;</span></span>
 <span id="L47"><span class="lineNum">      47</span>              : {</span>
 <span id="L48"><span class="lineNum">      48</span>              : public:</span>
 <span id="L49"><span class="lineNum">      49</span>              :   using BaseMatrix = Matrix&lt;ValueType_, Size_, Size_, IsRowMajor_&gt;; ///&lt; type of the parent class</span>
 <span id="L50"><span class="lineNum">      50</span>              : </span>
 <span id="L51"><span class="lineNum">      51</span>              :   // unhide ctor of base class to allow implicit call in derived default ctors</span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         324 :   using BaseMatrix::BaseMatrix;</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">        1123 :   using BaseMatrix::BaseMatrix;</span></span>
 <span id="L53"><span class="lineNum">      53</span>              : </span>
 <span id="L54"><span class="lineNum">      54</span>              :   //////////////////////////////////////////////////</span>
 <span id="L55"><span class="lineNum">      55</span>              :   // additional constructors  ---&gt;</span>
@@ -132,8 +132,8 @@
 <span id="L62"><span class="lineNum">      62</span>              : </span>
 <span id="L63"><span class="lineNum">      63</span>              :   /// \brief Move construct a new Square Matrix&lt;ValueType_, Size_&gt; object</span>
 <span id="L64"><span class="lineNum">      64</span>              :   /// \param[in] other A base class object</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC tlaBgGNC">        1113 :   explicit SquareMatrix(BaseMatrix&amp;&amp; other) noexcept</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         914 :       : BaseMatrix{std::move(other)}</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC tlaBgGNC">        2288 :   explicit SquareMatrix(BaseMatrix&amp;&amp; other) noexcept</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        1777 :       : BaseMatrix{std::move(other)}</span></span>
 <span id="L67"><span class="lineNum">      67</span>              :   {</span>
 <span id="L68"><span class="lineNum">      68</span>              :   }</span>
 <span id="L69"><span class="lineNum">      69</span>              : </span>
@@ -258,16 +258,16 @@
 <span id="L188"><span class="lineNum">     188</span>              :   [[nodiscard]] auto qrSolve(const Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt;&amp; b) const</span>
 <span id="L189"><span class="lineNum">     189</span>              :       -&gt; Matrix&lt;ValueType_, Size_, Cols_, !IsRowMajor_&gt;;</span>
 <span id="L190"><span class="lineNum">     190</span>              : </span>
-<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">          40 :   [[nodiscard]] auto qrSolve(const Vector&lt;ValueType_, Size_&gt;&amp; b) const -&gt; Vector&lt;ValueType_, Size_&gt;</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">          50 :   [[nodiscard]] auto qrSolve(const Vector&lt;ValueType_, Size_&gt;&amp; b) const -&gt; Vector&lt;ValueType_, Size_&gt;</span></span>
 <span id="L192"><span class="lineNum">     192</span>              :   {</span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">          40 :     return Vector&lt;ValueType_, Size_&gt;{qrSolve&lt;1, true&gt;(b)};</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">          50 :     return Vector&lt;ValueType_, Size_&gt;{qrSolve&lt;1, true&gt;(b)};</span></span>
 <span id="L194"><span class="lineNum">     194</span>              :   }</span>
 <span id="L195"><span class="lineNum">     195</span>              : </span>
 <span id="L196"><span class="lineNum">     196</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
-<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">          82 :   [[nodiscard]] auto qrSolve(const SquareMatrix&lt;ValueType_, Size_, IsRowMajor2_&gt;&amp; b) const</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">         331 :   [[nodiscard]] auto qrSolve(const SquareMatrix&lt;ValueType_, Size_, IsRowMajor2_&gt;&amp; b) const</span></span>
 <span id="L198"><span class="lineNum">     198</span>              :       -&gt; SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;</span>
 <span id="L199"><span class="lineNum">     199</span>              :   {</span>
-<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">          82 :     return static_cast&lt;SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&gt;(qrSolve&lt;Size_, IsRowMajor2_&gt;(b));</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">         331 :     return static_cast&lt;SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&gt;(qrSolve&lt;Size_, IsRowMajor2_&gt;(b));</span></span>
 <span id="L201"><span class="lineNum">     201</span>              :   }</span>
 <span id="L202"><span class="lineNum">     202</span>              : </span>
 <span id="L203"><span class="lineNum">     203</span>              :   /// \brief Performs Cholesky decomposition (LLT) of a symmetric positive definite matrix</span>

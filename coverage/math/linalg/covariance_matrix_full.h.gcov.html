@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryLo">59.0&nbsp;%</td>
-            <td class="headerCovTableEntry">39</td>
-            <td class="headerCovTableEntry">23</td>
+            <td class="headerCovTableEntryLo">61.7&nbsp;%</td>
+            <td class="headerCovTableEntry">47</td>
+            <td class="headerCovTableEntry">29</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -114,11 +114,11 @@
 <span id="L44"><span class="lineNum">      44</span>              : </span>
 <span id="L45"><span class="lineNum">      45</span>              :   // rule of 5 declarations</span>
 <span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC tlaBgGNC">          39 :   CovarianceMatrixFull()                                                   = default;</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          37 :   CovarianceMatrixFull(const CovarianceMatrixFull&amp;)                        = default;</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          43 :   CovarianceMatrixFull(CovarianceMatrixFull&amp;&amp;) noexcept                    = default;</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         347 :   CovarianceMatrixFull(const CovarianceMatrixFull&amp;)                        = default;</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          49 :   CovarianceMatrixFull(CovarianceMatrixFull&amp;&amp;) noexcept                    = default;</span></span>
 <span id="L49"><span class="lineNum">      49</span>              :   auto operator=(const CovarianceMatrixFull&amp;) -&gt; CovarianceMatrixFull&amp;     = default;</span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          58 :   auto operator=(CovarianceMatrixFull&amp;&amp;) noexcept -&gt; CovarianceMatrixFull&amp; = default;</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         457 :   virtual ~CovarianceMatrixFull()                                          = default;</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          65 :   auto operator=(CovarianceMatrixFull&amp;&amp;) noexcept -&gt; CovarianceMatrixFull&amp; = default;</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         646 :   virtual ~CovarianceMatrixFull()                                          = default;</span></span>
 <span id="L52"><span class="lineNum">      52</span>              : </span>
 <span id="L53"><span class="lineNum">      53</span>              :   //////////////////////////////////////////////////</span>
 <span id="L54"><span class="lineNum">      54</span>              :   // additional constructors  ---&gt;</span>
@@ -132,11 +132,11 @@
 <span id="L62"><span class="lineNum">      62</span>              : </span>
 <span id="L63"><span class="lineNum">      63</span>              :   /// \brief Move construct a new Covariance Matrix Full&lt;ValueType_, Size_&gt; object</span>
 <span id="L64"><span class="lineNum">      64</span>              :   /// \param[in] other A base class object</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         258 :   explicit CovarianceMatrixFull(BaseSquareMatrix&amp;&amp; other) noexcept</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         258 :       : BaseSquareMatrix{std::move(other)}</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        1353 :   explicit CovarianceMatrixFull(BaseSquareMatrix&amp;&amp; other) noexcept</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        1353 :       : BaseSquareMatrix{std::move(other)}</span></span>
 <span id="L67"><span class="lineNum">      67</span>              :   {</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">         258 :     assert(this-&gt;isSymmetric() &amp;&amp; &quot;Constructed covariance not symmetric&quot;);</span></span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">         258 :   }</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        1353 :     assert(this-&gt;isSymmetric() &amp;&amp; &quot;Constructed covariance not symmetric&quot;);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        1353 :   }</span></span>
 <span id="L70"><span class="lineNum">      70</span>              : </span>
 <span id="L71"><span class="lineNum">      71</span>              :   /// \brief Construct a new Covariance Matrix Full&lt;ValueType_, Size_&gt; object from a transposed SquareMatrix</span>
 <span id="L72"><span class="lineNum">      72</span>              :   /// \param[in] other A transposed base class object</span>
@@ -148,15 +148,15 @@
 <span id="L78"><span class="lineNum">      78</span>              : </span>
 <span id="L79"><span class="lineNum">      79</span>              :   /// \brief Move construct a new Covariance Matrix Full&lt;ValueType_, Size_&gt; object from a transposed SquareMatrix</span>
 <span id="L80"><span class="lineNum">      80</span>              :   /// \param[in] other A transposed base class object</span>
-<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC tlaBgGNC">         299 :   explicit CovarianceMatrixFull(typename BaseSquareMatrix::transpose_type&amp;&amp; other) noexcept</span></span>
-<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">         299 :       : BaseSquareMatrix{std::move(other).transpose_rvalue()}</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC tlaBgGNC">         351 :   explicit CovarianceMatrixFull(typename BaseSquareMatrix::transpose_type&amp;&amp; other) noexcept</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">         351 :       : BaseSquareMatrix{std::move(other).transpose_rvalue()}</span></span>
 <span id="L83"><span class="lineNum">      83</span>              :   {</span>
-<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">         299 :     assert(this-&gt;isSymmetric() &amp;&amp; &quot;Constructed covariance not symmetric&quot;);</span></span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">         299 :   }</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">         351 :     assert(this-&gt;isSymmetric() &amp;&amp; &quot;Constructed covariance not symmetric&quot;);</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">         351 :   }</span></span>
 <span id="L86"><span class="lineNum">      86</span>              : </span>
 <span id="L87"><span class="lineNum">      87</span>              :   /// \brief Construct an Identity matrix</span>
 <span id="L88"><span class="lineNum">      88</span>              :   /// \return CovarianceMatrixFull  Resulting identity matrix</span>
-<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">          51 :   static auto Identity() -&gt; CovarianceMatrixFull { return CovarianceMatrixFull{BaseSquareMatrix::Identity()}; }</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">          60 :   static auto Identity() -&gt; CovarianceMatrixFull { return CovarianceMatrixFull{BaseSquareMatrix::Identity()}; }</span></span>
 <span id="L90"><span class="lineNum">      90</span>              : </span>
 <span id="L91"><span class="lineNum">      91</span>              :   /// \brief Construct a diagonal covariance matrix</span>
 <span id="L92"><span class="lineNum">      92</span>              :   /// \return CovarianceMatrixFactored</span>
@@ -168,9 +168,9 @@
 <span id="L98"><span class="lineNum">      98</span>              :   ///</span>
 <span id="L99"><span class="lineNum">      99</span>              :   /// \param[in] list Nested initializer list representing the covariance matrix</span>
 <span id="L100"><span class="lineNum">     100</span>              :   /// \return CovarianceMatrixFull instance initialized with the provided values</span>
-<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">          54 :   static auto FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) -&gt; CovarianceMatrixFull</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">         155 :   static auto FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) -&gt; CovarianceMatrixFull</span></span>
 <span id="L102"><span class="lineNum">     102</span>              :   {</span>
-<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">          54 :     return CovarianceMatrixFull{BaseSquareMatrix::FromList(list)};</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">         155 :     return CovarianceMatrixFull{BaseSquareMatrix::FromList(list)};</span></span>
 <span id="L104"><span class="lineNum">     104</span>              :   }</span>
 <span id="L105"><span class="lineNum">     105</span>              :   // &lt;---</span>
 <span id="L106"><span class="lineNum">     106</span>              : </span>
@@ -188,7 +188,7 @@
 <span id="L118"><span class="lineNum">     118</span>              :   ///</span>
 <span id="L119"><span class="lineNum">     119</span>              :   /// \return ValueType_ The determinant of the matrix</span>
 <span id="L120"><span class="lineNum">     120</span>              :   /// \note uses SquareMatrix::determinant</span>
-<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC tlaBgGNC">          10 :   auto determinant() const -&gt; ValueType_ { return BaseSquareMatrix::determinant(); }</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC tlaBgGNC">         311 :   auto determinant() const -&gt; ValueType_ { return BaseSquareMatrix::determinant(); }</span></span>
 <span id="L122"><span class="lineNum">     122</span>              : </span>
 <span id="L123"><span class="lineNum">     123</span>              :   /// \brief Calculates the matrix inverse using Cholesky decomposition</span>
 <span id="L124"><span class="lineNum">     124</span>              :   ///</span>
@@ -219,45 +219,66 @@
 <span id="L149"><span class="lineNum">     149</span>              :   /// \param[in] A Square transformation matrix</span>
 <span id="L150"><span class="lineNum">     150</span>              :   ///</span>
 <span id="L151"><span class="lineNum">     151</span>              :   /// \note This is a key operation in Kalman filter prediction</span>
-<span id="L152"><span class="lineNum">     152</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
-<span id="L153"><span class="lineNum">     153</span>              :   // TODO(matthias): optimization - add in-place variants for common ops like apaT to avoid copies</span>
-<span id="L154"><span class="lineNum">     154</span>              :   // improving cache efficiency for small data; beneficial for small n without complexity overhead</span>
-<span id="L155"><span class="lineNum">     155</span>              :   template &lt;bool IsRowMajor_&gt;</span>
-<span id="L156"><span class="lineNum">     156</span>              :   void apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A);</span>
-<span id="L157"><span class="lineNum">     157</span>              : </span>
-<span id="L158"><span class="lineNum">     158</span>              :   /// \brief Compute A*P*A^T (covariance propagation)</span>
-<span id="L159"><span class="lineNum">     159</span>              :   ///</span>
-<span id="L160"><span class="lineNum">     160</span>              :   /// Performs the matrix operation A*P*A^T where P is this covariance matrix.</span>
-<span id="L161"><span class="lineNum">     161</span>              :   /// This operation propagates covariance through a linear transformation A.</span>
-<span id="L162"><span class="lineNum">     162</span>              :   /// Returns a new covariance matrix without modifying this one.</span>
-<span id="L163"><span class="lineNum">     163</span>              :   ///</span>
-<span id="L164"><span class="lineNum">     164</span>              :   /// \tparam IsRowMajor_ Storage layout of the transformation matrix A</span>
-<span id="L165"><span class="lineNum">     165</span>              :   /// \param[in] A Square transformation matrix</span>
-<span id="L166"><span class="lineNum">     166</span>              :   /// \return New covariance matrix containing A*P*A^T</span>
-<span id="L167"><span class="lineNum">     167</span>              :   ///</span>
-<span id="L168"><span class="lineNum">     168</span>              :   /// \note This is a key operation in Kalman filter prediction</span>
-<span id="L169"><span class="lineNum">     169</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
-<span id="L170"><span class="lineNum">     170</span>              :   template &lt;bool IsRowMajor_&gt;</span>
-<span id="L171"><span class="lineNum">     171</span>              :   auto apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull;</span>
-<span id="L172"><span class="lineNum">     172</span>              : </span>
-<span id="L173"><span class="lineNum">     173</span>              :   /// \brief Set diagonal variance element and clear correlations</span>
-<span id="L174"><span class="lineNum">     174</span>              :   ///</span>
-<span id="L175"><span class="lineNum">     175</span>              :   /// Sets the variance (diagonal element) at position (idx, idx) to the given value</span>
-<span id="L176"><span class="lineNum">     176</span>              :   /// and clears all off-diagonal correlations involving this state variable.</span>
-<span id="L177"><span class="lineNum">     177</span>              :   /// This effectively makes the idx-th state variable uncorrelated with others.</span>
-<span id="L178"><span class="lineNum">     178</span>              :   ///</span>
-<span id="L179"><span class="lineNum">     179</span>              :   /// \param[in] idx Zero-based index of the state variable (0 &lt;= idx &lt; Size_)</span>
-<span id="L180"><span class="lineNum">     180</span>              :   /// \param[in] val New variance value (must be positive)</span>
-<span id="L181"><span class="lineNum">     181</span>              :   ///</span>
-<span id="L182"><span class="lineNum">     182</span>              :   /// \note This operation modifies both the diagonal and off-diagonal elements</span>
-<span id="L183"><span class="lineNum">     183</span>              :   /// \note Commonly used to reinitialize uncertainty for specific state components</span>
-<span id="L184"><span class="lineNum">     184</span>              :   void setVariance(const sint32 idx, const ValueType_ val);</span>
-<span id="L185"><span class="lineNum">     185</span>              : };</span>
-<span id="L186"><span class="lineNum">     186</span>              : </span>
-<span id="L187"><span class="lineNum">     187</span>              : } // namespace math</span>
-<span id="L188"><span class="lineNum">     188</span>              : } // namespace tracking</span>
-<span id="L189"><span class="lineNum">     189</span>              : </span>
-<span id="L190"><span class="lineNum">     190</span>              : #endif // DD2B2494_7486_42BA_84E2_32308E26DBBC</span>
+<span id="L152"><span class="lineNum">     152</span>              :   /// \note Computed in two stages: AP = A*P is evaluated in full, then only the upper triangle of</span>
+<span id="L153"><span class="lineNum">     153</span>              :   ///       AP*A^T is computed and mirrored into the lower triangle, since the result is symmetric</span>
+<span id="L154"><span class="lineNum">     154</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
+<span id="L155"><span class="lineNum">     155</span>              :   // TODO(matthias): optimization - add in-place variants for common ops like apaT to avoid copies</span>
+<span id="L156"><span class="lineNum">     156</span>              :   // improving cache efficiency for small data; beneficial for small n without complexity overhead</span>
+<span id="L157"><span class="lineNum">     157</span>              :   template &lt;bool IsRowMajor_&gt;</span>
+<span id="L158"><span class="lineNum">     158</span>              :   void apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A);</span>
+<span id="L159"><span class="lineNum">     159</span>              : </span>
+<span id="L160"><span class="lineNum">     160</span>              :   /// \brief Compute A*P*A^T (covariance propagation)</span>
+<span id="L161"><span class="lineNum">     161</span>              :   ///</span>
+<span id="L162"><span class="lineNum">     162</span>              :   /// Performs the matrix operation A*P*A^T where P is this covariance matrix.</span>
+<span id="L163"><span class="lineNum">     163</span>              :   /// This operation propagates covariance through a linear transformation A.</span>
+<span id="L164"><span class="lineNum">     164</span>              :   /// Returns a new covariance matrix without modifying this one.</span>
+<span id="L165"><span class="lineNum">     165</span>              :   ///</span>
+<span id="L166"><span class="lineNum">     166</span>              :   /// \tparam IsRowMajor_ Storage layout of the transformation matrix A</span>
+<span id="L167"><span class="lineNum">     167</span>              :   /// \param[in] A Square transformation matrix</span>
+<span id="L168"><span class="lineNum">     168</span>              :   /// \return New covariance matrix containing A*P*A^T</span>
+<span id="L169"><span class="lineNum">     169</span>              :   ///</span>
+<span id="L170"><span class="lineNum">     170</span>              :   /// \note This is a key operation in Kalman filter prediction</span>
+<span id="L171"><span class="lineNum">     171</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
+<span id="L172"><span class="lineNum">     172</span>              :   template &lt;bool IsRowMajor_&gt;</span>
+<span id="L173"><span class="lineNum">     173</span>              :   auto apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull;</span>
+<span id="L174"><span class="lineNum">     174</span>              : </span>
+<span id="L175"><span class="lineNum">     175</span>              :   /// \brief Rank-1 update: P ± c*x*x^T</span>
+<span id="L176"><span class="lineNum">     176</span>              :   ///</span>
+<span id="L177"><span class="lineNum">     177</span>              :   /// Performs a rank-1 update of the covariance matrix: P = P + c*x*x^T</span>
+<span id="L178"><span class="lineNum">     178</span>              :   /// where c is a scalar and x is a vector. This operation is fundamental</span>
+<span id="L179"><span class="lineNum">     179</span>              :   /// to sequential Kalman filter measurement updates.</span>
+<span id="L180"><span class="lineNum">     180</span>              :   ///</span>
+<span id="L181"><span class="lineNum">     181</span>              :   /// When c &gt; 0: rank-1 update (increases uncertainty)</span>
+<span id="L182"><span class="lineNum">     182</span>              :   /// When c &lt; 0: rank-1 downdate (decreases uncertainty)</span>
+<span id="L183"><span class="lineNum">     183</span>              :   ///</span>
+<span id="L184"><span class="lineNum">     184</span>              :   /// \param[in] c Scalar multiplier (positive for update, negative for downdate)</span>
+<span id="L185"><span class="lineNum">     185</span>              :   /// \param[in] x Update vector defining the outer product x*x^T</span>
+<span id="L186"><span class="lineNum">     186</span>              :   ///</span>
+<span id="L187"><span class="lineNum">     187</span>              :   /// \note Part of the covariance contract shared with CovarianceMatrixFactored, allowing</span>
+<span id="L188"><span class="lineNum">     188</span>              :   ///       policy-independent sequential measurement updates</span>
+<span id="L189"><span class="lineNum">     189</span>              :   /// \note Only the upper triangle is computed and mirrored into the lower triangle</span>
+<span id="L190"><span class="lineNum">     190</span>              :   ///       (the result is symmetric by construction)</span>
+<span id="L191"><span class="lineNum">     191</span>              :   /// \note Time complexity: O(n^2) where n = Size_</span>
+<span id="L192"><span class="lineNum">     192</span>              :   void rank1Update(const ValueType_ c, const Vector&lt;ValueType_, Size_&gt;&amp; x);</span>
+<span id="L193"><span class="lineNum">     193</span>              : </span>
+<span id="L194"><span class="lineNum">     194</span>              :   /// \brief Set diagonal variance element and clear correlations</span>
+<span id="L195"><span class="lineNum">     195</span>              :   ///</span>
+<span id="L196"><span class="lineNum">     196</span>              :   /// Sets the variance (diagonal element) at position (idx, idx) to the given value</span>
+<span id="L197"><span class="lineNum">     197</span>              :   /// and clears all off-diagonal correlations involving this state variable.</span>
+<span id="L198"><span class="lineNum">     198</span>              :   /// This effectively makes the idx-th state variable uncorrelated with others.</span>
+<span id="L199"><span class="lineNum">     199</span>              :   ///</span>
+<span id="L200"><span class="lineNum">     200</span>              :   /// \param[in] idx Zero-based index of the state variable (0 &lt;= idx &lt; Size_)</span>
+<span id="L201"><span class="lineNum">     201</span>              :   /// \param[in] val New variance value (must be positive)</span>
+<span id="L202"><span class="lineNum">     202</span>              :   ///</span>
+<span id="L203"><span class="lineNum">     203</span>              :   /// \note This operation modifies both the diagonal and off-diagonal elements</span>
+<span id="L204"><span class="lineNum">     204</span>              :   /// \note Commonly used to reinitialize uncertainty for specific state components</span>
+<span id="L205"><span class="lineNum">     205</span>              :   void setVariance(const sint32 idx, const ValueType_ val);</span>
+<span id="L206"><span class="lineNum">     206</span>              : };</span>
+<span id="L207"><span class="lineNum">     207</span>              : </span>
+<span id="L208"><span class="lineNum">     208</span>              : } // namespace math</span>
+<span id="L209"><span class="lineNum">     209</span>              : } // namespace tracking</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span>              : #endif // DD2B2494_7486_42BA_84E2_32308E26DBBC</span>
         </pre>
               </td>
             </tr>

@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryHi">96.3&nbsp;%</td>
-            <td class="headerCovTableEntry">54</td>
-            <td class="headerCovTableEntry">52</td>
+            <td class="headerCovTableEntryMed">83.8&nbsp;%</td>
+            <td class="headerCovTableEntry">68</td>
+            <td class="headerCovTableEntry">57</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -85,23 +85,23 @@
 <span id="L15"><span class="lineNum">      15</span>              : class Vector;</span>
 <span id="L16"><span class="lineNum">      16</span>              : </span>
 <span id="L17"><span class="lineNum">      17</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC tlaBgGNC">        3112 : inline MatrixColumnView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::MatrixColumnView(</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC tlaBgGNC">        5180 : inline MatrixColumnView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::MatrixColumnView(</span></span>
 <span id="L19"><span class="lineNum">      19</span>              :     const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; matrix, const sint32 col, const sint32 rowBegin, const sint32 rowEnd)</span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">        3112 :     : _matrix{matrix}</span></span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">        3112 :     , _col{col}</span></span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">        3112 :     , _rowBegin{rowBegin}</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">        3108 :     , _rowCount{rowEnd - rowBegin + 1}</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">        5180 :     : _matrix{matrix}</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">        5180 :     , _col{col}</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">        5180 :     , _rowBegin{rowBegin}</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">        5176 :     , _rowCount{rowEnd - rowBegin + 1}</span></span>
 <span id="L24"><span class="lineNum">      24</span>              : {</span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">        3035 :   assert(_rowBegin &gt;= 0);</span></span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">        3035 :   assert(_rowCount &lt;= Rows_);</span></span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">        3035 : }</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">        5103 :   assert(_rowBegin &gt;= 0);</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">        5103 :   assert(_rowCount &lt;= Rows_);</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">        5103 : }</span></span>
 <span id="L28"><span class="lineNum">      28</span>              : </span>
 <span id="L29"><span class="lineNum">      29</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">       45760 : inline auto MatrixColumnView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::at_unsafe(const sint32 idx) const -&gt; ValueType_</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">       61062 : inline auto MatrixColumnView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::at_unsafe(const sint32 idx) const -&gt; ValueType_</span></span>
 <span id="L31"><span class="lineNum">      31</span>              : {</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">       45760 :   assert(idx &lt; _rowCount);</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">       45760 :   const auto row = _rowBegin + idx;</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">       45760 :   return _matrix.at_unsafe(row, _col);</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">       61062 :   assert(idx &lt; _rowCount);</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">       61062 :   const auto row = _rowBegin + idx;</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">       61062 :   return _matrix.at_unsafe(row, _col);</span></span>
 <span id="L35"><span class="lineNum">      35</span>              : }</span>
 <span id="L36"><span class="lineNum">      36</span>              : </span>
 <span id="L37"><span class="lineNum">      37</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
@@ -122,17 +122,17 @@
 <span id="L52"><span class="lineNum">      52</span>              : </span>
 <span id="L53"><span class="lineNum">      53</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
 <span id="L54"><span class="lineNum">      54</span>              : template &lt;sint32 Rows2_, sint32 Cols2_, bool IsRowMajor2_&gt;</span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">        1913 : inline auto MatrixColumnView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::operator*(</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">        3141 : inline auto MatrixColumnView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::operator*(</span></span>
 <span id="L56"><span class="lineNum">      56</span>              :     const MatrixColumnView&lt;ValueType_, Rows2_, Cols2_, IsRowMajor2_&gt;&amp; other) const -&gt; ValueType_</span>
 <span id="L57"><span class="lineNum">      57</span>              : {</span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">        1913 :   assert(other.getRowCount() == _rowCount);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">        3141 :   assert(other.getRowCount() == _rowCount);</span></span>
 <span id="L59"><span class="lineNum">      59</span>              :   // calc dot product</span>
 <span id="L60"><span class="lineNum">      60</span>              :   ValueType_ result{};</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        9303 :   for (auto row = 0; row &lt; _rowCount; ++row)</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       13231 :   for (auto row = 0; row &lt; _rowCount; ++row)</span></span>
 <span id="L62"><span class="lineNum">      62</span>              :   {</span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">        7390 :     result += this-&gt;at_unsafe(row) * other.at_unsafe(row);</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       10090 :     result += this-&gt;at_unsafe(row) * other.at_unsafe(row);</span></span>
 <span id="L64"><span class="lineNum">      64</span>              :   }</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        1913 :   return result;</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        3141 :   return result;</span></span>
 <span id="L66"><span class="lineNum">      66</span>              : }</span>
 <span id="L67"><span class="lineNum">      67</span>              : </span>
 <span id="L68"><span class="lineNum">      68</span>              : </span>

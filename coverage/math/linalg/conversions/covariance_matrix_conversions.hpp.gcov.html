@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">11</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -100,19 +100,19 @@
 <span id="L30"><span class="lineNum">      30</span>              : /// \see CovarianceMatrixFactoredFromList() (overloaded) for nested initializer list input</span>
 <span id="L31"><span class="lineNum">      31</span>              : /// \see CovarianceMatrixFullFromList() for full covariance matrixes</span>
 <span id="L32"><span class="lineNum">      32</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC tlaBgGNC">          44 : inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC tlaBgGNC">          77 : inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(</span></span>
 <span id="L34"><span class="lineNum">      34</span>              :     const typename CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::compose_type&amp; other)</span>
 <span id="L35"><span class="lineNum">      35</span>              :     -&gt; tl::expected&lt;CovarianceMatrixFactored&lt;ValueType_, Size_&gt;, Errors&gt;</span>
 <span id="L36"><span class="lineNum">      36</span>              : {</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          44 :   const auto retVal = other.decomposeUDUT();</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">          44 :   if (retVal.has_value())</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          77 :   const auto retVal = other.decomposeUDUT();</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">          77 :   if (retVal.has_value())</span></span>
 <span id="L39"><span class="lineNum">      39</span>              :   {</span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          44 :     const auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix&lt;ValueType_, Size_, false, true&gt;::Identity(),</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          77 :     const auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix&lt;ValueType_, Size_, false, true&gt;::Identity(),</span></span>
 <span id="L41"><span class="lineNum">      41</span>              :                                                        DiagonalMatrix&lt;ValueType_, Size_&gt;::Identity()));</span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">          44 :     return CovarianceMatrixFactored{std::move(u), std::move(d)};</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">          44 :   }</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">          77 :     return CovarianceMatrixFactored{std::move(u), std::move(d)};</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">          77 :   }</span></span>
 <span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC tlaBgUNC">           0 :   return tl::unexpected&lt;Errors&gt;{retVal.error()};</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC tlaBgGNC">          44 : }</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC tlaBgGNC">          77 : }</span></span>
 <span id="L46"><span class="lineNum">      46</span>              : </span>
 <span id="L47"><span class="lineNum">      47</span>              : </span>
 <span id="L48"><span class="lineNum">      48</span>              : /// \brief Creates a CovarianceMatrixFactored from a nested initializer list</span>
@@ -128,14 +128,14 @@
 <span id="L58"><span class="lineNum">      58</span>              : /// \see CovarianceMatrixFactoredFromList() (overloaded) for separate U and D input</span>
 <span id="L59"><span class="lineNum">      59</span>              : /// \see CovarianceMatrixFullFromList() for full covariance matrixes</span>
 <span id="L60"><span class="lineNum">      60</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">          21 : inline auto CovarianceMatrixFactoredFromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list)</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">          42 : inline auto CovarianceMatrixFactoredFromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list)</span></span>
 <span id="L62"><span class="lineNum">      62</span>              :     -&gt; CovarianceMatrixFactored&lt;ValueType_, Size_&gt;</span>
 <span id="L63"><span class="lineNum">      63</span>              : {</span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">          21 :   const auto other = CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::compose_type::FromList(list);</span></span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">          21 :   const auto cov   = CovarianceMatrixFactoredFromCovarianceMatrixFull&lt;ValueType_, Size_&gt;(other);</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          21 :   assert(cov.has_value() &amp;&amp; &quot;Input matrix cannot be factored into UDUt form&quot;);</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">          42 :   return cov.value();</span></span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">          21 : }</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">          42 :   const auto other = CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::compose_type::FromList(list);</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">          42 :   const auto cov   = CovarianceMatrixFactoredFromCovarianceMatrixFull&lt;ValueType_, Size_&gt;(other);</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          42 :   assert(cov.has_value() &amp;&amp; &quot;Input matrix cannot be factored into UDUt form&quot;);</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">          84 :   return cov.value();</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">          42 : }</span></span>
 <span id="L69"><span class="lineNum">      69</span>              : </span>
 <span id="L70"><span class="lineNum">      70</span>              : } // namespace conversions</span>
 <span id="L71"><span class="lineNum">      71</span>              : } // namespace math</span>

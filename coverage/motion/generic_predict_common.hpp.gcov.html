@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 20:25:40</td>
+            <td class="headerValue">2026-07-19 20:43:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryMed">83.3&nbsp;%</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">5</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -83,30 +83,30 @@
 <span id="L13"><span class="lineNum">      13</span>              : {</span>
 <span id="L14"><span class="lineNum">      14</span>              : </span>
 <span id="L15"><span class="lineNum">      15</span>              : template &lt;typename MotionModel_, typename CovarianceMatrixPolicy_&gt;</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">          80 : inline void PredictCommon&lt;MotionModel_, CovarianceMatrixPolicy_&gt;::run(Storage&amp;             data,</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">         310 : inline void PredictCommon&lt;MotionModel_, CovarianceMatrixPolicy_&gt;::run(Storage&amp;             data,</span></span>
 <span id="L17"><span class="lineNum">      17</span>              :                                                                       const value_type     dt,</span>
 <span id="L18"><span class="lineNum">      18</span>              :                                                                       const EgoMotionType&amp; egoMotion)</span>
 <span id="L19"><span class="lineNum">      19</span>              : {</span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">          80 :   assert(dt &gt;= static_cast&lt;value_type&gt;(0));</span></span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">          80 :   auto&amp; underlying = static_cast&lt;MotionModel_&amp;&gt;(*this);</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">         310 :   assert(dt &gt;= static_cast&lt;value_type&gt;(0));</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">         310 :   auto&amp; underlying = static_cast&lt;MotionModel_&amp;&gt;(*this);</span></span>
 <span id="L22"><span class="lineNum">      22</span>              : </span>
 <span id="L23"><span class="lineNum">      23</span>              :   // Compute ego motion compensation matrices</span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">          80 :   underlying.computeEgoMotionCompensationMatrices(data.Ge, data.Go, egoMotion);</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">          80 :   if (!egoMotion.getDisplacementCog().vec.isZeros())</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">         310 :   underlying.computeEgoMotionCompensationMatrices(data.Ge, data.Go, egoMotion);</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">         310 :   if (!egoMotion.getDisplacementCog().vec.isZeros())</span></span>
 <span id="L26"><span class="lineNum">      26</span>              :   {</span>
 <span id="L27"><span class="lineNum">      27</span>              :     // Exact nonlinear compensation in case the model is nonlinear</span>
 <span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">          40 :     underlying.compensateState(egoMotion);</span></span>
 <span id="L29"><span class="lineNum">      29</span>              :   }</span>
 <span id="L30"><span class="lineNum">      30</span>              : </span>
 <span id="L31"><span class="lineNum">      31</span>              :   // Compute state transition matrix on compensated state</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">          80 :   underlying.computeA(data.A, dt);</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">         310 :   underlying.computeA(data.A, dt);</span></span>
 <span id="L33"><span class="lineNum">      33</span>              : </span>
 <span id="L34"><span class="lineNum">      34</span>              :   // Exact nonlinear state prediction in case the model is nonlinear</span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">          80 :   underlying.applyProcessModel(dt);</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">         310 :   underlying.applyProcessModel(dt);</span></span>
 <span id="L36"><span class="lineNum">      36</span>              : </span>
 <span id="L37"><span class="lineNum">      37</span>              :   // Compute process noise matrices</span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">          80 :   underlying.computeQ(data.Q, dt);</span></span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">          80 :   underlying.computeG(data.G, dt);</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">         310 :   underlying.computeQ(data.Q, dt);</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         310 :   underlying.computeG(data.G, dt);</span></span>
 <span id="L40"><span class="lineNum">      40</span>              : </span>
 <span id="L41"><span class="lineNum">      41</span>              :   if constexpr (CovarianceMatrixPolicy_::is_factored)</span>
 <span id="L42"><span class="lineNum">      42</span>              :   {</span>
@@ -134,7 +134,7 @@
 <span id="L64"><span class="lineNum">      64</span>              :         data.G); // set G starting at dest (0, DS_NUM_VARIABLES)</span>
 <span id="L65"><span class="lineNum">      65</span>              :     // clang-format on</span>
 <span id="L66"><span class="lineNum">      66</span>              :   }</span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">          80 : }</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">         310 : }</span></span>
 <span id="L68"><span class="lineNum">      68</span>              : </span>
 <span id="L69"><span class="lineNum">      69</span>              : } // namespace generic</span>
 <span id="L70"><span class="lineNum">      70</span>              : } // namespace motion</span>
