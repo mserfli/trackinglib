@@ -24,7 +24,6 @@
             "extensions": [
                 "akiramiyakoda.cppincludeguard",
                 "aslamanver.vsc-export",
-                "bierner.markdown-mermaid",
                 "cschlosser.doxdocgen",
                 "donjayamanne.githistory",
                 "github.copilot-chat",
