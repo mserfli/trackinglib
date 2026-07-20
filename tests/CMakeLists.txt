@@ -74,14 +74,15 @@ if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQ
         EXECUTABLE_ARGS "--output-on-failure"
         DEPENDENCIES ${ALL_TEST_EXECUTABLES}
         BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
-        LCOV_ARGS 
-            --ignore-errors unused,mismatch 
-            --rc lcov_excl_braces_stop=1 
+        LCOV_ARGS
+            --ignore-errors unused,mismatch
+            --filter brace
             --rc geninfo_unexecuted_blocks=0
             --rc derive_function_end_line=0
         GENHTML_ARGS
             --no-branch-coverage
             --ignore-errors mismatch
+            --filter brace
             --legend
         EXCLUDE 
             "/Users/matthias/miniforge3/*" 
