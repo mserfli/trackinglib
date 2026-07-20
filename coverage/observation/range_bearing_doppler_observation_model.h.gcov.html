@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryHi">97.4&nbsp;%</td>
-            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">38</td>
             <td class="headerCovTableEntry">38</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 21:07:04</td>
+            <td class="headerValue">2026-07-20 09:33:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">38.5&nbsp;%</td>
@@ -140,12 +140,12 @@
 <span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">         125 :   explicit RangeBearingDopplerObservationModel(const MeasurementVec&amp; vec, const MeasurementCov&amp; cov)</span></span>
 <span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">         125 :       : BaseExtendedObservationModel{vec, cov}</span></span>
 <span id="L72"><span class="lineNum">      72</span>              :   {</span>
-<span id="L73"><span class="lineNum">      73</span> <span class="tlaUNC tlaBgUNC">           0 :   }</span></span>
+<span id="L73"><span class="lineNum">      73</span>              :   }</span>
 <span id="L74"><span class="lineNum">      74</span>              : </span>
 <span id="L75"><span class="lineNum">      75</span>              :   /// \brief Predict the measurement h(x) = [range, bearing, doppler]' for the given state</span>
 <span id="L76"><span class="lineNum">      76</span>              :   /// \param[in] state  State vector the measurement is predicted for</span>
 <span id="L77"><span class="lineNum">      77</span>              :   /// \return MeasurementVec  Predicted measurement</span>
-<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC tlaBgGNC">         130 :   auto predictMeasurement(const StateVec&amp; state) const -&gt; MeasurementVec</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">         130 :   auto predictMeasurement(const StateVec&amp; state) const -&gt; MeasurementVec</span></span>
 <span id="L79"><span class="lineNum">      79</span>              :   {</span>
 <span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">         130 :     const value_type x     = state.at_unsafe(StateDef_::X);</span></span>
 <span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">         130 :     const value_type y     = state.at_unsafe(StateDef_::Y);</span></span>

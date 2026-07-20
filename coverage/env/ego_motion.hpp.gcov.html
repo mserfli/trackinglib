@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">80</td>
-            <td class="headerCovTableEntry">80</td>
+            <td class="headerCovTableEntry">76</td>
+            <td class="headerCovTableEntry">76</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 21:07:04</td>
+            <td class="headerValue">2026-07-20 09:33:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">87.5&nbsp;%</td>
@@ -108,7 +108,7 @@
 <span id="L38"><span class="lineNum">      38</span>              : </span>
 <span id="L39"><span class="lineNum">      39</span>              :   // transfer from COG</span>
 <span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          40 :   posXNewEgo -= _geometry.distCog2Ego;</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">          40 : }</span></span>
+<span id="L41"><span class="lineNum">      41</span>              : }</span>
 <span id="L42"><span class="lineNum">      42</span>              : </span>
 <span id="L43"><span class="lineNum">      43</span>              : template &lt;typename CovarianceMatrixPolicy_&gt;</span>
 <span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">         100 : void EgoMotion&lt;CovarianceMatrixPolicy_&gt;::compensateDirection(value_type&amp;      dxNewEgo,</span></span>
@@ -119,7 +119,7 @@
 <span id="L49"><span class="lineNum">      49</span>              :   // rotate a vector (velocity or acceleration) according to deltaPsi</span>
 <span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         100 :   dxNewEgo = (_displacementCog.cosDeltaPsi * dxOldEgo) + (_displacementCog.sinDeltaPsi * dyOldEgo);</span></span>
 <span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         100 :   dyNewEgo = -(_displacementCog.sinDeltaPsi * dxOldEgo) + (_displacementCog.cosDeltaPsi * dyOldEgo);</span></span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         100 : }</span></span>
+<span id="L52"><span class="lineNum">      52</span>              : }</span>
 <span id="L53"><span class="lineNum">      53</span>              : </span>
 <span id="L54"><span class="lineNum">      54</span>              : template &lt;typename CovarianceMatrixPolicy_&gt;</span>
 <span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">          27 : auto EgoMotion&lt;CovarianceMatrixPolicy_&gt;::isLinearMotion() const -&gt; bool</span></span>
@@ -134,7 +134,7 @@
 <span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">          27 :   calcDisplacementVector(_displacementCog, _motion, _dt);</span></span>
 <span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">          27 :   const auto J = isLinearMotion() ? calcLinearMotionJacobian(_motion, _dt) : calcCircularMotionJacobian(_motion, _dt);</span></span>
 <span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          27 :   calcDisplacementCovariance(_displacementCog, J, _motion);</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">          27 : }</span></span>
+<span id="L67"><span class="lineNum">      67</span>              : }</span>
 <span id="L68"><span class="lineNum">      68</span>              : </span>
 <span id="L69"><span class="lineNum">      69</span>              : template &lt;typename CovarianceMatrixPolicy_&gt;</span>
 <span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">          23 : auto EgoMotion&lt;CovarianceMatrixPolicy_&gt;::calcLinearMotionJacobian(const InertialMotion&amp; motion,</span></span>
@@ -242,7 +242,7 @@
 <span id="L172"><span class="lineNum">     172</span>              : </span>
 <span id="L173"><span class="lineNum">     173</span>              :   // Apply the transformation: P = J * Pin * J^T using apaT</span>
 <span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">          27 :   displacement.cov.apaT(J);</span></span>
-<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">          27 : }</span></span>
+<span id="L175"><span class="lineNum">     175</span>              : }</span>
 <span id="L176"><span class="lineNum">     176</span>              : </span>
 <span id="L177"><span class="lineNum">     177</span>              : } // namespace env</span>
 <span id="L178"><span class="lineNum">     178</span>              : } // namespace tracking</span>

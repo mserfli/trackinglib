@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">35</td>
-            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntry">33</td>
+            <td class="headerCovTableEntry">33</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 21:07:04</td>
+            <td class="headerValue">2026-07-20 09:33:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -110,7 +110,7 @@
 <span id="L40"><span class="lineNum">      40</span>              : </span>
 <span id="L41"><span class="lineNum">      41</span>              :     // fill dstCov with the resulting top left block</span>
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">           1 :     dstCov.template fill&lt;SrcType::NUM_STATE_VARIABLES, DstType::NUM_STATE_VARIABLES&gt;(srcCov.apaT(A));</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">           1 :   }</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :   }</span>
 <span id="L44"><span class="lineNum">      44</span>              :   else</span>
 <span id="L45"><span class="lineNum">      45</span>              :   {</span>
 <span id="L46"><span class="lineNum">      46</span>              :     static_assert(DstType::VX == DstType::X + 1);</span>
@@ -187,7 +187,7 @@
 <span id="L117"><span class="lineNum">     117</span>              :     // set ax,ay to variance 1.0</span>
 <span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">           1 :     dstCov.D(DstType::AX, one);</span></span>
 <span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">           1 :     dstCov.D(DstType::AY, one);</span></span>
-<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">           1 :   }</span></span>
+<span id="L120"><span class="lineNum">     120</span>              :   }</span>
 <span id="L121"><span class="lineNum">     121</span>              :   else</span>
 <span id="L122"><span class="lineNum">     122</span>              :   {</span>
 <span id="L123"><span class="lineNum">     123</span>              :     static_assert(DstType::VX == DstType::X + 1);</span>

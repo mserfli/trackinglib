@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">86</td>
-            <td class="headerCovTableEntry">86</td>
+            <td class="headerCovTableEntry">82</td>
+            <td class="headerCovTableEntry">82</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 21:07:04</td>
+            <td class="headerValue">2026-07-20 09:33:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">94.3&nbsp;%</td>
@@ -152,7 +152,7 @@
 <span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">         387 :   auto triuR = TriangularMatrix&lt;ValueType_, Size_, false, IsRowMajor_&gt;{std::move(R)};</span></span>
 <span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">         387 :   triuR *= scaleFactor;</span></span>
 <span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">         387 :   return std::make_pair(std::move(Q), std::move(triuR));</span></span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">         387 : }</span></span>
+<span id="L85"><span class="lineNum">      85</span>              : }</span>
 <span id="L86"><span class="lineNum">      86</span>              : </span>
 <span id="L87"><span class="lineNum">      87</span>              : // LLT decomposition</span>
 <span id="L88"><span class="lineNum">      88</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
@@ -186,7 +186,7 @@
 <span id="L116"><span class="lineNum">     116</span>              :         }</span>
 <span id="L117"><span class="lineNum">     117</span>              :       }</span>
 <span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">          94 :       return std::move(L);</span></span>
-<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">          94 :     }</span></span>
+<span id="L119"><span class="lineNum">     119</span>              :     }</span>
 <span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">           3 :     return tl::unexpected&lt;Errors&gt;{Errors::matrix_not_symmetric};</span></span>
 <span id="L121"><span class="lineNum">     121</span>              :   }</span>
 <span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">           6 :   return tl::unexpected&lt;Errors&gt;{Errors::matrix_not_positive_definite};</span></span>
@@ -224,7 +224,7 @@
 <span id="L154"><span class="lineNum">     154</span>              :         }</span>
 <span id="L155"><span class="lineNum">     155</span>              :       }</span>
 <span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">          19 :       return std::make_pair(std::move(L), std::move(D));</span></span>
-<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">          19 :     }</span></span>
+<span id="L157"><span class="lineNum">     157</span>              :     }</span>
 <span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">           6 :     return tl::unexpected&lt;Errors&gt;{Errors::matrix_not_positive_definite};</span></span>
 <span id="L159"><span class="lineNum">     159</span>              :   }</span>
 <span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">           2 :   return tl::unexpected&lt;Errors&gt;{Errors::matrix_not_symmetric};</span></span>
@@ -261,7 +261,7 @@
 <span id="L191"><span class="lineNum">     191</span>              :       }</span>
 <span id="L192"><span class="lineNum">     192</span>              :     }</span>
 <span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">          84 :     return std::make_pair(std::move(U), std::move(D));</span></span>
-<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">          84 :   }</span></span>
+<span id="L194"><span class="lineNum">     194</span>              :   }</span>
 <span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">           2 :   return tl::unexpected&lt;Errors&gt;{Errors::matrix_not_symmetric};</span></span>
 <span id="L196"><span class="lineNum">     196</span>              : }</span>
 <span id="L197"><span class="lineNum">     197</span>              : </span>

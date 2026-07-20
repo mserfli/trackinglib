@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryHi">94.7&nbsp;%</td>
-            <td class="headerCovTableEntry">19</td>
-            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">17</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-19 21:07:04</td>
+            <td class="headerValue">2026-07-20 09:33:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">25.0&nbsp;%</td>
@@ -130,12 +130,12 @@
 <span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">           4 :   explicit RangeObservationModel(const MeasurementVec&amp; vec, const MeasurementCov&amp; cov)</span></span>
 <span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">           4 :       : BaseExtendedObservationModel{vec, cov}</span></span>
 <span id="L62"><span class="lineNum">      62</span>              :   {</span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaUNC tlaBgUNC">           0 :   }</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :   }</span>
 <span id="L64"><span class="lineNum">      64</span>              : </span>
 <span id="L65"><span class="lineNum">      65</span>              :   /// \brief Predict the measurement h(x) = sqrt(x^2+y^2) for the given state</span>
 <span id="L66"><span class="lineNum">      66</span>              :   /// \param[in] state  State vector the measurement is predicted for</span>
 <span id="L67"><span class="lineNum">      67</span>              :   /// \return MeasurementVec  Predicted measurement</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC tlaBgGNC">          11 :   auto predictMeasurement(const StateVec&amp; state) const -&gt; MeasurementVec</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">          11 :   auto predictMeasurement(const StateVec&amp; state) const -&gt; MeasurementVec</span></span>
 <span id="L69"><span class="lineNum">      69</span>              :   {</span>
 <span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">          11 :     const value_type x = state.at_unsafe(StateDef_::X);</span></span>
 <span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">          11 :     const value_type y = state.at_unsafe(StateDef_::Y);</span></span>
@@ -159,7 +159,7 @@
 <span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">           4 :     jacobian.setZeros();</span></span>
 <span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">           4 :     jacobian.at_unsafe(MEAS_RANGE, StateDef_::X) = x / range;</span></span>
 <span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">           4 :     jacobian.at_unsafe(MEAS_RANGE, StateDef_::Y) = y / range;</span></span>
-<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">           4 :   }</span></span>
+<span id="L92"><span class="lineNum">      92</span>              :   }</span>
 <span id="L93"><span class="lineNum">      93</span>              : };</span>
 <span id="L94"><span class="lineNum">      94</span>              : </span>
 <span id="L95"><span class="lineNum">      95</span>              : } // namespace observation</span>
