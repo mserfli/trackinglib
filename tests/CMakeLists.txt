@@ -6,6 +6,7 @@ set(TEST_SOURCES
     math/test_matrix.cpp
     math/test_vector.cpp
     math/test_point2d.cpp
+    math/test_rotation2d.cpp
     math/test_point3d.cpp
     math/test_matrix_column_view.cpp
     math/test_matrix_row_view.cpp
@@ -32,6 +33,7 @@ set(TEST_SOURCES
     observation/test_range_bearing_doppler_observation_model.cpp
     observation/test_bearing_observation_model.cpp
     observation/test_range_observation_model.cpp
+    observation/test_sensor_mounting_pose.cpp
 )
 
 set(ALL_TEST_EXECUTABLES "")

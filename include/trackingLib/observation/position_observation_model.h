@@ -16,6 +16,10 @@ namespace observation
 /// Linear observation model measuring the position components of the state:
 ///     h(x) = [x, y]'
 ///
+/// \note Measurements z and predictions h(x) are expressed in the sensor frame defined by the
+///       mounting pose (see ExtendedObservationModel::getSensorPose()); an identity pose makes the
+///       sensor frame coincide with the tracking frame.
+///
 /// \tparam CovarianceMatrixPolicy_ Policy type that defines the covariance matrix implementation
 /// \tparam StateDef_ State definition structure of the observed motion model (requires X and Y)
 template <typename CovarianceMatrixPolicy_, typename StateDef_>
@@ -58,10 +62,21 @@ public:
   {
   }
 
-  /// \brief Predict the measurement h(x) = [x, y]' for the given state
-  /// \param[in] state  State vector the measurement is predicted for
+  /// \brief Construct a new PositionObservationModel given the measurement, its covariance and a sensor mounting pose
+  /// \param[in] vec  Measurement vector z = [x, y]'
+  /// \param[in] cov  Measurement covariance R
+  /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
+  explicit PositionObservationModel(const MeasurementVec&                                    vec,
+                                    const MeasurementCov&                                    cov,
+                                    const typename BaseExtendedObservationModel::SensorPose& pose)
+      : BaseExtendedObservationModel{vec, cov, pose}
+  {
+  }
+
+  /// \brief Predict the measurement h(x) = [x, y]' for the given sensor-frame state
+  /// \param[in] state  Sensor-frame state vector the measurement is predicted for
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurement(const StateVec& state) const -> MeasurementVec
+  auto predictMeasurementSensorFrame(const StateVec& state) const -> MeasurementVec
   {
     MeasurementVec predicted{};
     predicted.at_unsafe(MEAS_X) = state.at_unsafe(StateDef_::X);
@@ -69,10 +84,14 @@ public:
     return predicted;
   }
 
-  /// \brief Compute the measurement Jacobian H = dh/dx at the given state
-  /// \param[out] jacobian  The measurement Jacobian to be filled
-  /// \param[in]  state     State vector the Jacobian is linearized at (unused, model is linear)
-  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const
+  /// \brief Compute the sensor-frame-local measurement Jacobian at the given sensor-frame state
+  ///
+  /// h(x) is affine in the sensor-frame position, so the local Jacobian is the identity; the base
+  /// class chains the constant mounting rotation onto the tracking-frame state columns afterwards.
+  ///
+  /// \param[out] jacobian  The measurement Jacobian to be filled (sensor-frame-local partials)
+  /// \param[in]  state     Sensor-frame state vector the Jacobian is linearized at (unused, model is linear)
+  void computeJacobianSensorFrame(JacobianMatrix& jacobian, const StateVec& state) const
   {
     static_cast<void>(state);
     jacobian.setZeros();

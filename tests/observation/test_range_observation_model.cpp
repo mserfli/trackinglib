@@ -2,6 +2,7 @@
 
 #include "trackingLib/motion/motion_model_cv.h" // IWYU pragma: keep  (StateDefCV)
 #include "trackingLib/observation/range_observation_model.h"
+#include "trackingLib/observation/sensor_mounting_pose.h"
 #include <cmath>
 
 using Testvalue_type = float64;
@@ -79,4 +80,25 @@ TEST(RangeObservationModel, computeJacobian__NoDivisionByZeroAtOrigin) // NOLINT
       EXPECT_TRUE(std::isfinite(H.at_unsafe(row, col))) << "row " << row << " col " << col;
     }
   }
+}
+
+TEST(RangeObservationModel, predictMeasurement__AppliesSensorMountingPose) // NOLINT
+{
+  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  const auto obs   = RangeModel::FromLists({0}, {{1}}, pose);
+  const auto state = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
+
+  const auto predicted = obs.predictMeasurement(state);
+
+  // p - t = (2, 4), rotated into the sensor frame by -90deg: (4, -2)
+  EXPECT_NEAR(predicted.at_unsafe(RangeModel::MEAS_RANGE), std::sqrt(20.0), 1e-9);
+}
+
+TEST(RangeObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
+{
+  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  const auto obs   = RangeModel::FromLists({0}, {{1}}, pose);
+  const auto state = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+
+  expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }

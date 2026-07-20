@@ -2,7 +2,9 @@
 
 #include "trackingLib/motion/motion_model_ca.h" // IWYU pragma: keep  (StateDefCA)
 #include "trackingLib/motion/motion_model_cv.h" // IWYU pragma: keep  (StateDefCV)
+#include "trackingLib/observation/sensor_mounting_pose.h"
 #include "trackingLib/observation/velocity_observation_model.h"
+#include <cmath>
 
 using Testvalue_type = float64;
 using FullPolicy     = tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>;
@@ -80,4 +82,27 @@ TEST(VelocityObservationModel, computeJacobian__MatchesFiniteDifference) // NOLI
   const auto state = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-9);
+}
+
+TEST(VelocityObservationModel, predictMeasurement__AppliesSensorMountingPose) // NOLINT
+{
+  // static mount: translation has no lever-arm effect, only the yaw rotates velocity
+  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  const auto obs   = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  const auto state = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0}); // {X, VX, Y, VY}
+
+  const auto predicted = obs.predictMeasurement(state);
+
+  // v rotated by -90deg: (2, 1) -> (1, -2)
+  EXPECT_NEAR(predicted.at_unsafe(VelModel::MEAS_VX), 1.0, 1e-9);
+  EXPECT_NEAR(predicted.at_unsafe(VelModel::MEAS_VY), -2.0, 1e-9);
+}
+
+TEST(VelocityObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
+{
+  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  const auto obs   = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  const auto state = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+
+  expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }

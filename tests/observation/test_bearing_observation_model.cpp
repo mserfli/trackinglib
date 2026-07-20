@@ -2,6 +2,7 @@
 
 #include "trackingLib/motion/motion_model_cv.h" // IWYU pragma: keep  (StateDefCV)
 #include "trackingLib/observation/bearing_observation_model.h"
+#include "trackingLib/observation/sensor_mounting_pose.h"
 #include <cmath>
 
 using Testvalue_type = float64;
@@ -93,4 +94,25 @@ TEST(BearingObservationModel, computeInnovation__WrapsBearingAcrossPi) // NOLINT
   const auto innovation = obs.computeInnovation(obs.getVec(), predicted);
 
   EXPECT_NEAR(innovation.at_unsafe(BearingModel::MEAS_BEARING), -0.2, 1e-9);
+}
+
+TEST(BearingObservationModel, predictMeasurement__AppliesSensorMountingPose) // NOLINT
+{
+  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  const auto obs   = BearingModel::FromLists({0}, {{1}}, pose);
+  const auto state = BearingModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
+
+  const auto predicted = obs.predictMeasurement(state);
+
+  // p - t = (2, 4), rotated into the sensor frame by -90deg: (4, -2)
+  EXPECT_NEAR(predicted.at_unsafe(BearingModel::MEAS_BEARING), std::atan2(-2.0, 4.0), 1e-9);
+}
+
+TEST(BearingObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
+{
+  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  const auto obs   = BearingModel::FromLists({0}, {{1}}, pose);
+  const auto state = BearingModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+
+  expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }

@@ -18,6 +18,12 @@ namespace observation
 /// Nonlinear observation model measuring the polar coordinates of the position and the radial
 /// (doppler) velocity:
 ///     h(x) = [sqrt(x^2 + y^2), atan2(y, x), (x*vx + y*vy)/sqrt(x^2 + y^2)]'
+/// evaluated on the sensor-frame position/velocity (identity pose reduces to the tracking-frame
+/// form shown above).
+///
+/// \note Measurements z and predictions h(x) are expressed in the sensor frame defined by the
+///       mounting pose (see ExtendedObservationModel::getSensorPose()); an identity pose makes the
+///       sensor frame coincide with the tracking frame.
 ///
 /// The bearing innovation is wrapped into [-pi, pi] by the shadowed computeInnovation().
 /// If the StateDef provides no velocity, the doppler component is predicted as zero with a zero
@@ -57,9 +63,9 @@ public:
   static constexpr value_type RANGE_SQ_MIN = static_cast<value_type>(1e-6);
 
   // rule of 5 declarations
-  RangeBearingDopplerObservationModel()                                                = default;
-  RangeBearingDopplerObservationModel(const RangeBearingDopplerObservationModel&)      = default;
-  RangeBearingDopplerObservationModel(RangeBearingDopplerObservationModel&&) noexcept  = default;
+  RangeBearingDopplerObservationModel()                                                                  = default;
+  RangeBearingDopplerObservationModel(const RangeBearingDopplerObservationModel&)                        = default;
+  RangeBearingDopplerObservationModel(RangeBearingDopplerObservationModel&&) noexcept                    = default;
   auto operator=(const RangeBearingDopplerObservationModel&) -> RangeBearingDopplerObservationModel&     = default;
   auto operator=(RangeBearingDopplerObservationModel&&) noexcept -> RangeBearingDopplerObservationModel& = default;
   virtual ~RangeBearingDopplerObservationModel() TEST_REMOVE_FINAL                                       = default;
@@ -72,10 +78,21 @@ public:
   {
   }
 
-  /// \brief Predict the measurement h(x) = [range, bearing, doppler]' for the given state
-  /// \param[in] state  State vector the measurement is predicted for
+  /// \brief Construct a new RangeBearingDopplerObservationModel given the measurement, its covariance and a sensor mounting pose
+  /// \param[in] vec  Measurement vector z = [range, bearing, doppler]'
+  /// \param[in] cov  Measurement covariance R
+  /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
+  explicit RangeBearingDopplerObservationModel(const MeasurementVec&                                    vec,
+                                               const MeasurementCov&                                    cov,
+                                               const typename BaseExtendedObservationModel::SensorPose& pose)
+      : BaseExtendedObservationModel{vec, cov, pose}
+  {
+  }
+
+  /// \brief Predict the measurement h(x) = [range, bearing, doppler]' for the given sensor-frame state
+  /// \param[in] state  Sensor-frame state vector the measurement is predicted for
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurement(const StateVec& state) const -> MeasurementVec
+  auto predictMeasurementSensorFrame(const StateVec& state) const -> MeasurementVec
   {
     const value_type x     = state.at_unsafe(StateDef_::X);
     const value_type y     = state.at_unsafe(StateDef_::Y);
@@ -97,11 +114,16 @@ public:
     return predicted;
   }
 
-  /// \brief Compute the measurement Jacobian H = dh/dx at the given state
-  /// \param[out] jacobian  The measurement Jacobian to be filled
-  /// \param[in]  state     State vector the Jacobian is linearized at
+  /// \brief Compute the sensor-frame-local measurement Jacobian at the given sensor-frame state
+  ///
+  /// Fills all local partials (range/bearing/doppler) w.r.t. the sensor-frame position and
+  /// velocity; the base class chains the constant mounting rotation onto the tracking-frame state
+  /// columns afterwards, once per column pair (position, velocity).
+  ///
+  /// \param[out] jacobian  The measurement Jacobian to be filled (sensor-frame-local partials)
+  /// \param[in]  state     Sensor-frame state vector the Jacobian is linearized at
   /// \note The squared range is clamped to RANGE_SQ_MIN to protect against division by zero
-  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const
+  void computeJacobianSensorFrame(JacobianMatrix& jacobian, const StateVec& state) const
   {
     const value_type x       = state.at_unsafe(StateDef_::X);
     const value_type y       = state.at_unsafe(StateDef_::Y);

@@ -2,6 +2,7 @@
 
 #include "trackingLib/motion/motion_model_cv.h" // IWYU pragma: keep  (StateDefCV)
 #include "trackingLib/observation/range_bearing_doppler_observation_model.h"
+#include "trackingLib/observation/sensor_mounting_pose.h"
 #include <cmath>
 
 using Testvalue_type = float64;
@@ -161,4 +162,40 @@ TEST(RangeBearingDopplerObservationModel, computeJacobian__DopplerRowZeroWithout
   {
     EXPECT_NEAR(H.at_unsafe(RbdModelPosOnly::MEAS_DOPPLER, col), 0.0, 1e-12) << "col " << col;
   }
+}
+
+TEST(RangeBearingDopplerObservationModel, predictMeasurement__AppliesSensorMountingPose) // NOLINT
+{
+  // clang-format off
+  const auto pose = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  const auto obs  = RbdModel::FromLists({0, 0, 0}, {
+    {1, 0, 0},
+    {0, 1, 0},
+    {0, 0, 1}
+  }, pose);
+  // clang-format on
+  const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
+
+  const auto predicted = obs.predictMeasurement(state);
+
+  // p - t = (2, 4), rotated into the sensor frame by -90deg: (4, -2); v = (1, 2) rotated: (2, -1)
+  EXPECT_NEAR(predicted.at_unsafe(RbdModel::MEAS_RANGE), std::sqrt(20.0), 1e-9);
+  EXPECT_NEAR(predicted.at_unsafe(RbdModel::MEAS_BEARING), std::atan2(-2.0, 4.0), 1e-9);
+  // doppler = (ps.x*vs.x + ps.y*vs.y) / range = (4*2 + -2*-1) / sqrt(20) = 10 / sqrt(20)
+  EXPECT_NEAR(predicted.at_unsafe(RbdModel::MEAS_DOPPLER), 10.0 / std::sqrt(20.0), 1e-9);
+}
+
+TEST(RangeBearingDopplerObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
+{
+  // clang-format off
+  const auto pose = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  const auto obs  = RbdModel::FromLists({0, 0, 0}, {
+    {1, 0, 0},
+    {0, 1, 0},
+    {0, 0, 1}
+  }, pose);
+  // clang-format on
+  const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
+
+  expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }

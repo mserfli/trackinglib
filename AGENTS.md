@@ -148,6 +148,7 @@ Ask first:
 ## Known limitations
 
 - out-of-sequence-measurements
-- sensor frame vs. modelling frame
 - block update of multiple synchronized sensors without exploding branching
+- motion and observation models just in 2D
+- include nonlinear motion models like CTRV and CTRA
 - `UnscentedKalmanFilter` is a header stub — not implemented.
