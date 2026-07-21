@@ -17,7 +17,16 @@ namespace observation
 ///
 /// Nonlinear observation model measuring the polar coordinates of the position and the radial
 /// (doppler) velocity:
-///     h(x) = [sqrt(x^2 + y^2), atan2(y, x), (x*vx + y*vy)/sqrt(x^2 + y^2)]'
+///     h(x) = [sqrt(x^2 + y^2), atan2(y, x), (x*vxRel + y*vyRel)/sqrt(x^2 + y^2)]'
+/// evaluated on the sensor-frame position/velocity (identity pose reduces to the tracking-frame
+/// form shown above), where (vxRel, vyRel) is the target velocity relative to the sensor: the
+/// sensor's own lever-arm velocity (EgoMotion::getVelocityAt() at the mounting position) is
+/// subtracted before projecting onto the line of sight, so a moving sensor platform does not bias
+/// the doppler measurement.
+///
+/// \note Measurements z and predictions h(x) are expressed in the sensor frame defined by the
+///       mounting pose (see ExtendedObservationModel::getSensorPose()); an identity pose makes the
+///       sensor frame coincide with the tracking frame.
 ///
 /// The bearing innovation is wrapped into [-pi, pi] by the shadowed computeInnovation().
 /// If the StateDef provides no velocity, the doppler component is predicted as zero with a zero
@@ -57,9 +66,9 @@ public:
   static constexpr value_type RANGE_SQ_MIN = static_cast<value_type>(1e-6);
 
   // rule of 5 declarations
-  RangeBearingDopplerObservationModel()                                                = default;
-  RangeBearingDopplerObservationModel(const RangeBearingDopplerObservationModel&)      = default;
-  RangeBearingDopplerObservationModel(RangeBearingDopplerObservationModel&&) noexcept  = default;
+  RangeBearingDopplerObservationModel()                                                                  = default;
+  RangeBearingDopplerObservationModel(const RangeBearingDopplerObservationModel&)                        = default;
+  RangeBearingDopplerObservationModel(RangeBearingDopplerObservationModel&&) noexcept                    = default;
   auto operator=(const RangeBearingDopplerObservationModel&) -> RangeBearingDopplerObservationModel&     = default;
   auto operator=(RangeBearingDopplerObservationModel&&) noexcept -> RangeBearingDopplerObservationModel& = default;
   virtual ~RangeBearingDopplerObservationModel() TEST_REMOVE_FINAL                                       = default;
@@ -72,10 +81,29 @@ public:
   {
   }
 
-  /// \brief Predict the measurement h(x) = [range, bearing, doppler]' for the given state
-  /// \param[in] state  State vector the measurement is predicted for
+  /// \brief Construct a new RangeBearingDopplerObservationModel given the measurement, its covariance and a sensor mounting pose
+  /// \param[in] vec  Measurement vector z = [range, bearing, doppler]'
+  /// \param[in] cov  Measurement covariance R
+  /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
+  explicit RangeBearingDopplerObservationModel(const MeasurementVec&                                    vec,
+                                               const MeasurementCov&                                    cov,
+                                               const typename BaseExtendedObservationModel::SensorPose& pose)
+      : BaseExtendedObservationModel{vec, cov, pose}
+  {
+  }
+
+  /// \brief Predict the measurement h(x) = [range, bearing, doppler]' for the given sensor-frame state
+  ///
+  /// The doppler term uses the target velocity relative to the sensor: the sensor's own
+  /// lever-arm velocity (egoMotion.getVelocityAt() at the mounting position, rotated into the
+  /// sensor frame) is subtracted from the target's sensor-frame velocity before projecting onto
+  /// the line of sight. Without this, a moving sensor platform biases every doppler measurement.
+  ///
+  /// \param[in] state      Sensor-frame state vector the measurement is predicted for
+  /// \param[in] egoMotion  Ego motion of the sensor platform
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurement(const StateVec& state) const -> MeasurementVec
+  auto predictMeasurementSensorFrame(
+      const StateVec& state, const typename BaseExtendedObservationModel::EgoMotionType& egoMotion) const -> MeasurementVec
   {
     const value_type x     = state.at_unsafe(StateDef_::X);
     const value_type y     = state.at_unsafe(StateDef_::Y);
@@ -86,9 +114,15 @@ public:
     predicted.at_unsafe(MEAS_BEARING) = std::atan2(y, x);
     if constexpr (motion::has_velocity_v<StateDef_>)
     {
-      const value_type vx               = state.at_unsafe(StateDef_::VX);
-      const value_type vy               = state.at_unsafe(StateDef_::VY);
-      predicted.at_unsafe(MEAS_DOPPLER) = ((x * vx) + (y * vy)) / range;
+      const value_type vx = state.at_unsafe(StateDef_::VX);
+      const value_type vy = state.at_unsafe(StateDef_::VY);
+
+      const auto       egoVelMount  = egoMotion.getVelocityAt(this->getSensorPose().tx(), this->getSensorPose().ty());
+      const auto       egoVelSensor = this->getSensorPose().directionToSensorFrame(egoVelMount.x(), egoVelMount.y());
+      const value_type vxRel        = vx - egoVelSensor.x();
+      const value_type vyRel        = vy - egoVelSensor.y();
+
+      predicted.at_unsafe(MEAS_DOPPLER) = ((x * vxRel) + (y * vyRel)) / range;
     }
     else
     {
@@ -97,11 +131,19 @@ public:
     return predicted;
   }
 
-  /// \brief Compute the measurement Jacobian H = dh/dx at the given state
-  /// \param[out] jacobian  The measurement Jacobian to be filled
-  /// \param[in]  state     State vector the Jacobian is linearized at
+  /// \brief Compute the sensor-frame-local measurement Jacobian at the given sensor-frame state
+  ///
+  /// Fills all local partials (range/bearing/doppler) w.r.t. the sensor-frame position and
+  /// velocity; the base class chains the constant mounting rotation onto the tracking-frame state
+  /// columns afterwards, once per column pair (position, velocity).
+  ///
+  /// \param[out] jacobian  The measurement Jacobian to be filled (sensor-frame-local partials)
+  /// \param[in]  state     Sensor-frame state vector the Jacobian is linearized at
+  /// \param[in]  egoMotion Ego motion of the sensor platform (see predictMeasurementSensorFrame())
   /// \note The squared range is clamped to RANGE_SQ_MIN to protect against division by zero
-  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const
+  void computeJacobianSensorFrame(JacobianMatrix&                                             jacobian,
+                                  const StateVec&                                             state,
+                                  const typename BaseExtendedObservationModel::EgoMotionType& egoMotion) const
   {
     const value_type x       = state.at_unsafe(StateDef_::X);
     const value_type y       = state.at_unsafe(StateDef_::Y);
@@ -115,12 +157,17 @@ public:
     jacobian.at_unsafe(MEAS_BEARING, StateDef_::Y) = x / rangeSq;
     if constexpr (motion::has_velocity_v<StateDef_>)
     {
-      const value_type vx     = state.at_unsafe(StateDef_::VX);
-      const value_type vy     = state.at_unsafe(StateDef_::VY);
-      const value_type radial = (x * vx) + (y * vy);
+      const value_type vx = state.at_unsafe(StateDef_::VX);
+      const value_type vy = state.at_unsafe(StateDef_::VY);
 
-      jacobian.at_unsafe(MEAS_DOPPLER, StateDef_::X)  = (vx / range) - ((x * radial) / (rangeSq * range));
-      jacobian.at_unsafe(MEAS_DOPPLER, StateDef_::Y)  = (vy / range) - ((y * radial) / (rangeSq * range));
+      const auto       egoVelMount  = egoMotion.getVelocityAt(this->getSensorPose().tx(), this->getSensorPose().ty());
+      const auto       egoVelSensor = this->getSensorPose().directionToSensorFrame(egoVelMount.x(), egoVelMount.y());
+      const value_type vxRel        = vx - egoVelSensor.x();
+      const value_type vyRel        = vy - egoVelSensor.y();
+      const value_type radial       = (x * vxRel) + (y * vyRel);
+
+      jacobian.at_unsafe(MEAS_DOPPLER, StateDef_::X)  = (vxRel / range) - ((x * radial) / (rangeSq * range));
+      jacobian.at_unsafe(MEAS_DOPPLER, StateDef_::Y)  = (vyRel / range) - ((y * radial) / (rangeSq * range));
       jacobian.at_unsafe(MEAS_DOPPLER, StateDef_::VX) = x / range;
       jacobian.at_unsafe(MEAS_DOPPLER, StateDef_::VY) = y / range;
     }

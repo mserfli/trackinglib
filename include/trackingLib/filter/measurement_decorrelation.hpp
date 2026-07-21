@@ -40,11 +40,10 @@ namespace detail
 /// \return true if decorrelation succeeded, false if the update must be skipped
 ///         (R could not be decomposed)
 template <typename CovarianceMatrixPolicy_, sint32 DimX_, sint32 DimZ_>
-[[nodiscard]] inline auto decorrelateMeasurement(
-    math::Vector<typename CovarianceMatrixPolicy_::value_type, DimZ_>&           vec,
-    math::Matrix<typename CovarianceMatrixPolicy_::value_type, DimZ_, DimX_>&    H,
-    math::DiagonalMatrix<typename CovarianceMatrixPolicy_::value_type, DimZ_>&   rDiag,
-    const typename CovarianceMatrixPolicy_::template Instantiate<DimZ_>&         R) -> bool
+[[nodiscard]] inline auto decorrelateMeasurement(math::Vector<typename CovarianceMatrixPolicy_::value_type, DimZ_>&         vec,
+                                                 math::Matrix<typename CovarianceMatrixPolicy_::value_type, DimZ_, DimX_>&  H,
+                                                 math::DiagonalMatrix<typename CovarianceMatrixPolicy_::value_type, DimZ_>& rDiag,
+                                                 const typename CovarianceMatrixPolicy_::template Instantiate<DimZ_>& R) -> bool
 {
   using value_type = typename CovarianceMatrixPolicy_::value_type;
 

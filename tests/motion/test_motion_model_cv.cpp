@@ -5,6 +5,7 @@
 #include "trackingLib/math/linalg/matrix_io.h"    // for operator<<
 #include "trackingLib/motion/motion_model_ca.hpp" // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
+#include <cmath>                                  // for std::isfinite
 #include <type_traits>                            // for std::is_same_v
 
 using Testvalue_type = float32;
@@ -141,22 +142,14 @@ struct TestPredictCV
 
     init(vec, expVec, cov, expCov, filter);
     auto tol{MM::StateMatrix::Ones()};
+    tol *= tolerance(filter);
     if constexpr (std::is_same_v<FilterTypeInst,
                                  tracking::filter::InformationFilter<
                                      tracking::math::FullCovarianceMatrixPolicy<typename CovarianceMatrixPolicy_::value_type>>>)
     {
-      // InformationFilter with full covariance does a two step approach to apply egomotion compensation
-      // causing larger differences compared to the UDU one-step approach due to correlations being ignored
-      tol *= 3 * tolerance(filter);
-      tol.at_unsafe(0, 2) = 0.000101;
-      tol.at_unsafe(2, 0) = tol.at_unsafe(0, 2);
-      tol.at_unsafe(2, 2) = 0.002001;
-      tol.at_unsafe(2, 3) = 5e-5;
-      tol.at_unsafe(3, 2) = tol.at_unsafe(2, 3);
-    }
-    else
-    {
-      tol *= tolerance(filter);
+      // Woodbury-via-QR reformulation introduces slightly more floating-point noise than the
+      // UDU one-step path; needs a small uniform bump over the shared tolerance() baseline.
+      tol *= 2;
     }
 
     // instantiate regular MM (no mocking)
@@ -227,6 +220,159 @@ TEST(MotionModelCV, predict_factoredCov_informationFilter_egoMotion) // NOLINT
                 tracking::filter::InformationFilter>::run_with_ego_motion_compensation();
 }
 
+TEST(MotionModelCV, predict_fullCov_informationFilter_singularPe_updatesY) // NOLINT
+{
+  // Reproduces the InformationFilter/full-covariance ego-motion-compensation bug: with
+  // w == 0, calcLinearMotionJacobian() produces a J whose rows 1/2 (dy, dpsi) are scalar
+  // multiples of each other, so Pe's bottom-right 2x2 block is an exact rank-1 outer
+  // product; with dt/v/sw chosen so the block's entries are exactly representable
+  // (0.25/0.25/0.25), decomposeLLT()'s Cholesky pivot at (2,2) becomes exactly 0.0,
+  // reproducing the silent-NaN inverse() described in the bug report (verified standalone:
+  // Pe.inverse() currently reports has_value()==true with an all-NaN/Inf payload). The
+  // full-covariance branch must still update Y with a finite result instead of silently
+  // leaving it stale or NaN-poisoned.
+  using CovPolicy      = tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>;
+  using MM             = tracking::motion::MotionModelCV<CovPolicy>;
+  using EgoMotionInst  = tracking::env::EgoMotion<CovPolicy>;
+  using FilterTypeInst = tracking::filter::InformationFilter<CovPolicy>;
+
+  const auto dt = static_cast<Testvalue_type>(0.5);
+  // clang-format off
+  const auto motion   = typename EgoMotionInst::InertialMotion{
+      .v = 4.0, .a = 0.0, .w = 0.0,
+      .sv = 0.1, .sa = 0.1, .sw = 1.0};
+  const auto geometry = typename EgoMotionInst::Geometry{
+      .width = 1.8, .length = 4.5, .height = 1.5,
+      .distCog2Ego = 1.0, .distFrontAxle2Ego = 2.5, .distFrontAxle2RearAxle = 2.5};
+  const auto egoMotion = EgoMotionInst(motion, geometry, dt);
+  // clang-format on
+
+  ASSERT_FALSE(egoMotion.getDisplacementCog().vec.isZeros());
+  // Sanity-check Pe is (numerically) singular by hand, independent of decomposeLLT()/inverse()'s
+  // own correctness (that's covered separately by the decomposeLLT/CovarianceMatrixFull tests) --
+  // a 3x3 determinant computed directly from Pe's entries.
+  const auto& pe  = egoMotion.getDisplacementCog().cov;
+  const auto  det = pe.at_unsafe(0, 0) * (pe.at_unsafe(1, 1) * pe.at_unsafe(2, 2) - pe.at_unsafe(1, 2) * pe.at_unsafe(2, 1)) -
+                    pe.at_unsafe(0, 1) * (pe.at_unsafe(1, 0) * pe.at_unsafe(2, 2) - pe.at_unsafe(1, 2) * pe.at_unsafe(2, 0)) +
+                    pe.at_unsafe(0, 2) * (pe.at_unsafe(1, 0) * pe.at_unsafe(2, 1) - pe.at_unsafe(1, 1) * pe.at_unsafe(2, 0));
+  ASSERT_NEAR(det, 0.0, 1e-6);
+
+  FilterTypeInst filter{};
+
+  // clang-format off
+  auto vec = MM::StateVecFromList({10, 2, 0, 0});
+  auto cov = MM::StateCovFromList({
+    {5, 0, 0, 0},
+    {0, 1, 0, 0},
+    {0, 0, 1, 0},
+    {0, 0, 0, 0.1}
+  });
+  // clang-format on
+
+  // InformationFilter convention: transform state/covariance into information space
+  cov = cov.inverse().value();
+  vec = static_cast<typename MM::StateVec>(cov() * vec);
+
+  MM        mm{vec, cov};
+  const auto YBefore = mm._cov;
+
+  // call UUT
+  mm.predict(dt, filter, egoMotion);
+
+  auto changed  = false;
+  auto allFinite = true;
+  for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
+  {
+    for (auto col = 0; col < MM::NUM_STATE_VARIABLES; ++col)
+    {
+      if (std::abs(mm._cov.at_unsafe(row, col) - YBefore.at_unsafe(row, col)) > static_cast<Testvalue_type>(1e-9))
+      {
+        changed = true;
+      }
+      if (!std::isfinite(mm._cov.at_unsafe(row, col)))
+      {
+        allFinite = false;
+      }
+    }
+  }
+  EXPECT_TRUE(changed) << "Y is stale after predict() despite non-zero ego motion with a singular Pe";
+  EXPECT_TRUE(allFinite) << "Y is NaN/Inf-poisoned after predict() due to the singular Pe inversion";
+}
+
+TEST(MotionModelCV, predict_informationFilter_singularPe_fullMatchesFactored) // NOLINT
+{
+  // Regression test: Full and Factored/UDU InformationFilter must stay in agreement across
+  // several prediction steps of non-zero ego motion with an exactly singular Pe.
+  using CovPolicyFull     = tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>;
+  using CovPolicyFactored = tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>;
+  using MMFull            = tracking::motion::MotionModelCV<CovPolicyFull>;
+  using MMFactored        = tracking::motion::MotionModelCV<CovPolicyFactored>;
+  using EgoMotionInst     = tracking::env::EgoMotion<CovPolicyFull>;
+
+  const auto dt = static_cast<Testvalue_type>(0.5);
+  // clang-format off
+  const auto motion   = typename EgoMotionInst::InertialMotion{
+      .v = 4.0, .a = 0.0, .w = 0.0,
+      .sv = 0.1, .sa = 0.1, .sw = 1.0};
+  const auto geometry = typename EgoMotionInst::Geometry{
+      .width = 1.8, .length = 4.5, .height = 1.5,
+      .distCog2Ego = 1.0, .distFrontAxle2Ego = 2.5, .distFrontAxle2RearAxle = 2.5};
+  const auto egoMotionFull = EgoMotionInst(motion, geometry, dt);
+
+  using EgoMotionInstFactored = tracking::env::EgoMotion<CovPolicyFactored>;
+  const auto motionFactored   = typename EgoMotionInstFactored::InertialMotion{
+      .v = 4.0, .a = 0.0, .w = 0.0,
+      .sv = 0.1, .sa = 0.1, .sw = 1.0};
+  const auto geometryFactored = typename EgoMotionInstFactored::Geometry{
+      .width = 1.8, .length = 4.5, .height = 1.5,
+      .distCog2Ego = 1.0, .distFrontAxle2Ego = 2.5, .distFrontAxle2RearAxle = 2.5};
+  const auto egoMotionFactored = EgoMotionInstFactored(motionFactored, geometryFactored, dt);
+  // clang-format on
+
+  tracking::filter::InformationFilter<CovPolicyFull>     filterFull{};
+  tracking::filter::InformationFilter<CovPolicyFactored> filterFactored{};
+
+  // clang-format off
+  auto vecFull = MMFull::StateVecFromList({10, 2, 0, 0});
+  auto covFull = MMFull::StateCovFromList({
+    {5, 0, 0, 0},
+    {0, 1, 0, 0},
+    {0, 0, 1, 0},
+    {0, 0, 0, 0.1}
+  });
+  // clang-format on
+  auto vecFactored = vecFull;
+  auto covFactored = MMFactored::StateCovFromList({
+      {5, 0, 0, 0},
+      {0, 1, 0, 0},
+      {0, 0, 1, 0},
+      {0, 0, 0, 0.1},
+  });
+
+  covFull     = covFull.inverse().value();
+  vecFull     = static_cast<typename MMFull::StateVec>(covFull() * vecFull);
+  covFactored = covFactored.inverse().value();
+  vecFactored = static_cast<typename MMFactored::StateVec>(covFactored() * vecFactored);
+
+  MMFull     mmFull{vecFull, covFull};
+  MMFactored mmFactored{vecFactored, covFactored};
+
+  const auto steps = 5;
+  const auto tol    = static_cast<Testvalue_type>(4.5e-4);
+  for (auto i = 0; i < steps; ++i)
+  {
+    mmFull.predict(dt, filterFull, egoMotionFull);
+    mmFactored.predict(dt, filterFactored, egoMotionFactored);
+  }
+
+  for (auto row = 0; row < MMFull::NUM_STATE_VARIABLES; ++row)
+  {
+    for (auto col = 0; col < MMFull::NUM_STATE_VARIABLES; ++col)
+    {
+      EXPECT_NEAR(mmFull._cov.at_unsafe(row, col), mmFactored._cov().at_unsafe(row, col), tol);
+    }
+  }
+}
 
 TEST(MotionModelCV, convertCA_fullCov) // NOLINT
 {

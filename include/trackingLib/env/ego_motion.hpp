@@ -8,8 +8,9 @@
 #include "math/linalg/covariance_matrix_factored.hpp"                // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_full.hpp"                    // IWYU pragma: keep
 #include "math/linalg/matrix.hpp"                                    // IWYU pragma: keep
-#include "math/linalg/square_matrix.hpp"                             // IWYU pragma: keep
-#include "math/linalg/vector.hpp"                                    // IWYU pragma: keep
+#include "math/linalg/rotation2d.h"
+#include "math/linalg/square_matrix.hpp" // IWYU pragma: keep
+#include "math/linalg/vector.hpp"        // IWYU pragma: keep
 #include <cmath>
 #include <limits>
 
@@ -47,8 +48,24 @@ void EgoMotion<CovarianceMatrixPolicy_>::compensateDirection(value_type&      dx
                                                              const value_type dyOldEgo) const
 {
   // rotate a vector (velocity or acceleration) according to deltaPsi
-  dxNewEgo = (_displacementCog.cosDeltaPsi * dxOldEgo) + (_displacementCog.sinDeltaPsi * dyOldEgo);
-  dyNewEgo = -(_displacementCog.sinDeltaPsi * dxOldEgo) + (_displacementCog.cosDeltaPsi * dyOldEgo);
+  const auto rotation = math::Rotation2D<value_type>::FromCosSin(_displacementCog.cosDeltaPsi, _displacementCog.sinDeltaPsi);
+  const auto rotated  = rotation.applyTranspose(dxOldEgo, dyOldEgo);
+  dxNewEgo            = rotated.x();
+  dyNewEgo            = rotated.y();
+}
+
+template <typename CovarianceMatrixPolicy_>
+auto EgoMotion<CovarianceMatrixPolicy_>::getVelocityAt(value_type mountX, value_type mountY) const -> math::Point2d<value_type>
+{
+  // r = vector from COG to the queried point, in the ego reference frame
+  const value_type rx = mountX - _geometry.distCog2Ego;
+  const value_type ry = mountY;
+
+  // v_point = (v, 0) + w x r = (v - w*ry, w*rx)
+  const value_type vx = _motion.v - (_motion.w * ry);
+  const value_type vy = _motion.w * rx;
+
+  return Point2d::FromValues(vx, vy);
 }
 
 template <typename CovarianceMatrixPolicy_>

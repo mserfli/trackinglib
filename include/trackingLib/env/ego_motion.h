@@ -184,6 +184,17 @@ public:
   /// \return Constant reference to motion parameters structure
   auto getMotion() const -> const InertialMotion& { return _motion; }
 
+  /// \brief Compute the tracking-frame velocity of a point rigidly attached to the ego vehicle
+  ///
+  /// Combines the COG forward speed with the lever-arm contribution of the yaw rate:
+  /// v_point = (v, 0) + w x r, where r is the vector from the COG to the queried point
+  /// (mountX, mountY) given in the ego reference frame.
+  ///
+  /// \param[in] mountX X-coordinate of the point in the ego reference frame [m]
+  /// \param[in] mountY Y-coordinate of the point in the ego reference frame [m]
+  /// \return Point2d Velocity of that point, expressed in the tracking frame [m/s]
+  [[nodiscard]] auto getVelocityAt(value_type mountX, value_type mountY) const -> math::Point2d<value_type>;
+
   // clang-format off
   TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation

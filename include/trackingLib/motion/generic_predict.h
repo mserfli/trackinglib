@@ -15,6 +15,23 @@ namespace generic
 {
 
 /// \brief Base class to extend any motion model with a generic prediction functionality using the CRTP pattern
+///
+/// Mixed into the motion model via CRTP inheritance (see ExtendedMotionModel in imotion_model.h),
+/// so a concrete motion model *is-a* Predict<Self, Policy>. This is required because
+/// IMotionModel::predict() is a pure virtual method with a fixed (non-template) signature: only a
+/// type that actually inherits Predict can override that virtual and forward to it. Because run()
+/// is reached as an ordinary inherited instance method, it is non-static, and internally does
+/// `static_cast<MotionModel_&>(*this)` to reach sibling state (e.g. getCovForInternalUse(), defined
+/// on the StateMem base) that Predict itself does not have direct access to.
+///
+/// Contrast with generic::Update (generic_update.h): Update's run() is inherently a template
+/// (variadic observation models, plus an UpdateMode_ tag), and C++ does not allow virtual template
+/// member functions. With no virtual-interface pressure forcing an inheritance relationship,
+/// Update is instead implemented as a stateless static utility, invoked by qualified name with the
+/// motion model passed in explicitly rather than reached via CRTP self-cast. The static-vs-instance
+/// difference between the two files is a consequence of this virtual-dispatch requirement, not an
+/// inconsistency to reconcile.
+///
 /// \tparam MotionModel_             The underlying MotionModel
 /// \tparam CovarianceMatrixPolicy_  Policy type that defines the covariance matrix implementation
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>

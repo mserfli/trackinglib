@@ -157,22 +157,7 @@ struct TestPredictCA
 
     init(vec, expVec, cov, expCov, filter);
     auto tol{MM::StateMatrix::Ones()};
-    if constexpr (std::is_same_v<FilterTypeInst,
-                                 tracking::filter::InformationFilter<
-                                     tracking::math::FullCovarianceMatrixPolicy<typename CovarianceMatrixPolicy_::value_type>>>)
-    {
-      // InformationFilter with full covariance does a two step approach to apply egomotion compensation
-      // causing larger differences compared to the UDU one-step approach due to correlations being ignored
-      tol *= 4.5e-4;
-      tol.at_unsafe(3, 3) = 0.002;
-      tol.at_unsafe(3, 4) = 0.0012;
-      tol.at_unsafe(4, 3) = tol.at_unsafe(3, 4);
-      tol.at_unsafe(4, 4) = 0.00063;
-    }
-    else
-    {
-      tol *= tolerance(filter);
-    }
+    tol *= tolerance(filter);
 
     // instantiate regular MM (no mocking)
     MM mm{vec, cov};
