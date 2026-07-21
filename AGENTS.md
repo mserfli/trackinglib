@@ -151,5 +151,24 @@ Ask first:
 - out-of-sequence-measurements
 - block update of multiple synchronized sensors without exploding branching
 - motion and observation models just in 2D
-- include nonlinear motion models like CTRV and CTRA
-- `UnscentedKalmanFilter` is a header stub — not implemented.
+- No maneuvering/turning target motion model: `MotionModelCV`/`MotionModelCA` are both
+  Cartesian-decoupled (no heading/turn-rate state), so neither can represent a curvature reversal
+  — demonstrated by the documented NEES spike at each self-intersection in
+  `examples/single_nonlinear_figure8_object_tracking.cpp`. CTRV/CTRA would fix this directly, CA
+  would only partially (untested on curved trajectories; still no jerk mechanism). See
+  `plans/recent/figure-8-exploration-ideas.md` for the full analysis.
+- CTRV/CTRA target motion models not implemented. Architecture is largely ready (`computeA`/
+  `applyProcessModel` are already non-static, and `env/ego_motion.h(pp)` has ready-to-adapt
+  circular-arc kinematics/Jacobian math) except one contract gap: `computeQ`/`computeG` are
+  static-asserted `static` in `contracts/motion_model_intf.h`, which blocks the state-dependent
+  (heading-projected) process noise a turning model naturally needs.
+- `UnscentedKalmanFilter` is a header stub — not implemented. Non-trivial because the current
+  motion-model contract is EKF-shaped by construction (`computeA`/Jacobian is a required method
+  that UKF never uses); needs either a parallel UKF-specific contract or a new
+  `generic::PredictUnscented` path. Only pays off once paired with a genuinely nonlinear model
+  (i.e. sequence after CTRV/CTRA, not before).
+- No IMM (Interacting Multiple Model) wrapper, and no precedent for one in the repo. Feasible
+  without violating the no-dynamic-allocation constraint (a compile-time tuple-of-models fits
+  better than runtime type erasure), and `state_vec_converter.h`/`state_cov_converter.h` already
+  give pairwise CV↔CA conversion as a starting primitive — but IMM needs N-way probability-weighted
+  mixing, a genuine generalization, not reuse. Only useful once a turning model exists to mix in.

@@ -195,8 +195,14 @@ See the [update sequence diagram](doc/info_filter_update.md) for the detailed fl
 
 ## Planned Features
 
-### UKF and non-linear Motion Models
-Future plans include adding support for Unscented Kalman Filters and extending the currently linear Motion Models with non-linear models like CTRV and CTRA.
+### Non-linear Motion Models (CTRV/CTRA)
+Future plans include extending the currently linear Motion Models with non-linear models like CTRV and CTRA.
+
+### Unscented Kalman Filter (UKF)
+Future plans include adding support for Unscented Kalman Filters, alongside the existing EKF and Information Filter.
+
+### Interacting Multiple Model (IMM) filtering
+Future plans include an IMM wrapper to blend multiple motion models (e.g. straight-line and turning) for objects that switch between driving behaviors.
 
 ### Examples using the library based on 3D simulation frameworks
 Future plans include the usage of the library in one of the famous 3D simulation robotics/autononmous driving frameworks
