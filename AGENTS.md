@@ -108,6 +108,7 @@ folder summary above.
 - **Self-contained headers**: every `.h`/`.hpp` must compile standalone (includable with no
   prerequisite includes) — enforced by the `header_tests` CMake target (see Commands above), not
   just a style preference.
+- **Prefer rg (ripgrep)** over grep for searches — it's installed in this environment.
 - **Symbol lookup**: `.repo.tags` at the repo root is a ctags-style index. Never read it directly
   (it's large) — grep/ripgrep it for symbol locations first to save context.
 - **Plan location**: all plans created in planning mode shall be stored in the folder  plans/recent
