@@ -3,7 +3,7 @@
 #include "trackingLib/filter/information_filter.hpp"                         // IWYU pragma: keep
 #include "trackingLib/filter/kalman_filter.hpp"                              // IWYU pragma: keep
 #include "trackingLib/math/linalg/matrix_io.h"                               // IWYU pragma: keep
-#include "trackingLib/motion/motion_model_cv.hpp"                            // IWYU pragma: keep
+#include "trackingLib/motion/motion_model_ca.hpp"                            // IWYU pragma: keep
 #include "trackingLib/observation/range_bearing_doppler_observation_model.h" // IWYU pragma: keep
 #include "trackingLib/observation/sensor_mounting_pose.h"                    // IWYU pragma: keep
 
@@ -20,15 +20,17 @@ int main(int argc, char** argv)
   // Optional structured CSV export (one row per step) for offline visualization; see examples/viz.
   // Console output above is unaffected. Path defaults so a plain `./single_nonlinear_figure8_object_tracking`
   // run behaves exactly as before. Same column contract as single_nonlinear_object_tracking.cpp, so
-  // examples/viz/render.py handles this CSV unchanged.
+  // examples/viz/render.py handles this CSV unchanged; a leading `# motion_model=...` comment line
+  // tells the renderer which motion model produced it, since that's otherwise not derivable from the columns.
   const std::string csvPath = (argc > 1) ? argv[1] : "single_nonlinear_figure8_track.csv";
   std::ofstream     csv(csvPath);
+  csv << "# motion_model=CA\n";
   csv << "step,t,gt_x,gt_y,est_x,est_y,est_vx,est_vy,P_xx,P_xy,P_yy,use_kalman,"
       << "ego_world_x,ego_world_y,ego_world_psi,target_world_x,target_world_y," << "z_range,z_bearing,z_doppler\n";
 
-  // Define a MotionModelCV with full covariance matrix
-  // State: [X, VX, Y, VY] - 4D state for constant velocity model
-  using MM = motion::MotionModelCV<math::FullCovarianceMatrixPolicy<float64>>;
+  // Define a MotionModelCA with UDU-factored covariance matrix
+  // State: [X, VX, AX, Y, VY, AY] - 6D state for constant acceleration (DWPA) model
+  using MM = motion::MotionModelCA<math::FactoredCovarianceMatrixPolicy<float64>>;
 
   // type aliases
   using value_type            = typename MM::value_type;
@@ -38,24 +40,27 @@ int main(int argc, char** argv)
 
   // Nonlinear observation model measuring polar range/bearing/doppler, e.g. a radar
   using RangeBearingDopplerType =
-      observation::RangeBearingDopplerObservationModel<math::FullCovarianceMatrixPolicy<float64>, motion::StateDefCV>;
+      observation::RangeBearingDopplerObservationModel<math::FactoredCovarianceMatrixPolicy<float64>, motion::StateDefCA>;
 
   InformationFilterType informationFilter{};
   KalmanFilterType      kalmanFilter{};
 
   // Initialize the object state: the figure-8 is constructed (see below) so the target sits exactly
   // at its self-intersection point at t=0, i.e. dead ahead at the pattern's center - so the initial
-  // guess is that center. The velocity is unknown at initialization - a single radar detection gives
-  // no velocity information - so it is set to 0 rather than the (nonzero) true initial velocity.
+  // guess is that center. Velocity and acceleration are unknown at initialization - a single radar
+  // detection gives no velocity/acceleration information - so both are set to 0 rather than the
+  // (nonzero) true initial values.
   // clang-format off
   auto motionModel = MM::FromLists(
-    {90.0, 0.0, 0.0, 0.0}, // State vector: [X, VX, Y, VY]
+    {90.0, 0.0, 0.0, 0.0, 0.0, 0.0}, // State vector: [X, VX, AX, Y, VY, AY]
     {
-      {1e-9, 0.0,  0.0,  0.0 },  // Information matrix Y, diagonal in state order [X, VX, Y, VY]:
-      {0.0,  1e-5, 0.0,  0.0 },  //   X, Y  positions -> ~no prior information (1e-9, near-singular).
-      {0.0,  0.0,  1e-9, 0.0 },  //   VX, VY velocities -> weak prior (1e-5, std ~300 m/s): the initial
-      {0.0,  0.0,  0.0,  1e-5}   //   velocity is unknown but bounded to a plausible range, which bounds
-  });                           //   the startup transient symmetrically on both axes without seeding a value.
+      {1e-9, 0.0,  0.0,  0.0,  0.0,  0.0 },  // Information matrix Y, diagonal in state order
+      {0.0,  1e-5, 0.0,  0.0,  0.0,  0.0 },  //   [X, VX, AX, Y, VY, AY]:
+      {0.0,  0.0,  1e-5, 0.0,  0.0,  0.0 },  //   X, Y   positions     -> ~no prior information (1e-9, near-singular).
+      {0.0,  0.0,  0.0,  1e-9, 0.0,  0.0 },  //   VX, VY velocities    -> weak prior (1e-5, std ~300 m/s).
+      {0.0,  0.0,  0.0,  0.0,  1e-5, 0.0 },  //   AX, AY accelerations -> weak prior (1e-5, std ~300 m/s^2): unknown but
+      {0.0,  0.0,  0.0,  0.0,  0.0,  1e-5}   //   bounded to a plausible range, same reasoning as velocity above.
+  });                                       //   Symmetric across axes so the startup transient isn't biased either way.
 
   // Ego vehicle drives the same shape of gentle left turn as the other nonlinear example, just
   // slower - a slow-moving ego isolates the target's own maneuver as the dominant source of
@@ -109,9 +114,10 @@ int main(int argc, char** argv)
   // sensor's boresight - stressing bearing and doppler - rather than mostly just receding/
   // approaching in range the way a single-direction ellipse would. The pattern's curvature also
   // reverses sign twice per loop (at the self-intersection, t = k * figure8Period/2), which
-  // continually re-excites the CV motion model's mismatch instead of letting it settle into a
-  // steady lag the way one constant-direction turn would - the reason a figure-8 is the harder of
-  // the two shapes for this estimation problem.
+  // continually re-excites a mismatched motion model instead of letting it settle into a steady lag
+  // the way one constant-direction turn would - the reason a figure-8 is the harder of the two
+  // shapes for this estimation problem. The CA model used here can represent the steady curvature
+  // between reversals but, lacking a jerk term, still lags briefly at the reversal itself.
   const value_type figure8CenterX          = static_cast<value_type>(90.0);
   const value_type figure8CenterY          = static_cast<value_type>(0.0);
   const value_type figure8RangeAmplitude   = static_cast<value_type>(10.0); // Rx: range sway is +-Rx/2
@@ -153,7 +159,8 @@ int main(int argc, char** argv)
             << std::endl;
   std::cout << "Filter: InformationFilter (suitable for high initial uncertainty)" << std::endl;
   std::cout << "Filter: KalmanFilter (EKF, after uncertainty has been initialized)" << std::endl;
-  std::cout << "Motion Model: Constant Velocity (CV) - deliberately mismatched against the maneuvering target" << std::endl;
+  std::cout << "Motion Model: Constant Acceleration (CA/DWPA) - can represent steady curvature, not its reversal"
+            << std::endl;
   std::cout << "Measurements: noisy (range, bearing, doppler), std=(" << rangeStd << " m, " << (bearingStd * 180.0 / M_PI)
             << " deg, " << dopplerStd << " m/s)" << std::endl;
   std::cout << std::endl;
@@ -161,6 +168,7 @@ int main(int argc, char** argv)
   std::cout << "Initial State:" << std::endl;
   std::cout << "  Position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << std::endl;
   std::cout << "  Velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << std::endl;
+  std::cout << "  Acceleration: (" << motionModel.getAx() << ", " << motionModel.getAy() << ")" << std::endl;
   std::cout << "  Initial Information Matrix (Y):" << std::endl;
   std::cout << static_cast<const MM&>(motionModel).getCov()() << std::endl;
   std::cout << std::endl;
@@ -183,8 +191,8 @@ int main(int argc, char** argv)
     value_type evx = motionModel.getVx();
     value_type evy = motionModel.getVy();
     value_type pXX = static_cast<const MM&>(motionModel).getCov()()(0, 0).value();
-    value_type pXY = static_cast<const MM&>(motionModel).getCov()()(0, 2).value();
-    value_type pYY = static_cast<const MM&>(motionModel).getCov()()(2, 2).value();
+    value_type pXY = static_cast<const MM&>(motionModel).getCov()()(0, motion::StateDefCA::Y).value();
+    value_type pYY = static_cast<const MM&>(motionModel).getCov()()(motion::StateDefCA::Y, motion::StateDefCA::Y).value();
     if (!useKalman)
     {
       MM tmp = static_cast<const MM&>(motionModel);
@@ -196,8 +204,8 @@ int main(int argc, char** argv)
       if (tmp.invertCov().has_value())
       {
         pXX = static_cast<const MM&>(tmp).getCov()()(0, 0).value();
-        pXY = static_cast<const MM&>(tmp).getCov()()(0, 2).value();
-        pYY = static_cast<const MM&>(tmp).getCov()()(2, 2).value();
+        pXY = static_cast<const MM&>(tmp).getCov()()(0, motion::StateDefCA::Y).value();
+        pYY = static_cast<const MM&>(tmp).getCov()()(motion::StateDefCA::Y, motion::StateDefCA::Y).value();
       }
     }
     return std::make_tuple(ex, ey, evx, evy, pXX, pXY, pYY);
@@ -350,6 +358,7 @@ int main(int argc, char** argv)
   std::cout << "Simulation completed successfully!" << std::endl;
   std::cout << "Final position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << std::endl;
   std::cout << "Final velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << std::endl;
+  std::cout << "Final acceleration: (" << motionModel.getAx() << ", " << motionModel.getAy() << ")" << std::endl;
 
   return 0;
 }

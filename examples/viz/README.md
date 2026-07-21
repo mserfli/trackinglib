@@ -5,10 +5,12 @@
 per simulation step) alongside their normal console output. `render.py` reads that CSV and renders
 an animated GIF via a single generic renderer that adapts its panels to the CSV columns present: a
 tracking-frame panel (ground truth, noisy measurements, the filter's estimated track, and a
-1-sigma covariance ellipse) and a position NEES panel are always shown; the nonlinear examples
+3-sigma covariance ellipse) and a position NEES panel are always shown; the nonlinear examples
 additionally get a world-frame panel with the ego vehicle's CTRV arc and the target's ground truth.
 The figure-8 example shares the exact same CSV column contract as the nonlinear example (just a
-different target trajectory and slower ego), so it needs no renderer changes.
+different target trajectory, slower ego, and a constant-acceleration target motion model instead
+of constant-velocity), so it needs no renderer changes beyond reading the target motion model from
+the CSV itself (see the CSV contract below).
 
 This tooling is Python-only and lives entirely outside the C++ build — the library and examples
 stay header-only / AUTOSAR-constrained with no new C++ dependency.
@@ -43,6 +45,10 @@ python3 ../examples/viz/render.py single_linear_track.csv --show
 ```
 
 ## CSV contract
+
+Every CSV starts with a `# motion_model=<CV|CA>` comment line naming the target motion model that
+produced it — the only way the generic renderer can label the world-frame target legend correctly,
+since that's not otherwise derivable from the columns below.
 
 Linear: `step,t,gt_x,gt_y,z_x,z_y,est_x,est_y,est_vx,est_vy,P_xx,P_xy,P_yy,use_kalman`
 

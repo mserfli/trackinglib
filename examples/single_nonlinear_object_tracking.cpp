@@ -22,6 +22,7 @@ int main(int argc, char** argv)
   // run behaves exactly as before.
   const std::string csvPath = (argc > 1) ? argv[1] : "single_nonlinear_track.csv";
   std::ofstream     csv(csvPath);
+  csv << "# motion_model=CV\n";
   csv << "step,t,gt_x,gt_y,est_x,est_y,est_vx,est_vy,P_xx,P_xy,P_yy,use_kalman,"
       << "ego_world_x,ego_world_y,ego_world_psi,target_world_x,target_world_y," << "z_range,z_bearing,z_doppler\n";
 

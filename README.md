@@ -178,7 +178,8 @@ range/bearing/doppler measurements, EKF-linearized at each step:
 **Single nonlinear figure-8 object tracking** ([source](examples/single_nonlinear_figure8_object_tracking.cpp)) — a
 slow-moving ego vehicle (CTRV arc) tracking a target driving a figure-8 (Lemniscate of Gerono) via
 the same radar model; the target's repeatedly reversing curvature is a harder process-model
-mismatch for the constant-velocity motion model than the crossing-object scenario above:
+mismatch for the constant-acceleration (CA/DWPA) motion model than the crossing-object scenario
+above:
 
 ![Single nonlinear figure-8 object tracking](doc/media/single_nonlinear_figure8_tracking.gif)
 

@@ -19,11 +19,12 @@ int main(int argc, char** argv)
   // run behaves exactly as before.
   const std::string csvPath = (argc > 1) ? argv[1] : "single_linear_track.csv";
   std::ofstream     csv(csvPath);
+  csv << "# motion_model=CV\n";
   csv << "step,t,gt_x,gt_y,z_x,z_y,est_x,est_y,est_vx,est_vy,P_xx,P_xy,P_yy,use_kalman\n";
 
-  // Define a MotionModelCV with full covariance matrix
+  // Define a MotionModelCV with UDU-factored covariance matrix
   // State: [X, VX, Y, VY] - 4D state for constant velocity model
-  using MM = motion::MotionModelCV<math::FullCovarianceMatrixPolicy<float64>>;
+  using MM = motion::MotionModelCV<math::FactoredCovarianceMatrixPolicy<float64>>;
 
   // type aliases
   using value_type            = typename MM::value_type;
@@ -33,7 +34,7 @@ int main(int argc, char** argv)
 
   // Observation model for a direct (x, y) position measurement: h(x) = [X, Y]'
   using PositionObservationType =
-      observation::PositionObservationModel<math::FullCovarianceMatrixPolicy<float64>, motion::StateDefCV>;
+      observation::PositionObservationModel<math::FactoredCovarianceMatrixPolicy<float64>, motion::StateDefCV>;
 
   // Create an Filter instance
   InformationFilterType informationFilter{};

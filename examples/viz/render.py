@@ -27,13 +27,25 @@ from matplotlib.patches import Ellipse
 
 
 def read_csv(path):
+    """Read rows plus the motion-model name from an optional leading `# motion_model=<name>` comment
+    line - the only way the generic renderer can know which target model produced a given CSV,
+    since that's not otherwise derivable from the column contract."""
     with open(path, newline="") as f:
+        first_line = f.readline()
+        motion_model = "CV"
+        if first_line.startswith("#"):
+            key, _, value = first_line.lstrip("#").strip().partition("=")
+            if key.strip() == "motion_model" and value.strip():
+                motion_model = value.strip()
+        else:
+            f.seek(0)
         reader = csv.DictReader(f)
-        return [{k: float(v) for k, v in row.items()} for row in reader]
+        rows = [{k: float(v) for k, v in row.items()} for row in reader]
+    return rows, motion_model
 
 
-def cov_ellipse(pxx, pxy, pyy, n_std=1.0):
-    """1-sigma (or n_std-sigma) error ellipse width/height/angle from a 2x2 covariance block."""
+def cov_ellipse(pxx, pxy, pyy, n_std=3.0):
+    """3-sigma (or n_std-sigma) error ellipse width/height/angle from a 2x2 covariance block."""
     cov = np.array([[pxx, pxy], [pxy, pyy]])
     eigvals, eigvecs = np.linalg.eigh(cov)
     eigvals = np.clip(eigvals, 0.0, None)
@@ -67,7 +79,7 @@ def _save_or_show(fig, anim, out_path, show):
     plt.close(fig)
 
 
-def render(rows, out_path, show):
+def render(rows, motion_model, out_path, show):
     has_world = "ego_world_x" in rows[0]
     has_polar_meas = "z_range" in rows[0]
 
@@ -109,7 +121,7 @@ def render(rows, out_path, show):
     ax_world.set_aspect("equal")
     ego_marker_style = {} if has_world else {"marker": "^", "markersize": 8}
     (ego_line,) = ax_world.plot([], [], "k-", label="ego (CTRV)" if has_world else "ego (stationary)", **ego_marker_style)
-    (target_line,) = ax_world.plot([], [], "m-", label="target (CV)")
+    (target_line,) = ax_world.plot([], [], "m-", label=f"target ({motion_model})")
     ax_world.legend(loc="upper left", fontsize=8)
 
     # Tracking frame (bottom left)
@@ -138,7 +150,7 @@ def render(rows, out_path, show):
         (ray_line,) = ax_track.plot([], [], "r--", linewidth=1, label="radar ray")
     else:
         meas_scatter = ax_track.scatter([], [], c="r", s=15, label="measurement")
-    ellipse = Ellipse((0, 0), 0, 0, angle=0, edgecolor="b", facecolor="none", linestyle="--", label="1-sigma cov")
+    ellipse = Ellipse((0, 0), 0, 0, angle=0, edgecolor="b", facecolor="none", linestyle="--", label="3-sigma cov")
     ax_track.add_patch(ellipse)
     switch_marker = ax_track.scatter([], [], c="orange", s=80, marker="*", label="IF -> KF switch", zorder=5)
     ax_track.legend(loc="upper left", fontsize=7)
@@ -194,11 +206,11 @@ def main():
     if args.out_path is None and not args.show:
         parser.error("either an out_path or --show is required")
 
-    rows = read_csv(args.csv_path)
+    rows, motion_model = read_csv(args.csv_path)
     if not rows:
         parser.error(f"{args.csv_path} contains no data rows")
 
-    render(rows, args.out_path, args.show)
+    render(rows, motion_model, args.out_path, args.show)
 
 
 if __name__ == "__main__":
