@@ -182,17 +182,6 @@ mismatch for the constant-velocity motion model than the crossing-object scenari
 
 ![Single nonlinear figure-8 object tracking](doc/media/single_nonlinear_figure8_tracking.gif)
 
-## Measurement Update
-
-The measurement update mirrors the prediction path and is fully implemented for both filter and
-covariance variants:
-- **Observation Model Framework**: C++17 framework with the pure abstract `IObservationModel`, the CRTP `ExtendedObservationModel`, and concrete models (Position, Range-Bearing, Velocity, Range-Bearing-Doppler).
-- **GenericUpdate Implementation**: Supports sequential, block, and composed (multi-model) update modes, selected at compile time to match the covariance representation.
-- **Filter-Specific Updates**: Dedicated measurement updates for both Kalman (gain-based, Joseph-stabilized) and Information (additive) filters.
-- **Motion Model Integration**: Extended motion models expose `update()` methods accepting one or more observation models.
-
-See the [update sequence diagram](doc/info_filter_update.md) for the detailed flow.
-
 ## Planned Features
 
 ### Non-linear Motion Models (CTRV/CTRA)
