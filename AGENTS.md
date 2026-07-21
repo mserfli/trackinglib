@@ -32,6 +32,24 @@ doxygen   # from repo root
 
 Branches: `feat/<kebab-case-description>` (e.g. `feat/math-optimization-analysis-and-improvements`).
 
+## General instructions
+
+- For **symbol lookups** specifically, use `rg` (not `grep`) against `.repo.tags` first — only
+  fall back to a full-tree `rg` across `include/` if you need call sites/usages, which the index
+  doesn't track. Never read `.repo.tags` directly (it's large).
+- **Scoped reads by default**: once you know which lines you need (from a grep/rg hit,
+  `.repo.tags`, or a prior read), read that file with an offset/limit range rather than the whole
+  file — this applies to the *first* read of a large header, not just re-reads. Read a file in
+  full only when the task genuinely needs the whole thing (a full-class refactor, the
+  self-contained-header check, a doxygen pass) — don't default to whole-file reads just because
+  it's convenient. Once you've read a file in full, don't re-read it again unless it changed.
+- **Context budget awareness**: large reads accumulate in conversation history and are not
+  reclaimed later — nothing shrinks content once it's a few turns old, even if you no longer need
+  it. When a task or plan is clearly complete and verified, say so explicitly and suggest starting
+  a fresh session (or compacting) before moving to the next unrelated task, rather than continuing
+  to build on an increasingly large conversation.
+- **Plan location**: all plans created in planning mode shall be stored in the folder  plans/recent
+
 ## Architecture
 
 Header-only C++ library, layered under `include/trackingLib/`:
@@ -113,10 +131,6 @@ folder summary above.
 - **Self-contained headers**: every `.h`/`.hpp` must compile standalone (includable with no
   prerequisite includes) — enforced by the `header_tests` CMake target (see Commands above), not
   just a style preference.
-- **Prefer rg (ripgrep)** over grep for searches — it's installed in this environment.
-- **Symbol lookup**: `.repo.tags` at the repo root is a ctags-style index. Never read it directly
-  (it's large) — grep/ripgrep it for symbol locations first to save context.
-- **Plan location**: all plans created in planning mode shall be stored in the folder  plans/recent
 
 ## Testing
 
@@ -159,9 +173,12 @@ Ask first:
 - No maneuvering/turning target motion model: `MotionModelCV`/`MotionModelCA` are both
   Cartesian-decoupled (no heading/turn-rate state), so neither can represent a curvature reversal
   — demonstrated by the documented NEES spike at each self-intersection in
-  `examples/single_nonlinear_figure8_object_tracking.cpp`. CTRV/CTRA would fix this directly, CA
-  would only partially (untested on curved trajectories; still no jerk mechanism). See
-  `plans/recent/figure-8-exploration-ideas.md` for the full analysis.
+  `examples/single_nonlinear_figure8_object_tracking.cpp`. Tested empirically: CA substantially
+  reduces both lag and NEES inconsistency versus CV (mean NEES ~1.73 vs. CV's 9.08, nominal ~2.0;
+  fraction of samples exceeding the 99% χ² bound drops from 38.5% to 0.8%), but still shows a
+  smaller residual NEES spike at each reversal since it still has no jerk mechanism. CTRV/CTRA
+  would fix the reversal itself directly. See `plans/recent/figure-8-exploration-ideas.md` for the
+  full analysis.
 - CTRV/CTRA target motion models not implemented. Architecture is largely ready (`computeA`/
   `applyProcessModel` are already non-static, and `env/ego_motion.h(pp)` has ready-to-adapt
   circular-arc kinematics/Jacobian math) except one contract gap: `computeQ`/`computeG` are
