@@ -116,7 +116,7 @@ int main(int argc, char** argv)
   const value_type figure8CenterY          = static_cast<value_type>(0.0);
   const value_type figure8RangeAmplitude   = static_cast<value_type>(10.0); // Rx: range sway is +-Rx/2
   const value_type figure8LateralAmplitude = static_cast<value_type>(12.0); // Ry: lateral sway is +-Ry
-  const value_type figure8Period           = static_cast<value_type>(8.0); // seconds per loop
+  const value_type figure8Period           = static_cast<value_type>(8.0);  // seconds per loop
   const value_type figure8Omega            = static_cast<value_type>(2.0 * M_PI) / figure8Period;
 
   value_type targetWorldX = figure8CenterX;
@@ -153,8 +153,7 @@ int main(int argc, char** argv)
             << std::endl;
   std::cout << "Filter: InformationFilter (suitable for high initial uncertainty)" << std::endl;
   std::cout << "Filter: KalmanFilter (EKF, after uncertainty has been initialized)" << std::endl;
-  std::cout << "Motion Model: Constant Velocity (CV) - deliberately mismatched against the maneuvering target"
-            << std::endl;
+  std::cout << "Motion Model: Constant Velocity (CV) - deliberately mismatched against the maneuvering target" << std::endl;
   std::cout << "Measurements: noisy (range, bearing, doppler), std=(" << rangeStd << " m, " << (bearingStd * 180.0 / M_PI)
             << " deg, " << dopplerStd << " m/s)" << std::endl;
   std::cout << std::endl;
@@ -242,11 +241,10 @@ int main(int argc, char** argv)
     // up in the estimate.
     const value_type newTime      = currentTime + dt;
     const value_type figure8Phase = figure8Omega * newTime;
-    targetWorldX = figure8CenterX + (static_cast<value_type>(0.5) * figure8RangeAmplitude *
-                                      std::sin(static_cast<value_type>(2.0) * figure8Phase));
-    targetWorldY = figure8CenterY + (figure8LateralAmplitude * std::sin(figure8Phase));
-    const value_type targetVx =
-        figure8RangeAmplitude * figure8Omega * std::cos(static_cast<value_type>(2.0) * figure8Phase);
+    targetWorldX                  = figure8CenterX +
+                   (static_cast<value_type>(0.5) * figure8RangeAmplitude * std::sin(static_cast<value_type>(2.0) * figure8Phase));
+    targetWorldY              = figure8CenterY + (figure8LateralAmplitude * std::sin(figure8Phase));
+    const value_type targetVx = figure8RangeAmplitude * figure8Omega * std::cos(static_cast<value_type>(2.0) * figure8Phase);
     const value_type targetVy = figure8LateralAmplitude * figure8Omega * std::cos(figure8Phase);
 
     // Predict step: motion model advances the state and compensates for the ego vehicle's own
