@@ -24,9 +24,9 @@ namespace generic
 
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
 template <typename UpdateMode_, typename... ObservationModels_>
-inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(const KalmanFilterType& filter,
+inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(MotionModel_&           motionModel,
+                                                               const KalmanFilterType& filter,
                                                                const EgoMotionType&    egoMotion,
-                                                               MotionModel_&           motionModel,
                                                                const ObservationModels_&... observationModels)
 {
   static_assert(sizeof...(ObservationModels_) > 0, "at least one observation model is required");
@@ -71,9 +71,9 @@ inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(const KalmanFilte
 
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
 template <typename UpdateMode_, typename... ObservationModels_>
-inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(const InformationFilterType& filter,
+inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(MotionModel_&                motionModel,
+                                                               const InformationFilterType& filter,
                                                                const EgoMotionType&         egoMotion,
-                                                               MotionModel_&                motionModel,
                                                                const ObservationModels_&... observationModels)
 {
   static_assert(sizeof...(ObservationModels_) > 0, "at least one observation model is required");

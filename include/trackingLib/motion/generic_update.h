@@ -32,8 +32,8 @@ namespace generic
 /// Unlike generic::Predict (generic_predict.h), this class is NOT mixed into the motion model via
 /// CRTP inheritance, and all of its methods are static as a result. ExtendedMotionModel's
 /// update() (imotion_model.h) is itself a template method (variadic ObservationModels_..., plus an
-/// UpdateMode_ tag) that explicitly calls generic::Update<...>::run(..., static_cast<MotionModel_&>
-/// (*this), observationModels...), passing the motion model in as an ordinary parameter rather than
+/// UpdateMode_ tag) that explicitly calls generic::Update<...>::run(static_cast<MotionModel_&>(*this),
+/// ..., observationModels...), passing the motion model in as an ordinary parameter rather than
 /// reaching it through an inherited `this`.
 ///
 /// This is not an arbitrary style choice, nor a stylistic drift from Predict: it follows from a
@@ -63,33 +63,33 @@ public:
   /// \brief Measurement update using a KalmanFilter
   /// \tparam UpdateMode_          Update mode tag (defaults to the policy-appropriate mode)
   /// \tparam ObservationModels_   One or more observation model types (composed if multiple)
+  /// \param[in,out] motionModel        The motion model whose state and covariance are updated
   /// \param[in]     filter             The filter instance
   /// \param[in]     egoMotion          Ego motion of the sensor platform, forwarded to each observation model
-  /// \param[in,out] motionModel        The motion model whose state and covariance are updated
   /// \param[in]     observationModels  Observation models carrying measurement z and covariance R
   /// \note Defensive skips are silent: degenerate measurement rows are dropped and a stacked R
   ///       that cannot be factorized/decomposed skips the whole update — the void return gives
   ///       the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = DefaultUpdateMode, typename... ObservationModels_>
-  static void run(const KalmanFilterType& filter,
+  static void run(MotionModel_&           motionModel,
+                  const KalmanFilterType& filter,
                   const EgoMotionType&    egoMotion,
-                  MotionModel_&           motionModel,
                   const ObservationModels_&... observationModels);
 
   /// \brief Measurement update using an InformationFilter
   /// \tparam UpdateMode_          Update mode tag (defaults to the policy-appropriate mode)
   /// \tparam ObservationModels_   One or more observation model types (composed if multiple)
+  /// \param[in,out] motionModel        The motion model whose information vector and matrix are updated
   /// \param[in]     filter             The filter instance
   /// \param[in]     egoMotion          Ego motion of the sensor platform, forwarded to each observation model
-  /// \param[in,out] motionModel        The motion model whose information vector and matrix are updated
   /// \param[in]     observationModels  Observation models carrying measurement z and covariance R
   /// \note Defensive skips are silent: degenerate measurement rows are dropped and a stacked R
   ///       that cannot be inverted/factorized skips the whole update — the void return gives
   ///       the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = DefaultUpdateMode, typename... ObservationModels_>
-  static void run(const InformationFilterType& filter,
+  static void run(MotionModel_&                motionModel,
+                  const InformationFilterType& filter,
                   const EgoMotionType&         egoMotion,
-                  MotionModel_&                motionModel,
                   const ObservationModels_&... observationModels);
 
 private:

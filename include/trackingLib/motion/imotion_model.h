@@ -191,7 +191,7 @@ public:
   void update(const KalmanFilterType& filter, const EgoMotionType& egoMotion, const ObservationModels_&... observationModels)
   {
     generic::Update<MotionModel_, CovarianceMatrixPolicy>::template run<UpdateMode_>(
-        filter, egoMotion, static_cast<MotionModel_&>(*this), observationModels...);
+        static_cast<MotionModel_&>(*this), filter, egoMotion, observationModels...);
   }
 
   /// \brief Information measurement update of the underlying MotionModel (information space)
@@ -216,7 +216,7 @@ public:
   void update(const InformationFilterType& filter, const EgoMotionType& egoMotion, const ObservationModels_&... observationModels)
   {
     generic::Update<MotionModel_, CovarianceMatrixPolicy>::template run<UpdateMode_>(
-        filter, egoMotion, static_cast<MotionModel_&>(*this), observationModels...);
+        static_cast<MotionModel_&>(*this), filter, egoMotion, observationModels...);
   }
 
   /// \brief Transform information space into state space

@@ -90,6 +90,11 @@ folder summary above.
   naming convention (e.g. `DiagonalFromSquare`, `VectorFromMatrixColumnView`). Don't add ad-hoc
   conversion logic elsewhere.
 - **Stream output**: template `operator<<` per matrix type in `matrix_io.h` — no `print()` methods.
+- **Parameter order**: output/in-out parameters first, then inputs (e.g. `computeA(A, dt)`,
+  `KalmanFilter::updateState(x, P, innovation, H, R)`). Applies to free/static functions with
+  explicit output params; doesn't apply to ordinary member functions (the receiver `*this` is
+  already the implicit output) or constructors. If a variadic parameter pack is also present, it
+  must still trail every other parameter (a C++ requirement), which output-first already satisfies.
 - **Formatting**: clang-format, Microsoft base style, 130 col limit, pointer-left, no bin-packing,
   `first_include.h` sorted first (see `.clang-format`). Run it before committing.
 - **Static analysis**: clang-tidy with `WarningsAsErrors: "*"` (see `.clang-tidy` for the enabled
