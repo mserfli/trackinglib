@@ -344,6 +344,23 @@ TEST(CovarianceMatrixFull, positive_semi_definite_inverse__Success) // NOLINT
   EXPECT_TRUE(invResult.value().isPositiveSemiDefinite());
 }
 
+TEST(CovarianceMatrixFull, inverse_SingularPositiveSemiDefinite_ExpectError) // NOLINT
+{
+  // Rank-deficient PSD matrix (mirrors the singular Pe seen in the InformationFilter
+  // ego-motion-compensation bug): must not silently return a NaN-payload "success".
+  // clang-format off
+  auto cov = CovarianceMatrixFull<float64, 2>::FromList({
+    {1, 1},
+    {1, 1},
+  });
+  // clang-format on
+
+  // call UUT
+  auto invResult = cov.inverse();
+
+  EXPECT_FALSE(invResult.has_value());
+}
+
 TEST(CovarianceMatrixFull, conversion_to_factored__Success) // NOLINT
 {
   // Test conversion from full to factored form

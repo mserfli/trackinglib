@@ -462,6 +462,38 @@ TEST(SquareMatrixDecompositions, decomposeLLT_Double__Success) // NOLINT
   }
 }
 
+TEST(SquareMatrixDecompositions, decomposeLLT_SingularPositiveSemiDefinite_ExpectError) // NOLINT
+{
+  // Rank-deficient but symmetric, strictly-positive-diagonal PSD matrix: pivot at (1,1)
+  // becomes exactly 0 mid-factorization even though the input diagonal itself is positive.
+  // clang-format off
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
+    {1, 1},
+    {1, 1},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLLT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
+TEST(SquareMatrixDecompositions, decomposeLLT_SingularPositiveSemiDefinite_Double_ExpectError) // NOLINT
+{
+  // clang-format off
+  auto cov = SquareMatrix<float64, 2, true>::FromList({
+    {1, 1},
+    {1, 1},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLLT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
 TEST(SquareMatrixDecompositions, decomposeLDLT_Double__Success) // NOLINT
 {
   // Create a symmetric positive definite matrix with double precision

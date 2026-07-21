@@ -26,9 +26,9 @@ int main(int argc, char** argv)
   csv << "step,t,gt_x,gt_y,est_x,est_y,est_vx,est_vy,P_xx,P_xy,P_yy,use_kalman,"
       << "ego_world_x,ego_world_y,ego_world_psi,target_world_x,target_world_y," << "z_range,z_bearing,z_doppler\n";
 
-  // Define a MotionModelCV with full covariance matrix
+  // Define a MotionModelCV with UDU-factored covariance matrix
   // State: [X, VX, Y, VY] - 4D state for constant velocity model
-  using MM = motion::MotionModelCV<math::FullCovarianceMatrixPolicy<float64>>;
+  using MM = motion::MotionModelCV<math::FactoredCovarianceMatrixPolicy<float64>>;
 
   // type aliases
   using value_type            = typename MM::value_type;
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 
   // Nonlinear observation model measuring polar range/bearing/doppler, e.g. a radar
   using RangeBearingDopplerType =
-      observation::RangeBearingDopplerObservationModel<math::FullCovarianceMatrixPolicy<float64>, motion::StateDefCV>;
+      observation::RangeBearingDopplerObservationModel<math::FactoredCovarianceMatrixPolicy<float64>, motion::StateDefCV>;
 
   InformationFilterType informationFilter{};
   KalmanFilterType      kalmanFilter{};

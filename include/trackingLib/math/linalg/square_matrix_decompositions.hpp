@@ -103,6 +103,10 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
         {
           sum -= math::pow<2>(L.at_unsafe(j, k));
         }
+        if (!(sum > static_cast<ValueType_>(0))) // catches <= 0 and NaN, unlike sum <= 0
+        {
+          return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
+        }
         L.at_unsafe(j, j) = std::sqrt(sum);
 
         for (auto i = j + 1; i < Size_; ++i)

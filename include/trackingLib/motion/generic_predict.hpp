@@ -93,59 +93,43 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const value_type
     }
     else
     {
-      using EgoMotionCov = typename EgoMotionType::DisplacementCov;
-      using StateCov     = typename MotionModel_::StateCov;
-      using StateMatrix  = typename MotionModel_::StateMatrix;
+      using StateCov    = typename MotionModel_::StateCov;
+      using StateMatrix = typename MotionModel_::StateMatrix;
       // Y = inv(Go*P*Go.T + Ge*Pe*Ge.T) with Po=inv(Y) can be solved directly in information space by
       // applying two steps
       // 1. Handle the State Transition
       //    Ys = inv(Go*P*Go.T) = inv(Go).T * Y * inv(Go)
       // 2. Handle the Additive Noise Q=Ge*Pe*Ge.T
-      //    Y = inv(Ps + Q) applying the Woodbury Matrix Identity gives
-      //    Y = Ys - Ys*Ge * inv( inv(Pe) + Ge.T*Ys*Ge ) * Ge.T*Ys
+      //    Y = inv(Ps + Q), solved via H*Y = Ys with H = I + Ys*Q using QR (mirrors
+      //    InformationFilter::predictCovariance's own non-factored time-update branch for G*Q*G',
+      //    see information_filter.hpp) instead of inverting Pe via the Woodbury identity: Pe is
+      //    structurally rank-deficient whenever the ego-motion output dimension exceeds its
+      //    independent noise sources, so inverting it directly is not robust.
 
       // step 1: Handle the State Transition (using linear solver)
       StateMatrix Z_T = data.Go.transpose().qrSolve(Y);                                    // solve Go.T * Z_transpose = Y
       auto        Ytr = StateCov{std::move(data.Go.transpose().qrSolve(Z_T.transpose()))}; // solve Go.T * Y_tr = Z
       Ytr.symmetrize();
 
-      // step 2: Handle the Additive Noise to be applied on the transformed Ytr (different to the one-step factored solution)!!!
-      // apply Woodbury Matrix Identity
-      // (Y^-1 + Ge Pe Ge')^-1 = Y - Y Ge (Pe^-1 + Ge' Y Ge)^-1 Ge' Y
-      // note: if any of the inverses fails, we skip the ego motion compensation step
-      const auto invPe = egoMotion.getDisplacementCog().cov.inverse();
-      if (invPe.has_value())
+      // step 2: Handle the Additive Noise Ge*Pe*Ge.T on the transformed Ytr (never inverts Pe)
+      auto       Mtr = Ytr; // state-transitioned copy consumed by the QR solve below
+      const auto H    = math::SquareMatrix<value_type, MotionModel_::NUM_STATE_VARIABLES>(
+          StateMatrix::Identity() + Mtr * (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose()));
+      math::SquareMatrix compensated = H.qrSolve(std::move(Mtr));
+      compensated.symmetrize();
+
+      // prevent destroying the Information matrix, e.g. removing information from a zero Y matrix (no information)
+      if (compensated.isPositiveSemiDefinite())
       {
-        // Compute Y Ge
-        auto YGe =
-            math::Matrix<value_type, MotionModel_::NUM_STATE_VARIABLES, EgoMotionType::DS_NUM_VARIABLES, true>{Ytr * data.Ge};
+        Ytr = StateCov{std::move(compensated)};
 
-        // Compute Ge' Y
-        auto GeTY = math::Matrix<value_type, EgoMotionType::DS_NUM_VARIABLES, MotionModel_::NUM_STATE_VARIABLES, false>{
-            data.Ge.transpose() * Ytr};
+        // final filter prediction step with compensated Ytr
+        filter.predictCovariance(Ytr, data.A, data.G, data.Q);
 
-        // Compute Ge' Y Ge
-        auto GeTYGe = math::SquareMatrix<value_type, EgoMotionType::DS_NUM_VARIABLES, false>{GeTY * data.Ge};
-
-        // Compute M = (Pe^-1 + Ge' Y Ge)^-1
-        auto M = EgoMotionCov{typename EgoMotionCov::BaseSquareMatrix{invPe.value() + std::move(GeTYGe)}};
-        M.symmetrize();
-        const auto invM = M.inverse();
-        if (invM.has_value())
+        // prevent destroying the Information matrix, e.g. removing information from a zero Y matrix (no information)
+        if (Ytr.isPositiveSemiDefinite())
         {
-          const auto mat = std::move(YGe) * std::move(invM.value()) * std::move(GeTY);
-          // Y^-1 + Ge Pe Ge')^-1 = Y - Y Ge (Pe^-1 + Ge' Y Ge)^-1 Ge' Y
-          Ytr -= mat;
-          Ytr.symmetrize();
-
-          // final filter prediction step with compensated Ytr
-          filter.predictCovariance(Ytr, data.A, data.G, data.Q);
-
-          // prevent destroying the Information matrix, e.g. removing information from a zero Y matrix (no information)
-          if (Ytr.isPositiveSemiDefinite())
-          {
-            Y = std::move(Ytr);
-          }
+          Y = std::move(Ytr);
         }
       }
     }
