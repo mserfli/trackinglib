@@ -29,6 +29,25 @@ namespace generic
 /// - Sequential: scalar row-by-row updates (required for the factored policy); a correlated R
 ///               is decorrelated internally via its UDU factorization
 ///
+/// Unlike generic::Predict (generic_predict.h), this class is NOT mixed into the motion model via
+/// CRTP inheritance, and all of its methods are static as a result. ExtendedMotionModel's
+/// update() (imotion_model.h) is itself a template method (variadic ObservationModels_..., plus an
+/// UpdateMode_ tag) that explicitly calls generic::Update<...>::run(..., static_cast<MotionModel_&>
+/// (*this), observationModels...), passing the motion model in as an ordinary parameter rather than
+/// reaching it through an inherited `this`.
+///
+/// This is not an arbitrary style choice, nor a stylistic drift from Predict: it follows from a
+/// hard C++ constraint. Predict is CRTP-inherited because IMotionModel::predict() is declared
+/// virtual with a fixed, non-template signature, and only an actual base class can be overridden
+/// that way. Update's run(), however, is inherently a template (it must vary per call by which and
+/// how many observation models are passed) — and C++ does not allow virtual template member
+/// functions. So update() can never be part of that same virtual-dispatch contract regardless of
+/// how Update is implemented, which removes the only reason Predict needed inheritance in the
+/// first place. With no virtual-interface pressure, implementing Update as a stateless static
+/// template utility — invoked by qualified name, motion model passed in explicitly — avoids adding
+/// an inheritance relationship that would buy nothing: the CRTP cast would still be needed, just
+/// moved from the call site into a would-be non-static method body.
+///
 /// \tparam MotionModel_             The underlying MotionModel
 /// \tparam CovarianceMatrixPolicy_  Policy type that defines the covariance matrix implementation
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
