@@ -3,8 +3,8 @@
 
 #include "motion/generic_update.h"
 
-#include "filter/information_filter.hpp"              // IWYU pragma: keep
-#include "filter/kalman_filter.hpp"                   // IWYU pragma: keep
+#include "filter/information_filter.hpp" // IWYU pragma: keep
+#include "filter/kalman_filter.hpp"      // IWYU pragma: keep
 #include "math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_full.hpp"     // IWYU pragma: keep
@@ -25,6 +25,7 @@ namespace generic
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
 template <typename UpdateMode_, typename... ObservationModels_>
 inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(const KalmanFilterType& filter,
+                                                               const EgoMotionType&    egoMotion,
                                                                MotionModel_&           motionModel,
                                                                const ObservationModels_&... observationModels)
 {
@@ -43,10 +44,10 @@ inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(const KalmanFilte
   auto& P = motionModel.getCovForInternalUse();
 
   // stack innovation, Jacobian and (block-diagonal) covariance of all observation models
-  math::Vector<value_type, TotalDimZ>        innovation{};
-  math::Matrix<value_type, TotalDimZ, DimX>  H{};
-  math::SquareMatrix<value_type, TotalDimZ>  Rfull{};
-  stackObservations<TotalDimZ, DimX, 0>(innovation, H, Rfull, x, observationModels...);
+  math::Vector<value_type, TotalDimZ>       innovation{};
+  math::Matrix<value_type, TotalDimZ, DimX> H{};
+  math::SquareMatrix<value_type, TotalDimZ> Rfull{};
+  stackObservations<TotalDimZ, DimX, 0>(innovation, H, Rfull, x, egoMotion, observationModels...);
 
   if constexpr (CovarianceMatrixPolicy_::is_factored)
   {
@@ -71,6 +72,7 @@ inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(const KalmanFilte
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
 template <typename UpdateMode_, typename... ObservationModels_>
 inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(const InformationFilterType& filter,
+                                                               const EgoMotionType&         egoMotion,
                                                                MotionModel_&                motionModel,
                                                                const ObservationModels_&... observationModels)
 {
@@ -89,10 +91,10 @@ inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(const Information
   const math::Vector<value_type, DimX> xState{motionModel.getVecForInternalUse()};
 
   // Step 2: stack innovation, Jacobian and (block-diagonal) covariance of all observation models
-  math::Vector<value_type, TotalDimZ>        innovation{};
-  math::Matrix<value_type, TotalDimZ, DimX>  H{};
-  math::SquareMatrix<value_type, TotalDimZ>  Rfull{};
-  stackObservations<TotalDimZ, DimX, 0>(innovation, H, Rfull, xState, observationModels...);
+  math::Vector<value_type, TotalDimZ>       innovation{};
+  math::Matrix<value_type, TotalDimZ, DimX> H{};
+  math::SquareMatrix<value_type, TotalDimZ> Rfull{};
+  stackObservations<TotalDimZ, DimX, 0>(innovation, H, Rfull, xState, egoMotion, observationModels...);
 
   // Step 3: effective measurement of the linearized observation model: z_eff = nu + H*x
   const math::Vector<value_type, TotalDimZ> zEff{innovation + (H * xState)};
@@ -125,11 +127,11 @@ inline void Update<MotionModel_, CovarianceMatrixPolicy_>::run(const Information
 
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
 template <sint32 TotalDimZ_, sint32 DimX_, sint32 Offset_>
-inline void Update<MotionModel_, CovarianceMatrixPolicy_>::stackObservations(
-    math::Vector<value_type, TotalDimZ_>& /*innovation*/,
-    math::Matrix<value_type, TotalDimZ_, DimX_>& /*H*/,
-    math::SquareMatrix<value_type, TotalDimZ_>& /*R*/,
-    const math::Vector<value_type, DimX_>& /*state*/)
+inline void Update<MotionModel_, CovarianceMatrixPolicy_>::stackObservations(math::Vector<value_type, TotalDimZ_>& /*innovation*/,
+                                                                             math::Matrix<value_type, TotalDimZ_, DimX_>& /*H*/,
+                                                                             math::SquareMatrix<value_type, TotalDimZ_>& /*R*/,
+                                                                             const math::Vector<value_type, DimX_>& /*state*/,
+                                                                             const EgoMotionType& /*egoMotion*/)
 {
   // recursion end: all observation models are stacked
   static_assert(Offset_ == TotalDimZ_, "stacked observation dimensions do not sum up to TotalDimZ");
@@ -137,24 +139,24 @@ inline void Update<MotionModel_, CovarianceMatrixPolicy_>::stackObservations(
 
 template <typename MotionModel_, typename CovarianceMatrixPolicy_>
 template <sint32 TotalDimZ_, sint32 DimX_, sint32 Offset_, typename First_, typename... Rest_>
-inline void Update<MotionModel_, CovarianceMatrixPolicy_>::stackObservations(
-    math::Vector<value_type, TotalDimZ_>&        innovation,
-    math::Matrix<value_type, TotalDimZ_, DimX_>& H,
-    math::SquareMatrix<value_type, TotalDimZ_>&  R,
-    const math::Vector<value_type, DimX_>&       state,
-    const First_&                                first,
-    const Rest_&... rest)
+inline void Update<MotionModel_, CovarianceMatrixPolicy_>::stackObservations(math::Vector<value_type, TotalDimZ_>& innovation,
+                                                                             math::Matrix<value_type, TotalDimZ_, DimX_>& H,
+                                                                             math::SquareMatrix<value_type, TotalDimZ_>&  R,
+                                                                             const math::Vector<value_type, DimX_>&       state,
+                                                                             const EgoMotionType& egoMotion,
+                                                                             const First_&        first,
+                                                                             const Rest_&... rest)
 {
   constexpr sint32 DimZ = First_::DimZ;
   static_assert((Offset_ + DimZ) <= TotalDimZ_, "stacked observation dimensions exceed TotalDimZ");
 
   // Jacobian block
   typename First_::JacobianMatrix Hi{};
-  first.computeJacobian(Hi, state);
+  first.computeJacobian(Hi, state, egoMotion);
   H.template setBlock<DimZ, DimX_, DimZ, DimX_, 0, 0, true, Offset_, 0>(Hi);
 
   // innovation block (innovation handling, e.g. angle wrapping, is resolved on the concrete model)
-  const auto predicted = first.predictMeasurement(state);
+  const auto predicted = first.predictMeasurement(state, egoMotion);
   const auto nu        = first.computeInnovation(first.getVec(), predicted);
   for (sint32 i = 0; i < DimZ; ++i)
   {
@@ -165,7 +167,7 @@ inline void Update<MotionModel_, CovarianceMatrixPolicy_>::stackObservations(
   const auto& Ri = first.getCov()();
   R.template setBlock<DimZ, DimZ, DimZ, DimZ, 0, 0, true, Offset_, Offset_>(Ri);
 
-  stackObservations<TotalDimZ_, DimX_, Offset_ + DimZ>(innovation, H, R, state, rest...);
+  stackObservations<TotalDimZ_, DimX_, Offset_ + DimZ>(innovation, H, R, state, egoMotion, rest...);
 }
 
 } // namespace generic

@@ -81,10 +81,13 @@ public:
   }
 
   /// \brief Predict the measurement h(x) = [sqrt(x^2+y^2), atan2(y,x)]' for the given sensor-frame state
-  /// \param[in] state  Sensor-frame state vector the measurement is predicted for
+  /// \param[in] state      Sensor-frame state vector the measurement is predicted for
+  /// \param[in] egoMotion  Ego motion of the sensor platform (unused, model measures range/bearing only)
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurementSensorFrame(const StateVec& state) const -> MeasurementVec
+  auto predictMeasurementSensorFrame(
+      const StateVec& state, const typename BaseExtendedObservationModel::EgoMotionType& egoMotion) const -> MeasurementVec
   {
+    static_cast<void>(egoMotion);
     const value_type x = state.at_unsafe(StateDef_::X);
     const value_type y = state.at_unsafe(StateDef_::Y);
 
@@ -102,9 +105,13 @@ public:
   ///
   /// \param[out] jacobian  The measurement Jacobian to be filled (sensor-frame-local partials)
   /// \param[in]  state     Sensor-frame state vector the Jacobian is linearized at
+  /// \param[in]  egoMotion Ego motion of the sensor platform (unused, model measures range/bearing only)
   /// \note The squared range is clamped to RANGE_SQ_MIN to protect against division by zero
-  void computeJacobianSensorFrame(JacobianMatrix& jacobian, const StateVec& state) const
+  void computeJacobianSensorFrame(JacobianMatrix&                                             jacobian,
+                                  const StateVec&                                             state,
+                                  const typename BaseExtendedObservationModel::EgoMotionType& egoMotion) const
   {
+    static_cast<void>(egoMotion);
     const value_type x       = state.at_unsafe(StateDef_::X);
     const value_type y       = state.at_unsafe(StateDef_::Y);
     const value_type rangeSq = std::max((x * x) + (y * y), RANGE_SQ_MIN);

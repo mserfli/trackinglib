@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "trackingLib/env/ego_motion.hpp"         // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
 #include "trackingLib/observation/position_observation_model.h"
 #include "trackingLib/observation/velocity_observation_model.h"
@@ -26,6 +27,16 @@ namespace update_mode = tracking::filter::update_mode;
 
 namespace
 {
+
+/// \brief Zero-motion EgoMotion (no sensor platform motion), for tests that don't exercise ego motion compensation
+template <typename CovarianceMatrixPolicy_>
+auto makeNoEgoMotion() -> tracking::env::EgoMotion<CovarianceMatrixPolicy_>
+{
+  using EgoMotionInst = tracking::env::EgoMotion<CovarianceMatrixPolicy_>;
+  return EgoMotionInst(typename EgoMotionInst::InertialMotion{},
+                       typename EgoMotionInst::Geometry{},
+                       static_cast<typename CovarianceMatrixPolicy_::value_type>(1.0));
+}
 
 /// \brief Compare state vector and (composed) state covariance of two motion models
 template <typename ModelA_, typename ModelB_>
@@ -75,8 +86,9 @@ TEST(MeasurementUpdate, update_KalmanFullBlock__MatchesHandComputedPosterior) //
   });
   // clang-format on
   const KalmanFull filter{};
+  const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
 
-  mm.update(filter, obs);
+  mm.update(filter, egoMotion, obs);
 
   const Testvalue_type tol = 1e-12;
   EXPECT_NEAR(mm._vec.at_unsafe(StateDefCV::X), 10.0 + 0.8 * 0.6, tol);
@@ -102,9 +114,10 @@ TEST(MeasurementUpdate, update_KalmanFullSequentialVsBlock__SamePosterior) // NO
   });
   // clang-format on
   const KalmanFull filter{};
+  const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
 
-  mmBlock.update<update_mode::Block>(filter, obs);
-  mmSequential.update<update_mode::Sequential>(filter, obs);
+  mmBlock.update<update_mode::Block>(filter, egoMotion, obs);
+  mmSequential.update<update_mode::Sequential>(filter, egoMotion, obs);
 
   expectSamePosterior(mmSequential, mmBlock, 1e-10, 1e-10);
 }
@@ -123,9 +136,11 @@ TEST(MeasurementUpdate, update_KalmanFactoredVsFull__SamePosterior) // NOLINT
     {0.0, 0.5}
   });
   // clang-format on
+  const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
+  const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
 
-  mmFull.update(KalmanFull{}, obsFull);
-  mmFact.update(KalmanFact{}, obsFact);
+  mmFull.update(KalmanFull{}, egoMotionFull, obsFull);
+  mmFact.update(KalmanFact{}, egoMotionFact, obsFact);
 
   expectSamePosterior(mmFact, mmFull, 1e-9, 1e-9);
 }
@@ -140,13 +155,14 @@ TEST(MeasurementUpdate, update_InformationVsKalman__SamePosterior) // NOLINT
     {0.0, 0.5}
   });
   // clang-format on
+  const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   // transform the information model into information space: Y = inv(P), y = Y*x
   mmInfo._cov = mmInfo._cov.inverse().value();
   mmInfo._vec = static_cast<typename MMFull::StateVec>(mmInfo._cov() * mmInfo._vec);
 
-  mmKalman.update(KalmanFull{}, obs);
-  mmInfo.update(InformationFull{}, obs);
+  mmKalman.update(KalmanFull{}, egoMotion, obs);
+  mmInfo.update(InformationFull{}, egoMotion, obs);
 
   // transform the information model back into state space for comparison
   mmInfo.convertStateVecIntoStateSpace();
@@ -165,13 +181,14 @@ TEST(MeasurementUpdate, update_InformationFactoredVsKalmanFactored__SamePosterio
     {0.0, 0.5}
   });
   // clang-format on
+  const auto egoMotion = makeNoEgoMotion<FactoredPolicy>();
 
   // transform the information model into information space: Y = inv(P), y = Y*x
   mmInfo._cov = mmInfo._cov.inverse().value();
   mmInfo._vec = static_cast<typename MMFact::StateVec>(mmInfo._cov() * mmInfo._vec);
 
-  mmKalman.update(KalmanFact{}, obs);
-  mmInfo.update(InformationFact{}, obs);
+  mmKalman.update(KalmanFact{}, egoMotion, obs);
+  mmInfo.update(InformationFact{}, egoMotion, obs);
 
   // transform the information model back into state space for comparison
   mmInfo.convertStateVecIntoStateSpace();
@@ -192,9 +209,10 @@ TEST(MeasurementUpdate, update_KalmanFullSequentialCorrelatedR_VsBlock__SamePost
   });
   // clang-format on
   const KalmanFull filter{};
+  const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
 
-  mmBlock.update<update_mode::Block>(filter, obs);
-  mmSequential.update<update_mode::Sequential>(filter, obs);
+  mmBlock.update<update_mode::Block>(filter, egoMotion, obs);
+  mmSequential.update<update_mode::Sequential>(filter, egoMotion, obs);
 
   expectSamePosterior(mmSequential, mmBlock, 1e-10, 1e-10);
 }
@@ -214,9 +232,11 @@ TEST(MeasurementUpdate, update_KalmanFactoredCorrelatedR_VsFullBlock__SamePoster
     {0.3, 0.5}
   });
   // clang-format on
+  const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
+  const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
 
-  mmFull.update(KalmanFull{}, obsFull);
-  mmFact.update(KalmanFact{}, obsFact);
+  mmFull.update(KalmanFull{}, egoMotionFull, obsFull);
+  mmFact.update(KalmanFact{}, egoMotionFact, obsFact);
 
   expectSamePosterior(mmFact, mmFull, 1e-9, 1e-9);
 }
@@ -231,13 +251,14 @@ TEST(MeasurementUpdate, update_InformationFactoredCorrelatedR_VsKalman__SamePost
     {0.3, 0.5}
   });
   // clang-format on
+  const auto egoMotion = makeNoEgoMotion<FactoredPolicy>();
 
   // transform the information model into information space: Y = inv(P), y = Y*x
   mmInfo._cov = mmInfo._cov.inverse().value();
   mmInfo._vec = static_cast<typename MMFact::StateVec>(mmInfo._cov() * mmInfo._vec);
 
-  mmKalman.update(KalmanFact{}, obs);
-  mmInfo.update(InformationFact{}, obs);
+  mmKalman.update(KalmanFact{}, egoMotion, obs);
+  mmInfo.update(InformationFact{}, egoMotion, obs);
 
   // transform the information model back into state space for comparison
   mmInfo.convertStateVecIntoStateSpace();
@@ -261,11 +282,12 @@ TEST(MeasurementUpdate, update_ComposedPositionVelocity__EqualsRepeatedSingleUpd
   });
   // clang-format on
   const KalmanFull filter{};
+  const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
 
   // composed joint update vs. two consecutive single updates: identical for linear models
-  mmComposed.update(filter, pos, vel);
-  mmRepeated.update(filter, pos);
-  mmRepeated.update(filter, vel);
+  mmComposed.update(filter, egoMotion, pos, vel);
+  mmRepeated.update(filter, egoMotion, pos);
+  mmRepeated.update(filter, egoMotion, vel);
 
   expectSamePosterior(mmComposed, mmRepeated, 1e-9, 1e-9);
 }
@@ -280,9 +302,11 @@ TEST(MeasurementUpdate, update_ComposedFactoredVsComposedFull__SamePosterior) //
   const auto velFull = VelFull::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}});
   const auto velFact = VelFact::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}});
   // clang-format on
+  const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
+  const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
 
-  mmFull.update(KalmanFull{}, posFull, velFull);
-  mmFact.update(KalmanFact{}, posFact, velFact);
+  mmFull.update(KalmanFull{}, egoMotionFull, posFull, velFull);
+  mmFact.update(KalmanFact{}, egoMotionFact, posFact, velFact);
 
   expectSamePosterior(mmFact, mmFull, 1e-9, 1e-9);
 }
@@ -324,7 +348,7 @@ TEST(MeasurementUpdate, predictUpdateLoop__ConvergesToGroundTruth) // NOLINT
     z.at_unsafe(PosFull::MEAS_Y) = vyTrue * static_cast<Testvalue_type>(k) * dt;
     const PosFull obs{z, R};
 
-    mm.update(filter, obs);
+    mm.update(filter, egoMotion, obs);
   }
 
   const Testvalue_type tEnd = static_cast<Testvalue_type>(steps) * dt;

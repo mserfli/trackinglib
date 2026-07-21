@@ -55,6 +55,20 @@ void EgoMotion<CovarianceMatrixPolicy_>::compensateDirection(value_type&      dx
 }
 
 template <typename CovarianceMatrixPolicy_>
+auto EgoMotion<CovarianceMatrixPolicy_>::getVelocityAt(value_type mountX, value_type mountY) const -> math::Point2d<value_type>
+{
+  // r = vector from COG to the queried point, in the ego reference frame
+  const value_type rx = mountX - _geometry.distCog2Ego;
+  const value_type ry = mountY;
+
+  // v_point = (v, 0) + w x r = (v - w*ry, w*rx)
+  const value_type vx = _motion.v - (_motion.w * ry);
+  const value_type vy = _motion.w * rx;
+
+  return Point2d::FromValues(vx, vy);
+}
+
+template <typename CovarianceMatrixPolicy_>
 auto EgoMotion<CovarianceMatrixPolicy_>::isLinearMotion() const -> bool
 {
   constexpr value_type omegaThreshold = static_cast<value_type>(9e-3);

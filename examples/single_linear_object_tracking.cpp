@@ -6,13 +6,21 @@
 #include "trackingLib/motion/motion_model_cv.hpp"               // IWYU pragma: keep
 #include "trackingLib/observation/position_observation_model.h" // IWYU pragma: keep
 
+#include <fstream>
 #include <iostream>
 #include <random>
 
 using namespace tracking;
 
-int main()
+int main(int argc, char** argv)
 {
+  // Optional structured CSV export (one row per step) for offline visualization; see examples/viz.
+  // Console output above is unaffected. Path defaults so a plain `./single_linear_object_tracking`
+  // run behaves exactly as before.
+  const std::string csvPath = (argc > 1) ? argv[1] : "single_linear_track.csv";
+  std::ofstream     csv(csvPath);
+  csv << "step,t,gt_x,gt_y,z_x,z_y,est_x,est_y,est_vx,est_vy,P_xx,P_xy,P_yy,use_kalman\n";
+
   // Define a MotionModelCV with full covariance matrix
   // State: [X, VX, Y, VY] - 4D state for constant velocity model
   using MM = motion::MotionModelCV<math::FullCovarianceMatrixPolicy<float64>>;
@@ -68,7 +76,7 @@ int main()
 
   // Simulation parameters
   const value_type dt       = static_cast<value_type>(0.1); // time step of 0.1 seconds
-  const sint32     numSteps = 20;                           // simulate 20 time steps (2 seconds total)
+  const sint32     numSteps = 40;                           // simulate 40 time steps (4 seconds total)
 
   // Ground-truth object: a perfect constant-velocity trajectory the filter is trying to recover.
   // The measurements below are noisy samples of this trajectory.
@@ -77,12 +85,13 @@ int main()
   const value_type gtVx = static_cast<value_type>(10.0);
   const value_type gtVy = static_cast<value_type>(2.5);
 
-  // Measurement noise: position sensor with a standard deviation of 3.0 m per axis (R = diag(9.0, 9.0)).
-  // The noise is deliberately large: each information-form update adds only H'*inv(R)*H = 1/sigma^2 of
-  // information, so together with the very low initial information above the information matrix needs a
-  // few measurements before its determinant is large enough to invert — i.e. the InformationFilter
-  // bootstraps for three steps and only then switches to the KalmanFilter.
-  const value_type measStd = static_cast<value_type>(3.0);
+  // Measurement noise: position sensor with a standard deviation of 1.0 m per axis (R = diag(1.0, 1.0)).
+  // Each information-form update adds only H'*inv(R)*H = 1/sigma^2 of information, so together with the
+  // very low initial information above and a switch threshold tuned for this noise level (see the
+  // determinant() check below), the information matrix still needs a few measurements before it is
+  // well-conditioned enough to invert — i.e. the InformationFilter bootstraps for a few steps and only
+  // then switches to the KalmanFilter.
+  const value_type measStd = static_cast<value_type>(1.0);
   // clang-format off
   const PositionObservationType::MeasurementCov R = PositionObservationType::MeasurementCovFromList({
     {measStd * measStd, static_cast<value_type>(0.0)},
@@ -120,14 +129,18 @@ int main()
   std::string filter_cov_str = "  Information Matrix (Y):";
   bool        useKalman      = false;
 
-  // Print the current Cartesian state estimate. While the InformationFilter is running, the stored vector
-  // is the information vector y = Y*x rather than the mean, so the mean is recovered on a throwaway copy
-  // (x = Y^-1 * y) purely for display — the running filter state is left untouched.
-  auto printEstimate = [&](const char* label) {
+  // Recover the current Cartesian state estimate and covariance. While the InformationFilter is
+  // running, the stored vector/matrix are the information vector y = Y*x and information matrix Y
+  // rather than the mean and covariance, so both are recovered on a throwaway copy (x = Y^-1 * y,
+  // P = Y^-1) purely for display/export — the running filter state is left untouched.
+  auto getEstimate = [&]() {
     value_type ex  = motionModel.getX();
     value_type ey  = motionModel.getY();
     value_type evx = motionModel.getVx();
     value_type evy = motionModel.getVy();
+    value_type pXX = static_cast<const MM&>(motionModel).getCov()()(0, 0).value();
+    value_type pXY = static_cast<const MM&>(motionModel).getCov()()(0, 2).value();
+    value_type pYY = static_cast<const MM&>(motionModel).getCov()()(2, 2).value();
     if (!useKalman)
     {
       MM tmp = static_cast<const MM&>(motionModel);
@@ -136,7 +149,21 @@ int main()
       ey  = tmp.getY();
       evx = tmp.getVx();
       evy = tmp.getVy();
+      if (tmp.invertCov().has_value())
+      {
+        pXX = static_cast<const MM&>(tmp).getCov()()(0, 0).value();
+        pXY = static_cast<const MM&>(tmp).getCov()()(0, 2).value();
+        pYY = static_cast<const MM&>(tmp).getCov()()(2, 2).value();
+      }
     }
+    return std::make_tuple(ex, ey, evx, evy, pXX, pXY, pYY);
+  };
+
+  auto printEstimate = [&](const char* label) {
+    const auto [ex, ey, evx, evy, pXX, pXY, pYY] = getEstimate();
+    static_cast<void>(pXX);
+    static_cast<void>(pXY);
+    static_cast<void>(pYY);
     std::cout << label << " (" << ex << ", " << ey << ") v=(" << evx << ", " << evy << ")" << std::endl;
   };
 
@@ -162,7 +189,7 @@ int main()
       // Kalman regime: predict, then correct with the (x, y) measurement in state space.
       motionModel.predict(dt, kalmanFilter, egoMotion);
       printEstimate("  Predicted State:");
-      motionModel.update(kalmanFilter, obs);
+      motionModel.update(kalmanFilter, egoMotion, obs);
     }
     else
     {
@@ -171,12 +198,13 @@ int main()
       // matrix until its covariance becomes well-defined.
       motionModel.predict(dt, informationFilter, egoMotion);
       printEstimate("  Predicted State:");
-      motionModel.update(informationFilter, obs);
+      motionModel.update(informationFilter, egoMotion, obs);
 
       // Hand over to the Kalman filter once the information matrix is well-conditioned. Recover the state
       // mean from the information vector first (needs Y while it is still the information matrix), then
-      // invert the information matrix into a covariance (Y -> P).
-      if (static_cast<const MM&>(motionModel).getCov().determinant() > 1e-6)
+      // invert the information matrix into a covariance (Y -> P). The threshold (1e-2, vs. 1e-6 when
+      // measStd was 3.0) is tuned for the current measStd so the bootstrap still spans a few steps.
+      if (static_cast<const MM&>(motionModel).getCov().determinant() > 1e-2)
       {
         motionModel.convertStateVecIntoStateSpace();
         if (motionModel.invertCov().has_value())
@@ -199,6 +227,10 @@ int main()
     std::cout << filter_cov_str << std::endl;
     std::cout << static_cast<const MM&>(motionModel).getCov()() << std::endl;
     std::cout << std::endl;
+
+    const auto [ex, ey, evx, evy, pXX, pXY, pYY] = getEstimate();
+    csv << step << ',' << currentTime << ',' << gtX << ',' << gtY << ',' << zx << ',' << zy << ',' << ex << ',' << ey << ','
+        << evx << ',' << evy << ',' << pXX << ',' << pXY << ',' << pYY << ',' << (useKalman ? 1 : 0) << '\n';
   }
 
   std::cout << "Simulation completed successfully!" << std::endl;

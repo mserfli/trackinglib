@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "trackingLib/env/ego_motion.hpp"         // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
 #include "trackingLib/observation/bearing_observation_model.h"
 #include "trackingLib/observation/position_observation_model.h"
@@ -48,6 +49,16 @@ void expectSamePosterior(const ModelA_& actual, const ModelB_& expected, const T
   }
 }
 
+/// \brief Zero-motion EgoMotion (no sensor platform motion), for tests that don't exercise ego motion compensation
+template <typename CovarianceMatrixPolicy_>
+auto makeNoEgoMotion() -> tracking::env::EgoMotion<CovarianceMatrixPolicy_>
+{
+  using EgoMotionInst = tracking::env::EgoMotion<CovarianceMatrixPolicy_>;
+  return EgoMotionInst(typename EgoMotionInst::InertialMotion{},
+                       typename EgoMotionInst::Geometry{},
+                       static_cast<typename CovarianceMatrixPolicy_::value_type>(1.0));
+}
+
 /// \brief Prior used across the cross-check tests (correlated, positive definite)
 template <typename MM_>
 auto makePrior() -> MM_
@@ -85,9 +96,11 @@ TEST(MeasurementUpdateNonlinear, update_KalmanFullRangeBearing__MatchesManualEkf
   const auto x0 = mm._vec;
   const auto P0 = mm._cov;
 
+  const auto egoMotion = makeNoEgoMotion<FullPolicy>();
+
   typename RbFull::JacobianMatrix H{};
-  obs.computeJacobian(H, x0);
-  const auto nu = obs.computeInnovation(obs.getVec(), obs.predictMeasurement(x0));
+  obs.computeJacobian(H, x0, egoMotion);
+  const auto nu = obs.computeInnovation(obs.getVec(), obs.predictMeasurement(x0, egoMotion));
 
   const tracking::math::Matrix<Testvalue_type, 4, 2>    PHt{P0 * H.transpose()};
   const tracking::math::SquareMatrix<Testvalue_type, 2> S{(H * PHt) + obs.getCov()()};
@@ -102,7 +115,7 @@ TEST(MeasurementUpdateNonlinear, update_KalmanFullRangeBearing__MatchesManualEkf
                                                              ((K * obs.getCov()()) * K.transpose())};
 
   // call UUT
-  mm.update(KalmanFull{}, obs);
+  mm.update(KalmanFull{}, egoMotion, obs);
 
   for (auto row = 0; row < StateDefCV::NUM_STATE_VARIABLES; ++row)
   {
@@ -124,8 +137,9 @@ TEST(MeasurementUpdateNonlinear, update_InformationVsKalman_RangeBearing__SamePo
   mmInfo._cov = mmInfo._cov.inverse().value();
   mmInfo._vec = static_cast<typename MMFull::StateVec>(mmInfo._cov() * mmInfo._vec);
 
-  mmKalman.update(KalmanFull{}, obs);
-  mmInfo.update(InformationFull{}, obs);
+  const auto egoMotion = makeNoEgoMotion<FullPolicy>();
+  mmKalman.update(KalmanFull{}, egoMotion, obs);
+  mmInfo.update(InformationFull{}, egoMotion, obs);
 
   // transform the information model back into state space for comparison
   mmInfo.convertStateVecIntoStateSpace();
@@ -142,8 +156,10 @@ TEST(MeasurementUpdateNonlinear, update_KalmanFactoredVsFull_RangeBearing__SameP
   const auto obsFull = makeRangeBearingObs<RbFull>();
   const auto obsFact = makeRangeBearingObs<RbFact>();
 
-  mmFull.update(KalmanFull{}, obsFull);
-  mmFact.update(KalmanFact{}, obsFact);
+  const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
+  const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
+  mmFull.update(KalmanFull{}, egoMotionFull, obsFull);
+  mmFact.update(KalmanFact{}, egoMotionFact, obsFact);
 
   expectSamePosterior(mmFact, mmFull, 1e-9, 1e-9);
 }
@@ -158,8 +174,9 @@ TEST(MeasurementUpdateNonlinear, update_InformationFactoredVsKalmanFactored_Rang
   mmInfo._cov = mmInfo._cov.inverse().value();
   mmInfo._vec = static_cast<typename MMFact::StateVec>(mmInfo._cov() * mmInfo._vec);
 
-  mmKalman.update(KalmanFact{}, obs);
-  mmInfo.update(InformationFact{}, obs);
+  const auto egoMotion = makeNoEgoMotion<FactoredPolicy>();
+  mmKalman.update(KalmanFact{}, egoMotion, obs);
+  mmInfo.update(InformationFact{}, egoMotion, obs);
 
   // transform the information model back into state space for comparison
   mmInfo.convertStateVecIntoStateSpace();
@@ -174,11 +191,12 @@ TEST(MeasurementUpdateNonlinear, update_KalmanFullSequentialVsBlock_RangeBearing
   auto             mmSequential = makePrior<MMFull>();
   const auto       obs          = makeRangeBearingObs<RbFull>();
   const KalmanFull filter{};
+  const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
 
   // H is evaluated once at the prior and the sequential path re-linearizes later innovations
   // around the entry state, so the equality with the block update also holds for nonlinear models
-  mmBlock.update<update_mode::Block>(filter, obs);
-  mmSequential.update<update_mode::Sequential>(filter, obs);
+  mmBlock.update<update_mode::Block>(filter, egoMotion, obs);
+  mmSequential.update<update_mode::Sequential>(filter, egoMotion, obs);
 
   expectSamePosterior(mmSequential, mmBlock, 1e-10, 1e-10);
 }
@@ -202,8 +220,9 @@ TEST(MeasurementUpdateNonlinear, update_BearingWrapAcrossPi__CorrectionTakesShor
     {0.0, 0.0004}
   });
   // clang-format on
+  const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
-  mm.update(KalmanFull{}, obs);
+  mm.update(KalmanFull{}, egoMotion, obs);
 
   // wrapped small innovation: the position correction stays small (bearing gain * 0.08 rad at
   // range 10 is well below 1 m); the unwrapped innovation would displace the state by several 10 m
@@ -226,10 +245,12 @@ TEST(MeasurementUpdateNonlinear, update_ComposedRangeBearingPlusPosition_Factore
   const auto posFull = PosFull::FromLists({10.4, 5.2}, {{1.0, 0.0}, {0.0, 0.5}});
   const auto posFact = PosFact::FromLists({10.4, 5.2}, {{1.0, 0.0}, {0.0, 0.5}});
   // clang-format on
+  const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
+  const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
 
   // composed nonlinear + linear stacking must agree across the covariance representations
-  mmFull.update(KalmanFull{}, rbFull, posFull);
-  mmFact.update(KalmanFact{}, rbFact, posFact);
+  mmFull.update(KalmanFull{}, egoMotionFull, rbFull, posFull);
+  mmFact.update(KalmanFact{}, egoMotionFact, rbFact, posFact);
 
   expectSamePosterior(mmFact, mmFull, 1e-9, 1e-9);
 }
@@ -243,12 +264,13 @@ TEST(MeasurementUpdateNonlinear, update_ComposedRangeBearing_MatchesJointRangeBe
   const auto       range        = RangeFull::FromLists({11.3}, {{0.04}});
   const auto       bearing      = BearingFull::FromLists({0.50}, {{0.0025}});
   const KalmanFull filter{};
+  const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
 
   // the diagonal R of makeRangeBearingObs() splits exactly into these two scalar model
   // covariances, so both stacking modes must reproduce the joint posterior
-  mmJoint.update(filter, joint);
-  mmBlock.update<update_mode::Block>(filter, range, bearing);
-  mmSequential.update<update_mode::Sequential>(filter, range, bearing);
+  mmJoint.update(filter, egoMotion, joint);
+  mmBlock.update<update_mode::Block>(filter, egoMotion, range, bearing);
+  mmSequential.update<update_mode::Sequential>(filter, egoMotion, range, bearing);
 
   expectSamePosterior(mmBlock, mmJoint, 1e-10, 1e-10);
   expectSamePosterior(mmSequential, mmJoint, 1e-10, 1e-10);
@@ -299,7 +321,7 @@ TEST(MeasurementUpdateNonlinear, predictUpdateLoop_RangeBearingDoppler__Converge
     z.at_unsafe(RbdFull::MEAS_DOPPLER) = ((px * vxTrue) + (py * vyTrue)) / range;
     const RbdFull obs{z, R};
 
-    mm.update(filter, obs);
+    mm.update(filter, egoMotion, obs);
   }
 
   const Testvalue_type tEnd = static_cast<Testvalue_type>(steps) * dt;
@@ -367,13 +389,13 @@ TEST(MeasurementUpdateNonlinear, predictUpdateLoop_DopplerImprovesVelocity__Smal
     typename RbFull::MeasurementVec zRb{};
     zRb.at_unsafe(RbFull::MEAS_RANGE)   = range;
     zRb.at_unsafe(RbFull::MEAS_BEARING) = std::atan2(py, px);
-    mmRb.update(filter, RbFull{zRb, Rrb});
+    mmRb.update(filter, egoMotion, RbFull{zRb, Rrb});
 
     typename RbdFull::MeasurementVec zRbd{};
     zRbd.at_unsafe(RbdFull::MEAS_RANGE)   = range;
     zRbd.at_unsafe(RbdFull::MEAS_BEARING) = std::atan2(py, px);
     zRbd.at_unsafe(RbdFull::MEAS_DOPPLER) = ((px * vxTrue) + (py * vyTrue)) / range;
-    mmRbd.update(filter, RbdFull{zRbd, Rrbd});
+    mmRbd.update(filter, egoMotion, RbdFull{zRbd, Rrbd});
   }
 
   // the doppler measurement adds independent radial velocity information every step:

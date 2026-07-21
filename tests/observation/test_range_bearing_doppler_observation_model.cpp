@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "trackingLib/env/ego_motion.hpp"       // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.h" // IWYU pragma: keep  (StateDefCV)
 #include "trackingLib/observation/range_bearing_doppler_observation_model.h"
 #include "trackingLib/observation/sensor_mounting_pose.h"
@@ -9,6 +10,15 @@ using Testvalue_type = float64;
 using FullPolicy     = tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>;
 using FactoredPolicy = tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>;
 using StateDefCV     = tracking::motion::StateDefCV;
+
+template <typename CovarianceMatrixPolicy_>
+auto makeNoEgoMotion() -> tracking::env::EgoMotion<CovarianceMatrixPolicy_>
+{
+  using EgoMotionInst = tracking::env::EgoMotion<CovarianceMatrixPolicy_>;
+  return EgoMotionInst(typename EgoMotionInst::InertialMotion{},
+                       typename EgoMotionInst::Geometry{},
+                       static_cast<typename CovarianceMatrixPolicy_::value_type>(1.0));
+}
 
 // instatiate all templates for full coverage report
 template class tracking::observation::RangeBearingDopplerObservationModel<FullPolicy, StateDefCV>;
@@ -46,8 +56,13 @@ void expectJacobianMatchesFiniteDifference(const ObservationModel_&             
                                            const typename ObservationModel_::StateVec& state,
                                            const Testvalue_type                        tol)
 {
+  using EgoMotionInst  = typename ObservationModel_::EgoMotionType;
+  const auto egoMotion = EgoMotionInst(typename EgoMotionInst::InertialMotion{},
+                                       typename EgoMotionInst::Geometry{},
+                                       static_cast<typename EgoMotionInst::value_type>(1.0));
+
   typename ObservationModel_::JacobianMatrix H{};
-  obs.computeJacobian(H, state);
+  obs.computeJacobian(H, state, egoMotion);
 
   const Testvalue_type eps = 1e-6;
   for (auto col = 0; col < ObservationModel_::DimX; ++col)
@@ -56,8 +71,8 @@ void expectJacobianMatchesFiniteDifference(const ObservationModel_&             
     auto stateMinus = state;
     statePlus.at_unsafe(col) += eps;
     stateMinus.at_unsafe(col) -= eps;
-    const auto hPlus  = obs.predictMeasurement(statePlus);
-    const auto hMinus = obs.predictMeasurement(stateMinus);
+    const auto hPlus  = obs.predictMeasurement(statePlus, egoMotion);
+    const auto hMinus = obs.predictMeasurement(stateMinus, egoMotion);
     for (auto row = 0; row < ObservationModel_::DimZ; ++row)
     {
       const Testvalue_type fd = (hPlus.at_unsafe(row) - hMinus.at_unsafe(row)) / (2 * eps);
@@ -77,9 +92,10 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__ReturnsPolarCoordi
     {0, 0, 1}
   });
   // clang-format on
-  const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
+  const auto state     = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
+  const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
-  const auto predicted = obs.predictMeasurement(state);
+  const auto predicted = obs.predictMeasurement(state, egoMotion);
 
   EXPECT_NEAR(predicted.at_unsafe(RbdModel::MEAS_RANGE), 5.0, 1e-12);
   EXPECT_NEAR(predicted.at_unsafe(RbdModel::MEAS_BEARING), std::atan2(4.0, 3.0), 1e-12);
@@ -130,9 +146,10 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__DopplerZeroWithout
     {0, 0, 1}
   });
   // clang-format on
-  const auto state = RbdModelPosOnly::StateVec::FromList({3.0, 4.0}); // {X, Y}
+  const auto state     = RbdModelPosOnly::StateVec::FromList({3.0, 4.0}); // {X, Y}
+  const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
-  const auto predicted = obs.predictMeasurement(state);
+  const auto predicted = obs.predictMeasurement(state, egoMotion);
 
   EXPECT_NEAR(predicted.at_unsafe(RbdModelPosOnly::MEAS_RANGE), 5.0, 1e-12);
   EXPECT_NEAR(predicted.at_unsafe(RbdModelPosOnly::MEAS_BEARING), std::atan2(4.0, 3.0), 1e-12);
@@ -149,10 +166,11 @@ TEST(RangeBearingDopplerObservationModel, computeJacobian__DopplerRowZeroWithout
     {0, 0, 1}
   });
   // clang-format on
-  const auto state = RbdModelPosOnly::StateVec::FromList({3.0, 4.0});
+  const auto state     = RbdModelPosOnly::StateVec::FromList({3.0, 4.0});
+  const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   typename RbdModelPosOnly::JacobianMatrix H{};
-  obs.computeJacobian(H, state);
+  obs.computeJacobian(H, state, egoMotion);
 
   // range/bearing rows are still populated
   EXPECT_NEAR(H.at_unsafe(RbdModelPosOnly::MEAS_RANGE, StateDefPosOnly::X), 3.0 / 5.0, 1e-12);
@@ -174,9 +192,10 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__AppliesSensorMount
     {0, 0, 1}
   }, pose);
   // clang-format on
-  const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
+  const auto state     = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
+  const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
-  const auto predicted = obs.predictMeasurement(state);
+  const auto predicted = obs.predictMeasurement(state, egoMotion);
 
   // p - t = (2, 4), rotated into the sensor frame by -90deg: (4, -2); v = (1, 2) rotated: (2, -1)
   EXPECT_NEAR(predicted.at_unsafe(RbdModel::MEAS_RANGE), std::sqrt(20.0), 1e-9);
@@ -198,4 +217,36 @@ TEST(RangeBearingDopplerObservationModel, computeJacobian__MatchesFiniteDifferen
   const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
+}
+
+TEST(RangeBearingDopplerObservationModel, predictMeasurement__CompensatesEgoMotion) // NOLINT
+{
+  // clang-format off
+  const auto obs = RbdModel::FromLists({0, 0, 0}, {
+    {1, 0, 0},
+    {0, 1, 0},
+    {0, 0, 1}
+  });
+  // clang-format on
+  const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
+
+  // nonzero ego COG speed and yaw rate: the sensor (mounted at the tracking-frame origin) itself
+  // moves at (v, 0) + w x r, r = (0 - distCog2Ego, 0) = (v, -w*distCog2Ego)
+  using EgoMotionInst = RbdModel::EgoMotionType;
+  EgoMotionInst::InertialMotion motion{};
+  motion.v = 5.0;
+  motion.w = 0.2;
+  EgoMotionInst::Geometry geometry{};
+  geometry.distCog2Ego = 10.0;
+  const auto egoMotion = EgoMotionInst(motion, geometry, static_cast<Testvalue_type>(1.0));
+
+  const auto predicted = obs.predictMeasurement(state, egoMotion);
+
+  // egoVel = (5, -0.2*10) = (5, -2); vRel = (1 - 5, 2 - (-2)) = (-4, 4)
+  // doppler = (x*vxRel + y*vyRel) / range = (3*-4 + 4*4) / 5 = 0.8
+  EXPECT_NEAR(predicted.at_unsafe(RbdModel::MEAS_DOPPLER), 0.8, 1e-9);
+
+  // the naive (uncompensated) formula would have given (3*1 + 4*2) / 5 = 2.2 - confirm the fix
+  // actually changes the result rather than accidentally cancelling out
+  EXPECT_FALSE(std::abs(predicted.at_unsafe(RbdModel::MEAS_DOPPLER) - 2.2) < 1e-9);
 }

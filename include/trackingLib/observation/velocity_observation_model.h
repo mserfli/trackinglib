@@ -74,10 +74,13 @@ public:
   }
 
   /// \brief Predict the measurement h(x) = [vx, vy]' for the given sensor-frame state
-  /// \param[in] state  Sensor-frame state vector the measurement is predicted for
+  /// \param[in] state      Sensor-frame state vector the measurement is predicted for
+  /// \param[in] egoMotion  Ego motion of the sensor platform (unused, model is a direct velocity measurement)
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurementSensorFrame(const StateVec& state) const -> MeasurementVec
+  auto predictMeasurementSensorFrame(
+      const StateVec& state, const typename BaseExtendedObservationModel::EgoMotionType& egoMotion) const -> MeasurementVec
   {
+    static_cast<void>(egoMotion);
     MeasurementVec predicted{};
     predicted.at_unsafe(MEAS_VX) = state.at_unsafe(StateDef_::VX);
     predicted.at_unsafe(MEAS_VY) = state.at_unsafe(StateDef_::VY);
@@ -91,9 +94,13 @@ public:
   ///
   /// \param[out] jacobian  The measurement Jacobian to be filled (sensor-frame-local partials)
   /// \param[in]  state     Sensor-frame state vector the Jacobian is linearized at (unused, model is linear)
-  void computeJacobianSensorFrame(JacobianMatrix& jacobian, const StateVec& state) const
+  /// \param[in]  egoMotion Ego motion of the sensor platform (unused, model is a direct velocity measurement)
+  void computeJacobianSensorFrame(JacobianMatrix&                                             jacobian,
+                                  const StateVec&                                             state,
+                                  const typename BaseExtendedObservationModel::EgoMotionType& egoMotion) const
   {
     static_cast<void>(state);
+    static_cast<void>(egoMotion);
     jacobian.setZeros();
     jacobian.at_unsafe(MEAS_VX, StateDef_::VX) = static_cast<value_type>(1.0);
     jacobian.at_unsafe(MEAS_VY, StateDef_::VY) = static_cast<value_type>(1.0);

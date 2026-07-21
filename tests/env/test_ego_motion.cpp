@@ -75,6 +75,46 @@ protected:
     }
   }
 
+  void test_GetVelocityAt_ZeroYawRate__ReducesToPureTranslation()
+  {
+    motion.w = 0.0;
+
+    auto egoMotion = EgoMotionType{motion, geometry, dt};
+
+    const auto velAtCog   = egoMotion.getVelocityAt(geometry.distCog2Ego, 0.0);
+    const auto velAtOther = egoMotion.getVelocityAt(geometry.distCog2Ego + 3.0, 2.0);
+
+    EXPECT_NEAR(velAtCog.x(), motion.v, epsilon);
+    EXPECT_NEAR(velAtCog.y(), 0.0, epsilon);
+    EXPECT_NEAR(velAtOther.x(), motion.v, epsilon);
+    EXPECT_NEAR(velAtOther.y(), 0.0, epsilon);
+  }
+
+  void test_GetVelocityAt_ZeroMountOffset__ReducesToCogVelocity()
+  {
+    auto egoMotion = EgoMotionType{motion, geometry, dt};
+
+    const auto velAtCog = egoMotion.getVelocityAt(geometry.distCog2Ego, 0.0);
+
+    EXPECT_NEAR(velAtCog.x(), motion.v, epsilon);
+    EXPECT_NEAR(velAtCog.y(), 0.0, epsilon);
+  }
+
+  void test_GetVelocityAt_NonzeroYawRateAndOffset__AppliesLeverArmCrossProduct()
+  {
+    auto egoMotion = EgoMotionType{motion, geometry, dt};
+
+    const value_type mountX = geometry.distCog2Ego + 2.0; // rx = 2.0
+    const value_type mountY = 3.0;                        // ry = 3.0
+
+    const auto vel = egoMotion.getVelocityAt(mountX, mountY);
+
+    // v_point = (v, 0) + w x r = (v - w*ry, w*rx)
+    const value_type tol = 10 * epsilon;
+    EXPECT_NEAR(vel.x(), motion.v - (motion.w * 3.0), tol);
+    EXPECT_NEAR(vel.y(), motion.w * 2.0, tol);
+  }
+
   void test_CircularMotionDisplacement__Success()
   {
     // Use larger ω for circular motion
@@ -129,6 +169,21 @@ TYPED_TEST(GTestEgoMotion, LinearMotionDisplacement__Success)
 TYPED_TEST(GTestEgoMotion, CircularMotionDisplacement__Success)
 {
   GTestEgoMotion<TypeParam>::test_CircularMotionDisplacement__Success();
+}
+
+TYPED_TEST(GTestEgoMotion, GetVelocityAt_ZeroYawRate__ReducesToPureTranslation)
+{
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_ZeroYawRate__ReducesToPureTranslation();
+}
+
+TYPED_TEST(GTestEgoMotion, GetVelocityAt_ZeroMountOffset__ReducesToCogVelocity)
+{
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_ZeroMountOffset__ReducesToCogVelocity();
+}
+
+TYPED_TEST(GTestEgoMotion, GetVelocityAt_NonzeroYawRateAndOffset__AppliesLeverArmCrossProduct)
+{
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_NonzeroYawRateAndOffset__AppliesLeverArmCrossProduct();
 }
 
 } // namespace env

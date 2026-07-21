@@ -122,8 +122,8 @@ motionModel.update(kalmanFilter, posObs, velObs);
 For the Information filter the same call operates in information space; the observation models are
 evaluated on the state mean internally and the update accumulates information additively
 (`Y += H'*inv(R)*H`). See the [update sequence diagram](doc/info_filter_update.md) for the full
-flow and the [single object tracking example](examples/single_object_tracking.cpp) for a runnable
-scenario combining prediction and updates.
+flow and the [single object tracking example](examples/single_linear_object_tracking.cpp) for a
+runnable scenario combining prediction and updates.
 
 
 **Core Components**:
@@ -155,6 +155,25 @@ scenario combining prediction and updates.
 - **Quality**: clang-format, clang-tidy, Doxygen
 - **Error Handling**: tl::expected (Rust-style Result pattern)
 
+
+## Visualized Examples
+
+Both `examples/*.cpp` can optionally export a per-step CSV alongside their console output, rendered
+into an animated GIF by `examples/viz/render.py` (ground truth, noisy measurements, the filter's
+estimated track, and a 1-sigma covariance ellipse). See [examples/viz/README.md](examples/viz/README.md)
+for how to regenerate these.
+
+**Single linear object tracking** ([source](examples/single_linear_object_tracking.cpp)) — a
+stationary sensor tracking a constant-velocity object via direct (x, y) position measurements,
+bootstrapped by the InformationFilter and handed over to the KalmanFilter:
+
+![Single linear object tracking](doc/media/single_linear_tracking.gif)
+
+**Single nonlinear object tracking** ([source](examples/single_nonlinear_object_tracking.cpp)) — a
+moving ego vehicle (CTRV arc) tracking a crossing object via a front-mounted radar's noisy
+range/bearing/doppler measurements, EKF-linearized at each step:
+
+![Single nonlinear object tracking](doc/media/single_nonlinear_tracking.gif)
 
 ## Measurement Update
 
@@ -200,8 +219,8 @@ cmake --build .
 ctest --output-on-failure
 
 # Build examples (optional, enabled by default)
-cmake --build . --target single_object_tracking
-./single_object_tracking
+cmake --build . --target single_linear_object_tracking single_nonlinear_object_tracking
+./single_linear_object_tracking
 ```
 
 ### Build Options

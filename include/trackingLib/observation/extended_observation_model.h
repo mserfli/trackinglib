@@ -3,6 +3,7 @@
 
 #include "base/first_include.h" // IWYU pragma: keep
 #include "base/require_abstract_intf.h"
+#include "env/ego_motion.h"
 #include "math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "math/linalg/matrix.h"
 #include "math/linalg/vector.h"
@@ -29,8 +30,8 @@ namespace observation
 /// toSensorFrame()/applyJacobianFrameRotation() before delegating to sensor-frame-only hooks that
 /// concrete models must provide (no vtable entry is involved — resolved statically via the CRTP
 /// derived() downcast):
-///   - predictMeasurementSensorFrame(const StateVec&) const -> MeasurementVec  (h(x) in sensor frame)
-///   - computeJacobianSensorFrame(JacobianMatrix&, const StateVec&) const      (dh/dx in sensor frame)
+///   - predictMeasurementSensorFrame(const StateVec&, const EgoMotionType&) const -> MeasurementVec  (h(x) in sensor frame)
+///   - computeJacobianSensorFrame(JacobianMatrix&, const StateVec&, const EgoMotionType&) const      (dh/dx in sensor frame)
 /// and may shadow computeInnovation() for measurement components that need special innovation
 /// handling (e.g. angle wrapping). Because the base applies the transform, a concrete model cannot
 /// forget it or apply it inconsistently between prediction and Jacobian; the mandatory two hooks
@@ -62,6 +63,7 @@ public:
   using StateVec       = math::Vector<value_type, DimX>;
   using JacobianMatrix = math::Matrix<value_type, DimZ, DimX>;
   using SensorPose     = SensorMountingPose<value_type>;
+  using EgoMotionType  = env::EgoMotion<CovarianceMatrixPolicy>;
 
   // rule of 5 declarations
   ExtendedObservationModel() = default;
@@ -146,11 +148,12 @@ public:
   /// guarantees every concrete model applies the sensor mounting pose consistently, since the
   /// transform lives here rather than being repeated (or forgotten) per model.
   ///
-  /// \param[in] state  Tracking-frame state vector the measurement is predicted for
+  /// \param[in] state      Tracking-frame state vector the measurement is predicted for
+  /// \param[in] egoMotion  Ego motion of the sensor platform
   /// \return MeasurementVec  Predicted measurement h(x)
-  [[nodiscard]] auto predictMeasurement(const StateVec& state) const -> MeasurementVec
+  [[nodiscard]] auto predictMeasurement(const StateVec& state, const EgoMotionType& egoMotion) const -> MeasurementVec
   {
-    return derived().predictMeasurementSensorFrame(toSensorFrame(state));
+    return derived().predictMeasurementSensorFrame(toSensorFrame(state), egoMotion);
   }
 
   /// \brief Compute the measurement Jacobian H = dh/dx for the given tracking-frame state
@@ -162,9 +165,10 @@ public:
   ///
   /// \param[out] jacobian  The measurement Jacobian to be filled
   /// \param[in]  state     Tracking-frame state vector the Jacobian is linearized at
-  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state) const
+  /// \param[in]  egoMotion Ego motion of the sensor platform
+  void computeJacobian(JacobianMatrix& jacobian, const StateVec& state, const EgoMotionType& egoMotion) const
   {
-    derived().computeJacobianSensorFrame(jacobian, toSensorFrame(state));
+    derived().computeJacobianSensorFrame(jacobian, toSensorFrame(state), egoMotion);
     applyJacobianFrameRotation(jacobian);
   }
 

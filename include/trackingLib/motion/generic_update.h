@@ -2,6 +2,7 @@
 #define F6A7B8C9_1D2E_4F3A_E4B5_6C7D8E9F0A1B
 
 #include "base/first_include.h" // IWYU pragma: keep
+#include "env/ego_motion.h"
 #include "filter/information_filter.h"
 #include "filter/kalman_filter.h"
 #include "filter/update_mode.h"
@@ -38,30 +39,39 @@ public:
   using KalmanFilterType      = filter::KalmanFilter<CovarianceMatrixPolicy_>;
   using InformationFilterType = filter::InformationFilter<CovarianceMatrixPolicy_>;
   using DefaultUpdateMode     = filter::update_mode::Default<CovarianceMatrixPolicy_>;
+  using EgoMotionType         = env::EgoMotion<CovarianceMatrixPolicy_>;
 
   /// \brief Measurement update using a KalmanFilter
   /// \tparam UpdateMode_          Update mode tag (defaults to the policy-appropriate mode)
   /// \tparam ObservationModels_   One or more observation model types (composed if multiple)
   /// \param[in]     filter             The filter instance
+  /// \param[in]     egoMotion          Ego motion of the sensor platform, forwarded to each observation model
   /// \param[in,out] motionModel        The motion model whose state and covariance are updated
   /// \param[in]     observationModels  Observation models carrying measurement z and covariance R
   /// \note Defensive skips are silent: degenerate measurement rows are dropped and a stacked R
   ///       that cannot be factorized/decomposed skips the whole update — the void return gives
   ///       the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = DefaultUpdateMode, typename... ObservationModels_>
-  static void run(const KalmanFilterType& filter, MotionModel_& motionModel, const ObservationModels_&... observationModels);
+  static void run(const KalmanFilterType& filter,
+                  const EgoMotionType&    egoMotion,
+                  MotionModel_&           motionModel,
+                  const ObservationModels_&... observationModels);
 
   /// \brief Measurement update using an InformationFilter
   /// \tparam UpdateMode_          Update mode tag (defaults to the policy-appropriate mode)
   /// \tparam ObservationModels_   One or more observation model types (composed if multiple)
   /// \param[in]     filter             The filter instance
+  /// \param[in]     egoMotion          Ego motion of the sensor platform, forwarded to each observation model
   /// \param[in,out] motionModel        The motion model whose information vector and matrix are updated
   /// \param[in]     observationModels  Observation models carrying measurement z and covariance R
   /// \note Defensive skips are silent: degenerate measurement rows are dropped and a stacked R
   ///       that cannot be inverted/factorized skips the whole update — the void return gives
   ///       the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = DefaultUpdateMode, typename... ObservationModels_>
-  static void run(const InformationFilterType& filter, MotionModel_& motionModel, const ObservationModels_&... observationModels);
+  static void run(const InformationFilterType& filter,
+                  const EgoMotionType&         egoMotion,
+                  MotionModel_&                motionModel,
+                  const ObservationModels_&... observationModels);
 
 private:
   /// \brief Recursion end of the observation stacking
@@ -72,7 +82,8 @@ private:
   static void stackObservations(math::Vector<value_type, TotalDimZ_>&        innovation,
                                 math::Matrix<value_type, TotalDimZ_, DimX_>& H,
                                 math::SquareMatrix<value_type, TotalDimZ_>&  R,
-                                const math::Vector<value_type, DimX_>&       state);
+                                const math::Vector<value_type, DimX_>&       state,
+                                const EgoMotionType&                         egoMotion);
 
   /// \brief Stack innovation, Jacobian and covariance blocks of the observation models
   /// \tparam TotalDimZ_  Total stacked measurement dimension
@@ -84,6 +95,7 @@ private:
   /// \param[in,out] H           Stacked measurement Jacobian to be filled
   /// \param[in,out] R           Stacked (block-diagonal) measurement covariance to be filled
   /// \param[in]     state       State vector (state space) the models are evaluated at
+  /// \param[in]     egoMotion   Ego motion of the sensor platform, forwarded to each observation model
   /// \param[in]     first       First observation model
   /// \param[in]     rest        Remaining observation models
   template <sint32 TotalDimZ_, sint32 DimX_, sint32 Offset_, typename First_, typename... Rest_>
@@ -91,6 +103,7 @@ private:
                                 math::Matrix<value_type, TotalDimZ_, DimX_>& H,
                                 math::SquareMatrix<value_type, TotalDimZ_>&  R,
                                 const math::Vector<value_type, DimX_>&       state,
+                                const EgoMotionType&                         egoMotion,
                                 const First_&                                first,
                                 const Rest_&... rest);
 };

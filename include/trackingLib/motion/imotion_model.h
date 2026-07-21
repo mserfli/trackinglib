@@ -182,15 +182,16 @@ public:
   /// \tparam UpdateMode_         Update mode tag (filter::update_mode::Block or ::Sequential)
   /// \tparam ObservationModels_  One or more observation model types (composed if multiple)
   /// \param[in] filter             The kalman filter instance
+  /// \param[in] egoMotion          Ego motion of the sensor platform, forwarded to each observation model
   /// \param[in] observationModels  Observation models carrying measurement z and covariance R
   /// \note Defensive skips are silent: measurement rows with a non-positive innovation variance
   ///       are dropped, and a measurement covariance R that cannot be decomposed skips the whole
   ///       update — the void return gives the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = filter::update_mode::Default<CovarianceMatrixPolicy>, typename... ObservationModels_>
-  void update(const KalmanFilterType& filter, const ObservationModels_&... observationModels)
+  void update(const KalmanFilterType& filter, const EgoMotionType& egoMotion, const ObservationModels_&... observationModels)
   {
     generic::Update<MotionModel_, CovarianceMatrixPolicy>::template run<UpdateMode_>(
-        filter, static_cast<MotionModel_&>(*this), observationModels...);
+        filter, egoMotion, static_cast<MotionModel_&>(*this), observationModels...);
   }
 
   /// \brief Information measurement update of the underlying MotionModel (information space)
@@ -206,15 +207,16 @@ public:
   /// \tparam UpdateMode_         Update mode tag (filter::update_mode::Block or ::Sequential)
   /// \tparam ObservationModels_  One or more observation model types (composed if multiple)
   /// \param[in] filter             The information filter instance
+  /// \param[in] egoMotion          Ego motion of the sensor platform, forwarded to each observation model
   /// \param[in] observationModels  Observation models carrying measurement z and covariance R
   /// \note Defensive skips are silent: measurement rows with a non-positive variance are dropped,
   ///       and a non-invertible / non-decomposable measurement covariance R skips the whole
   ///       update — the void return gives the caller no indication of a partial or skipped update.
   template <typename UpdateMode_ = filter::update_mode::Default<CovarianceMatrixPolicy>, typename... ObservationModels_>
-  void update(const InformationFilterType& filter, const ObservationModels_&... observationModels)
+  void update(const InformationFilterType& filter, const EgoMotionType& egoMotion, const ObservationModels_&... observationModels)
   {
     generic::Update<MotionModel_, CovarianceMatrixPolicy>::template run<UpdateMode_>(
-        filter, static_cast<MotionModel_&>(*this), observationModels...);
+        filter, egoMotion, static_cast<MotionModel_&>(*this), observationModels...);
   }
 
   /// \brief Transform information space into state space
