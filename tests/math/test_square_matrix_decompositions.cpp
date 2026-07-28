@@ -514,6 +514,70 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_Double__Success) // NOLINT
   }
 }
 
+TEST(SquareMatrixDecompositions, decomposeLDLT_SingularPositiveSemiDefinite_ExpectError) // NOLINT
+{
+  // Rank-deficient but symmetric, strictly-positive-diagonal PSD matrix: pivot at (1,1)
+  // becomes exactly 0 mid-factorization even though the input diagonal itself is positive.
+  // clang-format off
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
+    {1, 1},
+    {1, 1},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLDLT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
+TEST(SquareMatrixDecompositions, decomposeLDLT_SingularPositiveSemiDefinite_Double_ExpectError) // NOLINT
+{
+  // clang-format off
+  auto cov = SquareMatrix<float64, 2, true>::FromList({
+    {1, 1},
+    {1, 1},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLDLT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
+TEST(SquareMatrixDecompositions, decomposeLDLT_IndefiniteInteriorPivot_ExpectError) // NOLINT
+{
+  // Symmetric, strictly-positive-diagonal, indefinite matrix: pivot at (1,1) becomes
+  // negative mid-factorization even though the input diagonal itself is positive.
+  // clang-format off
+  auto cov = SquareMatrix<float32, 2, true>::FromList({
+    {1, 2},
+    {2, 1},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLDLT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
+TEST(SquareMatrixDecompositions, decomposeLDLT_IndefiniteInteriorPivot_Double_ExpectError) // NOLINT
+{
+  // clang-format off
+  auto cov = SquareMatrix<float64, 2, true>::FromList({
+    {1, 2},
+    {2, 1},
+  });
+  // clang-format on
+
+  // call UUT
+  auto retVal = cov.decomposeLDLT();
+
+  EXPECT_FALSE(retVal.has_value());
+}
+
 TEST(SquareMatrixDecompositions, decomposeUDUT_Double__Success) // NOLINT
 {
   // Create a symmetric positive definite matrix with double precision

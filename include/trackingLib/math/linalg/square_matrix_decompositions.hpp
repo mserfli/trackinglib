@@ -144,6 +144,10 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLDLT() const
         {
           sum -= D.at_unsafe(k) * L.at_unsafe(j, k) * L.at_unsafe(j, k);
         }
+        if (!(sum > static_cast<ValueType_>(0))) // catches <= 0 and NaN, mirrors decomposeLLT
+        {
+          return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
+        }
         D.at_unsafe(j)    = sum;
         L.at_unsafe(j, j) = static_cast<ValueType_>(1);
 
