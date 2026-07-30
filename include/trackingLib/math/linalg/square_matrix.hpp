@@ -208,8 +208,8 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveSemiDefinite
   {
     scale = std::max(scale, std::abs(this->at_unsafe(idx, idx)));
   }
-  const ValueType_ tolerance = std::numeric_limits<ValueType_>::epsilon() * static_cast<ValueType_>(Size_) *
-                               std::max(scale, static_cast<ValueType_>(1));
+  const ValueType_ tolerance =
+      std::numeric_limits<ValueType_>::epsilon() * static_cast<ValueType_>(Size_) * std::max(scale, static_cast<ValueType_>(1));
 
   DiagonalMatrix<ValueType_, Size_>                      D{};
   TriangularMatrix<ValueType_, Size_, true, IsRowMajor_> L{};

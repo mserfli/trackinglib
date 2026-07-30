@@ -113,7 +113,7 @@ inline void Predict<MotionModel_, CovarianceMatrixPolicy_>::run(const value_type
 
       // step 2: Handle the Additive Noise Ge*Pe*Ge.T on the transformed Ytr (never inverts Pe)
       auto       Mtr = Ytr; // state-transitioned copy consumed by the QR solve below
-      const auto H    = math::SquareMatrix<value_type, MotionModel_::NUM_STATE_VARIABLES>(
+      const auto H   = math::SquareMatrix<value_type, MotionModel_::NUM_STATE_VARIABLES>(
           StateMatrix::Identity() + Mtr * (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose()));
       math::SquareMatrix compensated = H.qrSolve(std::move(Mtr));
       compensated.symmetrize();

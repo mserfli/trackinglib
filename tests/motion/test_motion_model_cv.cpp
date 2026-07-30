@@ -273,13 +273,13 @@ TEST(MotionModelCV, predict_fullCov_informationFilter_singularPe_updatesY) // NO
   cov = cov.inverse().value();
   vec = static_cast<typename MM::StateVec>(cov() * vec);
 
-  MM        mm{vec, cov};
+  MM         mm{vec, cov};
   const auto YBefore = mm._cov;
 
   // call UUT
   mm.predict(dt, filter, egoMotion);
 
-  auto changed  = false;
+  auto changed   = false;
   auto allFinite = true;
   for (auto row = 0; row < MM::NUM_STATE_VARIABLES; ++row)
   {
@@ -358,7 +358,7 @@ TEST(MotionModelCV, predict_informationFilter_singularPe_fullMatchesFactored) //
   MMFactored mmFactored{vecFactored, covFactored};
 
   const auto steps = 5;
-  const auto tol    = static_cast<Testvalue_type>(4.5e-4);
+  const auto tol   = static_cast<Testvalue_type>(4.5e-4);
   for (auto i = 0; i < steps; ++i)
   {
     mmFull.predict(dt, filterFull, egoMotionFull);

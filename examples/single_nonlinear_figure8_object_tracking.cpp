@@ -159,8 +159,7 @@ int main(int argc, char** argv)
             << std::endl;
   std::cout << "Filter: InformationFilter (suitable for high initial uncertainty)" << std::endl;
   std::cout << "Filter: KalmanFilter (EKF, after uncertainty has been initialized)" << std::endl;
-  std::cout << "Motion Model: Constant Acceleration (CA/DWPA) - can represent steady curvature, not its reversal"
-            << std::endl;
+  std::cout << "Motion Model: Constant Acceleration (CA/DWPA) - can represent steady curvature, not its reversal" << std::endl;
   std::cout << "Measurements: noisy (range, bearing, doppler), std=(" << rangeStd << " m, " << (bearingStd * 180.0 / M_PI)
             << " deg, " << dopplerStd << " m/s)" << std::endl;
   std::cout << std::endl;
