@@ -18,14 +18,8 @@ jobs:
     - name: Install dependencies
       run: sudo apt-get update && sudo apt-get install -y build-essential cmake doxygen graphviz lcov
 
-    - name: Configure with CMake
-      run: cmake -S . -B build -DCMAKE_CXX_COMPILER=g++ -DCMAKE_CXX_STANDARD=17 -DCMAKE_BUILD_TYPE=Debug -DBUILD_HEADER_TESTS=ON
-
-    - name: Build header tests with CMake
-      run: cmake --build build --target header_tests
-    
-    - name: Run header tests
-      run: ctest --test-dir build -R "header_test_" --output-on-failure
+    - name: Verify self-contained headers
+      run: ./scripts/verify_self_contained_headers.sh
 
   verify-class-contracts:
     runs-on: ubuntu-latest
@@ -64,7 +58,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y build-essential cmake doxygen graphviz lcov
 
     - name: Build coverage report
-      run: ./coverage_report.sh
+      run: ./scripts/coverage_report.sh
 
   build-and-test:
     runs-on: ubuntu-latest

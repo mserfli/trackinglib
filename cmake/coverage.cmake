@@ -229,13 +229,10 @@ function(setup_target_for_coverage_lcov)
     cmake_parse_arguments(Coverage "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(COVERAGE_REPORT_DIR "coverage")
 
-    if(NOT LCOV_PATH)
-        message(FATAL_ERROR "lcov not found! Aborting...")
-    endif() # NOT LCOV_PATH
-
-    if(NOT GENHTML_PATH)
-        message(FATAL_ERROR "genhtml not found! Aborting...")
-    endif() # NOT GENHTML_PATH
+    if(NOT LCOV_PATH OR NOT GENHTML_PATH)
+        message(WARNING "lcov/genhtml not found, skipping coverage target '${Coverage_NAME}'")
+        return()
+    endif()
 
     # Set base directory (as absolute path), or default to PROJECT_SOURCE_DIR
     if(DEFINED Coverage_BASE_DIRECTORY)

@@ -26,15 +26,24 @@ ctest --output-on-failure
 
 # Self-contained-header check (every header must compile standalone; CI job "verify-self-contained-headers")
 cmake .. -DBUILD_HEADER_TESTS=ON && cmake --build . --target header_tests && ctest -R "header_test_" --output-on-failure
+./scripts/verify_self_contained_headers.sh   # equivalent single script; see skill: `verify-self-contained-headers`
 
 # Coverage report -> build_cov/coverage/index.html
-./coverage_report.sh   # from repo root
+./scripts/coverage_report.sh   # from repo root
 
 # Docs -> doxydoc/html/index.html
 doxygen   # from repo root
 
-# rebuild .repo.ctags
-ctags -R --languages=C++ --map-C++=+.h.hpp.tcc.cpp.cxx --kinds-C++=+p+t+u+v-l --fields=+iaS --extras=+q --exclude=build --exclude=.git --exclude=tests -f .repo.tags .
+# Regenerate the example GIFs -> doc/media/*.gif (build examples, run them to CSV, render via
+# examples/viz/render.py). Deterministic inside the pinned .devcontainer image; --check fails if a
+# committed GIF is stale (CI-friendly). Single source of truth for the example->CSV->GIF mapping is
+# the EXAMPLES table in the script. Prefer this over running examples/render by hand.
+# see skill: `regenerate-media`
+./scripts/regenerate_media.sh          # regenerate in place
+./scripts/regenerate_media.sh --check  # verify doc/media is up to date (no writes)
+
+# rebuild .repo.ctags; see skill: `regenerate-ctags`
+./scripts/regenerate_ctags.sh
 ```
 
 Branches: `feat/<kebab-case-description>` (e.g. `feat/math-optimization-analysis-and-improvements`).
@@ -56,7 +65,7 @@ Branches: `feat/<kebab-case-description>` (e.g. `feat/math-optimization-analysis
   it. When a task or plan is clearly complete and verified, say so explicitly and suggest starting
   a fresh session (or compacting) before moving to the next unrelated task, rather than continuing
   to build on an increasingly large conversation.
-- **Plan location**: all plans created in planning mode shall be stored as markdown files in `plans/recent/`. Each plan file shall contain a break down of tasks. The tasks shall be ordered by their execution order. Tasks which can run in parallel shall be flagged accordingly, so these can be handled by subagents. Move the plan file to `plans/archive/` once the all tasks are done and confirmed by the user.
+- **Plan location**: all plans created in planning mode shall be stored as markdown files in `plans/recent/`. Each plan file shall contain a break down of tasks. The tasks shall be ordered by their execution order. Tasks which can run in parallel shall be flagged accordingly, so these can be handled by subagents. Move the plan file to `plans/archive/` once the all tasks are done and confirmed by the user. This applies regardless of any default path a planning tool proposes for a working draft (e.g. Claude Code's Plan Mode writes its working draft under `~/.claude/plans/`, outside this repo) — that default path is scratch space only; the authoritative copy belongs in `plans/recent/` in this repository, written there before the plan is executed.
 
 # Architecture
 
