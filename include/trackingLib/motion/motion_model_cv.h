@@ -72,8 +72,8 @@ public:
   virtual ~MotionModelCV() TEST_REMOVE_FINAL                 = default;
 
   /// \brief Construct a new CV given the vector and the covariance matrix
-  /// \param[in] vec
-  /// \param[in] cov
+  /// \param[in] vec  Initial state vector [x, vx, y, vy]'
+  /// \param[in] cov  Initial state covariance (full or UDU-factored per the covariance policy)
   explicit MotionModelCV(const StateVec& vec, const StateCov& cov);
 
   /// \brief Read access to x velocity

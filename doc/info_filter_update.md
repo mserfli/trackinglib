@@ -118,15 +118,23 @@ sequenceDiagram
 
 ## Observation Models
 
-Concrete observation models derive from `ExtendedObservationModel` (CRTP) and provide two
-statically dispatched hooks — `predictMeasurement()` (`h(x)`) and `computeJacobian()`
-(`H = dh/dx`) — plus an optional shadowed `computeInnovation()` for components that need special
-innovation handling (e.g. angle wrapping). The models shipped with the library are:
+Concrete observation models derive from `ExtendedObservationModel` (CRTP), which owns the public
+`predictMeasurement()`/`computeJacobian()` entry points `GenericUpdate` calls (Template-Method
+pattern): it transforms the state into the sensor frame defined by the model's (optional, static
+SE(2)) mounting pose, delegates to the model's sensor-frame-only hooks —
+`predictMeasurementSensorFrame()` (`h(x)`) and `computeJacobianSensorFrame()` (`H = dh/dx`) — and
+then rotates the returned Jacobian back into the tracking frame. This guarantees the pose
+transform is applied consistently (or not at all, for the default identity pose) without each
+model having to remember to do it. Models may also provide an optional shadowed
+`computeInnovation()` for components that need special innovation handling (e.g. angle wrapping).
+The models shipped with the library are:
 
 | Model | DimZ | Measurement h(x) | Notes |
 |-------|------|------------------|-------|
 | `PositionObservationModel` | 2 | `[X, Y]'` | linear |
 | `VelocityObservationModel` | 2 | `[VX, VY]'` | linear |
+| `RangeObservationModel` | 1 | `sqrt(X^2+Y^2)` | nonlinear |
+| `BearingObservationModel` | 1 | `atan2(Y, X)` | nonlinear, wraps the bearing innovation |
 | `RangeBearingObservationModel` | 2 | `[sqrt(X^2+Y^2), atan2(Y, X)]'` | nonlinear, wraps the bearing innovation |
 | `RangeBearingDopplerObservationModel` | 3 | range/bearing plus radial velocity | nonlinear, wraps the bearing innovation |
 

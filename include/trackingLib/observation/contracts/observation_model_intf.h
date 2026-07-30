@@ -16,12 +16,12 @@ namespace contract
 namespace observation_model
 {
 template<typename T>
-concept has_predictMeasurement_const_member_func = requires {
-  { std::declval<const T>().predictMeasurement(std::declval<const typename T::StateVec&>()) } -> std::same_as<typename T::MeasurementVec>;
+concept has_predictMeasurementSensorFrame_const_member_func = requires {
+  { std::declval<const T>().predictMeasurementSensorFrame(std::declval<const typename T::StateVec&>(), std::declval<const typename T::EgoMotionType&>()) } -> std::same_as<typename T::MeasurementVec>;
 };
 template<typename T>
-concept has_computeJacobian_const_member_func = requires {
-  { std::declval<const T>().computeJacobian(std::declval<typename T::JacobianMatrix&>(), std::declval<const typename T::StateVec&>()) } -> std::same_as<void>;
+concept has_computeJacobianSensorFrame_const_member_func = requires {
+  { std::declval<const T>().computeJacobianSensorFrame(std::declval<typename T::JacobianMatrix&>(), std::declval<const typename T::StateVec&>(), std::declval<const typename T::EgoMotionType&>()) } -> std::same_as<void>;
 };
 // clang-format on
 } // namespace observation_model
@@ -47,8 +47,8 @@ struct ObservationModelIntf
 
 #if __cplusplus == 202002L
     // mandatory funcs
-    static_assert(observation_model::has_predictMeasurement_const_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
-    static_assert(observation_model::has_computeJacobian_const_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(observation_model::has_predictMeasurementSensorFrame_const_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
+    static_assert(observation_model::has_computeJacobianSensorFrame_const_member_func<ImplType>, ERR_MSG_MISSING_FUNCTION);
 #endif // __cplusplus == 202002L
   }
 };

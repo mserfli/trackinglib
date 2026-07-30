@@ -9,7 +9,9 @@
 #include "math/linalg/square_matrix_decompositions.hpp" // IWYU pragma: keep
 #include "math/linalg/triangular_matrix.hpp"            // IWYU pragma: keep
 #include "math/linalg/vector.hpp"                       // IWYU pragma: keep
+#include <algorithm>                                    // std::max
 #include <cmath>                                        // sqrt
+#include <limits>                                       // std::numeric_limits
 
 namespace tracking
 {
@@ -190,8 +192,65 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveDefinite() c
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveSemiDefinite() const -> bool
 {
-  // we can only use Cholesky decomposition which has more strict checks
-  return isPositiveDefinite();
+  // A strict Cholesky (decomposeLLT/isPositiveDefinite) rejects singular PSD matrices (zero
+  // eigenvalue -> zero pivot), which is wrong for a semi-definiteness test and would freeze the
+  // covariance/information prediction in the filter guards. Instead run a tolerance-aware LDL^T:
+  // a symmetric matrix is positive semi-definite if it admits an LDL^T with every pivot >= 0.
+  if (!isSymmetric())
+  {
+    return false;
+  }
+
+  // scale-relative tolerance from the largest diagonal magnitude (all diagonals of a PSD matrix
+  // are non-negative, so this bounds the spectral scale)
+  ValueType_ scale = static_cast<ValueType_>(0);
+  for (auto idx = 0; idx < Size_; ++idx)
+  {
+    scale = std::max(scale, std::abs(this->at_unsafe(idx, idx)));
+  }
+  const ValueType_ tolerance =
+      std::numeric_limits<ValueType_>::epsilon() * static_cast<ValueType_>(Size_) * std::max(scale, static_cast<ValueType_>(1));
+
+  DiagonalMatrix<ValueType_, Size_>                      D{};
+  TriangularMatrix<ValueType_, Size_, true, IsRowMajor_> L{};
+  for (auto j = 0; j < Size_; ++j)
+  {
+    ValueType_ pivot = this->at_unsafe(j, j);
+    for (auto k = 0; k < j; ++k)
+    {
+      pivot -= D.at_unsafe(k) * L.at_unsafe(j, k) * L.at_unsafe(j, k);
+    }
+    if (pivot < -tolerance)
+    {
+      return false; // strictly negative pivot -> indefinite / not positive semi-definite
+    }
+    D.at_unsafe(j)    = pivot;
+    L.at_unsafe(j, j) = static_cast<ValueType_>(1);
+
+    for (auto i = j + 1; i < Size_; ++i)
+    {
+      ValueType_ off = this->at_unsafe(i, j);
+      for (auto k = 0; k < j; ++k)
+      {
+        off -= D.at_unsafe(k) * L.at_unsafe(i, k) * L.at_unsafe(j, k);
+      }
+      if (pivot > tolerance)
+      {
+        L.at_unsafe(i, j) = off / pivot;
+      }
+      else
+      {
+        // Zero pivot: for a genuinely PSD matrix the corresponding Schur-complement column must
+        // vanish. A non-negligible off-diagonal here means the matrix is not PSD.
+        if (std::abs(off) > tolerance)
+        {
+          return false;
+        }
+        L.at_unsafe(i, j) = static_cast<ValueType_>(0);
+      }
+    }
+  }
+  return true;
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>

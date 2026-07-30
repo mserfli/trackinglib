@@ -19,7 +19,7 @@ echo "=== Registering RTK Claude Code Hook ==="
 rtk init -g --auto-patch
 
 echo "=== Installing Python Dependencies ==="
-pip3 install --break-system-packages fastapi "httpx[http2]" "headroom-ai[mcp]"
+pip3 install --break-system-packages matplotlib numpy fastapi "httpx[http2]" "headroom-ai[mcp,proxy,ml,code]"
 
 echo "=== Configuring Headroom MCP ==="
 headroom mcp install

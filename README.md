@@ -122,8 +122,8 @@ motionModel.update(kalmanFilter, posObs, velObs);
 For the Information filter the same call operates in information space; the observation models are
 evaluated on the state mean internally and the update accumulates information additively
 (`Y += H'*inv(R)*H`). See the [update sequence diagram](doc/info_filter_update.md) for the full
-flow and the [single object tracking example](examples/single_object_tracking.cpp) for a runnable
-scenario combining prediction and updates.
+flow and the [single object tracking example](examples/single_linear_object_tracking.cpp) for a
+runnable scenario combining prediction and updates.
 
 
 **Core Components**:
@@ -156,21 +156,43 @@ scenario combining prediction and updates.
 - **Error Handling**: tl::expected (Rust-style Result pattern)
 
 
-## Measurement Update
+## Visualized Examples
 
-The measurement update mirrors the prediction path and is fully implemented for both filter and
-covariance variants:
-- **Observation Model Framework**: C++17 framework with the pure abstract `IObservationModel`, the CRTP `ExtendedObservationModel`, and concrete models (Position, Range-Bearing, Velocity, Range-Bearing-Doppler).
-- **GenericUpdate Implementation**: Supports sequential, block, and composed (multi-model) update modes, selected at compile time to match the covariance representation.
-- **Filter-Specific Updates**: Dedicated measurement updates for both Kalman (gain-based, Joseph-stabilized) and Information (additive) filters.
-- **Motion Model Integration**: Extended motion models expose `update()` methods accepting one or more observation models.
+Both `examples/*.cpp` can optionally export a per-step CSV alongside their console output, rendered
+into an animated GIF by `examples/viz/render.py` (ground truth, noisy measurements, the filter's
+estimated track, and a 1-sigma covariance ellipse). See [examples/viz/README.md](examples/viz/README.md)
+for how to regenerate these.
 
-See the [update sequence diagram](doc/info_filter_update.md) for the detailed flow.
+**Single linear object tracking** ([source](examples/single_linear_object_tracking.cpp)) — a
+stationary sensor tracking a constant-velocity object via direct (x, y) position measurements,
+bootstrapped by the InformationFilter and handed over to the KalmanFilter:
+
+![Single linear object tracking](doc/media/single_linear_tracking.gif)
+
+**Single nonlinear object tracking** ([source](examples/single_nonlinear_object_tracking.cpp)) — a
+moving ego vehicle (CTRV arc) tracking a crossing object via a front-mounted radar's noisy
+range/bearing/doppler measurements, EKF-linearized at each step:
+
+![Single nonlinear object tracking](doc/media/single_nonlinear_tracking.gif)
+
+**Single nonlinear figure-8 object tracking** ([source](examples/single_nonlinear_figure8_object_tracking.cpp)) — a
+slow-moving ego vehicle (CTRV arc) tracking a target driving a figure-8 (Lemniscate of Gerono) via
+the same radar model; the target's repeatedly reversing curvature is a harder process-model
+mismatch for the constant-acceleration (CA/DWPA) motion model than the crossing-object scenario
+above:
+
+![Single nonlinear figure-8 object tracking](doc/media/single_nonlinear_figure8_tracking.gif)
 
 ## Planned Features
 
-### UKF and non-linear Motion Models
-Future plans include adding support for Unscented Kalman Filters and extending the currently linear Motion Models with non-linear models like CTRV and CTRA.
+### Non-linear Motion Models (CTRV/CTRA)
+Future plans include extending the currently linear Motion Models with non-linear models like CTRV and CTRA.
+
+### Unscented Kalman Filter (UKF)
+Future plans include adding support for Unscented Kalman Filters, alongside the existing EKF and Information Filter.
+
+### Interacting Multiple Model (IMM) filtering
+Future plans include an IMM wrapper to blend multiple motion models (e.g. straight-line and turning) for objects that switch between driving behaviors.
 
 ### Examples using the library based on 3D simulation frameworks
 Future plans include the usage of the library in one of the famous 3D simulation robotics/autononmous driving frameworks
@@ -200,8 +222,8 @@ cmake --build .
 ctest --output-on-failure
 
 # Build examples (optional, enabled by default)
-cmake --build . --target single_object_tracking
-./single_object_tracking
+cmake --build . --target single_linear_object_tracking single_nonlinear_object_tracking
+./single_linear_object_tracking
 ```
 
 ### Build Options

@@ -9,5 +9,7 @@ build_cov
 doxydoc
 pytracking.*
 plans
+single_linear_track.csv
+single_nonlinear_track.csv
 .claude/.headroom_wrap_marker.json
 .tokensave/
