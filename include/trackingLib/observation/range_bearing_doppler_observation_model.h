@@ -117,8 +117,7 @@ public:
       const value_type vx = state.at_unsafe(StateDef_::VX);
       const value_type vy = state.at_unsafe(StateDef_::VY);
 
-      const auto       egoVelMount  = egoMotion.getVelocityAt(this->getSensorPose().tx(), this->getSensorPose().ty());
-      const auto       egoVelSensor = this->getSensorPose().directionToSensorFrame(egoVelMount.x(), egoVelMount.y());
+      const auto       egoVelSensor = this->egoVelocitySensorFrame(egoMotion);
       const value_type vxRel        = vx - egoVelSensor.x();
       const value_type vyRel        = vy - egoVelSensor.y();
 
@@ -160,8 +159,7 @@ public:
       const value_type vx = state.at_unsafe(StateDef_::VX);
       const value_type vy = state.at_unsafe(StateDef_::VY);
 
-      const auto       egoVelMount  = egoMotion.getVelocityAt(this->getSensorPose().tx(), this->getSensorPose().ty());
-      const auto       egoVelSensor = this->getSensorPose().directionToSensorFrame(egoVelMount.x(), egoVelMount.y());
+      const auto       egoVelSensor = this->egoVelocitySensorFrame(egoMotion);
       const value_type vxRel        = vx - egoVelSensor.x();
       const value_type vyRel        = vy - egoVelSensor.y();
       const value_type radial       = (x * vxRel) + (y * vyRel);

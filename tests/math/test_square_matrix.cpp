@@ -808,3 +808,48 @@ TEST(SquareMatrix, determinant_Double__Success) // NOLINT
   // Expected: 1.0
   EXPECT_NEAR(result, 1.0, 1e-10);
 }
+
+TEST(SquareMatrix, isPositiveSemiDefinite_SingularPSD__ReturnsTrue) // NOLINT
+{
+  // [[1,0],[0,0]]: symmetric, eigenvalues {1, 0} -> rank-deficient positive semi-definite.
+  // clang-format off
+  const auto singularDiag = SquareMatrix<float64, 2, true>::FromList({
+    {1.0, 0.0},
+    {0.0, 0.0}
+  });
+  // [[1,1],[1,1]]: symmetric, eigenvalues {2, 0} -> rank-deficient positive semi-definite.
+  const auto singularRank1 = SquareMatrix<float64, 2, true>::FromList({
+    {1.0, 1.0},
+    {1.0, 1.0}
+  });
+  // clang-format on
+
+  // correct answer is true for both; the strict Cholesky path returns false (RED on this branch)
+  EXPECT_TRUE(singularDiag.isPositiveSemiDefinite());
+  EXPECT_TRUE(singularRank1.isPositiveSemiDefinite());
+}
+
+TEST(SquareMatrix, isPositiveSemiDefinite_NegativeDefinite__ReturnsFalse) // NOLINT
+{
+  // clang-format off
+  const auto negDef = SquareMatrix<float64, 2, true>::FromList({
+    {-1.0,  0.0},
+    { 0.0, -1.0}
+  });
+  // clang-format on
+
+  EXPECT_FALSE(negDef.isPositiveSemiDefinite());
+}
+
+TEST(SquareMatrix, isPositiveSemiDefinite_PositiveDefinite__ReturnsTrue) // NOLINT
+{
+  // strictly positive definite control that pins the intended contract
+  // clang-format off
+  const auto posDef = SquareMatrix<float64, 2, true>::FromList({
+    {2.0, 1.0},
+    {1.0, 2.0}
+  });
+  // clang-format on
+
+  EXPECT_TRUE(posDef.isPositiveSemiDefinite());
+}

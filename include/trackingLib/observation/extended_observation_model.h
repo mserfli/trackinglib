@@ -192,6 +192,21 @@ TEST_REMOVE_PROTECTED:
   ; // workaround to keep following idententation
   // clang-format on
 
+  /// \brief Ego lever-arm velocity at the mounting position, expressed in the sensor frame
+  ///
+  /// Two-step transform shared by every model that compensates the sensor platform's own motion
+  /// (doppler, velocity): the ego velocity at the mount (EgoMotion::getVelocityAt() at the pose
+  /// translation) rotated into the sensor frame. Keeping it here guarantees h(x) and its Jacobian
+  /// use one identical convention instead of duplicating the computation per hook.
+  ///
+  /// \param[in] egoMotion  Ego motion of the sensor platform
+  /// \return Point2d  Sensor's lever-arm velocity in the sensor frame
+  [[nodiscard]] auto egoVelocitySensorFrame(const EgoMotionType& egoMotion) const
+  {
+    const auto egoVelMount = egoMotion.getVelocityAt(getSensorPose().tx(), getSensorPose().ty());
+    return getSensorPose().directionToSensorFrame(egoVelMount.x(), egoVelMount.y());
+  }
+
   // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
   ExtendedObservationModel(const ExtendedObservationModel& other)                    = default;
   ExtendedObservationModel(ExtendedObservationModel&&) noexcept                      = default;

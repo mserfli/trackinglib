@@ -74,8 +74,8 @@ public:
   virtual ~MotionModelCA()                                   = default;
 
   /// \brief Construct a new CA given the vector and the covariance matrix
-  /// \param[in] vec
-  /// \param[in] cov
+  /// \param[in] vec  Initial state vector [x, vx, ax, y, vy, ay]'
+  /// \param[in] cov  Initial state covariance (full or UDU-factored per the covariance policy)
   explicit MotionModelCA(const StateVec& vec, const StateCov& cov);
 
   /// \brief Read access to x velocity

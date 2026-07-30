@@ -81,8 +81,9 @@ protected:
 
     auto egoMotion = EgoMotionType{motion, geometry, dt};
 
-    const auto velAtCog   = egoMotion.getVelocityAt(geometry.distCog2Ego, 0.0);
-    const auto velAtOther = egoMotion.getVelocityAt(geometry.distCog2Ego + 3.0, 2.0);
+    // compensatePosition maps ego->COG via += distCog2Ego, so the COG is at ego-x = -distCog2Ego.
+    const auto velAtCog   = egoMotion.getVelocityAt(-geometry.distCog2Ego, 0.0);
+    const auto velAtOther = egoMotion.getVelocityAt(-geometry.distCog2Ego + 3.0, 2.0);
 
     EXPECT_NEAR(velAtCog.x(), motion.v, epsilon);
     EXPECT_NEAR(velAtCog.y(), 0.0, epsilon);
@@ -94,7 +95,8 @@ protected:
   {
     auto egoMotion = EgoMotionType{motion, geometry, dt};
 
-    const auto velAtCog = egoMotion.getVelocityAt(geometry.distCog2Ego, 0.0);
+    // compensatePosition maps ego->COG via += distCog2Ego, so the COG is at ego-x = -distCog2Ego.
+    const auto velAtCog = egoMotion.getVelocityAt(-geometry.distCog2Ego, 0.0);
 
     EXPECT_NEAR(velAtCog.x(), motion.v, epsilon);
     EXPECT_NEAR(velAtCog.y(), 0.0, epsilon);
@@ -104,8 +106,9 @@ protected:
   {
     auto egoMotion = EgoMotionType{motion, geometry, dt};
 
-    const value_type mountX = geometry.distCog2Ego + 2.0; // rx = 2.0
-    const value_type mountY = 3.0;                        // ry = 3.0
+    // COG-relative offset rx = mountX + distCog2Ego, so pick mountX to land rx = 2.0.
+    const value_type mountX = -geometry.distCog2Ego + 2.0; // rx = 2.0
+    const value_type mountY = 3.0;                         // ry = 3.0
 
     const auto vel = egoMotion.getVelocityAt(mountX, mountY);
 
@@ -113,6 +116,79 @@ protected:
     const value_type tol = 10 * epsilon;
     EXPECT_NEAR(vel.x(), motion.v - (motion.w * 3.0), tol);
     EXPECT_NEAR(vel.y(), motion.w * 2.0, tol);
+  }
+
+  // The following GetVelocityAt tests derive the COG location independently from compensatePosition (which establishes
+  // the COG at ego-x + distCog2Ego), NOT from getVelocityAt's own convention. They assert the
+  // mathematically correct behavior, so a genuine sign bug in getVelocityAt makes them fail (RED).
+  void test_GetVelocityAt_AtCogFromCompensationConvention__ZeroLeverArmVelocity()
+  {
+    // motion.w is nonzero (0.1 from SetUp). compensatePosition maps ego->COG via += distCog2Ego,
+    // so the COG sits at ego-x = -distCog2Ego. A rigid point at the COG has no yaw-induced lateral
+    // velocity, only the forward speed v.
+    auto egoMotion = EgoMotionType{motion, geometry, dt};
+
+    const auto velAtCog = egoMotion.getVelocityAt(-geometry.distCog2Ego, 0.0);
+
+    const value_type tol = 10 * epsilon;
+    EXPECT_NEAR(velAtCog.x(), motion.v, tol);
+    EXPECT_NEAR(velAtCog.y(), 0.0, tol); // current code gives w*(-2*distCog2Ego) != 0
+  }
+
+  void test_GetVelocityAt_LeverArmSignConsistentWithCompensatePosition__Success()
+  {
+    auto egoMotion = EgoMotionType{motion, geometry, dt};
+
+    const value_type tol = 10 * epsilon;
+
+    // compensatePosition maps ego->COG via += distCog2Ego, so the COG-relative x of an ego-frame
+    // point px is (px + distCog2Ego): v_point = (v - w*ry, w*(px + distCog2Ego)).
+    // Point A: ego (px, py) = (2.0, 3.0)
+    {
+      const value_type px  = 2.0;
+      const value_type py  = 3.0;
+      const auto       vel = egoMotion.getVelocityAt(px, py);
+      EXPECT_NEAR(vel.x(), motion.v - (motion.w * py), tol);
+      EXPECT_NEAR(vel.y(), motion.w * (px + geometry.distCog2Ego), tol); // current code yields w*(px - distCog2Ego)
+    }
+    // Point B: ego (px, py) = (-4.0, 1.5)
+    {
+      const value_type px  = -4.0;
+      const value_type py  = 1.5;
+      const auto       vel = egoMotion.getVelocityAt(px, py);
+      EXPECT_NEAR(vel.x(), motion.v - (motion.w * py), tol);
+      EXPECT_NEAR(vel.y(), motion.w * (px + geometry.distCog2Ego), tol);
+    }
+  }
+
+  void test_GetVelocityAt_CogIsFixedPointOfPureRotation__ConsistentWithVelocity()
+  {
+    // Pure rotation (v=0, a=0, w!=0): calcDisplacementVector yields zero translation, so
+    // compensatePosition is a pure rotation about the COG. The rotation's fixed point (the ego
+    // point that maps to itself) is therefore the COG; getVelocityAt at that same point must
+    // return zero. This ties the two functions together with no hand-chosen sign.
+    motion.v = 0.0;
+    motion.a = 0.0;
+    motion.w = 0.1;
+
+    auto egoMotion = EgoMotionType{motion, geometry, dt};
+
+    // The fixed point of the pure rotation, resolved from compensatePosition alone.
+    const value_type cogEgoX = -geometry.distCog2Ego;
+    const value_type cogEgoY = 0.0;
+
+    value_type outX{};
+    value_type outY{};
+    egoMotion.compensatePosition(outX, outY, cogEgoX, cogEgoY);
+
+    const value_type tol = 10 * epsilon;
+    EXPECT_NEAR(outX, cogEgoX, tol); // confirm it is the rotation fixed point
+    EXPECT_NEAR(outY, cogEgoY, tol);
+
+    // The COG (= rotation fixed point) must have zero velocity per getVelocityAt.
+    const auto velAtCog = egoMotion.getVelocityAt(cogEgoX, cogEgoY);
+    EXPECT_NEAR(velAtCog.x(), 0.0, tol); // v = 0
+    EXPECT_NEAR(velAtCog.y(), 0.0, tol); // no lever arm at the COG
   }
 
   void test_CircularMotionDisplacement__Success()
@@ -184,6 +260,21 @@ TYPED_TEST(GTestEgoMotion, GetVelocityAt_ZeroMountOffset__ReducesToCogVelocity)
 TYPED_TEST(GTestEgoMotion, GetVelocityAt_NonzeroYawRateAndOffset__AppliesLeverArmCrossProduct)
 {
   GTestEgoMotion<TypeParam>::test_GetVelocityAt_NonzeroYawRateAndOffset__AppliesLeverArmCrossProduct();
+}
+
+TYPED_TEST(GTestEgoMotion, GetVelocityAt_AtCogFromCompensationConvention__ZeroLeverArmVelocity)
+{
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_AtCogFromCompensationConvention__ZeroLeverArmVelocity();
+}
+
+TYPED_TEST(GTestEgoMotion, GetVelocityAt_LeverArmSignConsistentWithCompensatePosition__Success)
+{
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_LeverArmSignConsistentWithCompensatePosition__Success();
+}
+
+TYPED_TEST(GTestEgoMotion, GetVelocityAt_CogIsFixedPointOfPureRotation__ConsistentWithVelocity)
+{
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_CogIsFixedPointOfPureRotation__ConsistentWithVelocity();
 }
 
 } // namespace env

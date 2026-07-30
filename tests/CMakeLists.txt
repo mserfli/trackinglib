@@ -27,6 +27,7 @@ set(TEST_SOURCES
     motion/test_motion_model_ca.cpp
     motion/test_measurement_update.cpp
     motion/test_measurement_update_nonlinear.cpp
+    motion/test_information_filter_predict_psd.cpp
     observation/test_position_observation_model.cpp
     observation/test_velocity_observation_model.cpp
     observation/test_range_bearing_observation_model.cpp

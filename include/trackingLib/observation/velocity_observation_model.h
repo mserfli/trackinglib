@@ -74,16 +74,24 @@ public:
   }
 
   /// \brief Predict the measurement h(x) = [vx, vy]' for the given sensor-frame state
+  ///
+  /// The prediction is the target velocity relative to the sensor: the sensor's own lever-arm
+  /// velocity (egoMotion.getVelocityAt() at the mounting position, rotated into the sensor frame)
+  /// is subtracted from the target's sensor-frame velocity, mirroring
+  /// RangeBearingDopplerObservationModel. Without this, a moving/turning sensor platform biases the
+  /// predicted velocity by the full ego velocity at the mount.
+  ///
   /// \param[in] state      Sensor-frame state vector the measurement is predicted for
-  /// \param[in] egoMotion  Ego motion of the sensor platform (unused, model is a direct velocity measurement)
+  /// \param[in] egoMotion  Ego motion of the sensor platform
   /// \return MeasurementVec  Predicted measurement
   auto predictMeasurementSensorFrame(
       const StateVec& state, const typename BaseExtendedObservationModel::EgoMotionType& egoMotion) const -> MeasurementVec
   {
-    static_cast<void>(egoMotion);
+    const auto egoVelSensor = this->egoVelocitySensorFrame(egoMotion);
+
     MeasurementVec predicted{};
-    predicted.at_unsafe(MEAS_VX) = state.at_unsafe(StateDef_::VX);
-    predicted.at_unsafe(MEAS_VY) = state.at_unsafe(StateDef_::VY);
+    predicted.at_unsafe(MEAS_VX) = state.at_unsafe(StateDef_::VX) - egoVelSensor.x();
+    predicted.at_unsafe(MEAS_VY) = state.at_unsafe(StateDef_::VY) - egoVelSensor.y();
     return predicted;
   }
 

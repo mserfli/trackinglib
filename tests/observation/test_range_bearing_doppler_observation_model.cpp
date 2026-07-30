@@ -231,7 +231,8 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__CompensatesEgoMoti
   const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
 
   // nonzero ego COG speed and yaw rate: the sensor (mounted at the tracking-frame origin) itself
-  // moves at (v, 0) + w x r, r = (0 - distCog2Ego, 0) = (v, -w*distCog2Ego)
+  // moves at (v, 0) + w x r. compensatePosition maps ego->COG via += distCog2Ego, so the COG-
+  // relative offset of the mount is r = (0 + distCog2Ego, 0) and egoVel = (v, w*distCog2Ego).
   using EgoMotionInst = RbdModel::EgoMotionType;
   EgoMotionInst::InertialMotion motion{};
   motion.v = 5.0;
@@ -242,9 +243,9 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__CompensatesEgoMoti
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
 
-  // egoVel = (5, -0.2*10) = (5, -2); vRel = (1 - 5, 2 - (-2)) = (-4, 4)
-  // doppler = (x*vxRel + y*vyRel) / range = (3*-4 + 4*4) / 5 = 0.8
-  EXPECT_NEAR(predicted.at_unsafe(RbdModel::MEAS_DOPPLER), 0.8, 1e-9);
+  // egoVel = (5, 0.2*10) = (5, 2); vRel = (1 - 5, 2 - 2) = (-4, 0)
+  // doppler = (x*vxRel + y*vyRel) / range = (3*-4 + 4*0) / 5 = -2.4
+  EXPECT_NEAR(predicted.at_unsafe(RbdModel::MEAS_DOPPLER), -2.4, 1e-9);
 
   // the naive (uncompensated) formula would have given (3*1 + 4*2) / 5 = 2.2 - confirm the fix
   // actually changes the result rather than accidentally cancelling out

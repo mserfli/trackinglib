@@ -4,6 +4,7 @@
 #include "trackingLib/math/linalg/conversions/triangular_conversions.hpp" // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/vector_conversions.hpp"     // IWYU pragma: keep
 #include "trackingLib/math/linalg/diagonal_matrix.hpp"                    // IWYU pragma: keep
+#include "trackingLib/math/linalg/square_matrix.hpp"                      // IWYU pragma: keep
 #include <limits>
 
 using namespace tracking::math;
@@ -817,4 +818,26 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_EdgeCaseNegativeZero__Success) // NO
 
   // Expected: true (negative zero should be treated as zero)
   EXPECT_TRUE(result);
+}
+
+// DiagonalMatrix::isPositiveSemiDefinite() allows a zero diagonal
+// element (0 <= x), and the full SquareMatrix path now agrees - its check no longer forwards to the
+// strict Cholesky pivot but runs a tolerance-aware LDL^T that accepts singular PSD matrices. This
+// pins the resolved full-vs-factored policy consistency that feeds the filter guards.
+TEST(DiagonalMatrix, isPositiveSemiDefinite_ZeroDiagonal_AgreesWithFullSquare__PolicyConsistent) // NOLINT
+{
+  // clang-format off
+  const auto diagMat = DiagonalMatrix<float64, 2>::FromList({
+    {1.0, 0.0},
+    {0.0, 0.0}  // zero diagonal element -> singular PSD
+  });
+  const auto equivalentFull = SquareMatrix<float64, 2, true>::FromList({
+    {1.0, 0.0},
+    {0.0, 0.0}
+  });
+  // clang-format on
+
+  // both the diagonal (factored) and full paths accept the same singular PSD matrix
+  EXPECT_TRUE(diagMat.isPositiveSemiDefinite());
+  EXPECT_TRUE(equivalentFull.isPositiveSemiDefinite());
 }

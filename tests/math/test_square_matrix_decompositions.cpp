@@ -599,3 +599,34 @@ TEST(SquareMatrixDecompositions, decomposeUDUT_Double__Success) // NOLINT
     }
   }
 }
+
+TEST(SquareMatrixDecompositions, decomposeLLT_SingularPSD__RejectsAsNotPositiveDefinite) // NOLINT
+{
+  // [[1,1],[1,1]] is symmetric PSD (eigenvalues {2,0}); the pivot at (1,1) becomes exactly 0.
+  // clang-format off
+  const auto cov = SquareMatrix<float64, 2, true>::FromList({
+    {1.0, 1.0},
+    {1.0, 1.0}
+  });
+  // clang-format on
+
+  const auto retVal = cov.decomposeLLT();
+
+  ASSERT_FALSE(retVal.has_value());
+  EXPECT_EQ(retVal.error(), Errors::matrix_not_positive_definite);
+}
+
+TEST(SquareMatrixDecompositions, decomposeLDLT_SingularPSD__RejectsAsNotPositiveDefinite) // NOLINT
+{
+  // clang-format off
+  const auto cov = SquareMatrix<float64, 2, true>::FromList({
+    {1.0, 1.0},
+    {1.0, 1.0}
+  });
+  // clang-format on
+
+  const auto retVal = cov.decomposeLDLT();
+
+  ASSERT_FALSE(retVal.has_value());
+  EXPECT_EQ(retVal.error(), Errors::matrix_not_positive_definite);
+}

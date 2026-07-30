@@ -3,6 +3,7 @@
 #include "trackingLib/env/ego_motion.hpp"       // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_ca.h" // IWYU pragma: keep  (StateDefCA)
 #include "trackingLib/motion/motion_model_cv.h" // IWYU pragma: keep  (StateDefCV)
+#include "trackingLib/observation/range_bearing_doppler_observation_model.h"
 #include "trackingLib/observation/sensor_mounting_pose.h"
 #include "trackingLib/observation/velocity_observation_model.h"
 #include <cmath>
@@ -20,6 +21,22 @@ auto makeNoEgoMotion() -> tracking::env::EgoMotion<CovarianceMatrixPolicy_>
   return EgoMotionInst(typename EgoMotionInst::InertialMotion{},
                        typename EgoMotionInst::Geometry{},
                        static_cast<typename CovarianceMatrixPolicy_::value_type>(1.0));
+}
+
+// A genuinely moving + turning platform (v != 0, w != 0) with a lever arm (distCog2Ego != 0), so
+// EgoMotion::getVelocityAt() at a mounted sensor returns a nonzero platform-relative velocity.
+template <typename CovarianceMatrixPolicy_>
+auto makeMovingTurningEgoMotion() -> tracking::env::EgoMotion<CovarianceMatrixPolicy_>
+{
+  using EgoMotionInst  = tracking::env::EgoMotion<CovarianceMatrixPolicy_>;
+  using vt             = typename CovarianceMatrixPolicy_::value_type;
+  auto motion          = typename EgoMotionInst::InertialMotion{};
+  motion.v             = static_cast<vt>(3.0);
+  motion.a             = static_cast<vt>(0.5);
+  motion.w             = static_cast<vt>(0.2);
+  auto geometry        = typename EgoMotionInst::Geometry{};
+  geometry.distCog2Ego = static_cast<vt>(1.0);
+  return EgoMotionInst(motion, geometry, static_cast<vt>(1.0));
 }
 
 // instatiate all templates for full coverage report
@@ -122,4 +139,57 @@ TEST(VelocityObservationModel, computeJacobian__MatchesFiniteDifferenceWithSenso
   const auto state = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
+}
+
+// ---------------------------------------------------------------------------------------------
+// The velocity model subtracts the sensor's ego (lever-arm)
+// velocity, mirroring the doppler model - a mounted velocity sensor on a moving/turning platform
+// reports the target velocity relative to the sensor. The regression tests below reuse the exact
+// primitives the doppler model uses (EgoMotion::getVelocityAt() +
+// SensorMountingPose::directionToSensorFrame()) as the oracle, matching
+// RangeBearingDopplerObservationModel::predictMeasurementSensorFrame().
+
+using DopplerModel = tracking::observation::RangeBearingDopplerObservationModel<FullPolicy, StateDefCV>;
+
+// regression: the velocity model subtracts the ego lever-arm velocity like the doppler model does.
+TEST(VelocityObservationModel, predictMeasurement_MovingTurningPlatform__SubtractsEgoLeverArmVelocity) // NOLINT
+{
+  const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.5, 0.5, std::acos(-1.0) / 6.0);
+  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  const auto state     = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  const auto egoMotion = makeMovingTurningEgoMotion<FullPolicy>();
+
+  const auto predicted = obs.predictMeasurement(state, egoMotion);
+
+  // oracle: mirror RangeBearingDopplerObservationModel::predictMeasurementSensorFrame's ego term
+  const auto egoVelMount    = egoMotion.getVelocityAt(pose.tx(), pose.ty());
+  const auto egoVelSensor   = pose.directionToSensorFrame(egoVelMount.x(), egoVelMount.y());
+  const auto stateVelSensor = pose.directionToSensorFrame(state.at_unsafe(StateDefCV::VX), state.at_unsafe(StateDefCV::VY));
+
+  EXPECT_NEAR(predicted.at_unsafe(VelModel::MEAS_VX), stateVelSensor.x() - egoVelSensor.x(), 1e-9);
+  EXPECT_NEAR(predicted.at_unsafe(VelModel::MEAS_VY), stateVelSensor.y() - egoVelSensor.y(), 1e-9);
+}
+
+// consistency: both doppler and velocity now respond to the platform's ego motion (each subtracts
+// the lever-arm velocity), so neither is invariant to a moving vs. static platform.
+TEST(VelocityObservationModel, predictMeasurement_DopplerVsVelocity_EgoHandling__BothRespond) // NOLINT
+{
+  const auto pose       = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.5, 0.5, std::acos(-1.0) / 6.0);
+  const auto velObs     = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  const auto dopplerObs = DopplerModel::FromLists({0, 0, 0}, {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}, pose);
+  const auto state      = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  const auto movingEgo  = makeMovingTurningEgoMotion<FullPolicy>();
+  const auto noEgo      = makeNoEgoMotion<FullPolicy>();
+
+  // doppler diverges between a moving and a static platform (it subtracts the ego velocity)
+  const auto dopplerMoving = dopplerObs.predictMeasurement(state, movingEgo).at_unsafe(DopplerModel::MEAS_DOPPLER);
+  const auto dopplerStatic = dopplerObs.predictMeasurement(state, noEgo).at_unsafe(DopplerModel::MEAS_DOPPLER);
+  EXPECT_GT(std::abs(dopplerMoving - dopplerStatic), 1e-6);
+
+  // the velocity model now also diverges between a moving and a static platform (it too subtracts
+  // the ego velocity), consistent with the doppler model
+  const auto velMoving = velObs.predictMeasurement(state, movingEgo);
+  const auto velStatic = velObs.predictMeasurement(state, noEgo);
+  EXPECT_GT(std::abs(velMoving.at_unsafe(VelModel::MEAS_VX) - velStatic.at_unsafe(VelModel::MEAS_VX)), 1e-6);
+  EXPECT_GT(std::abs(velMoving.at_unsafe(VelModel::MEAS_VY) - velStatic.at_unsafe(VelModel::MEAS_VY)), 1e-6);
 }

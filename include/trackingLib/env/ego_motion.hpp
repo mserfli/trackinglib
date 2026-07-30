@@ -57,8 +57,10 @@ void EgoMotion<CovarianceMatrixPolicy_>::compensateDirection(value_type&      dx
 template <typename CovarianceMatrixPolicy_>
 auto EgoMotion<CovarianceMatrixPolicy_>::getVelocityAt(value_type mountX, value_type mountY) const -> math::Point2d<value_type>
 {
-  // r = vector from COG to the queried point, in the ego reference frame
-  const value_type rx = mountX - _geometry.distCog2Ego;
+  // r = vector from COG to the queried point, in the ego reference frame.
+  // compensatePosition() maps an ego-frame point to COG-relative via += distCog2Ego, so the
+  // COG-relative longitudinal offset of the queried point is (mountX + distCog2Ego).
+  const value_type rx = mountX + _geometry.distCog2Ego;
   const value_type ry = mountY;
 
   // v_point = (v, 0) + w x r = (v - w*ry, w*rx)
