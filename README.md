@@ -222,7 +222,7 @@ cmake --build .
 ctest --output-on-failure
 
 # Build examples (optional, enabled by default)
-cmake --build . --target single_linear_object_tracking single_nonlinear_object_tracking
+cmake --build . --target single_linear_object_tracking single_nonlinear_object_tracking single_nonlinear_figure8_object_tracking
 ./single_linear_object_tracking
 ```
 
@@ -246,7 +246,7 @@ doxygen
 
 ```bash
 # Generate coverage report
-./coverage_report.sh
+./scripts/coverage_report.sh
 # Open build_cov/coverage/index.html in your browser
 ```
 

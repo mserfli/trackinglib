@@ -18,14 +18,8 @@ jobs:
     - name: Install dependencies
       run: sudo apt-get update && sudo apt-get install -y build-essential cmake doxygen graphviz lcov
 
-    - name: Configure with CMake
-      run: cmake -S . -B build -DCMAKE_CXX_COMPILER=g++ -DCMAKE_CXX_STANDARD=17 -DCMAKE_BUILD_TYPE=Debug -DBUILD_HEADER_TESTS=ON
-
-    - name: Build header tests with CMake
-      run: cmake --build build --target header_tests
-    
-    - name: Run header tests
-      run: ctest --test-dir build -R "header_test_" --output-on-failure
+    - name: Verify self-contained headers
+      run: ./scripts/verify_self_contained_headers.sh
 
   verify-class-contracts:
     runs-on: ubuntu-latest
@@ -54,6 +48,38 @@ jobs:
     - name: Build doxgen doc
       run: doxygen .
 
+  verify-media:
+    # Fail if doc/media/*.gif is stale vs. what the examples currently produce. The render stack is
+    # pinned to the exact versions the committed GIFs were generated with; matplotlib's PyPI wheel
+    # bundles its own freetype, so the frame rendering is reproducible independent of the runner's
+    # OS libraries, and Pillow (pinned) drives the deterministic GIF encoding. If this ever drifts,
+    # regenerate with ./scripts/regenerate_media.sh (inside the pinned .devcontainer image) and commit.
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install build dependencies
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install pinned render stack
+      # Pin the full transitive set that can influence layout/rasterization (kiwisolver solves the
+      # panel layout, fonttools drives text metrics) so the byte-check is reproducible, not just the
+      # three top-level packages. Matches the .devcontainer image the committed GIFs came from.
+      run: >-
+        python3 -m pip install --no-cache-dir
+        numpy==2.5.1 matplotlib==3.11.1 pillow==12.3.0
+        kiwisolver==1.5.0 contourpy==1.3.3 fonttools==4.63.0
+        cycler==0.12.1 pyparsing==3.3.2 packaging==26.2 python-dateutil==2.9.0.post0
+
+    - name: Verify doc/media is up to date
+      run: ./scripts/regenerate_media.sh --check
+
   coverage-gen:
     runs-on: ubuntu-latest
     steps:
@@ -64,7 +90,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y build-essential cmake doxygen graphviz lcov
 
     - name: Build coverage report
-      run: ./coverage_report.sh
+      run: ./scripts/coverage_report.sh
 
   build-and-test:
     runs-on: ubuntu-latest

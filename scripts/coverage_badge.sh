@@ -6,7 +6,7 @@ OUT_DIR="build_cov/coverage"
 OUT_FILE="${OUT_DIR}/coverage-badge.json"
 
 if [ ! -f "${LCOV_INFO}" ]; then
-    echo "error: ${LCOV_INFO} not found — run ./coverage_report.sh first" >&2
+    echo "error: ${LCOV_INFO} not found — run ./scripts/coverage_report.sh first" >&2
     exit 1
 fi
 
