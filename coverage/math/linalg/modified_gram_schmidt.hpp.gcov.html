@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-20 09:33:13</td>
+            <td class="headerValue">2026-07-30 20:40:58</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">94.1&nbsp;%</td>
@@ -83,7 +83,7 @@
 <span id="L13"><span class="lineNum">      13</span>              : namespace math</span>
 <span id="L14"><span class="lineNum">      14</span>              : {</span>
 <span id="L15"><span class="lineNum">      15</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">          46 : void ModifiedGramSchmidt&lt;ValueType_, Size_&gt;::run(TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; u,</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">          72 : void ModifiedGramSchmidt&lt;ValueType_, Size_&gt;::run(TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; u,</span></span>
 <span id="L17"><span class="lineNum">      17</span>              :                                                  DiagonalMatrix&lt;ValueType_, Size_&gt;&amp;                d,</span>
 <span id="L18"><span class="lineNum">      18</span>              :                                                  const SquareMatrix&lt;ValueType_, Size_, true&gt;&amp;      Phi)</span>
 <span id="L19"><span class="lineNum">      19</span>              : {</span>
@@ -95,35 +95,35 @@
 <span id="L25"><span class="lineNum">      25</span>              :   // TODO(matthias): Grewal, p. 260 -&gt; inplace product Phi*U</span>
 <span id="L26"><span class="lineNum">      26</span>              :   // TODO(matthias): optimization - eliminate allocations in modified Gram-Schmidt for in-place updates</span>
 <span id="L27"><span class="lineNum">      27</span>              :   // beneficial for small n without complexity overhead; add template-based loop unrolling for Size_ &lt;= 10</span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">          46 :   auto PhiU = Phi * u;</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">          46 :   auto Din  = d;</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">          46 :   u.setIdentity();</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">          72 :   auto PhiU = Phi * u;</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">          72 :   auto Din  = d;</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">          72 :   u.setIdentity();</span></span>
 <span id="L31"><span class="lineNum">      31</span>              :   ValueType_ sigma;</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">         240 :   for (sint32 i = Size_ - 1; i &gt;= 0; --i)</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">         349 :   for (sint32 i = Size_ - 1; i &gt;= 0; --i)</span></span>
 <span id="L33"><span class="lineNum">      33</span>              :   {</span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">         194 :     sigma = static_cast&lt;ValueType_&gt;(0.0);</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        1080 :     for (sint32 j = 0; j &lt; Size_; ++j)</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">         277 :     sigma = static_cast&lt;ValueType_&gt;(0.0);</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        1432 :     for (sint32 j = 0; j &lt; Size_; ++j)</span></span>
 <span id="L36"><span class="lineNum">      36</span>              :     {</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">         886 :       sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">        1155 :       sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);</span></span>
 <span id="L38"><span class="lineNum">      38</span>              :     }</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         222 :     d.at_unsafe(i) = std::max(sigma, std::numeric_limits&lt;ValueType_&gt;::epsilon());</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">         540 :     for (sint32 j = 0; j &lt; i; ++j)</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         326 :     d.at_unsafe(i) = std::max(sigma, std::numeric_limits&lt;ValueType_&gt;::epsilon());</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">         716 :     for (sint32 j = 0; j &lt; i; ++j)</span></span>
 <span id="L41"><span class="lineNum">      41</span>              :     {</span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         346 :       sigma = static_cast&lt;ValueType_&gt;(0.0);</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">        2076 :       for (sint32 k = 0; k &lt; Size_; ++k)</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         439 :       sigma = static_cast&lt;ValueType_&gt;(0.0);</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">        2478 :       for (sint32 k = 0; k &lt; Size_; ++k)</span></span>
 <span id="L44"><span class="lineNum">      44</span>              :       {</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">        1730 :         sigma += PhiU.at_unsafe(i, k) * Din.at_unsafe(k) * PhiU.at_unsafe(j, k);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">        2039 :         sigma += PhiU.at_unsafe(i, k) * Din.at_unsafe(k) * PhiU.at_unsafe(j, k);</span></span>
 <span id="L46"><span class="lineNum">      46</span>              :       }</span>
 <span id="L47"><span class="lineNum">      47</span>              : </span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         346 :       u.at_unsafe(j, i) = sigma / d.at_unsafe(i);</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         439 :       u.at_unsafe(j, i) = sigma / d.at_unsafe(i);</span></span>
 <span id="L49"><span class="lineNum">      49</span>              : </span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">        2076 :       for (sint32 k = 0; k &lt; Size_; ++k)</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">        2478 :       for (sint32 k = 0; k &lt; Size_; ++k)</span></span>
 <span id="L51"><span class="lineNum">      51</span>              :       {</span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">        1730 :         PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">        2039 :         PhiU.at_unsafe(j, k) -= u.at_unsafe(j, i) * PhiU.at_unsafe(i, k);</span></span>
 <span id="L53"><span class="lineNum">      53</span>              :       }</span>
 <span id="L54"><span class="lineNum">      54</span>              :     }</span>
 <span id="L55"><span class="lineNum">      55</span>              :   }</span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">          46 : }</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">          72 : }</span></span>
 <span id="L57"><span class="lineNum">      57</span>              : </span>
 <span id="L58"><span class="lineNum">      58</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
 <span id="L59"><span class="lineNum">      59</span>              : template &lt;sint32 SizeQ_&gt;</span>
