@@ -1,0 +1,5 @@
+<map id="tracking::env::EgoMotion::getVelocityAt" name="tracking::env::EgoMotion::getVelocityAt">
+<area shape="rect" id="Node000001" title="Compute the tracking&#45;frame velocity of a point rigidly attached to the ego vehicle." alt="" coords="264,13,447,53"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#ab52775f7fc97c09bf73bfe3a8e2f7aaa" title="Ego lever&#45;arm velocity at the mounting position, expressed in the sensor frame." alt="" coords="5,5,216,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,35,216,35,216,30,250,30"/>
+</map>

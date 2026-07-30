@@ -1,0 +1,13 @@
+<map id="tracking::math::Point2d::FromValues" name="tracking::math::Point2d::FromValues">
+<area shape="rect" id="Node000001" title="Create a 2D point from coordinate values." alt="" coords="705,53,880,93"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Rotation2D.html#acf75b3f6640d01fbbdac4a45ee2a9c04" title="Apply the forward rotation R(theta) * v." alt="" coords="469,17,657,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="691,59,657,54,658,49,692,54"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Rotation2D.html#ab1cd9ce0f6ab78f5fa24c071712bd1ab" title="Apply the inverse rotation R(theta)^T * v." alt="" coords="469,85,657,125"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="692,89,658,94,657,89,691,84"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1observation_1_1SensorMountingPose.html#ab411fae27878ae71425ae5613f76f86c" title="Chain the constant sensor&#45;frame rotation into a Jacobian column pair." alt="" coords="237,5,419,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="455,37,419,37,419,32,455,32"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1observation_1_1SensorMountingPose.html#aac16822a69079ba1aaad9d32f23a369b" title="Rotate a tracking&#45;frame direction (e.g. velocity) into the sensor frame." alt="" coords="235,84,421,139"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="456,110,421,111,421,106,456,105"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1observation_1_1SensorMountingPose.html#afe7b4cc69c9ce6b03c3af25ff676237e" title="Transform a tracking&#45;frame position into the sensor frame." alt="" coords="5,84,187,139"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="220,114,187,114,187,109,220,109"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="tracking::observation::SensorMountingPose::FromValues" name="tracking::observation::SensorMountingPose::FromValues">
+<area shape="rect" id="Node000001" title="Create a sensor mounting pose from a translation and a yaw angle." alt="" coords="5,62,172,117"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Rotation2D.html#acf0b4f00a5da99e9124ed348b4879177" title="Create a rotation from an angle, computing cos/sin." alt="" coords="220,5,432,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,64,237,46,239,52,173,70"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1observation_1_1SensorMountingPose.html#afd92f94f2938e7ec2af7f965af33ac1f" title="Read access to the mounting translation X component." alt="" coords="233,69,419,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,87,219,87,219,92,172,92"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1observation_1_1SensorMountingPose.html#aeef181d8bf7c5e881b679f23cca3e24a" title="Read access to the mounting translation Y component." alt="" coords="233,133,419,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="173,109,239,127,237,132,171,114"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="tracking::observation::SensorMountingPose::directionToSensorFrame" name="tracking::observation::SensorMountingPose::directionToSensorFrame">
+<area shape="rect" id="Node000001" title="Rotate a tracking&#45;frame direction (e.g. velocity) into the sensor frame." alt="" coords="5,16,192,71"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Rotation2D.html#ab1cd9ce0f6ab78f5fa24c071712bd1ab" title="Apply the inverse rotation R(theta)^T * v." alt="" coords="240,23,428,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,41,226,41,226,46,192,46"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Point2d.html#a599362040b9541cb2f30d69d6479614f" title="Create a 2D point from coordinate values." alt="" coords="476,23,651,63"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="428,41,462,41,462,46,428,46"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Point2d.html#a745132e4965e317a57e1df605327e910" title="Read access to x&#45;coordinate." alt="" coords="699,5,889,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="651,31,685,27,685,33,651,36"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1Point2d.html#a18c015f1396d1a2f385a2e2716c4943a" title="Read access to y&#45;coordinate." alt="" coords="699,55,889,80"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="651,50,685,53,685,59,651,55"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="937,16,1104,71"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="890,26,924,30,923,35,889,31"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="889,55,923,51,924,56,890,60"/>
+</map>

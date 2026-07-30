@@ -1,0 +1,5 @@
+<map id="tracking::observation::ExtendedObservationModel::applyJacobianFrameRotation" name="tracking::observation::ExtendedObservationModel::applyJacobianFrameRotation">
+<area shape="rect" id="Node000001" title="Chain the constant sensor mounting rotation onto every present Jacobian column pair." alt="" coords="264,5,481,60"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a10536a872b99fd7fdb83a7a668753a88" title="Compute the measurement Jacobian H = dh/dx for the given tracking&#45;frame state." alt="" coords="5,5,216,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,35,216,35,216,30,251,30"/>
+</map>

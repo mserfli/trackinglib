@@ -1,0 +1,9 @@
+<map id="tracking::observation::ExtendedObservationModel::toSensorFrame" name="tracking::observation::ExtendedObservationModel::toSensorFrame">
+<area shape="rect" id="Node000001" title="Transform every present state component (position/velocity/acceleration) into the sensor frame." alt="" coords="5,41,216,96"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="286,13,453,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,51,272,43,273,49,216,57"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a8aea79e4a1e87fa9deb6266b476034d3" title="Read access to the sensor mounting pose." alt="" coords="264,77,475,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="216,81,251,86,250,91,216,86"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html#a103ed8d3af53ba865c6a00784ed62de6" title="Unsafe element read&#45;only access (no bounds checking)" alt="" coords="523,5,695,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="453,30,509,30,509,35,453,35"/>
+</map>

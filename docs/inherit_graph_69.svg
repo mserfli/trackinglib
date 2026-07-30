@@ -15,7 +15,7 @@
 <polygon fill="white" stroke="#666666" points="225,-52 0,-52 0,0 225,0 225,-52"/>
 <text text-anchor="start" x="8" y="-40" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::observation</text>
 <text text-anchor="start" x="8" y="-29" font-family="Helvetica,sans-Serif" font-size="10.00">::contract::ObservationModel</text>
-<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Intf&lt; VelocityObservationModel</text>
+<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Intf&lt; RangeBearingObservationModel</text>
 <text text-anchor="middle" x="112.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; CovarianceMatrixPolicy_, StateDef_ &gt; &gt;</text>
 </a>
 </g>

@@ -1,0 +1,7 @@
+<map id="tracking::observation::ExtendedObservationModel::egoVelocitySensorFrame" name="tracking::observation::ExtendedObservationModel::egoVelocitySensorFrame">
+<area shape="rect" id="Node000001" title="Ego lever&#45;arm velocity at the mounting position, expressed in the sensor frame." alt="" coords="5,41,216,96"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a8aea79e4a1e87fa9deb6266b476034d3" title="Read access to the sensor mounting pose." alt="" coords="264,5,475,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,51,250,47,251,52,216,57"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1env_1_1EgoMotion.html#ad19cf1f5e365228f2f52b5068c67bba6" title="Compute the tracking&#45;frame velocity of a point rigidly attached to the ego vehicle." alt="" coords="278,85,461,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="216,81,265,87,264,93,216,86"/>
+</map>

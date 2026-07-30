@@ -1,0 +1,13 @@
+<map id="tracking::observation::ExtendedObservationModel::predictMeasurement" name="tracking::observation::ExtendedObservationModel::predictMeasurement">
+<area shape="rect" id="Node000001" title="Predict the measurement h(x) for the given tracking&#45;frame state." alt="" coords="5,45,216,100"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a6e9cf8e9e82d69038a328c4c14f5423f" title="CRTP downcast to the concrete derived observation model." alt="" coords="264,5,475,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,54,250,48,251,54,217,59"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a296007bba3bccb799ebe4889828930e9" title="Transform every present state component (position/velocity/acceleration) into the sensor frame." alt="" coords="264,84,475,139"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,86,251,91,250,96,216,91"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="545,55,711,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="474,94,531,86,532,91,475,99"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a8aea79e4a1e87fa9deb6266b476034d3" title="Read access to the sensor mounting pose." alt="" coords="523,120,733,175"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="475,123,510,128,509,133,474,129"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Matrix.html#a103ed8d3af53ba865c6a00784ed62de6" title="Unsafe element read&#45;only access (no bounds checking)" alt="" coords="781,48,953,103"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="711,73,768,73,768,78,711,78"/>
+</map>

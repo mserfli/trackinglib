@@ -125,6 +125,8 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename MotionModel_, typename CovarianceMatrixPolicy_&gt;<br />
 class tracking::motion::generic::Predict&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;</div><p>Base class to extend any motion model with a generic prediction functionality using the CRTP pattern. </p>
+<p>Mixed into the motion model via CRTP inheritance (see <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance.">ExtendedMotionModel</a> in <a class="el" href="imotion__model_8h.html">imotion_model.h</a>), so a concrete motion model <em>is-a</em> Predict&lt;Self, Policy&gt;. This is required because <a class="el" href="classtracking_1_1motion_1_1IMotionModel.html#ad4046457a9b09c7f6b8bd5560b8f1bce" title="Predicts the underlying MotionModel with the given filter (includes ego motion compensation)">IMotionModel::predict()</a> is a pure virtual method with a fixed (non-template) signature: only a type that actually inherits <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern.">Predict</a> can override that virtual and forward to it. Because <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter.">run()</a> is reached as an ordinary inherited instance method, it is non-static, and internally does <code>static_cast&lt;MotionModel_&amp;&gt;(*this)</code> to reach sibling state (e.g. getCovForInternalUse(), defined on the <a class="el" href="classtracking_1_1motion_1_1StateMem.html" title="StateMem class to represent a state vector with its uncertainty described by the state covariance mat...">StateMem</a> base) that <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern.">Predict</a> itself does not have direct access to.</p>
+<p>Contrast with <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html" title="Class to extend any motion model with a generic measurement update functionality.">generic::Update</a> (<a class="el" href="generic__update_8h.html">generic_update.h</a>): <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html" title="Class to extend any motion model with a generic measurement update functionality.">Update</a>'s <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter.">run()</a> is inherently a template (variadic observation models, plus an UpdateMode_ tag), and C++ does not allow virtual template member functions. With no virtual-interface pressure forcing an inheritance relationship, <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html" title="Class to extend any motion model with a generic measurement update functionality.">Update</a> is instead implemented as a stateless static utility, invoked by qualified name with the motion model passed in explicitly rather than reached via CRTP self-cast. The static-vs-instance difference between the two files is a consequence of this virtual-dispatch requirement, not an inconsistency to reconcile.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">MotionModel_</td><td>The underlying MotionModel </td></tr>
@@ -265,11 +267,6 @@ template&lt;typename MotionModel_ , typename CovarianceMatrixPolicy_ &gt; </div>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classtracking_1_1motion_1_1generic_1_1Predict_ad6bc834949fd3d8f75ec79ddf2d734d5_cgraph.svg" width="100%" height="591"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
 
 </div>
 </div>
@@ -327,7 +324,7 @@ template&lt;typename MotionModel_ , typename CovarianceMatrixPolicy_ &gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1motion_1_1generic_1_1Predict_ab73d074a9023ed02adbf7c247a263798_cgraph.svg" width="427" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classtracking_1_1motion_1_1generic_1_1Predict_ab73d074a9023ed02adbf7c247a263798_cgraph.svg" width="100%" height="392"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

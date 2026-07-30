@@ -17,8 +17,8 @@
 <area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="313,108,291,101,194,64,196,59,293,96,314,103"/>
 <area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a2b6eac9001311d011d12a2ce79706938" title="Compute inverse as full covariance matrix." alt="" coords="16,110,233,150"/>
 <area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="278,133,234,133,234,127,278,127"/>
-<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter." alt="" coords="5,215,244,285"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="287,258,244,256,244,251,287,252"/>
-<area shape="rect" id="Node000010" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="32,309,217,349"/>
-<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="279,328,218,329,217,324,279,322"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter." alt="" coords="32,230,217,270"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="287,258,217,256,218,250,287,252"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="5,294,244,363"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="279,328,244,328,244,323,279,322"/>
 </map>

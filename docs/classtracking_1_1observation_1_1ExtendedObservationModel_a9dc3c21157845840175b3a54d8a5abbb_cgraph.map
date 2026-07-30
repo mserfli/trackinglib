@@ -1,0 +1,5 @@
+<map id="tracking::observation::ExtendedObservationModel::applyJacobianFrameRotation" name="tracking::observation::ExtendedObservationModel::applyJacobianFrameRotation">
+<area shape="rect" id="Node000001" title="Chain the constant sensor mounting rotation onto every present Jacobian column pair." alt="" coords="5,5,223,60"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a8aea79e4a1e87fa9deb6266b476034d3" title="Read access to the sensor mounting pose." alt="" coords="271,5,481,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,30,257,30,257,35,223,35"/>
+</map>

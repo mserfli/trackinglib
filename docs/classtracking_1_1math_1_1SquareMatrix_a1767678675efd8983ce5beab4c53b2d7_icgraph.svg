@@ -46,7 +46,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 721;
+var viewWidth = 761;
 var viewHeight = 230;
 var sectionId = 'dynsection-2';
 </script>
@@ -58,9 +58,9 @@ var sectionId = 'dynsection-2';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title="Construct an identity matrix with ones on the diagonal and zeros elsewhere.">
-<polygon fill="#999999" stroke="#666666" points="713,-126 554,-126 554,-96 713,-96 713,-126"/>
-<text text-anchor="start" x="562" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
-<text text-anchor="middle" x="633.5" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">::Identity</text>
+<polygon fill="#999999" stroke="#666666" points="753,-126 594,-126 594,-96 753,-96 753,-126"/>
+<text text-anchor="start" x="602" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
+<text text-anchor="middle" x="673.5" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">::Identity</text>
 </a>
 </g>
 </g>
@@ -68,9 +68,9 @@ var sectionId = 'dynsection-2';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b" target="_top" xlink:title="Performs Householder QR decomposition of a square matrix.">
-<polygon fill="white" stroke="#666666" points="518,-222 359,-222 359,-192 518,-192 518,-222"/>
-<text text-anchor="start" x="367" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
-<text text-anchor="middle" x="438.5" y="-199" font-family="Helvetica,sans-Serif" font-size="10.00">::householderQR</text>
+<polygon fill="white" stroke="#666666" points="558,-222 399,-222 399,-192 558,-192 558,-222"/>
+<text text-anchor="start" x="407" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
+<text text-anchor="middle" x="478.5" y="-199" font-family="Helvetica,sans-Serif" font-size="10.00">::householderQR</text>
 </a>
 </g>
 </g>
@@ -78,8 +78,8 @@ var sectionId = 'dynsection-2';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M603.95,-131.95C581.49,-147.68 548.92,-168.86 518,-183 510.87,-186.26 503.18,-189.23 495.5,-191.88"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="606.2,-134.65 612.33,-126.01 602.15,-128.94 606.2,-134.65"/>
+<path fill="none" stroke="#63b8ff" d="M643.95,-131.95C621.49,-147.68 588.92,-168.86 558,-183 550.87,-186.26 543.18,-189.23 535.5,-191.88"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="646.2,-134.65 652.33,-126.01 642.15,-128.94 646.2,-134.65"/>
 </a>
 </g>
 </g>
@@ -87,9 +87,9 @@ var sectionId = 'dynsection-2';
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="classtracking_1_1math_1_1SquareMatrix.html#a911f645174c9ebb677deeeef12a71a34" target="_top" xlink:title="Compute the matrix inverse using QR decomposition.">
-<polygon fill="white" stroke="#666666" points="518,-174 359,-174 359,-144 518,-144 518,-174"/>
-<text text-anchor="start" x="367" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
-<text text-anchor="middle" x="438.5" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">::inverse</text>
+<polygon fill="white" stroke="#666666" points="558,-174 399,-174 399,-144 558,-144 558,-174"/>
+<text text-anchor="start" x="407" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
+<text text-anchor="middle" x="478.5" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">::inverse</text>
 </a>
 </g>
 </g>
@@ -97,8 +97,8 @@ var sectionId = 'dynsection-2';
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M562.09,-128.51C541.67,-133.59 519.57,-139.09 499.82,-144"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="563.1,-131.87 571.96,-126.06 561.41,-125.07 563.1,-131.87"/>
+<path fill="none" stroke="#63b8ff" d="M602.09,-128.51C581.67,-133.59 559.57,-139.09 539.82,-144"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="603.1,-131.87 611.96,-126.06 601.41,-125.07 603.1,-131.87"/>
 </a>
 </g>
 </g>
@@ -106,9 +106,9 @@ var sectionId = 'dynsection-2';
 <g id="Node000006" class="node">
 <title>Node6</title>
 <g id="a_Node000006"><a xlink:href="classtracking_1_1math_1_1SquareMatrix.html#aedb954fb72fb9da713fe0d36b826b681" target="_top" xlink:title="Checks if the matrix is orthogonal within a specified tolerance.">
-<polygon fill="white" stroke="#666666" points="518,-126 359,-126 359,-96 518,-96 518,-126"/>
-<text text-anchor="start" x="367" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
-<text text-anchor="middle" x="438.5" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">::isOrthogonal</text>
+<polygon fill="white" stroke="#666666" points="558,-126 399,-126 399,-96 558,-96 558,-126"/>
+<text text-anchor="start" x="407" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::SquareMatrix</text>
+<text text-anchor="middle" x="478.5" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">::isOrthogonal</text>
 </a>
 </g>
 </g>
@@ -116,8 +116,8 @@ var sectionId = 'dynsection-2';
 <g id="edge5_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
 <g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M543.98,-111C535.39,-111 526.72,-111 518.24,-111"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="544,-114.5 554,-111 544,-107.5 544,-114.5"/>
+<path fill="none" stroke="#63b8ff" d="M583.98,-111C575.39,-111 566.72,-111 558.24,-111"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="584,-114.5 594,-111 584,-107.5 584,-114.5"/>
 </a>
 </g>
 </g>
@@ -125,9 +125,9 @@ var sectionId = 'dynsection-2';
 <g id="Node000007" class="node">
 <title>Node7</title>
 <g id="a_Node000007"><a xlink:href="classtracking_1_1math_1_1CovarianceMatrixFactored.html#ade6e7f2800cf91037769424fb92dccd6" target="_top" xlink:title="Set the variance at (idx,idx) and clears any correlations.">
-<polygon fill="white" stroke="#666666" points="514.5,-78 362.5,-78 362.5,-48 514.5,-48 514.5,-78"/>
-<text text-anchor="start" x="370.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Covariance</text>
-<text text-anchor="middle" x="438.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixFactored::setVariance</text>
+<polygon fill="white" stroke="#666666" points="554.5,-78 402.5,-78 402.5,-48 554.5,-48 554.5,-78"/>
+<text text-anchor="start" x="410.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::Covariance</text>
+<text text-anchor="middle" x="478.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixFactored::setVariance</text>
 </a>
 </g>
 </g>
@@ -135,8 +135,8 @@ var sectionId = 'dynsection-2';
 <g id="edge6_Node000001_Node000007" class="edge">
 <title>Node1&#45;&gt;Node7</title>
 <g id="a_edge6_Node000001_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M562.09,-93.49C541.67,-88.41 519.57,-82.91 499.82,-78"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="561.41,-96.93 571.96,-95.94 563.1,-90.13 561.41,-96.93"/>
+<path fill="none" stroke="#63b8ff" d="M602.09,-93.49C581.67,-88.41 559.57,-82.91 539.82,-78"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="601.41,-96.93 611.96,-95.94 603.1,-90.13 601.41,-96.93"/>
 </a>
 </g>
 </g>
@@ -144,9 +144,9 @@ var sectionId = 'dynsection-2';
 <g id="Node000008" class="node">
 <title>Node8</title>
 <g id="a_Node000008"><a xlink:href="classtracking_1_1filter_1_1KalmanFilter.html#a4df70b5fa33fdf85a95d6a528da0344f" target="_top" xlink:title="Kalman measurement update of state and covariance.">
-<polygon fill="white" stroke="#666666" points="502.5,-30 374.5,-30 374.5,0 502.5,0 502.5,-30"/>
-<text text-anchor="start" x="382.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::filter::Kalman</text>
-<text text-anchor="middle" x="438.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Filter::updateState</text>
+<polygon fill="white" stroke="#666666" points="542.5,-30 414.5,-30 414.5,0 542.5,0 542.5,-30"/>
+<text text-anchor="start" x="422.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::filter::Kalman</text>
+<text text-anchor="middle" x="478.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Filter::updateState</text>
 </a>
 </g>
 </g>
@@ -154,8 +154,8 @@ var sectionId = 'dynsection-2';
 <g id="edge7_Node000001_Node000008" class="edge">
 <title>Node1&#45;&gt;Node8</title>
 <g id="a_edge7_Node000001_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M603.95,-90.05C581.49,-74.32 548.92,-53.14 518,-39 510.87,-35.74 503.18,-32.77 495.5,-30.12"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="602.15,-93.06 612.33,-95.99 606.2,-87.35 602.15,-93.06"/>
+<path fill="none" stroke="#63b8ff" d="M643.95,-90.05C621.49,-74.32 588.92,-53.14 558,-39 550.87,-35.74 543.18,-32.77 535.5,-30.12"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="642.15,-93.06 652.33,-95.99 646.2,-87.35 642.15,-93.06"/>
 </a>
 </g>
 </g>
@@ -163,9 +163,9 @@ var sectionId = 'dynsection-2';
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="323,-174 175,-174 175,-144 323,-144 323,-174"/>
-<text text-anchor="start" x="183" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::filter::Information</text>
-<text text-anchor="middle" x="249" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">Filter::predictCovariance</text>
+<polygon fill="white" stroke="#666666" points="363,-174 215,-174 215,-144 363,-144 363,-174"/>
+<text text-anchor="start" x="223" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::filter::Information</text>
+<text text-anchor="middle" x="289" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">Filter::predictCovariance</text>
 </a>
 </g>
 </g>
@@ -173,8 +173,8 @@ var sectionId = 'dynsection-2';
 <g id="edge3_Node000003_Node000004" class="edge">
 <title>Node3&#45;&gt;Node4</title>
 <g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M348.76,-159C340.17,-159 331.53,-159 323.12,-159"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="348.8,-162.5 358.8,-159 348.8,-155.5 348.8,-162.5"/>
+<path fill="none" stroke="#63b8ff" d="M388.76,-159C380.17,-159 371.53,-159 363.12,-159"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="388.8,-162.5 398.8,-159 388.8,-155.5 388.8,-162.5"/>
 </a>
 </g>
 </g>
@@ -182,9 +182,11 @@ var sectionId = 'dynsection-2';
 <g id="Node000005" class="node">
 <title>Node5</title>
 <g id="a_Node000005"><a xlink:href="classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" target="_top" xlink:title="State prediction with ego motion compensation using an InformationFilter.">
-<polygon fill="white" stroke="#666666" points="139,-174 0,-174 0,-144 139,-144 139,-174"/>
-<text text-anchor="start" x="8" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::generic</text>
-<text text-anchor="middle" x="69.5" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">::Predict::run</text>
+<polygon fill="white" stroke="#666666" points="179,-185 0,-185 0,-133 179,-133 179,-185"/>
+<text text-anchor="start" x="8" y="-173" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::generic</text>
+<text text-anchor="start" x="8" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">::Predict&lt; MotionModel</text>
+<text text-anchor="start" x="8" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">_, MotionModelTrait_::Covariance</text>
+<text text-anchor="middle" x="89.5" y="-140" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixPolicy &gt;::run</text>
 </a>
 </g>
 </g>
@@ -192,8 +194,8 @@ var sectionId = 'dynsection-2';
 <g id="edge4_Node000004_Node000005" class="edge">
 <title>Node4&#45;&gt;Node5</title>
 <g id="a_edge4_Node000004_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M164.52,-159C156.07,-159 147.55,-159 139.27,-159"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="164.78,-162.5 174.78,-159 164.78,-155.5 164.78,-162.5"/>
+<path fill="none" stroke="#63b8ff" d="M204.54,-159C196.1,-159 187.51,-159 179.02,-159"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="204.74,-162.5 214.74,-159 204.74,-155.5 204.74,-162.5"/>
 </a>
 </g>
 </g>

@@ -35,5 +35,7 @@ var searchData=
   ['requiremoveintf_3c_20matrix_3c_20valuetype_5f_2c_20rows_5f_2c_20cols_5f_2c_20true_20_3e_20_3e_32',['RequireMoveIntf&lt; Matrix&lt; ValueType_, Rows_, Cols_, true &gt; &gt;',['../classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html',1,'tracking::base::contract']]],
   ['requiremoveintf_3c_20statemem_3c_20covariancematrixpolicy_5f_2c_20size_5f_20_3e_20_3e_33',['RequireMoveIntf&lt; StateMem&lt; CovarianceMatrixPolicy_, Size_ &gt; &gt;',['../classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html',1,'tracking::base::contract']]],
   ['requiremoveintf_3c_20statemem_3c_20motionmodeltrait_5f_3a_3acovariancematrixpolicy_2c_20size_5f_20_3e_20_3e_34',['RequireMoveIntf&lt; StateMem&lt; MotionModelTrait_::CovarianceMatrixPolicy, Size_ &gt; &gt;',['../classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html',1,'tracking::base::contract']]],
-  ['requiremoveintf_3c_20statemem_3c_20observationmodeltrait_5f_3a_3acovariancematrixpolicy_2c_20size_5f_20_3e_20_3e_35',['RequireMoveIntf&lt; StateMem&lt; ObservationModelTrait_::CovarianceMatrixPolicy, Size_ &gt; &gt;',['../classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html',1,'tracking::base::contract']]]
+  ['requiremoveintf_3c_20statemem_3c_20observationmodeltrait_5f_3a_3acovariancematrixpolicy_2c_20size_5f_20_3e_20_3e_35',['RequireMoveIntf&lt; StateMem&lt; ObservationModelTrait_::CovarianceMatrixPolicy, Size_ &gt; &gt;',['../classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html',1,'tracking::base::contract']]],
+  ['rotation2d_36',['Rotation2D',['../classtracking_1_1math_1_1Rotation2D.html',1,'tracking::math']]],
+  ['rotation2d_3c_20value_5ftype_20_3e_37',['Rotation2D&lt; value_type &gt;',['../classtracking_1_1math_1_1Rotation2D.html',1,'tracking::math']]]
 ];

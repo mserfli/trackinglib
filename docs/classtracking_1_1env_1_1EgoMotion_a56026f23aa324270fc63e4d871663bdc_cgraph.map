@@ -1,0 +1,5 @@
+<map id="tracking::env::EgoMotion::compensateDirection" name="tracking::env::EgoMotion::compensateDirection">
+<area shape="rect" id="Node000001" title="Compensate direction vector for ego vehicle motion." alt="" coords="5,5,188,45"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Rotation2D.html#a9d3080324df858335b82c2125d0423dd" title="Create a rotation from an already&#45;known cos/sin pair, avoiding recomputation." alt="" coords="236,5,424,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,23,222,23,222,28,189,28"/>
+</map>

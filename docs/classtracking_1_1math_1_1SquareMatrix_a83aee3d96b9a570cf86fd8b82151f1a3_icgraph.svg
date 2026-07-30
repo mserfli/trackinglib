@@ -230,11 +230,9 @@ var sectionId = 'dynsection-11';
 <g id="Node000008" class="node">
 <title>Node8</title>
 <g id="a_Node000008"><a xlink:href="classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" target="_top" xlink:title="State prediction with ego motion compensation using a KalmanFilter.">
-<polygon fill="white" stroke="#666666" points="179,-143 0,-143 0,-91 179,-91 179,-143"/>
-<text text-anchor="start" x="8" y="-131" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::generic</text>
-<text text-anchor="start" x="8" y="-120" font-family="Helvetica,sans-Serif" font-size="10.00">::Predict&lt; MotionModel</text>
-<text text-anchor="start" x="8" y="-109" font-family="Helvetica,sans-Serif" font-size="10.00">_, MotionModelTrait_::Covariance</text>
-<text text-anchor="middle" x="89.5" y="-98" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixPolicy &gt;::run</text>
+<polygon fill="white" stroke="#666666" points="159,-132 20,-132 20,-102 159,-102 159,-132"/>
+<text text-anchor="start" x="28" y="-120" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::generic</text>
+<text text-anchor="middle" x="89.5" y="-109" font-family="Helvetica,sans-Serif" font-size="10.00">::Predict::run</text>
 </a>
 </g>
 </g>
@@ -242,7 +240,7 @@ var sectionId = 'dynsection-11';
 <g id="edge8_Node000007_Node000008" class="edge">
 <title>Node7&#45;&gt;Node8</title>
 <g id="a_edge8_Node000007_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M211.46,-113.33C200.9,-113.65 189.98,-113.99 179.23,-114.31"/>
+<path fill="none" stroke="#63b8ff" d="M211.44,-113.34C194.2,-113.86 176.02,-114.41 159.15,-114.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="211.58,-116.83 221.47,-113.03 211.36,-109.84 211.58,-116.83"/>
 </a>
 </g>
@@ -251,9 +249,11 @@ var sectionId = 'dynsection-11';
 <g id="Node000010" class="node">
 <title>Node10</title>
 <g id="a_Node000010"><a xlink:href="classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" target="_top" xlink:title="State prediction with ego motion compensation using an InformationFilter.">
-<polygon fill="white" stroke="#666666" points="159,-73 20,-73 20,-43 159,-43 159,-73"/>
-<text text-anchor="start" x="28" y="-61" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::generic</text>
-<text text-anchor="middle" x="89.5" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">::Predict::run</text>
+<polygon fill="white" stroke="#666666" points="179,-84 0,-84 0,-32 179,-32 179,-84"/>
+<text text-anchor="start" x="8" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::generic</text>
+<text text-anchor="start" x="8" y="-61" font-family="Helvetica,sans-Serif" font-size="10.00">::Predict&lt; MotionModel</text>
+<text text-anchor="start" x="8" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">_, MotionModelTrait_::Covariance</text>
+<text text-anchor="middle" x="89.5" y="-39" font-family="Helvetica,sans-Serif" font-size="10.00">MatrixPolicy &gt;::run</text>
 </a>
 </g>
 </g>
@@ -261,7 +261,7 @@ var sectionId = 'dynsection-11';
 <g id="edge10_Node000009_Node000010" class="edge">
 <title>Node9&#45;&gt;Node10</title>
 <g id="a_edge10_Node000009_Node000010"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M205.31,-60.9C189.92,-60.51 174,-60.11 159.1,-59.73"/>
+<path fill="none" stroke="#63b8ff" d="M205.28,-60.9C196.64,-60.68 187.83,-60.46 179.13,-60.24"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="205.25,-64.4 215.33,-61.15 205.43,-57.4 205.25,-64.4"/>
 </a>
 </g>

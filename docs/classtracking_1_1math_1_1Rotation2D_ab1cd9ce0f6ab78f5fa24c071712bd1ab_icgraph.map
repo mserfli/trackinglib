@@ -1,0 +1,7 @@
+<map id="tracking::math::Rotation2D::applyTranspose" name="tracking::math::Rotation2D::applyTranspose">
+<area shape="rect" id="Node000001" title="Apply the inverse rotation R(theta)^T * v." alt="" coords="469,13,657,53"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1SensorMountingPose.html#aac16822a69079ba1aaad9d32f23a369b" title="Rotate a tracking&#45;frame direction (e.g. velocity) into the sensor frame." alt="" coords="235,5,421,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="456,35,421,35,421,30,456,30"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1observation_1_1SensorMountingPose.html#afe7b4cc69c9ce6b03c3af25ff676237e" title="Transform a tracking&#45;frame position into the sensor frame." alt="" coords="5,5,187,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="220,35,187,35,187,30,220,30"/>
+</map>

@@ -161,6 +161,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a30efcbbd9b9c89a6e4873283bb09b8a0" id="r_a30efcbbd9b9c89a6e4873283bb09b8a0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1env_1_1EgoMotion.html#a30efcbbd9b9c89a6e4873283bb09b8a0">getMotion</a> () const -&gt; const <a class="el" href="structtracking_1_1env_1_1EgoMotion_1_1InertialMotion.html">InertialMotion</a> &amp;</td></tr>
 <tr class="memdesc:a30efcbbd9b9c89a6e4873283bb09b8a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the motion parameters.  <br /></td></tr>
 <tr class="separator:a30efcbbd9b9c89a6e4873283bb09b8a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad19cf1f5e365228f2f52b5068c67bba6" id="r_ad19cf1f5e365228f2f52b5068c67bba6"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1env_1_1EgoMotion.html#ad19cf1f5e365228f2f52b5068c67bba6">getVelocityAt</a> (<a class="el" href="classtracking_1_1env_1_1EgoMotion.html#a2e354f0a9287f07e3d6726cf869ad86c">value_type</a> mountX, <a class="el" href="classtracking_1_1env_1_1EgoMotion.html#a2e354f0a9287f07e3d6726cf869ad86c">value_type</a> mountY) const -&gt; <a class="el" href="classtracking_1_1math_1_1Point2d.html">math::Point2d</a>&lt; <a class="el" href="classtracking_1_1env_1_1EgoMotion.html#a2e354f0a9287f07e3d6726cf869ad86c">value_type</a> &gt;</td></tr>
+<tr class="memdesc:ad19cf1f5e365228f2f52b5068c67bba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the tracking-frame velocity of a point rigidly attached to the ego vehicle.  <br /></td></tr>
+<tr class="separator:ad19cf1f5e365228f2f52b5068c67bba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf.html">tracking::math::contract::CovarianceMatrixPolicyIntf&lt; CovarianceMatrixPolicy_ &gt;</a></td></tr>
 <tr class="memitem:aaa69636bf47ad0b3edde3005ef0b2f2d inherit pub_methods_structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf" id="r_aaa69636bf47ad0b3edde3005ef0b2f2d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf.html#aaa69636bf47ad0b3edde3005ef0b2f2d">CovarianceMatrixPolicyIntf</a> ()</td></tr>
 <tr class="separator:aaa69636bf47ad0b3edde3005ef0b2f2d inherit pub_methods_structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -834,6 +837,11 @@ template&lt;typename CovarianceMatrixPolicy_ &gt; </div>
   </table>
   </dd>
 </dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1env_1_1EgoMotion_a56026f23aa324270fc63e4d871663bdc_cgraph.svg" width="430" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -951,7 +959,7 @@ template&lt;typename CovarianceMatrixPolicy_ &gt; </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1env_1_1EgoMotion_a65b4febc155d69ae77c6a42f626bb2e3_icgraph.svg" width="427" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1env_1_1EgoMotion_a65b4febc155d69ae77c6a42f626bb2e3_icgraph.svg" width="480" height="208"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1013,6 +1021,52 @@ template&lt;typename CovarianceMatrixPolicy_ &gt; </div>
 
 <p>Get the motion parameters. </p>
 <dl class="section return"><dt>Returns</dt><dd>Constant reference to motion parameters structure </dd></dl>
+
+</div>
+</div>
+<a id="ad19cf1f5e365228f2f52b5068c67bba6" name="ad19cf1f5e365228f2f52b5068c67bba6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad19cf1f5e365228f2f52b5068c67bba6">&#9670;&#160;</a></span>getVelocityAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CovarianceMatrixPolicy_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classtracking_1_1env_1_1EgoMotion.html">tracking::env::EgoMotion</a>&lt; CovarianceMatrixPolicy_ &gt;::getVelocityAt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtracking_1_1env_1_1EgoMotion.html#a2e354f0a9287f07e3d6726cf869ad86c">value_type</a>&#160;</td>
+          <td class="paramname"><em>mountX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtracking_1_1env_1_1EgoMotion.html#a2e354f0a9287f07e3d6726cf869ad86c">value_type</a>&#160;</td>
+          <td class="paramname"><em>mountY</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const -&gt; <a class="el" href="classtracking_1_1math_1_1Point2d.html">math::Point2d</a>&lt;<a class="el" href="classtracking_1_1env_1_1EgoMotion.html#a2e354f0a9287f07e3d6726cf869ad86c">value_type</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the tracking-frame velocity of a point rigidly attached to the ego vehicle. </p>
+<p>Combines the COG forward speed with the lever-arm contribution of the yaw rate: v_point = (v, 0) + w x r, where r is the vector from the COG to the queried point (mountX, mountY) given in the ego reference frame.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">mountX</td><td>X-coordinate of the point in the ego reference frame [m] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mountY</td><td>Y-coordinate of the point in the ego reference frame [m] </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Point2d Velocity of that point, expressed in the tracking frame [m/s] </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1env_1_1EgoMotion_ad19cf1f5e365228f2f52b5068c67bba6_icgraph.svg" width="452" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

@@ -1,0 +1,5 @@
+<map id="tracking::math::Rotation2D::apply" name="tracking::math::Rotation2D::apply">
+<area shape="rect" id="Node000001" title="Apply the forward rotation R(theta) * v." alt="" coords="235,13,423,53"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1SensorMountingPose.html#ab411fae27878ae71425ae5613f76f86c" title="Chain the constant sensor&#45;frame rotation into a Jacobian column pair." alt="" coords="5,5,187,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,35,187,35,187,30,221,30"/>
+</map>

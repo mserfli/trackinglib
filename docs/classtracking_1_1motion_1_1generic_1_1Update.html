@@ -97,37 +97,42 @@ Public Types</h2></td></tr>
 <tr class="separator:a662d61cefe1172a3e48e8fe08cb5ac96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7ea5445d5af226093aad6a2a65c7e68" id="r_ad7ea5445d5af226093aad6a2a65c7e68"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#ad7ea5445d5af226093aad6a2a65c7e68">DefaultUpdateMode</a> = <a class="el" href="namespacetracking_1_1filter_1_1update__mode.html#af6b573aa686c78847ec7f4ef1ed4b763">filter::update_mode::Default</a>&lt; CovarianceMatrixPolicy_ &gt;</td></tr>
 <tr class="separator:ad7ea5445d5af226093aad6a2a65c7e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60359ba1bf727a3054bd2e6417aff928" id="r_a60359ba1bf727a3054bd2e6417aff928"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a60359ba1bf727a3054bd2e6417aff928">EgoMotionType</a> = <a class="el" href="classtracking_1_1env_1_1EgoMotion.html">env::EgoMotion</a>&lt; CovarianceMatrixPolicy_ &gt;</td></tr>
+<tr class="separator:a60359ba1bf727a3054bd2e6417aff928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a1c60340770b4c97edfc8608ef516a61e" id="r_a1c60340770b4c97edfc8608ef516a61e"><td class="memTemplParams" colspan="2">template&lt;typename UpdateMode_  = DefaultUpdateMode, typename... ObservationModels_&gt; </td></tr>
-<tr class="memitem:a1c60340770b4c97edfc8608ef516a61e"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a1c60340770b4c97edfc8608ef516a61e">run</a> (const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a40a5ef9195b85eefc724357e505d8a20">KalmanFilterType</a> &amp;filter, MotionModel_ &amp;motionModel, const ObservationModels_ &amp;... observationModels)</td></tr>
-<tr class="memdesc:a1c60340770b4c97edfc8608ef516a61e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement update using a KalmanFilter.  <br /></td></tr>
-<tr class="separator:a1c60340770b4c97edfc8608ef516a61e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad58c687ef4a03880fe2d0e87d61dbd50" id="r_ad58c687ef4a03880fe2d0e87d61dbd50"><td class="memTemplParams" colspan="2">template&lt;typename UpdateMode_  = DefaultUpdateMode, typename... ObservationModels_&gt; </td></tr>
-<tr class="memitem:ad58c687ef4a03880fe2d0e87d61dbd50"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#ad58c687ef4a03880fe2d0e87d61dbd50">run</a> (const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a662d61cefe1172a3e48e8fe08cb5ac96">InformationFilterType</a> &amp;filter, MotionModel_ &amp;motionModel, const ObservationModels_ &amp;... observationModels)</td></tr>
-<tr class="memdesc:ad58c687ef4a03880fe2d0e87d61dbd50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement update using an InformationFilter.  <br /></td></tr>
-<tr class="separator:ad58c687ef4a03880fe2d0e87d61dbd50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d94bb0163a3da87586601ec156df23e" id="r_a8d94bb0163a3da87586601ec156df23e"><td class="memTemplParams" colspan="2">template&lt;typename UpdateMode_  = DefaultUpdateMode, typename... ObservationModels_&gt; </td></tr>
+<tr class="memitem:a8d94bb0163a3da87586601ec156df23e"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a8d94bb0163a3da87586601ec156df23e">run</a> (MotionModel_ &amp;motionModel, const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a40a5ef9195b85eefc724357e505d8a20">KalmanFilterType</a> &amp;filter, const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a60359ba1bf727a3054bd2e6417aff928">EgoMotionType</a> &amp;egoMotion, const ObservationModels_ &amp;... observationModels)</td></tr>
+<tr class="memdesc:a8d94bb0163a3da87586601ec156df23e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement update using a KalmanFilter.  <br /></td></tr>
+<tr class="separator:a8d94bb0163a3da87586601ec156df23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a963b5243c9c1a6fcd77367872c06a0b6" id="r_a963b5243c9c1a6fcd77367872c06a0b6"><td class="memTemplParams" colspan="2">template&lt;typename UpdateMode_  = DefaultUpdateMode, typename... ObservationModels_&gt; </td></tr>
+<tr class="memitem:a963b5243c9c1a6fcd77367872c06a0b6"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a963b5243c9c1a6fcd77367872c06a0b6">run</a> (MotionModel_ &amp;motionModel, const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a662d61cefe1172a3e48e8fe08cb5ac96">InformationFilterType</a> &amp;filter, const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a60359ba1bf727a3054bd2e6417aff928">EgoMotionType</a> &amp;egoMotion, const ObservationModels_ &amp;... observationModels)</td></tr>
+<tr class="memdesc:a963b5243c9c1a6fcd77367872c06a0b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement update using an InformationFilter.  <br /></td></tr>
+<tr class="separator:a963b5243c9c1a6fcd77367872c06a0b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a460349d8f90cf32fa962e9116a9b7bac" id="r_a460349d8f90cf32fa962e9116a9b7bac"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> TotalDimZ_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimX_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Offset_&gt; </td></tr>
-<tr class="memitem:a460349d8f90cf32fa962e9116a9b7bac"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a460349d8f90cf32fa962e9116a9b7bac">stackObservations</a> (<a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_ &gt; &amp;innovation, <a class="el" href="classtracking_1_1math_1_1Matrix.html">math::Matrix</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_, DimX_ &gt; &amp;H, <a class="el" href="classtracking_1_1math_1_1SquareMatrix.html">math::SquareMatrix</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_ &gt; &amp;R, const <a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, DimX_ &gt; &amp;state)</td></tr>
-<tr class="memdesc:a460349d8f90cf32fa962e9116a9b7bac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursion end of the observation stacking.  <br /></td></tr>
-<tr class="separator:a460349d8f90cf32fa962e9116a9b7bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb700b27802d9b4a11e08d22c0ec53b0" id="r_aeb700b27802d9b4a11e08d22c0ec53b0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> TotalDimZ_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimX_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Offset_, typename First_ , typename... Rest_&gt; </td></tr>
-<tr class="memitem:aeb700b27802d9b4a11e08d22c0ec53b0"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#aeb700b27802d9b4a11e08d22c0ec53b0">stackObservations</a> (<a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_ &gt; &amp;innovation, <a class="el" href="classtracking_1_1math_1_1Matrix.html">math::Matrix</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_, DimX_ &gt; &amp;H, <a class="el" href="classtracking_1_1math_1_1SquareMatrix.html">math::SquareMatrix</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_ &gt; &amp;R, const <a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, DimX_ &gt; &amp;state, const First_ &amp;first, const Rest_ &amp;... rest)</td></tr>
-<tr class="memdesc:aeb700b27802d9b4a11e08d22c0ec53b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack innovation, Jacobian and covariance blocks of the observation models.  <br /></td></tr>
-<tr class="separator:aeb700b27802d9b4a11e08d22c0ec53b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b6c80b97368eedf763311d0b8718e8" id="r_a15b6c80b97368eedf763311d0b8718e8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> TotalDimZ_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimX_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Offset_&gt; </td></tr>
+<tr class="memitem:a15b6c80b97368eedf763311d0b8718e8"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a15b6c80b97368eedf763311d0b8718e8">stackObservations</a> (<a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_ &gt; &amp;innovation, <a class="el" href="classtracking_1_1math_1_1Matrix.html">math::Matrix</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_, DimX_ &gt; &amp;H, <a class="el" href="classtracking_1_1math_1_1SquareMatrix.html">math::SquareMatrix</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_ &gt; &amp;R, const <a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, DimX_ &gt; &amp;state, const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a60359ba1bf727a3054bd2e6417aff928">EgoMotionType</a> &amp;egoMotion)</td></tr>
+<tr class="memdesc:a15b6c80b97368eedf763311d0b8718e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursion end of the observation stacking.  <br /></td></tr>
+<tr class="separator:a15b6c80b97368eedf763311d0b8718e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29afaf5db9f6ff2961e8ff514591040f" id="r_a29afaf5db9f6ff2961e8ff514591040f"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> TotalDimZ_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimX_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Offset_, typename First_ , typename... Rest_&gt; </td></tr>
+<tr class="memitem:a29afaf5db9f6ff2961e8ff514591040f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a29afaf5db9f6ff2961e8ff514591040f">stackObservations</a> (<a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_ &gt; &amp;innovation, <a class="el" href="classtracking_1_1math_1_1Matrix.html">math::Matrix</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_, DimX_ &gt; &amp;H, <a class="el" href="classtracking_1_1math_1_1SquareMatrix.html">math::SquareMatrix</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, TotalDimZ_ &gt; &amp;R, const <a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, DimX_ &gt; &amp;state, const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a60359ba1bf727a3054bd2e6417aff928">EgoMotionType</a> &amp;egoMotion, const First_ &amp;first, const Rest_ &amp;... rest)</td></tr>
+<tr class="memdesc:a29afaf5db9f6ff2961e8ff514591040f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack innovation, Jacobian and covariance blocks of the observation models.  <br /></td></tr>
+<tr class="separator:a29afaf5db9f6ff2961e8ff514591040f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename MotionModel_, typename CovarianceMatrixPolicy_&gt;<br />
 class tracking::motion::generic::Update&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;</div><p>Class to extend any motion model with a generic measurement update functionality. </p>
-<p>Mirrors <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern.">generic::Predict</a> for the measurement update path. The variadic <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a1c60340770b4c97edfc8608ef516a61e" title="Measurement update using a KalmanFilter.">run()</a> overloads accept one or more observation models: a single model performs a plain measurement update, multiple models are composed by stacking their measurement vectors, Jacobians, and covariances into one joint update (compile-time sized, TotalDimZ = sum of all model dimensions).</p>
+<p>Mirrors <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern.">generic::Predict</a> for the measurement update path. The variadic <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a8d94bb0163a3da87586601ec156df23e" title="Measurement update using a KalmanFilter.">run()</a> overloads accept one or more observation models: a single model performs a plain measurement update, multiple models are composed by stacking their measurement vectors, Jacobians, and covariances into one joint update (compile-time sized, TotalDimZ = sum of all model dimensions).</p>
 <p>The update mode is selected at compile time (see <a class="el" href="namespacetracking_1_1filter_1_1update__mode.html">filter::update_mode</a>):</p><ul>
 <li>Block: one TotalDimZ-sized update (full covariance policy only)</li>
 <li>Sequential: scalar row-by-row updates (required for the factored policy); a correlated R is decorrelated internally via its UDU factorization</li>
 </ul>
+<p>Unlike <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern.">generic::Predict</a> (<a class="el" href="generic__predict_8h.html">generic_predict.h</a>), this class is NOT mixed into the motion model via CRTP inheritance, and all of its methods are static as a result. <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance.">ExtendedMotionModel</a>'s update() (<a class="el" href="imotion__model_8h.html">imotion_model.h</a>) is itself a template method (variadic ObservationModels_..., plus an UpdateMode_ tag) that explicitly calls generic::Update&lt;...&gt;::run(static_cast&lt;MotionModel_&amp;&gt;(*this),
+..., observationModels...), passing the motion model in as an ordinary parameter rather than reaching it through an inherited <code>this</code>.</p>
+<p>This is not an arbitrary style choice, nor a stylistic drift from <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern.">Predict</a>: it follows from a hard C++ constraint. <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern.">Predict</a> is CRTP-inherited because <a class="el" href="classtracking_1_1motion_1_1IMotionModel.html#ad4046457a9b09c7f6b8bd5560b8f1bce" title="Predicts the underlying MotionModel with the given filter (includes ego motion compensation)">IMotionModel::predict()</a> is declared virtual with a fixed, non-template signature, and only an actual base class can be overridden that way. <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html" title="Class to extend any motion model with a generic measurement update functionality.">Update</a>'s <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a8d94bb0163a3da87586601ec156df23e" title="Measurement update using a KalmanFilter.">run()</a>, however, is inherently a template (it must vary per call by which and how many observation models are passed) — and C++ does not allow virtual template member functions. So update() can never be part of that same virtual-dispatch contract regardless of how <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html" title="Class to extend any motion model with a generic measurement update functionality.">Update</a> is implemented, which removes the only reason <a class="el" href="classtracking_1_1motion_1_1generic_1_1Predict.html" title="Base class to extend any motion model with a generic prediction functionality using the CRTP pattern.">Predict</a> needed inheritance in the first place. With no virtual-interface pressure, implementing <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html" title="Class to extend any motion model with a generic measurement update functionality.">Update</a> as a stateless static template utility — invoked by qualified name, motion model passed in explicitly — avoids adding an inheritance relationship that would buy nothing: the CRTP cast would still be needed, just moved from the call site into a would-be non-static method body.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">MotionModel_</td><td>The underlying MotionModel </td></tr>
@@ -146,6 +151,22 @@ template&lt;typename MotionModel_ , typename CovarianceMatrixPolicy_ &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html">tracking::motion::generic::Update</a>&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;::DefaultUpdateMode =  <a class="el" href="namespacetracking_1_1filter_1_1update__mode.html#af6b573aa686c78847ec7f4ef1ed4b763">filter::update_mode::Default</a>&lt;CovarianceMatrixPolicy_&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a60359ba1bf727a3054bd2e6417aff928" name="a60359ba1bf727a3054bd2e6417aff928"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60359ba1bf727a3054bd2e6417aff928">&#9670;&#160;</a></span>EgoMotionType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MotionModel_ , typename CovarianceMatrixPolicy_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html">tracking::motion::generic::Update</a>&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;::EgoMotionType =  <a class="el" href="classtracking_1_1env_1_1EgoMotion.html">env::EgoMotion</a>&lt;CovarianceMatrixPolicy_&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -201,8 +222,8 @@ template&lt;typename MotionModel_ , typename CovarianceMatrixPolicy_ &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad58c687ef4a03880fe2d0e87d61dbd50" name="ad58c687ef4a03880fe2d0e87d61dbd50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad58c687ef4a03880fe2d0e87d61dbd50">&#9670;&#160;</a></span>run() <span class="overload">[1/2]</span></h2>
+<a id="a963b5243c9c1a6fcd77367872c06a0b6" name="a963b5243c9c1a6fcd77367872c06a0b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a963b5243c9c1a6fcd77367872c06a0b6">&#9670;&#160;</a></span>run() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,14 +238,20 @@ template&lt;typename UpdateMode_ , typename... ObservationModels_&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html">tracking::motion::generic::Update</a>&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;::run </td>
           <td>(</td>
+          <td class="paramtype">MotionModel_ &amp;&#160;</td>
+          <td class="paramname"><em>motionModel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a662d61cefe1172a3e48e8fe08cb5ac96">InformationFilterType</a> &amp;&#160;</td>
           <td class="paramname"><em>filter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">MotionModel_ &amp;&#160;</td>
-          <td class="paramname"><em>motionModel</em>, </td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a60359ba1bf727a3054bd2e6417aff928">EgoMotionType</a> &amp;&#160;</td>
+          <td class="paramname"><em>egoMotion</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -255,8 +282,9 @@ template&lt;typename UpdateMode_ , typename... ObservationModels_&gt; </div>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">filter</td><td>The filter instance </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">motionModel</td><td>The motion model whose information vector and matrix are updated </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filter</td><td>The filter instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">egoMotion</td><td>Ego motion of the sensor platform, forwarded to each observation model </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">observationModels</td><td>Observation models carrying measurement z and covariance R </td></tr>
   </table>
   </dd>
@@ -265,8 +293,8 @@ template&lt;typename UpdateMode_ , typename... ObservationModels_&gt; </div>
 
 </div>
 </div>
-<a id="a1c60340770b4c97edfc8608ef516a61e" name="a1c60340770b4c97edfc8608ef516a61e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c60340770b4c97edfc8608ef516a61e">&#9670;&#160;</a></span>run() <span class="overload">[2/2]</span></h2>
+<a id="a8d94bb0163a3da87586601ec156df23e" name="a8d94bb0163a3da87586601ec156df23e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d94bb0163a3da87586601ec156df23e">&#9670;&#160;</a></span>run() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,14 +309,20 @@ template&lt;typename UpdateMode_ , typename... ObservationModels_&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html">tracking::motion::generic::Update</a>&lt; MotionModel_, CovarianceMatrixPolicy_ &gt;::run </td>
           <td>(</td>
+          <td class="paramtype">MotionModel_ &amp;&#160;</td>
+          <td class="paramname"><em>motionModel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a40a5ef9195b85eefc724357e505d8a20">KalmanFilterType</a> &amp;&#160;</td>
           <td class="paramname"><em>filter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">MotionModel_ &amp;&#160;</td>
-          <td class="paramname"><em>motionModel</em>, </td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a60359ba1bf727a3054bd2e6417aff928">EgoMotionType</a> &amp;&#160;</td>
+          <td class="paramname"><em>egoMotion</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -319,8 +353,9 @@ template&lt;typename UpdateMode_ , typename... ObservationModels_&gt; </div>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">filter</td><td>The filter instance </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">motionModel</td><td>The motion model whose state and covariance are updated </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filter</td><td>The filter instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">egoMotion</td><td>Ego motion of the sensor platform, forwarded to each observation model </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">observationModels</td><td>Observation models carrying measurement z and covariance R </td></tr>
   </table>
   </dd>
@@ -329,8 +364,8 @@ template&lt;typename UpdateMode_ , typename... ObservationModels_&gt; </div>
 
 </div>
 </div>
-<a id="a460349d8f90cf32fa962e9116a9b7bac" name="a460349d8f90cf32fa962e9116a9b7bac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a460349d8f90cf32fa962e9116a9b7bac">&#9670;&#160;</a></span>stackObservations() <span class="overload">[1/2]</span></h2>
+<a id="a15b6c80b97368eedf763311d0b8718e8" name="a15b6c80b97368eedf763311d0b8718e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15b6c80b97368eedf763311d0b8718e8">&#9670;&#160;</a></span>stackObservations() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -364,7 +399,13 @@ template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, DimX_ &gt; &amp;&#160;</td>
-          <td class="paramname"><em>state</em>&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a60359ba1bf727a3054bd2e6417aff928">EgoMotionType</a> &amp;&#160;</td>
+          <td class="paramname"><em>egoMotion</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -391,8 +432,8 @@ template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a
 
 </div>
 </div>
-<a id="aeb700b27802d9b4a11e08d22c0ec53b0" name="aeb700b27802d9b4a11e08d22c0ec53b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb700b27802d9b4a11e08d22c0ec53b0">&#9670;&#160;</a></span>stackObservations() <span class="overload">[2/2]</span></h2>
+<a id="a29afaf5db9f6ff2961e8ff514591040f" name="a29afaf5db9f6ff2961e8ff514591040f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29afaf5db9f6ff2961e8ff514591040f">&#9670;&#160;</a></span>stackObservations() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -427,6 +468,12 @@ template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a
           <td></td>
           <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#adbd416eb0bb1827dee25f64b127bc6ca">value_type</a>, DimX_ &gt; &amp;&#160;</td>
           <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1motion_1_1generic_1_1Update.html#a60359ba1bf727a3054bd2e6417aff928">EgoMotionType</a> &amp;&#160;</td>
+          <td class="paramname"><em>egoMotion</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -470,6 +517,7 @@ template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a
     <tr><td class="paramdir">[in,out]</td><td class="paramname">H</td><td>Stacked measurement Jacobian to be filled </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">R</td><td>Stacked (block-diagonal) measurement covariance to be filled </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>State vector (state space) the models are evaluated at </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">egoMotion</td><td>Ego motion of the sensor platform, forwarded to each observation model </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">first</td><td>First observation model </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">rest</td><td>Remaining observation models </td></tr>
   </table>
@@ -478,7 +526,7 @@ template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1motion_1_1generic_1_1Update_aeb700b27802d9b4a11e08d22c0ec53b0_cgraph.svg" width="652" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1motion_1_1generic_1_1Update_a29afaf5db9f6ff2961e8ff514591040f_cgraph.svg" width="652" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

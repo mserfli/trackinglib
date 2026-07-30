@@ -1,0 +1,5 @@
+<map id="tracking::math::Rotation2D::sin" name="tracking::math::Rotation2D::sin">
+<area shape="rect" id="Node000001" title="Read access to the cached sine." alt="" coords="220,13,408,53"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1SensorMountingPose.html#adb1d702a92e93bde857bd70e33d14faf" title="Read access to the mounting yaw sine." alt="" coords="5,5,172,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,35,172,35,172,30,206,30"/>
+</map>

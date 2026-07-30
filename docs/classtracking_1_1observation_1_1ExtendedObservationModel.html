@@ -79,6 +79,8 @@ $(function() {
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classtracking_1_1observation_1_1ExtendedObservationModel-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">tracking::observation::ExtendedObservationModel&lt; ObservationModel_, ObservationModelTrait_ &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
@@ -114,6 +116,10 @@ Public Types</h2></td></tr>
 <tr class="separator:a9d9a50ee7d48549f66299c5fe81bcc5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fac79c12c453ab3e50835c7323c56a6" id="r_a4fac79c12c453ab3e50835c7323c56a6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fac79c12c453ab3e50835c7323c56a6">JacobianMatrix</a> = <a class="el" href="classtracking_1_1math_1_1Matrix.html">math::Matrix</a>&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a>, <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ad513f2e6a02541042652b2f30985533c">DimZ</a>, <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#adf7c9dba57349a71a793e577a05968af">DimX</a> &gt;</td></tr>
 <tr class="separator:a4fac79c12c453ab3e50835c7323c56a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fca23ab6d9c182fba13acc4be44b61f" id="r_a4fca23ab6d9c182fba13acc4be44b61f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> = <a class="el" href="classtracking_1_1observation_1_1SensorMountingPose.html">SensorMountingPose</a>&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt;</td></tr>
+<tr class="separator:a4fca23ab6d9c182fba13acc4be44b61f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a810025689fbd926601ebc03f87a1aa60" id="r_a810025689fbd926601ebc03f87a1aa60"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a810025689fbd926601ebc03f87a1aa60">EgoMotionType</a> = <a class="el" href="classtracking_1_1env_1_1EgoMotion.html">env::EgoMotion</a>&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#aef2772e39ad6ac7d62481c0a62b3e310">CovarianceMatrixPolicy</a> &gt;</td></tr>
+<tr class="separator:a810025689fbd926601ebc03f87a1aa60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classtracking_1_1observation_1_1IObservationModel"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtracking_1_1observation_1_1IObservationModel')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtracking_1_1observation_1_1IObservationModel.html">tracking::observation::IObservationModel&lt; ObservationModelTrait_::CovarianceMatrixPolicy &gt;</a></td></tr>
 <tr class="memitem:afd69318687247b236f8b93607df7dfa9 inherit pub_types_classtracking_1_1observation_1_1IObservationModel" id="r_afd69318687247b236f8b93607df7dfa9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1IObservationModel.html#afd69318687247b236f8b93607df7dfa9">value_type</a> = typename CovarianceMatrixPolicy_::value_type</td></tr>
 <tr class="separator:afd69318687247b236f8b93607df7dfa9 inherit pub_types_classtracking_1_1observation_1_1IObservationModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,6 +145,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a87055ba5f83013fd515e50415ccef959" id="r_a87055ba5f83013fd515e50415ccef959"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a87055ba5f83013fd515e50415ccef959">getDim</a> () const -&gt; <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> final</td></tr>
 <tr class="memdesc:a87055ba5f83013fd515e50415ccef959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read access to the measurement dimension.  <br /></td></tr>
 <tr class="separator:a87055ba5f83013fd515e50415ccef959"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aea79e4a1e87fa9deb6266b476034d3" id="r_a8aea79e4a1e87fa9deb6266b476034d3"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a8aea79e4a1e87fa9deb6266b476034d3">getSensorPose</a> () const -&gt; const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;</td></tr>
+<tr class="memdesc:a8aea79e4a1e87fa9deb6266b476034d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read access to the sensor mounting pose.  <br /></td></tr>
+<tr class="separator:a8aea79e4a1e87fa9deb6266b476034d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92c3b2f9e3b4946c2d5231a0c4f1ccb7" id="r_a92c3b2f9e3b4946c2d5231a0c4f1ccb7"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a92c3b2f9e3b4946c2d5231a0c4f1ccb7">predictMeasurement</a> (const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9d9a50ee7d48549f66299c5fe81bcc5c">StateVec</a> &amp;state, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a810025689fbd926601ebc03f87a1aa60">EgoMotionType</a> &amp;egoMotion) const -&gt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a></td></tr>
+<tr class="memdesc:a92c3b2f9e3b4946c2d5231a0c4f1ccb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predict the measurement h(x) for the given tracking-frame state.  <br /></td></tr>
+<tr class="separator:a92c3b2f9e3b4946c2d5231a0c4f1ccb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10536a872b99fd7fdb83a7a668753a88" id="r_a10536a872b99fd7fdb83a7a668753a88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a10536a872b99fd7fdb83a7a668753a88">computeJacobian</a> (<a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fac79c12c453ab3e50835c7323c56a6">JacobianMatrix</a> &amp;jacobian, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9d9a50ee7d48549f66299c5fe81bcc5c">StateVec</a> &amp;state, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a810025689fbd926601ebc03f87a1aa60">EgoMotionType</a> &amp;egoMotion) const</td></tr>
+<tr class="memdesc:a10536a872b99fd7fdb83a7a668753a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the measurement Jacobian H = dh/dx for the given tracking-frame state.  <br /></td></tr>
+<tr class="separator:a10536a872b99fd7fdb83a7a668753a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05fed77ed466c7c76ceeac3d0729a044" id="r_a05fed77ed466c7c76ceeac3d0729a044"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a05fed77ed466c7c76ceeac3d0729a044">computeInnovation</a> (const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp;measurement, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp;predicted) const -&gt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a></td></tr>
 <tr class="memdesc:a05fed77ed466c7c76ceeac3d0729a044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the innovation nu = z - h(x)  <br /></td></tr>
 <tr class="separator:a05fed77ed466c7c76ceeac3d0729a044"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,6 +230,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af26cd587341e97a9cdb8b44b1e32adf9" id="r_af26cd587341e97a9cdb8b44b1e32adf9"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#af26cd587341e97a9cdb8b44b1e32adf9">FromLists</a> (const std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList) -&gt; ObservationModel_</td></tr>
 <tr class="memdesc:af26cd587341e97a9cdb8b44b1e32adf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create complete ObservationModel from initializer lists.  <br /></td></tr>
 <tr class="separator:af26cd587341e97a9cdb8b44b1e32adf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab77e06c5979828b50d5de5734d72ac6d" id="r_ab77e06c5979828b50d5de5734d72ac6d"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ab77e06c5979828b50d5de5734d72ac6d">FromLists</a> (const std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;pose) -&gt; ObservationModel_</td></tr>
+<tr class="memdesc:ab77e06c5979828b50d5de5734d72ac6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create complete ObservationModel from initializer lists and a sensor mounting pose.  <br /></td></tr>
+<tr class="separator:ab77e06c5979828b50d5de5734d72ac6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -227,6 +245,9 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ab52775f7fc97c09bf73bfe3a8e2f7aaa" id="r_ab52775f7fc97c09bf73bfe3a8e2f7aaa"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ab52775f7fc97c09bf73bfe3a8e2f7aaa">egoVelocitySensorFrame</a> (const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a810025689fbd926601ebc03f87a1aa60">EgoMotionType</a> &amp;egoMotion) const</td></tr>
+<tr class="memdesc:ab52775f7fc97c09bf73bfe3a8e2f7aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ego lever-arm velocity at the mounting position, expressed in the sensor frame.  <br /></td></tr>
+<tr class="separator:ab52775f7fc97c09bf73bfe3a8e2f7aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a941abfee38a00d8828a51bc73480e2d4" id="r_a941abfee38a00d8828a51bc73480e2d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a941abfee38a00d8828a51bc73480e2d4">ExtendedObservationModel</a> (const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">ExtendedObservationModel</a> &amp;other)=default</td></tr>
 <tr class="separator:a941abfee38a00d8828a51bc73480e2d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeafbb4943ac4919d7cda6bf573635b1d" id="r_aeafbb4943ac4919d7cda6bf573635b1d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#aeafbb4943ac4919d7cda6bf573635b1d">ExtendedObservationModel</a> (<a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">ExtendedObservationModel</a> &amp;&amp;) noexcept=default</td></tr>
@@ -238,6 +259,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aacf04717e7bd64648859dff514e56b2b" id="r_aacf04717e7bd64648859dff514e56b2b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#aacf04717e7bd64648859dff514e56b2b">ExtendedObservationModel</a> (const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp;vec, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp;cov)</td></tr>
 <tr class="memdesc:aacf04717e7bd64648859dff514e56b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Extended Observation Model object.  <br /></td></tr>
 <tr class="separator:aacf04717e7bd64648859dff514e56b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62e695a8a59dc3181d7dd1b08571b15f" id="r_a62e695a8a59dc3181d7dd1b08571b15f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a62e695a8a59dc3181d7dd1b08571b15f">ExtendedObservationModel</a> (const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp;vec, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp;cov, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;pose)</td></tr>
+<tr class="memdesc:a62e695a8a59dc3181d7dd1b08571b15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Extended Observation Model object with a non-identity sensor mounting pose.  <br /></td></tr>
+<tr class="separator:a62e695a8a59dc3181d7dd1b08571b15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classtracking_1_1observation_1_1IObservationModel"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classtracking_1_1observation_1_1IObservationModel')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classtracking_1_1observation_1_1IObservationModel.html">tracking::observation::IObservationModel&lt; ObservationModelTrait_::CovarianceMatrixPolicy &gt;</a></td></tr>
 <tr class="memitem:a50ff9bd8d04ea20842286775cd5037de inherit pro_methods_classtracking_1_1observation_1_1IObservationModel" id="r_a50ff9bd8d04ea20842286775cd5037de"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1IObservationModel.html#a50ff9bd8d04ea20842286775cd5037de">IObservationModel</a> (const <a class="el" href="classtracking_1_1observation_1_1IObservationModel.html">IObservationModel</a> &amp;other)=default</td></tr>
 <tr class="separator:a50ff9bd8d04ea20842286775cd5037de inherit pro_methods_classtracking_1_1observation_1_1IObservationModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,14 +284,31 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a077e9c366b6f857261ba097dc8dc0129 inherit pro_methods_classtracking_1_1motion_1_1StateMem" id="r_a077e9c366b6f857261ba097dc8dc0129"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1StateMem.html#a077e9c366b6f857261ba097dc8dc0129">operator[]</a> (const <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> idx) -&gt; <a class="el" href="classtracking_1_1motion_1_1StateMem.html#a673872e4a7b3a6ea8d9ed3ecf6666b3c">value_type</a> &amp;</td></tr>
 <tr class="memdesc:a077e9c366b6f857261ba097dc8dc0129 inherit pro_methods_classtracking_1_1motion_1_1StateMem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write access to indexed element of the state vector.  <br /></td></tr>
 <tr class="separator:a077e9c366b6f857261ba097dc8dc0129 inherit pro_methods_classtracking_1_1motion_1_1StateMem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a6e9cf8e9e82d69038a328c4c14f5423f" id="r_a6e9cf8e9e82d69038a328c4c14f5423f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a6e9cf8e9e82d69038a328c4c14f5423f">derived</a> () const -&gt; const ObservationModel_ &amp;</td></tr>
+<tr class="memdesc:a6e9cf8e9e82d69038a328c4c14f5423f"><td class="mdescLeft">&#160;</td><td class="mdescRight">CRTP downcast to the concrete derived observation model.  <br /></td></tr>
+<tr class="separator:a6e9cf8e9e82d69038a328c4c14f5423f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a296007bba3bccb799ebe4889828930e9" id="r_a296007bba3bccb799ebe4889828930e9"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a296007bba3bccb799ebe4889828930e9">toSensorFrame</a> (const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9d9a50ee7d48549f66299c5fe81bcc5c">StateVec</a> &amp;state) const -&gt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9d9a50ee7d48549f66299c5fe81bcc5c">StateVec</a></td></tr>
+<tr class="memdesc:a296007bba3bccb799ebe4889828930e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform every present state component (position/velocity/acceleration) into the sensor frame.  <br /></td></tr>
+<tr class="separator:a296007bba3bccb799ebe4889828930e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dc3c21157845840175b3a54d8a5abbb" id="r_a9dc3c21157845840175b3a54d8a5abbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9dc3c21157845840175b3a54d8a5abbb">applyJacobianFrameRotation</a> (<a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fac79c12c453ab3e50835c7323c56a6">JacobianMatrix</a> &amp;jacobian) const</td></tr>
+<tr class="memdesc:a9dc3c21157845840175b3a54d8a5abbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chain the constant sensor mounting rotation onto every present Jacobian column pair.  <br /></td></tr>
+<tr class="separator:a9dc3c21157845840175b3a54d8a5abbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ac80fae29bf17edcb0fb851c055758acb" id="r_ac80fae29bf17edcb0fb851c055758acb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac80fae29bf17edcb0fb851c055758acb">_sensorPose</a> {}</td></tr>
+<tr class="separator:ac80fae29bf17edcb0fb851c055758acb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename ObservationModel_, typename ObservationModelTrait_&gt;<br />
 class tracking::observation::ExtendedObservationModel&lt; ObservationModel_, ObservationModelTrait_ &gt;</div><p>Abstract ObservationModel with known dimensions, keeping the model memory for the measurement vector z and the measurement covariance R. </p>
 <p>CRTP base for concrete observation models, mirroring <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance.">motion::ExtendedMotionModel</a>. It reuses <a class="el" href="classtracking_1_1motion_1_1StateMem.html" title="StateMem class to represent a state vector with its uncertainty described by the state covariance mat...">motion::StateMem</a> for the measurement memory: <a class="el" href="classtracking_1_1motion_1_1StateMem.html#af55a8f1ac97f75144ca075394885810b" title="Write access to full state vector.">getVec()</a> returns the measurement vector z and <a class="el" href="classtracking_1_1motion_1_1StateMem.html#ada90b03a93dd10b2993be3dd37c5001b" title="Write access to state covariance matrix.">getCov()</a> returns the measurement covariance R.</p>
-<p>Static contract (no virtual dispatch, mirroring the motion side's computeA/applyProcessModel hooks): concrete models must provide</p><ul>
-<li>predictMeasurement(const StateVec&amp;) const -&gt; MeasurementVec (observation function h(x))</li>
-<li>computeJacobian(JacobianMatrix&amp;, const StateVec&amp;) const  (H = dh/dx) and may shadow <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a05fed77ed466c7c76ceeac3d0729a044" title="Compute the innovation nu = z - h(x)">computeInnovation()</a> for measurement components that need special innovation handling (e.g. angle wrapping). These hooks are resolved statically on the concrete model type by generic::Update (no vtable entry is involved); the mandatory two are enforced at compile time by <a class="el" href="structtracking_1_1observation_1_1contract_1_1ObservationModelIntf.html" title="Static interface contract for concrete observation models (CRTP)">contract::ObservationModelIntf</a> (this class's CRTP contract base).</li>
+<p>Template-Method pattern: this base owns <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a92c3b2f9e3b4946c2d5231a0c4f1ccb7" title="Predict the measurement h(x) for the given tracking-frame state.">predictMeasurement()</a>/computeJacobian() (called by generic::Update) and unconditionally applies the sensor mounting pose transform via <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a296007bba3bccb799ebe4889828930e9" title="Transform every present state component (position/velocity/acceleration) into the sensor frame.">toSensorFrame()</a>/applyJacobianFrameRotation() before delegating to sensor-frame-only hooks that concrete models must provide (no vtable entry is involved — resolved statically via the CRTP <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a6e9cf8e9e82d69038a328c4c14f5423f" title="CRTP downcast to the concrete derived observation model.">derived()</a> downcast):</p><ul>
+<li>predictMeasurementSensorFrame(const StateVec&amp;, const EgoMotionType&amp;) const -&gt; MeasurementVec (h(x) in sensor frame)</li>
+<li>computeJacobianSensorFrame(JacobianMatrix&amp;, const StateVec&amp;, const EgoMotionType&amp;) const  (dh/dx in sensor frame) and may shadow <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a05fed77ed466c7c76ceeac3d0729a044" title="Compute the innovation nu = z - h(x)">computeInnovation()</a> for measurement components that need special innovation handling (e.g. angle wrapping). Because the base applies the transform, a concrete model cannot forget it or apply it inconsistently between prediction and Jacobian; the mandatory two hooks are enforced at compile time by <a class="el" href="structtracking_1_1observation_1_1contract_1_1ObservationModelIntf.html" title="Static interface contract for concrete observation models (CRTP)">contract::ObservationModelIntf</a> (this class's CRTP contract base).</li>
 </ul>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -325,6 +366,22 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 
 </div>
 </div>
+<a id="a810025689fbd926601ebc03f87a1aa60" name="a810025689fbd926601ebc03f87a1aa60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a810025689fbd926601ebc03f87a1aa60">&#9670;&#160;</a></span>EgoMotionType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::EgoMotionType =  <a class="el" href="classtracking_1_1env_1_1EgoMotion.html">env::EgoMotion</a>&lt;<a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#aef2772e39ad6ac7d62481c0a62b3e310">CovarianceMatrixPolicy</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a4fac79c12c453ab3e50835c7323c56a6" name="a4fac79c12c453ab3e50835c7323c56a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4fac79c12c453ab3e50835c7323c56a6">&#9670;&#160;</a></span>JacobianMatrix</h2>
 
@@ -367,6 +424,22 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::MeasurementVec =  typename <a class="el" href="classtracking_1_1motion_1_1StateMem.html#af4a3e9236bd4df64babb8aa22a10bcee">BaseStateMem::StateVec</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4fca23ab6d9c182fba13acc4be44b61f" name="a4fca23ab6d9c182fba13acc4be44b61f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fca23ab6d9c182fba13acc4be44b61f">&#9670;&#160;</a></span>SensorPose</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::SensorPose =  <a class="el" href="classtracking_1_1observation_1_1SensorMountingPose.html">SensorMountingPose</a>&lt;<a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -423,7 +496,7 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a47499d5e30938c457a3090e2fc40464b" name="a47499d5e30938c457a3090e2fc40464b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47499d5e30938c457a3090e2fc40464b">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a47499d5e30938c457a3090e2fc40464b">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -479,7 +552,7 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 </div>
 </div>
 <a id="a941abfee38a00d8828a51bc73480e2d4" name="a941abfee38a00d8828a51bc73480e2d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a941abfee38a00d8828a51bc73480e2d4">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a941abfee38a00d8828a51bc73480e2d4">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -507,7 +580,7 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 </div>
 </div>
 <a id="aeafbb4943ac4919d7cda6bf573635b1d" name="aeafbb4943ac4919d7cda6bf573635b1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeafbb4943ac4919d7cda6bf573635b1d">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aeafbb4943ac4919d7cda6bf573635b1d">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -535,7 +608,7 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 </div>
 </div>
 <a id="aacf04717e7bd64648859dff514e56b2b" name="aacf04717e7bd64648859dff514e56b2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacf04717e7bd64648859dff514e56b2b">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aacf04717e7bd64648859dff514e56b2b">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -581,7 +654,108 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 
 </div>
 </div>
+<a id="a62e695a8a59dc3181d7dd1b08571b15f" name="a62e695a8a59dc3181d7dd1b08571b15f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62e695a8a59dc3181d7dd1b08571b15f">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::ExtendedObservationModel </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp;&#160;</td>
+          <td class="paramname"><em>vec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp;&#160;</td>
+          <td class="paramname"><em>cov</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;&#160;</td>
+          <td class="paramname"><em>pose</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Construct a new Extended Observation Model object with a non-identity sensor mounting pose. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">vec</td><td>Measurement vector z </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cov</td><td>Measurement covariance R </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pose</td><td>Static SE(2) sensor mounting pose relative to the tracking frame </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9dc3c21157845840175b3a54d8a5abbb" name="a9dc3c21157845840175b3a54d8a5abbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dc3c21157845840175b3a54d8a5abbb">&#9670;&#160;</a></span>applyJacobianFrameRotation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::applyJacobianFrameRotation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fac79c12c453ab3e50835c7323c56a6">JacobianMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>jacobian</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Chain the constant sensor mounting rotation onto every present Jacobian column pair. </p>
+<p>Post-multiplies each present (position/velocity/acceleration) column pair by R(theta)^T, turning sensor-frame-local partials (filled by computeJacobianSensorFrame()) into partials w.r.t. the underlying tracking-frame state columns. A pair with all-zero local partials (e.g. a component the concrete model doesn't use) rotates to zero, so applying this unconditionally to every present pair is always safe.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">jacobian</td><td>Jacobian matrix updated in place </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a9dc3c21157845840175b3a54d8a5abbb_cgraph.svg" width="487" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a9dc3c21157845840175b3a54d8a5abbb_icgraph.svg" width="487" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a05fed77ed466c7c76ceeac3d0729a044" name="a05fed77ed466c7c76ceeac3d0729a044"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a05fed77ed466c7c76ceeac3d0729a044">&#9670;&#160;</a></span>computeInnovation()</h2>
 
@@ -632,8 +806,146 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 
 </div>
 </div>
+<a id="a10536a872b99fd7fdb83a7a668753a88" name="a10536a872b99fd7fdb83a7a668753a88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10536a872b99fd7fdb83a7a668753a88">&#9670;&#160;</a></span>computeJacobian()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::computeJacobian </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fac79c12c453ab3e50835c7323c56a6">JacobianMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>jacobian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9d9a50ee7d48549f66299c5fe81bcc5c">StateVec</a> &amp;&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a810025689fbd926601ebc03f87a1aa60">EgoMotionType</a> &amp;&#160;</td>
+          <td class="paramname"><em>egoMotion</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the measurement Jacobian H = dh/dx for the given tracking-frame state. </p>
+<p>Transforms the state into the sensor frame, delegates to the derived model's computeJacobianSensorFrame() hook to fill the sensor-frame-local partials, then chains the constant mounting rotation back onto the tracking-frame state columns via <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9dc3c21157845840175b3a54d8a5abbb" title="Chain the constant sensor mounting rotation onto every present Jacobian column pair.">applyJacobianFrameRotation()</a>. See <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a92c3b2f9e3b4946c2d5231a0c4f1ccb7" title="Predict the measurement h(x) for the given tracking-frame state.">predictMeasurement()</a> for the rationale.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">jacobian</td><td>The measurement Jacobian to be filled </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>Tracking-frame state vector the Jacobian is linearized at </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">egoMotion</td><td>Ego motion of the sensor platform </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a10536a872b99fd7fdb83a7a668753a88_cgraph.svg" width="100%" height="467"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a6e9cf8e9e82d69038a328c4c14f5423f" name="a6e9cf8e9e82d69038a328c4c14f5423f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e9cf8e9e82d69038a328c4c14f5423f">&#9670;&#160;</a></span>derived()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::derived </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; const ObservationModel_&amp; </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CRTP downcast to the concrete derived observation model. </p>
+<dl class="section return"><dt>Returns</dt><dd>const ObservationModel_&amp; The concrete model this base is instantiated for </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a6e9cf8e9e82d69038a328c4c14f5423f_icgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ab52775f7fc97c09bf73bfe3a8e2f7aaa" name="ab52775f7fc97c09bf73bfe3a8e2f7aaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab52775f7fc97c09bf73bfe3a8e2f7aaa">&#9670;&#160;</a></span>egoVelocitySensorFrame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::egoVelocitySensorFrame </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a810025689fbd926601ebc03f87a1aa60">EgoMotionType</a> &amp;&#160;</td>
+          <td class="paramname"><em>egoMotion</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ego lever-arm velocity at the mounting position, expressed in the sensor frame. </p>
+<p>Two-step transform shared by every model that compensates the sensor platform's own motion (doppler, velocity): the ego velocity at the mount (EgoMotion::getVelocityAt() at the pose translation) rotated into the sensor frame. Keeping it here guarantees h(x) and its Jacobian use one identical convention instead of duplicating the computation per hook.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">egoMotion</td><td>Ego motion of the sensor platform </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Point2d Sensor's lever-arm velocity in the sensor frame </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_ab52775f7fc97c09bf73bfe3a8e2f7aaa_cgraph.svg" width="480" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="af26cd587341e97a9cdb8b44b1e32adf9" name="af26cd587341e97a9cdb8b44b1e32adf9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af26cd587341e97a9cdb8b44b1e32adf9">&#9670;&#160;</a></span>FromLists()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af26cd587341e97a9cdb8b44b1e32adf9">&#9670;&#160;</a></span>FromLists() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -686,6 +998,67 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="ab77e06c5979828b50d5de5734d72ac6d" name="ab77e06c5979828b50d5de5734d72ac6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab77e06c5979828b50d5de5734d72ac6d">&#9670;&#160;</a></span>FromLists() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static auto <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::FromLists </td>
+          <td>(</td>
+          <td class="paramtype">const std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vecList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>covList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;&#160;</td>
+          <td class="paramname"><em>pose</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; ObservationModel_
+  </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create complete ObservationModel from initializer lists and a sensor mounting pose. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">vecList</td><td>Initializer list for the measurement vector </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">covList</td><td>Nested initializer list for the measurement covariance matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pose</td><td>Static SE(2) sensor mounting pose relative to the tracking frame </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ObservationModel_ instance </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_ab77e06c5979828b50d5de5734d72ac6d_cgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a87055ba5f83013fd515e50415ccef959" name="a87055ba5f83013fd515e50415ccef959"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87055ba5f83013fd515e50415ccef959">&#9670;&#160;</a></span>getDim()</h2>
 
@@ -715,6 +1088,41 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 <dl class="section return"><dt>Returns</dt><dd>sint32 Number of measurement components </dd></dl>
 
 <p>Implements <a class="el" href="classtracking_1_1observation_1_1IObservationModel.html#a0f5c4c9c8f86a0c17fa612b0f3286be7">tracking::observation::IObservationModel&lt; ObservationModelTrait_::CovarianceMatrixPolicy &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a8aea79e4a1e87fa9deb6266b476034d3" name="a8aea79e4a1e87fa9deb6266b476034d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aea79e4a1e87fa9deb6266b476034d3">&#9670;&#160;</a></span>getSensorPose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::getSensorPose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a>&amp; </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read access to the sensor mounting pose. </p>
+<dl class="section return"><dt>Returns</dt><dd>SensorPose Static SE(2) sensor mounting pose relative to the tracking frame </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a8aea79e4a1e87fa9deb6266b476034d3_icgraph.svg" width="100%" height="467"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 
 </div>
 </div>
@@ -756,7 +1164,7 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a40aad5843e61ca38de02e6ea6b4b5177_icgraph.svg" width="480" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a40aad5843e61ca38de02e6ea6b4b5177_icgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -856,7 +1264,7 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_adb53eb1be969c8dfdba3c4153bec2b58_icgraph.svg" width="480" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_adb53eb1be969c8dfdba3c4153bec2b58_icgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -917,7 +1325,135 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
 
 </div>
 </div>
+<a id="a92c3b2f9e3b4946c2d5231a0c4f1ccb7" name="a92c3b2f9e3b4946c2d5231a0c4f1ccb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92c3b2f9e3b4946c2d5231a0c4f1ccb7">&#9670;&#160;</a></span>predictMeasurement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::predictMeasurement </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9d9a50ee7d48549f66299c5fe81bcc5c">StateVec</a> &amp;&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a810025689fbd926601ebc03f87a1aa60">EgoMotionType</a> &amp;&#160;</td>
+          <td class="paramname"><em>egoMotion</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const -&gt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a>
+  </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Predict the measurement h(x) for the given tracking-frame state. </p>
+<p>Transforms the state into the sensor frame via <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a296007bba3bccb799ebe4889828930e9" title="Transform every present state component (position/velocity/acceleration) into the sensor frame.">toSensorFrame()</a> and delegates to the derived model's predictMeasurementSensorFrame() hook, which operates purely in the sensor frame. This guarantees every concrete model applies the sensor mounting pose consistently, since the transform lives here rather than being repeated (or forgotten) per model.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>Tracking-frame state vector the measurement is predicted for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">egoMotion</td><td>Ego motion of the sensor platform </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>MeasurementVec Predicted measurement h(x) </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a92c3b2f9e3b4946c2d5231a0c4f1ccb7_cgraph.svg" width="100%" height="435"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a296007bba3bccb799ebe4889828930e9" name="a296007bba3bccb799ebe4889828930e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a296007bba3bccb799ebe4889828930e9">&#9670;&#160;</a></span>toSensorFrame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::toSensorFrame </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9d9a50ee7d48549f66299c5fe81bcc5c">StateVec</a> &amp;&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td> const -&gt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a9d9a50ee7d48549f66299c5fe81bcc5c">StateVec</a>
+  </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Transform every present state component (position/velocity/acceleration) into the sensor frame. </p>
+<p>Driven by the existing <a class="el" href="namespacetracking_1_1motion.html#a0ee66343dbadbe2a7cd3be53b8e87f37" title="true if the StateDef provides position enumerators X and Y">motion::has_position_v</a>/has_velocity_v/has_acceleration_v traits so no per-model trait is needed. A pair the StateDef doesn't provide is simply skipped.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>Tracking-frame state vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>StateVec State vector with all present position/velocity/acceleration pairs expressed in the sensor frame </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a296007bba3bccb799ebe4889828930e9_cgraph.svg" width="100%" height="403"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a296007bba3bccb799ebe4889828930e9_icgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac80fae29bf17edcb0fb851c055758acb" name="ac80fae29bf17edcb0fb851c055758acb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac80fae29bf17edcb0fb851c055758acb">&#9670;&#160;</a></span>_sensorPose</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html">tracking::observation::ExtendedObservationModel</a>&lt; ObservationModel_, ObservationModelTrait_ &gt;::_sensorPose {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="adf7c9dba57349a71a793e577a05968af" name="adf7c9dba57349a71a793e577a05968af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adf7c9dba57349a71a793e577a05968af">&#9670;&#160;</a></span>DimX</h2>
 

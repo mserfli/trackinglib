@@ -15,6 +15,8 @@ var searchData=
   ['_7erangebearingdopplerobservationmodel_12',['~RangeBearingDopplerObservationModel',['../classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#ada8d393c6ad897e554dbfc571d070d64',1,'tracking::observation::TEST_REMOVE_FINAL']]],
   ['_7erangebearingobservationmodel_13',['~RangeBearingObservationModel',['../classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#acd3ec46a2124a926f4d85d303c44a716',1,'tracking::observation::TEST_REMOVE_FINAL']]],
   ['_7erangeobservationmodel_14',['~RangeObservationModel',['../classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#a23316bd10594daf4e1f0f488dd6162fd',1,'tracking::observation::TEST_REMOVE_FINAL']]],
-  ['_7estatemem_15',['~StateMem',['../classtracking_1_1motion_1_1StateMem.html#af66dd38e212b198f4b3f6d3706e7513e',1,'tracking::motion::StateMem']]],
-  ['_7evelocityobservationmodel_16',['~VelocityObservationModel',['../classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#ae78bb93761e2a7478727ba458a9bca03',1,'tracking::observation::TEST_REMOVE_FINAL']]]
+  ['_7erotation2d_15',['~Rotation2D',['../classtracking_1_1math_1_1Rotation2D.html#af88b978fbb4c22c3e180ae3d80310b78',1,'tracking::math::Rotation2D']]],
+  ['_7esensormountingpose_16',['~SensorMountingPose',['../classtracking_1_1observation_1_1SensorMountingPose.html#a812c166e3a7262bbc352d02e054e721e',1,'tracking::observation::SensorMountingPose']]],
+  ['_7estatemem_17',['~StateMem',['../classtracking_1_1motion_1_1StateMem.html#af66dd38e212b198f4b3f6d3706e7513e',1,'tracking::motion::StateMem']]],
+  ['_7evelocityobservationmodel_18',['~VelocityObservationModel',['../classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#ae78bb93761e2a7478727ba458a9bca03',1,'tracking::observation::TEST_REMOVE_FINAL']]]
 ];

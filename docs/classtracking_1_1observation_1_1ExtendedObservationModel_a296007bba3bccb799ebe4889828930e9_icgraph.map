@@ -1,0 +1,7 @@
+<map id="tracking::observation::ExtendedObservationModel::toSensorFrame" name="tracking::observation::ExtendedObservationModel::toSensorFrame">
+<area shape="rect" id="Node000001" title="Transform every present state component (position/velocity/acceleration) into the sensor frame." alt="" coords="264,45,475,100"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a10536a872b99fd7fdb83a7a668753a88" title="Compute the measurement Jacobian H = dh/dx for the given tracking&#45;frame state." alt="" coords="5,5,216,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,57,216,52,216,46,251,52"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a92c3b2f9e3b4946c2d5231a0c4f1ccb7" title="Predict the measurement h(x) for the given tracking&#45;frame state." alt="" coords="5,84,216,139"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="251,93,216,98,216,93,250,88"/>
+</map>

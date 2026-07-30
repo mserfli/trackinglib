@@ -1,0 +1,12 @@
+<map id="tracking::math::Rotation2D::apply" name="tracking::math::Rotation2D::apply">
+<area shape="rect" id="Node000001" title="Apply the forward rotation R(theta) * v." alt="" coords="5,23,193,63"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Point2d.html#a599362040b9541cb2f30d69d6479614f" title="Create a 2D point from coordinate values." alt="" coords="241,23,416,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,41,228,41,228,46,194,46"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Point2d.html#a745132e4965e317a57e1df605327e910" title="Read access to x&#45;coordinate." alt="" coords="464,5,655,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="416,31,450,27,451,33,416,36"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Point2d.html#a18c015f1396d1a2f385a2e2716c4943a" title="Read access to y&#45;coordinate." alt="" coords="464,55,655,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="416,50,451,53,450,59,416,55"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="703,16,869,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="655,26,689,30,689,35,655,31"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="655,55,689,51,689,56,655,60"/>
+</map>
