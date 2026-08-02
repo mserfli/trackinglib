@@ -60,7 +60,7 @@ int main(int argc, char** argv)
       {0.0,  0.0,  0.0,  1e-9, 0.0,  0.0 },  //   VX, VY velocities    -> weak prior (1e-5, std ~300 m/s).
       {0.0,  0.0,  0.0,  0.0,  1e-5, 0.0 },  //   AX, AY accelerations -> weak prior (1e-5, std ~300 m/s^2): unknown but
       {0.0,  0.0,  0.0,  0.0,  0.0,  1e-5}   //   bounded to a plausible range, same reasoning as velocity above.
-  });                                       //   Symmetric across axes so the startup transient isn't biased either way.
+  }).value();                               //   Symmetric across axes so the startup transient isn't biased either way.
 
   // Ego vehicle drives the same shape of gentle left turn as the other nonlinear example, just
   // slower - a slow-moving ego isolates the target's own maneuver as the dominant source of
@@ -139,7 +139,7 @@ int main(int argc, char** argv)
     {rangeStd * rangeStd, static_cast<value_type>(0.0),         static_cast<value_type>(0.0)        },
     {static_cast<value_type>(0.0),         bearingStd * bearingStd, static_cast<value_type>(0.0)        },
     {static_cast<value_type>(0.0),         static_cast<value_type>(0.0),         dopplerStd * dopplerStd}
-  });
+  }).value();
   // clang-format on
 
   // Fixed-seed RNG so the example produces reproducible output run to run.
@@ -301,8 +301,10 @@ int main(int argc, char** argv)
     const value_type zBearing = gtBearing + bearingNoise(rng);
     const value_type zDoppler = gtDoppler + dopplerNoise(rng);
 
-    const RangeBearingDopplerType obs{
-        RangeBearingDopplerType::MeasurementVec::FromList({zRange, zBearing, zDoppler}), R, sensorPose};
+    const RangeBearingDopplerType obs =
+        RangeBearingDopplerType::TryCreate(
+            RangeBearingDopplerType::MeasurementVec::FromList({zRange, zBearing, zDoppler}), R, sensorPose)
+            .value();
 
     // Correct step: nonlinear measurement update via the EKF, linearizing h(x) at the current
     // estimate. Bootstrap regime accumulates information (Y += H'*inv(R)*H); Kalman regime corrects

@@ -63,7 +63,7 @@ auto makePrior() -> MM_
     {0.5, 1.0, 0.0, 0.1},
     {0.2, 0.0, 2.0, 0.3},
     {0.0, 0.1, 0.3, 0.5}
-  });
+  }).value();
   // clang-format on
 }
 
@@ -79,11 +79,11 @@ TEST(MeasurementUpdate, update_KalmanFullBlock__MatchesHandComputedPosterior) //
     {0.0, 1.0, 0.0, 0.0},
     {0.0, 0.0, 2.0, 0.0},
     {0.0, 0.0, 0.0, 0.5}
-  });
+  }).value();
   const auto obs = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  });
+  }).value();
   // clang-format on
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -111,7 +111,7 @@ TEST(MeasurementUpdate, update_KalmanFullSequentialVsBlock__SamePosterior) // NO
   const auto obs = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  });
+  }).value();
   // clang-format on
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -130,11 +130,11 @@ TEST(MeasurementUpdate, update_KalmanFactoredVsFull__SamePosterior) // NOLINT
   const auto obsFull = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  });
+  }).value();
   const auto obsFact = PosFact::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  });
+  }).value();
   // clang-format on
   const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
   const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
@@ -153,7 +153,7 @@ TEST(MeasurementUpdate, update_InformationVsKalman__SamePosterior) // NOLINT
   const auto obs = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  });
+  }).value();
   // clang-format on
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -179,7 +179,7 @@ TEST(MeasurementUpdate, update_InformationFactoredVsKalmanFactored__SamePosterio
   const auto obs = PosFact::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  });
+  }).value();
   // clang-format on
   const auto egoMotion = makeNoEgoMotion<FactoredPolicy>();
 
@@ -206,7 +206,7 @@ TEST(MeasurementUpdate, update_KalmanFullSequentialCorrelatedR_VsBlock__SamePost
   const auto obs = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.3},
     {0.3, 0.5}
-  });
+  }).value();
   // clang-format on
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -226,11 +226,11 @@ TEST(MeasurementUpdate, update_KalmanFactoredCorrelatedR_VsFullBlock__SamePoster
   const auto obsFull = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.3},
     {0.3, 0.5}
-  });
+  }).value();
   const auto obsFact = PosFact::FromLists({10.6, 5.3}, {
     {1.0, 0.3},
     {0.3, 0.5}
-  });
+  }).value();
   // clang-format on
   const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
   const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
@@ -249,7 +249,7 @@ TEST(MeasurementUpdate, update_InformationFactoredCorrelatedR_VsKalman__SamePost
   const auto obs = PosFact::FromLists({10.6, 5.3}, {
     {1.0, 0.3},
     {0.3, 0.5}
-  });
+  }).value();
   // clang-format on
   const auto egoMotion = makeNoEgoMotion<FactoredPolicy>();
 
@@ -275,11 +275,11 @@ TEST(MeasurementUpdate, update_ComposedPositionVelocity__EqualsRepeatedSingleUpd
   const auto pos = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  });
+  }).value();
   const auto vel = VelFull::FromLists({2.2, 0.8}, {
     {0.2, 0.0},
     {0.0, 0.2}
-  });
+  }).value();
   // clang-format on
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -297,10 +297,10 @@ TEST(MeasurementUpdate, update_ComposedFactoredVsComposedFull__SamePosterior) //
   auto mmFull = makePrior<MMFull>();
   auto mmFact = makePrior<MMFact>();
   // clang-format off
-  const auto posFull = PosFull::FromLists({10.6, 5.3}, {{1.0, 0.0}, {0.0, 0.5}});
-  const auto posFact = PosFact::FromLists({10.6, 5.3}, {{1.0, 0.0}, {0.0, 0.5}});
-  const auto velFull = VelFull::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}});
-  const auto velFact = VelFact::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}});
+  const auto posFull = PosFull::FromLists({10.6, 5.3}, {{1.0, 0.0}, {0.0, 0.5}}).value();
+  const auto posFact = PosFact::FromLists({10.6, 5.3}, {{1.0, 0.0}, {0.0, 0.5}}).value();
+  const auto velFull = VelFull::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}}).value();
+  const auto velFact = VelFact::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}}).value();
   // clang-format on
   const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
   const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
@@ -330,11 +330,11 @@ TEST(MeasurementUpdate, predictUpdateLoop__ConvergesToGroundTruth) // NOLINT
     {  0.0, 10.0,   0.0,  0.0},
     {  0.0,  0.0, 100.0,  0.0},
     {  0.0,  0.0,   0.0, 10.0}
-  });
+  }).value();
   const auto R = PosFull::MeasurementCovFromList({
     {0.25, 0.00},
     {0.00, 0.25}
-  });
+  }).value();
   // clang-format on
 
   const int steps = 50;

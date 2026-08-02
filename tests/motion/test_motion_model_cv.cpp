@@ -74,14 +74,14 @@ struct TestPredictCV
       {0, 1, 0, 0.0},
       {0, 0, 1, 0.0},
       {0, 0, 0, 0.1}
-    });
+    }).value();
     auto expVec = MM::StateVecFromList({11, 2, 0, 0});
     auto expCov = MM::StateCovFromList({
       {+5.29125, +0.62500, +0.00000, +0.00000},
       {+0.62500, +1.50000, +0.00000, +0.00000},
       {+0.00000, +0.00000, +1.06625, +0.17500},
       {+0.00000, +0.00000, +0.17500, +0.60000}
-    });
+    }).value();
     // clang-format on
 
     init(vec, expVec, cov, expCov, filter);
@@ -130,14 +130,14 @@ struct TestPredictCV
       {0, 1, 0, 0.0},
       {0, 0, 1, 0.0},
       {0, 0, 0, 0.1}
-    });
+    }).value();
     auto expVec = MM::StateVecFromList({+9.9604310989, +1.9975004196, -0.5741304159, -0.0999583453});
     auto expCov = MM::StateCovFromList({
       {+5.2812027931,  +0.6238771081,  -0.2107825130,  -0.0224393737},
       {+0.6238771081,  +1.4977520704,  -0.0224399883,  -0.0449210368},
       {-0.2107825130,  -0.0224399883,  +1.0793461800,  +0.1765742004},
       {-0.0224393737,  -0.0449210368,  +0.1765742004,  +0.6023279428}
-    });
+    }).value();
     // clang-format on
 
     init(vec, expVec, cov, expCov, filter);
@@ -253,8 +253,8 @@ TEST(MotionModelCV, predict_fullCov_informationFilter_singularPe_updatesY) // NO
   // a 3x3 determinant computed directly from Pe's entries.
   const auto& pe  = egoMotion.getDisplacementCog().cov;
   const auto  det = pe.at_unsafe(0, 0) * (pe.at_unsafe(1, 1) * pe.at_unsafe(2, 2) - pe.at_unsafe(1, 2) * pe.at_unsafe(2, 1)) -
-                    pe.at_unsafe(0, 1) * (pe.at_unsafe(1, 0) * pe.at_unsafe(2, 2) - pe.at_unsafe(1, 2) * pe.at_unsafe(2, 0)) +
-                    pe.at_unsafe(0, 2) * (pe.at_unsafe(1, 0) * pe.at_unsafe(2, 1) - pe.at_unsafe(1, 1) * pe.at_unsafe(2, 0));
+                   pe.at_unsafe(0, 1) * (pe.at_unsafe(1, 0) * pe.at_unsafe(2, 2) - pe.at_unsafe(1, 2) * pe.at_unsafe(2, 0)) +
+                   pe.at_unsafe(0, 2) * (pe.at_unsafe(1, 0) * pe.at_unsafe(2, 1) - pe.at_unsafe(1, 1) * pe.at_unsafe(2, 0));
   ASSERT_NEAR(det, 0.0, 1e-6);
 
   FilterTypeInst filter{};
@@ -266,7 +266,7 @@ TEST(MotionModelCV, predict_fullCov_informationFilter_singularPe_updatesY) // NO
     {0, 1, 0, 0},
     {0, 0, 1, 0},
     {0, 0, 0, 0.1}
-  });
+  }).value();
   // clang-format on
 
   // InformationFilter convention: transform state/covariance into information space
@@ -339,15 +339,16 @@ TEST(MotionModelCV, predict_informationFilter_singularPe_fullMatchesFactored) //
     {0, 1, 0, 0},
     {0, 0, 1, 0},
     {0, 0, 0, 0.1}
-  });
+  }).value();
   // clang-format on
   auto vecFactored = vecFull;
   auto covFactored = MMFactored::StateCovFromList({
-      {5, 0, 0, 0},
-      {0, 1, 0, 0},
-      {0, 0, 1, 0},
-      {0, 0, 0, 0.1},
-  });
+                                                      {5, 0, 0, 0},
+                                                      {0, 1, 0, 0},
+                                                      {0, 0, 1, 0},
+                                                      {0, 0, 0, 0.1},
+                                                  })
+                         .value();
 
   covFull     = covFull.inverse().value();
   vecFull     = static_cast<typename MMFull::StateVec>(covFull() * vecFull);
@@ -387,7 +388,7 @@ TEST(MotionModelCV, convertCA_fullCov) // NOLINT
     { 5.0849,   -1.1132,   -0.2259,    2.6187,   -0.1260,    1.2376},
     {-0.4707,    0.3277,   -0.9420,   -0.1260,    1.2990,    0.8641},
     { 2.3979,    0.1886,   -0.3686,    1.2376,    0.8641,    1.5631},
-  });
+  }).value();
   MMCA mm_ca{vec, cov};
   MMCV mm_cv{};
 
@@ -433,7 +434,7 @@ TEST(MotionModelCV, convertCA_facCov) // NOLINT
     { 5.0849,   -1.1132,   -0.2259,    2.6187,   -0.1260,    1.2376},
     {-0.4707,    0.3277,   -0.9420,   -0.1260,    1.2990,    0.8641},
     { 2.3979,    0.1886,   -0.3686,    1.2376,    0.8641,    1.5631},
-  });
+  }).value();
   auto mm_ca = MMCA{vec, cov};
   MMCV mm_cv{};
 
@@ -464,4 +465,46 @@ TEST(MotionModelCV, convertCA_facCov) // NOLINT
   EXPECT_FLOAT_EQ(caFull.at_unsafe(MMCA::VY, MMCA::Y),  cvFull.at_unsafe(MMCV::VY, MMCV::Y));
   EXPECT_FLOAT_EQ(caFull.at_unsafe(MMCA::VY, MMCA::VY), cvFull.at_unsafe(MMCV::VY, MMCV::VY));
   // clang-format on
+}
+
+TEST(MotionModelCV, TryCreate_fullCov__Success) // NOLINT
+{
+  using MM = tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
+  auto vec = MM::StateVecFromList({10, 2, 0, 0});
+  auto cov = MM::StateCovFromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}}).value();
+  auto mm  = MM::TryCreate(vec, cov);
+  ASSERT_TRUE(mm.has_value());
+  EXPECT_FLOAT_EQ(mm.value().getX(), 10);
+}
+
+TEST(MotionModelCV, TryCreate_factoredCov__Success) // NOLINT
+{
+  using MM = tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>>;
+  auto vec = MM::StateVecFromList({10, 2, 0, 0});
+  auto cov = MM::StateCovFromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}}).value();
+  auto mm  = MM::TryCreate(vec, cov);
+  ASSERT_TRUE(mm.has_value());
+  EXPECT_FLOAT_EQ(mm.value().getX(), 10);
+}
+
+// det>0 but negative-definite: a symmetric CovarianceMatrixFull only asserts symmetry (not PD) at
+// construction, so this reaches TryCreate's own check rather than aborting earlier (see
+// plans/recent/decomposeLDLT_error_handling_resolution.md for why the factored policy can't
+// construct an equivalent counterexample: its ctor asserts PD directly, and StateCovFromList's
+// UDU decomposition already rejects a non-PD list before a StateCov exists to pass in).
+TEST(MotionModelCV, TryCreate_fullCov_NegativeDefinite__ExpectError) // NOLINT
+{
+  using MM = tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
+  auto vec = MM::StateVecFromList({10, 2, 0, 0});
+  // clang-format off
+  auto cov = MM::StateCov::FromList({
+    {-1,  0,  0,  0},
+    { 0, -1,  0,  0},
+    { 0,  0, -1,  0},
+    { 0,  0,  0, -1}
+  });
+  // clang-format on
+  auto mm = MM::TryCreate(vec, cov);
+  ASSERT_FALSE(mm.has_value());
+  EXPECT_EQ(mm.error(), tracking::math::Errors::matrix_not_positive_definite);
 }

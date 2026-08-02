@@ -53,18 +53,17 @@ inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(
 /// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The dimension of the covariance matrix
 /// \param[in] list Nested initializer list representing the full covariance matrix
-/// \return CovarianceMatrixFactored instance with UDU^T decomposition of the input
+/// \return tl::expected containing the CovarianceMatrixFactored instance on success, or
+///         Errors::matrix_not_positive_definite if the input cannot be factored into UDU^T form
 /// \note The input matrix must be symmetric, otherwise assertion fails
 /// \see CovarianceMatrixFactoredFromList() (overloaded) for separate U and D input
 /// \see CovarianceMatrixFullFromList() for full covariance matrixes
 template <typename ValueType_, sint32 Size_>
 inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-    -> CovarianceMatrixFactored<ValueType_, Size_>
+    -> tl::expected<CovarianceMatrixFactored<ValueType_, Size_>, Errors>
 {
   const auto other = CovarianceMatrixFactored<ValueType_, Size_>::compose_type::FromList(list);
-  const auto cov   = CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(other);
-  assert(cov.has_value() && "Input matrix cannot be factored into UDUt form");
-  return cov.value();
+  return CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(other);
 }
 
 } // namespace conversions

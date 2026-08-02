@@ -73,10 +73,25 @@ public:
   auto operator=(MotionModelCA&&) noexcept -> MotionModelCA& = default;
   virtual ~MotionModelCA()                                   = default;
 
-  /// \brief Construct a new CA given the vector and the covariance matrix
+  /// \brief Construct a new CA with a validated covariance
+  ///
+  /// The release-safe, mandatory gate to the protected ctor below: validates cov before
+  /// construction instead of relying on a debug-only precondition check. Defined here (not on
+  /// the CRTP base) because only MotionModelCA's own members can reach its own protected ctor
+  /// without a friend declaration, which AUTOSAR A11-3-1 prohibits.
+  ///
   /// \param[in] vec  Initial state vector [x, vx, ax, y, vy, ay]'
   /// \param[in] cov  Initial state covariance (full or UDU-factored per the covariance policy)
-  explicit MotionModelCA(const StateVec& vec, const StateCov& cov);
+  /// \return tl::expected containing the MotionModelCA instance on success, or
+  ///         Errors::matrix_not_positive_definite if cov is not positive definite
+  static auto TryCreate(const StateVec& vec, const StateCov& cov) -> tl::expected<MotionModelCA, math::Errors>
+  {
+    if (!cov.isPositiveDefinite())
+    {
+      return tl::unexpected<math::Errors>{math::Errors::matrix_not_positive_definite};
+    }
+    return MotionModelCA{vec, cov};
+  }
 
   /// \brief Read access to x velocity
   /// \return value_type
@@ -126,6 +141,19 @@ public:
   /// \param[out] G         The transformation of the process noise to the full state space
   /// \param[in]  dt        The delta time from last state to predicted state
   static void computeG(ProcessNoiseMappingMatrix& G, const value_type dt);
+
+  // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround to keep following idententation
+  // clang-format on
+
+  /// \brief Construct a new CA given the vector and the covariance matrix
+  ///
+  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  ///
+  /// \param[in] vec  Initial state vector [x, vx, ax, y, vy, ay]'
+  /// \param[in] cov  Initial state covariance (full or UDU-factored per the covariance policy)
+  explicit MotionModelCA(const StateVec& vec, const StateCov& cov);
 };
 
 } // namespace motion

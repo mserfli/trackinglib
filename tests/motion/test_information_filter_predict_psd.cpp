@@ -62,13 +62,14 @@ TEST(InformationFilterPredict, predict_RankDeficientInformationMatrix__DoesNotFr
     {0.0, 0.0, 0.0, 0.0},   // VX unobserved
     {0.0, 0.0, 4.0, 0.0},   // Y  observed
     {0.0, 0.0, 0.0, 0.0}    // VY unobserved
-  });
+  }).value();
   // clang-format on
   const auto ySingular = MM::StateVecFromList({8.0, 0.0, 8.0, 0.0});
 
   // Construct with a PD placeholder to satisfy the ctor's determinant assert, then install the
   // singular PSD information state through the internal-use accessors.
-  MM mm{MM::StateVecFromList({0, 0, 0, 0}), MM::StateCovFromList({{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}})};
+  MM mm{MM::StateVecFromList({0, 0, 0, 0}),
+        MM::StateCovFromList({{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}}).value()};
   mm.getCovForInternalUse() = Ysingular;
   mm.getVecForInternalUse() = ySingular;
 
@@ -99,7 +100,7 @@ TEST(InformationFilterPredict, predict_StrictlyPositiveDefiniteInformationMatrix
     {0.0, 2.0, 0.0, 0.0},
     {0.0, 0.0, 5.0, 0.0},
     {0.0, 0.0, 0.0, 2.0}
-  });
+  }).value();
   // clang-format on
   const auto yPd = MM::StateVecFromList({10.0, 4.0, 10.0, 4.0});
 

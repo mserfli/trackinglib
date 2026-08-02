@@ -90,7 +90,7 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__ReturnsPolarCoordi
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  });
+  }).value();
   // clang-format on
   const auto state     = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -110,7 +110,7 @@ TEST(RangeBearingDopplerObservationModel, computeJacobian__MatchesFiniteDifferen
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  });
+  }).value();
   // clang-format on
   const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
 
@@ -126,7 +126,7 @@ TEST(RangeBearingDopplerObservationModel, computeInnovation__WrapsBearing) // NO
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  });
+  }).value();
   // clang-format on
   const auto predicted = RbdModel::MeasurementVecFromList({5.0, -pi + 0.1, 1.5});
 
@@ -144,7 +144,7 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__DopplerZeroWithout
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  });
+  }).value();
   // clang-format on
   const auto state     = RbdModelPosOnly::StateVec::FromList({3.0, 4.0}); // {X, Y}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -164,7 +164,7 @@ TEST(RangeBearingDopplerObservationModel, computeJacobian__DopplerRowZeroWithout
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  });
+  }).value();
   // clang-format on
   const auto state     = RbdModelPosOnly::StateVec::FromList({3.0, 4.0});
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -190,7 +190,7 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__AppliesSensorMount
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }, pose);
+  }, pose).value();
   // clang-format on
   const auto state     = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -212,7 +212,7 @@ TEST(RangeBearingDopplerObservationModel, computeJacobian__MatchesFiniteDifferen
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }, pose);
+  }, pose).value();
   // clang-format on
   const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
 
@@ -226,7 +226,7 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__CompensatesEgoMoti
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  });
+  }).value();
   // clang-format on
   const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
 

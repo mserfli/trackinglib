@@ -64,7 +64,7 @@ void expectJacobianMatchesFiniteDifference(const ObservationModel_&             
 
 TEST(RangeObservationModel, predictMeasurement__ReturnsRange) // NOLINT
 {
-  const auto obs       = RangeModel::FromLists({0}, {{1}});
+  const auto obs       = RangeModel::FromLists({0}, {{1}}).value();
   const auto state     = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -75,7 +75,7 @@ TEST(RangeObservationModel, predictMeasurement__ReturnsRange) // NOLINT
 
 TEST(RangeObservationModel, computeJacobian__MatchesFiniteDifference) // NOLINT
 {
-  const auto obs   = RangeModel::FromLists({0}, {{1}});
+  const auto obs   = RangeModel::FromLists({0}, {{1}}).value();
   const auto state = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
@@ -83,7 +83,7 @@ TEST(RangeObservationModel, computeJacobian__MatchesFiniteDifference) // NOLINT
 
 TEST(RangeObservationModel, computeJacobian__NoDivisionByZeroAtOrigin) // NOLINT
 {
-  const auto obs       = RangeModel::FromLists({0}, {{1}});
+  const auto obs       = RangeModel::FromLists({0}, {{1}}).value();
   const auto state     = RangeModel::StateVec::FromList({0.0, 0.0, 0.0, 0.0});
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -102,7 +102,7 @@ TEST(RangeObservationModel, computeJacobian__NoDivisionByZeroAtOrigin) // NOLINT
 TEST(RangeObservationModel, predictMeasurement__AppliesSensorMountingPose) // NOLINT
 {
   const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs       = RangeModel::FromLists({0}, {{1}}, pose);
+  const auto obs       = RangeModel::FromLists({0}, {{1}}, pose).value();
   const auto state     = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -115,7 +115,7 @@ TEST(RangeObservationModel, predictMeasurement__AppliesSensorMountingPose) // NO
 TEST(RangeObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
 {
   const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs   = RangeModel::FromLists({0}, {{1}}, pose);
+  const auto obs   = RangeModel::FromLists({0}, {{1}}, pose).value();
   const auto state = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);

@@ -110,6 +110,9 @@ a no-transform fast path.
   explicit output params; doesn't apply to ordinary member functions (the receiver `*this` is
   already the implicit output) or constructors. If a variadic parameter pack is also present, it
   must still trail every other parameter (a C++ requirement), which output-first already satisfies.
+- **Member ordering**: static factory methods (e.g. `TryCreate`, `FromLists`) go immediately after
+  the rule-of-5 block (ctors/assignment operators/dtor), before any other public methods — they're
+  part of the class's construction story and belong next to it, not buried among unrelated behavior.
 - **Formatting**: clang-format shall be used given the `.clang-format` configuration to keep code formatting consistent. Run it before committing.
 - **Static analysis**: clang-tidy with `WarningsAsErrors: "*"` (see `.clang-tidy` for the enabled
   families and the explicit disables, e.g. `readability-magic-numbers`, `readability-identifier-length`).

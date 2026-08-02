@@ -54,25 +54,51 @@ public:
   auto operator=(PositionObservationModel&&) noexcept -> PositionObservationModel& = default;
   virtual ~PositionObservationModel() TEST_REMOVE_FINAL                            = default;
 
-  /// \brief Construct a new PositionObservationModel given the measurement and its covariance
+  /// \brief Construct a new PositionObservationModel with a validated covariance
+  ///
+  /// The release-safe, mandatory gate to the protected ctor below: validates cov before
+  /// construction instead of relying on a debug-only precondition check. Defined here (not on
+  /// the CRTP base) because only PositionObservationModel's own members can reach its own
+  /// protected ctor without a friend declaration, which AUTOSAR A11-3-1 prohibits.
+  ///
   /// \param[in] vec  Measurement vector z = [x, y]'
   /// \param[in] cov  Measurement covariance R
-  explicit PositionObservationModel(const MeasurementVec& vec, const MeasurementCov& cov)
-      : BaseExtendedObservationModel{vec, cov}
+  /// \return tl::expected containing the PositionObservationModel instance on success, or
+  ///         Errors::matrix_not_positive_definite if cov is not positive definite
+  static auto TryCreate(const MeasurementVec& vec,
+                        const MeasurementCov& cov) -> tl::expected<PositionObservationModel, math::Errors>
   {
+    if (!cov.isPositiveDefinite())
+    {
+      return tl::unexpected<math::Errors>{math::Errors::matrix_not_positive_definite};
+    }
+    return PositionObservationModel{vec, cov};
   }
 
-  /// \brief Construct a new PositionObservationModel given the measurement, its covariance and a sensor mounting pose
+  /// \brief Construct a new PositionObservationModel with a validated covariance and a sensor mounting pose
+  ///
+  /// The release-safe, mandatory gate to the protected ctor below: validates cov before
+  /// construction instead of relying on a debug-only precondition check. Defined here (not on
+  /// the CRTP base) because only PositionObservationModel's own members can reach its own
+  /// protected ctor without a friend declaration, which AUTOSAR A11-3-1 prohibits.
+  ///
   /// \param[in] vec  Measurement vector z = [x, y]'
   /// \param[in] cov  Measurement covariance R
   /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
-  explicit PositionObservationModel(const MeasurementVec&                                    vec,
-                                    const MeasurementCov&                                    cov,
-                                    const typename BaseExtendedObservationModel::SensorPose& pose)
-      : BaseExtendedObservationModel{vec, cov, pose}
+  /// \return tl::expected containing the PositionObservationModel instance on success, or
+  ///         Errors::matrix_not_positive_definite if cov is not positive definite
+  static auto TryCreate(const MeasurementVec&                                    vec,
+                        const MeasurementCov&                                    cov,
+                        const typename BaseExtendedObservationModel::SensorPose& pose)
+      -> tl::expected<PositionObservationModel, math::Errors>
   {
+    if (!cov.isPositiveDefinite())
+    {
+      return tl::unexpected<math::Errors>{math::Errors::matrix_not_positive_definite};
+    }
+    return PositionObservationModel{vec, cov, pose};
   }
-
+  
   /// \brief Predict the measurement h(x) = [x, y]' for the given sensor-frame state
   /// \param[in] state      Sensor-frame state vector the measurement is predicted for
   /// \param[in] egoMotion  Ego motion of the sensor platform (unused, model is a direct position measurement)
@@ -104,6 +130,36 @@ public:
     jacobian.setZeros();
     jacobian.at_unsafe(MEAS_X, StateDef_::X) = static_cast<value_type>(1.0);
     jacobian.at_unsafe(MEAS_Y, StateDef_::Y) = static_cast<value_type>(1.0);
+  }
+
+  // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround to keep following idententation
+  // clang-format on
+
+  /// \brief Construct a new PositionObservationModel given the measurement and its covariance
+  ///
+  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  ///
+  /// \param[in] vec  Measurement vector z = [x, y]'
+  /// \param[in] cov  Measurement covariance R
+  explicit PositionObservationModel(const MeasurementVec& vec, const MeasurementCov& cov)
+      : BaseExtendedObservationModel{vec, cov}
+  {
+  }
+
+  /// \brief Construct a new PositionObservationModel given the measurement, its covariance and a sensor mounting pose
+  ///
+  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  ///
+  /// \param[in] vec  Measurement vector z = [x, y]'
+  /// \param[in] cov  Measurement covariance R
+  /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
+  explicit PositionObservationModel(const MeasurementVec&                                    vec,
+                                    const MeasurementCov&                                    cov,
+                                    const typename BaseExtendedObservationModel::SensorPose& pose)
+      : BaseExtendedObservationModel{vec, cov, pose}
+  {
   }
 };
 

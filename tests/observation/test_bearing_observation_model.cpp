@@ -64,7 +64,7 @@ void expectJacobianMatchesFiniteDifference(const ObservationModel_&             
 
 TEST(BearingObservationModel, predictMeasurement__ReturnsBearing) // NOLINT
 {
-  const auto obs       = BearingModel::FromLists({0}, {{1}});
+  const auto obs       = BearingModel::FromLists({0}, {{1}}).value();
   const auto state     = BearingModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -75,7 +75,7 @@ TEST(BearingObservationModel, predictMeasurement__ReturnsBearing) // NOLINT
 
 TEST(BearingObservationModel, computeJacobian__MatchesFiniteDifference) // NOLINT
 {
-  const auto obs   = BearingModel::FromLists({0}, {{1}});
+  const auto obs   = BearingModel::FromLists({0}, {{1}}).value();
   const auto state = BearingModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
@@ -83,7 +83,7 @@ TEST(BearingObservationModel, computeJacobian__MatchesFiniteDifference) // NOLIN
 
 TEST(BearingObservationModel, computeJacobian__NoDivisionByZeroAtOrigin) // NOLINT
 {
-  const auto obs       = BearingModel::FromLists({0}, {{1}});
+  const auto obs       = BearingModel::FromLists({0}, {{1}}).value();
   const auto state     = BearingModel::StateVec::FromList({0.0, 0.0, 0.0, 0.0});
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -105,7 +105,7 @@ TEST(BearingObservationModel, computeInnovation__WrapsBearingAcrossPi) // NOLINT
 
   // measured bearing just below +pi, predicted just above -pi: the raw difference is ~2*pi
   // but the true angular error is only -0.2 rad
-  const auto obs       = BearingModel::FromLists({pi - 0.1}, {{1}});
+  const auto obs       = BearingModel::FromLists({pi - 0.1}, {{1}}).value();
   const auto predicted = BearingModel::MeasurementVecFromList({-pi + 0.1});
 
   const auto innovation = obs.computeInnovation(obs.getVec(), predicted);
@@ -116,7 +116,7 @@ TEST(BearingObservationModel, computeInnovation__WrapsBearingAcrossPi) // NOLINT
 TEST(BearingObservationModel, predictMeasurement__AppliesSensorMountingPose) // NOLINT
 {
   const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs       = BearingModel::FromLists({0}, {{1}}, pose);
+  const auto obs       = BearingModel::FromLists({0}, {{1}}, pose).value();
   const auto state     = BearingModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -129,7 +129,7 @@ TEST(BearingObservationModel, predictMeasurement__AppliesSensorMountingPose) // 
 TEST(BearingObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
 {
   const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs   = BearingModel::FromLists({0}, {{1}}, pose);
+  const auto obs   = BearingModel::FromLists({0}, {{1}}, pose).value();
   const auto state = BearingModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
