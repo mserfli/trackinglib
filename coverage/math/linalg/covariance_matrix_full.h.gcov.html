@@ -31,18 +31,18 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryMed">80.0&nbsp;%</td>
+            <td class="headerCovTableEntryMed">76.0&nbsp;%</td>
             <td class="headerCovTableEntry">25</td>
-            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntry">19</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-30 21:19:04</td>
+            <td class="headerValue">2026-08-02 19:05:50</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryLo">61.7&nbsp;%</td>
-            <td class="headerCovTableEntry">47</td>
-            <td class="headerCovTableEntry">29</td>
+            <td class="headerCovTableEntryLo">62.0&nbsp;%</td>
+            <td class="headerCovTableEntry">50</td>
+            <td class="headerCovTableEntry">31</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -114,11 +114,11 @@
 <span id="L44"><span class="lineNum">      44</span>              : </span>
 <span id="L45"><span class="lineNum">      45</span>              :   // rule of 5 declarations</span>
 <span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC tlaBgGNC">          39 :   CovarianceMatrixFull()                                                   = default;</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         392 :   CovarianceMatrixFull(const CovarianceMatrixFull&amp;)                        = default;</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          31 :   CovarianceMatrixFull(CovarianceMatrixFull&amp;&amp;) noexcept                    = default;</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         394 :   CovarianceMatrixFull(const CovarianceMatrixFull&amp;)                        = default;</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         158 :   CovarianceMatrixFull(CovarianceMatrixFull&amp;&amp;) noexcept                    = default;</span></span>
 <span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           1 :   auto operator=(const CovarianceMatrixFull&amp;) -&gt; CovarianceMatrixFull&amp;     = default;</span></span>
 <span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         161 :   auto operator=(CovarianceMatrixFull&amp;&amp;) noexcept -&gt; CovarianceMatrixFull&amp; = default;</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         813 :   virtual ~CovarianceMatrixFull()                                          = default;</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         858 :   virtual ~CovarianceMatrixFull()                                          = default;</span></span>
 <span id="L52"><span class="lineNum">      52</span>              : </span>
 <span id="L53"><span class="lineNum">      53</span>              :   //////////////////////////////////////////////////</span>
 <span id="L54"><span class="lineNum">      54</span>              :   // additional constructors  ---&gt;</span>
@@ -132,10 +132,10 @@
 <span id="L62"><span class="lineNum">      62</span>              : </span>
 <span id="L63"><span class="lineNum">      63</span>              :   /// \brief Move construct a new Covariance Matrix Full&lt;ValueType_, Size_&gt; object</span>
 <span id="L64"><span class="lineNum">      64</span>              :   /// \param[in] other A base class object</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        1536 :   explicit CovarianceMatrixFull(BaseSquareMatrix&amp;&amp; other) noexcept</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        1536 :       : BaseSquareMatrix{std::move(other)}</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        1543 :   explicit CovarianceMatrixFull(BaseSquareMatrix&amp;&amp; other) noexcept</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        1543 :       : BaseSquareMatrix{std::move(other)}</span></span>
 <span id="L67"><span class="lineNum">      67</span>              :   {</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        1536 :     assert(this-&gt;isSymmetric() &amp;&amp; &quot;Constructed covariance not symmetric&quot;);</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        1543 :     assert(this-&gt;isSymmetric() &amp;&amp; &quot;Constructed covariance not symmetric&quot;);</span></span>
 <span id="L69"><span class="lineNum">      69</span>              :   }</span>
 <span id="L70"><span class="lineNum">      70</span>              : </span>
 <span id="L71"><span class="lineNum">      71</span>              :   /// \brief Construct a new Covariance Matrix Full&lt;ValueType_, Size_&gt; object from a transposed SquareMatrix</span>
@@ -168,9 +168,9 @@
 <span id="L98"><span class="lineNum">      98</span>              :   ///</span>
 <span id="L99"><span class="lineNum">      99</span>              :   /// \param[in] list Nested initializer list representing the covariance matrix</span>
 <span id="L100"><span class="lineNum">     100</span>              :   /// \return CovarianceMatrixFull instance initialized with the provided values</span>
-<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">         178 :   static auto FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) -&gt; CovarianceMatrixFull</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">         185 :   static auto FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) -&gt; CovarianceMatrixFull</span></span>
 <span id="L102"><span class="lineNum">     102</span>              :   {</span>
-<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">         178 :     return CovarianceMatrixFull{BaseSquareMatrix::FromList(list)};</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">         185 :     return CovarianceMatrixFull{BaseSquareMatrix::FromList(list)};</span></span>
 <span id="L104"><span class="lineNum">     104</span>              :   }</span>
 <span id="L105"><span class="lineNum">     105</span>              :   // &lt;---</span>
 <span id="L106"><span class="lineNum">     106</span>              : </span>
@@ -188,7 +188,7 @@
 <span id="L118"><span class="lineNum">     118</span>              :   ///</span>
 <span id="L119"><span class="lineNum">     119</span>              :   /// \return ValueType_ The determinant of the matrix</span>
 <span id="L120"><span class="lineNum">     120</span>              :   /// \note uses SquareMatrix::determinant</span>
-<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC tlaBgGNC">         331 :   auto determinant() const -&gt; ValueType_ { return BaseSquareMatrix::determinant(); }</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaUNC">           0 :   auto determinant() const -&gt; ValueType_ { return BaseSquareMatrix::determinant(); }</span></span>
 <span id="L122"><span class="lineNum">     122</span>              : </span>
 <span id="L123"><span class="lineNum">     123</span>              :   /// \brief Calculates the matrix inverse using Cholesky decomposition</span>
 <span id="L124"><span class="lineNum">     124</span>              :   ///</span>
@@ -207,7 +207,7 @@
 <span id="L137"><span class="lineNum">     137</span>              :   /// Alias for inverse() to match the contract definitions</span>
 <span id="L138"><span class="lineNum">     138</span>              :   ///</span>
 <span id="L139"><span class="lineNum">     139</span>              :   /// \return Full covariance matrix containing the inverse</span>
-<span id="L140"><span class="lineNum">     140</span> <span class="tlaUNC tlaBgUNC">           0 :   auto composed_inverse() const -&gt; tl::expected&lt;compose_type, Errors&gt; { return this-&gt;inverse(); }</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaUNC">           0 :   auto composed_inverse() const -&gt; tl::expected&lt;compose_type, Errors&gt; { return this-&gt;inverse(); }</span></span>
 <span id="L141"><span class="lineNum">     141</span>              : </span>
 <span id="L142"><span class="lineNum">     142</span>              :   /// \brief Compute A*P*A^T in-place (covariance propagation)</span>
 <span id="L143"><span class="lineNum">     143</span>              :   ///</span>

@@ -37,11 +37,11 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-30 21:19:04</td>
+            <td class="headerValue">2026-08-02 19:05:50</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">0.0&nbsp;%</td>
-            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntry">22</td>
             <td class="headerCovTableEntry">0</td>
           </tr>
           <tr>
@@ -135,11 +135,11 @@
 <span id="L65"><span class="lineNum">      65</span>              : </span>
 <span id="L66"><span class="lineNum">      66</span>              :   // rule of 5 declarations</span>
 <span id="L67"><span class="lineNum">      67</span>              :   CovarianceMatrixFactored()                                                       = default;</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC tlaBgGNC">          78 :   CovarianceMatrixFactored(const CovarianceMatrixFactored&amp;)                        = default;</span></span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          40 :   CovarianceMatrixFactored(CovarianceMatrixFactored&amp;&amp;) noexcept                    = default;</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC tlaBgGNC">          41 :   CovarianceMatrixFactored(const CovarianceMatrixFactored&amp;)                        = default;</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          65 :   CovarianceMatrixFactored(CovarianceMatrixFactored&amp;&amp;) noexcept                    = default;</span></span>
 <span id="L70"><span class="lineNum">      70</span>              :   auto operator=(const CovarianceMatrixFactored&amp;) -&gt; CovarianceMatrixFactored&amp;     = default;</span>
 <span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">          48 :   auto operator=(CovarianceMatrixFactored&amp;&amp;) noexcept -&gt; CovarianceMatrixFactored&amp; = default;</span></span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">         321 :   virtual ~CovarianceMatrixFactored()                                              = default;</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">         329 :   virtual ~CovarianceMatrixFactored()                                              = default;</span></span>
 <span id="L73"><span class="lineNum">      73</span>              : </span>
 <span id="L74"><span class="lineNum">      74</span>              :   //////////////////////////////////////////////////</span>
 <span id="L75"><span class="lineNum">      75</span>              :   // additional constructors  ---&gt;</span>
@@ -207,7 +207,7 @@
 <span id="L137"><span class="lineNum">     137</span>              :   /// \return ValueType_ The determinant of the matrix</span>
 <span id="L138"><span class="lineNum">     138</span>              :   /// \note Time complexity: O(n) where n is the matrix dimension</span>
 <span id="L139"><span class="lineNum">     139</span>              :   /// \note For singular matrixes, the determinant will be zero or very close to zero</span>
-<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">          32 :   [[nodiscard]] auto determinant() const -&gt; ValueType_ { return _d.determinant(); }</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaUNC tlaBgUNC">           0 :   [[nodiscard]] auto determinant() const -&gt; ValueType_ { return _d.determinant(); }</span></span>
 <span id="L141"><span class="lineNum">     141</span>              : </span>
 <span id="L142"><span class="lineNum">     142</span>              :   /// \brief Compute inverse in factored form</span>
 <span id="L143"><span class="lineNum">     143</span>              :   ///</span>
@@ -333,7 +333,7 @@
 <span id="L263"><span class="lineNum">     263</span>              :   /// The factored covariance is symmetric by design.</span>
 <span id="L264"><span class="lineNum">     264</span>              :   ///</span>
 <span id="L265"><span class="lineNum">     265</span>              :   /// \return always true</span>
-<span id="L266"><span class="lineNum">     266</span> <span class="tlaUNC tlaBgUNC">           0 :   [[nodiscard]] auto isSymmetric() const -&gt; bool { return true; }</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaUNC">           0 :   [[nodiscard]] auto isSymmetric() const -&gt; bool { return true; }</span></span>
 <span id="L267"><span class="lineNum">     267</span>              : </span>
 <span id="L268"><span class="lineNum">     268</span>              :   /// \brief Check if the matrix matrix is positive definite.</span>
 <span id="L269"><span class="lineNum">     269</span>              :   ///</span>
@@ -341,7 +341,7 @@
 <span id="L271"><span class="lineNum">     271</span>              :   /// A positive definite matrix satisfies x^T * A * x &gt; 0 for all non-zero vectors x.</span>
 <span id="L272"><span class="lineNum">     272</span>              :   ///</span>
 <span id="L273"><span class="lineNum">     273</span>              :   /// \return true if the matrix is positive definite, false otherwise</span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaUNC">           0 :   [[nodiscard]] auto isPositiveDefinite() const -&gt; bool { return _d.isPositiveDefinite(); }</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC tlaBgGNC">          57 :   [[nodiscard]] auto isPositiveDefinite() const -&gt; bool { return _d.isPositiveDefinite(); }</span></span>
 <span id="L275"><span class="lineNum">     275</span>              : </span>
 <span id="L276"><span class="lineNum">     276</span>              :   /// \brief Checks if the matrix is positive semi-definite.</span>
 <span id="L277"><span class="lineNum">     277</span>              :   ///</span>
@@ -351,7 +351,7 @@
 <span id="L281"><span class="lineNum">     281</span>              :   /// This is a key property for covariance matrixes in statistics and machine learning.</span>
 <span id="L282"><span class="lineNum">     282</span>              :   ///</span>
 <span id="L283"><span class="lineNum">     283</span>              :   /// \return true if the matrix is positive semi-definite, false otherwise</span>
-<span id="L284"><span class="lineNum">     284</span> <span class="tlaUNC">           0 :   [[nodiscard]] auto isPositiveSemiDefinite() const -&gt; bool { return _d.isPositiveSemiDefinite(); }</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaUNC tlaBgUNC">           0 :   [[nodiscard]] auto isPositiveSemiDefinite() const -&gt; bool { return _d.isPositiveSemiDefinite(); }</span></span>
 <span id="L285"><span class="lineNum">     285</span>              : </span>
 <span id="L286"><span class="lineNum">     286</span>              :   //////////////////////////////////////////////////</span>
 <span id="L287"><span class="lineNum">     287</span>              :   // unsafe access operators  ---&gt;</span>

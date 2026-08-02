@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-30 21:19:04</td>
+            <td class="headerValue">2026-08-02 19:05:50</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -94,7 +94,7 @@
 <span id="L24"><span class="lineNum">      24</span>              :   using Point2d    = math::Point2d&lt;value_type&gt;;</span>
 <span id="L25"><span class="lineNum">      25</span>              : </span>
 <span id="L26"><span class="lineNum">      26</span>              :   // rule of 5 declarations</span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC tlaBgGNC">         285 :   Rotation2D()                                         = default;</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC tlaBgGNC">         286 :   Rotation2D()                                         = default;</span></span>
 <span id="L28"><span class="lineNum">      28</span>              :   Rotation2D(const Rotation2D&amp;)                        = default;</span>
 <span id="L29"><span class="lineNum">      29</span>              :   Rotation2D(Rotation2D&amp;&amp;) noexcept                    = default;</span>
 <span id="L30"><span class="lineNum">      30</span>              :   auto operator=(const Rotation2D&amp;) -&gt; Rotation2D&amp;     = default;</span>
@@ -104,12 +104,12 @@
 <span id="L34"><span class="lineNum">      34</span>              :   /// \brief Create a rotation from an angle, computing cos/sin</span>
 <span id="L35"><span class="lineNum">      35</span>              :   /// \param[in] yaw Rotation angle theta [rad]</span>
 <span id="L36"><span class="lineNum">      36</span>              :   /// \return Rotation2D representing R(theta)</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          25 :   static auto FromAngle(const value_type yaw) -&gt; Rotation2D</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          26 :   static auto FromAngle(const value_type yaw) -&gt; Rotation2D</span></span>
 <span id="L38"><span class="lineNum">      38</span>              :   {</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">          25 :     Rotation2D rotation{};</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          25 :     rotation._cos = std::cos(yaw);</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">          25 :     rotation._sin = std::sin(yaw);</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">          25 :     return rotation;</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">          26 :     Rotation2D rotation{};</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          26 :     rotation._cos = std::cos(yaw);</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">          26 :     rotation._sin = std::sin(yaw);</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">          26 :     return rotation;</span></span>
 <span id="L43"><span class="lineNum">      43</span>              :   }</span>
 <span id="L44"><span class="lineNum">      44</span>              : </span>
 <span id="L45"><span class="lineNum">      45</span>              :   /// \brief Create a rotation from an already-known cos/sin pair, avoiding recomputation</span>

@@ -37,11 +37,11 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-30 21:19:04</td>
+            <td class="headerValue">2026-08-02 19:05:50</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryHi">90.3&nbsp;%</td>
-            <td class="headerCovTableEntry">72</td>
+            <td class="headerCovTableEntryMed">89.0&nbsp;%</td>
+            <td class="headerCovTableEntry">73</td>
             <td class="headerCovTableEntry">65</td>
           </tr>
           <tr>
@@ -89,13 +89,13 @@
 <span id="L19"><span class="lineNum">      19</span>              : {</span>
 <span id="L20"><span class="lineNum">      20</span>              : </span>
 <span id="L21"><span class="lineNum">      21</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC tlaBgGNC">         197 : CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::CovarianceMatrixFactored(const TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; u,</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC tlaBgGNC">         199 : CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::CovarianceMatrixFactored(const TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; u,</span></span>
 <span id="L23"><span class="lineNum">      23</span>              :                                                                       const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp;                d)</span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">         197 :     : _u{u}</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">         197 :     , _d{d}</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">         199 :     : _u{u}</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">         199 :     , _d{d}</span></span>
 <span id="L26"><span class="lineNum">      26</span>              : {</span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         197 :   assert(_u.isUnitUpperTriangular() &amp;&amp; &quot;Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular&quot;);</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         197 :   assert(_d.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         199 :   assert(_u.isUnitUpperTriangular() &amp;&amp; &quot;Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular&quot;);</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         199 :   assert(_d.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
 <span id="L29"><span class="lineNum">      29</span>              : }</span>
 <span id="L30"><span class="lineNum">      30</span>              : </span>
 <span id="L31"><span class="lineNum">      31</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>

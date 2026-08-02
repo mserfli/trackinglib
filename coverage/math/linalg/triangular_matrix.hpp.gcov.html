@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-07-30 21:19:04</td>
+            <td class="headerValue">2026-08-02 19:05:50</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryHi">93.5&nbsp;%</td>
-            <td class="headerCovTableEntry">201</td>
-            <td class="headerCovTableEntry">188</td>
+            <td class="headerCovTableEntryHi">93.1&nbsp;%</td>
+            <td class="headerCovTableEntry">203</td>
+            <td class="headerCovTableEntry">189</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -309,17 +309,17 @@
 <span id="L239"><span class="lineNum">     239</span>              : }</span>
 <span id="L240"><span class="lineNum">     240</span>              : </span>
 <span id="L241"><span class="lineNum">     241</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
-<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">       47703 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::at_unsafe(sint32 row, sint32 col) const -&gt; ValueType_</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">       47709 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::at_unsafe(sint32 row, sint32 col) const -&gt; ValueType_</span></span>
 <span id="L243"><span class="lineNum">     243</span>              : {</span>
-<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">       47703 :   assert((IsLower_ ? row &gt;= col : row &lt;= col) &amp;&amp; &quot;accessing off-triangular elements&quot;);</span></span>
-<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">       47703 :   return BaseSquareMatrix::at_unsafe(row, col);</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">       47709 :   assert((IsLower_ ? row &gt;= col : row &lt;= col) &amp;&amp; &quot;accessing off-triangular elements&quot;);</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">       47709 :   return BaseSquareMatrix::at_unsafe(row, col);</span></span>
 <span id="L246"><span class="lineNum">     246</span>              : }</span>
 <span id="L247"><span class="lineNum">     247</span>              : </span>
 <span id="L248"><span class="lineNum">     248</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
-<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">       23642 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::at_unsafe(sint32 row, sint32 col) -&gt; ValueType_&amp;</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">       28980 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::at_unsafe(sint32 row, sint32 col) -&gt; ValueType_&amp;</span></span>
 <span id="L250"><span class="lineNum">     250</span>              : {</span>
-<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">       23642 :   assert((IsLower_ ? row &gt;= col : row &lt;= col) &amp;&amp; &quot;accessing off-triangular elements&quot;);</span></span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       23642 :   return BaseSquareMatrix::at_unsafe(row, col);</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">       28980 :   assert((IsLower_ ? row &gt;= col : row &lt;= col) &amp;&amp; &quot;accessing off-triangular elements&quot;);</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       28980 :   return BaseSquareMatrix::at_unsafe(row, col);</span></span>
 <span id="L253"><span class="lineNum">     253</span>              : }</span>
 <span id="L254"><span class="lineNum">     254</span>              : </span>
 <span id="L255"><span class="lineNum">     255</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
@@ -391,14 +391,14 @@
 <span id="L321"><span class="lineNum">     321</span>              : }</span>
 <span id="L322"><span class="lineNum">     322</span>              : </span>
 <span id="L323"><span class="lineNum">     323</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
-<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">         423 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::isUnitUpperTriangular() const -&gt; bool</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">         425 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::isUnitUpperTriangular() const -&gt; bool</span></span>
 <span id="L325"><span class="lineNum">     325</span>              : {</span>
-<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">         423 :   auto isValid = true;</span></span>
-<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">        2077 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">         425 :   auto isValid = true;</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">        2085 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
 <span id="L328"><span class="lineNum">     328</span>              :   {</span>
-<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">        1655 :     isValid = isValid &amp;&amp; (static_cast&lt;ValueType_&gt;(1.0) == this-&gt;at_unsafe(idx, idx));</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">        1661 :     isValid = isValid &amp;&amp; (static_cast&lt;ValueType_&gt;(1.0) == this-&gt;at_unsafe(idx, idx));</span></span>
 <span id="L330"><span class="lineNum">     330</span>              :   }</span>
-<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">         423 :   return isValid;</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">         425 :   return isValid;</span></span>
 <span id="L332"><span class="lineNum">     332</span>              : }</span>
 <span id="L333"><span class="lineNum">     333</span>              : </span>
 <span id="L334"><span class="lineNum">     334</span>              : </span>
