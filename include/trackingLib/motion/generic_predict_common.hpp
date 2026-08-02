@@ -17,7 +17,7 @@ inline void PredictCommon<MotionModel_, CovarianceMatrixPolicy_>::run(Storage&  
                                                                       const value_type     dt,
                                                                       const EgoMotionType& egoMotion)
 {
-  assert(dt >= static_cast<value_type>(0));
+  assert(dt >= static_cast<value_type>(0)); // out-of-sequence measurements are not yet supported
   auto& underlying = static_cast<MotionModel_&>(*this);
 
   // Compute ego motion compensation matrices

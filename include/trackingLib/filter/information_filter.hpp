@@ -40,10 +40,16 @@ void InformationFilter<CovarianceMatrixPolicy_>::predictCovariance(CovarianceMat
     using ColView = math::MatrixColumnView<value_type, DimX_, DimQ_, false>;
     for (sint32 i = 0; i < DimQ_; ++i)
     {
+      const value_type qi = Q.at_unsafe(i);
+      if (!(qi > static_cast<value_type>(0.0)))
+      {
+        continue; // defensive: skip process-noise entries with a non-positive/NaN variance
+      }
+
       const ColView Gi{invAMulG, i};
       const auto    fullY{Y()};
       xi = fullY * Gi;
-      ci = -1 / (1 / Q.at_unsafe(i) + Gi * xi);
+      ci = -1 / (1 / qi + Gi * xi);
 
       Y.rank1Update(ci, xi);
     }

@@ -3,6 +3,8 @@
 #include "trackingLib/math/linalg/conversions/triangular_conversions.hpp"
 #include "trackingLib/math/linalg/conversions/vector_conversions.hpp"
 #include "trackingLib/math/linalg/rank1_update.hpp" // IWYU pragma: keep
+#include <cmath>
+#include <limits>
 
 using namespace tracking::math;
 
@@ -171,6 +173,76 @@ TEST(Rank1Update, ldl_downdate) // NOLINT
     for (auto col = 0; col < row; ++col)
     {
       EXPECT_FLOAT_EQ(L.at_unsafe(row, col), expL.at_unsafe(row, col));
+    }
+  }
+}
+
+TEST(Rank1Update, ldl_update_zeroIncomingPivot__StaysFinite) // NOLINT
+{
+  // A degenerate incoming D (e.g. from a prior downdate that already hit the epsilon floor) must
+  // not poison the update via an unguarded division by that pivot.
+
+  // clang-format off
+  auto L = TriangularMatrix<float64, 4, true, true>::FromList({
+    {1.000000000000000,                  0,                  0,                  0},
+    {0.963676245213974,  1.000000000000000,                  0,                  0},
+    {0.410046948367661, -0.938497570939665,  1.000000000000000,                  0},
+    {0.762280461386267, -0.940741810056261,  0.195856283828150,  1.000000000000000}
+  });
+  auto D = DiagonalMatrix<float64, 4>::FromList({
+    2.184725700773844, 0.424415494704770, 1.703921082760869, 0.238675924218862
+  });
+  // clang-format on
+  D.at_unsafe(3) = 0.0; // simulate a degenerate incoming pivot
+
+  const auto w =
+      Vector<float64, 4>::FromList({3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01});
+  const auto sigma = 3.0;
+
+  // call UUT
+  Rank1Update<float64, 4, true>::run(L, D, sigma, w);
+
+  for (auto row = 0; row < 4; ++row)
+  {
+    EXPECT_TRUE(std::isfinite(D.at_unsafe(row))) << "row=" << row;
+    for (auto col = 0; col < row; ++col)
+    {
+      EXPECT_TRUE(std::isfinite(L.at_unsafe(row, col))) << "row=" << row << " col=" << col;
+    }
+  }
+}
+
+TEST(Rank1Update, ldl_downdate_zeroIncomingPivot__StaysFinite) // NOLINT
+{
+  // clang-format off
+  auto L = TriangularMatrix<float64, 4, true, true>::FromList({
+    {1.000000000000000,                  0,                  0,                  0},
+    {0.963676245213974,  1.000000000000000,                  0,                  0},
+    {0.410046948367661, -0.938497570939665,  1.000000000000000,                  0},
+    {0.762280461386267, -0.940741810056261,  0.195856283828150,  1.000000000000000}
+  });
+  auto D = DiagonalMatrix<float64, 4>::FromList({
+    2.184725700773844, 0.424415494704770, 1.703921082760869, 0.238675924218862
+  });
+  // clang-format on
+  // A strictly-positive (denormalized) pivot: passes the downdate's up-front d.inverse() gate
+  // (which requires d > 0 for every entry, a separate assert out of this task's scope) while still
+  // being small enough that an unguarded division by it overflows to Inf.
+  D.at_unsafe(0) = std::numeric_limits<float64>::denorm_min();
+
+  const auto w =
+      Vector<float64, 4>::FromList({3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01});
+  const auto sigma = 3.0;
+
+  // call UUT
+  Rank1Update<float64, 4, true>::run(L, D, -sigma, w);
+
+  for (auto row = 0; row < 4; ++row)
+  {
+    EXPECT_TRUE(std::isfinite(D.at_unsafe(row))) << "row=" << row;
+    for (auto col = 0; col < row; ++col)
+    {
+      EXPECT_TRUE(std::isfinite(L.at_unsafe(row, col))) << "row=" << row << " col=" << col;
     }
   }
 }
