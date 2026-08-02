@@ -206,6 +206,7 @@ template&lt;typename MotionModel_ , typename CovarianceMatrixPolicy_ &gt; </div>
   </table>
   </dd>
 </dl>
+<dl class="section pre"><dt>Precondition</dt><dd>dt &gt;= 0. Out-of-sequence measurements (negative dt) are not yet supported (see AGENTS.md's "Known limitations"); the whole predict() chain is void end to end, so this is a debug-only assert rather than a propagated tl::expected error. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
