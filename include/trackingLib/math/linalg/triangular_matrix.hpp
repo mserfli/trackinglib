@@ -4,6 +4,8 @@
 #include "math/linalg/triangular_matrix.h"
 
 #include "math/linalg/matrix.hpp" // IWYU pragma: keep
+#include <cmath>
+#include <limits>
 
 namespace tracking
 {
@@ -269,6 +271,13 @@ template <sint32 Cols_, bool IsRowMajor2_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
     const Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>& b) const -> Matrix<ValueType_, Size_, Cols_, IsRowMajor2_>
 {
+  // clamp: a zero (or near-zero) diagonal entry means the source matrix was rank-deficient in
+  // this direction (e.g. householderQR's R has no PD/nonsingular precondition on its input,
+  // unlike decomposeLLT/decomposeUDUT's factors). Preserve sign so a legitimate negative pivot
+  // (R's diagonal can be either sign) is left untouched; only a genuine zero is pushed to the
+  // epsilon boundary, mirroring decomposeUDUT's pivot clamp.
+  constexpr ValueType_ epsilon = std::numeric_limits<ValueType_>::epsilon();
+
   Matrix<ValueType_, Size_, Cols_, IsRowMajor2_> x{};
   if constexpr (IsLower_)
   {
@@ -281,7 +290,9 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
         {
           sum += this->at_unsafe(row, col) * x.at_unsafe(col, k);
         }
-        x.at_unsafe(row, k) = (b.at_unsafe(row, k) - sum) / this->at_unsafe(row, row);
+        const ValueType_ diag     = this->at_unsafe(row, row);
+        const ValueType_ diagSafe = (std::abs(diag) > epsilon) ? diag : std::copysign(epsilon, diag);
+        x.at_unsafe(row, k)       = (b.at_unsafe(row, k) - sum) / diagSafe;
       }
     }
   }
@@ -296,7 +307,9 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
         {
           sum += this->at_unsafe(row, col) * x.at_unsafe(col, k);
         }
-        x.at_unsafe(row, k) = (b.at_unsafe(row, k) - sum) / this->at_unsafe(row, row);
+        const ValueType_ diag     = this->at_unsafe(row, row);
+        const ValueType_ diagSafe = (std::abs(diag) > epsilon) ? diag : std::copysign(epsilon, diag);
+        x.at_unsafe(row, k)       = (b.at_unsafe(row, k) - sum) / diagSafe;
       }
     }
   }

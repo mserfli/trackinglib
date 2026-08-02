@@ -46,7 +46,10 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const
       w.at_unsafe(k) = static_cast<ValueType_>(0);
     }
 
-    const ValueType_ normx = w.norm();
+    // clamp: a zero (or near-zero) column here means R's remaining submatrix is already
+    // rank-deficient in this direction; treat it as a no-op reflection (w becomes e_j below)
+    // instead of dividing by zero, mirroring decomposeUDUT's pivot clamp
+    const ValueType_ normx = std::max(w.norm(), std::numeric_limits<ValueType_>::epsilon());
     // Determines the sign of the j-th diagonal element of R.
     const ValueType_ sign =
         (R.at_unsafe(j, j) < static_cast<ValueType_>(0)) ? static_cast<ValueType_>(1) : static_cast<ValueType_>(-1);

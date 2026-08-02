@@ -3,6 +3,7 @@
 #include "trackingLib/math/linalg/diagonal_matrix.hpp"
 #include "trackingLib/math/linalg/square_matrix.hpp" // IWYU pragma: keep
 #include "trackingLib/math/linalg/triangular_matrix.hpp"
+#include <cmath>
 
 using namespace tracking::math;
 
@@ -131,6 +132,57 @@ TEST(SquareMatrixDecompositions, householderQR_Reconstruction__Success) // NOLIN
     for (auto col = 0; col < 3; col++)
     {
       EXPECT_NEAR(mat.at_unsafe(row, col), recomposed.at_unsafe(row, col), 1e-5);
+    }
+  }
+}
+
+TEST(SquareMatrixDecompositions, householderQR_ZeroColumn__StaysFinite) // NOLINT
+{
+  // First column (rows 0..end) is exactly zero -> a naive Householder step divides
+  // tau = -sign*u1/normx and w /= u1 by 0/0. The pivot clamp must keep every entry finite.
+  // clang-format off
+  const auto mat = SquareMatrix<float32, 2, true>::FromList({
+    {0.0, 0.0},
+    {0.0, 1.0}
+  });
+  // clang-format on
+
+  const auto [Q, R] = mat.householderQR();
+
+  for (auto row = 0; row < 2; ++row)
+  {
+    for (auto col = 0; col < 2; ++col)
+    {
+      EXPECT_TRUE(std::isfinite(Q.at_unsafe(row, col))) << "row=" << row << " col=" << col;
+      if (row <= col) // R is upper triangular; at_unsafe only accepts on/above the diagonal
+      {
+        EXPECT_TRUE(std::isfinite(R.at_unsafe(row, col))) << "row=" << row << " col=" << col;
+      }
+    }
+  }
+}
+
+TEST(SquareMatrixDecompositions, inverse_SingularZeroColumn__StaysFinite) // NOLINT
+{
+  // SquareMatrix::inverse() (qrSolve(Identity()) under the hood) on a structurally singular
+  // matrix must not silently propagate NaN/Inf with no error signal (mirrors decomposeUDUT's
+  // clamp-and-continue strategy, since inverse()/qrSolve() have no tl::expected error channel).
+  // clang-format off
+  const auto mat = SquareMatrix<float64, 4, true>::FromList({
+    {4.0, 0.0, 0.0, 0.0},
+    {0.0, 0.0, 0.0, 0.0},
+    {0.0, 0.0, 4.0, 0.0},
+    {0.0, 0.0, 0.0, 0.0}
+  });
+  // clang-format on
+
+  const auto inv = mat.inverse();
+
+  for (auto row = 0; row < 4; ++row)
+  {
+    for (auto col = 0; col < 4; ++col)
+    {
+      EXPECT_TRUE(std::isfinite(inv.at_unsafe(row, col))) << "row=" << row << " col=" << col;
     }
   }
 }
