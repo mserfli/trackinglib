@@ -122,7 +122,8 @@ struct tracking::env::EgoMotion&lt; CovarianceMatrixPolicy_ &gt;::InertialMotion
   dy = c·\sin\frac{dφ}{2}
 \]" src="form_0.png"/></picture>
 </p>
-<p>For small angular velocities (ω→0), simplified equations (linear motion) are used to avoid numerical issues. </p>
+<p>For small angular velocities (ω→0), simplified equations (linear motion) are used to avoid numerical issues.</p>
+<dl class="section pre"><dt>Precondition</dt><dd>sv &gt; 0 &amp;&amp; sa &gt; 0 &amp;&amp; sw &gt; 0 (checked by <a class="el" href="classtracking_1_1env_1_1EgoMotion.html#a416b656631a71fc8ca83730a1ff117fb" title="Construct a validated EgoMotion.">TryCreate()</a>; each uncertainty is used as a variance in <a class="el" href="classtracking_1_1env_1_1EgoMotion.html#a78a88909c9ccc71f8378976e11714184" title="Calculate displacement covariance.">calcDisplacementCovariance()</a>, which requires a strictly positive diagonal) </dd></dl>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a34709912da4f740200a0e4c96d393f8f" name="a34709912da4f740200a0e4c96d393f8f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34709912da4f740200a0e4c96d393f8f">&#9670;&#160;</a></span>a</h2>

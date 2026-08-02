@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classtracking_1_1env_1_1EgoMotion.html#afcfbb101d661a34a3f4c1c853e8fb0c4" target="_top" xlink:title="Constructor with explicit covariance matrix type.">
+<g id="a_Node000002"><a xlink:href="classtracking_1_1env_1_1EgoMotion.html#afcfbb101d661a34a3f4c1c853e8fb0c4" target="_top" xlink:title="Construct a new Ego Motion object.">
 <polygon fill="white" stroke="#666666" points="137,-30 0,-30 0,0 137,0 137,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::env::EgoMotion</text>
 <text text-anchor="middle" x="68.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::EgoMotion</text>
