@@ -220,19 +220,19 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:adb53eb1be969c8dfdba3c4153bec2b58" id="r_adb53eb1be969c8dfdba3c4153bec2b58"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#adb53eb1be969c8dfdba3c4153bec2b58">MeasurementVecFromList</a> (const std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;list) -&gt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a></td></tr>
 <tr class="memdesc:adb53eb1be969c8dfdba3c4153bec2b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create measurement vector from initializer list.  <br /></td></tr>
 <tr class="separator:adb53eb1be969c8dfdba3c4153bec2b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40aad5843e61ca38de02e6ea6b4b5177" id="r_a40aad5843e61ca38de02e6ea6b4b5177"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a40aad5843e61ca38de02e6ea6b4b5177">MeasurementCovFromList</a> (const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;list) -&gt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a></td></tr>
-<tr class="memdesc:a40aad5843e61ca38de02e6ea6b4b5177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create measurement covariance from initializer list.  <br /></td></tr>
-<tr class="separator:a40aad5843e61ca38de02e6ea6b4b5177"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37094be622c21c7cfd472372bd4b23e8" id="r_a37094be622c21c7cfd472372bd4b23e8"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a37094be622c21c7cfd472372bd4b23e8">MeasurementCovFromList</a> (const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;list) -&gt; tl::expected&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>, <a class="el" href="namespacetracking_1_1math.html#aa03008b32b3c30ee7beb57d7e3fbf54d">math::Errors</a> &gt;</td></tr>
+<tr class="memdesc:a37094be622c21c7cfd472372bd4b23e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create measurement covariance from initializer list.  <br /></td></tr>
+<tr class="separator:a37094be622c21c7cfd472372bd4b23e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b3fe43fdc4570232458c9b95805d7e8" id="r_a2b3fe43fdc4570232458c9b95805d7e8"><td class="memTemplParams" colspan="2">template&lt;typename T  = CovarianceMatrixPolicy&gt; </td></tr>
 <tr class="memitem:a2b3fe43fdc4570232458c9b95805d7e8"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a2b3fe43fdc4570232458c9b95805d7e8">MeasurementCovFromList</a> (const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;u, const std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;d) -&gt; std::enable_if_t&lt; T::is_factored, <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &gt;</td></tr>
 <tr class="memdesc:a2b3fe43fdc4570232458c9b95805d7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create factored measurement covariance from initializer list.  <br /></td></tr>
 <tr class="separator:a2b3fe43fdc4570232458c9b95805d7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af26cd587341e97a9cdb8b44b1e32adf9" id="r_af26cd587341e97a9cdb8b44b1e32adf9"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#af26cd587341e97a9cdb8b44b1e32adf9">FromLists</a> (const std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList) -&gt; ObservationModel_</td></tr>
-<tr class="memdesc:af26cd587341e97a9cdb8b44b1e32adf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create complete ObservationModel from initializer lists.  <br /></td></tr>
-<tr class="separator:af26cd587341e97a9cdb8b44b1e32adf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab77e06c5979828b50d5de5734d72ac6d" id="r_ab77e06c5979828b50d5de5734d72ac6d"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ab77e06c5979828b50d5de5734d72ac6d">FromLists</a> (const std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;pose) -&gt; ObservationModel_</td></tr>
-<tr class="memdesc:ab77e06c5979828b50d5de5734d72ac6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create complete ObservationModel from initializer lists and a sensor mounting pose.  <br /></td></tr>
-<tr class="separator:ab77e06c5979828b50d5de5734d72ac6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d767863bb6eb10bcead589d493d34a3" id="r_a5d767863bb6eb10bcead589d493d34a3"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a5d767863bb6eb10bcead589d493d34a3">FromLists</a> (const std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList) -&gt; tl::expected&lt; ObservationModel_, <a class="el" href="namespacetracking_1_1math.html#aa03008b32b3c30ee7beb57d7e3fbf54d">math::Errors</a> &gt;</td></tr>
+<tr class="memdesc:a5d767863bb6eb10bcead589d493d34a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create complete ObservationModel from initializer lists.  <br /></td></tr>
+<tr class="separator:a5d767863bb6eb10bcead589d493d34a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c65031817a855b38578cf310f8400ae" id="r_a1c65031817a855b38578cf310f8400ae"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a1c65031817a855b38578cf310f8400ae">FromLists</a> (const std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList, const <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;pose) -&gt; tl::expected&lt; ObservationModel_, <a class="el" href="namespacetracking_1_1math.html#aa03008b32b3c30ee7beb57d7e3fbf54d">math::Errors</a> &gt;</td></tr>
+<tr class="memdesc:a1c65031817a855b38578cf310f8400ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create complete ObservationModel from initializer lists and a sensor mounting pose.  <br /></td></tr>
+<tr class="separator:a1c65031817a855b38578cf310f8400ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -944,8 +944,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="af26cd587341e97a9cdb8b44b1e32adf9" name="af26cd587341e97a9cdb8b44b1e32adf9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af26cd587341e97a9cdb8b44b1e32adf9">&#9670;&#160;</a></span>FromLists() <span class="overload">[1/2]</span></h2>
+<a id="a5d767863bb6eb10bcead589d493d34a3" name="a5d767863bb6eb10bcead589d493d34a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d767863bb6eb10bcead589d493d34a3">&#9670;&#160;</a></span>FromLists() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -970,7 +970,7 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; ObservationModel_
+          <td></td><td> -&gt; tl::expected&lt;ObservationModel_, <a class="el" href="namespacetracking_1_1math.html#aa03008b32b3c30ee7beb57d7e3fbf54d">math::Errors</a>&gt;
   </td>
         </tr>
       </table>
@@ -989,17 +989,17 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>ObservationModel_ instance </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>tl::expected containing the ObservationModel_ instance on success, or Errors::matrix_not_positive_definite if covList cannot be factored into a valid covariance </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_af26cd587341e97a9cdb8b44b1e32adf9_cgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a5d767863bb6eb10bcead589d493d34a3_cgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ab77e06c5979828b50d5de5734d72ac6d" name="ab77e06c5979828b50d5de5734d72ac6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab77e06c5979828b50d5de5734d72ac6d">&#9670;&#160;</a></span>FromLists() <span class="overload">[2/2]</span></h2>
+<a id="a1c65031817a855b38578cf310f8400ae" name="a1c65031817a855b38578cf310f8400ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c65031817a855b38578cf310f8400ae">&#9670;&#160;</a></span>FromLists() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1030,7 +1030,7 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; ObservationModel_
+          <td></td><td> -&gt; tl::expected&lt;ObservationModel_, <a class="el" href="namespacetracking_1_1math.html#aa03008b32b3c30ee7beb57d7e3fbf54d">math::Errors</a>&gt;
   </td>
         </tr>
       </table>
@@ -1050,11 +1050,11 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>ObservationModel_ instance </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>tl::expected containing the ObservationModel_ instance on success, or Errors::matrix_not_positive_definite if covList cannot be factored into a valid covariance </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_ab77e06c5979828b50d5de5734d72ac6d_cgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a1c65031817a855b38578cf310f8400ae_cgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1126,8 +1126,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a40aad5843e61ca38de02e6ea6b4b5177" name="a40aad5843e61ca38de02e6ea6b4b5177"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40aad5843e61ca38de02e6ea6b4b5177">&#9670;&#160;</a></span>MeasurementCovFromList() <span class="overload">[1/2]</span></h2>
+<a id="a37094be622c21c7cfd472372bd4b23e8" name="a37094be622c21c7cfd472372bd4b23e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37094be622c21c7cfd472372bd4b23e8">&#9670;&#160;</a></span>MeasurementCovFromList() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1142,7 +1142,7 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
           <td>(</td>
           <td class="paramtype">const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>
+          <td> -&gt; tl::expected&lt;<a class="el" href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>, <a class="el" href="namespacetracking_1_1math.html#aa03008b32b3c30ee7beb57d7e3fbf54d">math::Errors</a>&gt;
   </td>
         </tr>
       </table>
@@ -1160,11 +1160,11 @@ template&lt;typename ObservationModel_ , typename ObservationModelTrait_ &gt; </
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>MeasurementCov </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>tl::expected containing MeasurementCov on success, or Errors::matrix_not_positive_definite if the list cannot be factored into a valid covariance (factored policy only) </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a40aad5843e61ca38de02e6ea6b4b5177_icgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a37094be622c21c7cfd472372bd4b23e8_icgraph.svg" width="480" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

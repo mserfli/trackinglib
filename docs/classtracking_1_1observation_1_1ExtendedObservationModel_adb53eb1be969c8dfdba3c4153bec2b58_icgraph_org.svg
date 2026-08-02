@@ -22,7 +22,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classtracking_1_1observation_1_1ExtendedObservationModel.html#af26cd587341e97a9cdb8b44b1e32adf9" target="_top" xlink:title="Create complete ObservationModel from initializer lists.">
+<g id="a_Node000002"><a xlink:href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a5d767863bb6eb10bcead589d493d34a3" target="_top" xlink:title="Create complete ObservationModel from initializer lists.">
 <polygon fill="white" stroke="#666666" points="158,-100 0,-100 0,-59 158,-59 158,-100"/>
 <text text-anchor="start" x="8" y="-88" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::observation</text>
 <text text-anchor="start" x="8" y="-77" font-family="Helvetica,sans-Serif" font-size="10.00">::ExtendedObservationModel</text>
@@ -42,7 +42,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classtracking_1_1observation_1_1ExtendedObservationModel.html#ab77e06c5979828b50d5de5734d72ac6d" target="_top" xlink:title="Create complete ObservationModel from initializer lists and a sensor mounting pose.">
+<g id="a_Node000003"><a xlink:href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a1c65031817a855b38578cf310f8400ae" target="_top" xlink:title="Create complete ObservationModel from initializer lists and a sensor mounting pose.">
 <polygon fill="white" stroke="#666666" points="158,-41 0,-41 0,0 158,0 158,-41"/>
 <text text-anchor="start" x="8" y="-29" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::observation</text>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">::ExtendedObservationModel</text>
