@@ -115,3 +115,41 @@ TEST(InformationFilterPredict, predict_StrictlyPositiveDefiniteInformationMatrix
   EXPECT_GT(maxAbsDiff(before, after), static_cast<Testvalue_type>(1e-9))
       << "strictly PD information matrix should be updated by the predict";
 }
+
+TEST(InformationFilterPredict, predict_RankDeficientInformationMatrix__StateStaysFinite) // NOLINT
+{
+  // ExtendedMotionModel::convertStateVecIntoStateSpace() (imotion_model.h) solves x = Y^-1 * y via
+  // Y().qrSolve(y) -- a raw SquareMatrix::qrSolve on Y itself, not a structurally-safe input. The
+  // Full-policy InformationFilter's own predictCovariance deliberately accepts an exactly-singular
+  // PSD Y ("no information" state, see the comment at information_filter.hpp/generic_predict.hpp),
+  // so the very next predict() call's convertStateVecIntoStateSpace() must not silently NaN the
+  // state vector -- householderQR's pivot clamp (mirroring decomposeUDUT) is what prevents that.
+  const auto dt        = static_cast<Testvalue_type>(0.1);
+  const auto egoMotion = makeNoEgoMotion();
+  IF         filter{};
+
+  // Information matrix with the velocity subspace unobserved (zero information) -> singular PSD,
+  // i.e. an exactly-zero eigenvalue. State order is {X, VX, Y, VY}.
+  // clang-format off
+  const auto Ysingular = MM::StateCovFromList({
+    {4.0, 0.0, 0.0, 0.0},   // X  observed
+    {0.0, 0.0, 0.0, 0.0},   // VX unobserved
+    {0.0, 0.0, 4.0, 0.0},   // Y  observed
+    {0.0, 0.0, 0.0, 0.0}    // VY unobserved
+  }).value();
+  // clang-format on
+  const auto ySingular = MM::StateVecFromList({8.0, 0.0, 8.0, 0.0});
+
+  MM mm{MM::StateVecFromList({0, 0, 0, 0}),
+        MM::StateCovFromList({{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}}).value()};
+  mm.getCovForInternalUse() = Ysingular;
+  mm.getVecForInternalUse() = ySingular;
+
+  mm.predict(dt, filter, egoMotion);
+
+  const auto& state = mm.getVec();
+  for (auto i = 0; i < MM::NUM_STATE_VARIABLES; ++i)
+  {
+    EXPECT_TRUE(std::isfinite(state.at_unsafe(i))) << "state component " << i << " is not finite";
+  }
+}
