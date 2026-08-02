@@ -56,6 +56,9 @@ public:
   /// \param[out] data       Output data storage for all precomputed results
   /// \param[in]  dt         The delta time from last state to predicted state
   /// \param[in]  egoMotion  The known egoMotion from last state to predicted state
+  /// \pre dt >= 0. Out-of-sequence measurements (negative dt) are not yet supported (see
+  ///      AGENTS.md's "Known limitations"); the whole predict() chain is void end to end, so this
+  ///      is a debug-only assert rather than a propagated tl::expected error.
   void run(Storage& data, const value_type dt, const EgoMotionType& egoMotion);
 };
 

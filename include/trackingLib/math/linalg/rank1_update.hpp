@@ -86,7 +86,7 @@ inline void Rank1Update<ValueType_, Size_, IsRowMajor_>::run(TriangularMatrix<Va
     for (auto j = 0; j < Size_; ++j)
     {
       p              = x.at_unsafe(j);
-      dj_            = d.at_unsafe(j);
+      dj_            = std::max(d.at_unsafe(j), std::numeric_limits<ValueType_>::epsilon());
       c              = c_ + pow<2>(p) / dj_;
       d.at_unsafe(j) = dj_ * c / c_;
       beta           = p / (dj_ * c);
@@ -107,7 +107,7 @@ inline void Rank1Update<ValueType_, Size_, IsRowMajor_>::run(TriangularMatrix<Va
     c_ = std::max(1 - (p.transpose() * (dinv * p)).at_unsafe(0, 0), std::numeric_limits<ValueType_>::epsilon());
     for (auto j = Size_ - 1; j >= 0; --j)
     {
-      dj_            = d.at_unsafe(j);
+      dj_            = std::max(d.at_unsafe(j), std::numeric_limits<ValueType_>::epsilon());
       c              = c_ + pow<2>(p.at_unsafe(j)) / dj_;
       d.at_unsafe(j) = dj_ * c_ / c;
       beta           = -p.at_unsafe(j) / (dj_ * c_);

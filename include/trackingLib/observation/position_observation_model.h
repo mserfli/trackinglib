@@ -98,7 +98,7 @@ public:
     }
     return PositionObservationModel{vec, cov, pose};
   }
-  
+
   /// \brief Predict the measurement h(x) = [x, y]' for the given sensor-frame state
   /// \param[in] state      Sensor-frame state vector the measurement is predicted for
   /// \param[in] egoMotion  Ego motion of the sensor platform (unused, model is a direct position measurement)
