@@ -76,7 +76,7 @@ struct TestPredictCA
       {0, 0, 0, 1, 0.0, 0},
       {0, 0, 0, 0, 0.1, 0},
       {0, 0, 0, 0, 0.0, 1}
-    });
+    }).value();
 
     auto expVec = MM::StateVecFromList({
       11.25, 3, 2, 0.05, 0.1, 0.1
@@ -88,7 +88,7 @@ struct TestPredictCA
       {      0,       0,       0, 1.06510, 0.22500, 0.40000},
       {      0,       0,       0, 0.22500, 0.90000, 2.00000},
       {      0,       0,       0, 0.40000, 2.00000, 6.00000},
-    });
+    }).value();
     // clang-format on
 
     init(vec, expVec, cov, expCov, filter);
@@ -141,7 +141,7 @@ struct TestPredictCA
       {0, 0, 0, 1, 0.0, 0},
       {0, 0, 0, 0, 0.1, 0},
       {0, 0, 0, 0, 0.0, 1}
-    });
+    }).value();
     auto expVec = MM::StateVecFromList({
       10.2126188278, 3.0012483597, 2.0024981499, -0.5366877317, -0.0500624813, -8.3314255e-05
     });
@@ -152,7 +152,7 @@ struct TestPredictCA
       {-0.2107882202,    -0.0224509798,    +0.0000000194,    +1.0783109665,    +0.2268155664,    +0.4004613757},
       {-0.0224299952,    -0.0449220277,    +0.0000000038,    +0.2268155664,    +0.9024284482,    +2.0001204014},
       {+0.0000216986,    +0.0000020047,    -0.0000000031,    +0.4004613757,    +2.0001204014,    +6.0000801086},
-    });
+    }).value();
     // clang-format on
 
     init(vec, expVec, cov, expCov, filter);
@@ -238,13 +238,13 @@ TEST(MotionModelCA, convertCV_fullCov) // NOLINT
     {-3.3077,   13.7164,   -1.1132,    0.3277},
     { 5.0849,   -1.1132,    2.6187,   -0.1260},
     {-0.4707,    0.3277,   -0.1260,    1.2990},
-  });
+  }).value();
   MMCV mm_cv{vec, cov};
   MMCA mm_ca{};
 
   // call UUT
   mm_ca.convertFrom(mm_cv);
-  
+
   // verify
   EXPECT_FLOAT_EQ(mm_ca._vec.at_unsafe(MMCA::X),  mm_cv._vec.at_unsafe(MMCV::X));
   EXPECT_FLOAT_EQ(mm_ca._vec.at_unsafe(MMCA::VX), mm_cv._vec.at_unsafe(MMCV::VX));
@@ -302,7 +302,7 @@ TEST(MotionModelCA, convertCV_facCov) // NOLINT
     {-3.3077,   13.7164,   -1.1132,    0.3277},
     { 5.0849,   -1.1132,    2.6187,   -0.1260},
     {-0.4707,    0.3277,   -0.1260,    1.2990},
-  });
+  }).value();
   MMCV mm_cv{vec, cov};
   MMCA mm_ca{};
 

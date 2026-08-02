@@ -54,7 +54,7 @@ int main(int argc, char** argv)
       {0.0,  1e-5, 0.0,  0.0 },  //   X, Y  positions -> ~no prior information (1e-9, near-singular).
       {0.0,  0.0,  1e-9, 0.0 },  //   VX, VY velocities -> weak prior (1e-5, std ~300 m/s): the initial
       {0.0,  0.0,  0.0,  1e-5}   //   velocity is unknown but bounded to a plausible range, which bounds
-  });                           //   the startup transient symmetrically on both axes without seeding a value.
+  }).value();                   //   the startup transient symmetrically on both axes without seeding a value.
 
   // Ego vehicle drives a gentle left turn: constant forward speed with a non-zero yaw rate.
   EgoMotionType::InertialMotion motionParams{
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     {rangeStd * rangeStd, static_cast<value_type>(0.0),         static_cast<value_type>(0.0)        },
     {static_cast<value_type>(0.0),         bearingStd * bearingStd, static_cast<value_type>(0.0)        },
     {static_cast<value_type>(0.0),         static_cast<value_type>(0.0),         dopplerStd * dopplerStd}
-  });
+  }).value();
   // clang-format on
 
   // Fixed-seed RNG so the example produces reproducible output run to run.
@@ -264,8 +264,10 @@ int main(int argc, char** argv)
     const value_type zBearing = gtBearing + bearingNoise(rng);
     const value_type zDoppler = gtDoppler + dopplerNoise(rng);
 
-    const RangeBearingDopplerType obs{
-        RangeBearingDopplerType::MeasurementVec::FromList({zRange, zBearing, zDoppler}), R, sensorPose};
+    const RangeBearingDopplerType obs =
+        RangeBearingDopplerType::TryCreate(
+            RangeBearingDopplerType::MeasurementVec::FromList({zRange, zBearing, zDoppler}), R, sensorPose)
+            .value();
 
     // Correct step: nonlinear measurement update via the EKF, linearizing h(x) at the current
     // estimate. Bootstrap regime accumulates information (Y += H'*inv(R)*H); Kalman regime corrects

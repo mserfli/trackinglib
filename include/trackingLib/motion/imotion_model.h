@@ -106,8 +106,10 @@ public:
 
   /// \brief Create state covariance from initializer list
   /// \param[in] list  Nested initializer list with covariance values
-  /// \return StateCov
-  static auto StateCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> StateCov
+  /// \return tl::expected containing StateCov on success, or Errors::matrix_not_positive_definite
+  ///         if the list cannot be factored into a valid covariance (factored policy only)
+  static auto StateCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list)
+      -> tl::expected<StateCov, math::Errors>
   {
     if constexpr (CovarianceMatrixPolicy::is_factored)
     {
@@ -133,13 +135,22 @@ public:
   /// \brief Create complete ExtendedMotionModel from initializer lists
   /// \param[in] vecList  Initializer list for state vector
   /// \param[in] covList  Nested initializer list for covariance matrix
-  /// \return ExtendedMotionModel instance
+  /// \return tl::expected containing the MotionModel_ instance on success, or
+  ///         Errors::matrix_not_positive_definite if covList cannot be factored into a valid covariance
   static auto FromLists(const std::initializer_list<value_type>&                        vecList,
-                        const std::initializer_list<std::initializer_list<value_type>>& covList) -> MotionModel_
+                        const std::initializer_list<std::initializer_list<value_type>>& covList)
+      -> tl::expected<MotionModel_, math::Errors>
   {
-    auto vec = StateVecFromList(vecList);
-    auto cov = StateCovFromList(covList);
-    return MotionModel_{vec, cov};
+    auto       vec = StateVecFromList(vecList);
+    const auto cov = StateCovFromList(covList);
+    if (!cov.has_value())
+    {
+      return tl::unexpected<math::Errors>{cov.error()};
+    }
+    // MotionModel_::TryCreate (not the ctor directly): a CRTP base has no access to its derived
+    // class's protected ctor without a friend declaration, which AUTOSAR A11-3-1 prohibits.
+    // TryCreate is a member of MotionModel_ itself, so it can reach its own protected ctor.
+    return MotionModel_::TryCreate(vec, cov.value());
   }
 
   /// \brief Read access to x position
@@ -264,7 +275,7 @@ TEST_REMOVE_PROTECTED:
       : BaseIMotionModel{}
       , BaseStateMem{vec, cov}
   {
-    assert(cov.determinant() > 0);
+    assert(cov.isPositiveDefinite());
   }
 };
 

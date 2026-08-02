@@ -52,7 +52,7 @@ int main(int argc, char** argv)
       {0.0,  1e-3, 0.0,  0.0 },  //   X, Y  positions -> ~no prior information (1e-7, near-singular).
       {0.0,  0.0,  1e-7, 0.0 },  //   VX, VY velocities -> weak prior (1e-3, std ~30 m/s): the initial
       {0.0,  0.0,  0.0,  1e-3}   //   velocity is unknown but bounded to a plausible range, which bounds
-  });                           //   the startup transient symmetrically on both axes without seeding a value.
+  }).value();                   //   the startup transient symmetrically on both axes without seeding a value.
 
   // Create ego motion with zero motion (ego vehicle is not moving)
   // This is the scenario where ego vehicle is stationary
@@ -97,7 +97,7 @@ int main(int argc, char** argv)
   const PositionObservationType::MeasurementCov R = PositionObservationType::MeasurementCovFromList({
     {measStd * measStd, static_cast<value_type>(0.0)},
     {static_cast<value_type>(0.0), measStd * measStd}
-  });
+  }).value();
   // clang-format on
 
   // Fixed-seed RNG so the example produces reproducible output run to run.
@@ -183,7 +183,8 @@ int main(int argc, char** argv)
     gtY += gtVy * dt;
     const value_type              zx = gtX + measNoise(rng);
     const value_type              zy = gtY + measNoise(rng);
-    const PositionObservationType obs{PositionObservationType::MeasurementVec::FromList({zx, zy}), R};
+    const PositionObservationType obs =
+        PositionObservationType::TryCreate(PositionObservationType::MeasurementVec::FromList({zx, zy}), R).value();
 
     if (useKalman)
     {

@@ -58,23 +58,48 @@ public:
   auto operator=(RangeObservationModel&&) noexcept -> RangeObservationModel& = default;
   virtual ~RangeObservationModel() TEST_REMOVE_FINAL                         = default;
 
-  /// \brief Construct a new RangeObservationModel given the measurement and its covariance
+  /// \brief Construct a new RangeObservationModel with a validated covariance
+  ///
+  /// The release-safe, mandatory gate to the protected ctor below: validates cov before
+  /// construction instead of relying on a debug-only precondition check. Defined here (not on
+  /// the CRTP base) because only RangeObservationModel's own members can reach its own
+  /// protected ctor without a friend declaration, which AUTOSAR A11-3-1 prohibits.
+  ///
   /// \param[in] vec  Measurement vector z = [range]'
   /// \param[in] cov  Measurement covariance R
-  explicit RangeObservationModel(const MeasurementVec& vec, const MeasurementCov& cov)
-      : BaseExtendedObservationModel{vec, cov}
+  /// \return tl::expected containing the RangeObservationModel instance on success, or
+  ///         Errors::matrix_not_positive_definite if cov is not positive definite
+  static auto TryCreate(const MeasurementVec& vec, const MeasurementCov& cov) -> tl::expected<RangeObservationModel, math::Errors>
   {
+    if (!cov.isPositiveDefinite())
+    {
+      return tl::unexpected<math::Errors>{math::Errors::matrix_not_positive_definite};
+    }
+    return RangeObservationModel{vec, cov};
   }
 
-  /// \brief Construct a new RangeObservationModel given the measurement, its covariance and a sensor mounting pose
+  /// \brief Construct a new RangeObservationModel with a validated covariance and a sensor mounting pose
+  ///
+  /// The release-safe, mandatory gate to the protected ctor below: validates cov before
+  /// construction instead of relying on a debug-only precondition check. Defined here (not on
+  /// the CRTP base) because only RangeObservationModel's own members can reach its own
+  /// protected ctor without a friend declaration, which AUTOSAR A11-3-1 prohibits.
+  ///
   /// \param[in] vec  Measurement vector z = [range]'
   /// \param[in] cov  Measurement covariance R
   /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
-  explicit RangeObservationModel(const MeasurementVec&                                    vec,
-                                 const MeasurementCov&                                    cov,
-                                 const typename BaseExtendedObservationModel::SensorPose& pose)
-      : BaseExtendedObservationModel{vec, cov, pose}
+  /// \return tl::expected containing the RangeObservationModel instance on success, or
+  ///         Errors::matrix_not_positive_definite if cov is not positive definite
+  static auto TryCreate(const MeasurementVec&                                    vec,
+                        const MeasurementCov&                                    cov,
+                        const typename BaseExtendedObservationModel::SensorPose& pose)
+      -> tl::expected<RangeObservationModel, math::Errors>
   {
+    if (!cov.isPositiveDefinite())
+    {
+      return tl::unexpected<math::Errors>{math::Errors::matrix_not_positive_definite};
+    }
+    return RangeObservationModel{vec, cov, pose};
   }
 
   /// \brief Predict the measurement h(x) = sqrt(x^2+y^2) for the given sensor-frame state
@@ -115,6 +140,36 @@ public:
     jacobian.setZeros();
     jacobian.at_unsafe(MEAS_RANGE, StateDef_::X) = x / range;
     jacobian.at_unsafe(MEAS_RANGE, StateDef_::Y) = y / range;
+  }
+
+  // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround to keep following idententation
+  // clang-format on
+
+  /// \brief Construct a new RangeObservationModel given the measurement and its covariance
+  ///
+  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  ///
+  /// \param[in] vec  Measurement vector z = [range]'
+  /// \param[in] cov  Measurement covariance R
+  explicit RangeObservationModel(const MeasurementVec& vec, const MeasurementCov& cov)
+      : BaseExtendedObservationModel{vec, cov}
+  {
+  }
+
+  /// \brief Construct a new RangeObservationModel given the measurement, its covariance and a sensor mounting pose
+  ///
+  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  ///
+  /// \param[in] vec  Measurement vector z = [range]'
+  /// \param[in] cov  Measurement covariance R
+  /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
+  explicit RangeObservationModel(const MeasurementVec&                                    vec,
+                                 const MeasurementCov&                                    cov,
+                                 const typename BaseExtendedObservationModel::SensorPose& pose)
+      : BaseExtendedObservationModel{vec, cov, pose}
+  {
   }
 };
 

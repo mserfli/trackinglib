@@ -81,8 +81,10 @@ public:
 
   /// \brief Create measurement covariance from initializer list
   /// \param[in] list  Nested initializer list with covariance values
-  /// \return MeasurementCov
-  static auto MeasurementCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list) -> MeasurementCov
+  /// \return tl::expected containing MeasurementCov on success, or Errors::matrix_not_positive_definite
+  ///         if the list cannot be factored into a valid covariance (factored policy only)
+  static auto MeasurementCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list)
+      -> tl::expected<MeasurementCov, math::Errors>
   {
     if constexpr (CovarianceMatrixPolicy::is_factored)
     {
@@ -110,27 +112,44 @@ public:
   /// \brief Create complete ObservationModel from initializer lists
   /// \param[in] vecList  Initializer list for the measurement vector
   /// \param[in] covList  Nested initializer list for the measurement covariance matrix
-  /// \return ObservationModel_ instance
+  /// \return tl::expected containing the ObservationModel_ instance on success, or
+  ///         Errors::matrix_not_positive_definite if covList cannot be factored into a valid covariance
   static auto FromLists(const std::initializer_list<value_type>&                        vecList,
-                        const std::initializer_list<std::initializer_list<value_type>>& covList) -> ObservationModel_
+                        const std::initializer_list<std::initializer_list<value_type>>& covList)
+      -> tl::expected<ObservationModel_, math::Errors>
   {
-    auto vec = MeasurementVecFromList(vecList);
-    auto cov = MeasurementCovFromList(covList);
-    return ObservationModel_{vec, cov};
+    auto       vec = MeasurementVecFromList(vecList);
+    const auto cov = MeasurementCovFromList(covList);
+    if (!cov.has_value())
+    {
+      return tl::unexpected<math::Errors>{cov.error()};
+    }
+    // ObservationModel_::TryCreate (not the ctor directly): a CRTP base has no access to its
+    // derived class's protected ctor without a friend declaration, which AUTOSAR A11-3-1
+    // prohibits. TryCreate is a member of ObservationModel_ itself, so it can reach its own
+    // protected ctor.
+    return ObservationModel_::TryCreate(vec, cov.value());
   }
 
   /// \brief Create complete ObservationModel from initializer lists and a sensor mounting pose
   /// \param[in] vecList  Initializer list for the measurement vector
   /// \param[in] covList  Nested initializer list for the measurement covariance matrix
   /// \param[in] pose     Static SE(2) sensor mounting pose relative to the tracking frame
-  /// \return ObservationModel_ instance
+  /// \return tl::expected containing the ObservationModel_ instance on success, or
+  ///         Errors::matrix_not_positive_definite if covList cannot be factored into a valid covariance
   static auto FromLists(const std::initializer_list<value_type>&                        vecList,
                         const std::initializer_list<std::initializer_list<value_type>>& covList,
-                        const SensorPose&                                               pose) -> ObservationModel_
+                        const SensorPose& pose) -> tl::expected<ObservationModel_, math::Errors>
   {
-    auto vec = MeasurementVecFromList(vecList);
-    auto cov = MeasurementCovFromList(covList);
-    return ObservationModel_{vec, cov, pose};
+    auto       vec = MeasurementVecFromList(vecList);
+    const auto cov = MeasurementCovFromList(covList);
+    if (!cov.has_value())
+    {
+      return tl::unexpected<math::Errors>{cov.error()};
+    }
+    // ObservationModel_::TryCreate (not the ctor directly): see the rationale in the other
+    // FromLists() overload above.
+    return ObservationModel_::TryCreate(vec, cov.value(), pose);
   }
 
   /// \brief Read access to the measurement dimension
@@ -230,7 +249,7 @@ TEST_REMOVE_PROTECTED:
       , BaseStateMem{vec, cov}
       , _sensorPose{pose}
   {
-    assert(cov.determinant() > 0);
+    assert(cov.isPositiveDefinite());
   }
 
 private:

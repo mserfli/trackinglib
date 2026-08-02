@@ -69,7 +69,7 @@ auto makePrior() -> MM_
     {0.5, 1.0, 0.0, 0.1},
     {0.2, 0.0, 2.0, 0.3},
     {0.0, 0.1, 0.3, 0.5}
-  });
+  }).value();
   // clang-format on
 }
 
@@ -81,7 +81,7 @@ auto makeRangeBearingObs() -> RbModel_
   return RbModel_::FromLists({11.3, 0.50}, {
     {0.04,   0.0},
     {0.0, 0.0025}
-  });
+  }).value();
   // clang-format on
 }
 
@@ -212,13 +212,13 @@ TEST(MeasurementUpdateNonlinear, update_BearingWrapAcrossPi__CorrectionTakesShor
     {0.0, 1.0, 0.0, 0.0},
     {0.0, 0.0, 1.0, 0.0},
     {0.0, 0.0, 0.0, 1.0}
-  });
+  }).value();
   // measured bearing just across the +-pi seam: the wrapped innovation is +0.08, the unwrapped
   // difference would be -6.20 and would yield a catastrophic correction
   const auto obs = RbFull::FromLists({10.0125, -pi + 0.03}, {
     {0.01,   0.0},
     {0.0, 0.0004}
-  });
+  }).value();
   // clang-format on
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -242,8 +242,8 @@ TEST(MeasurementUpdateNonlinear, update_ComposedRangeBearingPlusPosition_Factore
   // clang-format off
   const auto rbFull  = makeRangeBearingObs<RbFull>();
   const auto rbFact  = makeRangeBearingObs<RbFact>();
-  const auto posFull = PosFull::FromLists({10.4, 5.2}, {{1.0, 0.0}, {0.0, 0.5}});
-  const auto posFact = PosFact::FromLists({10.4, 5.2}, {{1.0, 0.0}, {0.0, 0.5}});
+  const auto posFull = PosFull::FromLists({10.4, 5.2}, {{1.0, 0.0}, {0.0, 0.5}}).value();
+  const auto posFact = PosFact::FromLists({10.4, 5.2}, {{1.0, 0.0}, {0.0, 0.5}}).value();
   // clang-format on
   const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
   const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
@@ -261,8 +261,8 @@ TEST(MeasurementUpdateNonlinear, update_ComposedRangeBearing_MatchesJointRangeBe
   auto             mmBlock      = makePrior<MMFull>();
   auto             mmSequential = makePrior<MMFull>();
   const auto       joint        = makeRangeBearingObs<RbFull>();
-  const auto       range        = RangeFull::FromLists({11.3}, {{0.04}});
-  const auto       bearing      = BearingFull::FromLists({0.50}, {{0.0025}});
+  const auto       range        = RangeFull::FromLists({11.3}, {{0.04}}).value();
+  const auto       bearing      = BearingFull::FromLists({0.50}, {{0.0025}}).value();
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -297,12 +297,12 @@ TEST(MeasurementUpdateNonlinear, predictUpdateLoop_RangeBearingDoppler__Converge
     {  0.0, 10.0,   0.0,  0.0},
     {  0.0,  0.0, 100.0,  0.0},
     {  0.0,  0.0,   0.0, 10.0}
-  });
+  }).value();
   const auto R = RbdFull::MeasurementCovFromList({
     {0.04,   0.0,  0.0},
     {0.0, 0.0004,  0.0},
     {0.0,    0.0, 0.01}
-  });
+  }).value();
   // clang-format on
 
   const int steps = 60;
@@ -358,7 +358,7 @@ TEST(MeasurementUpdateNonlinear, predictUpdateLoop_DopplerImprovesVelocity__Smal
       {  0.0, 10.0,   0.0,  0.0},
       {  0.0,  0.0, 100.0,  0.0},
       {  0.0,  0.0,   0.0, 10.0}
-    });
+    }).value();
     // clang-format on
   };
   auto mmRb  = makeInitial();
@@ -368,12 +368,12 @@ TEST(MeasurementUpdateNonlinear, predictUpdateLoop_DopplerImprovesVelocity__Smal
   const auto Rrb = RbFull::MeasurementCovFromList({
     {0.04,   0.0},
     {0.0, 0.0004}
-  });
+  }).value();
   const auto Rrbd = RbdFull::MeasurementCovFromList({
     {0.04,   0.0,  0.0},
     {0.0, 0.0004,  0.0},
     {0.0,    0.0, 0.01}
-  });
+  }).value();
   // clang-format on
 
   const int steps = 60;

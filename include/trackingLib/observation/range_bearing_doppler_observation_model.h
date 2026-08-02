@@ -73,23 +73,49 @@ public:
   auto operator=(RangeBearingDopplerObservationModel&&) noexcept -> RangeBearingDopplerObservationModel& = default;
   virtual ~RangeBearingDopplerObservationModel() TEST_REMOVE_FINAL                                       = default;
 
-  /// \brief Construct a new RangeBearingDopplerObservationModel given the measurement and its covariance
+  /// \brief Construct a new RangeBearingDopplerObservationModel with a validated covariance
+  ///
+  /// The release-safe, mandatory gate to the protected ctor below: validates cov before
+  /// construction instead of relying on a debug-only precondition check. Defined here (not on
+  /// the CRTP base) because only RangeBearingDopplerObservationModel's own members can reach its
+  /// own protected ctor without a friend declaration, which AUTOSAR A11-3-1 prohibits.
+  ///
   /// \param[in] vec  Measurement vector z = [range, bearing, doppler]'
   /// \param[in] cov  Measurement covariance R
-  explicit RangeBearingDopplerObservationModel(const MeasurementVec& vec, const MeasurementCov& cov)
-      : BaseExtendedObservationModel{vec, cov}
+  /// \return tl::expected containing the RangeBearingDopplerObservationModel instance on success, or
+  ///         Errors::matrix_not_positive_definite if cov is not positive definite
+  static auto TryCreate(const MeasurementVec& vec,
+                        const MeasurementCov& cov) -> tl::expected<RangeBearingDopplerObservationModel, math::Errors>
   {
+    if (!cov.isPositiveDefinite())
+    {
+      return tl::unexpected<math::Errors>{math::Errors::matrix_not_positive_definite};
+    }
+    return RangeBearingDopplerObservationModel{vec, cov};
   }
 
-  /// \brief Construct a new RangeBearingDopplerObservationModel given the measurement, its covariance and a sensor mounting pose
+  /// \brief Construct a new RangeBearingDopplerObservationModel with a validated covariance and a sensor mounting pose
+  ///
+  /// The release-safe, mandatory gate to the protected ctor below: validates cov before
+  /// construction instead of relying on a debug-only precondition check. Defined here (not on
+  /// the CRTP base) because only RangeBearingDopplerObservationModel's own members can reach its
+  /// own protected ctor without a friend declaration, which AUTOSAR A11-3-1 prohibits.
+  ///
   /// \param[in] vec  Measurement vector z = [range, bearing, doppler]'
   /// \param[in] cov  Measurement covariance R
   /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
-  explicit RangeBearingDopplerObservationModel(const MeasurementVec&                                    vec,
-                                               const MeasurementCov&                                    cov,
-                                               const typename BaseExtendedObservationModel::SensorPose& pose)
-      : BaseExtendedObservationModel{vec, cov, pose}
+  /// \return tl::expected containing the RangeBearingDopplerObservationModel instance on success, or
+  ///         Errors::matrix_not_positive_definite if cov is not positive definite
+  static auto TryCreate(const MeasurementVec&                                    vec,
+                        const MeasurementCov&                                    cov,
+                        const typename BaseExtendedObservationModel::SensorPose& pose)
+      -> tl::expected<RangeBearingDopplerObservationModel, math::Errors>
   {
+    if (!cov.isPositiveDefinite())
+    {
+      return tl::unexpected<math::Errors>{math::Errors::matrix_not_positive_definite};
+    }
+    return RangeBearingDopplerObservationModel{vec, cov, pose};
   }
 
   /// \brief Predict the measurement h(x) = [range, bearing, doppler]' for the given sensor-frame state
@@ -181,6 +207,36 @@ public:
     value_type&    bearing = innovation.at_unsafe(MEAS_BEARING);
     bearing                = std::atan2(std::sin(bearing), std::cos(bearing));
     return innovation;
+  }
+
+  // clang-format off
+TEST_REMOVE_PROTECTED:
+  ; // workaround to keep following idententation
+  // clang-format on
+
+  /// \brief Construct a new RangeBearingDopplerObservationModel given the measurement and its covariance
+  ///
+  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  ///
+  /// \param[in] vec  Measurement vector z = [range, bearing, doppler]'
+  /// \param[in] cov  Measurement covariance R
+  explicit RangeBearingDopplerObservationModel(const MeasurementVec& vec, const MeasurementCov& cov)
+      : BaseExtendedObservationModel{vec, cov}
+  {
+  }
+
+  /// \brief Construct a new RangeBearingDopplerObservationModel given the measurement, its covariance and a sensor mounting pose
+  ///
+  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  ///
+  /// \param[in] vec  Measurement vector z = [range, bearing, doppler]'
+  /// \param[in] cov  Measurement covariance R
+  /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
+  explicit RangeBearingDopplerObservationModel(const MeasurementVec&                                    vec,
+                                               const MeasurementCov&                                    cov,
+                                               const typename BaseExtendedObservationModel::SensorPose& pose)
+      : BaseExtendedObservationModel{vec, cov, pose}
+  {
   }
 };
 

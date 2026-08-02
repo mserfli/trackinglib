@@ -88,7 +88,7 @@ TEST(VelocityObservationModel, ctor_FromLists__Success) // NOLINT
   const auto obs = VelModel::FromLists({2.1, 0.9}, {
     {0.2, 0.0},
     {0.0, 0.3}
-  });
+  }).value();
   // clang-format on
 
   EXPECT_DOUBLE_EQ(obs[VelModel::MEAS_VX], 2.1);
@@ -99,7 +99,7 @@ TEST(VelocityObservationModel, ctor_FromLists__Success) // NOLINT
 
 TEST(VelocityObservationModel, predictMeasurement__ReturnsVelocity) // NOLINT
 {
-  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
   const auto state     = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0}); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -111,7 +111,7 @@ TEST(VelocityObservationModel, predictMeasurement__ReturnsVelocity) // NOLINT
 
 TEST(VelocityObservationModel, computeJacobian__MatchesFiniteDifference) // NOLINT
 {
-  const auto obs   = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  const auto obs   = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
   const auto state = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-9);
@@ -121,7 +121,7 @@ TEST(VelocityObservationModel, predictMeasurement__AppliesSensorMountingPose) //
 {
   // static mount: translation has no lever-arm effect, only the yaw rotates velocity
   const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
   const auto state     = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0}); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -135,7 +135,7 @@ TEST(VelocityObservationModel, predictMeasurement__AppliesSensorMountingPose) //
 TEST(VelocityObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
 {
   const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs   = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  const auto obs   = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
   const auto state = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
@@ -155,7 +155,7 @@ using DopplerModel = tracking::observation::RangeBearingDopplerObservationModel<
 TEST(VelocityObservationModel, predictMeasurement_MovingTurningPlatform__SubtractsEgoLeverArmVelocity) // NOLINT
 {
   const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.5, 0.5, std::acos(-1.0) / 6.0);
-  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
   const auto state     = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
   const auto egoMotion = makeMovingTurningEgoMotion<FullPolicy>();
 
@@ -175,8 +175,8 @@ TEST(VelocityObservationModel, predictMeasurement_MovingTurningPlatform__Subtrac
 TEST(VelocityObservationModel, predictMeasurement_DopplerVsVelocity_EgoHandling__BothRespond) // NOLINT
 {
   const auto pose       = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.5, 0.5, std::acos(-1.0) / 6.0);
-  const auto velObs     = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
-  const auto dopplerObs = DopplerModel::FromLists({0, 0, 0}, {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}, pose);
+  const auto velObs     = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
+  const auto dopplerObs = DopplerModel::FromLists({0, 0, 0}, {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}, pose).value();
   const auto state      = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
   const auto movingEgo  = makeMovingTurningEgoMotion<FullPolicy>();
   const auto noEgo      = makeNoEgoMotion<FullPolicy>();

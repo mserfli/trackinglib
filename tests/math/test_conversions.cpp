@@ -188,8 +188,29 @@ TEST(GTestConversionsSpecial, CovarianceMatrixFactoredFromList__Success) // NOLI
   });
   // clang-format on
 
-  EXPECT_FLOAT_EQ(result.at_unsafe(0, 0), 1.5F);
-  EXPECT_FLOAT_EQ(result.at_unsafe(0, 1), 1.0F);
-  EXPECT_FLOAT_EQ(result.at_unsafe(1, 1), 2.0F);
-  EXPECT_FLOAT_EQ(result.at_unsafe(2, 2), 3.0F);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_FLOAT_EQ(result.value().at_unsafe(0, 0), 1.5F);
+  EXPECT_FLOAT_EQ(result.value().at_unsafe(0, 1), 1.0F);
+  EXPECT_FLOAT_EQ(result.value().at_unsafe(1, 1), 2.0F);
+  EXPECT_FLOAT_EQ(result.value().at_unsafe(2, 2), 3.0F);
+}
+
+TEST(GTestConversionsSpecial, CovarianceMatrixFactoredFromCovarianceMatrixFull_NonSymmetric__ExpectError) // NOLINT
+{
+  // CovarianceMatrixFactoredFromList can't drive this path with a literal list: compose_type::FromList
+  // (a CovarianceMatrixFull) asserts isSymmetric() at construction time, aborting before the conversion
+  // is ever reached. Exercise the conversion itself directly on a compose_type value whose symmetry is
+  // broken post-construction (at_unsafe mutation isn't invariant-checked), which is the only way to reach
+  // the real (non-assert) `if (isSymmetric())` guard inside decomposeUDUT().
+  auto broken            = CovarianceMatrixFull<float32, 2>::FromList({
+      {1.0F, 2.0F},
+      {2.0F, 1.0F},
+  });
+  broken.at_unsafe(0, 1) = 3.0F;
+
+  // call UUT
+  const auto result = conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull<float32, 2>(broken);
+
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), Errors::matrix_not_symmetric);
 }

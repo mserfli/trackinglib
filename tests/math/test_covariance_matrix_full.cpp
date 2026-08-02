@@ -368,13 +368,12 @@ TEST(CovarianceMatrixFull, conversion_to_factored__Success) // NOLINT
 
   // Create nested initializer list from full matrix data for conversion
   std::initializer_list<std::initializer_list<float32>> covList = {
-    {fullCov.at_unsafe(0, 0), fullCov.at_unsafe(0, 1), fullCov.at_unsafe(0, 2)},
-    {fullCov.at_unsafe(1, 0), fullCov.at_unsafe(1, 1), fullCov.at_unsafe(1, 2)},
-    {fullCov.at_unsafe(2, 0), fullCov.at_unsafe(2, 1), fullCov.at_unsafe(2, 2)}
-  };
+      {fullCov.at_unsafe(0, 0), fullCov.at_unsafe(0, 1), fullCov.at_unsafe(0, 2)},
+      {fullCov.at_unsafe(1, 0), fullCov.at_unsafe(1, 1), fullCov.at_unsafe(1, 2)},
+      {fullCov.at_unsafe(2, 0), fullCov.at_unsafe(2, 1), fullCov.at_unsafe(2, 2)}};
 
   // Convert to factored form using conversion function
-  auto factoredCov = conversions::CovarianceMatrixFactoredFromList<float32, 3>(covList);
+  auto factoredCov = conversions::CovarianceMatrixFactoredFromList<float32, 3>(covList).value();
 
   // Convert back to full form
   auto convertedFull = factoredCov();
@@ -406,7 +405,7 @@ TEST(CovarianceMatrixFull, conversion_roundtrip__Success) // NOLINT
       {original.at_unsafe(3, 0), original.at_unsafe(3, 1), original.at_unsafe(3, 2), original.at_unsafe(3, 3)}};
 
   // Convert to factored and back
-  auto factored  = conversions::CovarianceMatrixFactoredFromList<float64, 4>(covList);
+  auto factored  = conversions::CovarianceMatrixFactoredFromList<float64, 4>(covList).value();
   auto roundtrip = factored();
 
   // Verify properties are preserved
