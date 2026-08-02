@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 20:41:38</td>
+            <td class="headerValue">2026-08-02 21:36:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">83.3&nbsp;%</td>
@@ -90,7 +90,7 @@
 <span id="L20"><span class="lineNum">      20</span>              : </span>
 <span id="L21"><span class="lineNum">      21</span>              : template &lt;typename CovarianceMatrixPolicy_&gt;</span>
 <span id="L22"><span class="lineNum">      22</span>              : template &lt;sint32 DimX_, sint32 DimQ_&gt;</span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC tlaBgGNC">          54 : void InformationFilter&lt;CovarianceMatrixPolicy_&gt;::predictCovariance(CovarianceMatrixType&lt;DimX_&gt;&amp;                   Y,</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC tlaBgGNC">          55 : void InformationFilter&lt;CovarianceMatrixPolicy_&gt;::predictCovariance(CovarianceMatrixType&lt;DimX_&gt;&amp;                   Y,</span></span>
 <span id="L24"><span class="lineNum">      24</span>              :                                                                    const math::SquareMatrix&lt;value_type, DimX_&gt;&amp;   A,</span>
 <span id="L25"><span class="lineNum">      25</span>              :                                                                    const math::Matrix&lt;value_type, DimX_, DimQ_&gt;&amp;  G,</span>
 <span id="L26"><span class="lineNum">      26</span>              :                                                                    const math::DiagonalMatrix&lt;value_type, DimQ_&gt;&amp; Q)</span>
@@ -133,23 +133,23 @@
 <span id="L63"><span class="lineNum">      63</span>              :     // GA Terejanu</span>
 <span id="L64"><span class="lineNum">      64</span>              :     // University at Buffalo, Department of Computer Science and Engineering, NY 14260</span>
 <span id="L65"><span class="lineNum">      65</span>              :     // https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=Z7LP12kAAAAJ&amp;citation_for_view=Z7LP12kAAAAJ:_FxGoFyzp5QC</span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          28 :     auto M{Y};</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          29 :     auto M{Y};</span></span>
 <span id="L67"><span class="lineNum">      67</span>              :     // calc M = invA'*Y*invA as Y is the inverse of P</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">          28 :     const math::SquareMatrix&lt;value_type, DimX_, false&gt; invA = A.inverse();</span></span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          28 :     M.apaT(math::SquareMatrix&lt;value_type, DimX_, true&gt;{invA.transpose()});</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">          29 :     const math::SquareMatrix&lt;value_type, DimX_, false&gt; invA = A.inverse();</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          29 :     M.apaT(math::SquareMatrix&lt;value_type, DimX_, true&gt;{invA.transpose()});</span></span>
 <span id="L70"><span class="lineNum">      70</span>              :     // solve now H * Y = M with H = (I + M * G*Q*G') using QR as H is not symmetric</span>
-<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">          28 :     const auto H =</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">          29 :     const auto H =</span></span>
 <span id="L72"><span class="lineNum">      72</span>              :         math::SquareMatrix&lt;value_type, DimX_&gt;(math::SquareMatrix&lt;value_type, DimX_&gt;::Identity() + M * (G * Q * G.transpose()));</span>
-<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">          28 :     math::SquareMatrix cov = H.qrSolve(std::move(M));</span></span>
-<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">          28 :     cov.symmetrize();</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">          29 :     math::SquareMatrix cov = H.qrSolve(std::move(M));</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">          29 :     cov.symmetrize();</span></span>
 <span id="L75"><span class="lineNum">      75</span>              : </span>
 <span id="L76"><span class="lineNum">      76</span>              :     // prevent destroying the Information matrix, e.g. removing information from a zero Y matrix (no information)</span>
-<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">          28 :     if (cov.isPositiveSemiDefinite())</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">          29 :     if (cov.isPositiveSemiDefinite())</span></span>
 <span id="L78"><span class="lineNum">      78</span>              :     {</span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">          28 :       Y = math::CovarianceMatrixFull&lt;value_type, DimX_&gt;{std::move(cov)};</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">          29 :       Y = math::CovarianceMatrixFull&lt;value_type, DimX_&gt;{std::move(cov)};</span></span>
 <span id="L80"><span class="lineNum">      80</span>              :     }</span>
 <span id="L81"><span class="lineNum">      81</span>              :   }</span>
-<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">          54 : }</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">          55 : }</span></span>
 <span id="L83"><span class="lineNum">      83</span>              : </span>
 <span id="L84"><span class="lineNum">      84</span>              : template &lt;typename CovarianceMatrixPolicy_&gt;</span>
 <span id="L85"><span class="lineNum">      85</span>              : template &lt;typename UpdateMode_, sint32 DimX_, sint32 DimZ_&gt;</span>

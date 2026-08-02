@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 20:41:38</td>
+            <td class="headerValue">2026-08-02 21:36:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">84.2&nbsp;%</td>
@@ -83,10 +83,10 @@
 <span id="L13"><span class="lineNum">      13</span>              : {</span>
 <span id="L14"><span class="lineNum">      14</span>              : </span>
 <span id="L15"><span class="lineNum">      15</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">          84 : auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::FromDiagonal(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; diag) -&gt; CovarianceMatrixFull</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">          85 : auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::FromDiagonal(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; diag) -&gt; CovarianceMatrixFull</span></span>
 <span id="L17"><span class="lineNum">      17</span>              : {</span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">          84 :   assert(diag.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">          84 :   return CovarianceMatrixFull{diag};</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">          85 :   assert(diag.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">          85 :   return CovarianceMatrixFull{diag};</span></span>
 <span id="L20"><span class="lineNum">      20</span>              : }</span>
 <span id="L21"><span class="lineNum">      21</span>              : </span>
 <span id="L22"><span class="lineNum">      22</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
@@ -110,29 +110,29 @@
 <span id="L40"><span class="lineNum">      40</span>              : </span>
 <span id="L41"><span class="lineNum">      41</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
 <span id="L42"><span class="lineNum">      42</span>              : template &lt;bool IsRowMajor_&gt;</span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         617 : inline void CovarianceMatrixFull&lt;ValueType_, Size_&gt;::apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A)</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         619 : inline void CovarianceMatrixFull&lt;ValueType_, Size_&gt;::apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A)</span></span>
 <span id="L44"><span class="lineNum">      44</span>              : {</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         617 :   assert(this-&gt;isSymmetric() &amp;&amp; &quot;Covariance currently not symmetric&quot;);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         619 :   assert(this-&gt;isSymmetric() &amp;&amp; &quot;Covariance currently not symmetric&quot;);</span></span>
 <span id="L46"><span class="lineNum">      46</span>              :   // Stage 1: AP = A*P in full - every row of AP is needed to compute any output pair below - O(n^3)</span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         617 :   const auto AP = A * (*this);</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         619 :   const auto AP = A * (*this);</span></span>
 <span id="L48"><span class="lineNum">      48</span>              : </span>
 <span id="L49"><span class="lineNum">      49</span>              :   // Stage 2: only the upper triangle of AP*A^T is needed, mirrored into the lower triangle - O(n^3/2)</span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         617 :   BaseSquareMatrix cov{};</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        3043 :   for (sint32 i = 0; i &lt; Size_; ++i)</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         619 :   BaseSquareMatrix cov{};</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        3052 :   for (sint32 i = 0; i &lt; Size_; ++i)</span></span>
 <span id="L52"><span class="lineNum">      52</span>              :   {</span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        8491 :     for (sint32 j = i; j &lt; Size_; ++j)</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        8514 :     for (sint32 j = i; j &lt; Size_; ++j)</span></span>
 <span id="L54"><span class="lineNum">      54</span>              :     {</span>
 <span id="L55"><span class="lineNum">      55</span>              :       ValueType_ element = static_cast&lt;ValueType_&gt;(0);</span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       30703 :       for (sint32 k = 0; k &lt; Size_; ++k)</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       30777 :       for (sint32 k = 0; k &lt; Size_; ++k)</span></span>
 <span id="L57"><span class="lineNum">      57</span>              :       {</span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       24638 :         element += AP.at_unsafe(i, k) * A.at_unsafe(j, k);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       24696 :         element += AP.at_unsafe(i, k) * A.at_unsafe(j, k);</span></span>
 <span id="L59"><span class="lineNum">      59</span>              :       }</span>
 <span id="L60"><span class="lineNum">      60</span>              :       // construct symmetric covariance matrix by filling both upper and lower triangle</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        6065 :       cov.at_unsafe(i, j) = element;</span></span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        6065 :       cov.at_unsafe(j, i) = element;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        6081 :       cov.at_unsafe(i, j) = element;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        6081 :       cov.at_unsafe(j, i) = element;</span></span>
 <span id="L63"><span class="lineNum">      63</span>              :     }</span>
 <span id="L64"><span class="lineNum">      64</span>              :   }</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         617 :   *this = CovarianceMatrixFull{std::move(cov)};</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         619 :   *this = CovarianceMatrixFull{std::move(cov)};</span></span>
 <span id="L66"><span class="lineNum">      66</span>              : }</span>
 <span id="L67"><span class="lineNum">      67</span>              : </span>
 <span id="L68"><span class="lineNum">      68</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>

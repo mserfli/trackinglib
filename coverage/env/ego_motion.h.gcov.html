@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 20:41:38</td>
+            <td class="headerValue">2026-08-02 21:36:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">75.0&nbsp;%</td>
@@ -185,7 +185,7 @@
 <span id="L115"><span class="lineNum">     115</span>              :   ///</span>
 <span id="L116"><span class="lineNum">     116</span>              :   /// Contains displacement vector, covariance, and precomputed trigonometric values</span>
 <span id="L117"><span class="lineNum">     117</span>              :   /// for efficient compensation calculations</span>
-<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC tlaBgGNC">         118 :   struct Displacement</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC tlaBgGNC">         119 :   struct Displacement</span></span>
 <span id="L119"><span class="lineNum">     119</span>              :   {</span>
 <span id="L120"><span class="lineNum">     120</span>              :     DisplacementVec vec{};                            ///&lt; Displacement vector [Δx, Δy, Δψ]</span>
 <span id="L121"><span class="lineNum">     121</span>              :     DisplacementCov cov{DisplacementCov::Identity()}; ///&lt; Displacement covariance matrix</span>
@@ -199,7 +199,7 @@
 <span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">           4 :   EgoMotion(EgoMotion&amp;&amp;) noexcept                    = default;</span></span>
 <span id="L130"><span class="lineNum">     130</span>              :   auto operator=(const EgoMotion&amp;) -&gt; EgoMotion&amp;     = default;</span>
 <span id="L131"><span class="lineNum">     131</span>              :   auto operator=(EgoMotion&amp;&amp;) noexcept -&gt; EgoMotion&amp; = default;</span>
-<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">         109 :   virtual ~EgoMotion()                               = default;</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">         110 :   virtual ~EgoMotion()                               = default;</span></span>
 <span id="L133"><span class="lineNum">     133</span>              : </span>
 <span id="L134"><span class="lineNum">     134</span>              :   /// \brief Construct a validated EgoMotion</span>
 <span id="L135"><span class="lineNum">     135</span>              :   ///</span>
@@ -293,12 +293,12 @@
 <span id="L223"><span class="lineNum">     223</span>              :   /// \param[in] motion Motion parameters; sv, sa, and sw must all be strictly positive</span>
 <span id="L224"><span class="lineNum">     224</span>              :   /// \param[in] geometry Vehicle geometry</span>
 <span id="L225"><span class="lineNum">     225</span>              :   /// \param[in] dt Time interval</span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         120 :   EgoMotion(const InertialMotion&amp; motion, const Geometry&amp; geometry, const value_type dt)</span></span>
-<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">         120 :       : _motion(motion)</span></span>
-<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">         120 :       , _geometry(geometry)</span></span>
-<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">         120 :       , _dt(dt)</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         121 :   EgoMotion(const InertialMotion&amp; motion, const Geometry&amp; geometry, const value_type dt)</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">         121 :       : _motion(motion)</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">         121 :       , _geometry(geometry)</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">         121 :       , _dt(dt)</span></span>
 <span id="L230"><span class="lineNum">     230</span>              :   {</span>
-<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">         120 :     calcDisplacement();</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">         121 :     calcDisplacement();</span></span>
 <span id="L232"><span class="lineNum">     232</span>              :   }</span>
 <span id="L233"><span class="lineNum">     233</span>              : </span>
 <span id="L234"><span class="lineNum">     234</span>              :   // clang-format off</span>
