@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 19:05:50</td>
+            <td class="headerValue">2026-08-02 20:21:56</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">97.8&nbsp;%</td>
@@ -89,33 +89,33 @@
 <span id="L19"><span class="lineNum">      19</span>              : {</span>
 <span id="L20"><span class="lineNum">      20</span>              : </span>
 <span id="L21"><span class="lineNum">      21</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC tlaBgGNC">        1924 : SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::SquareMatrix(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; other)</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC tlaBgGNC">        1929 : SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::SquareMatrix(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; other)</span></span>
 <span id="L23"><span class="lineNum">      23</span>              : {</span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">        8906 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">        8921 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
 <span id="L25"><span class="lineNum">      25</span>              :   {</span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">        6982 :     this-&gt;at_unsafe(idx, idx) = other.at_unsafe(idx);</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">        6992 :     this-&gt;at_unsafe(idx, idx) = other.at_unsafe(idx);</span></span>
 <span id="L27"><span class="lineNum">      27</span>              :   }</span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">        1924 : }</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">        1929 : }</span></span>
 <span id="L29"><span class="lineNum">      29</span>              : </span>
 <span id="L30"><span class="lineNum">      30</span>              : </span>
 <span id="L31"><span class="lineNum">      31</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">         473 : inline void SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::setIdentity()</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">         474 : inline void SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::setIdentity()</span></span>
 <span id="L33"><span class="lineNum">      33</span>              : {</span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">         473 :   *this = SquareMatrix{DiagonalMatrix&lt;ValueType_, Size_&gt;::Identity()};</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">         474 :   *this = SquareMatrix{DiagonalMatrix&lt;ValueType_, Size_&gt;::Identity()};</span></span>
 <span id="L35"><span class="lineNum">      35</span>              : }</span>
 <span id="L36"><span class="lineNum">      36</span>              : </span>
 <span id="L37"><span class="lineNum">      37</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        1371 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::Identity() -&gt; SquareMatrix</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        1375 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::Identity() -&gt; SquareMatrix</span></span>
 <span id="L39"><span class="lineNum">      39</span>              : {</span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        1371 :   return SquareMatrix{DiagonalMatrix&lt;ValueType_, Size_&gt;::Identity()};</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        1375 :   return SquareMatrix{DiagonalMatrix&lt;ValueType_, Size_&gt;::Identity()};</span></span>
 <span id="L41"><span class="lineNum">      41</span>              : }</span>
 <span id="L42"><span class="lineNum">      42</span>              : </span>
 <span id="L43"><span class="lineNum">      43</span>              : </span>
 <span id="L44"><span class="lineNum">      44</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         436 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::FromList(</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         438 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::FromList(</span></span>
 <span id="L46"><span class="lineNum">      46</span>              :     const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) -&gt; SquareMatrix</span>
 <span id="L47"><span class="lineNum">      47</span>              : {</span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         436 :   return SquareMatrix{BaseMatrix::FromList(list)};</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         438 :   return SquareMatrix{BaseMatrix::FromList(list)};</span></span>
 <span id="L49"><span class="lineNum">      49</span>              : }</span>
 <span id="L50"><span class="lineNum">      50</span>              : </span>
 <span id="L51"><span class="lineNum">      51</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
@@ -199,49 +199,49 @@
 <span id="L129"><span class="lineNum">     129</span>              : </span>
 <span id="L130"><span class="lineNum">     130</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
 <span id="L131"><span class="lineNum">     131</span>              : template &lt;sint32 Cols_, bool IsRowMajor2_&gt;</span>
-<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">         443 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::qrSolve(const Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt;&amp; b) const</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">         444 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::qrSolve(const Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt;&amp; b) const</span></span>
 <span id="L133"><span class="lineNum">     133</span>              :     -&gt; Matrix&lt;ValueType_, Size_, Cols_, !IsRowMajor_&gt;</span>
 <span id="L134"><span class="lineNum">     134</span>              : {</span>
-<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">         443 :   const auto [Q, R] = householderQR();</span></span>
-<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">         443 :   return R.solve(Q.transpose() * b);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">         444 :   const auto [Q, R] = householderQR();</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">         444 :   return R.solve(Q.transpose() * b);</span></span>
 <span id="L137"><span class="lineNum">     137</span>              : }</span>
 <span id="L138"><span class="lineNum">     138</span>              : </span>
 <span id="L139"><span class="lineNum">     139</span>              : </span>
 <span id="L140"><span class="lineNum">     140</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
-<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">         304 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::inverse() const -&gt; SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">         305 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::inverse() const -&gt; SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;</span></span>
 <span id="L142"><span class="lineNum">     142</span>              : {</span>
 <span id="L143"><span class="lineNum">     143</span>              :   // TODO(matthias): optimization - implement SPD detection and prefer Cholesky over QR for small sizes (Size_ &lt;= 10)</span>
 <span id="L144"><span class="lineNum">     144</span>              :   // saves time without complexity overhead; add in-place variant to avoid copies and improve cache efficiency</span>
-<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">         304 :   return qrSolve(SquareMatrix::Identity());</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">         305 :   return qrSolve(SquareMatrix::Identity());</span></span>
 <span id="L146"><span class="lineNum">     146</span>              : }</span>
 <span id="L147"><span class="lineNum">     147</span>              : </span>
 <span id="L148"><span class="lineNum">     148</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
-<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        1487 : inline void SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::symmetrize()</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        1489 : inline void SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::symmetrize()</span></span>
 <span id="L150"><span class="lineNum">     150</span>              : {</span>
 <span id="L151"><span class="lineNum">     151</span>              :   // keep diagonal elements unchanged, average upper and lower triangle elements to enforce symmetry</span>
-<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        6940 :   for (sint32 row = 0; row &lt; Size_; ++row)</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        6946 :   for (sint32 row = 0; row &lt; Size_; ++row)</span></span>
 <span id="L153"><span class="lineNum">     153</span>              :   {</span>
-<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       13686 :     for (sint32 col = row + 1; col &lt; Size_; ++col)</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       13692 :     for (sint32 col = row + 1; col &lt; Size_; ++col)</span></span>
 <span id="L155"><span class="lineNum">     155</span>              :     {</span>
-<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">        8233 :       const ValueType_ avg      = (this-&gt;at_unsafe(row, col) + this-&gt;at_unsafe(col, row)) * static_cast&lt;ValueType_&gt;(0.5);</span></span>
-<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">        8233 :       this-&gt;at_unsafe(row, col) = avg;</span></span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">        8233 :       this-&gt;at_unsafe(col, row) = avg;</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">        8235 :       const ValueType_ avg      = (this-&gt;at_unsafe(row, col) + this-&gt;at_unsafe(col, row)) * static_cast&lt;ValueType_&gt;(0.5);</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">        8235 :       this-&gt;at_unsafe(row, col) = avg;</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">        8235 :       this-&gt;at_unsafe(col, row) = avg;</span></span>
 <span id="L159"><span class="lineNum">     159</span>              :     }</span>
 <span id="L160"><span class="lineNum">     160</span>              :   }</span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        1487 : }</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        1489 : }</span></span>
 <span id="L162"><span class="lineNum">     162</span>              : </span>
 <span id="L163"><span class="lineNum">     163</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_&gt;</span>
-<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">        3302 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::isSymmetric(ValueType_ tolerance) const -&gt; bool</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">        3304 : inline auto SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;::isSymmetric(ValueType_ tolerance) const -&gt; bool</span></span>
 <span id="L165"><span class="lineNum">     165</span>              : {</span>
 <span id="L166"><span class="lineNum">     166</span>              :   // check all off diagonal elements</span>
 <span id="L167"><span class="lineNum">     167</span>              :   // TODO(matthias): optimization - use template-based loop unrolling for fixed small sizes (Size_ &lt;= 10)</span>
 <span id="L168"><span class="lineNum">     168</span>              :   // to reduce loop overhead; optimize cache access in matrix ops, prioritize simplicity since n is small</span>
-<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       15343 :   for (auto row = 0; row &lt; Size_; ++row)</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       15349 :   for (auto row = 0; row &lt; Size_; ++row)</span></span>
 <span id="L170"><span class="lineNum">     170</span>              :   {</span>
-<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       29833 :     for (auto col = row + 1; col &lt; Size_; ++col)</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       29839 :     for (auto col = row + 1; col &lt; Size_; ++col)</span></span>
 <span id="L172"><span class="lineNum">     172</span>              :     {</span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       17792 :       const auto absDiff = std::abs(this-&gt;at_unsafe(row, col) - this-&gt;at_unsafe(col, row));</span></span>
-<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       17792 :       if (absDiff &gt; tolerance)</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       17794 :       const auto absDiff = std::abs(this-&gt;at_unsafe(row, col) - this-&gt;at_unsafe(col, row));</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       17794 :       if (absDiff &gt; tolerance)</span></span>
 <span id="L175"><span class="lineNum">     175</span>              :       {</span>
 <span id="L176"><span class="lineNum">     176</span>              :         return false;</span>
 <span id="L177"><span class="lineNum">     177</span>              :       }</span>

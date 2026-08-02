@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 19:05:50</td>
+            <td class="headerValue">2026-08-02 20:21:56</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">83.3&nbsp;%</td>
@@ -87,7 +87,7 @@
 <span id="L17"><span class="lineNum">      17</span>              :                                                                       const value_type     dt,</span>
 <span id="L18"><span class="lineNum">      18</span>              :                                                                       const EgoMotionType&amp; egoMotion)</span>
 <span id="L19"><span class="lineNum">      19</span>              : {</span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">         323 :   assert(dt &gt;= static_cast&lt;value_type&gt;(0));</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">         323 :   assert(dt &gt;= static_cast&lt;value_type&gt;(0)); // out-of-sequence measurements are not yet supported</span></span>
 <span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">         323 :   auto&amp; underlying = static_cast&lt;MotionModel_&amp;&gt;(*this);</span></span>
 <span id="L22"><span class="lineNum">      22</span>              : </span>
 <span id="L23"><span class="lineNum">      23</span>              :   // Compute ego motion compensation matrices</span>
