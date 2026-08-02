@@ -174,7 +174,7 @@ int main(int argc, char** argv)
     const value_type currentTime = step * dt;
 
     // Create ego motion for this time step (zero motion)
-    EgoMotionType egoMotion(motionParams, geometry, dt);
+    auto egoMotion = EgoMotionType::TryCreate(motionParams, geometry, dt).value();
 
     std::cout << "Step " << step << " (t=" << currentTime << "s):" << std::endl;
 
