@@ -4,6 +4,7 @@
 #include "base/first_include.h"                                  // IWYU pragma: keep
 #include "math/linalg/contracts/covariance_matrix_policy_intf.h" // IWYU pragma: keep
 #include "math/linalg/covariance_matrix_policies.h"              // IWYU pragma: keep
+#include "math/linalg/errors.h"
 #include "math/linalg/point2d.h"
 #include "math/linalg/vector.h"
 
@@ -83,6 +84,9 @@ public:
   /// @f]
   ///
   /// For small angular velocities (ω→0), simplified equations (linear motion) are used to avoid numerical issues.
+  ///
+  /// \pre sv > 0 && sa > 0 && sw > 0 (checked by TryCreate(); each uncertainty is used as a
+  ///      variance in calcDisplacementCovariance(), which requires a strictly positive diagonal)
   struct InertialMotion
   {
     value_type v{};      ///< Velocity [m/s]
@@ -127,17 +131,29 @@ public:
   auto operator=(EgoMotion&&) noexcept -> EgoMotion& = default;
   virtual ~EgoMotion()                               = default;
 
-  /// \brief Constructor with explicit covariance matrix type
-  /// \tparam CovarianceMatrixType Template template for covariance matrix type
-  /// \param motion Motion parameters
-  /// \param geometry Vehicle geometry
-  /// \param dt Time interval
-  EgoMotion(const InertialMotion& motion, const Geometry& geometry, const value_type dt)
-      : _motion(motion)
-      , _geometry(geometry)
-      , _dt(dt)
+  /// \brief Construct a validated EgoMotion
+  ///
+  /// The release-safe, mandatory gate to the protected ctor below: validates \p motion's
+  /// uncertainty parameters before construction instead of relying on a debug-only precondition
+  /// check deep inside calcDisplacementCovariance()'s FromDiagonal() call. Defined here (not
+  /// elsewhere) because only EgoMotion's own members can reach its own protected ctor without a
+  /// friend declaration, which AUTOSAR A11-3-1 prohibits.
+  ///
+  /// \param[in] motion Motion parameters; sv, sa, and sw must all be strictly positive
+  /// \param[in] geometry Vehicle geometry
+  /// \param[in] dt Time interval
+  /// \return tl::expected containing the EgoMotion instance on success, or
+  ///         Errors::matrix_not_positive_definite if any of motion's sv/sa/sw is not strictly positive
+  static auto TryCreate(const InertialMotion& motion,
+                        const Geometry&       geometry,
+                        const value_type      dt) -> tl::expected<EgoMotion, math::Errors>
   {
-    calcDisplacement();
+    if (!(motion.sv > static_cast<value_type>(0)) || !(motion.sa > static_cast<value_type>(0)) ||
+        !(motion.sw > static_cast<value_type>(0)))
+    {
+      return tl::unexpected<math::Errors>{math::Errors::matrix_not_positive_definite};
+    }
+    return EgoMotion{motion, geometry, dt};
   }
 
   /// \brief Get the time interval for this ego motion compensation
@@ -194,6 +210,26 @@ public:
   /// \param[in] mountY Y-coordinate of the point in the ego reference frame [m]
   /// \return Point2d Velocity of that point, expressed in the tracking frame [m/s]
   [[nodiscard]] auto getVelocityAt(value_type mountX, value_type mountY) const -> math::Point2d<value_type>;
+
+  // clang-format off
+  TEST_REMOVE_PROTECTED:
+  ; // workaround for correct indentation
+  // clang-format on
+
+  /// \brief Construct a new Ego Motion object
+  ///
+  /// Protected in production: use TryCreate() instead.
+  ///
+  /// \param[in] motion Motion parameters; sv, sa, and sw must all be strictly positive
+  /// \param[in] geometry Vehicle geometry
+  /// \param[in] dt Time interval
+  EgoMotion(const InertialMotion& motion, const Geometry& geometry, const value_type dt)
+      : _motion(motion)
+      , _geometry(geometry)
+      , _dt(dt)
+  {
+    calcDisplacement();
+  }
 
   // clang-format off
   TEST_REMOVE_PRIVATE:

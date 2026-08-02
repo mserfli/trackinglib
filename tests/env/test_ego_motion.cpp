@@ -191,6 +191,46 @@ protected:
     EXPECT_NEAR(velAtCog.y(), 0.0, tol); // no lever arm at the COG
   }
 
+  void test_TryCreate__Success()
+  {
+    const auto result   = EgoMotionType::TryCreate(motion, geometry, dt);
+    const auto expected = EgoMotionType{motion, geometry, dt};
+    ASSERT_TRUE(result.has_value());
+    EXPECT_NEAR(result.value().getDisplacementCog().vec.at_unsafe(0), expected.getDisplacementCog().vec.at_unsafe(0), epsilon);
+  }
+
+  void test_TryCreate_ZeroVelocityUncertainty__ExpectError()
+  {
+    motion.sv         = static_cast<value_type>(0.0);
+    const auto result = EgoMotionType::TryCreate(motion, geometry, dt);
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), math::Errors::matrix_not_positive_definite);
+  }
+
+  void test_TryCreate_ZeroAccelerationUncertainty__ExpectError()
+  {
+    motion.sa         = static_cast<value_type>(0.0);
+    const auto result = EgoMotionType::TryCreate(motion, geometry, dt);
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), math::Errors::matrix_not_positive_definite);
+  }
+
+  void test_TryCreate_ZeroYawRateUncertainty__ExpectError()
+  {
+    motion.sw         = static_cast<value_type>(0.0);
+    const auto result = EgoMotionType::TryCreate(motion, geometry, dt);
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), math::Errors::matrix_not_positive_definite);
+  }
+
+  void test_TryCreate_NegativeVelocityUncertainty__ExpectError()
+  {
+    motion.sv         = static_cast<value_type>(-0.5);
+    const auto result = EgoMotionType::TryCreate(motion, geometry, dt);
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), math::Errors::matrix_not_positive_definite);
+  }
+
   void test_CircularMotionDisplacement__Success()
   {
     // Use larger ω for circular motion
@@ -245,6 +285,31 @@ TYPED_TEST(GTestEgoMotion, LinearMotionDisplacement__Success)
 TYPED_TEST(GTestEgoMotion, CircularMotionDisplacement__Success)
 {
   GTestEgoMotion<TypeParam>::test_CircularMotionDisplacement__Success();
+}
+
+TYPED_TEST(GTestEgoMotion, TryCreate__Success)
+{
+  GTestEgoMotion<TypeParam>::test_TryCreate__Success();
+}
+
+TYPED_TEST(GTestEgoMotion, TryCreate_ZeroVelocityUncertainty__ExpectError) // NOLINT
+{
+  GTestEgoMotion<TypeParam>::test_TryCreate_ZeroVelocityUncertainty__ExpectError();
+}
+
+TYPED_TEST(GTestEgoMotion, TryCreate_ZeroAccelerationUncertainty__ExpectError) // NOLINT
+{
+  GTestEgoMotion<TypeParam>::test_TryCreate_ZeroAccelerationUncertainty__ExpectError();
+}
+
+TYPED_TEST(GTestEgoMotion, TryCreate_ZeroYawRateUncertainty__ExpectError) // NOLINT
+{
+  GTestEgoMotion<TypeParam>::test_TryCreate_ZeroYawRateUncertainty__ExpectError();
+}
+
+TYPED_TEST(GTestEgoMotion, TryCreate_NegativeVelocityUncertainty__ExpectError) // NOLINT
+{
+  GTestEgoMotion<TypeParam>::test_TryCreate_NegativeVelocityUncertainty__ExpectError();
 }
 
 TYPED_TEST(GTestEgoMotion, GetVelocityAt_ZeroYawRate__ReducesToPureTranslation)
