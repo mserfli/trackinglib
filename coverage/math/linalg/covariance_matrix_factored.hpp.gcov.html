@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 20:21:56</td>
+            <td class="headerValue">2026-08-02 20:41:38</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">89.5&nbsp;%</td>
@@ -89,29 +89,29 @@
 <span id="L19"><span class="lineNum">      19</span>              : {</span>
 <span id="L20"><span class="lineNum">      20</span>              : </span>
 <span id="L21"><span class="lineNum">      21</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC tlaBgGNC">         200 : CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::CovarianceMatrixFactored(const TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; u,</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC tlaBgGNC">         208 : CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::CovarianceMatrixFactored(const TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; u,</span></span>
 <span id="L23"><span class="lineNum">      23</span>              :                                                                       const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp;                d)</span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">         200 :     : _u{u}</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">         200 :     , _d{d}</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">         208 :     : _u{u}</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">         208 :     , _d{d}</span></span>
 <span id="L26"><span class="lineNum">      26</span>              : {</span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         200 :   assert(_u.isUnitUpperTriangular() &amp;&amp; &quot;Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular&quot;);</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         200 :   assert(_d.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         208 :   assert(_u.isUnitUpperTriangular() &amp;&amp; &quot;Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular&quot;);</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         208 :   assert(_d.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
 <span id="L29"><span class="lineNum">      29</span>              : }</span>
 <span id="L30"><span class="lineNum">      30</span>              : </span>
 <span id="L31"><span class="lineNum">      31</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">          52 : auto CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::Identity() -&gt; CovarianceMatrixFactored</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">          56 : auto CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::Identity() -&gt; CovarianceMatrixFactored</span></span>
 <span id="L33"><span class="lineNum">      33</span>              : {</span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">          76 :   CovarianceMatrixFactored cov{TriangularMatrix&lt;ValueType_, Size_, false, true&gt;::Identity(),</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">          82 :   CovarianceMatrixFactored cov{TriangularMatrix&lt;ValueType_, Size_, false, true&gt;::Identity(),</span></span>
 <span id="L35"><span class="lineNum">      35</span>              :                                DiagonalMatrix&lt;ValueType_, Size_&gt;::Identity()};</span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">          52 :   return cov;</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">          56 :   return cov;</span></span>
 <span id="L37"><span class="lineNum">      37</span>              : }</span>
 <span id="L38"><span class="lineNum">      38</span>              : </span>
 <span id="L39"><span class="lineNum">      39</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          34 : auto CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::FromDiagonal(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; diag)</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          38 : auto CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::FromDiagonal(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; diag)</span></span>
 <span id="L41"><span class="lineNum">      41</span>              :     -&gt; CovarianceMatrixFactored</span>
 <span id="L42"><span class="lineNum">      42</span>              : {</span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">          34 :   assert(diag.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">          34 :   return CovarianceMatrixFactored{TriangularMatrix&lt;ValueType_, Size_, false, true&gt;::Identity(), diag};</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">          38 :   assert(diag.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">          38 :   return CovarianceMatrixFactored{TriangularMatrix&lt;ValueType_, Size_, false, true&gt;::Identity(), diag};</span></span>
 <span id="L45"><span class="lineNum">      45</span>              : }</span>
 <span id="L46"><span class="lineNum">      46</span>              : </span>
 <span id="L47"><span class="lineNum">      47</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
@@ -221,11 +221,11 @@
 <span id="L151"><span class="lineNum">     151</span>              : </span>
 <span id="L152"><span class="lineNum">     152</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
 <span id="L153"><span class="lineNum">     153</span>              : template &lt;bool IsRowMajor_&gt;</span>
-<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">          68 : inline void CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::apaT(const SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A)</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">          72 : inline void CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::apaT(const SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A)</span></span>
 <span id="L155"><span class="lineNum">     155</span>              : {</span>
-<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">          68 :   math::ModifiedGramSchmidt&lt;ValueType_, Size_&gt;::run(_u, _d, A);</span></span>
-<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">          68 :   assert(_u.isUnitUpperTriangular() &amp;&amp; &quot;Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular&quot;);</span></span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">          68 :   assert(_d.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">          72 :   math::ModifiedGramSchmidt&lt;ValueType_, Size_&gt;::run(_u, _d, A);</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">          72 :   assert(_u.isUnitUpperTriangular() &amp;&amp; &quot;Bad triangular matrix not fullfilling the constraint IsUnitUpperTriangular&quot;);</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">          72 :   assert(_d.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
 <span id="L159"><span class="lineNum">     159</span>              : }</span>
 <span id="L160"><span class="lineNum">     160</span>              : </span>
 <span id="L161"><span class="lineNum">     161</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
