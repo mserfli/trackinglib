@@ -4,7 +4,6 @@
 #include "base/first_include.h"                           // IWYU pragma: keep
 #include "math/linalg/contracts/covariance_matrix_intf.h" // IWYU pragma: keep
 #include <initializer_list>
-#include <iostream> // IWYU pragma: keep
 
 namespace tracking
 {

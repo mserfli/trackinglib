@@ -43,9 +43,15 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::Identity() -> SquareMa
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::FromList(
-    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> tl::expected<SquareMatrix, math::Errors>
 {
-  return SquareMatrix{BaseMatrix::FromList(list)};
+  auto baseMatrix = BaseMatrix::FromList(list);
+  if (!baseMatrix)
+  {
+    // propagate the error from the base class
+    return tl::unexpected<math::Errors>{baseMatrix.error()};
+  }
+  return SquareMatrix{std::move(baseMatrix.value())};
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>

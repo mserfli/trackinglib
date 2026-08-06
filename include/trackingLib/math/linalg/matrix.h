@@ -126,8 +126,8 @@ public:
   ///
   /// \param[in] list Nested initializer list in logical row-major format
   /// \return Matrix instance initialized with the provided values
-  /// \throws std::runtime_error If the list dimensions don't match the matrix dimensions
-  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix;
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+      -> tl::expected<Matrix, math::Errors>;
   // <---
 
   //////////////////////////////////////////////////

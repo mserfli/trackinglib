@@ -7,8 +7,6 @@
 #include <cmath>
 #include <functional>
 #include <limits>
-#include <stdexcept>
-#include <string>
 #include <type_traits>
 
 namespace tracking
@@ -46,14 +44,14 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Ones() -> Matrix
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::FromList(
-    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> Matrix
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> tl::expected<Matrix, math::Errors>
 {
   Matrix result{};
 
   // Validate row count - input is always in logical row-major format
   if (list.size() != static_cast<std::size_t>(Rows))
   {
-    throw std::runtime_error("Matrix::FromList: expected " + std::to_string(Rows) + " rows, got " + std::to_string(list.size()));
+    return tl::unexpected<math::Errors>{math::Errors::invalid_initializer_list_row_count};
   }
 
   // Validate column count for each row - input is always in logical row-major format
@@ -61,8 +59,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::FromList(
   {
     if (row.size() != static_cast<std::size_t>(Cols))
     {
-      throw std::runtime_error("Matrix::FromList: expected " + std::to_string(Cols) + " columns, got " +
-                               std::to_string(row.size()));
+      return tl::unexpected<math::Errors>{math::Errors::invalid_initializer_list_col_count};
     }
   }
 

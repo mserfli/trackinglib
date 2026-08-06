@@ -63,7 +63,11 @@ inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::in
     -> tl::expected<CovarianceMatrixFactored<ValueType_, Size_>, Errors>
 {
   const auto other = CovarianceMatrixFactored<ValueType_, Size_>::compose_type::FromList(list);
-  return CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(other);
+  if (!other)
+  {
+    return tl::unexpected<Errors>{other.error()};
+  }
+  return CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(other.value());
 }
 
 } // namespace conversions

@@ -98,9 +98,16 @@ public:
   ///
   /// \param[in] list Nested initializer list representing the covariance matrix
   /// \return CovarianceMatrixFull instance initialized with the provided values
-  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> CovarianceMatrixFull
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+      -> tl::expected<CovarianceMatrixFull, Errors>
   {
-    return CovarianceMatrixFull{BaseSquareMatrix::FromList(list)};
+    auto baseMatrix = BaseSquareMatrix::FromList(list);
+    if (!baseMatrix)
+    {
+      // propagate the error from the base class
+      return tl::unexpected<Errors>{baseMatrix.error()};
+    }
+    return CovarianceMatrixFull{std::move(baseMatrix.value())};
   }
   // <---
 

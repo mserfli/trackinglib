@@ -5,7 +5,6 @@
 
 #include "motion/state_cov_converter.hpp" // IWYU pragma: keep
 #include "motion/state_vec_converter.hpp" // IWYU pragma: keep
-#include <iostream>
 
 namespace tracking
 {

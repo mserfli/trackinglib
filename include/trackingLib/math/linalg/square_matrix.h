@@ -96,10 +96,10 @@ public:
   /// \tparam IsRowMajor_ The storage layout (true for row-major, false for column-major)
   /// \param[in] list Nested initializer list in logical row-major format
   /// \return SquareMatrix instance initialized with the provided values
-  /// \throws std::runtime_error If the list dimensions don't match the square matrix size
   /// \see SquareFromDiagonal() for creating from diagonal matrixes
   /// \see MatrixFromList() for general matrix creation
-  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> SquareMatrix;
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+      -> tl::expected<SquareMatrix, math::Errors>;
 
   /// \brief Set the matrix to the identity matrix in-place.
   ///
