@@ -18,7 +18,6 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
     set(CMAKE_CXX_FLAGS_DEBUG "-g")
     set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 else()
@@ -52,6 +51,12 @@ FetchContent_MakeAvailable (
     googletest
     expected
 )
+
+if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    # Apply the project warning policy after configuring dependencies so their
+    # own source files are not compiled with our warnings-as-errors policy.
+    add_compile_options(-Wall -Wextra -Werror)
+endif()
 
 if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
     # activate code coverage
