@@ -43,7 +43,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::Identity() -> SquareMa
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::FromList(
-    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> tl::expected<SquareMatrix, math::Errors>
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept -> tl::expected<SquareMatrix, math::Errors>
 {
   auto baseMatrix = BaseMatrix::FromList(list);
   if (!baseMatrix)
@@ -167,7 +167,7 @@ inline void SquareMatrix<ValueType_, Size_, IsRowMajor_>::symmetrize()
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric(ValueType_ tolerance) const -> bool
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric(ValueType_ tolerance) const noexcept -> bool
 {
   // check all off diagonal elements
   // TODO(matthias): optimization - use template-based loop unrolling for fixed small sizes (Size_ <= 10)
@@ -187,7 +187,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric(ValueType_
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveDefinite() const -> bool
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveDefinite() const noexcept -> bool
 {
   // Try Cholesky decomposition - if it succeeds, matrix is positive definite
   const auto choleskyResult = this->decomposeLLT();
@@ -260,7 +260,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveSemiDefinite
 }
 
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::hasStrictlyPositiveDiagonalElems() const -> bool
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::hasStrictlyPositiveDiagonalElems() const noexcept -> bool
 {
   sint32 j{0};
   // check all diagonal elements

@@ -44,7 +44,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::Ones() -> Matrix
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::FromList(
-    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> tl::expected<Matrix, math::Errors>
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept -> tl::expected<Matrix, math::Errors>
 {
   Matrix result{};
 
@@ -95,7 +95,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::FromList(
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) const noexcept -> ValueType_
 {
   assert((0 <= row) && (row < Rows));
   assert((0 <= col) && (col < Cols));
@@ -104,7 +104,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row,
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) -> ValueType_&
+inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) noexcept -> ValueType_&
 {
   assert((0 <= row) && (row < Rows));
   assert((0 <= col) && (col < Cols));

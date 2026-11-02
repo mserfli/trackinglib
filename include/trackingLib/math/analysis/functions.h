@@ -13,6 +13,8 @@
 
 #include "base/first_include.h" // IWYU pragma: keep
 
+#include <type_traits>
+
 namespace tracking
 {
 namespace math
@@ -39,7 +41,7 @@ namespace math
 /// constexpr int template_param = tracking::math::pow<4>(3); // can be used in templates
 /// \endcode
 template <int N, class T>
-constexpr T pow(T const x)
+constexpr auto pow(T const x) noexcept(std::is_arithmetic<T>::value) -> T
 {
   if constexpr (N == 0)
   {

@@ -61,7 +61,7 @@ struct StateMemIntf
     : public base::contract::RequireCopyIntf<ImplType>
     , public base::contract::RequireMoveIntf<ImplType>
 {
-  StateMemIntf()
+  StateMemIntf() noexcept
       : base::contract::RequireCopyIntf<ImplType>()
       , base::contract::RequireMoveIntf<ImplType>()
 

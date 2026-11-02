@@ -64,8 +64,12 @@ void expectJacobianMatchesFiniteDifference(const ObservationModel_&             
 
 TEST(RangeBearingObservationModel, predictMeasurement__ReturnsPolarCoordinates) // NOLINT
 {
-  const auto obs       = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
-  const auto state     = RbModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
+  auto obsResult = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RbModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -76,16 +80,24 @@ TEST(RangeBearingObservationModel, predictMeasurement__ReturnsPolarCoordinates) 
 
 TEST(RangeBearingObservationModel, computeJacobian__MatchesFiniteDifference) // NOLINT
 {
-  const auto obs   = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
-  const auto state = RbModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  auto obsResult = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RbModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }
 
 TEST(RangeBearingObservationModel, computeJacobian__NoDivisionByZeroAtOrigin) // NOLINT
 {
-  const auto obs       = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
-  const auto state     = RbModel::StateVec::FromList({0.0, 0.0, 0.0, 0.0});
+  auto obsResult = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RbModel::StateVec::FromList({0.0, 0.0, 0.0, 0.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value();
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   typename RbModel::JacobianMatrix H{};
@@ -106,8 +118,12 @@ TEST(RangeBearingObservationModel, computeInnovation__WrapsBearing) // NOLINT
 
   // measured bearing just below +pi, predicted just above -pi: the raw difference is ~2*pi
   // but the true angular error is only -0.2 rad
-  const auto obs       = RbModel::FromLists({5.0, pi - 0.1}, {{1, 0}, {0, 1}}).value();
-  const auto predicted = RbModel::MeasurementVecFromList({5.0, -pi + 0.1});
+  auto obsResult = RbModel::FromLists({5.0, pi - 0.1}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs             = obsResult.value();
+  auto       predictedResult = RbModel::MeasurementVecFromList({5.0, -pi + 0.1});
+  ASSERT_TRUE(predictedResult.has_value());
+  const auto predicted = predictedResult.value();
 
   const auto innovation = obs.computeInnovation(obs.getVec(), predicted);
 
@@ -118,8 +134,12 @@ TEST(RangeBearingObservationModel, computeInnovation__WrapsBearing) // NOLINT
 TEST(RangeBearingObservationModel, predictMeasurement__AppliesSensorMountingPose) // NOLINT
 {
   const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs       = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
-  const auto state     = RbModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
+  auto       obsResult = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RbModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -131,9 +151,13 @@ TEST(RangeBearingObservationModel, predictMeasurement__AppliesSensorMountingPose
 
 TEST(RangeBearingObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
 {
-  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs   = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
-  const auto state = RbModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  auto       obsResult = RbModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RbModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }

@@ -8,17 +8,21 @@ TEST(MatrixRowView, mul_rhs) // NOLINT
 {
   // testing MatrixRowView * Matrix
   // clang-format off
-  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 4, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9},
     {10,11,12},
-  })};
-  const auto rhs{Matrix<sint32, 3, 2, true>::FromList({
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
+  auto rhsFactoryResult = Matrix<sint32, 3, 2, true>::FromList({
     {1, 2},
     {3, 4},
     {5, 6},
-  })};
+  });
+  ASSERT_TRUE(rhsFactoryResult.has_value());
+  const auto rhs = rhsFactoryResult.value();
   const MatrixRowView<sint32, 4, 3, true> rowView(mat, 2, 0, 2);
   // clang-format on
 
@@ -43,16 +47,20 @@ TEST(MatrixRowView, mul_rhs_ranged) // NOLINT
 {
   // testing MatrixRowView * Matrix
   // clang-format off
-  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 4, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9},
     {10,11,12},
-  })};
-  const auto rhs{Matrix<sint32, 2, 2, true>::FromList({
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
+  auto rhsFactoryResult = Matrix<sint32, 2, 2, true>::FromList({
     {1, 2},
     {3, 4},
-  })};
+  });
+  ASSERT_TRUE(rhsFactoryResult.has_value());
+  const auto rhs = rhsFactoryResult.value();
   const MatrixRowView<sint32, 4, 3, true> rowView(mat, 2, 1, 2);
   // clang-format on
 
@@ -77,12 +85,14 @@ TEST(MatrixRowView, dot_colView) // NOLINT
 {
   // testing MatrixRowView * MatrixColView
   // clang-format off
-  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 4, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9},
     {10,11,12},
-  })};
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
   const MatrixRowView<sint32, 4, 3, true> rowView(mat, 2, 1, 2);
   const MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 1, 2);
   // clang-format on

@@ -64,8 +64,12 @@ void expectJacobianMatchesFiniteDifference(const ObservationModel_&             
 
 TEST(RangeObservationModel, predictMeasurement__ReturnsRange) // NOLINT
 {
-  const auto obs       = RangeModel::FromLists({0}, {{1}}).value();
-  const auto state     = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
+  auto obsResult = RangeModel::FromLists({0}, {{1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -75,16 +79,24 @@ TEST(RangeObservationModel, predictMeasurement__ReturnsRange) // NOLINT
 
 TEST(RangeObservationModel, computeJacobian__MatchesFiniteDifference) // NOLINT
 {
-  const auto obs   = RangeModel::FromLists({0}, {{1}}).value();
-  const auto state = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  auto obsResult = RangeModel::FromLists({0}, {{1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }
 
 TEST(RangeObservationModel, computeJacobian__NoDivisionByZeroAtOrigin) // NOLINT
 {
-  const auto obs       = RangeModel::FromLists({0}, {{1}}).value();
-  const auto state     = RangeModel::StateVec::FromList({0.0, 0.0, 0.0, 0.0});
+  auto obsResult = RangeModel::FromLists({0}, {{1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RangeModel::StateVec::FromList({0.0, 0.0, 0.0, 0.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value();
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   typename RangeModel::JacobianMatrix H{};
@@ -102,8 +114,12 @@ TEST(RangeObservationModel, computeJacobian__NoDivisionByZeroAtOrigin) // NOLINT
 TEST(RangeObservationModel, predictMeasurement__AppliesSensorMountingPose) // NOLINT
 {
   const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs       = RangeModel::FromLists({0}, {{1}}, pose).value();
-  const auto state     = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0}); // {X, VX, Y, VY}
+  auto       obsResult = RangeModel::FromLists({0}, {{1}}, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -114,9 +130,13 @@ TEST(RangeObservationModel, predictMeasurement__AppliesSensorMountingPose) // NO
 
 TEST(RangeObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
 {
-  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs   = RangeModel::FromLists({0}, {{1}}, pose).value();
-  const auto state = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  auto       obsResult = RangeModel::FromLists({0}, {{1}}, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = RangeModel::StateVec::FromList({3.0, 2.0, 4.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }

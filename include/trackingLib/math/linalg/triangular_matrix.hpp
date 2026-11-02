@@ -20,7 +20,7 @@ template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 class SquareMatrix;
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMatrix(const BaseSquareMatrix& other)
+inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMatrix(const BaseSquareMatrix& other) noexcept
     : BaseSquareMatrix{}
 {
   // copy triangular elements from other
@@ -39,9 +39,14 @@ inline TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::TriangularMat
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::FromList(
-    const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept -> tl::expected<TriangularMatrix, Errors>
 {
-  return TriangularMatrix{BaseSquareMatrix::FromList(list)};
+  const auto square = BaseSquareMatrix::FromList(list);
+  if (!square)
+  {
+    return tl::unexpected<Errors>{square.error()};
+  }
+  return TriangularMatrix{square.value()};
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
@@ -241,14 +246,15 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) const -> ValueType_
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::at_unsafe(sint32 row,
+                                                                                  sint32 col) const noexcept -> ValueType_
 {
   assert((IsLower_ ? row >= col : row <= col) && "accessing off-triangular elements");
   return BaseSquareMatrix::at_unsafe(row, col);
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) -> ValueType_&
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::at_unsafe(sint32 row, sint32 col) noexcept -> ValueType_&
 {
   assert((IsLower_ ? row >= col : row <= col) && "accessing off-triangular elements");
   return BaseSquareMatrix::at_unsafe(row, col);
@@ -334,7 +340,7 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::determin
 }
 
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::isUnitUpperTriangular() const -> bool
+inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::isUnitUpperTriangular() const noexcept -> bool
 {
   auto isValid = true;
   for (auto idx = 0; idx < Size_; ++idx)

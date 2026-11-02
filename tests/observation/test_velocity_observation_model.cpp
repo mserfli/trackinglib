@@ -85,10 +85,12 @@ void expectJacobianMatchesFiniteDifference(const ObservationModel_&             
 TEST(VelocityObservationModel, ctor_FromLists__Success) // NOLINT
 {
   // clang-format off
-  const auto obs = VelModel::FromLists({2.1, 0.9}, {
+  auto obsResult = VelModel::FromLists({2.1, 0.9}, {
     {0.2, 0.0},
     {0.0, 0.3}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
 
   EXPECT_DOUBLE_EQ(obs[VelModel::MEAS_VX], 2.1);
@@ -99,8 +101,12 @@ TEST(VelocityObservationModel, ctor_FromLists__Success) // NOLINT
 
 TEST(VelocityObservationModel, predictMeasurement__ReturnsVelocity) // NOLINT
 {
-  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
-  const auto state     = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0}); // {X, VX, Y, VY}
+  auto obsResult = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -111,8 +117,12 @@ TEST(VelocityObservationModel, predictMeasurement__ReturnsVelocity) // NOLINT
 
 TEST(VelocityObservationModel, computeJacobian__MatchesFiniteDifference) // NOLINT
 {
-  const auto obs   = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
-  const auto state = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  auto obsResult = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-9);
 }
@@ -121,8 +131,12 @@ TEST(VelocityObservationModel, predictMeasurement__AppliesSensorMountingPose) //
 {
   // static mount: translation has no lever-arm effect, only the yaw rotates velocity
   const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
-  const auto state     = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0}); // {X, VX, Y, VY}
+  auto       obsResult = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -134,9 +148,13 @@ TEST(VelocityObservationModel, predictMeasurement__AppliesSensorMountingPose) //
 
 TEST(VelocityObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
 {
-  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs   = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
-  const auto state = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  auto       obsResult = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }
@@ -155,8 +173,12 @@ using DopplerModel = tracking::observation::RangeBearingDopplerObservationModel<
 TEST(VelocityObservationModel, predictMeasurement_MovingTurningPlatform__SubtractsEgoLeverArmVelocity) // NOLINT
 {
   const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.5, 0.5, std::acos(-1.0) / 6.0);
-  const auto obs       = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
-  const auto state     = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  auto       obsResult = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value();
   const auto egoMotion = makeMovingTurningEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -174,12 +196,18 @@ TEST(VelocityObservationModel, predictMeasurement_MovingTurningPlatform__Subtrac
 // the lever-arm velocity), so neither is invariant to a moving vs. static platform.
 TEST(VelocityObservationModel, predictMeasurement_DopplerVsVelocity_EgoHandling__BothRespond) // NOLINT
 {
-  const auto pose       = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.5, 0.5, std::acos(-1.0) / 6.0);
-  const auto velObs     = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
-  const auto dopplerObs = DopplerModel::FromLists({0, 0, 0}, {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}, pose).value();
-  const auto state      = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
-  const auto movingEgo  = makeMovingTurningEgoMotion<FullPolicy>();
-  const auto noEgo      = makeNoEgoMotion<FullPolicy>();
+  const auto pose = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.5, 0.5, std::acos(-1.0) / 6.0);
+  auto       velObsResult = VelModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  ASSERT_TRUE(velObsResult.has_value());
+  const auto velObs           = velObsResult.value();
+  auto       dopplerObsResult = DopplerModel::FromLists({0, 0, 0}, {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}, pose);
+  ASSERT_TRUE(dopplerObsResult.has_value());
+  const auto dopplerObs  = dopplerObsResult.value();
+  auto       stateResult = VelModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value();
+  const auto movingEgo = makeMovingTurningEgoMotion<FullPolicy>();
+  const auto noEgo     = makeNoEgoMotion<FullPolicy>();
 
   // doppler diverges between a moving and a static platform (it subtracts the ego velocity)
   const auto dopplerMoving = dopplerObs.predictMeasurement(state, movingEgo).at_unsafe(DopplerModel::MEAS_DOPPLER);

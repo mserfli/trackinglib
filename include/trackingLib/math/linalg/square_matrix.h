@@ -79,13 +79,6 @@ public:
   SquareMatrix(const DiagonalMatrix<ValueType_, Size_>& other); // NOLINT(google-explicit-constructor)
 
 
-  /// \brief Construct an identity matrix with ones on the diagonal and zeros elsewhere.
-  ///
-  /// \return SquareMatrix An identity matrix of the specified size and storage layout
-  ///
-  /// \note The identity matrix I satisfies I * A = A * I = A for any square matrix A
-  [[nodiscard]] static auto Identity() -> SquareMatrix;
-
   /// \brief Creates a SquareMatrix from a nested initializer list
   ///
   /// This function constructs a SquareMatrix from a nested initializer list where each inner list
@@ -95,11 +88,21 @@ public:
   /// \tparam Size_ The dimension of the square matrix
   /// \tparam IsRowMajor_ The storage layout (true for row-major, false for column-major)
   /// \param[in] list Nested initializer list in logical row-major format
-  /// \return SquareMatrix instance initialized with the provided values
+  /// \return tl::expected containing the square matrix or the propagated row-count / column-count error
+  /// \note Checks outer rows before every row width, independently of storage layout.
+  ///       No numeric invariants are checked; the factory is noexcept for supported primitive types.
   /// \see SquareFromDiagonal() for creating from diagonal matrixes
-  /// \see MatrixFromList() for general matrix creation
-  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+  /// \see Matrix::FromList() for general matrix creation
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept
       -> tl::expected<SquareMatrix, math::Errors>;
+
+  /// \brief Construct an identity matrix with ones on the diagonal and zeros elsewhere.
+  ///
+  /// \return SquareMatrix An identity matrix of the specified size and storage layout
+  ///
+  /// \note The identity matrix I satisfies I * A = A * I = A for any square matrix A
+  [[nodiscard]] static auto Identity() -> SquareMatrix;
+
 
   /// \brief Set the matrix to the identity matrix in-place.
   ///
@@ -224,7 +227,8 @@ public:
   ///
   /// \see decomposeLDLT for a more numerically stable variant
   /// \see isSymmetric for symmetry checking
-  [[nodiscard]] auto decomposeLLT() const -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>;
+  [[nodiscard]] auto decomposeLLT() const noexcept
+      -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>;
 
   /// \brief Performs LDL^T decomposition of a symmetric positive definite matrix
   ///
@@ -287,7 +291,7 @@ public:
   /// \see Grewal & Andrews, Kalman Filtering Theory and Practice Using MATLAB, 4th Edition, Wiley, 2014
   /// \see Gerald J. Bierman, "Factorization Methods for Discrete Sequential Estimation", 1977
   /// \see Catherine L. Thornton, "Triangular Covariance Factorizations for Kalman Filtering", 1976
-  [[nodiscard]] auto decomposeUDUT() const
+  [[nodiscard]] auto decomposeUDUT() const noexcept
       -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>,
                       Errors>;
 
@@ -326,7 +330,7 @@ public:
   /// \return true if the matrix is symmetric, false otherwise
   ///
   /// \note Symmetry checking uses element-wise comparison and may have floating-point precision issues
-  [[nodiscard]] auto isSymmetric(ValueType_ tolerance = 1e-6) const -> bool;
+  [[nodiscard]] auto isSymmetric(ValueType_ tolerance = 1e-6) const noexcept -> bool;
 
   /// \brief Check if the diagonal matrix is positive definite.
   ///
@@ -335,7 +339,7 @@ public:
   /// \return true if all diagonal elements are > 0, false otherwise
   ///
   /// \note For diagonal matrixes, positive definiteness is equivalent to all elements > 0
-  [[nodiscard]] auto isPositiveDefinite() const -> bool;
+  [[nodiscard]] auto isPositiveDefinite() const noexcept -> bool;
 
   /// \brief Checks if the matrix is positive semi-definite.
   ///
@@ -412,7 +416,7 @@ private:
   /// \return true if all diagonal elements are positive, false otherwise
   ///
   /// \note This is a necessary but not sufficient condition for positive definiteness
-  [[nodiscard]] auto hasStrictlyPositiveDiagonalElems() const -> bool;
+  [[nodiscard]] auto hasStrictlyPositiveDiagonalElems() const noexcept -> bool;
 };
 
 } // namespace math

@@ -86,13 +86,17 @@ void expectJacobianMatchesFiniteDifference(const ObservationModel_&             
 TEST(RangeBearingDopplerObservationModel, predictMeasurement__ReturnsPolarCoordinatesAndDoppler) // NOLINT
 {
   // clang-format off
-  const auto obs = RbdModel::FromLists({0, 0, 0}, {
+  auto obsResult = RbdModel::FromLists({0, 0, 0}, {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
-  const auto state     = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
+  auto stateResult = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -106,13 +110,17 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__ReturnsPolarCoordi
 TEST(RangeBearingDopplerObservationModel, computeJacobian__MatchesFiniteDifference) // NOLINT
 {
   // clang-format off
-  const auto obs = RbdModel::FromLists({0, 0, 0}, {
+  auto obsResult = RbdModel::FromLists({0, 0, 0}, {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
-  const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
+  auto stateResult = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }
@@ -122,13 +130,17 @@ TEST(RangeBearingDopplerObservationModel, computeInnovation__WrapsBearing) // NO
   const Testvalue_type pi = std::acos(-1.0);
 
   // clang-format off
-  const auto obs = RbdModel::FromLists({5.0, pi - 0.1, 2.0}, {
+  auto obsResult = RbdModel::FromLists({5.0, pi - 0.1, 2.0}, {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
-  const auto predicted = RbdModel::MeasurementVecFromList({5.0, -pi + 0.1, 1.5});
+  auto predictedResult = RbdModel::MeasurementVecFromList({5.0, -pi + 0.1, 1.5});
+  ASSERT_TRUE(predictedResult.has_value());
+  const auto predicted = predictedResult.value();
 
   const auto innovation = obs.computeInnovation(obs.getVec(), predicted);
 
@@ -140,13 +152,17 @@ TEST(RangeBearingDopplerObservationModel, computeInnovation__WrapsBearing) // NO
 TEST(RangeBearingDopplerObservationModel, predictMeasurement__DopplerZeroWithoutVelocity) // NOLINT
 {
   // clang-format off
-  const auto obs = RbdModelPosOnly::FromLists({0, 0, 0}, {
+  auto obsResult = RbdModelPosOnly::FromLists({0, 0, 0}, {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
-  const auto state     = RbdModelPosOnly::StateVec::FromList({3.0, 4.0}); // {X, Y}
+  auto stateResult = RbdModelPosOnly::StateVec::FromList({3.0, 4.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, Y}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -160,13 +176,17 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__DopplerZeroWithout
 TEST(RangeBearingDopplerObservationModel, computeJacobian__DopplerRowZeroWithoutVelocity) // NOLINT
 {
   // clang-format off
-  const auto obs = RbdModelPosOnly::FromLists({0, 0, 0}, {
+  auto obsResult = RbdModelPosOnly::FromLists({0, 0, 0}, {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
-  const auto state     = RbdModelPosOnly::StateVec::FromList({3.0, 4.0});
+  auto stateResult = RbdModelPosOnly::StateVec::FromList({3.0, 4.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value();
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   typename RbdModelPosOnly::JacobianMatrix H{};
@@ -186,13 +206,17 @@ TEST(RangeBearingDopplerObservationModel, predictMeasurement__AppliesSensorMount
 {
   // clang-format off
   const auto pose = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs  = RbdModel::FromLists({0, 0, 0}, {
+  auto obsResult = RbdModel::FromLists({0, 0, 0}, {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }, pose).value();
+  }, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
-  const auto state     = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
+  auto stateResult = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -208,13 +232,17 @@ TEST(RangeBearingDopplerObservationModel, computeJacobian__MatchesFiniteDifferen
 {
   // clang-format off
   const auto pose = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs  = RbdModel::FromLists({0, 0, 0}, {
+  auto obsResult = RbdModel::FromLists({0, 0, 0}, {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }, pose).value();
+  }, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
-  const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
+  auto stateResult = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }
@@ -222,13 +250,17 @@ TEST(RangeBearingDopplerObservationModel, computeJacobian__MatchesFiniteDifferen
 TEST(RangeBearingDopplerObservationModel, predictMeasurement__CompensatesEgoMotion) // NOLINT
 {
   // clang-format off
-  const auto obs = RbdModel::FromLists({0, 0, 0}, {
+  auto obsResult = RbdModel::FromLists({0, 0, 0}, {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
-  const auto state = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0}); // {X, VX, Y, VY}
+  auto stateResult = RbdModel::StateVec::FromList({3.0, 1.0, 4.0, 2.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value(); // {X, VX, Y, VY}
 
   // nonzero ego COG speed and yaw rate: the sensor (mounted at the tracking-frame origin) itself
   // moves at (v, 0) + w x r. compensatePosition maps ego->COG via += distCog2Ego, so the COG-

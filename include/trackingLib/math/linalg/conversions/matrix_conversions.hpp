@@ -22,7 +22,7 @@ namespace conversions
 /// \param[in] vec The source vector to convert
 /// \return Matrix with Size_ rows and 1 column containing the vector elements
 /// \see VectorFromMatrixColumnView() for the reverse conversion
-/// \see MatrixFromList() for creating matrixes from initializer lists
+/// \see Matrix::FromList() for checked initializer-list construction
 template <typename ValueType_, sint32 Size_>
 inline auto MatrixFromVector(const Vector<ValueType_, Size_>& vec) -> Matrix<ValueType_, Size_, 1, true>
 {

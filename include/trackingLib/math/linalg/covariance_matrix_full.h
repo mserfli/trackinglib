@@ -23,7 +23,8 @@ namespace math
 /// - Represents uncertainty in state estimation
 ///
 /// This implementation uses row-major storage for consistency with other matrix types.
-/// All constructors enforce symmetry through assertions.
+/// Direct value constructors enforce symmetry through assertions; FromList checks
+/// dimensions and the existing symmetry predicate before invoking a constructor.
 ///
 /// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ Dimension of the square covariance matrix
@@ -49,6 +50,33 @@ public:
   auto operator=(const CovarianceMatrixFull&) -> CovarianceMatrixFull&     = default;
   auto operator=(CovarianceMatrixFull&&) noexcept -> CovarianceMatrixFull& = default;
   virtual ~CovarianceMatrixFull()                                          = default;
+
+  /// \brief Creates a CovarianceMatrixFull from a nested initializer list
+  ///
+  /// This function constructs a full covariance matrix from a nested initializer list.
+  ///
+  /// \param[in] list Nested initializer list representing the covariance matrix
+  /// \return tl::expected containing the full covariance or invalid_initializer_list_row_count,
+  ///         invalid_initializer_list_col_count, or matrix_not_symmetric
+  /// \note Checks outer rows, then every row width, then symmetry with the existing default tolerance.
+  ///       Singular and indefinite symmetric inputs remain supported. This is not a
+  ///       positive-definiteness or comprehensive non-finite-number check.
+  /// \note noexcept describes exception behavior; construction can still return an error.
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept
+      -> tl::expected<CovarianceMatrixFull, Errors>
+  {
+    auto baseMatrix = BaseSquareMatrix::FromList(list);
+    if (!baseMatrix)
+    {
+      // propagate the error from the base class
+      return tl::unexpected<Errors>{baseMatrix.error()};
+    }
+    if (!baseMatrix.value().isSymmetric())
+    {
+      return tl::unexpected<Errors>{Errors::matrix_not_symmetric};
+    }
+    return CovarianceMatrixFull{std::move(baseMatrix.value())};
+  }
 
   //////////////////////////////////////////////////
   // additional constructors  --->
@@ -92,23 +120,6 @@ public:
   /// \return CovarianceMatrixFactored
   static auto FromDiagonal(const DiagonalMatrix<ValueType_, Size_>& diag) -> CovarianceMatrixFull;
 
-  /// \brief Creates a CovarianceMatrixFull from a nested initializer list
-  ///
-  /// This function constructs a full covariance matrix from a nested initializer list.
-  ///
-  /// \param[in] list Nested initializer list representing the covariance matrix
-  /// \return CovarianceMatrixFull instance initialized with the provided values
-  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-      -> tl::expected<CovarianceMatrixFull, Errors>
-  {
-    auto baseMatrix = BaseSquareMatrix::FromList(list);
-    if (!baseMatrix)
-    {
-      // propagate the error from the base class
-      return tl::unexpected<Errors>{baseMatrix.error()};
-    }
-    return CovarianceMatrixFull{std::move(baseMatrix.value())};
-  }
   // <---
 
   /// \brief Set internal matrix to the Identity matrix

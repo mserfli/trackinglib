@@ -12,7 +12,9 @@ namespace motion
 {
 
 template <typename CovarianceMatrixPolicy_>
-MotionModelCA<CovarianceMatrixPolicy_>::MotionModelCA(const StateVec& vec, const StateCov& cov)
+MotionModelCA<CovarianceMatrixPolicy_>::MotionModelCA(const StateVec& vec, const StateCov& cov) noexcept(
+    std::is_nothrow_copy_constructible<StateVec>::value && std::is_nothrow_copy_constructible<StateCov>::value &&
+    noexcept(cov.isPositiveDefinite()))
     : BaseExtendedMotionModel{vec, cov}
 {
 }

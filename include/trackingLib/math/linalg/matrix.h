@@ -109,6 +109,19 @@ public:
   auto operator=(Matrix&&) noexcept -> Matrix& = default;
   virtual ~Matrix()                            = default;
 
+  /// \brief Creates a Matrix from a nested initializer list
+  ///
+  /// This function constructs a Matrix from a nested initializer list where each inner list
+  /// represents a row of the matrix. The dimensions must match the template parameters exactly.
+  ///
+  /// \param[in] list Nested initializer list in logical row-major format
+  /// \return tl::expected containing the matrix or invalid_initializer_list_row_count /
+  ///         invalid_initializer_list_col_count
+  /// \note Checks the outer row count, then every row width before copying, for either storage layout.
+  ///       Checks shape only; noexcept describes exception behavior, not numeric validity.
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept
+      -> tl::expected<Matrix, math::Errors>;
+
   //////////////////////////////////////////////////
   // additional constructors  --->
   /// \brief Construct a Zero matrix
@@ -119,15 +132,7 @@ public:
   /// \return One matrix
   [[nodiscard]] static auto Ones() -> Matrix;
 
-  /// \brief Creates a Matrix from a nested initializer list
-  ///
-  /// This function constructs a Matrix from a nested initializer list where each inner list
-  /// represents a row of the matrix. The dimensions must match the template parameters exactly.
-  ///
-  /// \param[in] list Nested initializer list in logical row-major format
-  /// \return Matrix instance initialized with the provided values
-  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-      -> tl::expected<Matrix, math::Errors>;
+
   // <---
 
   //////////////////////////////////////////////////
@@ -350,14 +355,14 @@ public:
   /// \param[in] col  column of the element to read (0-based index, must be valid)
   /// \return ValueType_   the value at (row,col)
   /// \warning No bounds checking is performed. Undefined behavior if indices are out of bounds.
-  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -> ValueType_;
+  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const noexcept -> ValueType_;
 
   /// \brief Unsafe element modify access (no bounds checking)
   /// \param[in] row  row of the element to modify (0-based index, must be valid)
   /// \param[in] col  column of the element to modify (0-based index, must be valid)
   /// \return ValueType_&   reference to the value at (row,col)
   /// \warning No bounds checking is performed. Undefined behavior if indices are out of bounds.
-  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
+  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) noexcept -> ValueType_&;
   // <---
 
   // clang-format off
@@ -374,11 +379,11 @@ TEST_REMOVE_PROTECTED:
   // access operators  --->
   /// \brief  Read-only access to the internal data
   /// \return const Storage&
-  auto data() const -> const Storage& { return _data; }
+  auto data() const noexcept -> const Storage& { return _data; }
 
   /// \brief Modify access to the internal data
   /// \return Storage&
-  auto data() -> Storage& { return _data; }
+  auto data() noexcept -> Storage& { return _data; }
   // <---
 
   // clang-format off

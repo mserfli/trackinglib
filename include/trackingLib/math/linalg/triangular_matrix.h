@@ -50,13 +50,28 @@ public:
 
   /// \brief Construct a new Triangular Matrix object
   /// \param[in] other
-  explicit TriangularMatrix(const BaseSquareMatrix& other);
+  explicit TriangularMatrix(const BaseSquareMatrix& other) noexcept;
 
   /// \brief Move construct a new Triangular Matrix object
   /// \param[in] other
   explicit TriangularMatrix(BaseSquareMatrix&& other) noexcept
       : BaseSquareMatrix{std::move(other)} {}; // TODO(matthias): might be dangerous due to memory artifacts
 
+
+  /// \brief Creates a TriangularMatrix from a nested initializer list
+  ///
+  /// This function constructs a TriangularMatrix from a nested initializer list.
+  /// The triangular structure (upper or lower) is determined by the IsLower_ template parameter.
+  ///
+  /// \param[in] list Nested initializer list representing a full square matrix
+  /// \return tl::expected containing the selected triangle or a propagated row-count / column-count error
+  /// \note Checks outer rows, then every row width before extracting the selected triangle.
+  ///       Discarded triangle values are ignored; no unit-diagonal, positivity, or finite-number check is added.
+  ///       noexcept describes exception behavior, not construction success.
+  /// \see TriangularFromSquare() for creating from square matrixes
+  /// \see SquareMatrix::FromList() for the checked square input
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept
+      -> tl::expected<TriangularMatrix, Errors>;
 
   /// \brief Construct an identity triangular matrix.
   ///
@@ -68,16 +83,6 @@ public:
   /// \note For unit triangular matrixes, this creates a matrix with ones on the diagonal
   [[nodiscard]] static auto Identity() -> TriangularMatrix { return TriangularMatrix{BaseSquareMatrix::Identity()}; }
 
-  /// \brief Creates a TriangularMatrix from a nested initializer list
-  ///
-  /// This function constructs a TriangularMatrix from a nested initializer list.
-  /// The triangular structure (upper or lower) is determined by the IsLower_ template parameter.
-  ///
-  /// \param[in] list Nested initializer list representing the triangular matrix
-  /// \return TriangularMatrix instance initialized with the provided values
-  /// \see TriangularFromSquare() for creating from square matrixes
-  /// \see SquareFromList() for the underlying conversion
-  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> TriangularMatrix;
 
   /// \brief Set a triangular block within this triangular matrix.
   ///
@@ -198,7 +203,7 @@ public:
 
   /// \brief Checks for Unit Upper condition
   /// \return true
-  [[nodiscard]] auto isUnitUpperTriangular() const -> bool;
+  [[nodiscard]] auto isUnitUpperTriangular() const noexcept -> bool;
 
   //////////////////////////////////////////////////
   // unsafe access operators  --->
@@ -206,13 +211,13 @@ public:
   /// \param[in] row  Row index of the element
   /// \param[in] col  Col index of the element
   /// \return value_type  scalar triangular value
-  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -> ValueType_;
+  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const noexcept -> ValueType_;
 
   /// \brief Element access to a scalar triangular value
   /// \param[in] row  Row index of the element
   /// \param[in] col  Col index of the element
   /// \return value_type&  Reference to the scalar triangular value
-  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) -> ValueType_&;
+  [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) noexcept -> ValueType_&;
   // <---
 
 private:

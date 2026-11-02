@@ -31,9 +31,13 @@ inline void DiagonalMatrix<ValueType_, Size_>::setIdentity()
 }
 
 template <typename ValueType_, sint32 Size_>
-inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix
+inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) noexcept
+    -> tl::expected<DiagonalMatrix, Errors>
 {
-  assert((list.size() == Size_) && "Mismatching size of intializer list");
+  if (list.size() != static_cast<std::size_t>(Size_))
+  {
+    return tl::unexpected<Errors>{Errors::invalid_initializer_list_size};
+  }
 
   DiagonalMatrix diag{};
   // fill diagonal elements
@@ -46,18 +50,26 @@ inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_l
 }
 
 template <typename ValueType_, sint32 Size_>
-inline auto DiagonalMatrix<ValueType_, Size_>::FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
-    -> DiagonalMatrix
+inline auto DiagonalMatrix<ValueType_, Size_>::FromList(
+    const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept -> tl::expected<DiagonalMatrix, Errors>
 {
-  assert(list.size() == Size_);
-  assert(list.begin()->size() == Size_);
+  if (list.size() != static_cast<std::size_t>(Size_))
+  {
+    return tl::unexpected<Errors>{Errors::invalid_initializer_list_row_count};
+  }
+  for (const auto& row : list)
+  {
+    if (row.size() != static_cast<std::size_t>(Size_))
+    {
+      return tl::unexpected<Errors>{Errors::invalid_initializer_list_col_count};
+    }
+  }
 
   DiagonalMatrix diag{};
   // copy diagonal elements from list
   sint32 idx = 0;
   for (const auto& rowList : list)
   {
-    assert((rowList.size() == Size_) && "Mismatching size of intializer list");
     diag.at_unsafe(idx) = *(rowList.begin() + idx);
     ++idx;
   }
@@ -209,7 +221,7 @@ inline auto DiagonalMatrix<ValueType_, Size_>::determinant() const -> ValueType_
 }
 
 template <typename ValueType_, sint32 Size_>
-inline auto DiagonalMatrix<ValueType_, Size_>::isPositiveDefinite() const -> bool
+inline auto DiagonalMatrix<ValueType_, Size_>::isPositiveDefinite() const noexcept -> bool
 {
   auto isValid = true;
   for (auto idx = 0; idx < Size_; ++idx)

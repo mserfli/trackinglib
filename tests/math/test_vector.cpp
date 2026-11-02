@@ -22,7 +22,9 @@ using VectorTestTypes = testing::Types<VectorValueType<sint32>, VectorValueType<
 TEST(Vector, ctor_FromList__Success) // NOLINT
 {
   // call UUT
-  const auto result = Vector<sint32, 3>::FromList({1, 2, 3});
+  auto resultResult = Vector<sint32, 3>::FromList({1, 2, 3});
+  ASSERT_TRUE(resultResult.has_value());
+  const auto result = resultResult.value();
 
   EXPECT_EQ(result.at_unsafe(0), 1);
   EXPECT_EQ(result.at_unsafe(1), 2);
@@ -33,9 +35,11 @@ TEST(Vector, ctor_FromList__Success) // NOLINT
 TEST(Vector, UnitVector__Success) // NOLINT
 {
   // clang-format off
-  const auto a  = Vector<sint32, 4>::FromList({
+  auto aResult = Vector<sint32, 4>::FromList({
     0, 0, 1, 0
   });
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
   // clang-format on
 
   // call UUT
@@ -48,9 +52,11 @@ TEST(Vector, test_op_at_Success) // NOLINT
 {
   // clang-format off
   using VecType = Vector<sint32, 4>;
-  auto a        = Vector<sint32, 4>::FromList({
+  auto aResult = Vector<sint32, 4>::FromList({
     1, 2, 3, 4
   });
+  ASSERT_TRUE(aResult.has_value());
+  auto a = aResult.value();
   // clang-format on
 
   // call UUT
@@ -64,9 +70,11 @@ TEST(Vector, test_op_at_const_Success) // NOLINT
 {
   // clang-format off
   using VecType = Vector<sint32, 4>;
-  const auto a  = Vector<sint32, 4>::FromList({
+  auto aResult = Vector<sint32, 4>::FromList({
     1, 2, 3, 4
   });
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
   // clang-format on
 
   // call UUT
@@ -81,9 +89,11 @@ TEST(Vector, op_dot__Success) // NOLINT
   // clang-format off
   using VecType = Vector<sint32, 4>;
   const auto a  = VecType::Ones();
-  const auto b  = Vector<sint32, 4>::FromList({
+  auto bResult = Vector<sint32, 4>::FromList({
     1, 2, 3, 4
   });
+  ASSERT_TRUE(bResult.has_value());
+  const auto b = bResult.value();
   // clang-format on
 
   // call UUT
@@ -95,9 +105,11 @@ TEST(Vector, op_dot__Success) // NOLINT
 TEST(Vector, op_normSq__Success) // NOLINT
 {
   // clang-format off
-  const auto a = Vector<sint32, 4>::FromList({
+  auto aResult = Vector<sint32, 4>::FromList({
     1, 2, 3, 4
   });
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
   // clang-format on
 
   // call UUT
@@ -109,9 +121,11 @@ TEST(Vector, op_normSq__Success) // NOLINT
 TEST(Vector, op_norm__Success) // NOLINT
 {
   // clang-format off
-  const auto a = Vector<float32, 2>::FromList({
+  auto aResult = Vector<float32, 2>::FromList({
     3, 4
   });
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
   // clang-format on
 
   // call UUT
@@ -123,12 +137,16 @@ TEST(Vector, op_norm__Success) // NOLINT
 TEST(Vector, op_normalize__Success) // NOLINT
 {
   // clang-format off
-  const auto a = Vector<float32, 2>::FromList({
+  auto aResult = Vector<float32, 2>::FromList({
     3, 4
   });
-  const auto b = Vector<float32, 2>::FromList({
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
+  auto bResult = Vector<float32, 2>::FromList({
     3 / 5.0, 4 / 5.0
   });
+  ASSERT_TRUE(bResult.has_value());
+  const auto b = bResult.value();
   // clang-format on
 
   // call UUT
@@ -151,15 +169,21 @@ TYPED_TEST(GTestVectorArithmetic, op_plus__Success) // NOLINT
 {
   using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<value_type, 3>::FromList({
+  auto aResult = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const auto b = Vector<value_type, 3>::FromList({
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
+  auto bResult = Vector<value_type, 3>::FromList({
     4, 5, 6
   });
-  const auto expected = Vector<value_type, 3>::FromList({
+  ASSERT_TRUE(bResult.has_value());
+  const auto b = bResult.value();
+  auto expectedResult = Vector<value_type, 3>::FromList({
     5, 7, 9
   });
+  ASSERT_TRUE(expectedResult.has_value());
+  const auto expected = expectedResult.value();
   // clang-format on
 
   // call UUT
@@ -172,15 +196,21 @@ TYPED_TEST(GTestVectorArithmetic, op_minus__Success) // NOLINT
 {
   using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<value_type, 3>::FromList({
+  auto aResult = Vector<value_type, 3>::FromList({
     5, 7, 9
   });
-  const auto b = Vector<value_type, 3>::FromList({
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
+  auto bResult = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const auto expected = Vector<value_type, 3>::FromList({
+  ASSERT_TRUE(bResult.has_value());
+  const auto b = bResult.value();
+  auto expectedResult = Vector<value_type, 3>::FromList({
     4, 5, 6
   });
+  ASSERT_TRUE(expectedResult.has_value());
+  const auto expected = expectedResult.value();
   // clang-format on
 
   // call UUT
@@ -193,13 +223,17 @@ TYPED_TEST(GTestVectorArithmetic, op_mul_scalar__Success) // NOLINT
 {
   using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<value_type, 3>::FromList({
+  auto aResult = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
   const value_type scalar = 2;
-  const auto expected = Vector<value_type, 3>::FromList({
+  auto expectedResult = Vector<value_type, 3>::FromList({
     2, 4, 6
   });
+  ASSERT_TRUE(expectedResult.has_value());
+  const auto expected = expectedResult.value();
   // clang-format on
 
   // call UUT - use scalar * vector (inherited from Matrix)
@@ -212,13 +246,17 @@ TYPED_TEST(GTestVectorArithmetic, op_plus_scalar__Success) // NOLINT
 {
   using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<value_type, 3>::FromList({
+  auto aResult = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
   const value_type scalar = 10;
-  const auto expected = Vector<value_type, 3>::FromList({
+  auto expectedResult = Vector<value_type, 3>::FromList({
     11, 12, 13
   });
+  ASSERT_TRUE(expectedResult.has_value());
+  const auto expected = expectedResult.value();
   // clang-format on
 
   // call UUT
@@ -231,13 +269,17 @@ TYPED_TEST(GTestVectorArithmetic, op_minus_scalar__Success) // NOLINT
 {
   using value_type = typename TypeParam::type;
   // clang-format off
-  const auto a = Vector<value_type, 3>::FromList({
+  auto aResult = Vector<value_type, 3>::FromList({
     10, 20, 30
   });
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
   const value_type scalar = 5;
-  const auto expected = Vector<value_type, 3>::FromList({
+  auto expectedResult = Vector<value_type, 3>::FromList({
     5, 15, 25
   });
+  ASSERT_TRUE(expectedResult.has_value());
+  const auto expected = expectedResult.value();
   // clang-format on
 
   // call UUT
@@ -251,16 +293,22 @@ TYPED_TEST(GTestVectorArithmetic, op_mul_matrix__Success) // NOLINT
 {
   using value_type = typename TypeParam::type;
   // clang-format off
-  const auto vec = Vector<value_type, 2>::FromList({
+  auto vecResult = Vector<value_type, 2>::FromList({
     3, 4
   });
-  const auto mat = Matrix<value_type, 2, 3, true>::FromList({
+  ASSERT_TRUE(vecResult.has_value());
+  const auto vec = vecResult.value();
+  auto matResult = Matrix<value_type, 2, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6}
   });
-  const auto expected = Vector<value_type, 3>::FromList({
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
+  auto expectedResult = Vector<value_type, 3>::FromList({
     19, 26, 33  // 3*1 + 4*4, 3*2 + 4*5, 3*3 + 4*6
   });
+  ASSERT_TRUE(expectedResult.has_value());
+  const auto expected = expectedResult.value();
   // clang-format on
 
   // call UUT - vector * matrix multiplication
@@ -274,15 +322,21 @@ TYPED_TEST(GTestVectorArithmetic, op_plus_equals__Success) // NOLINT
 {
   using value_type = typename TypeParam::type;
   // clang-format off
-  auto a = Vector<value_type, 3>::FromList({
+  auto aResult = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const auto b = Vector<value_type, 3>::FromList({
+  ASSERT_TRUE(aResult.has_value());
+  auto a = aResult.value();
+  auto bResult = Vector<value_type, 3>::FromList({
     4, 5, 6
   });
-  const auto expected = Vector<value_type, 3>::FromList({
+  ASSERT_TRUE(bResult.has_value());
+  const auto b = bResult.value();
+  auto expectedResult = Vector<value_type, 3>::FromList({
     5, 7, 9
   });
+  ASSERT_TRUE(expectedResult.has_value());
+  const auto expected = expectedResult.value();
   // clang-format on
 
   // call UUT
@@ -295,15 +349,21 @@ TYPED_TEST(GTestVectorArithmetic, op_minus_equals__Success) // NOLINT
 {
   using value_type = typename TypeParam::type;
   // clang-format off
-  auto a = Vector<value_type, 3>::FromList({
+  auto aResult = Vector<value_type, 3>::FromList({
     5, 7, 9
   });
-  const auto b = Vector<value_type, 3>::FromList({
+  ASSERT_TRUE(aResult.has_value());
+  auto a = aResult.value();
+  auto bResult = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
-  const auto expected = Vector<value_type, 3>::FromList({
+  ASSERT_TRUE(bResult.has_value());
+  const auto b = bResult.value();
+  auto expectedResult = Vector<value_type, 3>::FromList({
     4, 5, 6
   });
+  ASSERT_TRUE(expectedResult.has_value());
+  const auto expected = expectedResult.value();
   // clang-format on
 
   // call UUT
@@ -316,13 +376,17 @@ TYPED_TEST(GTestVectorArithmetic, op_mul_equals_scalar__Success) // NOLINT
 {
   using value_type = typename TypeParam::type;
   // clang-format off
-  auto a = Vector<value_type, 3>::FromList({
+  auto aResult = Vector<value_type, 3>::FromList({
     1, 2, 3
   });
+  ASSERT_TRUE(aResult.has_value());
+  auto a = aResult.value();
   const value_type scalar = 3;
-  const auto expected = Vector<value_type, 3>::FromList({
+  auto expectedResult = Vector<value_type, 3>::FromList({
     3, 6, 9
   });
+  ASSERT_TRUE(expectedResult.has_value());
+  const auto expected = expectedResult.value();
   // clang-format on
 
   // call UUT
@@ -350,9 +414,11 @@ TEST(Vector, ZeroVector_dot_product__Success) // NOLINT
 {
   // clang-format off
   const auto zero_vec = Vector<float32, 3>::Zeros();
-  const auto other_vec = Vector<float32, 3>::FromList({
+  auto other_vecResult = Vector<float32, 3>::FromList({
     1, 2, 3
   });
+  ASSERT_TRUE(other_vecResult.has_value());
+  const auto other_vec = other_vecResult.value();
   // clang-format on
 
   // call UUT
@@ -379,7 +445,9 @@ TEST(Vector, UnitVector_normalize__Success) // NOLINT
 TEST(Vector, op_at__FailBadRowIdx) // NOLINT
 {
   using VecType = Vector<sint32, 4>;
-  const auto a  = Vector<sint32, 4>::FromList({1, 2, 3, 4});
+  auto aResult  = Vector<sint32, 4>::FromList({1, 2, 3, 4});
+  ASSERT_TRUE(aResult.has_value());
+  const auto a = aResult.value();
 
   // call UUT with invalid index
   auto retVal = a[VecType::Rows]; // Out of bounds
@@ -391,9 +459,11 @@ TEST(Vector, op_at__FailBadRowIdx) // NOLINT
 TEST(Vector, op_divide_by_zero__Fail) // NOLINT
 {
   // clang-format off
-  auto vec = Vector<float32, 3>::FromList({
+  auto vecResult = Vector<float32, 3>::FromList({
     1, 2, 3
   });
+  ASSERT_TRUE(vecResult.has_value());
+  auto vec = vecResult.value();
   // clang-format on
 
   // call UUT - division by zero

@@ -54,11 +54,13 @@ TEST(SquareMatrixDecompositions, householderQR__Success) // NOLINT
 {
   // Create a test matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -79,11 +81,13 @@ TEST(SquareMatrixDecompositions, householderQR_OrthogonalityOfQ__Success) // NOL
 {
   // Create a test matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -97,11 +101,13 @@ TEST(SquareMatrixDecompositions, householderQR_UpperTriangularR__Success) // NOL
 {
   // Create a test matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -115,11 +121,13 @@ TEST(SquareMatrixDecompositions, householderQR_Reconstruction__Success) // NOLIN
 {
   // Create a test matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -141,10 +149,12 @@ TEST(SquareMatrixDecompositions, householderQR_ZeroColumn__StaysFinite) // NOLIN
   // First column (rows 0..end) is exactly zero -> a naive Householder step divides
   // tau = -sign*u1/normx and w /= u1 by 0/0. The pivot clamp must keep every entry finite.
   // clang-format off
-  const auto mat = SquareMatrix<float32, 2, true>::FromList({
+  auto matResult = SquareMatrix<float32, 2, true>::FromList({
     {0.0, 0.0},
     {0.0, 1.0}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   const auto [Q, R] = mat.householderQR();
@@ -168,12 +178,14 @@ TEST(SquareMatrixDecompositions, inverse_SingularZeroColumn__StaysFinite) // NOL
   // matrix must not silently propagate NaN/Inf with no error signal (mirrors decomposeUDUT's
   // clamp-and-continue strategy, since inverse()/qrSolve() have no tl::expected error channel).
   // clang-format off
-  const auto mat = SquareMatrix<float64, 4, true>::FromList({
+  auto matResult = SquareMatrix<float64, 4, true>::FromList({
     {4.0, 0.0, 0.0, 0.0},
     {0.0, 0.0, 0.0, 0.0},
     {0.0, 0.0, 4.0, 0.0},
     {0.0, 0.0, 0.0, 0.0}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   const auto inv = mat.inverse();
@@ -239,10 +251,12 @@ TEST(SquareMatrixDecompositions, decomposeLLT_NotSymmetric_ExpectError) // NOLIN
 {
   // Create a non-symmetric matrix
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, -4},
     {-3, 13},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -255,10 +269,12 @@ TEST(SquareMatrixDecompositions, decomposeLLT_SymmetricNotPositiveDefinite_Expec
 {
   // Create a symmetric but not positive definite matrix
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, -3},
     {-3, -13},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -330,10 +346,12 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_NotSymmetric_ExpectError) // NOLI
 {
   // Create a non-symmetric matrix
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, -4},
     {-3, 13},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -346,10 +364,12 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_SymmetricNotPositiveDefinite_Expe
 {
   // Create a symmetric but not positive definite matrix
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, -3},
     {-3, -13},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -451,10 +471,12 @@ TEST(SquareMatrixDecompositions, decomposeUDUT_NotSymmetric_ExpectError) // NOLI
 {
   // Create a non-symmetric matrix
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, 2},
     { 1, 5}
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -471,11 +493,13 @@ TEST(SquareMatrixDecompositions, householderQR_Double__Success) // NOLINT
 {
   // Create a test matrix with double precision
   // clang-format off
-  const auto mat = SquareMatrix<float64, 3, true>::FromList({
+  auto matResult = SquareMatrix<float64, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -519,10 +543,12 @@ TEST(SquareMatrixDecompositions, decomposeLLT_SingularPositiveSemiDefinite_Expec
   // Rank-deficient but symmetric, strictly-positive-diagonal PSD matrix: pivot at (1,1)
   // becomes exactly 0 mid-factorization even though the input diagonal itself is positive.
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {1, 1},
     {1, 1},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -534,10 +560,12 @@ TEST(SquareMatrixDecompositions, decomposeLLT_SingularPositiveSemiDefinite_Expec
 TEST(SquareMatrixDecompositions, decomposeLLT_SingularPositiveSemiDefinite_Double_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float64, 2, true>::FromList({
+  auto covResult = SquareMatrix<float64, 2, true>::FromList({
     {1, 1},
     {1, 1},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -571,10 +599,12 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_SingularPositiveSemiDefinite_Expe
   // Rank-deficient but symmetric, strictly-positive-diagonal PSD matrix: pivot at (1,1)
   // becomes exactly 0 mid-factorization even though the input diagonal itself is positive.
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {1, 1},
     {1, 1},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -586,10 +616,12 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_SingularPositiveSemiDefinite_Expe
 TEST(SquareMatrixDecompositions, decomposeLDLT_SingularPositiveSemiDefinite_Double_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float64, 2, true>::FromList({
+  auto covResult = SquareMatrix<float64, 2, true>::FromList({
     {1, 1},
     {1, 1},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -603,10 +635,12 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_IndefiniteInteriorPivot_ExpectErr
   // Symmetric, strictly-positive-diagonal, indefinite matrix: pivot at (1,1) becomes
   // negative mid-factorization even though the input diagonal itself is positive.
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {1, 2},
     {2, 1},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -618,10 +652,12 @@ TEST(SquareMatrixDecompositions, decomposeLDLT_IndefiniteInteriorPivot_ExpectErr
 TEST(SquareMatrixDecompositions, decomposeLDLT_IndefiniteInteriorPivot_Double_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float64, 2, true>::FromList({
+  auto covResult = SquareMatrix<float64, 2, true>::FromList({
     {1, 2},
     {2, 1},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -656,10 +692,12 @@ TEST(SquareMatrixDecompositions, decomposeLLT_SingularPSD__RejectsAsNotPositiveD
 {
   // [[1,1],[1,1]] is symmetric PSD (eigenvalues {2,0}); the pivot at (1,1) becomes exactly 0.
   // clang-format off
-  const auto cov = SquareMatrix<float64, 2, true>::FromList({
+  auto covResult = SquareMatrix<float64, 2, true>::FromList({
     {1.0, 1.0},
     {1.0, 1.0}
   });
+  ASSERT_TRUE(covResult.has_value());
+  const auto cov = covResult.value();
   // clang-format on
 
   const auto retVal = cov.decomposeLLT();
@@ -671,10 +709,12 @@ TEST(SquareMatrixDecompositions, decomposeLLT_SingularPSD__RejectsAsNotPositiveD
 TEST(SquareMatrixDecompositions, decomposeLDLT_SingularPSD__RejectsAsNotPositiveDefinite) // NOLINT
 {
   // clang-format off
-  const auto cov = SquareMatrix<float64, 2, true>::FromList({
+  auto covResult = SquareMatrix<float64, 2, true>::FromList({
     {1.0, 1.0},
     {1.0, 1.0}
   });
+  ASSERT_TRUE(covResult.has_value());
+  const auto cov = covResult.value();
   // clang-format on
 
   const auto retVal = cov.decomposeLDLT();

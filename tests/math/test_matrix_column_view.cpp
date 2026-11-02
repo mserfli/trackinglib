@@ -9,11 +9,13 @@ TEST(MatrixColumnView, mul_lhs) // NOLINT
 {
   // testing Matrix * MatrixColumnView
   // clang-format off
-  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
-  })};
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
   // clang-format on
   // the column view
   const MatrixColumnView<sint32, 3, 3, true> colView(mat, 2, 0, 2);
@@ -36,22 +38,26 @@ TEST(MatrixColumnView, mul_lhs_ranged) // NOLINT
 {
   // testing Matrix * MatrixColumnView
   // clang-format off
-  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
-  })};
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
   // clang-format on
   // the column view
   const MatrixColumnView<sint32, 3, 3, true> colView(mat, 2, 1, 2);
 
   // a lhs matrix
   // clang-format off
-  const auto lhs{Matrix<sint32, 3, 2, true>::FromList({
+  auto lhsFactoryResult = Matrix<sint32, 3, 2, true>::FromList({
     {1, 2}, 
     {3, 4}, 
     {5, 6}}
-  )};
+  );
+  ASSERT_TRUE(lhsFactoryResult.has_value());
+  const auto lhs = lhsFactoryResult.value();
   // clang-format on
 
   // calc expected result
@@ -69,15 +75,19 @@ TEST(MatrixColumnView, mul_rhs) // NOLINT
 {
   // testing MatrixColumnView * Vector
   // clang-format off
-  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 4, 3, true>::FromList({
     { 1,  2,  3},
     { 4,  5,  6},
     { 7,  8,  9},
     {10, 11, 12}
-  })};
-  const auto rhs{Vector<sint32, 4>::FromList({
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
+  auto rhsFactoryResult = Vector<sint32, 4>::FromList({
     1, 2, 3, 4}
-  )};
+  );
+  ASSERT_TRUE(rhsFactoryResult.has_value());
+  const auto rhs = rhsFactoryResult.value();
   // clang-format on
   const MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 0, 3);
 
@@ -96,15 +106,19 @@ TEST(MatrixColumnView, mul_rhs_ranged) // NOLINT
 {
   // testing MatrixColumnView * Vector
   // clang-format off
-  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 4, 3, true>::FromList({
     { 1,  2,  3},
     { 4,  5,  6},
     { 7,  8,  9},
     {10, 11, 12}
-  })};
-  const auto rhs{Vector<sint32, 2>::FromList({
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
+  auto rhsFactoryResult = Vector<sint32, 2>::FromList({
     1, 2
-  })};
+  });
+  ASSERT_TRUE(rhsFactoryResult.has_value());
+  const auto rhs = rhsFactoryResult.value();
   // clang-format on
   const MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 1, 2);
 
@@ -123,15 +137,19 @@ TEST(MatrixColumnView, mul_rhsview) // NOLINT
 {
   // testing MatrixColumnView * MatrixColumnView
   // clang-format off
-  const auto mat{Matrix<sint32, 4, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 4, 3, true>::FromList({
     { 1,  2,  3},
     { 4,  5,  6},
     { 7,  8,  9},
     {10, 11, 12}
-  })};
-  const auto rhs{Vector<sint32, 4>::FromList({
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
+  auto rhsFactoryResult = Vector<sint32, 4>::FromList({
     1, 2, 3, 4
-  })};
+  });
+  ASSERT_TRUE(rhsFactoryResult.has_value());
+  const auto rhs = rhsFactoryResult.value();
   // clang-format on
   const MatrixColumnView<sint32, 4, 3, true> colView(mat, 2, 1, 2);
   const MatrixColumnView<sint32, 4, 1, true> rhsView(rhs, 0, 1, 2);

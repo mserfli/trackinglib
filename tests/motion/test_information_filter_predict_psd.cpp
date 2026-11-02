@@ -57,19 +57,24 @@ TEST(InformationFilterPredict, predict_RankDeficientInformationMatrix__DoesNotFr
   // Information matrix with the velocity subspace unobserved (zero information) -> singular PSD,
   // i.e. an exactly-zero eigenvalue. State order is {X, VX, Y, VY}.
   // clang-format off
-  const auto Ysingular = MM::StateCovFromList({
+  auto YsingularResult = MM::StateCovFromList({
     {4.0, 0.0, 0.0, 0.0},   // X  observed
     {0.0, 0.0, 0.0, 0.0},   // VX unobserved
     {0.0, 0.0, 4.0, 0.0},   // Y  observed
     {0.0, 0.0, 0.0, 0.0}    // VY unobserved
-  }).value();
+  });
+  ASSERT_TRUE(YsingularResult.has_value());
+  const auto Ysingular = YsingularResult.value();
   // clang-format on
-  const auto ySingular = MM::StateVecFromList({8.0, 0.0, 8.0, 0.0});
+  auto ySingularResult = MM::StateVecFromList({8.0, 0.0, 8.0, 0.0});
+  ASSERT_TRUE(ySingularResult.has_value());
+  const auto ySingular = ySingularResult.value();
 
-  // Construct with a PD placeholder to satisfy the ctor's determinant assert, then install the
+  // Construct with a PD placeholder to pass checked construction, then install the
   // singular PSD information state through the internal-use accessors.
-  MM mm{MM::StateVecFromList({0, 0, 0, 0}),
-        MM::StateCovFromList({{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}}).value()};
+  auto mmResult = MM::FromLists({0, 0, 0, 0}, {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}});
+  ASSERT_TRUE(mmResult.has_value());
+  MM mm                     = mmResult.value();
   mm.getCovForInternalUse() = Ysingular;
   mm.getVecForInternalUse() = ySingular;
 
@@ -95,14 +100,18 @@ TEST(InformationFilterPredict, predict_StrictlyPositiveDefiniteInformationMatrix
   // strictly PD information matrix -> the predict must update it normally (regression guard: the
   // eventual fix must keep updating PD matrices and must NOT resurrect a genuinely zero-Y state)
   // clang-format off
-  const auto Ypd = MM::StateCovFromList({
+  auto YpdResult = MM::StateCovFromList({
     {5.0, 0.0, 0.0, 0.0},
     {0.0, 2.0, 0.0, 0.0},
     {0.0, 0.0, 5.0, 0.0},
     {0.0, 0.0, 0.0, 2.0}
-  }).value();
+  });
+  ASSERT_TRUE(YpdResult.has_value());
+  const auto Ypd = YpdResult.value();
   // clang-format on
-  const auto yPd = MM::StateVecFromList({10.0, 4.0, 10.0, 4.0});
+  auto yPdResult = MM::StateVecFromList({10.0, 4.0, 10.0, 4.0});
+  ASSERT_TRUE(yPdResult.has_value());
+  const auto yPd = yPdResult.value();
 
   MM mm{yPd, Ypd};
 
@@ -131,17 +140,22 @@ TEST(InformationFilterPredict, predict_RankDeficientInformationMatrix__StateStay
   // Information matrix with the velocity subspace unobserved (zero information) -> singular PSD,
   // i.e. an exactly-zero eigenvalue. State order is {X, VX, Y, VY}.
   // clang-format off
-  const auto Ysingular = MM::StateCovFromList({
+  auto YsingularResult = MM::StateCovFromList({
     {4.0, 0.0, 0.0, 0.0},   // X  observed
     {0.0, 0.0, 0.0, 0.0},   // VX unobserved
     {0.0, 0.0, 4.0, 0.0},   // Y  observed
     {0.0, 0.0, 0.0, 0.0}    // VY unobserved
-  }).value();
+  });
+  ASSERT_TRUE(YsingularResult.has_value());
+  const auto Ysingular = YsingularResult.value();
   // clang-format on
-  const auto ySingular = MM::StateVecFromList({8.0, 0.0, 8.0, 0.0});
+  auto ySingularResult = MM::StateVecFromList({8.0, 0.0, 8.0, 0.0});
+  ASSERT_TRUE(ySingularResult.has_value());
+  const auto ySingular = ySingularResult.value();
 
-  MM mm{MM::StateVecFromList({0, 0, 0, 0}),
-        MM::StateCovFromList({{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}}).value()};
+  auto mmResult = MM::FromLists({0, 0, 0, 0}, {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}});
+  ASSERT_TRUE(mmResult.has_value());
+  MM mm                     = mmResult.value();
   mm.getCovForInternalUse() = Ysingular;
   mm.getVecForInternalUse() = ySingular;
 

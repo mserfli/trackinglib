@@ -66,14 +66,14 @@ public:
   using AugmentedProcessNoiseMappingMatrix = math::Matrix<value_type, NUM_STATE_VARIABLES, NUM_AUG_PROC_NOISE_VARIABLES>;
 
   // rule of 5 declarations
-  MotionModelCA()                                            = default;
-  MotionModelCA(const MotionModelCA&)                        = default;
-  MotionModelCA(MotionModelCA&&) noexcept                    = default;
-  auto operator=(const MotionModelCA&) -> MotionModelCA&     = default;
-  auto operator=(MotionModelCA&&) noexcept -> MotionModelCA& = default;
-  virtual ~MotionModelCA()                                   = default;
+  MotionModelCA()                                                                              = default;
+  MotionModelCA(const MotionModelCA&)                                                          = default;
+  MotionModelCA(MotionModelCA&&) noexcept(std::is_nothrow_move_constructible<StateCov>::value) = default;
+  auto operator=(const MotionModelCA&) -> MotionModelCA&                                       = default;
+  auto operator=(MotionModelCA&&) noexcept -> MotionModelCA&                                   = default;
+  virtual ~MotionModelCA()                                                                     = default;
 
-  /// \brief Construct a new CA with a validated covariance
+  /// \brief Construct a new CA after checking covariance positive definiteness
   ///
   /// The release-safe, mandatory gate to the protected ctor below: validates cov before
   /// construction instead of relying on a debug-only precondition check. Defined here (not on
@@ -84,7 +84,12 @@ public:
   /// \param[in] cov  Initial state covariance (full or UDU-factored per the covariance policy)
   /// \return tl::expected containing the MotionModelCA instance on success, or
   ///         Errors::matrix_not_positive_definite if cov is not positive definite
-  static auto TryCreate(const StateVec& vec, const StateCov& cov) -> tl::expected<MotionModelCA, math::Errors>
+  /// \note Uses the existing covariance predicate/tolerance; no comprehensive NaN/Inf rejection is added.
+  ///       noexcept holds for built-in policies and is conditional on supplied covariance operations.
+  static auto TryCreate(const StateVec& vec, const StateCov& cov) noexcept(
+      std::is_nothrow_copy_constructible<StateVec>::value && std::is_nothrow_copy_constructible<StateCov>::value &&
+      std::is_nothrow_move_constructible<StateCov>::value &&
+      noexcept(cov.isPositiveDefinite())) -> tl::expected<MotionModelCA, math::Errors>
   {
     if (!cov.isPositiveDefinite())
     {
@@ -149,11 +154,13 @@ TEST_REMOVE_PROTECTED:
 
   /// \brief Construct a new CA given the vector and the covariance matrix
   ///
-  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  /// Protected in production: use TryCreate() (positive-definiteness check) or FromLists() instead.
   ///
   /// \param[in] vec  Initial state vector [x, vx, ax, y, vy, ay]'
   /// \param[in] cov  Initial state covariance (full or UDU-factored per the covariance policy)
-  explicit MotionModelCA(const StateVec& vec, const StateCov& cov);
+  explicit MotionModelCA(const StateVec& vec, const StateCov& cov) noexcept(std::is_nothrow_copy_constructible<StateVec>::value &&
+                                                                            std::is_nothrow_copy_constructible<StateCov>::value &&
+                                                                            noexcept(cov.isPositiveDefinite()));
 };
 
 } // namespace motion

@@ -20,7 +20,7 @@ namespace math
 
 template <typename ValueType_, sint32 Size_>
 CovarianceMatrixFactored<ValueType_, Size_>::CovarianceMatrixFactored(const TriangularMatrix<ValueType_, Size_, false, true>& u,
-                                                                      const DiagonalMatrix<ValueType_, Size_>&                d)
+                                                                      const DiagonalMatrix<ValueType_, Size_>& d) noexcept
     : _u{u}
     , _d{d}
 {
@@ -46,11 +46,28 @@ auto CovarianceMatrixFactored<ValueType_, Size_>::FromDiagonal(const DiagonalMat
 
 template <typename ValueType_, sint32 Size_>
 auto CovarianceMatrixFactored<ValueType_, Size_>::FromList(const std::initializer_list<std::initializer_list<ValueType_>>& u,
-                                                           const std::initializer_list<ValueType_>& d) -> CovarianceMatrixFactored
+                                                           const std::initializer_list<ValueType_>& d) noexcept
+    -> tl::expected<CovarianceMatrixFactored, Errors>
 {
-  auto&& u_ = TriangularMatrix<ValueType_, Size_, false, true>::FromList(u);
-  auto&& d_ = DiagonalMatrix<ValueType_, Size_>::FromList(d);
-  return CovarianceMatrixFactored{std::move(u_), std::move(d_)};
+  const auto upper = TriangularMatrix<ValueType_, Size_, false, true>::FromList(u);
+  if (!upper)
+  {
+    return tl::unexpected<Errors>{upper.error()};
+  }
+  const auto diagonal = DiagonalMatrix<ValueType_, Size_>::FromList(d);
+  if (!diagonal)
+  {
+    return tl::unexpected<Errors>{diagonal.error()};
+  }
+  if (!upper.value().isUnitUpperTriangular())
+  {
+    return tl::unexpected<Errors>{Errors::matrix_not_unit_upper_triangular};
+  }
+  if (!diagonal.value().isPositiveDefinite())
+  {
+    return tl::unexpected<Errors>{Errors::matrix_not_positive_definite};
+  }
+  return CovarianceMatrixFactored{upper.value(), diagonal.value()};
 }
 
 

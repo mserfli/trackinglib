@@ -7,6 +7,9 @@
 #include "math/linalg/vector.h"
 #include "motion/contracts/state_mem_intf.h"
 
+#include <type_traits>
+#include <utility>
+
 namespace tracking
 {
 namespace motion
@@ -31,12 +34,12 @@ public:
   using ConstStateCov = const StateCov;
 
   // rule of 5 declarations
-  StateMem()                                         = default;
-  StateMem(const StateMem& other)                    = default;
-  StateMem(StateMem&&) noexcept                      = default;
-  auto operator=(const StateMem& other) -> StateMem& = default;
-  auto operator=(StateMem&&) noexcept -> StateMem&   = default;
-  virtual ~StateMem()                                = default;
+  StateMem()                                                                         = default;
+  StateMem(const StateMem& other)                                                    = default;
+  StateMem(StateMem&&) noexcept(std::is_nothrow_move_constructible<StateCov>::value) = default;
+  auto operator=(const StateMem& other) -> StateMem&                                 = default;
+  auto operator=(StateMem&&) noexcept -> StateMem&                                   = default;
+  virtual ~StateMem()                                                                = default;
 
   /// \brief Read access to full state vector
   /// \return const StateVec&
@@ -75,7 +78,8 @@ TEST_REMOVE_PROTECTED:
   /// \brief Construct a new State Mem object
   /// \param[in] vec
   /// \param[in] cov
-  explicit StateMem(const StateVec& vec, const StateCov& cov)
+  explicit StateMem(const StateVec& vec, const StateCov& cov) noexcept(std::is_nothrow_copy_constructible<StateVec>::value &&
+                                                                       std::is_nothrow_copy_constructible<StateCov>::value)
       : _vec{vec}
       , _cov{cov}
   {

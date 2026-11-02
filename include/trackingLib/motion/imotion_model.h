@@ -16,6 +16,9 @@
 #include "motion/motion_model_traits.h" // IWYU pragma: keep
 #include "motion/state_mem.h"
 
+#include <type_traits>
+#include <utility>
+
 namespace tracking
 {
 namespace motion
@@ -101,14 +104,24 @@ public:
 
   /// \brief Create state vector from initializer list
   /// \param[in] list  Initializer list with state values
-  /// \return StateVec
-  static auto StateVecFromList(const std::initializer_list<value_type>& list) -> StateVec { return StateVec::FromList(list); }
+  /// \return tl::expected containing StateVec or invalid_initializer_list_size
+  /// \note Checks length before copying; noexcept specifies exception behavior, not finite numeric inputs.
+  static auto StateVecFromList(const std::initializer_list<value_type>& list) noexcept -> tl::expected<StateVec, math::Errors>
+  {
+    return StateVec::FromList(list);
+  }
 
   /// \brief Create state covariance from initializer list
   /// \param[in] list  Nested initializer list with covariance values
-  /// \return tl::expected containing StateCov on success, or Errors::matrix_not_positive_definite
-  ///         if the list cannot be factored into a valid covariance (factored policy only)
-  static auto StateCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list)
+  /// \return tl::expected containing StateCov or the propagated dimension, symmetry, or decomposition error
+  /// \note Checks outer rows, then every row width, then symmetry using the existing tolerance.
+  ///       Full policy supports singular/indefinite symmetric inputs at this boundary.
+  ///       Factored policy preserves UDU pivot clamping; success does not prove the input was PD.
+  ///       For example, a negative diagonal can be retained by full construction and clamped by factored construction.
+  /// \note noexcept for built-in policies specifies exception behavior, not finite numeric validity.
+  static auto StateCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list) noexcept(
+      std::is_same<StateCov, math::CovarianceMatrixFull<value_type, MotionModelTrait_::Size>>::value ||
+      std::is_same<StateCov, math::CovarianceMatrixFactored<value_type, MotionModelTrait_::Size>>::value)
       -> tl::expected<StateCov, math::Errors>
   {
     if constexpr (CovarianceMatrixPolicy::is_factored)
@@ -122,12 +135,16 @@ public:
   }
 
   /// \brief Create factored state covariance from initializer list
+  /// \tparam T Covariance policy, enabling this overload only for factored policies
   /// \param[in] u Nested initializer list for the upper triangular U matrix
   /// \param[in] d Flat initializer list for the diagonal D matrix
-  /// \return StateCov
+  /// \return tl::expected containing StateCov or the first U-dimension, D-length, unit-upper, or positive-D error
+  /// \note Extracts upper U, ignores its lower triangle, and never clamps explicit D.
+  ///       Uses the component factory's conditional noexcept contract; no comprehensive NaN/Inf validation is added.
   template <typename T = CovarianceMatrixPolicy>
   static auto StateCovFromList(const std::initializer_list<std::initializer_list<value_type>>& u,
-                               const std::initializer_list<value_type>& d) -> std::enable_if_t<T::is_factored, StateCov>
+                               const std::initializer_list<value_type>& d) noexcept(noexcept(StateCov::FromList(u, d)))
+      -> std::enable_if_t<T::is_factored, tl::expected<StateCov, math::Errors>>
   {
     return StateCov::FromList(u, d);
   }
@@ -135,13 +152,24 @@ public:
   /// \brief Create complete ExtendedMotionModel from initializer lists
   /// \param[in] vecList  Initializer list for state vector
   /// \param[in] covList  Nested initializer list for covariance matrix
-  /// \return tl::expected containing the MotionModel_ instance on success, or
-  ///         Errors::matrix_not_positive_definite if covList cannot be factored into a valid covariance
-  static auto FromLists(const std::initializer_list<value_type>&                        vecList,
-                        const std::initializer_list<std::initializer_list<value_type>>& covList)
+  /// \return tl::expected containing MotionModel_ or the first error from vector, covariance, then concrete TryCreate
+  /// \note Vector length is checked before covariance dimensions/symmetry/decomposition.
+  ///       Built-in TryCreate requires the resulting covariance to be positive definite.
+  ///       Full and factored policies can accept different numeric inputs due to existing UDU clamping.
+  /// \note noexcept is conditional on the supplied helpers/model and true for built-ins.
+  ///       It does not guarantee finite numeric inputs or construction success. Check the result before value access.
+  static auto FromLists(const std::initializer_list<value_type>& vecList,
+                        const std::initializer_list<std::initializer_list<value_type>>&
+                            covList) noexcept(noexcept(StateVecFromList(vecList)) && noexcept(StateCovFromList(covList)) &&
+                                              noexcept(MotionModel_::TryCreate(std::declval<const StateVec&>(),
+                                                                               std::declval<const StateCov&>())))
       -> tl::expected<MotionModel_, math::Errors>
   {
-    auto       vec = StateVecFromList(vecList);
+    const auto vec = StateVecFromList(vecList);
+    if (!vec.has_value())
+    {
+      return tl::unexpected<math::Errors>{vec.error()};
+    }
     const auto cov = StateCovFromList(covList);
     if (!cov.has_value())
     {
@@ -150,7 +178,7 @@ public:
     // MotionModel_::TryCreate (not the ctor directly): a CRTP base has no access to its derived
     // class's protected ctor without a friend declaration, which AUTOSAR A11-3-1 prohibits.
     // TryCreate is a member of MotionModel_ itself, so it can reach its own protected ctor.
-    return MotionModel_::TryCreate(vec, cov.value());
+    return MotionModel_::TryCreate(vec.value(), cov.value());
   }
 
   /// \brief Read access to x position
@@ -263,15 +291,18 @@ TEST_REMOVE_PROTECTED:
   // clang-format on
 
   // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
-  ExtendedMotionModel(const ExtendedMotionModel& other)                    = default;
-  ExtendedMotionModel(ExtendedMotionModel&&) noexcept                      = default;
-  auto operator=(const ExtendedMotionModel& other) -> ExtendedMotionModel& = default;
-  auto operator=(ExtendedMotionModel&&) noexcept -> ExtendedMotionModel&   = default;
+  ExtendedMotionModel(const ExtendedMotionModel& other)                                                    = default;
+  ExtendedMotionModel(ExtendedMotionModel&&) noexcept(std::is_nothrow_move_constructible<StateCov>::value) = default;
+  auto operator=(const ExtendedMotionModel& other) -> ExtendedMotionModel&                                 = default;
+  auto operator=(ExtendedMotionModel&&) noexcept -> ExtendedMotionModel&                                   = default;
 
   /// \brief Testing: Construct a new Extended Motion Model object
   /// \param[in] vec
   /// \param[in] cov
-  explicit ExtendedMotionModel(const StateVec& vec, const StateCov& cov)
+  explicit ExtendedMotionModel(const StateVec& vec,
+                               const StateCov& cov) noexcept(std::is_nothrow_copy_constructible<StateVec>::value &&
+                                                             std::is_nothrow_copy_constructible<StateCov>::value &&
+                                                             noexcept(cov.isPositiveDefinite()))
       : BaseIMotionModel{}
       , BaseStateMem{vec, cov}
   {

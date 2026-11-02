@@ -74,6 +74,17 @@ public:
     // row-major or column-major storage, as there is only one column.
   }
 
+  /// \brief Creates a Vector from an initializer list
+  ///
+  /// This function constructs a Vector from a flat initializer list.
+  /// The list size must exactly match the vector size.
+  ///
+  /// \param[in] list Initializer list containing the vector values
+  /// \return tl::expected containing the vector or invalid_initializer_list_size on a length mismatch
+  /// \note Checks length before copying; numeric values are not validated.
+  ///       noexcept describes exception behavior, not construction success or finite numbers.
+  [[nodiscard]] static auto FromList(const std::initializer_list<ValueType_>& list) noexcept -> tl::expected<Vector, Errors>;
+
   /// \brief Construct a zero vector
   /// \return A vector filled with zeros
   [[nodiscard]] static auto Zeros() -> Vector;
@@ -88,15 +99,7 @@ public:
   template <sint32 Row_>
   [[nodiscard]] static auto UnitVector() -> Vector;
 
-  /// \brief Creates a Vector from an initializer list
-  ///
-  /// This function constructs a Vector from a flat initializer list.
-  /// The list size must exactly match the vector size.
-  ///
-  /// \param[in] list Initializer list containing the vector values
-  /// \return Vector instance initialized with the provided values
-  /// \note The list size must equal Size_, otherwise assertion fails
-  [[nodiscard]] static auto FromList(const std::initializer_list<ValueType_>& list) -> Vector;
+
   // <---
 
   //////////////////////////////////////////////////
@@ -161,13 +164,13 @@ public:
   /// \param[in] idx Row index of the element (must be valid)
   /// \return The scalar vector value
   /// \note No bounds checking performed - use with caution
-  [[nodiscard]] auto at_unsafe(sint32 idx) const -> ValueType_ { return BaseMatrix::at_unsafe(idx, 0); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) const noexcept -> ValueType_ { return BaseMatrix::at_unsafe(idx, 0); }
 
   /// \brief Element access to a scalar vector value (unchecked)
   /// \param[in] idx Row index of the element (must be valid)
   /// \return Reference to the scalar vector value
   /// \note No bounds checking performed - use with caution
-  [[nodiscard]] auto at_unsafe(sint32 idx) -> ValueType_& { return BaseMatrix::at_unsafe(idx, 0); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) noexcept -> ValueType_& { return BaseMatrix::at_unsafe(idx, 0); }
   // <---
 
 protected:

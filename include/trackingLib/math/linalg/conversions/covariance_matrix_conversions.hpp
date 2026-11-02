@@ -26,20 +26,21 @@ namespace conversions
 /// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The dimension of the covariance matrix
 /// \param[in] other Full covariance matrix to decompose
-/// \return tl::expected containing the CovarianceMatrixFactored instance on success
-/// \see CovarianceMatrixFactoredFromList() (overloaded) for nested initializer list input
-/// \see CovarianceMatrixFullFromList() for full covariance matrixes
+/// \return tl::expected containing the factored covariance or the decomposition error
+/// \note Preserves existing UDU pivot clamping to epsilon; input is not required to be strictly PD.
+///       No comprehensive NaN/Inf rejection is provided. noexcept specifies exception behavior only.
+/// \see CovarianceMatrixFactoredFromList() for nested initializer list input
+/// \see CovarianceMatrixFull::FromList() for full covariance matrices
 template <typename ValueType_, sint32 Size_>
 inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(
-    const typename CovarianceMatrixFactored<ValueType_, Size_>::compose_type& other)
+    const typename CovarianceMatrixFactored<ValueType_, Size_>::compose_type& other) noexcept
     -> tl::expected<CovarianceMatrixFactored<ValueType_, Size_>, Errors>
 {
   const auto retVal = other.decomposeUDUT();
   if (retVal.has_value())
   {
-    const auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix<ValueType_, Size_, false, true>::Identity(),
-                                                       DiagonalMatrix<ValueType_, Size_>::Identity()));
-    return CovarianceMatrixFactored{std::move(u), std::move(d)};
+    const auto& [u, d] = retVal.value();
+    return CovarianceMatrixFactored{u, d};
   }
   return tl::unexpected<Errors>{retVal.error()};
 }
@@ -53,13 +54,16 @@ inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(
 /// \tparam ValueType_ The atomic data type of internal elements
 /// \tparam Size_ The dimension of the covariance matrix
 /// \param[in] list Nested initializer list representing the full covariance matrix
-/// \return tl::expected containing the CovarianceMatrixFactored instance on success, or
-///         Errors::matrix_not_positive_definite if the input cannot be factored into UDU^T form
-/// \note The input matrix must be symmetric, otherwise assertion fails
-/// \see CovarianceMatrixFactoredFromList() (overloaded) for separate U and D input
-/// \see CovarianceMatrixFullFromList() for full covariance matrixes
+/// \return tl::expected containing the factored covariance or a propagated dimension, symmetry, or decomposition error
+/// \note Checks dimensions and symmetry before decomposition. The existing UDU
+///       algorithm clamps non-positive pivots to epsilon; it does not enforce strict
+///       positive definiteness of the input. For example, diag(-1, 1) succeeds here
+///       with the first pivot clamped, while full-policy model creation rejects it.
+/// \note No comprehensive NaN/Inf check is provided. noexcept describes exception
+///       behavior and does not guarantee successful construction or finite numbers.
+/// \see CovarianceMatrixFactored::FromList for explicit U/D input without clamping
 template <typename ValueType_, sint32 Size_>
-inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list)
+inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept
     -> tl::expected<CovarianceMatrixFactored<ValueType_, Size_>, Errors>
 {
   const auto other = CovarianceMatrixFactored<ValueType_, Size_>::compose_type::FromList(list);

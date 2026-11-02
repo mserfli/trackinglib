@@ -14,7 +14,7 @@ template <typename ImplType>
 class RequireMoveIntf
 {
 public:
-  RequireMoveIntf()
+  RequireMoveIntf() noexcept
   {
     static_assert(std::is_nothrow_move_constructible<ImplType>::value, "missing noexcept move ctor");
     static_assert(std::is_nothrow_move_assignable<ImplType>::value, "missing noexcept move assignment operator");

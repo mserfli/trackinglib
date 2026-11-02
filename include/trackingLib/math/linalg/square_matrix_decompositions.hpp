@@ -89,7 +89,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::householderQR() const
 
 // LLT decomposition
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLLT() const noexcept
     -> tl::expected<TriangularMatrix<ValueType_, Size_, true, IsRowMajor_>, Errors>
 {
   // TODO(matthias): optimization - for small sizes (Size_ <= 10), leverage compile-time features
@@ -173,7 +173,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeLDLT() const
 
 // UDUT decomposition
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
-inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const
+inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::decomposeUDUT() const noexcept
     -> tl::expected<std::pair<TriangularMatrix<ValueType_, Size_, false, IsRowMajor_>, DiagonalMatrix<ValueType_, Size_>>, Errors>
 {
   if (isSymmetric())

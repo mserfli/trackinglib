@@ -47,14 +47,15 @@ public:
   using JacobianMatrix               = typename BaseExtendedObservationModel::JacobianMatrix;
 
   // rule of 5 declarations
-  VelocityObservationModel()                                                       = default;
-  VelocityObservationModel(const VelocityObservationModel&)                        = default;
-  VelocityObservationModel(VelocityObservationModel&&) noexcept                    = default;
+  VelocityObservationModel()                                = default;
+  VelocityObservationModel(const VelocityObservationModel&) = default;
+  VelocityObservationModel(VelocityObservationModel&&) noexcept(std::is_nothrow_move_constructible<MeasurementCov>::value) =
+      default;
   auto operator=(const VelocityObservationModel&) -> VelocityObservationModel&     = default;
   auto operator=(VelocityObservationModel&&) noexcept -> VelocityObservationModel& = default;
   virtual ~VelocityObservationModel() TEST_REMOVE_FINAL                            = default;
 
-  /// \brief Construct a new VelocityObservationModel with a validated covariance
+  /// \brief Construct a new VelocityObservationModel after checking covariance positive definiteness
   ///
   /// The release-safe, mandatory gate to the protected ctor below: validates cov before
   /// construction instead of relying on a debug-only precondition check. Defined here (not on
@@ -65,8 +66,12 @@ public:
   /// \param[in] cov  Measurement covariance R
   /// \return tl::expected containing the VelocityObservationModel instance on success, or
   ///         Errors::matrix_not_positive_definite if cov is not positive definite
-  static auto TryCreate(const MeasurementVec& vec,
-                        const MeasurementCov& cov) -> tl::expected<VelocityObservationModel, math::Errors>
+  /// \note Uses the existing covariance predicate/tolerance; no comprehensive NaN/Inf rejection is added.
+  ///       noexcept holds for built-in policies and is conditional on supplied covariance operations.
+  static auto TryCreate(const MeasurementVec& vec, const MeasurementCov& cov) noexcept(
+      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
+      std::is_nothrow_move_constructible<MeasurementCov>::value &&
+      noexcept(cov.isPositiveDefinite())) -> tl::expected<VelocityObservationModel, math::Errors>
   {
     if (!cov.isPositiveDefinite())
     {
@@ -75,7 +80,7 @@ public:
     return VelocityObservationModel{vec, cov};
   }
 
-  /// \brief Construct a new VelocityObservationModel with a validated covariance and a sensor mounting pose
+  /// \brief Construct a new VelocityObservationModel after checking covariance positive definiteness and a sensor mounting pose
   ///
   /// The release-safe, mandatory gate to the protected ctor below: validates cov before
   /// construction instead of relying on a debug-only precondition check. Defined here (not on
@@ -87,9 +92,16 @@ public:
   /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
   /// \return tl::expected containing the VelocityObservationModel instance on success, or
   ///         Errors::matrix_not_positive_definite if cov is not positive definite
-  static auto TryCreate(const MeasurementVec&                                    vec,
-                        const MeasurementCov&                                    cov,
-                        const typename BaseExtendedObservationModel::SensorPose& pose)
+  /// \note Uses the existing covariance predicate/tolerance; no comprehensive NaN/Inf rejection is added.
+  ///       noexcept holds for built-in policies and is conditional on supplied covariance operations.
+  static auto TryCreate(
+      const MeasurementVec& vec,
+      const MeasurementCov& cov,
+      const typename BaseExtendedObservationModel::SensorPose&
+          pose) noexcept(std::is_nothrow_copy_constructible<MeasurementVec>::value &&
+                         std::is_nothrow_copy_constructible<MeasurementCov>::value && noexcept(cov.isPositiveDefinite()) &&
+                         std::is_nothrow_copy_constructible<typename BaseExtendedObservationModel::SensorPose>::value &&
+                         std::is_nothrow_move_constructible<MeasurementCov>::value)
       -> tl::expected<VelocityObservationModel, math::Errors>
   {
     if (!cov.isPositiveDefinite())
@@ -147,25 +159,31 @@ TEST_REMOVE_PROTECTED:
 
   /// \brief Construct a new VelocityObservationModel given the measurement and its covariance
   ///
-  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  /// Protected in production: use TryCreate() (positive-definiteness check) or FromLists() instead.
   ///
   /// \param[in] vec  Measurement vector z = [vx, vy]'
   /// \param[in] cov  Measurement covariance R
-  explicit VelocityObservationModel(const MeasurementVec& vec, const MeasurementCov& cov)
+  explicit VelocityObservationModel(const MeasurementVec& vec, const MeasurementCov& cov) noexcept(
+      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
+      noexcept(cov.isPositiveDefinite()))
       : BaseExtendedObservationModel{vec, cov}
   {
   }
 
   /// \brief Construct a new VelocityObservationModel given the measurement, its covariance and a sensor mounting pose
   ///
-  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  /// Protected in production: use TryCreate() (positive-definiteness check) or FromLists() instead.
   ///
   /// \param[in] vec  Measurement vector z = [vx, vy]'
   /// \param[in] cov  Measurement covariance R
   /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
-  explicit VelocityObservationModel(const MeasurementVec&                                    vec,
-                                    const MeasurementCov&                                    cov,
-                                    const typename BaseExtendedObservationModel::SensorPose& pose)
+  explicit VelocityObservationModel(
+      const MeasurementVec& vec,
+      const MeasurementCov& cov,
+      const typename BaseExtendedObservationModel::SensorPose&
+          pose) noexcept(std::is_nothrow_copy_constructible<MeasurementVec>::value &&
+                         std::is_nothrow_copy_constructible<MeasurementCov>::value && noexcept(cov.isPositiveDefinite()) &&
+                         std::is_nothrow_copy_constructible<typename BaseExtendedObservationModel::SensorPose>::value)
       : BaseExtendedObservationModel{vec, cov, pose}
   {
   }

@@ -79,15 +79,21 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT__Success) // NOLINT
   if (size == 2)
   {
     // clang-format off
-    const auto phi = SquareMatrix<float64, 2, true>::FromList({
+    auto phiResult = SquareMatrix<float64, 2, true>::FromList({
         {1.0, 0.1},
         {0.0, 1.0},
     });
-    auto u = conversions::TriangularFromSquare<float64, 2, false, true>(SquareMatrix<float64, 2, true>::FromList({
+    ASSERT_TRUE(phiResult.has_value());
+    const auto phi = phiResult.value();
+    auto uResult = TriangularMatrix<float64, 2, false, true>::FromList({
         {1.0, 0.5},
         {0.0, 1.0},
-    }));
-    auto d = DiagonalMatrix<float64, 2>::FromList({2.0, 3.0});
+    });
+    ASSERT_TRUE(uResult.has_value());
+    auto u = uResult.value();
+    auto dResult = DiagonalMatrix<float64, 2>::FromList({2.0, 3.0});
+    ASSERT_TRUE(dResult.has_value());
+    auto d = dResult.value();
     // clang-format on
 
     // Expected: Phi * (U*D*U') * Phi'
@@ -105,19 +111,25 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT__Success) // NOLINT
   else if (size == 4)
   {
     // clang-format off
-    const auto phi = SquareMatrix<float64, 4, true>::FromList({
+    auto phiResult = SquareMatrix<float64, 4, true>::FromList({
         {1.0, 0.0, 0.0, 0.0},
         {0.1, 1.0, 0.0, 0.0},
         {0.0, 0.0, 1.0, 0.0},
         {0.0, 0.0, 0.0, 1.0},
     });
-    auto u = conversions::TriangularFromSquare<float64, 4, false, true>(SquareMatrix<float64, 4, true>::FromList({
+    ASSERT_TRUE(phiResult.has_value());
+    const auto phi = phiResult.value();
+    auto uResult = TriangularMatrix<float64, 4, false, true>::FromList({
         {1.0, 0.2, 0.1, 0.0},
         {0.0, 1.0, 0.3, 0.0},
         {0.0, 0.0, 1.0, 0.4},
         {0.0, 0.0, 0.0, 1.0},
-    }));
-    auto d = DiagonalMatrix<float64, 4>::FromList({1.0, 2.0, 3.0, 4.0});
+    });
+    ASSERT_TRUE(uResult.has_value());
+    auto u = uResult.value();
+    auto dResult = DiagonalMatrix<float64, 4>::FromList({1.0, 2.0, 3.0, 4.0});
+    ASSERT_TRUE(dResult.has_value());
+    auto d = dResult.value();
     // clang-format on
 
     // Expected: Phi * (U*D*U') * Phi'
@@ -135,7 +147,7 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT__Success) // NOLINT
   else if (size == 6)
   {
     // clang-format off
-    const auto phi = SquareMatrix<float64, 6, true>::FromList({
+    auto phiResult = SquareMatrix<float64, 6, true>::FromList({
         {1.0, 0.0, 0.0, 0.0, 0.0, 0.0},
         {0.0, 1.0, 0.0, 0.0, 0.0, 0.0},
         {0.0, 0.0, 1.0, 0.0, 0.0, 0.0},
@@ -143,15 +155,21 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT__Success) // NOLINT
         {0.0, 0.0, 0.0, 0.0, 1.0, 0.0},
         {0.0, 0.0, 0.0, 0.0, 0.0, 1.0},
     });
-    auto u = conversions::TriangularFromSquare<float64, 6, false, true>(SquareMatrix<float64, 6, true>::FromList({
+    ASSERT_TRUE(phiResult.has_value());
+    const auto phi = phiResult.value();
+    auto uResult = TriangularMatrix<float64, 6, false, true>::FromList({
         {1.0, 0.1, 0.0, 0.0, 0.0, 0.0},
         {0.0, 1.0, 0.2, 0.0, 0.0, 0.0},
         {0.0, 0.0, 1.0, 0.3, 0.0, 0.0},
         {0.0, 0.0, 0.0, 1.0, 0.4, 0.0},
         {0.0, 0.0, 0.0, 0.0, 1.0, 0.5},
         {0.0, 0.0, 0.0, 0.0, 0.0, 1.0},
-    }));
-    auto d = DiagonalMatrix<float64, 6>::FromList({1.0, 1.5, 2.0, 2.5, 3.0, 3.5});
+    });
+    ASSERT_TRUE(uResult.has_value());
+    auto u = uResult.value();
+    auto dResult = DiagonalMatrix<float64, 6>::FromList({1.0, 1.5, 2.0, 2.5, 3.0, 3.5});
+    ASSERT_TRUE(dResult.has_value());
+    auto d = dResult.value();
     // clang-format on
 
     // Expected: Phi * (U*D*U') * Phi'
@@ -176,20 +194,30 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT_PlusGQGT__Success) 
   if (size == 2)
   {
     // clang-format off
-    const auto phi = SquareMatrix<float64, 2, true>::FromList({
+    auto phiResult = SquareMatrix<float64, 2, true>::FromList({
         {1.0, 0.1},
         {0.0, 1.0},
     });
-    auto u = conversions::TriangularFromSquare<float64, 2, false, true>(SquareMatrix<float64, 2, true>::FromList({
+    ASSERT_TRUE(phiResult.has_value());
+    const auto phi = phiResult.value();
+    auto uResult = TriangularMatrix<float64, 2, false, true>::FromList({
         {1.0, 0.5},
         {0.0, 1.0},
-    }));
-    auto d = DiagonalMatrix<float64, 2>::FromList({2.0, 3.0});
-    const auto g = Matrix<float64, 2, 1, true>::FromList({
+    });
+    ASSERT_TRUE(uResult.has_value());
+    auto u = uResult.value();
+    auto dResult = DiagonalMatrix<float64, 2>::FromList({2.0, 3.0});
+    ASSERT_TRUE(dResult.has_value());
+    auto d = dResult.value();
+    auto gResult = Matrix<float64, 2, 1, true>::FromList({
         {0.1},
         {0.2},
     });
-    const auto q = DiagonalMatrix<float64, 1>::FromList({0.5});
+    ASSERT_TRUE(gResult.has_value());
+    const auto g = gResult.value();
+    auto qResult = DiagonalMatrix<float64, 1>::FromList({0.5});
+    ASSERT_TRUE(qResult.has_value());
+    const auto q = qResult.value();
     // clang-format on
 
     // Expected: Phi * (U*D*U') * Phi' + G*Q*G'
@@ -210,26 +238,36 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT_PlusGQGT__Success) 
   else if (size == 4)
   {
     // clang-format off
-    const auto phi = SquareMatrix<float64, 4, true>::FromList({
+    auto phiResult = SquareMatrix<float64, 4, true>::FromList({
         {1.0, 0.0, 0.0, 0.0},
         {0.1, 1.0, 0.0, 0.0},
         {0.0, 0.0, 1.0, 0.0},
         {0.0, 0.0, 0.0, 1.0},
     });
-    auto u = conversions::TriangularFromSquare<float64, 4, false, true>(SquareMatrix<float64, 4, true>::FromList({
+    ASSERT_TRUE(phiResult.has_value());
+    const auto phi = phiResult.value();
+    auto uResult = TriangularMatrix<float64, 4, false, true>::FromList({
         {1.0, 0.2, 0.1, 0.0},
         {0.0, 1.0, 0.3, 0.0},
         {0.0, 0.0, 1.0, 0.4},
         {0.0, 0.0, 0.0, 1.0},
-    }));
-    auto d = DiagonalMatrix<float64, 4>::FromList({1.0, 2.0, 3.0, 4.0});
-    const auto g = Matrix<float64, 4, 2, true>::FromList({
+    });
+    ASSERT_TRUE(uResult.has_value());
+    auto u = uResult.value();
+    auto dResult = DiagonalMatrix<float64, 4>::FromList({1.0, 2.0, 3.0, 4.0});
+    ASSERT_TRUE(dResult.has_value());
+    auto d = dResult.value();
+    auto gResult = Matrix<float64, 4, 2, true>::FromList({
         {0.1, 0.0},
         {0.0, 0.1},
         {0.2, 0.0},
         {0.0, 0.2},
     });
-    const auto q = DiagonalMatrix<float64, 2>::FromList({0.5, 0.8});
+    ASSERT_TRUE(gResult.has_value());
+    const auto g = gResult.value();
+    auto qResult = DiagonalMatrix<float64, 2>::FromList({0.5, 0.8});
+    ASSERT_TRUE(qResult.has_value());
+    const auto q = qResult.value();
     // clang-format on
 
     // Expected: Phi * (U*D*U') * Phi' + G*Q*G'
@@ -250,7 +288,7 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT_PlusGQGT__Success) 
   else if (size == 6)
   {
     // clang-format off
-    const auto phi = SquareMatrix<float64, 6, true>::FromList({
+    auto phiResult = SquareMatrix<float64, 6, true>::FromList({
         {1.0, 0.0, 0.0, 0.0, 0.0, 0.0},
         {0.0, 1.0, 0.0, 0.0, 0.0, 0.0},
         {0.0, 0.0, 1.0, 0.0, 0.0, 0.0},
@@ -258,16 +296,22 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT_PlusGQGT__Success) 
         {0.0, 0.0, 0.0, 0.0, 1.0, 0.0},
         {0.0, 0.0, 0.0, 0.0, 0.0, 1.0},
     });
-    auto u = conversions::TriangularFromSquare<float64, 6, false, true>(SquareMatrix<float64, 6, true>::FromList({
+    ASSERT_TRUE(phiResult.has_value());
+    const auto phi = phiResult.value();
+    auto uResult = TriangularMatrix<float64, 6, false, true>::FromList({
         {1.0, 0.1, 0.0, 0.0, 0.0, 0.0},
         {0.0, 1.0, 0.2, 0.0, 0.0, 0.0},
         {0.0, 0.0, 1.0, 0.3, 0.0, 0.0},
         {0.0, 0.0, 0.0, 1.0, 0.4, 0.0},
         {0.0, 0.0, 0.0, 0.0, 1.0, 0.5},
         {0.0, 0.0, 0.0, 0.0, 0.0, 1.0},
-    }));
-    auto d = DiagonalMatrix<float64, 6>::FromList({1.0, 1.5, 2.0, 2.5, 3.0, 3.5});
-    const auto g = Matrix<float64, 6, 3, true>::FromList({
+    });
+    ASSERT_TRUE(uResult.has_value());
+    auto u = uResult.value();
+    auto dResult = DiagonalMatrix<float64, 6>::FromList({1.0, 1.5, 2.0, 2.5, 3.0, 3.5});
+    ASSERT_TRUE(dResult.has_value());
+    auto d = dResult.value();
+    auto gResult = Matrix<float64, 6, 3, true>::FromList({
         {0.1, 0.0, 0.0},
         {0.0, 0.1, 0.0},
         {0.0, 0.0, 0.1},
@@ -275,7 +319,11 @@ TEST_P(GTestModifiedGramSchmidtParameterized, run_PhiUDUPhiT_PlusGQGT__Success) 
         {0.0, 0.2, 0.0},
         {0.0, 0.0, 0.2},
     });
-    const auto q = DiagonalMatrix<float64, 3>::FromList({0.5, 0.8, 1.2});
+    ASSERT_TRUE(gResult.has_value());
+    const auto g = gResult.value();
+    auto qResult = DiagonalMatrix<float64, 3>::FromList({0.5, 0.8, 1.2});
+    ASSERT_TRUE(qResult.has_value());
+    const auto q = qResult.value();
     // clang-format on
 
     // Expected: Phi * (U*D*U') * Phi' + G*Q*G'
@@ -300,19 +348,25 @@ TEST_F(GTestModifiedGramSchmidt, run_NumericalStability__Success) // NOLINT
 {
   // Use a matrix with high condition number
   // clang-format off
-  const auto phi = SquareMatrix<float64, 4, true>::FromList({
+  auto phiResult = SquareMatrix<float64, 4, true>::FromList({
       {1.0, 1e-8, 0.0, 0.0},
       {0.0, 1.0, 1e-8, 0.0},
       {0.0, 0.0, 1.0, 1e-8},
       {0.0, 0.0, 0.0, 1.0},
   });
-  auto u = conversions::TriangularFromSquare<float64, 4, false, true>(SquareMatrix<float64, 4, true>::FromList({
+  ASSERT_TRUE(phiResult.has_value());
+  const auto phi = phiResult.value();
+  auto uResult = TriangularMatrix<float64, 4, false, true>::FromList({
       {1.0, 0.1, 0.0, 0.0},
       {0.0, 1.0, 0.2, 0.0},
       {0.0, 0.0, 1.0, 0.3},
       {0.0, 0.0, 0.0, 1.0},
-  }));
-  auto d = DiagonalMatrix<float64, 4>::FromList({1e-10, 1e-5, 1.0, 1e5});
+  });
+  ASSERT_TRUE(uResult.has_value());
+  auto u = uResult.value();
+  auto dResult = DiagonalMatrix<float64, 4>::FromList({1e-10, 1e-5, 1.0, 1e5});
+  ASSERT_TRUE(dResult.has_value());
+  auto d = dResult.value();
   // clang-format on
 
   // Expected: Phi * (U*D*U') * Phi'
@@ -332,17 +386,23 @@ TEST_F(GTestModifiedGramSchmidt, run_NumericalStability__Success) // NOLINT
 TEST_F(GTestModifiedGramSchmidt, run_IdentityPhi__Success) // NOLINT
 {
   // clang-format off
-  const auto phi = SquareMatrix<float64, 3, true>::FromList({
+  auto phiResult = SquareMatrix<float64, 3, true>::FromList({
       {1.0, 0.0, 0.0},
       {0.0, 1.0, 0.0},
       {0.0, 0.0, 1.0},
   });
-  auto u = conversions::TriangularFromSquare<float64, 3, false, true>(SquareMatrix<float64, 3, true>::FromList({
+  ASSERT_TRUE(phiResult.has_value());
+  const auto phi = phiResult.value();
+  auto uResult = TriangularMatrix<float64, 3, false, true>::FromList({
       {1.0, 0.5, 0.2},
       {0.0, 1.0, 0.3},
       {0.0, 0.0, 1.0},
-  }));
-  auto d = DiagonalMatrix<float64, 3>::FromList({2.0, 3.0, 4.0});
+  });
+  ASSERT_TRUE(uResult.has_value());
+  auto u = uResult.value();
+  auto dResult = DiagonalMatrix<float64, 3>::FromList({2.0, 3.0, 4.0});
+  ASSERT_TRUE(dResult.has_value());
+  auto d = dResult.value();
   // clang-format on
 
   // Expected: Phi * (U*D*U') * Phi' = U*D*U' since Phi = I
@@ -360,20 +420,30 @@ TEST_F(GTestModifiedGramSchmidt, run_IdentityPhi__Success) // NOLINT
 TEST_F(GTestModifiedGramSchmidt, run_ZeroProcessNoise__Success) // NOLINT
 {
   // clang-format off
-  const auto phi = SquareMatrix<float64, 2, true>::FromList({
+  auto phiResult = SquareMatrix<float64, 2, true>::FromList({
       {1.0, 0.1},
       {0.0, 1.0},
   });
-  auto u = conversions::TriangularFromSquare<float64, 2, false, true>(SquareMatrix<float64, 2, true>::FromList({
+  ASSERT_TRUE(phiResult.has_value());
+  const auto phi = phiResult.value();
+  auto uResult = TriangularMatrix<float64, 2, false, true>::FromList({
       {1.0, 0.5},
       {0.0, 1.0},
-  }));
-  auto d = DiagonalMatrix<float64, 2>::FromList({2.0, 3.0});
-  const auto g = Matrix<float64, 2, 1, true>::FromList({
+  });
+  ASSERT_TRUE(uResult.has_value());
+  auto u = uResult.value();
+  auto dResult = DiagonalMatrix<float64, 2>::FromList({2.0, 3.0});
+  ASSERT_TRUE(dResult.has_value());
+  auto d = dResult.value();
+  auto gResult = Matrix<float64, 2, 1, true>::FromList({
       {0.1},
       {0.2},
   });
-  const auto q = DiagonalMatrix<float64, 1>::FromList({0.0}); // Zero noise
+  ASSERT_TRUE(gResult.has_value());
+  const auto g = gResult.value();
+  auto qResult = DiagonalMatrix<float64, 1>::FromList({0.0});
+  ASSERT_TRUE(qResult.has_value());
+  const auto q = qResult.value(); // Zero noise
   // clang-format on
 
   // Expected: Phi * (U*D*U') * Phi' + G*Q*G' = Phi * (U*D*U') * Phi' since Q=0

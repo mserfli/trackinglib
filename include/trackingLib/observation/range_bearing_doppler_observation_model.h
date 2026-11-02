@@ -66,14 +66,15 @@ public:
   static constexpr value_type RANGE_SQ_MIN = static_cast<value_type>(1e-6);
 
   // rule of 5 declarations
-  RangeBearingDopplerObservationModel()                                                                  = default;
-  RangeBearingDopplerObservationModel(const RangeBearingDopplerObservationModel&)                        = default;
-  RangeBearingDopplerObservationModel(RangeBearingDopplerObservationModel&&) noexcept                    = default;
+  RangeBearingDopplerObservationModel()                                           = default;
+  RangeBearingDopplerObservationModel(const RangeBearingDopplerObservationModel&) = default;
+  RangeBearingDopplerObservationModel(RangeBearingDopplerObservationModel&&) noexcept(
+      std::is_nothrow_move_constructible<MeasurementCov>::value)                                         = default;
   auto operator=(const RangeBearingDopplerObservationModel&) -> RangeBearingDopplerObservationModel&     = default;
   auto operator=(RangeBearingDopplerObservationModel&&) noexcept -> RangeBearingDopplerObservationModel& = default;
   virtual ~RangeBearingDopplerObservationModel() TEST_REMOVE_FINAL                                       = default;
 
-  /// \brief Construct a new RangeBearingDopplerObservationModel with a validated covariance
+  /// \brief Construct a new RangeBearingDopplerObservationModel after checking covariance positive definiteness
   ///
   /// The release-safe, mandatory gate to the protected ctor below: validates cov before
   /// construction instead of relying on a debug-only precondition check. Defined here (not on
@@ -84,8 +85,12 @@ public:
   /// \param[in] cov  Measurement covariance R
   /// \return tl::expected containing the RangeBearingDopplerObservationModel instance on success, or
   ///         Errors::matrix_not_positive_definite if cov is not positive definite
-  static auto TryCreate(const MeasurementVec& vec,
-                        const MeasurementCov& cov) -> tl::expected<RangeBearingDopplerObservationModel, math::Errors>
+  /// \note Uses the existing covariance predicate/tolerance; no comprehensive NaN/Inf rejection is added.
+  ///       noexcept holds for built-in policies and is conditional on supplied covariance operations.
+  static auto TryCreate(const MeasurementVec& vec, const MeasurementCov& cov) noexcept(
+      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
+      std::is_nothrow_move_constructible<MeasurementCov>::value &&
+      noexcept(cov.isPositiveDefinite())) -> tl::expected<RangeBearingDopplerObservationModel, math::Errors>
   {
     if (!cov.isPositiveDefinite())
     {
@@ -94,7 +99,8 @@ public:
     return RangeBearingDopplerObservationModel{vec, cov};
   }
 
-  /// \brief Construct a new RangeBearingDopplerObservationModel with a validated covariance and a sensor mounting pose
+  /// \brief Construct a new RangeBearingDopplerObservationModel after checking covariance positive definiteness and a sensor
+  /// mounting pose
   ///
   /// The release-safe, mandatory gate to the protected ctor below: validates cov before
   /// construction instead of relying on a debug-only precondition check. Defined here (not on
@@ -106,9 +112,16 @@ public:
   /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
   /// \return tl::expected containing the RangeBearingDopplerObservationModel instance on success, or
   ///         Errors::matrix_not_positive_definite if cov is not positive definite
-  static auto TryCreate(const MeasurementVec&                                    vec,
-                        const MeasurementCov&                                    cov,
-                        const typename BaseExtendedObservationModel::SensorPose& pose)
+  /// \note Uses the existing covariance predicate/tolerance; no comprehensive NaN/Inf rejection is added.
+  ///       noexcept holds for built-in policies and is conditional on supplied covariance operations.
+  static auto TryCreate(
+      const MeasurementVec& vec,
+      const MeasurementCov& cov,
+      const typename BaseExtendedObservationModel::SensorPose&
+          pose) noexcept(std::is_nothrow_copy_constructible<MeasurementVec>::value &&
+                         std::is_nothrow_copy_constructible<MeasurementCov>::value && noexcept(cov.isPositiveDefinite()) &&
+                         std::is_nothrow_copy_constructible<typename BaseExtendedObservationModel::SensorPose>::value &&
+                         std::is_nothrow_move_constructible<MeasurementCov>::value)
       -> tl::expected<RangeBearingDopplerObservationModel, math::Errors>
   {
     if (!cov.isPositiveDefinite())
@@ -216,25 +229,31 @@ TEST_REMOVE_PROTECTED:
 
   /// \brief Construct a new RangeBearingDopplerObservationModel given the measurement and its covariance
   ///
-  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  /// Protected in production: use TryCreate() (positive-definiteness check) or FromLists() instead.
   ///
   /// \param[in] vec  Measurement vector z = [range, bearing, doppler]'
   /// \param[in] cov  Measurement covariance R
-  explicit RangeBearingDopplerObservationModel(const MeasurementVec& vec, const MeasurementCov& cov)
+  explicit RangeBearingDopplerObservationModel(const MeasurementVec& vec, const MeasurementCov& cov) noexcept(
+      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
+      noexcept(cov.isPositiveDefinite()))
       : BaseExtendedObservationModel{vec, cov}
   {
   }
 
   /// \brief Construct a new RangeBearingDopplerObservationModel given the measurement, its covariance and a sensor mounting pose
   ///
-  /// Protected in production: use TryCreate() (validated) or FromLists() instead.
+  /// Protected in production: use TryCreate() (positive-definiteness check) or FromLists() instead.
   ///
   /// \param[in] vec  Measurement vector z = [range, bearing, doppler]'
   /// \param[in] cov  Measurement covariance R
   /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
-  explicit RangeBearingDopplerObservationModel(const MeasurementVec&                                    vec,
-                                               const MeasurementCov&                                    cov,
-                                               const typename BaseExtendedObservationModel::SensorPose& pose)
+  explicit RangeBearingDopplerObservationModel(
+      const MeasurementVec& vec,
+      const MeasurementCov& cov,
+      const typename BaseExtendedObservationModel::SensorPose&
+          pose) noexcept(std::is_nothrow_copy_constructible<MeasurementVec>::value &&
+                         std::is_nothrow_copy_constructible<MeasurementCov>::value && noexcept(cov.isPositiveDefinite()) &&
+                         std::is_nothrow_copy_constructible<typename BaseExtendedObservationModel::SensorPose>::value)
       : BaseExtendedObservationModel{vec, cov, pose}
   {
   }

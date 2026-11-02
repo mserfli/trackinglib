@@ -1,6 +1,8 @@
 #ifndef B03BEBEF_0868_4245_A0B5_AD255C4514FE
 #define B03BEBEF_0868_4245_A0B5_AD255C4514FE
 
+#include "base/first_include.h" // IWYU pragma: keep
+
 /// \file errors.h
 /// \brief Error types used throughout the math library
 ///
@@ -23,19 +25,23 @@ namespace math
 /// failure condition that prevents an operation from completing successfully.
 ///
 /// \note Used with tl::expected<T, Errors> for error handling
+/// \note The explicit sint32 base preserves the original int representation on supported targets.
+///       Original enumerator values are retained; list-boundary errors are appended.
 /// \see tl::expected for the error handling pattern used
-enum class Errors
+enum class Errors : sint32
 {
   invalid_access_row,                 ///< Row index is out of bounds (e.g., accessing row 5 in a 3x3 matrix)
   invalid_access_col,                 ///< Column index is out of bounds (e.g., accessing column 5 in a 3x3 matrix)
   invalid_access_idx,                 ///< Linear index is out of bounds (e.g., accessing element 10 in a 3x3 matrix)
-  invalid_initializer_list_row_count, ///< Initializer list has incorrect number of rows
-  invalid_initializer_list_col_count, ///< Initializer list has incorrect number of columns
   divide_by_zero,                     ///< Division by zero attempted (e.g., 9 / 0)
   not_integer_division,               ///< Result of integer division is not an integer (e.g., 5 / 2 = 2.5)
   integer_divide_overflows,           ///< Integer division would overflow (e.g., INT_MIN / -1)
   matrix_not_symmetric,               ///< Matrix operation requires symmetric matrix but input is not symmetric
   matrix_not_positive_definite,       ///< Matrix decomposition requires positive definite matrix but input is not
+  invalid_initializer_list_row_count, ///< Initializer list has incorrect number of rows
+  invalid_initializer_list_col_count, ///< Initializer list has incorrect number of columns
+  invalid_initializer_list_size,      ///< Flat initializer list has incorrect number of elements
+  matrix_not_unit_upper_triangular,   ///< Extracted upper triangle does not have a unit diagonal
 };
 
 } // namespace math

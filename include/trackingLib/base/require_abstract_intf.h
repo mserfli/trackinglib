@@ -14,7 +14,7 @@ template <typename ImplType>
 class RequireAbstractIntf
 {
 public:
-  RequireAbstractIntf()
+  RequireAbstractIntf() noexcept
   {
     static_assert(std::is_abstract<ImplType>::value, "class is not pure virtual");
     static_assert(std::has_virtual_destructor<ImplType>::value, "destructor has to be virtual");
