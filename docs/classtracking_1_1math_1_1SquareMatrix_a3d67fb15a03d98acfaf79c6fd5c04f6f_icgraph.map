@@ -1,0 +1,19 @@
+<map id="tracking::math::SquareMatrix::isSymmetric" name="tracking::math::SquareMatrix::isSymmetric">
+<area shape="rect" id="Node000001" title="Check if the matrix is symmetric." alt="" coords="524,109,735,154"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#aa221b9d615f0f551a43b70e05910a556" title="Performs LDL^T decomposition of a symmetric positive definite matrix." alt="" coords="265,5,476,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="565,103,475,65,444,53,444,48,477,60,571,102"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1SquareMatrix.html#a5d97dae5cffbe0453dfdfad414126307" title="Performs Cholesky decomposition (LLT) of a symmetric positive definite matrix." alt="" coords="265,75,476,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="506,116,477,114,476,109,511,115"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1SquareMatrix.html#ae690936edf1113008c96386412b2e901" title="Performs UDU^T decomposition of a symmetric matrix." alt="" coords="265,144,476,189"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="506,148,477,155,476,150,511,147"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1SquareMatrix.html#a4781b46749a96cc7cf05f941d8ead8f2" title="Checks if the matrix is positive semi&#45;definite." alt="" coords="265,213,476,258"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="571,160,477,203,445,215,443,210,475,199,565,162"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ab1b0b450b5e2daae321027ca80605dca" title="Compute inverse in factored form." alt="" coords="12,5,210,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="247,29,211,30,209,25,251,26"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1SquareMatrix.html#ad6db96247e4ecc19e83478a8c3fe74cb" title="Check if the diagonal matrix is positive definite." alt="" coords="5,75,217,119"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="247,98,218,100,216,94,252,96"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" title=" " alt="" coords="13,179,209,223"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="247,220,210,217,210,211,252,219"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="19,248,203,293"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="246,252,204,261,203,255,252,251"/>
+</map>

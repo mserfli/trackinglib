@@ -1,7 +1,9 @@
 <map id="tracking::motion::IMotionModel&lt; CovarianceMatrixPolicy_ &gt;" name="tracking::motion::IMotionModel&lt; CovarianceMatrixPolicy_ &gt;">
-<area shape="rect" id="Node000001" title="Abstract Motion Model interface." alt="" coords="115,163,361,503"/>
-<area shape="rect" id="Node000002" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf.html" title=" " alt="" coords="5,13,220,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,119,162,161,157,163,138,121"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="245,5,482,115"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="335,128,319,163,314,161,331,126"/>
+<area shape="rect" id="Node000001" title="Abstract Motion Model interface." alt="" coords="115,177,357,556"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title=" " alt="" coords="119,604,353,1169"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="236,569,238,605,233,604,235,574"/>
+<area shape="rect" id="Node000002" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf.html" title=" " alt="" coords="5,14,218,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,131,160,176,154,177,139,136"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="243,5,477,129"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="328,145,317,178,312,176,330,140"/>
 </map>

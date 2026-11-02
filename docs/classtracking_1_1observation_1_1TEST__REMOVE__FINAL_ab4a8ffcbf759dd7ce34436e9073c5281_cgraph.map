@@ -1,0 +1,6 @@
+<map id="tracking::observation::TEST_REMOVE_FINAL::TryCreate" name="tracking::observation::TEST_REMOVE_FINAL::TryCreate">
+<area shape="rect" id="Node000001" title="Construct a new BearingObservationModel after checking covariance positive definiteness." alt="" coords="5,29,183,91"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="48,28,50,19,58,10,73,5,94,3,118,5,135,15,129,15,117,11,94,8,74,10,61,15,54,21,53,30"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#ae32cca2ed0a33c07589f1618100954c7" title=" " alt="" coords="231,29,421,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,58,218,60,213,60,183,63"/>
+</map>

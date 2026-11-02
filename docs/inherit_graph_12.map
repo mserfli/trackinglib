@@ -1,3 +1,26 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="5,5,248,75"/>
+<area shape="rect" id="Node000000" href="$structtracking_1_1math_1_1contract_1_1CovarianceMatrixPolicyIntf.html" title=" " alt="" coords="333,108,612,187"/>
+<area shape="rect" id="Node000001" href="$classtracking_1_1motion_1_1IMotionModel.html" title=" " alt="" coords="693,86,898,148"/>
+<area shape="poly" id="edge23_Node000000_Node000001" title=" " alt="" coords="627,130,695,125,690,127,628,135"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1StateMem.html" title=" " alt="" coords="677,172,914,251"/>
+<area shape="poly" id="edge25_Node000000_Node000003" title=" " alt="" coords="627,175,679,187,674,188,627,181"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance." alt="" coords="979,266,1186,328"/>
+<area shape="poly" id="edge24_Node000001_Node000002" title=" " alt="" coords="913,147,933,157,969,181,1003,210,1058,266,1052,265,999,214,966,186,930,162,912,152"/>
+<area shape="poly" id="edge26_Node000003_Node000002" title=" " alt="" coords="929,248,982,266,976,266,929,254"/>
+<area shape="rect" id="Node000007" href="$structtracking_1_1motion_1_1contract_1_1MotionModelIntf.html" title=" " alt="" coords="666,274,925,319"/>
+<area shape="poly" id="edge27_Node000007_Node000002" title=" " alt="" coords="940,294,982,296,976,297,941,299"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1motion_1_1generic_1_1PredictCommon.html" title=" " alt="" coords="333,343,612,421"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1generic_1_1Predict.html" title=" " alt="" coords="677,343,914,421"/>
+<area shape="poly" id="edge28_Node000009_Node000008" title=" " alt="" coords="627,379,679,382,674,382,628,385"/>
+<area shape="poly" id="edge29_Node000008_Node000002" title=" " alt="" coords="929,340,976,328,982,327,930,345"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="660,445,931,524"/>
+<area shape="poly" id="edge30_Node000010_Node000002" title=" " alt="" coords="925,435,930,432,965,407,998,379,1052,329,1056,327,1002,383,968,411,933,436,926,440"/>
+<area shape="rect" id="Node000011" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="351,5,594,84"/>
+<area shape="poly" id="edge31_Node000011_Node000001" title=" " alt="" coords="608,72,695,93,690,95,609,78"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1base_1_1contract_1_1RequireCopyIntf.html" title=" " alt="" coords="5,160,285,239"/>
+<area shape="rect" id="Node000004" href="$structtracking_1_1motion_1_1contract_1_1StateMemIntf.html" title=" " alt="" coords="333,211,612,289"/>
+<area shape="poly" id="edge32_Node000005_Node000004" title=" " alt="" coords="299,221,335,227,330,229,301,226"/>
+<area shape="poly" id="edge33_Node000004_Node000003" title=" " alt="" coords="627,229,679,225,674,226,628,234"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html" title=" " alt="" coords="5,263,285,341"/>
+<area shape="poly" id="edge34_Node000006_Node000004" title=" " alt="" coords="299,275,335,271,330,273,301,280"/>
 </map>

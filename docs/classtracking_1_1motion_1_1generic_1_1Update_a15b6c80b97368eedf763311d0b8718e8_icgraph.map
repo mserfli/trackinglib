@@ -1,0 +1,9 @@
+<map id="tracking::motion::generic::Update::stackObservations" name="tracking::motion::generic::Update::stackObservations">
+<area shape="rect" id="Node000001" title="Recursion end of the observation stacking." alt="" coords="259,75,464,119"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1generic_1_1Update.html#a963b5243c9c1a6fcd77367872c06a0b6" title="Measurement update using an InformationFilter." alt="" coords="16,5,200,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="260,71,192,53,192,48,265,69"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1generic_1_1Update.html#a8d94bb0163a3da87586601ec156df23e" title="Measurement update using a KalmanFilter." alt="" coords="16,75,200,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="240,98,201,100,200,94,245,96"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1generic_1_1Update.html#a29afaf5db9f6ff2961e8ff514591040f" title="Stack innovation, Jacobian and covariance blocks of the observation models." alt="" coords="5,144,211,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="265,123,193,146,192,141,260,125"/>
+</map>

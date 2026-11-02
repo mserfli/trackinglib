@@ -9,7 +9,7 @@ var searchData=
   ['has_5fvelocity_6',['has_velocity',['../structtracking_1_1motion_1_1detail_1_1has__velocity.html',1,'tracking::motion::detail']]],
   ['has_5fvelocity_3c_20statedef_5f_2c_20std_3a_3avoid_5ft_3c_20decltype_28statedef_5f_3a_3avx_29_2c_20decltype_28statedef_5f_3a_3avy_29_3e_20_3e_7',['has_velocity&lt; StateDef_, std::void_t&lt; decltype(StateDef_::VX), decltype(StateDef_::VY)&gt; &gt;',['../structtracking_1_1motion_1_1detail_1_1has__velocity_3_01StateDef___00_01std_1_1void__t_3_01declt761797243578e97e12ddac604b16c70e.html',1,'tracking::motion::detail']]],
   ['has_5fvelocity_5fv_8',['has_velocity_v',['../namespacetracking_1_1motion.html#ab38bf9cf9860a68e9bb0b9b358598dba',1,'tracking::motion']]],
-  ['hasstrictlypositivediagonalelems_9',['hasStrictlyPositiveDiagonalElems',['../classtracking_1_1math_1_1SquareMatrix.html#a7cc81ece29a7f61d1d7de803d343b21b',1,'tracking::math::SquareMatrix']]],
+  ['hasstrictlypositivediagonalelems_9',['hasStrictlyPositiveDiagonalElems',['../classtracking_1_1math_1_1SquareMatrix.html#ad6aee1928883e749a396866d7d20e609',1,'tracking::math::SquareMatrix']]],
   ['hasunitdiagonal_10',['hasUnitDiagonal',['../classtracking_1_1math_1_1SquareMatrix.html#aca13bd5fb9df7661fcacd47e70a65fac',1,'tracking::math::SquareMatrix']]],
   ['height_11',['height',['../structtracking_1_1env_1_1EgoMotion_1_1Geometry.html#a7f92d6ce486206a02269645b83e731f0',1,'tracking::env::EgoMotion::Geometry']]],
   ['householderqr_12',['householderQR',['../classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b',1,'tracking::math::SquareMatrix']]]

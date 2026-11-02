@@ -1,0 +1,65 @@
+<map id="tracking::math::Matrix::at_unsafe" name="tracking::math::Matrix::at_unsafe">
+<area shape="rect" id="Node000001" title="Unsafe element read&#45;only access (no bounds checking)." alt="" coords="1101,760,1267,805"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a70d258c33ab8284534f22683e26ec06e" title="Compute A*P*A^T in&#45;place (covariance propagation)." alt="" coords="812,5,1009,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1179,744,1169,596,1147,391,1130,288,1109,193,1083,116,1067,87,1051,64,1031,49,1010,39,1009,34,1034,44,1055,60,1072,84,1087,114,1114,192,1136,287,1153,391,1174,596,1183,746"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1env_1_1EgoMotion.html#a253c2bb648180106b9d53f8fcde0be65" title="Calculate Jacobian for circular motion case." alt="" coords="808,75,1013,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1178,743,1166,608,1143,425,1126,332,1105,248,1080,180,1066,153,1051,134,1033,120,1014,110,1013,105,1036,115,1055,130,1070,150,1085,177,1110,247,1131,331,1148,424,1171,608,1183,745"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1env_1_1EgoMotion.html#a9883316bd3de3ac7cdf7ef3f6edb0c88" title="Calculate Jacobian for linear motion case." alt="" coords="813,144,1008,189"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1177,744,1163,622,1138,459,1121,378,1101,304,1077,243,1051,203,1031,188,1009,178,1008,173,1034,183,1055,199,1082,241,1106,302,1126,376,1143,459,1168,622,1182,746"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1motion_1_1StateCovConverter_3_01MotionModelCA_3_01CovarianceMatrixPolicy___01_4cf241df2807db57c4696e14f1c33a9b2.html#aaf37a300d8f7b3ee9e0b1877781cbb19" title=" " alt="" coords="768,237,1053,333"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="1179,744,1172,664,1153,559,1136,502,1114,447,1086,394,1051,347,1041,336,1041,331,1055,343,1090,391,1119,444,1141,501,1158,557,1177,664,1184,746"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1motion_1_1StateCovConverter_3_01MotionModelCV_3_01CovarianceMatrixPolicy___01_4eda10a9c0c0b4c9846df0bedca4b51a2.html#ac312b57d2862336f397aab2fde8fb697" title=" " alt="" coords="768,381,1053,477"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="1173,744,1158,690,1134,622,1099,552,1076,520,1051,491,1039,480,1039,475,1055,487,1081,517,1103,550,1139,620,1163,688,1178,746"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1math_1_1SquareMatrix.html#a07660dc294ef75e635399577f0e0bf4f" title="Calculate the determinant of the square matrix." alt="" coords="805,501,1016,546"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="1169,744,1152,703,1127,652,1094,602,1051,560,1017,542,1016,537,1054,556,1098,599,1132,650,1157,701,1174,746"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b" title="Performs Householder QR decomposition of a square matrix." alt="" coords="805,571,1016,615"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="1158,747,1113,691,1084,662,1051,637,1015,619,1015,613,1054,632,1087,658,1117,687,1163,748"/>
+<area shape="rect" id="Node000013" href="$classtracking_1_1filter_1_1KalmanFilter.html#a4df70b5fa33fdf85a95d6a528da0344f" title="Kalman measurement update of state and covariance." alt="" coords="18,485,189,530"/>
+<area shape="poly" id="edge34_Node000001_Node000013" title=" " alt="" coords="1150,749,1106,712,1080,695,1052,681,992,661,936,647,883,640,833,637,740,643,651,657,562,670,468,676,418,673,365,665,309,651,249,630,210,610,175,584,124,533,123,528,178,580,213,605,251,625,311,646,366,660,419,668,468,670,562,665,650,651,739,638,833,632,883,634,937,642,993,655,1054,676,1083,690,1110,708,1155,749"/>
+<area shape="rect" id="Node000017" href="$namespacetracking_1_1math_1_1conversions.html#a5cfb34890c4b8a46be286892155ed213" title="Creates a single&#45;column Matrix from a Vector." alt="" coords="809,691,1012,735"/>
+<area shape="poly" id="edge20_Node000001_Node000017" title=" " alt="" coords="1083,757,1052,750,1007,739,1006,733,1053,745,1088,756"/>
+<area shape="rect" id="Node000018" href="$classtracking_1_1math_1_1Vector.html#a2a093a2f59247f405801cda330da997a" title="Compute the Euclidean norm (L2 norm) of the vector." alt="" coords="828,760,993,805"/>
+<area shape="poly" id="edge21_Node000001_Node000018" title=" " alt="" coords="1082,783,994,785,993,780,1087,782"/>
+<area shape="rect" id="Node000021" href="$classtracking_1_1math_1_1Matrix.html#abcffe22dc0aafe575bc41673a938828f" title="Calculates matrix multiplication Self * Other." alt="" coords="827,829,994,874"/>
+<area shape="poly" id="edge24_Node000001_Node000021" title=" " alt="" coords="1083,809,1053,820,995,834,993,829,1052,814,1088,807"/>
+<area shape="rect" id="Node000022" href="$namespacetracking_1_1math.html#a3cb17735266f10296c8f695c5a160af3" title="Multiply two matrix views." alt="" coords="817,898,1004,926"/>
+<area shape="poly" id="edge25_Node000001_Node000022" title=" " alt="" coords="1153,814,1108,855,1054,889,1005,904,1003,899,1052,884,1105,851,1149,817"/>
+<area shape="rect" id="Node000023" href="$namespacetracking_1_1math.html#ad59b912a93d23b51952426698d3e6c22" title="Add two matrix views element&#45;wise." alt="" coords="815,950,1006,978"/>
+<area shape="poly" id="edge26_Node000001_Node000023" title=" " alt="" coords="1165,816,1120,882,1089,913,1054,939,1007,958,1005,953,1051,935,1086,909,1116,878,1161,819"/>
+<area shape="rect" id="Node000024" href="$namespacetracking_1_1math.html#a202ace75a11abc67e81330e799b8827b" title="Subtract two matrix views element&#45;wise." alt="" coords="818,1026,1003,1054"/>
+<area shape="poly" id="edge27_Node000001_Node000024" title=" " alt="" coords="1170,817,1153,859,1127,905,1094,951,1054,991,1019,1013,981,1028,979,1023,1016,1008,1051,987,1090,948,1123,902,1148,857,1167,821"/>
+<area shape="rect" id="Node000025" href="$classtracking_1_1observation_1_1SensorMountingPose.html#ab411fae27878ae71425ae5613f76f86c" title=" " alt="" coords="798,1078,1023,1156"/>
+<area shape="poly" id="edge29_Node000001_Node000025" title=" " alt="" coords="1177,818,1163,875,1138,941,1103,1008,1080,1039,1054,1067,1025,1088,1022,1083,1051,1063,1076,1036,1098,1005,1134,939,1158,873,1173,822"/>
+<area shape="rect" id="Node000026" href="$classtracking_1_1math_1_1Matrix.html#a5753d9ec2eb71fb4f171235731b8718e" title="Set a block matrix at given position (compile&#45;time parameters)." alt="" coords="827,1180,994,1225"/>
+<area shape="poly" id="edge30_Node000001_Node000026" title=" " alt="" coords="1183,818,1176,894,1156,988,1139,1038,1118,1086,1089,1131,1054,1170,1027,1188,995,1199,993,1194,1024,1183,1051,1166,1085,1127,1113,1083,1135,1036,1151,987,1171,893,1180,822"/>
+<area shape="rect" id="Node000027" href="$classtracking_1_1math_1_1Matrix.html#a5f132cb4f3d87e6f18f53ea59b6d3657" title="Set a block matrix at given position." alt="" coords="827,1249,994,1294"/>
+<area shape="poly" id="edge31_Node000001_Node000027" title=" " alt="" coords="1185,818,1183,906,1176,961,1165,1019,1149,1079,1126,1137,1095,1191,1054,1239,1027,1258,995,1269,994,1264,1024,1253,1051,1235,1090,1188,1121,1135,1144,1077,1160,1018,1171,960,1177,906,1182,823"/>
+<area shape="rect" id="Node000028" href="$namespacetracking_1_1math_1_1conversions.html#a0873ae1f700757d4411181cae96cee65" title="Creates a SquareMatrix from a DiagonalMatrix." alt="" coords="809,1319,1012,1363"/>
+<area shape="poly" id="edge32_Node000001_Node000028" title=" " alt="" coords="1180,818,1166,932,1139,1078,1122,1151,1102,1217,1080,1271,1055,1308,1035,1323,1013,1333,1011,1328,1032,1318,1051,1304,1075,1269,1097,1215,1117,1150,1134,1077,1160,931,1177,822"/>
+<area shape="rect" id="Node000029" href="$classtracking_1_1filter_1_1InformationFilter.html#a7b21589d9b27015411de1f4ecc272528" title="Information measurement update of information vector and information matrix." alt="" coords="812,1388,1009,1433"/>
+<area shape="poly" id="edge33_Node000001_Node000029" title=" " alt="" coords="1181,818,1169,946,1144,1112,1127,1196,1107,1272,1083,1335,1069,1359,1055,1378,1034,1393,1010,1404,1009,1399,1031,1389,1051,1374,1065,1356,1078,1332,1102,1271,1122,1195,1139,1111,1164,945,1178,822"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1env_1_1EgoMotion.html#af757959575cb1711704b3a150dca3403" title="Compute displacement from internal motion parameters." alt="" coords="524,109,706,154"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="790,112,708,123,705,119,795,109"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="795,154,707,145,705,140,800,152"/>
+<area shape="poly" id="edge7_Node000006_Node000006" title=" " alt="" coords="951,225,936,219,910,216,890,218,875,222,866,229,862,238,857,235,862,226,873,218,889,212,911,211,937,213,956,223"/>
+<area shape="poly" id="edge9_Node000007_Node000007" title=" " alt="" coords="951,368,936,363,910,360,890,362,875,366,866,373,862,382,857,379,862,370,873,362,889,356,911,355,937,357,956,367"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1math_1_1SquareMatrix.html#a944374777b1df93e4bec74765bcef6e0" title="Solve the linear system A * x = b using QR decomposition." alt="" coords="509,451,720,495"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="787,567,767,561,703,530,651,498,650,493,706,526,769,556,793,565"/>
+<area shape="rect" id="Node000011" href="$classtracking_1_1math_1_1SquareMatrix.html#a911f645174c9ebb677deeeef12a71a34" title="Compute the matrix inverse using QR decomposition." alt="" coords="250,331,461,375"/>
+<area shape="poly" id="edge13_Node000010_Node000011" title=" " alt="" coords="562,443,514,417,460,390,432,378,430,373,462,385,517,412,567,442"/>
+<area shape="rect" id="Node000012" href="$classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" title=" " alt="" coords="5,301,202,346"/>
+<area shape="poly" id="edge16_Node000010_Node000012" title=" " alt="" coords="589,438,566,408,536,375,500,344,460,321,396,302,328,295,262,297,204,304,200,300,262,292,329,290,397,297,462,316,504,340,540,371,570,405,594,437"/>
+<area shape="rect" id="Node000014" href="$classtracking_1_1math_1_1SquareMatrix.html#af5354a63bf2535bbeb94c792c1bcb2d4" title=" " alt="" coords="250,400,461,461"/>
+<area shape="poly" id="edge17_Node000010_Node000014" title=" " alt="" coords="491,454,463,450,460,445,496,452"/>
+<area shape="rect" id="Node000015" href="$classtracking_1_1math_1_1SquareMatrix.html#a9f29fb997b4166edf07cec88d6759da3" title=" " alt="" coords="250,485,461,546"/>
+<area shape="poly" id="edge18_Node000010_Node000015" title=" " alt="" coords="491,495,463,500,460,496,496,491"/>
+<area shape="rect" id="Node000016" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="263,571,448,615"/>
+<area shape="poly" id="edge19_Node000010_Node000016" title=" " alt="" coords="563,505,517,534,462,561,433,572,430,568,460,556,514,529,566,502"/>
+<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="232,340,204,337,201,333,236,337"/>
+<area shape="poly" id="edge15_Node000011_Node000013" title=" " alt="" coords="259,384,251,390,215,413,182,438,129,486,125,483,179,434,212,408,248,385,262,380"/>
+<area shape="rect" id="Node000019" href="$classtracking_1_1math_1_1Vector.html#ac68c5dfeb6608b1db26264cd4410a933" title="Normalize this vector in&#45;place to unit length." alt="" coords="532,760,697,805"/>
+<area shape="poly" id="edge22_Node000018_Node000019" title=" " alt="" coords="810,783,699,785,697,780,815,781"/>
+<area shape="rect" id="Node000020" href="$classtracking_1_1math_1_1Vector.html#ab30558a6336045ae4c6848f217ddecb9" title="Create a new normalized vector of unit length." alt="" coords="273,760,438,805"/>
+<area shape="poly" id="edge23_Node000019_Node000020" title=" " alt="" coords="514,784,439,785,437,780,518,781"/>
+<area shape="poly" id="edge28_Node000024_Node000024" title=" " alt="" coords="956,1011,941,1007,910,1004,882,1006,866,1011,862,1017,869,1026,864,1025,857,1017,863,1007,881,1001,911,999,942,1002,961,1010"/>
+</map>

@@ -1,5 +1,5 @@
 <map id="tracking::math::Point2d::y" name="tracking::math::Point2d::y">
-<area shape="rect" id="Node000001" title="Write access to y&#45;coordinate." alt="" coords="5,20,196,45"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="244,5,411,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,30,230,30,230,35,196,35"/>
+<area shape="rect" id="Node000001" title="Write access to y&#45;coordinate." alt="" coords="5,22,195,50"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a2da76bfaec4e3c25b5f11078a632c960" title=" " alt="" coords="243,5,408,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,34,230,36,224,36,195,39"/>
 </map>

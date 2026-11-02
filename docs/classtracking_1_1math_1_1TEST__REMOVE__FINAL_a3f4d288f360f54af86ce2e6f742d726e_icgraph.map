@@ -1,0 +1,6 @@
+<map id="tracking::math::TEST_REMOVE_FINAL::determinant" name="tracking::math::TEST_REMOVE_FINAL::determinant">
+<area shape="rect" id="Node000001" title="Calculate the determinant of the diagonal matrix." alt="" coords="255,29,472,74"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="404,14,390,10,363,8,339,10,324,15,318,21,319,30,315,27,313,19,321,10,338,5,363,3,391,5,409,14"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#ace3ce343395ade18d9254d914cc178a4" title="Element access to a scalar triangular value." alt="" coords="5,29,207,74"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,52,207,54,207,49,242,51"/>
+</map>

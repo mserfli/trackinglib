@@ -1,9 +1,15 @@
 <map id="tracking::math::operator*" name="tracking::math::operator*">
-<area shape="rect" id="Node000001" title=" " alt="" coords="240,70,427,95"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a0f839b3b261c9a949ba0f0dfa133f7ca" title="Compute the squared Euclidean norm (L2 norm squared) of the vector." alt="" coords="15,5,182,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="267,69,180,48,182,43,268,64"/>
-<area shape="rect" id="Node000003" href="$namespacetracking_1_1math.html#a5da1defd9816130013342221228abf76" title="Multiply a matrix by a column view." alt="" coords="5,70,192,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,85,192,85,192,80,227,80"/>
-<area shape="rect" id="Node000004" href="$namespacetracking_1_1math.html#a3cb17735266f10296c8f695c5a160af3" title="Multiply two matrix views." alt="" coords="5,119,192,145"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="259,101,161,122,159,117,258,96"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="880,74,1066,102"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a0f839b3b261c9a949ba0f0dfa133f7ca" title="Compute the squared Euclidean norm (L2 norm squared) of the vector." alt="" coords="656,5,821,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="899,69,821,52,822,46,904,70"/>
+<area shape="rect" id="Node000006" href="$namespacetracking_1_1math.html#a5da1defd9816130013342221228abf76" title="Multiply a matrix by a column view." alt="" coords="645,74,832,102"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="862,88,832,90,832,85,867,88"/>
+<area shape="rect" id="Node000007" href="$namespacetracking_1_1math.html#a3cb17735266f10296c8f695c5a160af3" title="Multiply two matrix views." alt="" coords="645,126,832,154"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="895,105,805,128,804,123,890,106"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Vector.html#a2a093a2f59247f405801cda330da997a" title="Compute the Euclidean norm (L2 norm) of the vector." alt="" coords="432,5,597,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="638,28,598,30,598,25,643,27"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Vector.html#ac68c5dfeb6608b1db26264cd4410a933" title="Normalize this vector in&#45;place to unit length." alt="" coords="219,5,384,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="414,28,385,30,384,25,419,27"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Vector.html#ab30558a6336045ae4c6848f217ddecb9" title="Create a new normalized vector of unit length." alt="" coords="5,5,171,50"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="201,29,172,30,171,25,206,27"/>
 </map>

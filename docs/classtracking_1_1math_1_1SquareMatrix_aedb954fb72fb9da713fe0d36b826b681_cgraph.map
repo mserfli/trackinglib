@@ -1,5 +1,9 @@
 <map id="tracking::math::SquareMatrix::isOrthogonal" name="tracking::math::SquareMatrix::isOrthogonal">
-<area shape="rect" id="Node000001" title="Checks if the matrix is orthogonal within a specified tolerance." alt="" coords="5,5,217,45"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#a1767678675efd8983ce5beab4c53b2d7" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="265,5,477,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,23,252,23,252,28,217,28"/>
+<area shape="rect" id="Node000001" title="Checks if the matrix is orthogonal within a specified tolerance." alt="" coords="5,40,217,85"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#a1767678675efd8983ce5beab4c53b2d7" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="265,5,476,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,46,252,43,247,45,218,51"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1SquareMatrix.html#a83aee3d96b9a570cf86fd8b82151f1a3" title="Fast transpose without changing the layout (zero&#45;copy view)." alt="" coords="265,75,476,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="217,74,252,81,246,81,217,79"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1SquareMatrix.html#ad2f11aee9c411ff111e408c607eec1c6" title="Construct a new Square Matrix&lt;ValueType_, Size_&gt; object." alt="" coords="524,5,735,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="476,25,511,27,506,28,477,30"/>
 </map>

@@ -1,0 +1,22 @@
+<map id="tracking::math::SquareMatrix::qrSolve" name="tracking::math::SquareMatrix::qrSolve">
+<area shape="rect" id="Node000001" title="Solve the linear system A * x = b using QR decomposition." alt="" coords="5,208,217,253"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b" title="Performs Householder QR decomposition of a square matrix." alt="" coords="265,169,476,214"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,212,251,208,247,211,218,217"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1math_1_1Matrix.html#aedaf2c7db2e20735acb4c3648ea58494" title=" " alt="" coords="277,238,464,300"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="217,243,264,252,259,254,218,249"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html#a915072569a44b145370777147abece04" title="Unsafe element read&#45;only access (no bounds checking)." alt="" coords="546,5,713,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="391,167,447,114,484,85,523,60,537,55,533,58,525,65,487,90,451,118,395,171"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1SquareMatrix.html#a1767678675efd8983ce5beab4c53b2d7" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="524,75,735,119"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="433,166,555,124,550,126,435,171"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1SquareMatrix.html#ad2f11aee9c411ff111e408c607eec1c6" title="Construct a new Square Matrix&lt;ValueType_, Size_&gt; object." alt="" coords="783,104,995,149"/>
+<area shape="poly" id="edge9_Node000002_Node000006" title=" " alt="" coords="476,176,770,140,766,143,477,181"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1Matrix.html#aba21624386501bb4f47750d245a2ddee" title=" " alt="" coords="536,194,723,256"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="476,203,523,211,518,211,477,208"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1math_1_1Matrix.html#a87fa8f08a9f3be4d6cdf9f1e047c6337" title=" " alt="" coords="536,280,723,341"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="452,212,477,224,502,245,526,266,534,272,529,272,522,270,498,249,475,229,452,217"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1math_1_1Matrix.html#adf3791d6a7c8e961b74e27f5c1713ada" title="Get min and max value of the matrix." alt="" coords="546,365,713,410"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="461,212,478,224,491,241,498,257,503,289,507,321,514,336,526,351,536,361,531,360,522,355,509,339,502,322,497,290,493,259,486,243,474,228,460,217"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Matrix.html#a61fb51f86317a5f19c164d3d8c7ae572" title="Read&#45;only access to the internal data." alt="" coords="806,5,972,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="713,25,793,27,788,28,714,30"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="735,106,770,112,765,113,736,112"/>
+</map>

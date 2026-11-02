@@ -1,0 +1,20 @@
+<map id="tracking::motion::TEST_REMOVE_FINAL::MotionModelCA" name="tracking::motion::TEST_REMOVE_FINAL::MotionModelCA">
+<area shape="rect" id="Node000001" title=" " alt="" coords="552,213,792,258"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#a3189723f18910126e3d26d5681b59679" title="Creates a CV model based on a CA model." alt="" coords="269,5,488,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="643,200,585,132,546,96,503,65,480,53,480,48,505,60,549,91,588,128,649,201"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#a84f710b1c4f23f7c77e5596c3ca4139c" title=" " alt="" coords="258,75,498,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="625,204,569,169,503,134,473,123,473,117,505,129,572,164,631,204"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#a07e97c0b3bd3993597dd1b75dcad7d80" title=" " alt="" coords="258,144,498,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="557,210,476,192,476,187,562,209"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#a1b27c3aa634fb7cadd30d4082c21c2a3" title=" " alt="" coords="277,213,480,258"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="534,236,481,238,480,233,539,235"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#a4805676fa2d5cb9005a111d619168c2d" title=" " alt="" coords="277,283,480,327"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="557,263,477,285,475,280,562,261"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#a84adf16a57ebd245cebefcb3a7e3fa67" title="Construct a new CA after checking covariance positive definiteness." alt="" coords="279,376,478,421"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="627,266,505,342,433,378,431,373,503,337,622,267"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#a4e08a27aa4d9c95fa20f4d8554e54940" title=" " alt="" coords="253,445,504,490"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="652,270,627,311,593,355,552,398,505,435,482,447,481,442,503,431,549,394,589,351,623,308,648,273"/>
+<area shape="poly" id="edge7_Node000007_Node000007" title=" " alt="" coords="421,361,406,357,378,355,353,357,337,361,330,367,332,377,327,374,325,366,334,357,352,351,378,349,407,352,427,361"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1TEST__REMOVE__FINAL.html#a629eb85acf3e0b6b89ff65883c0cb30d" title="Construct a new CV after checking covariance positive definiteness." alt="" coords="5,376,205,421"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="260,399,205,401,205,396,265,398"/>
+</map>

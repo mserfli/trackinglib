@@ -1,0 +1,12 @@
+<map id="tracking::env::EgoMotion::getVelocityAt" name="tracking::env::EgoMotion::getVelocityAt">
+<area shape="rect" id="Node000001" title="Compute the tracking&#45;frame velocity of a point rigidly attached to the ego vehicle." alt="" coords="5,75,188,119"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Point2d.html#a599362040b9541cb2f30d69d6479614f" title=" " alt="" coords="236,75,443,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,94,223,96,218,98,189,100"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Point2d.html#a37c7c8571fb8202a17b878f7eb611c25" title=" " alt="" coords="491,5,671,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="419,72,489,54,484,56,420,77"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Point2d.html#a745132e4965e317a57e1df605327e910" title=" " alt="" coords="494,75,668,119"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="443,94,481,97,476,97,444,100"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Point2d.html#a18c015f1396d1a2f385a2e2716c4943a" title=" " alt="" coords="494,168,668,213"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="400,117,510,162,505,162,399,122"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="536,166,534,158,542,149,557,143,581,141,607,144,624,153,619,152,606,149,581,147,559,149,544,153,539,159,540,169"/>
+</map>

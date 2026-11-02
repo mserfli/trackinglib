@@ -1,0 +1,5 @@
+<map id="tracking::math::SquareMatrix::symmetrize" name="tracking::math::SquareMatrix::symmetrize">
+<area shape="rect" id="Node000001" title="Symmetrize the matrix by averaging with its transpose." alt="" coords="5,14,217,58"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a915072569a44b145370777147abece04" title=" " alt="" coords="265,5,451,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,34,252,36,246,36,217,39"/>
+</map>

@@ -1,0 +1,18 @@
+<map id="tracking::math::SquareMatrix::householderQR" name="tracking::math::SquareMatrix::householderQR">
+<area shape="rect" id="Node000001" title="Performs Householder QR decomposition of a square matrix." alt="" coords="768,143,980,187"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#a944374777b1df93e4bec74765bcef6e0" title="Solve the linear system A * x = b using QR decomposition." alt="" coords="509,143,720,187"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="750,165,721,168,721,162,756,165"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1SquareMatrix.html#a911f645174c9ebb677deeeef12a71a34" title="Compute the matrix inverse using QR decomposition." alt="" coords="250,65,461,110"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="520,138,433,113,433,108,525,137"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" title=" " alt="" coords="5,5,202,50"/>
+<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="577,132,525,91,494,71,460,56,395,37,327,27,262,23,203,23,201,18,262,17,328,22,396,32,462,50,496,66,529,87,583,132"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1SquareMatrix.html#af5354a63bf2535bbeb94c792c1bcb2d4" title=" " alt="" coords="250,134,461,196"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="491,166,462,168,461,162,496,164"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1SquareMatrix.html#a9f29fb997b4166edf07cec88d6759da3" title=" " alt="" coords="250,220,461,281"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="532,192,452,222,450,216,527,194"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="263,305,448,350"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="583,198,529,249,462,295,437,307,435,302,460,291,526,245,579,200"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="242,62,201,53,199,48,247,60"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1filter_1_1KalmanFilter.html#a4df70b5fa33fdf85a95d6a528da0344f" title="Kalman measurement update of state and covariance." alt="" coords="18,75,189,119"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="232,94,190,96,188,91,236,91"/>
+</map>

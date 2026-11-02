@@ -1,0 +1,7 @@
+<map id="tracking::math::SquareMatrix::FromList" name="tracking::math::SquareMatrix::FromList">
+<area shape="rect" id="Node000001" title="Creates a SquareMatrix from a nested initializer list." alt="" coords="5,52,217,97"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a062e30aeb5d241aca75eb82a82ed5774" title=" " alt="" coords="271,5,470,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,56,258,53,253,54,218,62"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1SquareMatrix.html#ad2f11aee9c411ff111e408c607eec1c6" title="Construct a new Square Matrix&lt;ValueType_, Size_&gt; object." alt="" coords="265,91,476,136"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,88,252,95,246,96,217,93"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="tracking::math::Vector::operator*" name="tracking::math::Vector::operator*">
+<area shape="rect" id="Node000001" title="Compute the dot product with another vector." alt="" coords="5,40,171,85"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a2da76bfaec4e3c25b5f11078a632c960" title="Element read&#45;only access to a scalar vector value (unchecked)." alt="" coords="219,5,384,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,46,206,43,200,44,171,52"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Vector.html#aec0a6c75358f5a47e1d4c056c8aebb12" title="Construct a vector from a compatible matrix." alt="" coords="219,75,384,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,73,206,81,200,81,171,78"/>
+</map>

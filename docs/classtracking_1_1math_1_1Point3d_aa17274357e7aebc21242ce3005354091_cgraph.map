@@ -1,13 +1,16 @@
 <map id="tracking::math::Point3d::FromValues" name="tracking::math::Point3d::FromValues">
-<area shape="rect" id="Node000001" title="Create a 3D point from coordinate values." alt="" coords="5,47,180,87"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Point3d.html#a7cdd5d96deabfec4c8f13dcaac2f028d" title="Read access to x&#45;coordinate." alt="" coords="228,5,419,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,46,249,31,250,36,181,51"/>
-<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Point3d.html#ac6e001149c0df058ee7e421a778fc9a2" title="Read access to y&#45;coordinate." alt="" coords="228,55,419,80"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="180,65,214,65,214,70,180,70"/>
-<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Point3d.html#a89ce54a5d263b40860d3bb4acdd7c64c" title="Read access to z&#45;coordinate." alt="" coords="229,104,418,129"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="181,83,250,98,249,104,180,89"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="467,40,633,95"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="383,28,454,44,452,49,382,33"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="419,65,453,65,453,70,419,70"/>
-<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="382,101,452,86,454,91,383,107"/>
+<area shape="rect" id="Node000001" title="Create a 3D point from coordinate values." alt="" coords="5,92,179,137"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="48,91,47,82,54,73,69,67,92,65,117,68,133,76,128,78,115,73,92,71,71,73,57,77,52,83,53,92"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Point3d.html#a755d5aec19e6be4d541e0bf4ea6a61c2" title="Construct a new Point 3d&lt;ValueType_&gt; object." alt="" coords="235,5,408,50"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="151,89,226,60,246,55,241,57,228,65,153,94"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Point3d.html#a7cdd5d96deabfec4c8f13dcaac2f028d" title="Read access to x&#45;coordinate." alt="" coords="227,74,416,102"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="178,102,214,100,209,101,180,107"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Point3d.html#ac6e001149c0df058ee7e421a778fc9a2" title="Read access to y&#45;coordinate." alt="" coords="227,126,416,154"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="179,121,214,127,208,128,179,127"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1Point3d.html#a89ce54a5d263b40860d3bb4acdd7c64c" title="Read access to z&#45;coordinate." alt="" coords="227,178,416,206"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="150,134,228,162,255,173,249,173,226,168,150,140"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Point3d.html#a2da76bfaec4e3c25b5f11078a632c960" title="hide inherited at_unsafe to prevent wrong access" alt="" coords="464,117,637,162"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="386,99,452,116,446,117,386,105"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="416,137,451,139,446,140,416,142"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="385,175,446,163,452,162,386,180"/>
 </map>

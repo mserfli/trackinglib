@@ -1,9 +1,11 @@
 <map id="tracking::math::ModifiedGramSchmidt::run" name="tracking::math::ModifiedGramSchmidt::run">
-<area shape="rect" id="Node000001" title="Computes UDU factorization of Phi matrix." alt="" coords="499,37,680,77"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ac25112b654af737bc4d1eb973cd72b86" title="Compute A*P*A^T in&#45;place (factored covariance propagation)" alt="" coords="252,5,451,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="485,46,450,41,451,36,485,41"/>
-<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a98cfcb7607af2ad5a9066731465abc6b" title="Thornton update: Φ*P*Φ^T + G*Q*G^T (Kalman prediction)" alt="" coords="252,69,451,109"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="485,74,451,79,450,73,485,69"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a6fcc69cb404ce1957bffb9f575c814c8" title="Compute A*P*A^T (factored covariance propagation)" alt="" coords="5,5,204,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="238,28,204,28,204,23,238,23"/>
+<area shape="rect" id="Node000001" title="Computes UDU factorization of Phi matrix." alt="" coords="501,75,681,119"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ac25112b654af737bc4d1eb973cd72b86" title="Compute A*P*A^T in&#45;place (factored covariance propagation)." alt="" coords="256,40,453,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="483,82,454,79,454,74,488,82"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a98cfcb7607af2ad5a9066731465abc6b" title="Thornton update: Φ*P*Φ^T + G*Q*G^T (Kalman prediction)." alt="" coords="256,109,453,154"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="488,112,454,120,453,115,483,113"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a6fcc69cb404ce1957bffb9f575c814c8" title="Compute A*P*A^T (factored covariance propagation)." alt="" coords="8,5,205,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="237,47,206,44,205,39,243,46"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ade6e7f2800cf91037769424fb92dccd6" title="Set the variance at (idx,idx) and clears any correlations." alt="" coords="5,75,208,119"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="237,79,209,85,207,80,243,78"/>
 </map>

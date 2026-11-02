@@ -1,5 +1,7 @@
 <map id="tracking::math::CovarianceMatrixFactored::apaT" name="tracking::math::CovarianceMatrixFactored::apaT">
-<area shape="rect" id="Node000001" title="Compute A*P*A^T in&#45;place (factored covariance propagation)" alt="" coords="252,5,451,45"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a6fcc69cb404ce1957bffb9f575c814c8" title="Compute A*P*A^T (factored covariance propagation)" alt="" coords="5,5,204,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,28,204,28,204,23,238,23"/>
+<area shape="rect" id="Node000001" title="Compute A*P*A^T in&#45;place (factored covariance propagation)." alt="" coords="256,40,453,85"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a6fcc69cb404ce1957bffb9f575c814c8" title="Compute A*P*A^T (factored covariance propagation)." alt="" coords="8,5,205,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,47,206,44,205,39,243,46"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ade6e7f2800cf91037769424fb92dccd6" title="Set the variance at (idx,idx) and clears any correlations." alt="" coords="5,75,208,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="237,79,208,85,208,80,243,78"/>
 </map>

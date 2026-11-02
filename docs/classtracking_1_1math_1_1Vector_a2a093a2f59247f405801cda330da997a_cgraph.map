@@ -1,0 +1,11 @@
+<map id="tracking::math::Vector::norm" name="tracking::math::Vector::norm">
+<area shape="rect" id="Node000001" title="Compute the Euclidean norm (L2 norm) of the vector." alt="" coords="5,40,171,85"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a915072569a44b145370777147abece04" title="Unsafe element read&#45;only access (no bounds checking)." alt="" coords="219,5,385,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,46,206,43,200,44,172,52"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Vector.html#a0f839b3b261c9a949ba0f0dfa133f7ca" title="Compute the squared Euclidean norm (L2 norm squared) of the vector." alt="" coords="219,75,384,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="171,73,207,81,201,81,171,78"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html#a61fb51f86317a5f19c164d3d8c7ae572" title="Read&#45;only access to the internal data." alt="" coords="443,5,609,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="385,25,430,27,425,28,385,30"/>
+<area shape="rect" id="Node000005" href="$namespacetracking_1_1math.html#ae8c2f6288ea8b30c11b8f6d055edbc06" title=" " alt="" coords="433,83,619,111"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="385,94,420,97,415,97,385,100"/>
+</map>

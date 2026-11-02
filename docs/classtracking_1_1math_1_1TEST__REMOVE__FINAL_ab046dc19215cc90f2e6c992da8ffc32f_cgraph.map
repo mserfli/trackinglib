@@ -1,0 +1,9 @@
+<map id="tracking::math::TEST_REMOVE_FINAL::FromList" name="tracking::math::TEST_REMOVE_FINAL::FromList">
+<area shape="rect" id="Node000001" title="Creates a DiagonalMatrix from the diagonal of a nested initializer list." alt="" coords="5,5,199,50"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#af5d8c2e9d8c9c32640365de4172e4f23" title=" " alt="" coords="488,5,725,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,12,247,8,343,4,440,8,475,12,470,13,440,13,343,9,247,13,200,17"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a98e3168ee0679e8d3830638ae552070a" title="Creates a DiagonalMatrix from a flat initializer list." alt="" coords="247,47,440,91"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,42,234,50,229,50,199,47"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="440,51,470,49,475,48,441,56"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="298,45,296,37,304,28,320,22,343,20,369,23,387,32,381,31,368,28,343,25,321,27,307,32,301,38,302,48"/>
+</map>

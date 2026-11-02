@@ -1,0 +1,10 @@
+<map id="tracking::observation::TEST_REMOVE_FINAL::TryCreate" name="tracking::observation::TEST_REMOVE_FINAL::TryCreate">
+<area shape="rect" id="Node000001" title="Construct a new RangeBearingDopplerObservationModel after checking covariance positive definiteness." alt="" coords="5,60,183,122"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#a3239887ff0dca295471da49f5bbd7d1f" title=" " alt="" coords="231,5,513,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,71,218,66,213,68,184,76"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#ab4a8ffcbf759dd7ce34436e9073c5281" title="Construct a new BearingObservationModel after checking covariance positive definiteness." alt="" coords="283,115,460,176"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="183,106,270,124,265,126,183,111"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="318,113,319,104,329,95,347,90,372,88,401,91,420,101,415,100,400,96,372,93,348,95,332,100,324,107,322,116"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#ae32cca2ed0a33c07589f1618100954c7" title=" " alt="" coords="561,115,751,176"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="461,143,548,145,543,146,461,148"/>
+</map>

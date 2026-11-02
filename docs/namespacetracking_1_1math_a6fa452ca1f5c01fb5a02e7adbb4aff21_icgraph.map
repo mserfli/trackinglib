@@ -1,0 +1,5 @@
+<map id="tracking::math::operator+" name="tracking::math::operator+">
+<area shape="rect" id="Node000001" title="Calculates Scalar + Matrix (element&#45;wise addition)." alt="" coords="244,5,434,33"/>
+<area shape="rect" id="Node000002" href="$namespacetracking_1_1math.html#ad59b912a93d23b51952426698d3e6c22" title="Add two matrix views element&#45;wise." alt="" coords="5,5,196,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="225,19,196,22,196,17,231,19"/>
+</map>

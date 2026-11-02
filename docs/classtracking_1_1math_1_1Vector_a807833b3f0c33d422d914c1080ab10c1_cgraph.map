@@ -1,0 +1,7 @@
+<map id="tracking::math::Vector::Ones" name="tracking::math::Vector::Ones">
+<area shape="rect" id="Node000001" title="Construct a vector filled with ones." alt="" coords="5,52,171,97"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a142d63039f9811888631868bcfab74d6" title=" " alt="" coords="219,5,390,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,57,206,53,201,55,172,63"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Vector.html#aec0a6c75358f5a47e1d4c056c8aebb12" title="Construct a vector from a compatible matrix." alt="" coords="222,91,387,136"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,87,209,96,204,96,171,92"/>
+</map>

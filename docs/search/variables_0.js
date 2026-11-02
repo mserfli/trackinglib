@@ -10,7 +10,7 @@ var searchData=
   ['_5fdisplacementcog_7',['_displacementCog',['../classtracking_1_1env_1_1EgoMotion.html#a1b61f3bfc4b45b84053fa7b5b9c5d67c',1,'tracking::env::EgoMotion']]],
   ['_5fdt_8',['_dt',['../classtracking_1_1env_1_1EgoMotion.html#aff276a21b4e8e0192c9a94eb239b6a7e',1,'tracking::env::EgoMotion']]],
   ['_5fgeometry_9',['_geometry',['../classtracking_1_1env_1_1EgoMotion.html#af01248cc2cba7e58ccece6276fa8e236',1,'tracking::env::EgoMotion']]],
-  ['_5fmatrix_10',['_matrix',['../classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#ad2f375332a5e2b5c970f0e06ddc41d53',1,'tracking::math::TEST_REMOVE_FINAL::_matrix'],['../classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#acb2ee7816132af25bafbb36d169a7d82',1,'tracking::math::TEST_REMOVE_FINAL::_matrix']]],
+  ['_5fmatrix_10',['_matrix',['../classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#acb2ee7816132af25bafbb36d169a7d82',1,'tracking::math::TEST_REMOVE_FINAL::_matrix'],['../classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#ad2f375332a5e2b5c970f0e06ddc41d53',1,'tracking::math::TEST_REMOVE_FINAL::_matrix']]],
   ['_5fmotion_11',['_motion',['../classtracking_1_1env_1_1EgoMotion.html#abd111d1077b473174feb3b7616ea78a5',1,'tracking::env::EgoMotion']]],
   ['_5frotation_12',['_rotation',['../classtracking_1_1observation_1_1SensorMountingPose.html#adc68cf57788d5b7a24c70c80ef9368ca',1,'tracking::observation::SensorMountingPose']]],
   ['_5frow_13',['_row',['../classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a738d8d627964ba59c166547f86d8b632',1,'tracking::math::TEST_REMOVE_FINAL']]],

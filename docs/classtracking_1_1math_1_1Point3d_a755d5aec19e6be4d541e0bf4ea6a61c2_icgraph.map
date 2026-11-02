@@ -1,0 +1,6 @@
+<map id="tracking::math::Point3d::Point3d" name="tracking::math::Point3d::Point3d">
+<area shape="rect" id="Node000001" title="Construct a new Point 3d&lt;ValueType_&gt; object." alt="" coords="227,29,400,74"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Point3d.html#aa17274357e7aebc21242ce3005354091" title="Create a 3D point from coordinate values." alt="" coords="5,29,179,74"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,52,179,54,179,49,214,51"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="127,14,115,10,92,8,71,10,59,15,53,21,55,29,50,28,48,19,56,10,70,5,92,3,116,5,132,14"/>
+</map>

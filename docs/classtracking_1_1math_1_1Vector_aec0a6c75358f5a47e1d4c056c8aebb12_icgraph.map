@@ -1,0 +1,16 @@
+<map id="tracking::math::Vector::Vector" name="tracking::math::Vector::Vector">
+<area shape="rect" id="Node000001" title="Construct a vector from a compatible matrix." alt="" coords="432,179,597,223"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a40c69cbe9a64b353d47eab4740612064" title="Creates a Vector from an initializer list." alt="" coords="219,5,384,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="485,166,440,116,413,89,382,65,364,53,364,48,386,60,416,85,444,112,490,166"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Vector.html#ab30558a6336045ae4c6848f217ddecb9" title="Create a new normalized vector of unit length." alt="" coords="219,75,384,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="457,171,383,134,358,123,358,117,385,129,463,171"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Vector.html#a807833b3f0c33d422d914c1080ab10c1" title="Construct a vector filled with ones." alt="" coords="219,144,384,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="414,186,385,182,384,177,419,185"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Vector.html#a723f6bc4536182198f4412f268b526c7" title="Compute the dot product with another vector." alt="" coords="219,213,384,258"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="414,218,385,225,384,220,419,216"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1Vector.html#aa6895be41c5df10d1c4a26762b648c70" title="Create a unit vector with 1 at the specified position." alt="" coords="5,304,171,349"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="467,231,427,255,385,273,330,290,274,303,172,320,171,315,273,298,329,284,383,268,425,250,462,233"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1Vector.html#a3cdf9d5d406d9b94236096546c0897a2" title="Construct a zero vector." alt="" coords="219,333,384,378"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="483,233,438,276,385,317,353,335,351,330,383,312,434,272,478,235"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="201,342,171,340,171,335,206,342"/>
+</map>

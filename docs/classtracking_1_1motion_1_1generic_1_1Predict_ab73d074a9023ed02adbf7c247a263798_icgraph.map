@@ -1,0 +1,11 @@
+<map id="tracking::motion::generic::Predict::run" name="tracking::motion::generic::Predict::run">
+<area shape="rect" id="Node000001" title="State prediction with ego motion compensation using a KalmanFilter." alt="" coords="270,142,454,186"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#a6915335b50e2836d7073f88769c74944" title=" " alt="" coords="5,5,222,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="312,134,220,81,198,70,197,65,223,76,317,132"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#a5526ca6661dbd7b7eeab1925d04b55f7" title=" " alt="" coords="5,91,222,152"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="252,147,223,143,222,138,257,145"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#acb55842ef9a962cccda9a013703fff22" title=" " alt="" coords="5,176,222,238"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="252,184,223,191,221,186,257,182"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#aea49e79854f2ed05a6ed3bbfd714e521" title=" " alt="" coords="5,261,222,323"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="317,194,223,252,199,263,197,258,220,247,312,196"/>
+</map>

@@ -1,17 +1,27 @@
 <map id="tracking::math::SquareMatrix::Identity" name="tracking::math::SquareMatrix::Identity">
-<area shape="rect" id="Node000001" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="797,133,1009,173"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b" title="Performs Householder QR decomposition of a square matrix." alt="" coords="537,5,749,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="862,128,809,93,748,60,718,48,720,43,750,55,812,88,865,123"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1SquareMatrix.html#a911f645174c9ebb677deeeef12a71a34" title="Compute the matrix inverse using QR decomposition." alt="" coords="537,69,749,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="807,133,724,112,726,107,809,127"/>
-<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1SquareMatrix.html#aedb954fb72fb9da713fe0d36b826b681" title="Checks if the matrix is orthogonal within a specified tolerance." alt="" coords="537,133,749,173"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="784,156,750,156,750,151,784,151"/>
-<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ade6e7f2800cf91037769424fb92dccd6" title="Set the variance at (idx,idx) and clears any correlations." alt="" coords="542,197,745,237"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="809,179,726,200,724,195,807,174"/>
-<area shape="rect" id="Node000008" href="$classtracking_1_1filter_1_1KalmanFilter.html#a4df70b5fa33fdf85a95d6a528da0344f" title="Kalman measurement update of state and covariance." alt="" coords="558,261,729,301"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="865,184,812,218,750,252,720,264,718,259,748,247,809,214,862,179"/>
-<area shape="rect" id="Node000004" href="$classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" title=" " alt="" coords="292,69,489,109"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="524,92,489,92,489,87,524,87"/>
-<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="5,55,244,124"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="278,92,244,92,244,87,278,87"/>
+<area shape="rect" id="Node000001" title="Construct an identity matrix with ones on the diagonal and zeros elsewhere." alt="" coords="1028,368,1239,412"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b" title="Performs Householder QR decomposition of a square matrix." alt="" coords="768,248,980,292"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1067,361,924,296,925,290,1072,361"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1SquareMatrix.html#a911f645174c9ebb677deeeef12a71a34" title="Compute the matrix inverse using QR decomposition." alt="" coords="250,334,461,379"/>
+<area shape="poly" id="edge10_Node000001_Node000004" title=" " alt="" coords="1010,387,461,364,461,358,1013,383"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1filter_1_1InformationFilter.html#a10fd3d15b0f1cde43be4d74f7ba28404" title=" " alt="" coords="5,274,202,319"/>
+<area shape="poly" id="edge12_Node000001_Node000005" title=" " alt="" coords="1103,355,1049,297,1015,265,978,237,844,155,788,125,733,102,677,83,615,66,460,34,400,20,351,9,328,8,304,11,279,19,251,34,220,57,193,86,170,119,152,154,126,222,112,275,107,273,121,220,147,152,166,116,189,83,216,53,248,29,277,14,303,6,328,3,351,4,401,15,462,29,616,61,678,78,735,97,790,120,847,150,981,233,1018,261,1053,293,1108,356"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1filter_1_1KalmanFilter.html#a4df70b5fa33fdf85a95d6a528da0344f" title="Kalman measurement update of state and covariance." alt="" coords="18,369,189,414"/>
+<area shape="poly" id="edge14_Node000001_Node000006" title=" " alt="" coords="1011,393,461,394,189,394,189,389,461,389,1014,388"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1math_1_1SquareMatrix.html#aedb954fb72fb9da713fe0d36b826b681" title="Checks if the matrix is orthogonal within a specified tolerance." alt="" coords="768,454,980,499"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="1052,417,944,456,943,451,1047,418"/>
+<area shape="rect" id="Node000011" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ade6e7f2800cf91037769424fb92dccd6" title="Set the variance at (idx,idx) and clears any correlations." alt="" coords="773,524,975,568"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="1100,422,1046,470,981,514,955,526,953,521,978,509,1043,466,1095,424"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1SquareMatrix.html#a944374777b1df93e4bec74765bcef6e0" title="Solve the linear system A * x = b using QR decomposition." alt="" coords="509,245,720,290"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="750,269,721,271,720,266,755,268"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="531,296,423,336,421,331,536,294"/>
+<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="492,276,203,294,202,288,495,272"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1SquareMatrix.html#af5354a63bf2535bbeb94c792c1bcb2d4" title=" " alt="" coords="250,43,461,105"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="583,233,529,176,496,146,460,119,442,108,442,103,462,114,499,142,533,173,588,233"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1math_1_1SquareMatrix.html#a9f29fb997b4166edf07cec88d6759da3" title=" " alt="" coords="250,128,461,190"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="544,239,460,204,434,193,433,188,462,199,549,238"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="263,214,448,259"/>
+<area shape="poly" id="edge9_Node000003_Node000009" title=" " alt="" coords="491,254,448,250,447,245,496,252"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="242,331,201,322,199,317,247,329"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="232,375,190,382,188,377,236,372"/>
 </map>

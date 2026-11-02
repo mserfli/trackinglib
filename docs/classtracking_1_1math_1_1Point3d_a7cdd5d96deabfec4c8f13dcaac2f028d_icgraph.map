@@ -1,5 +1,6 @@
 <map id="tracking::math::Point3d::x" name="tracking::math::Point3d::x">
-<area shape="rect" id="Node000001" title="Read access to x&#45;coordinate." alt="" coords="228,13,419,38"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Point3d.html#aa17274357e7aebc21242ce3005354091" title="Create a 3D point from coordinate values." alt="" coords="5,5,180,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="214,28,180,28,180,23,214,23"/>
+<area shape="rect" id="Node000001" title="Read access to x&#45;coordinate." alt="" coords="227,38,416,66"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Point3d.html#aa17274357e7aebc21242ce3005354091" title="Create a 3D point from coordinate values." alt="" coords="5,29,179,74"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,52,179,54,179,49,214,51"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="128,14,115,10,92,8,71,10,57,15,52,21,53,29,48,28,47,19,54,10,69,5,92,3,117,5,133,14"/>
 </map>

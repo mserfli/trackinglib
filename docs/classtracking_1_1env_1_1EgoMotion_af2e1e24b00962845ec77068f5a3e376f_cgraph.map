@@ -1,0 +1,16 @@
+<map id="tracking::env::EgoMotion::compensatePosition" name="tracking::env::EgoMotion::compensatePosition">
+<area shape="rect" id="Node000001" title="Compensate object position for ego vehicle motion." alt="" coords="5,75,188,119"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1env_1_1EgoMotion.html#a56026f23aa324270fc63e4d871663bdc" title="Compensate direction vector for ego vehicle motion." alt="" coords="248,23,430,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,75,235,66,231,69,189,80"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Point2d.html#a599362040b9541cb2f30d69d6479614f" title=" " alt="" coords="236,109,443,154"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="188,107,223,114,218,116,189,113"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Rotation2D.html#a9d3080324df858335b82c2125d0423dd" title="Create a rotation from an already&#45;known cos/sin pair, avoiding recomputation." alt="" coords="491,5,678,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="430,36,478,35,473,36,432,41"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Point2d.html#a37c7c8571fb8202a17b878f7eb611c25" title=" " alt="" coords="494,75,675,119"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="443,114,482,111,477,113,444,120"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1Point2d.html#a745132e4965e317a57e1df605327e910" title=" " alt="" coords="498,144,671,189"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="443,144,485,152,480,152,444,149"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1Point2d.html#a18c015f1396d1a2f385a2e2716c4943a" title=" " alt="" coords="498,237,671,282"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="385,152,529,229,524,230,383,157"/>
+<area shape="poly" id="edge7_Node000007_Node000007" title=" " alt="" coords="538,235,537,227,545,218,561,213,585,211,611,213,629,223,623,222,610,218,585,216,562,218,547,223,542,229,543,238"/>
+</map>

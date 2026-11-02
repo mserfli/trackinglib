@@ -1,0 +1,17 @@
+<map id="tracking::observation::TEST_REMOVE_FINAL::VelocityObservationModel" name="tracking::observation::TEST_REMOVE_FINAL::VelocityObservationModel">
+<area shape="rect" id="Node000001" title=" " alt="" coords="257,261,449,323"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#a640b908cb2259f27ad8ee64e7d2e0117" title=" " alt="" coords="18,5,196,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="329,247,308,209,280,164,246,120,207,81,193,70,192,65,210,77,250,116,285,161,313,206,334,248"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#af7dbc99874d4d81c1e20cd773847ac0e" title=" " alt="" coords="18,91,196,152"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="309,251,263,208,207,166,190,156,188,150,210,162,266,204,315,250"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#a17e03e6e68cbf3f831cecdb0e85719fb" title="Construct a new VelocityObservationModel after checking covariance positive definiteness." alt="" coords="18,176,196,238"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="245,257,197,240,195,235,250,255"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#a8c53c5d69ca06c1efa38003a3137393e" title="Construct a new VelocityObservationModel after checking covariance positive definiteness and a sensor..." alt="" coords="18,261,196,323"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="239,294,197,295,195,290,243,291"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#a44ffaf7e6e46c0e6cb7245a0e748786c" title=" " alt="" coords="11,347,203,408"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="246,330,199,348,197,344,250,327"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#a18f29851fc97b567b9a744da12ab54cb" title=" " alt="" coords="11,432,203,494"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="314,332,266,380,210,422,190,434,187,429,207,418,263,376,310,336"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1observation_1_1TEST__REMOVE__FINAL.html#ae78bb93761e2a7478727ba458a9bca03" title=" " alt="" coords="5,517,209,579"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="333,335,313,378,285,423,250,468,210,508,194,519,191,514,207,503,246,464,280,420,308,375,330,339"/>
+</map>

@@ -1,11 +1,24 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,125,124,150"/>
-<area shape="rect" id="Node000001" href="$structtracking_1_1math_1_1is__matrix__like.html" title="SFINAE helper to detect matrix&#45;like types at compile time." alt="" coords="172,5,387,45"/>
-<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="89,113,126,83,171,55,199,43,201,48,173,60,129,88,92,117"/>
-<area shape="rect" id="Node000002" href="$structtracking_1_1motion_1_1detail_1_1has__acceleration.html" title="Detection trait for StateDefs providing an acceleration (AX and AY enumerators)" alt="" coords="173,70,385,125"/>
-<area shape="poly" id="edge2_Node000000_Node000002" title=" " alt="" coords="137,121,173,114,174,120,138,126"/>
-<area shape="rect" id="Node000003" href="$structtracking_1_1motion_1_1detail_1_1has__position.html" title="Detection trait for StateDefs providing a position (X and Y enumerators)" alt="" coords="187,149,371,203"/>
-<area shape="poly" id="edge3_Node000000_Node000003" title=" " alt="" coords="139,148,188,157,187,162,138,153"/>
-<area shape="rect" id="Node000004" href="$structtracking_1_1motion_1_1detail_1_1has__velocity.html" title="Detection trait for StateDefs providing a velocity (VX and VY enumerators)" alt="" coords="187,227,371,282"/>
-<area shape="poly" id="edge4_Node000000_Node000004" title=" " alt="" coords="93,157,130,185,173,212,199,225,197,230,171,217,127,189,90,161"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,467,123,494"/>
+<area shape="rect" id="Node000001" href="$structtracking_1_1math_1_1is__matrix__like_3_01T_00_01std_1_1void__t_3_01decltype_07std_1_1declv8d1fac557ead71a78e0fc84cf1d19214.html" title=" " alt="" coords="209,227,425,374"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="88,454,126,420,169,385,210,360,206,364,172,389,129,424,93,457"/>
+<area shape="rect" id="Node000003" href="$structtracking_1_1motion_1_1detail_1_1has__acceleration_3_01StateDef___00_01std_1_1void__t_3_01dbb413f917a3fc5b53346dc2c5a7a9c8d.html" title="Specialization matching StateDefs that provide AX and AY enumerators." alt="" coords="193,399,440,477"/>
+<area shape="poly" id="edge2_Node000000_Node000003" title=" " alt="" coords="136,466,195,457,191,461,139,471"/>
+<area shape="rect" id="Node000004" href="$structtracking_1_1motion_1_1detail_1_1has__position_3_01StateDef___00_01std_1_1void__t_3_01declt12e267b1c94fb154c6231e45e274b12c.html" title="Specialization matching StateDefs that provide X and Y enumerators." alt="" coords="171,5,463,84"/>
+<area shape="poly" id="edge3_Node000000_Node000004" title=" " alt="" coords="70,451,122,245,151,144,168,94,184,82,181,87,173,97,156,145,128,246,75,452"/>
+<area shape="rect" id="Node000005" href="$structtracking_1_1motion_1_1detail_1_1has__velocity_3_01StateDef___00_01std_1_1void__t_3_01declt761797243578e97e12ddac604b16c70e.html" title="Specialization matching StateDefs that provide VX and VY enumerators." alt="" coords="224,108,410,203"/>
+<area shape="poly" id="edge4_Node000000_Node000005" title=" " alt="" coords="67,451,77,401,96,338,126,272,145,241,169,213,194,193,225,178,222,183,197,198,173,217,150,244,130,274,101,339,82,402,72,452"/>
+<area shape="rect" id="Node000006" href="$structtracking_1_1math_1_1is__matrix__like.html" title="SFINAE helper to detect matrix&#45;like types at compile time." alt="" coords="210,501,424,546"/>
+<area shape="poly" id="edge5_Node000000_Node000006" title=" " alt="" coords="137,490,212,504,208,507,139,496"/>
+<area shape="rect" id="Node000007" href="$structtracking_1_1motion_1_1detail_1_1has__acceleration.html" title="Detection trait for StateDefs providing an acceleration (AX and AY enumerators)." alt="" coords="211,570,422,632"/>
+<area shape="poly" id="edge6_Node000000_Node000007" title=" " alt="" coords="92,502,130,530,172,556,213,574,208,575,169,560,127,535,93,507"/>
+<area shape="rect" id="Node000008" href="$structtracking_1_1motion_1_1detail_1_1has__position.html" title="Detection trait for StateDefs providing a position (X and Y enumerators)." alt="" coords="225,655,408,717"/>
+<area shape="poly" id="edge7_Node000000_Node000008" title=" " alt="" coords="76,506,114,575,140,611,172,641,198,656,227,669,222,670,195,661,169,645,136,614,109,578,76,511"/>
+<area shape="rect" id="Node000009" href="$structtracking_1_1motion_1_1detail_1_1has__velocity.html" title="Detection trait for StateDefs providing a velocity (VX and VY enumerators)." alt="" coords="225,740,408,802"/>
+<area shape="poly" id="edge8_Node000000_Node000009" title=" " alt="" coords="70,507,82,557,101,615,130,675,150,703,172,727,197,744,227,758,222,758,195,748,169,731,146,706,126,678,96,617,77,558,69,512"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="8,215,120,242"/>
+<area shape="poly" id="edge9_Node000002_Node000001" title=" " alt="" coords="129,245,210,268,206,271,131,250"/>
+<area shape="poly" id="edge10_Node000002_Node000003" title=" " alt="" coords="77,254,116,320,142,354,172,384,195,400,190,401,169,388,138,358,111,323,78,259"/>
+<area shape="poly" id="edge11_Node000002_Node000004" title=" " alt="" coords="78,200,115,146,140,118,169,93,189,82,186,87,172,97,144,122,119,149,83,202"/>
+<area shape="poly" id="edge12_Node000002_Node000005" title=" " alt="" coords="127,208,225,180,222,184,131,212"/>
 </map>

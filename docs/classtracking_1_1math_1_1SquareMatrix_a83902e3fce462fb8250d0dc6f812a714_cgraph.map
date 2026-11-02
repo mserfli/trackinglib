@@ -1,0 +1,5 @@
+<map id="tracking::math::SquareMatrix::setIdentity" name="tracking::math::SquareMatrix::setIdentity">
+<area shape="rect" id="Node000001" title="Set the matrix to the identity matrix in&#45;place." alt="" coords="5,5,217,50"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#ad2f11aee9c411ff111e408c607eec1c6" title="Construct a new Square Matrix&lt;ValueType_, Size_&gt; object." alt="" coords="265,5,476,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,25,252,28,246,28,217,30"/>
+</map>

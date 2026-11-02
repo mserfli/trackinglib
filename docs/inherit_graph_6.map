@@ -1,3 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtracking_1_1base_1_1contract_1_1RequireAbstractIntf.html" title=" " alt="" coords="5,5,336,119"/>
+<area shape="rect" id="Node000000" href="$classtracking_1_1base_1_1contract_1_1RequireCopyIntf.html" title=" " alt="" coords="5,40,201,119"/>
+<area shape="rect" id="Node000001" href="$structtracking_1_1math_1_1contract_1_1MatrixIntf.html" title=" " alt="" coords="249,101,480,162"/>
+<area shape="poly" id="edge16_Node000000_Node000001" title=" " alt="" coords="216,99,251,108,246,109,216,105"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html" title="Compliant to AUTOSAR C++14, A8&#45;4&#45;8: Output parameters shall not be used, making use of RVO and NRVO." alt="" coords="528,101,723,162"/>
+<area shape="poly" id="edge17_Node000001_Node000002" title=" " alt="" coords="495,129,530,131,525,132,496,134"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1SquareMatrix.html" title=" " alt="" coords="771,5,1059,50"/>
+<area shape="poly" id="edge18_Node000002_Node000003" title=" " alt="" coords="697,91,770,60,806,51,811,50,772,65,699,96"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Vector.html" title=" " alt="" coords="782,75,1048,119"/>
+<area shape="poly" id="edge19_Node000002_Node000004" title=" " alt="" coords="738,116,784,113,779,113,739,121"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1Vector.html" title=" " alt="" coords="832,144,998,189"/>
+<area shape="poly" id="edge20_Node000002_Node000005" title=" " alt="" coords="739,143,834,156,829,157,739,148"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1Vector.html" title=" " alt="" coords="831,213,999,258"/>
+<area shape="poly" id="edge21_Node000002_Node000006" title=" " alt="" coords="699,167,772,198,833,219,828,218,770,204,698,172"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1base_1_1contract_1_1RequireMoveIntf.html" title=" " alt="" coords="5,143,201,222"/>
+<area shape="poly" id="edge22_Node000007_Node000001" title=" " alt="" coords="215,158,251,153,246,155,217,163"/>
 </map>

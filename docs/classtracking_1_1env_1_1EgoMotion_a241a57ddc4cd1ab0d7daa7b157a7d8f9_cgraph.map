@@ -1,9 +1,9 @@
 <map id="tracking::env::EgoMotion::calcDisplacementVector" name="tracking::env::EgoMotion::calcDisplacementVector">
-<area shape="rect" id="Node000001" title="Calculate displacement vector." alt="" coords="5,45,192,85"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a74f4a1dc6f64586863ce3ef351a1e9c8" title="Element read&#45;only access to a scalar vector value (unchecked)" alt="" coords="240,13,407,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,49,226,44,227,49,193,54"/>
-<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Matrix.html#a86a0461615fafc04dfe7756bda3fe4b5" title="Sets all elements to zero." alt="" coords="240,77,407,117"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="193,75,227,80,226,86,192,81"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html#a103ed8d3af53ba865c6a00784ed62de6" title="Unsafe element read&#45;only access (no bounds checking)" alt="" coords="455,5,627,60"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="407,30,441,30,441,35,407,35"/>
+<area shape="rect" id="Node000001" title="Calculate displacement vector." alt="" coords="5,40,192,85"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Vector.html#a2da76bfaec4e3c25b5f11078a632c960" title="Element read&#45;only access to a scalar vector value (unchecked)." alt="" coords="240,5,406,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,45,227,42,222,44,193,51"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html#a86a0461615fafc04dfe7756bda3fe4b5" title="Sets all elements to zero." alt="" coords="240,75,406,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,74,227,82,222,82,192,79"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Matrix.html#a61fb51f86317a5f19c164d3d8c7ae572" title="Read&#45;only access to the internal data." alt="" coords="454,75,620,119"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="407,94,441,97,436,97,407,100"/>
 </map>

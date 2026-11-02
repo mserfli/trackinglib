@@ -1,6 +1,9 @@
 <map id="tracking::math::operator+" name="tracking::math::operator+">
-<area shape="rect" id="Node000001" title="Add two matrix views element&#45;wise." alt="" coords="5,29,196,55"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="64,31,56,21,60,11,75,5,101,3,133,7,145,16,141,20,131,11,101,8,76,10,64,15,61,20,68,27"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a103ed8d3af53ba865c6a00784ed62de6" title="Unsafe element read&#45;only access (no bounds checking)" alt="" coords="244,22,411,62"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,39,230,39,230,45,196,45"/>
+<area shape="rect" id="Node000001" title="Add two matrix views element&#45;wise." alt="" coords="5,44,196,72"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1Matrix.html#a915072569a44b145370777147abece04" title="Unsafe element read&#45;only access (no bounds checking)." alt="" coords="256,5,422,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,43,243,40,238,41,197,49"/>
+<area shape="rect" id="Node000004" href="$namespacetracking_1_1math.html#a6fa452ca1f5c01fb5a02e7adbb4aff21" title="Calculates Scalar + Matrix (element&#45;wise addition)." alt="" coords="244,74,434,102"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="196,67,231,74,226,74,196,73"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html#a61fb51f86317a5f19c164d3d8c7ae572" title="Read&#45;only access to the internal data." alt="" coords="482,5,648,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="422,25,469,27,464,28,422,30"/>
 </map>

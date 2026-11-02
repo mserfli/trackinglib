@@ -1,0 +1,15 @@
+<map id="tracking::math::conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull" name="tracking::math::conversions::CovarianceMatrixFactoredFromCovarianceMatrixFull">
+<area shape="rect" id="Node000001" title="Creates a CovarianceMatrixFactored from its full covariance matrix." alt="" coords="873,130,1179,192"/>
+<area shape="rect" id="Node000002" href="$namespacetracking_1_1math_1_1conversions.html#ae2b39760fe01ce27578934ccd625182d" title="Creates a CovarianceMatrixFactored from a nested initializer list." alt="" coords="570,69,825,114"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="860,126,807,117,807,112,865,126"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1motion_1_1generic_1_1Update.html#a963b5243c9c1a6fcd77367872c06a0b6" title="Measurement update using an InformationFilter." alt="" coords="606,138,790,183"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="855,161,790,163,790,158,860,160"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1motion_1_1generic_1_1Update.html#a8d94bb0163a3da87586601ec156df23e" title="Measurement update using a KalmanFilter." alt="" coords="606,208,790,252"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="865,195,791,213,790,208,859,196"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a98187b78a47120322100f0eb8235be73" title=" " alt="" coords="271,5,520,84"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="552,69,521,67,521,61,557,69"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#a29a452edb91c9aa1e52e1384c8e802d9" title=" " alt="" coords="270,108,522,170"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="552,115,523,122,522,117,557,114"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#a6b92364de24a8aa5e3a2791990a1e3d7" title=" " alt="" coords="5,108,222,170"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="252,140,223,142,222,137,257,139"/>
+</map>

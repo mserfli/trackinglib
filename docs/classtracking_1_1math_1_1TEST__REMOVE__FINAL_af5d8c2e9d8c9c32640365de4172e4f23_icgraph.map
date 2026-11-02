@@ -1,0 +1,37 @@
+<map id="tracking::math::TEST_REMOVE_FINAL::DiagonalMatrix" name="tracking::math::TEST_REMOVE_FINAL::DiagonalMatrix">
+<area shape="rect" id="Node000001" title=" " alt="" coords="532,451,769,495"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a8f06a9adbe2b0021303f81227713384c" title=" " alt="" coords="247,5,484,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="643,435,629,358,600,258,579,205,553,154,521,106,482,64,468,53,467,48,486,60,525,103,558,151,584,203,605,256,634,357,648,436"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a390f3435ff9856cdb93d91429a34f066" title=" " alt="" coords="247,75,484,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="638,435,619,373,588,293,568,252,543,211,515,174,482,140,456,122,455,117,486,136,519,170,547,208,572,249,593,291,625,371,643,436"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#ab046dc19215cc90f2e6c992da8ffc32f" title="Creates a DiagonalMatrix from the diagonal of a nested initializer list." alt="" coords="5,177,199,222"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="638,435,620,377,589,306,569,271,544,238,516,208,483,185,445,167,404,157,362,152,319,152,238,162,170,179,166,175,237,157,319,146,362,146,405,151,446,162,485,180,519,204,548,234,573,268,594,304,625,375,643,436"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a98e3168ee0679e8d3830638ae552070a" title="Creates a DiagonalMatrix from a flat initializer list." alt="" coords="269,219,462,263"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="626,437,602,401,568,358,528,315,483,278,463,267,462,261,485,273,532,311,572,354,606,398,632,438"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#ad47abd6c5308cafd061ab56614e34964" title="Construct an identity diagonal matrix." alt="" coords="272,312,459,357"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="604,442,549,407,483,371,455,360,454,355,485,367,551,402,610,441"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a19356a9368feabbf0f2ba5a525b3b73b" title="Compute the inverse of the diagonal matrix." alt="" coords="273,381,458,426"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="539,447,459,429,458,424,544,446"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#aa77b3463a59420112a7fc83ad272b4f1" title="Multiplication with diagonal matrix: D * Matrix." alt="" coords="266,451,465,495"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="514,474,466,476,465,470,519,472"/>
+<area shape="rect" id="Node000011" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a816ab13e4ef16f77308d669cba1c6dfb" title="Multiplication with diagonal matrix: Tria * Matrix." alt="" coords="266,520,465,565"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="539,501,461,522,459,517,543,498"/>
+<area shape="rect" id="Node000012" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a66efcd6d195aa2d83c7a19b42f77a054" title="Multiplication with scalar: D * scalar." alt="" coords="266,589,465,634"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="605,506,551,544,485,579,455,591,453,586,483,575,549,539,609,503"/>
+<area shape="rect" id="Node000013" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a46b561083ec06b222acbee175f5bc9b3" title="Inplace Multiplication with diagonal matrix: D * Matrix." alt="" coords="260,659,470,703"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="627,506,568,580,529,617,485,649,462,660,460,656,483,644,525,613,564,577,623,510"/>
+<area shape="rect" id="Node000014" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a15dadd938043c228973ec262e93312eb" title=" " alt="" coords="264,728,467,773"/>
+<area shape="poly" id="edge16_Node000001_Node000014" title=" " alt="" coords="636,508,613,558,580,614,537,670,486,718,465,730,463,725,482,714,533,666,576,611,609,555,632,512"/>
+<area shape="rect" id="Node000015" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#aabf1c6acf5bc5ade1a0792a7bf3de46f" title=" " alt="" coords="264,797,467,842"/>
+<area shape="poly" id="edge17_Node000001_Node000015" title=" " alt="" coords="642,508,623,572,591,646,546,722,518,757,486,787,467,799,465,794,482,783,514,753,541,719,586,644,618,570,638,512"/>
+<area shape="rect" id="Node000016" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a494dbecdd18eac5f41af5b875f1d08e0" title="Set a diagonal block matrix at given position." alt="" coords="269,891,462,935"/>
+<area shape="poly" id="edge18_Node000001_Node000016" title=" " alt="" coords="644,509,627,582,596,673,575,721,549,769,520,815,486,856,461,877,433,893,431,888,458,872,482,852,516,812,545,767,570,719,591,671,622,581,640,513"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="251,225,200,217,198,213,255,222"/>
+<area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="407,204,392,200,365,197,341,199,325,204,319,210,321,218,315,218,314,208,322,200,340,194,365,192,394,194,412,203"/>
+<area shape="poly" id="edge8_Node000006_Node000006" title=" " alt="" coords="407,298,392,293,365,291,341,293,325,297,319,303,321,312,315,311,314,302,322,293,340,287,365,285,394,288,412,296"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a7c5b9ce524b6db3b09cb9c030b6b22b4" title="Compute the inverse in&#45;place." alt="" coords="9,347,195,391"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="255,391,196,384,194,379,259,388"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1math_1_1TEST__REMOVE__FINAL.html#a2e7d181ede548510d56d16e17709d1b6" title="Compute the inverse of the triangular matrix." alt="" coords="9,416,195,461"/>
+<area shape="poly" id="edge11_Node000007_Node000009" title=" " alt="" coords="255,420,197,428,194,424,259,416"/>
+<area shape="poly" id="edge19_Node000016_Node000016" title=" " alt="" coords="407,875,392,872,365,869,341,871,325,876,319,882,320,892,316,889,314,880,322,872,340,866,365,864,394,866,412,876"/>
+</map>

@@ -1,7 +1,21 @@
 <map id="tracking::math::CovarianceMatrixFactored::inverse" name="tracking::math::CovarianceMatrixFactored::inverse">
-<area shape="rect" id="Node000001" title="Compute inverse in factored form." alt="" coords="5,13,204,53"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1SquareMatrix.html#a83aee3d96b9a570cf86fd8b82151f1a3" title="Fast transpose without changing the layout (zero&#45;copy view)" alt="" coords="252,13,464,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,30,239,30,239,35,204,35"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1Matrix.html#a478f0eea63246477537c07d88584371d" title="Fast transpose without changing the layout (zero&#45;copy view)" alt="" coords="512,5,719,60"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="464,30,498,30,498,35,464,35"/>
+<area shape="rect" id="Node000001" title="Compute inverse in factored form." alt="" coords="5,91,203,136"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a6bda87d57d09cc54108d08c6b213f7d2" title=" " alt="" coords="251,5,492,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,88,250,70,246,73,185,93"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1SquareMatrix.html#aa221b9d615f0f551a43b70e05910a556" title="Performs LDL^T decomposition of a symmetric positive definite matrix." alt="" coords="266,91,477,136"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,111,253,113,248,114,204,116"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#abec29dff62a82724a87508a1cf58e6b8" title="Access operator to the covariance value at (row, col)." alt="" coords="273,160,470,205"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="193,134,270,155,265,157,193,139"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1math_1_1Matrix.html#a915072569a44b145370777147abece04" title=" " alt="" coords="836,48,1023,110"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="463,88,491,76,504,68,514,58,524,49,539,42,611,27,685,25,757,32,824,47,819,47,756,37,685,30,612,32,541,47,527,54,517,62,508,72,493,81,465,93"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1SquareMatrix.html#ad6aee1928883e749a396866d7d20e609" title="Check if all diagonal elements are strictly positive." alt="" coords="540,56,788,101"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="477,98,527,95,522,96,478,104"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1SquareMatrix.html#a3d67fb15a03d98acfaf79c6fd5c04f6f" title="Check if the matrix is symmetric." alt="" coords="558,126,770,170"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="477,123,546,134,541,134,477,129"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="789,76,823,79,818,79,789,81"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="752,123,818,108,824,107,753,128"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a8f7277bd2b2dbba73979c997b7bce166" title="Unsafe element read&#45;only access." alt="" coords="566,195,763,240"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="471,192,552,204,547,204,470,197"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1math_1_1Vector.html#a2da76bfaec4e3c25b5f11078a632c960" title="Element read&#45;only access to a scalar vector value (unchecked)." alt="" coords="847,195,1012,240"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="763,215,834,217,828,218,763,220"/>
 </map>

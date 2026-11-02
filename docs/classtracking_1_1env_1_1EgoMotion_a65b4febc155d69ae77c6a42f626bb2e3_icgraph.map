@@ -1,9 +1,19 @@
 <map id="tracking::env::EgoMotion::getDisplacementCog" name="tracking::env::EgoMotion::getDisplacementCog">
-<area shape="rect" id="Node000001" title="Get the displacement information for center of gravity." alt="" coords="292,99,475,139"/>
-<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="5,5,244,75"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="303,97,238,77,240,72,304,92"/>
-<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter." alt="" coords="32,99,217,139"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="278,121,218,121,218,116,278,116"/>
-<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1generic_1_1PredictCommon.html#a33663fa4093f1be2990b48cd46176ed4" title="Runner to calculate the common predict data for the predictor." alt="" coords="32,163,217,203"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="289,145,207,165,205,160,288,139"/>
+<area shape="rect" id="Node000001" title="Get the displacement information for center of gravity." alt="" coords="734,107,917,152"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ad6bc834949fd3d8f75ec79ddf2d734d5" title="State prediction with ego motion compensation using an InformationFilter." alt="" coords="270,60,454,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="728,103,686,97,566,87,455,84,454,79,566,81,687,92,733,103"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1motion_1_1generic_1_1Predict.html#ab73d074a9023ed02adbf7c247a263798" title="State prediction with ego motion compensation using a KalmanFilter." alt="" coords="270,142,454,186"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="730,156,687,167,566,174,455,173,454,167,565,169,686,162,735,155"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1motion_1_1generic_1_1PredictCommon.html#a33663fa4093f1be2990b48cd46176ed4" title="Runner to calculate the common predict data for the predictor." alt="" coords="502,107,686,152"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="716,130,687,132,686,127,721,129"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#a6915335b50e2836d7073f88769c74944" title=" " alt="" coords="5,5,222,67"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="296,135,268,120,244,100,220,81,200,70,200,65,223,77,248,96,271,115,301,134"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#a5526ca6661dbd7b7eeab1925d04b55f7" title=" " alt="" coords="5,91,222,152"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="252,147,223,143,222,138,257,145"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#acb55842ef9a962cccda9a013703fff22" title=" " alt="" coords="5,176,222,238"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="252,184,223,191,221,186,257,182"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1motion_1_1ExtendedMotionModel.html#aea49e79854f2ed05a6ed3bbfd714e521" title=" " alt="" coords="5,261,222,323"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="317,194,223,252,199,263,197,258,220,247,312,196"/>
+<area shape="poly" id="edge8_Node000008_Node000002" title=" " alt="" coords="484,108,455,104,454,99,489,107"/>
+<area shape="poly" id="edge9_Node000008_Node000003" title=" " alt="" coords="484,146,455,153,454,148,489,145"/>
 </map>
