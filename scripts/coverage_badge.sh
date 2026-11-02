@@ -10,12 +10,29 @@ if [ ! -f "${LCOV_INFO}" ]; then
     exit 1
 fi
 
-PCT_RAW=$(lcov --summary "${LCOV_INFO}" 2>&1 | grep -oP 'lines\.*:\s*\K[0-9.]+') || {
-    echo "error: could not parse line coverage percentage from lcov summary" >&2
+# Read the tracefile's line totals directly. A line-coverage badge does not
+# require lcov's version-dependent summary output or function metadata checks.
+PCT_RAW=$(LC_ALL=C awk -F: '
+    /^LF:/ {
+        if ($2 !~ /^[0-9]+$/) exit 1
+        found += $2
+        found_records++
+    }
+    /^LH:/ {
+        if ($2 !~ /^[0-9]+$/) exit 1
+        hit += $2
+        hit_records++
+    }
+    END {
+        if (found_records == 0 || found_records != hit_records || found <= 0 || hit > found) exit 1
+        printf "%.1f", 100 * hit / found
+    }
+' "${LCOV_INFO}") || {
+    echo "error: could not read valid line coverage totals from ${LCOV_INFO}" >&2
     exit 1
 }
 
-PCT=$(printf '%.0f' "${PCT_RAW}")
+PCT=$(LC_ALL=C printf '%.0f' "${PCT_RAW}")
 
 if [ "${PCT}" -ge 90 ]; then
     COLOR="brightgreen"
