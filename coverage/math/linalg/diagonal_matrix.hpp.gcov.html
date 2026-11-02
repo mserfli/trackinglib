@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - diagonal_matrix.hpp<span style="font-size: 80%;"> (source / <a href="diagonal_matrix.hpp.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory math/linalg">math/linalg</a> - diagonal_matrix.hpp<span style="font-size: 80%;"> (source / <a href="diagonal_matrix.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -32,21 +32,21 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">94</td>
-            <td class="headerCovTableEntry">94</td>
+            <td class="headerCovTableEntry">97</td>
+            <td class="headerCovTableEntry">97</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryHi">91.8&nbsp;%</td>
-            <td class="headerCovTableEntry">73</td>
-            <td class="headerCovTableEntry">67</td>
+            <td class="headerCovTableEntryMed">87.5&nbsp;%</td>
+            <td class="headerCovTableEntry">80</td>
+            <td class="headerCovTableEntry">70</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -87,242 +87,254 @@
 <span id="L17"><span class="lineNum">      17</span>              : class SquareMatrix;</span>
 <span id="L18"><span class="lineNum">      18</span>              : </span>
 <span id="L19"><span class="lineNum">      19</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC tlaBgGNC">        2015 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::Identity() -&gt; DiagonalMatrix</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">        1855 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::Identity() -&gt; DiagonalMatrix</span></span>
 <span id="L21"><span class="lineNum">      21</span>              : {</span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">        2015 :   DiagonalMatrix diag{};</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">        2015 :   diag.setIdentity();</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">        1247 :   return diag;</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">        1855 :   DiagonalMatrix diag{};</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">        1855 :   diag.setIdentity();</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">           2 :   return diag;</span></span>
 <span id="L25"><span class="lineNum">      25</span>              : }</span>
 <span id="L26"><span class="lineNum">      26</span>              : </span>
 <span id="L27"><span class="lineNum">      27</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">        2019 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::setIdentity()</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">        1859 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::setIdentity()</span></span>
 <span id="L29"><span class="lineNum">      29</span>              : {</span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">        2788 :   _data.setOnes();</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">        3713 :   _data.setOnes();</span></span>
 <span id="L31"><span class="lineNum">      31</span>              : }</span>
 <span id="L32"><span class="lineNum">      32</span>              : </span>
 <span id="L33"><span class="lineNum">      33</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">         184 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::FromList(const std::initializer_list&lt;ValueType_&gt;&amp; list) -&gt; DiagonalMatrix</span></span>
-<span id="L35"><span class="lineNum">      35</span>              : {</span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">         184 :   assert((list.size() == Size_) &amp;&amp; &quot;Mismatching size of intializer list&quot;);</span></span>
-<span id="L37"><span class="lineNum">      37</span>              : </span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">         184 :   DiagonalMatrix diag{};</span></span>
-<span id="L39"><span class="lineNum">      39</span>              :   // fill diagonal elements</span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">         184 :   sint32 idx = 0;</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">         743 :   for (auto val : list)</span></span>
-<span id="L42"><span class="lineNum">      42</span>              :   {</span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         559 :     diag.at_unsafe(idx++) = val;</span></span>
-<span id="L44"><span class="lineNum">      44</span>              :   }</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         184 :   return diag;</span></span>
-<span id="L46"><span class="lineNum">      46</span>              : }</span>
-<span id="L47"><span class="lineNum">      47</span>              : </span>
-<span id="L48"><span class="lineNum">      48</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          51 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list)</span></span>
-<span id="L50"><span class="lineNum">      50</span>              :     -&gt; DiagonalMatrix</span>
-<span id="L51"><span class="lineNum">      51</span>              : {</span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">          51 :   assert(list.size() == Size_);</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">          51 :   assert(list.begin()-&gt;size() == Size_);</span></span>
-<span id="L54"><span class="lineNum">      54</span>              : </span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">          51 :   DiagonalMatrix diag{};</span></span>
-<span id="L56"><span class="lineNum">      56</span>              :   // copy diagonal elements from list</span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">          51 :   sint32 idx = 0;</span></span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         200 :   for (const auto&amp; rowList : list)</span></span>
-<span id="L59"><span class="lineNum">      59</span>              :   {</span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">         149 :     assert((rowList.size() == Size_) &amp;&amp; &quot;Mismatching size of intializer list&quot;);</span></span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">         149 :     diag.at_unsafe(idx) = *(rowList.begin() + idx);</span></span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         149 :     ++idx;</span></span>
-<span id="L63"><span class="lineNum">      63</span>              :   }</span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">          51 :   return diag;</span></span>
-<span id="L65"><span class="lineNum">      65</span>              : }</span>
-<span id="L66"><span class="lineNum">      66</span>              : </span>
-<span id="L67"><span class="lineNum">      67</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L68"><span class="lineNum">      68</span>              : template &lt;sint32 SrcSize_, sint32 SrcCount_, sint32 SrcIdxBeg_, sint32 DstIdxBeg_&gt;</span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          94 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::setBlock(const DiagonalMatrix&lt;ValueType_, SrcSize_&gt;&amp; block)</span></span>
-<span id="L70"><span class="lineNum">      70</span>              : {</span>
-<span id="L71"><span class="lineNum">      71</span>              :   static_assert(SrcCount_ &gt; 1, &quot;use scalar access operator for block copy size == 1&quot;);</span>
-<span id="L72"><span class="lineNum">      72</span>              :   static_assert(SrcIdxBeg_ + SrcCount_ &lt;= SrcSize_, &quot;copy to many rows from src&quot;);</span>
-<span id="L73"><span class="lineNum">      73</span>              : </span>
-<span id="L74"><span class="lineNum">      74</span>              :   static_assert(DstIdxBeg_ + SrcCount_ &lt;= Size_, &quot;copy to many rows to dst&quot;);</span>
-<span id="L75"><span class="lineNum">      75</span>              : </span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">          94 :   sint32 dstIdx = DstIdxBeg_;</span></span>
-<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">         331 :   for (auto srcIdx = SrcIdxBeg_; srcIdx &lt; SrcIdxBeg_ + SrcCount_; ++srcIdx)</span></span>
-<span id="L78"><span class="lineNum">      78</span>              :   {</span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">         237 :     _data.at_unsafe(dstIdx++) = block.at_unsafe(srcIdx);</span></span>
-<span id="L80"><span class="lineNum">      80</span>              :   }</span>
-<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">          94 : }</span></span>
-<span id="L82"><span class="lineNum">      82</span>              : </span>
-<span id="L83"><span class="lineNum">      83</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L84"><span class="lineNum">      84</span>              : template &lt;sint32 Cols_, bool IsRowMajor_&gt;</span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">           5 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*(const Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor_&gt;&amp; mat) const</span></span>
-<span id="L86"><span class="lineNum">      86</span>              :     -&gt; Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor_&gt;</span>
-<span id="L87"><span class="lineNum">      87</span>              : {</span>
-<span id="L88"><span class="lineNum">      88</span>              :   // each row is multiplied by the corresponding diagonal row element</span>
-<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">           5 :   auto result{mat};</span></span>
-<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">          23 :   for (auto row = 0; row &lt; Size_; ++row)</span></span>
-<span id="L91"><span class="lineNum">      91</span>              :   {</span>
-<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">          18 :     const ValueType_ val = _data.at_unsafe(row);</span></span>
-<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">          45 :     for (auto col = 0; col &lt; Cols_; ++col)</span></span>
-<span id="L94"><span class="lineNum">      94</span>              :     {</span>
-<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">          27 :       result.at_unsafe(row, col) *= val;</span></span>
-<span id="L96"><span class="lineNum">      96</span>              :     }</span>
-<span id="L97"><span class="lineNum">      97</span>              :   }</span>
-<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">           5 :   return result;</span></span>
-<span id="L99"><span class="lineNum">      99</span>              : }</span>
-<span id="L100"><span class="lineNum">     100</span>              : </span>
-<span id="L101"><span class="lineNum">     101</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L102"><span class="lineNum">     102</span>              : template &lt;bool IsLower_, bool IsRowMajor_&gt;</span>
-<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">          20 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*(const TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;&amp; mat)</span></span>
-<span id="L104"><span class="lineNum">     104</span>              :     const -&gt; TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;</span>
-<span id="L105"><span class="lineNum">     105</span>              : {</span>
-<span id="L106"><span class="lineNum">     106</span>              :   // each row is multiplied by the corresponding diagonal row element</span>
-<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">          20 :   auto result{mat};</span></span>
-<span id="L108"><span class="lineNum">     108</span>              :   if (IsLower_)</span>
-<span id="L109"><span class="lineNum">     109</span>              :   {</span>
-<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">          88 :     for (auto row = 0; row &lt; Size_; ++row)</span></span>
-<span id="L111"><span class="lineNum">     111</span>              :     {</span>
-<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">          69 :       const ValueType_ val = _data.at_unsafe(row);</span></span>
-<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">         249 :       for (auto col = 0; col &lt;= row; ++col)</span></span>
-<span id="L114"><span class="lineNum">     114</span>              :       {</span>
-<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">         180 :         result.at_unsafe(row, col) *= val;</span></span>
-<span id="L116"><span class="lineNum">     116</span>              :       }</span>
-<span id="L117"><span class="lineNum">     117</span>              :     }</span>
-<span id="L118"><span class="lineNum">     118</span>              :   }</span>
-<span id="L119"><span class="lineNum">     119</span>              :   else</span>
-<span id="L120"><span class="lineNum">     120</span>              :   {</span>
-<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">           4 :     for (auto row = 0; row &lt; Size_; ++row)</span></span>
-<span id="L122"><span class="lineNum">     122</span>              :     {</span>
-<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">           3 :       const ValueType_ val = _data.at_unsafe(row);</span></span>
-<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">           9 :       for (auto col = row; col &lt; Size_; ++col)</span></span>
-<span id="L125"><span class="lineNum">     125</span>              :       {</span>
-<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">           6 :         result.at_unsafe(row, col) *= val;</span></span>
-<span id="L127"><span class="lineNum">     127</span>              :       }</span>
-<span id="L128"><span class="lineNum">     128</span>              :     }</span>
-<span id="L129"><span class="lineNum">     129</span>              :   }</span>
-<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">          20 :   return result;</span></span>
-<span id="L131"><span class="lineNum">     131</span>              : }</span>
-<span id="L132"><span class="lineNum">     132</span>              : </span>
-<span id="L133"><span class="lineNum">     133</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">           1 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*(const DiagonalMatrix&amp; mat) const -&gt; DiagonalMatrix</span></span>
-<span id="L135"><span class="lineNum">     135</span>              : {</span>
-<span id="L136"><span class="lineNum">     136</span>              :   // copy *this</span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">           1 :   auto result{*this};</span></span>
-<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">           1 :   result *= mat;</span></span>
-<span id="L139"><span class="lineNum">     139</span>              :   return result;</span>
-<span id="L140"><span class="lineNum">     140</span>              : }</span>
-<span id="L141"><span class="lineNum">     141</span>              : </span>
-<span id="L142"><span class="lineNum">     142</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">           1 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*(const ValueType_ scalar) const -&gt; DiagonalMatrix</span></span>
-<span id="L144"><span class="lineNum">     144</span>              : {</span>
-<span id="L145"><span class="lineNum">     145</span>              :   // copy *this</span>
-<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">           1 :   auto result{*this};</span></span>
-<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">           1 :   result *= scalar;</span></span>
-<span id="L148"><span class="lineNum">     148</span>              :   return result;</span>
-<span id="L149"><span class="lineNum">     149</span>              : }</span>
-<span id="L150"><span class="lineNum">     150</span>              : </span>
-<span id="L151"><span class="lineNum">     151</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">           2 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*=(const DiagonalMatrix&amp; mat)</span></span>
-<span id="L153"><span class="lineNum">     153</span>              : {</span>
-<span id="L154"><span class="lineNum">     154</span>              :   // element-wise multiplication of the elements on both diagonals</span>
-<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">           8 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
-<span id="L156"><span class="lineNum">     156</span>              :   {</span>
-<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">           6 :     _data.at_unsafe(idx) *= mat.at_unsafe(idx);</span></span>
-<span id="L158"><span class="lineNum">     158</span>              :   }</span>
-<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">           2 : }</span></span>
-<span id="L160"><span class="lineNum">     160</span>              : </span>
-<span id="L161"><span class="lineNum">     161</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">           2 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*=(const ValueType_ scalar)</span></span>
-<span id="L163"><span class="lineNum">     163</span>              : {</span>
-<span id="L164"><span class="lineNum">     164</span>              :   // element-wise multiplication of the elements on both diagonals</span>
-<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">           8 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
-<span id="L166"><span class="lineNum">     166</span>              :   {</span>
-<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">           6 :     _data.at_unsafe(idx) *= scalar;</span></span>
-<span id="L168"><span class="lineNum">     168</span>              :   }</span>
-<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">           2 : }</span></span>
-<span id="L170"><span class="lineNum">     170</span>              : </span>
-<span id="L171"><span class="lineNum">     171</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">          27 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::inverse() const -&gt; DiagonalMatrix</span></span>
-<span id="L173"><span class="lineNum">     173</span>              : {</span>
-<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">          27 :   DiagonalMatrix tmp{*this};</span></span>
-<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">          27 :   tmp.inverse();</span></span>
-<span id="L176"><span class="lineNum">     176</span>              :   return tmp;</span>
-<span id="L177"><span class="lineNum">     177</span>              : }</span>
-<span id="L178"><span class="lineNum">     178</span>              : </span>
-<span id="L179"><span class="lineNum">     179</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">          28 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::inverse()</span></span>
-<span id="L181"><span class="lineNum">     181</span>              : {</span>
-<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">         140 :   for (sint32 idx = 0; idx &lt; Size_; ++idx)</span></span>
-<span id="L183"><span class="lineNum">     183</span>              :   {</span>
-<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">         112 :     assert((static_cast&lt;ValueType_&gt;(0) &lt; this-&gt;at_unsafe(idx)) &amp;&amp; &quot;inverse not possible&quot;);</span></span>
-<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">         112 :     _data.at_unsafe(idx) = static_cast&lt;ValueType_&gt;(1) / _data.at_unsafe(idx);</span></span>
-<span id="L186"><span class="lineNum">     186</span>              :   }</span>
-<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">          28 : }</span></span>
-<span id="L188"><span class="lineNum">     188</span>              : </span>
-<span id="L189"><span class="lineNum">     189</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">           7 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::trace() const -&gt; ValueType_</span></span>
-<span id="L191"><span class="lineNum">     191</span>              : {</span>
-<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">           7 :   ValueType_ sum{static_cast&lt;ValueType_&gt;(0)};</span></span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">          26 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
-<span id="L194"><span class="lineNum">     194</span>              :   {</span>
-<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">          19 :     sum += _data.at_unsafe(idx);</span></span>
-<span id="L196"><span class="lineNum">     196</span>              :   }</span>
-<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">           7 :   return sum;</span></span>
-<span id="L198"><span class="lineNum">     198</span>              : }</span>
-<span id="L199"><span class="lineNum">     199</span>              : </span>
-<span id="L200"><span class="lineNum">     200</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">           7 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::determinant() const -&gt; ValueType_</span></span>
-<span id="L202"><span class="lineNum">     202</span>              : {</span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">           7 :   ValueType_ det{static_cast&lt;ValueType_&gt;(1)};</span></span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">          25 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
-<span id="L205"><span class="lineNum">     205</span>              :   {</span>
-<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">          18 :     det *= _data.at_unsafe(idx);</span></span>
-<span id="L207"><span class="lineNum">     207</span>              :   }</span>
-<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">           7 :   return det;</span></span>
-<span id="L209"><span class="lineNum">     209</span>              : }</span>
-<span id="L210"><span class="lineNum">     210</span>              : </span>
-<span id="L211"><span class="lineNum">     211</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">         618 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::isPositiveDefinite() const -&gt; bool</span></span>
-<span id="L213"><span class="lineNum">     213</span>              : {</span>
-<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">         618 :   auto isValid = true;</span></span>
-<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">        2877 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
-<span id="L216"><span class="lineNum">     216</span>              :   {</span>
-<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">        2260 :     isValid = isValid &amp;&amp; (static_cast&lt;ValueType_&gt;(0) &lt; _data.at_unsafe(idx));</span></span>
-<span id="L218"><span class="lineNum">     218</span>              :   }</span>
-<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">         618 :   return isValid;</span></span>
-<span id="L220"><span class="lineNum">     220</span>              : }</span>
-<span id="L221"><span class="lineNum">     221</span>              : </span>
-<span id="L222"><span class="lineNum">     222</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">          12 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::isPositiveSemiDefinite() const -&gt; bool</span></span>
-<span id="L224"><span class="lineNum">     224</span>              : {</span>
-<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">          12 :   auto isValid = true;</span></span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">          46 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
-<span id="L227"><span class="lineNum">     227</span>              :   {</span>
-<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">          36 :     isValid = isValid &amp;&amp; (static_cast&lt;ValueType_&gt;(0) &lt;= _data.at_unsafe(idx));</span></span>
-<span id="L229"><span class="lineNum">     229</span>              :   }</span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">          12 :   return isValid;</span></span>
-<span id="L231"><span class="lineNum">     231</span>              : }</span>
-<span id="L232"><span class="lineNum">     232</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">         143 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::FromList(const std::initializer_list&lt;ValueType_&gt;&amp; list) noexcept</span></span>
+<span id="L35"><span class="lineNum">      35</span>              :     -&gt; tl::expected&lt;DiagonalMatrix, Errors&gt;</span>
+<span id="L36"><span class="lineNum">      36</span>              : {</span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">         143 :   if (list.size() != static_cast&lt;std::size_t&gt;(Size_))</span></span>
+<span id="L38"><span class="lineNum">      38</span>              :   {</span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">          39 :     return tl::unexpected&lt;Errors&gt;{Errors::invalid_initializer_list_size};</span></span>
+<span id="L40"><span class="lineNum">      40</span>              :   }</span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         104 :   DiagonalMatrix diag{};</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :   // fill diagonal elements</span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">         104 :   sint32 idx = 0;</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         382 :   for (auto val : list)</span></span>
+<span id="L46"><span class="lineNum">      46</span>              :   {</span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         278 :     diag.at_unsafe(idx++) = val;</span></span>
+<span id="L48"><span class="lineNum">      48</span>              :   }</span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         104 :   return diag;</span></span>
+<span id="L50"><span class="lineNum">      50</span>              : }</span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         123 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::FromList(</span></span>
+<span id="L54"><span class="lineNum">      54</span>              :     const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) noexcept -&gt; tl::expected&lt;DiagonalMatrix, Errors&gt;</span>
+<span id="L55"><span class="lineNum">      55</span>              : {</span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">         123 :   if (list.size() != static_cast&lt;std::size_t&gt;(Size_))</span></span>
+<span id="L57"><span class="lineNum">      57</span>              :   {</span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">          27 :     return tl::unexpected&lt;Errors&gt;{Errors::invalid_initializer_list_row_count};</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :   }</span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">         281 :   for (const auto&amp; row : list)</span></span>
+<span id="L61"><span class="lineNum">      61</span>              :   {</span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         221 :     if (row.size() != static_cast&lt;std::size_t&gt;(Size_))</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :     {</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">          36 :       return tl::unexpected&lt;Errors&gt;{Errors::invalid_initializer_list_col_count};</span></span>
+<span id="L65"><span class="lineNum">      65</span>              :     }</span>
+<span id="L66"><span class="lineNum">      66</span>              :   }</span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">          60 :   DiagonalMatrix diag{};</span></span>
+<span id="L69"><span class="lineNum">      69</span>              :   // copy diagonal elements from list</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">          60 :   sint32 idx = 0;</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">         227 :   for (const auto&amp; rowList : list)</span></span>
+<span id="L72"><span class="lineNum">      72</span>              :   {</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">         167 :     diag.at_unsafe(idx) = *(rowList.begin() + idx);</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">         167 :     ++idx;</span></span>
+<span id="L75"><span class="lineNum">      75</span>              :   }</span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">          60 :   return diag;</span></span>
+<span id="L77"><span class="lineNum">      77</span>              : }</span>
+<span id="L78"><span class="lineNum">      78</span>              : </span>
+<span id="L79"><span class="lineNum">      79</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L80"><span class="lineNum">      80</span>              : template &lt;sint32 SrcSize_, sint32 SrcCount_, sint32 SrcIdxBeg_, sint32 DstIdxBeg_&gt;</span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">          94 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::setBlock(const DiagonalMatrix&lt;ValueType_, SrcSize_&gt;&amp; block)</span></span>
+<span id="L82"><span class="lineNum">      82</span>              : {</span>
+<span id="L83"><span class="lineNum">      83</span>              :   static_assert(SrcCount_ &gt; 1, &quot;use scalar access operator for block copy size == 1&quot;);</span>
+<span id="L84"><span class="lineNum">      84</span>              :   static_assert(SrcIdxBeg_ + SrcCount_ &lt;= SrcSize_, &quot;copy to many rows from src&quot;);</span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span>              :   static_assert(DstIdxBeg_ + SrcCount_ &lt;= Size_, &quot;copy to many rows to dst&quot;);</span>
+<span id="L87"><span class="lineNum">      87</span>              : </span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">          94 :   sint32 dstIdx = DstIdxBeg_;</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">         331 :   for (auto srcIdx = SrcIdxBeg_; srcIdx &lt; SrcIdxBeg_ + SrcCount_; ++srcIdx)</span></span>
+<span id="L90"><span class="lineNum">      90</span>              :   {</span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">         237 :     _data.at_unsafe(dstIdx++) = block.at_unsafe(srcIdx);</span></span>
+<span id="L92"><span class="lineNum">      92</span>              :   }</span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">          94 : }</span></span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L96"><span class="lineNum">      96</span>              : template &lt;sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">           5 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*(const Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor_&gt;&amp; mat) const</span></span>
+<span id="L98"><span class="lineNum">      98</span>              :     -&gt; Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor_&gt;</span>
+<span id="L99"><span class="lineNum">      99</span>              : {</span>
+<span id="L100"><span class="lineNum">     100</span>              :   // each row is multiplied by the corresponding diagonal row element</span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">           5 :   auto result{mat};</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">          23 :   for (auto row = 0; row &lt; Size_; ++row)</span></span>
+<span id="L103"><span class="lineNum">     103</span>              :   {</span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">          18 :     const ValueType_ val = _data.at_unsafe(row);</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">          45 :     for (auto col = 0; col &lt; Cols_; ++col)</span></span>
+<span id="L106"><span class="lineNum">     106</span>              :     {</span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">          27 :       result.at_unsafe(row, col) *= val;</span></span>
+<span id="L108"><span class="lineNum">     108</span>              :     }</span>
+<span id="L109"><span class="lineNum">     109</span>              :   }</span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">           5 :   return result;</span></span>
+<span id="L111"><span class="lineNum">     111</span>              : }</span>
+<span id="L112"><span class="lineNum">     112</span>              : </span>
+<span id="L113"><span class="lineNum">     113</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L114"><span class="lineNum">     114</span>              : template &lt;bool IsLower_, bool IsRowMajor_&gt;</span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">          20 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*(const TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;&amp; mat)</span></span>
+<span id="L116"><span class="lineNum">     116</span>              :     const -&gt; TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;</span>
+<span id="L117"><span class="lineNum">     117</span>              : {</span>
+<span id="L118"><span class="lineNum">     118</span>              :   // each row is multiplied by the corresponding diagonal row element</span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">          20 :   auto result{mat};</span></span>
+<span id="L120"><span class="lineNum">     120</span>              :   if (IsLower_)</span>
+<span id="L121"><span class="lineNum">     121</span>              :   {</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">          88 :     for (auto row = 0; row &lt; Size_; ++row)</span></span>
+<span id="L123"><span class="lineNum">     123</span>              :     {</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">          69 :       const ValueType_ val = _data.at_unsafe(row);</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">         249 :       for (auto col = 0; col &lt;= row; ++col)</span></span>
+<span id="L126"><span class="lineNum">     126</span>              :       {</span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">         180 :         result.at_unsafe(row, col) *= val;</span></span>
+<span id="L128"><span class="lineNum">     128</span>              :       }</span>
+<span id="L129"><span class="lineNum">     129</span>              :     }</span>
+<span id="L130"><span class="lineNum">     130</span>              :   }</span>
+<span id="L131"><span class="lineNum">     131</span>              :   else</span>
+<span id="L132"><span class="lineNum">     132</span>              :   {</span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">           4 :     for (auto row = 0; row &lt; Size_; ++row)</span></span>
+<span id="L134"><span class="lineNum">     134</span>              :     {</span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">           3 :       const ValueType_ val = _data.at_unsafe(row);</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">           9 :       for (auto col = row; col &lt; Size_; ++col)</span></span>
+<span id="L137"><span class="lineNum">     137</span>              :       {</span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">           6 :         result.at_unsafe(row, col) *= val;</span></span>
+<span id="L139"><span class="lineNum">     139</span>              :       }</span>
+<span id="L140"><span class="lineNum">     140</span>              :     }</span>
+<span id="L141"><span class="lineNum">     141</span>              :   }</span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">          20 :   return result;</span></span>
+<span id="L143"><span class="lineNum">     143</span>              : }</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">           1 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*(const DiagonalMatrix&amp; mat) const -&gt; DiagonalMatrix</span></span>
+<span id="L147"><span class="lineNum">     147</span>              : {</span>
+<span id="L148"><span class="lineNum">     148</span>              :   // copy *this</span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">           1 :   auto result{*this};</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">           1 :   result *= mat;</span></span>
+<span id="L151"><span class="lineNum">     151</span>              :   return result;</span>
+<span id="L152"><span class="lineNum">     152</span>              : }</span>
+<span id="L153"><span class="lineNum">     153</span>              : </span>
+<span id="L154"><span class="lineNum">     154</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">           1 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*(const ValueType_ scalar) const -&gt; DiagonalMatrix</span></span>
+<span id="L156"><span class="lineNum">     156</span>              : {</span>
+<span id="L157"><span class="lineNum">     157</span>              :   // copy *this</span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">           1 :   auto result{*this};</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">           1 :   result *= scalar;</span></span>
+<span id="L160"><span class="lineNum">     160</span>              :   return result;</span>
+<span id="L161"><span class="lineNum">     161</span>              : }</span>
+<span id="L162"><span class="lineNum">     162</span>              : </span>
+<span id="L163"><span class="lineNum">     163</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">           2 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*=(const DiagonalMatrix&amp; mat)</span></span>
+<span id="L165"><span class="lineNum">     165</span>              : {</span>
+<span id="L166"><span class="lineNum">     166</span>              :   // element-wise multiplication of the elements on both diagonals</span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">           8 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L168"><span class="lineNum">     168</span>              :   {</span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">           6 :     _data.at_unsafe(idx) *= mat.at_unsafe(idx);</span></span>
+<span id="L170"><span class="lineNum">     170</span>              :   }</span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">           2 : }</span></span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">           2 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::operator*=(const ValueType_ scalar)</span></span>
+<span id="L175"><span class="lineNum">     175</span>              : {</span>
+<span id="L176"><span class="lineNum">     176</span>              :   // element-wise multiplication of the elements on both diagonals</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">           8 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L178"><span class="lineNum">     178</span>              :   {</span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">           6 :     _data.at_unsafe(idx) *= scalar;</span></span>
+<span id="L180"><span class="lineNum">     180</span>              :   }</span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">           2 : }</span></span>
+<span id="L182"><span class="lineNum">     182</span>              : </span>
+<span id="L183"><span class="lineNum">     183</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">          27 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::inverse() const -&gt; DiagonalMatrix</span></span>
+<span id="L185"><span class="lineNum">     185</span>              : {</span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">          27 :   DiagonalMatrix tmp{*this};</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">          27 :   tmp.inverse();</span></span>
+<span id="L188"><span class="lineNum">     188</span>              :   return tmp;</span>
+<span id="L189"><span class="lineNum">     189</span>              : }</span>
+<span id="L190"><span class="lineNum">     190</span>              : </span>
+<span id="L191"><span class="lineNum">     191</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">          28 : inline void DiagonalMatrix&lt;ValueType_, Size_&gt;::inverse()</span></span>
+<span id="L193"><span class="lineNum">     193</span>              : {</span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">         140 :   for (sint32 idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L195"><span class="lineNum">     195</span>              :   {</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">         112 :     assert((static_cast&lt;ValueType_&gt;(0) &lt; this-&gt;at_unsafe(idx)) &amp;&amp; &quot;inverse not possible&quot;);</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">         112 :     _data.at_unsafe(idx) = static_cast&lt;ValueType_&gt;(1) / _data.at_unsafe(idx);</span></span>
+<span id="L198"><span class="lineNum">     198</span>              :   }</span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">          28 : }</span></span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">           7 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::trace() const -&gt; ValueType_</span></span>
+<span id="L203"><span class="lineNum">     203</span>              : {</span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">           7 :   ValueType_ sum{static_cast&lt;ValueType_&gt;(0)};</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">          26 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L206"><span class="lineNum">     206</span>              :   {</span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">          19 :     sum += _data.at_unsafe(idx);</span></span>
+<span id="L208"><span class="lineNum">     208</span>              :   }</span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">           7 :   return sum;</span></span>
+<span id="L210"><span class="lineNum">     210</span>              : }</span>
+<span id="L211"><span class="lineNum">     211</span>              : </span>
+<span id="L212"><span class="lineNum">     212</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">           7 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::determinant() const -&gt; ValueType_</span></span>
+<span id="L214"><span class="lineNum">     214</span>              : {</span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">           7 :   ValueType_ det{static_cast&lt;ValueType_&gt;(1)};</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">          25 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L217"><span class="lineNum">     217</span>              :   {</span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">          18 :     det *= _data.at_unsafe(idx);</span></span>
+<span id="L219"><span class="lineNum">     219</span>              :   }</span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">           7 :   return det;</span></span>
+<span id="L221"><span class="lineNum">     221</span>              : }</span>
+<span id="L222"><span class="lineNum">     222</span>              : </span>
+<span id="L223"><span class="lineNum">     223</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">         757 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::isPositiveDefinite() const noexcept -&gt; bool</span></span>
+<span id="L225"><span class="lineNum">     225</span>              : {</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         757 :   auto isValid = true;</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">        3409 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L228"><span class="lineNum">     228</span>              :   {</span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">        2663 :     isValid = isValid &amp;&amp; (static_cast&lt;ValueType_&gt;(0) &lt; _data.at_unsafe(idx));</span></span>
+<span id="L230"><span class="lineNum">     230</span>              :   }</span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">         739 :   return isValid;</span></span>
+<span id="L232"><span class="lineNum">     232</span>              : }</span>
 <span id="L233"><span class="lineNum">     233</span>              : </span>
-<span id="L234"><span class="lineNum">     234</span>              : // ------ non-member functions ---------------------------------------------------------------------------------------------------</span>
-<span id="L235"><span class="lineNum">     235</span>              : </span>
-<span id="L236"><span class="lineNum">     236</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
-<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">         283 : auto operator*(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; mat,</span></span>
-<span id="L238"><span class="lineNum">     238</span>              :                const DiagonalMatrix&lt;ValueType_, Cols_&gt;&amp;             diag) -&gt; Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;</span>
-<span id="L239"><span class="lineNum">     239</span>              : {</span>
-<span id="L240"><span class="lineNum">     240</span>              :   // each column is multiplied by the corresponding diagonal column element</span>
-<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">         283 :   auto result{mat};</span></span>
-<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">         850 :   for (auto col = 0; col &lt; Cols_; ++col)</span></span>
-<span id="L243"><span class="lineNum">     243</span>              :   {</span>
-<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">        2916 :     for (auto row = 0; row &lt; Rows_; ++row)</span></span>
-<span id="L245"><span class="lineNum">     245</span>              :     {</span>
-<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">        2349 :       result.at_unsafe(row, col) *= diag.at_unsafe(col);</span></span>
-<span id="L247"><span class="lineNum">     247</span>              :     }</span>
-<span id="L248"><span class="lineNum">     248</span>              :   }</span>
-<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">         283 :   return result;</span></span>
-<span id="L250"><span class="lineNum">     250</span>              : }</span>
-<span id="L251"><span class="lineNum">     251</span>              : </span>
-<span id="L252"><span class="lineNum">     252</span>              : } // namespace math</span>
-<span id="L253"><span class="lineNum">     253</span>              : } // namespace tracking</span>
-<span id="L254"><span class="lineNum">     254</span>              : </span>
-<span id="L255"><span class="lineNum">     255</span>              : #endif // BA34774A_D1AA_44D4_BAD2_1845716F4E58</span>
+<span id="L234"><span class="lineNum">     234</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">          12 : inline auto DiagonalMatrix&lt;ValueType_, Size_&gt;::isPositiveSemiDefinite() const -&gt; bool</span></span>
+<span id="L236"><span class="lineNum">     236</span>              : {</span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">          12 :   auto isValid = true;</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">          46 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L239"><span class="lineNum">     239</span>              :   {</span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">          36 :     isValid = isValid &amp;&amp; (static_cast&lt;ValueType_&gt;(0) &lt;= _data.at_unsafe(idx));</span></span>
+<span id="L241"><span class="lineNum">     241</span>              :   }</span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">          12 :   return isValid;</span></span>
+<span id="L243"><span class="lineNum">     243</span>              : }</span>
+<span id="L244"><span class="lineNum">     244</span>              : </span>
+<span id="L245"><span class="lineNum">     245</span>              : </span>
+<span id="L246"><span class="lineNum">     246</span>              : // ------ non-member functions ---------------------------------------------------------------------------------------------------</span>
+<span id="L247"><span class="lineNum">     247</span>              : </span>
+<span id="L248"><span class="lineNum">     248</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">         283 : auto operator*(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; mat,</span></span>
+<span id="L250"><span class="lineNum">     250</span>              :                const DiagonalMatrix&lt;ValueType_, Cols_&gt;&amp;             diag) -&gt; Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;</span>
+<span id="L251"><span class="lineNum">     251</span>              : {</span>
+<span id="L252"><span class="lineNum">     252</span>              :   // each column is multiplied by the corresponding diagonal column element</span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         283 :   auto result{mat};</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">         850 :   for (auto col = 0; col &lt; Cols_; ++col)</span></span>
+<span id="L255"><span class="lineNum">     255</span>              :   {</span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">        2916 :     for (auto row = 0; row &lt; Rows_; ++row)</span></span>
+<span id="L257"><span class="lineNum">     257</span>              :     {</span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">        2349 :       result.at_unsafe(row, col) *= diag.at_unsafe(col);</span></span>
+<span id="L259"><span class="lineNum">     259</span>              :     }</span>
+<span id="L260"><span class="lineNum">     260</span>              :   }</span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">         283 :   return result;</span></span>
+<span id="L262"><span class="lineNum">     262</span>              : }</span>
+<span id="L263"><span class="lineNum">     263</span>              : </span>
+<span id="L264"><span class="lineNum">     264</span>              : } // namespace math</span>
+<span id="L265"><span class="lineNum">     265</span>              : } // namespace tracking</span>
+<span id="L266"><span class="lineNum">     266</span>              : </span>
+<span id="L267"><span class="lineNum">     267</span>              : #endif // BA34774A_D1AA_44D4_BAD2_1845716F4E58</span>
         </pre>
               </td>
             </tr>

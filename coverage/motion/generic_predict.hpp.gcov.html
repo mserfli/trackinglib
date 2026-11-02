@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">motion</a> - generic_predict.hpp<span style="font-size: 80%;"> (source / <a href="generic_predict.hpp.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory motion">motion</a> - generic_predict.hpp<span style="font-size: 80%;"> (source / <a href="generic_predict.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -37,16 +37,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryMed">83.3&nbsp;%</td>
-            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryLo">62.5&nbsp;%</td>
+            <td class="headerCovTableEntry">16</td>
             <td class="headerCovTableEntry">10</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -86,7 +86,7 @@
 <span id="L16"><span class="lineNum">      16</span>              : {</span>
 <span id="L17"><span class="lineNum">      17</span>              : </span>
 <span id="L18"><span class="lineNum">      18</span>              : template &lt;typename MotionModel_, typename CovarianceMatrixPolicy_&gt;</span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC tlaBgGNC">         270 : inline void Predict&lt;MotionModel_, CovarianceMatrixPolicy_&gt;::run(const value_type        dt,</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">         270 : inline void Predict&lt;MotionModel_, CovarianceMatrixPolicy_&gt;::run(const value_type        dt,</span></span>
 <span id="L20"><span class="lineNum">      20</span>              :                                                                 const KalmanFilterType&amp; filter,</span>
 <span id="L21"><span class="lineNum">      21</span>              :                                                                 const EgoMotionType&amp;    egoMotion)</span>
 <span id="L22"><span class="lineNum">      22</span>              : {</span>
@@ -94,7 +94,7 @@
 <span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">         270 :   auto&amp; underlying = static_cast&lt;MotionModel_&amp;&gt;(*this);</span></span>
 <span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">         270 :   auto&amp; P          = underlying.getCovForInternalUse();</span></span>
 <span id="L26"><span class="lineNum">      26</span>              : </span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         270 :   static typename BasePredictCommon::Storage data{};</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         304 :   static typename BasePredictCommon::Storage data{};</span></span>
 <span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         270 :   BasePredictCommon::run(data, dt, egoMotion);</span></span>
 <span id="L29"><span class="lineNum">      29</span>              : </span>
 <span id="L30"><span class="lineNum">      30</span>              :   // Covariance prediction</span>
@@ -131,7 +131,7 @@
 <span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">          54 :   auto&amp; Y          = underlying.getCovForInternalUse();</span></span>
 <span id="L62"><span class="lineNum">      62</span>              : </span>
 <span id="L63"><span class="lineNum">      63</span>              :   // prepare covariance prediction based on egomotion compensated state</span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">          54 :   static typename BasePredictCommon::Storage data{};</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">          70 :   static typename BasePredictCommon::Storage data{};</span></span>
 <span id="L65"><span class="lineNum">      65</span>              : </span>
 <span id="L66"><span class="lineNum">      66</span>              :   // Step 1: Transform from information space to state space for state prediction</span>
 <span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">          54 :   underlying.convertStateVecIntoStateSpace();</span></span>
@@ -184,7 +184,7 @@
 <span id="L114"><span class="lineNum">     114</span>              :       // step 2: Handle the Additive Noise Ge*Pe*Ge.T on the transformed Ytr (never inverts Pe)</span>
 <span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">          16 :       auto       Mtr = Ytr; // state-transitioned copy consumed by the QR solve below</span></span>
 <span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">          16 :       const auto H   = math::SquareMatrix&lt;value_type, MotionModel_::NUM_STATE_VARIABLES&gt;(</span></span>
-<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">          16 :           StateMatrix::Identity() + Mtr * (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose()));</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">          27 :           StateMatrix::Identity() + Mtr * (data.Ge * egoMotion.getDisplacementCog().cov * data.Ge.transpose()));</span></span>
 <span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">          16 :       math::SquareMatrix compensated = H.qrSolve(std::move(Mtr));</span></span>
 <span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">          16 :       compensated.symmetrize();</span></span>
 <span id="L120"><span class="lineNum">     120</span>              : </span>

@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - point3d.h<span style="font-size: 80%;"> (source / <a href="point3d.h.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory math/linalg">math/linalg</a> - point3d.h<span style="font-size: 80%;"> (source / <a href="point3d.h.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">19</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -46,7 +46,7 @@
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -113,14 +113,14 @@
 <span id="L43"><span class="lineNum">      43</span>              : /// \see Point2d for 2D points</span>
 <span id="L44"><span class="lineNum">      44</span>              : /// \see Vector for underlying vector operations</span>
 <span id="L45"><span class="lineNum">      45</span>              : template &lt;typename ValueType_&gt;</span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC tlaBgGNC">           4 : class Point3d: public Vector&lt;ValueType_, 3&gt;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">           5 : class Point3d: public Vector&lt;ValueType_, 3&gt;</span></span>
 <span id="L47"><span class="lineNum">      47</span>              : {</span>
 <span id="L48"><span class="lineNum">      48</span>              : public:</span>
 <span id="L49"><span class="lineNum">      49</span>              :   /// \brief Type of the parent Vector class</span>
 <span id="L50"><span class="lineNum">      50</span>              :   using BaseVector = Vector&lt;ValueType_, 3&gt;;</span>
 <span id="L51"><span class="lineNum">      51</span>              : </span>
 <span id="L52"><span class="lineNum">      52</span>              :   // unhide ctor of base class to allow implicit call in derived default ctors</span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">           1 :   using BaseVector::BaseVector;</span></span>
+<span id="L53"><span class="lineNum">      53</span>              :   using BaseVector::BaseVector;</span>
 <span id="L54"><span class="lineNum">      54</span>              : </span>
 <span id="L55"><span class="lineNum">      55</span>              :   /// \brief Construct a new Point 3d&lt;ValueType_&gt; object</span>
 <span id="L56"><span class="lineNum">      56</span>              :   /// \param[in] other A base class object</span>
@@ -240,7 +240,7 @@
 <span id="L170"><span class="lineNum">     170</span>              : template &lt;typename ValueType_&gt;</span>
 <span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">           5 : inline auto Point3d&lt;ValueType_&gt;::y() -&gt; ValueType_&amp;</span></span>
 <span id="L172"><span class="lineNum">     172</span>              : {</span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">           5 :   return this-&gt;at_unsafe(1);</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">          10 :   return this-&gt;at_unsafe(1);</span></span>
 <span id="L174"><span class="lineNum">     174</span>              : }</span>
 <span id="L175"><span class="lineNum">     175</span>              : </span>
 <span id="L176"><span class="lineNum">     176</span>              : template &lt;typename ValueType_&gt;</span>

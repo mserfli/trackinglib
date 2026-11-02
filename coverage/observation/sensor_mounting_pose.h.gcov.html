@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">observation</a> - sensor_mounting_pose.h<span style="font-size: 80%;"> (source / <a href="sensor_mounting_pose.h.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory observation">observation</a> - sensor_mounting_pose.h<span style="font-size: 80%;"> (source / <a href="sensor_mounting_pose.h.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -37,16 +37,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -100,7 +100,7 @@
 <span id="L30"><span class="lineNum">      30</span>              :   using Rotation2D = math::Rotation2D&lt;value_type&gt;;</span>
 <span id="L31"><span class="lineNum">      31</span>              : </span>
 <span id="L32"><span class="lineNum">      32</span>              :   // rule of 5 declarations</span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC tlaBgGNC">         286 :   SensorMountingPose()                                                 = default;</span></span>
+<span id="L33"><span class="lineNum">      33</span>              :   SensorMountingPose()                                                 = default;</span>
 <span id="L34"><span class="lineNum">      34</span>              :   SensorMountingPose(const SensorMountingPose&amp;)                        = default;</span>
 <span id="L35"><span class="lineNum">      35</span>              :   SensorMountingPose(SensorMountingPose&amp;&amp;) noexcept                    = default;</span>
 <span id="L36"><span class="lineNum">      36</span>              :   auto operator=(const SensorMountingPose&amp;) -&gt; SensorMountingPose&amp;     = default;</span>
@@ -112,13 +112,13 @@
 <span id="L42"><span class="lineNum">      42</span>              :   /// \param[in] ty  Translation along the tracking-frame Y axis [m]</span>
 <span id="L43"><span class="lineNum">      43</span>              :   /// \param[in] yaw Mounting yaw angle relative to the tracking frame [rad]</span>
 <span id="L44"><span class="lineNum">      44</span>              :   /// \return SensorMountingPose with the given translation and yaw</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          22 :   static auto FromValues(const value_type tx, const value_type ty, const value_type yaw) -&gt; SensorMountingPose</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          74 :   static auto FromValues(const value_type tx, const value_type ty, const value_type yaw) -&gt; SensorMountingPose</span></span>
 <span id="L46"><span class="lineNum">      46</span>              :   {</span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          22 :     SensorMountingPose pose{};</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          19 :     pose._tx       = tx;</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           5 :     pose._ty       = ty;</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          23 :     pose._rotation = Rotation2D::FromAngle(yaw);</span></span>
-<span id="L51"><span class="lineNum">      51</span>              :     return pose;</span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          74 :     SensorMountingPose pose{};</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          71 :     pose._tx       = tx;</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          57 :     pose._ty       = ty;</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          49 :     pose._rotation = Rotation2D::FromAngle(yaw);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">          26 :     return pose;</span></span>
 <span id="L52"><span class="lineNum">      52</span>              :   }</span>
 <span id="L53"><span class="lineNum">      53</span>              : </span>
 <span id="L54"><span class="lineNum">      54</span>              :   /// \brief Transform a tracking-frame position into the sensor frame</span>
@@ -183,11 +183,11 @@
 <span id="L113"><span class="lineNum">     113</span>              : </span>
 <span id="L114"><span class="lineNum">     114</span>              :   /// \brief Read access to the mounting translation X component</span>
 <span id="L115"><span class="lineNum">     115</span>              :   /// \return Translation along the tracking-frame X axis [m]</span>
-<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">         290 :   [[nodiscard]] auto tx() const -&gt; value_type { return _tx; }</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">         342 :   [[nodiscard]] auto tx() const -&gt; value_type { return _tx; }</span></span>
 <span id="L117"><span class="lineNum">     117</span>              : </span>
 <span id="L118"><span class="lineNum">     118</span>              :   /// \brief Read access to the mounting translation Y component</span>
 <span id="L119"><span class="lineNum">     119</span>              :   /// \return Translation along the tracking-frame Y axis [m]</span>
-<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">         290 :   [[nodiscard]] auto ty() const -&gt; value_type { return _ty; }</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">         294 :   [[nodiscard]] auto ty() const -&gt; value_type { return _ty; }</span></span>
 <span id="L121"><span class="lineNum">     121</span>              : </span>
 <span id="L122"><span class="lineNum">     122</span>              : private:</span>
 <span id="L123"><span class="lineNum">     123</span>              :   value_type _tx{static_cast&lt;value_type&gt;(0)};</span>

@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">env</a> - ego_motion.hpp<span style="font-size: 80%;"> (source / <a href="ego_motion.hpp.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory env">env</a> - ego_motion.hpp<span style="font-size: 80%;"> (source / <a href="ego_motion.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">84</td>
-            <td class="headerCovTableEntry">84</td>
+            <td class="headerCovTableEntry">86</td>
+            <td class="headerCovTableEntry">86</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -46,7 +46,7 @@
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -90,7 +90,7 @@
 <span id="L20"><span class="lineNum">      20</span>              : {</span>
 <span id="L21"><span class="lineNum">      21</span>              : </span>
 <span id="L22"><span class="lineNum">      22</span>              : template &lt;typename CovarianceMatrixPolicy_&gt;</span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC tlaBgGNC">          55 : void EgoMotion&lt;CovarianceMatrixPolicy_&gt;::compensatePosition(value_type&amp;      posXNewEgo,</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">          55 : void EgoMotion&lt;CovarianceMatrixPolicy_&gt;::compensatePosition(value_type&amp;      posXNewEgo,</span></span>
 <span id="L24"><span class="lineNum">      24</span>              :                                                             value_type&amp;      posYNewEgo,</span>
 <span id="L25"><span class="lineNum">      25</span>              :                                                             const value_type posXOldEgo,</span>
 <span id="L26"><span class="lineNum">      26</span>              :                                                             const value_type posYOldEgo) const</span>
@@ -237,7 +237,7 @@
 <span id="L167"><span class="lineNum">     167</span>              :     // Set displacement vector</span>
 <span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">          47 :     displacement.vec.at_unsafe(DS_X)   = dx;</span></span>
 <span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">          47 :     displacement.vec.at_unsafe(DS_Y)   = dy;</span></span>
-<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">          94 :     displacement.vec.at_unsafe(DS_PSI) = dphi;</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">          47 :     displacement.vec.at_unsafe(DS_PSI) = dphi;</span></span>
 <span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">          47 :     displacement.sinDeltaPsi           = sin_dphi;</span></span>
 <span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">          47 :     displacement.cosDeltaPsi           = cos_dphi;</span></span>
 <span id="L173"><span class="lineNum">     173</span>              :   }</span>
@@ -248,25 +248,23 @@
 <span id="L178"><span class="lineNum">     178</span>              :                                                                     const math::SquareMatrix&lt;value_type, 3, true&gt;&amp; J,</span>
 <span id="L179"><span class="lineNum">     179</span>              :                                                                     const InertialMotion&amp;                          motion)</span>
 <span id="L180"><span class="lineNum">     180</span>              : {</span>
-<span id="L181"><span class="lineNum">     181</span>              :   // clang-format off</span>
-<span id="L182"><span class="lineNum">     182</span>              :   // Create diagonal matrix from motion uncertainties</span>
-<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">         484 :   auto diag =</span></span>
-<span id="L184"><span class="lineNum">     184</span>              :     math::DiagonalMatrix&lt;value_type, 3&gt;::FromList({</span>
-<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">         484 :       math::pow&lt;2&gt;(motion.sv), math::pow&lt;2&gt;(motion.sa), math::pow&lt;2&gt;(motion.sw)</span></span>
-<span id="L186"><span class="lineNum">     186</span>              :   });</span>
-<span id="L187"><span class="lineNum">     187</span>              :   // clang-format on</span>
-<span id="L188"><span class="lineNum">     188</span>              : </span>
-<span id="L189"><span class="lineNum">     189</span>              :   // Create covariance matrix using generic FromDiagonal constructor</span>
-<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">         121 :   displacement.cov = std::move(DisplacementCov::FromDiagonal(diag));</span></span>
-<span id="L191"><span class="lineNum">     191</span>              : </span>
-<span id="L192"><span class="lineNum">     192</span>              :   // Apply the transformation: P = J * Pin * J^T using apaT</span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">         121 :   displacement.cov.apaT(J);</span></span>
-<span id="L194"><span class="lineNum">     194</span>              : }</span>
-<span id="L195"><span class="lineNum">     195</span>              : </span>
-<span id="L196"><span class="lineNum">     196</span>              : } // namespace env</span>
-<span id="L197"><span class="lineNum">     197</span>              : } // namespace tracking</span>
-<span id="L198"><span class="lineNum">     198</span>              : </span>
-<span id="L199"><span class="lineNum">     199</span>              : #endif // FAA51682_4454_40DA_82DD_798B885BD9D8</span>
+<span id="L181"><span class="lineNum">     181</span>              :   // Compute the fixed three diagonal entries directly; there is no list input boundary here.</span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">         121 :   math::DiagonalMatrix&lt;value_type, 3&gt; diag{};</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">         242 :   diag.at_unsafe(0) = math::pow&lt;2&gt;(motion.sv);</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">         242 :   diag.at_unsafe(1) = math::pow&lt;2&gt;(motion.sa);</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">         242 :   diag.at_unsafe(2) = math::pow&lt;2&gt;(motion.sw);</span></span>
+<span id="L186"><span class="lineNum">     186</span>              : </span>
+<span id="L187"><span class="lineNum">     187</span>              :   // Create covariance matrix using generic FromDiagonal constructor</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">         121 :   displacement.cov = std::move(DisplacementCov::FromDiagonal(diag));</span></span>
+<span id="L189"><span class="lineNum">     189</span>              : </span>
+<span id="L190"><span class="lineNum">     190</span>              :   // Apply the transformation: P = J * Pin * J^T using apaT</span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">         121 :   displacement.cov.apaT(J);</span></span>
+<span id="L192"><span class="lineNum">     192</span>              : }</span>
+<span id="L193"><span class="lineNum">     193</span>              : </span>
+<span id="L194"><span class="lineNum">     194</span>              : } // namespace env</span>
+<span id="L195"><span class="lineNum">     195</span>              : } // namespace tracking</span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              : #endif // FAA51682_4454_40DA_82DD_798B885BD9D8</span>
         </pre>
               </td>
             </tr>

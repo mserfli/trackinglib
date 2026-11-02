@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">motion/contracts</a> - state_mem_intf.h<span style="font-size: 80%;"> (source / <a href="state_mem_intf.h.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory motion/contracts">motion/contracts</a> - state_mem_intf.h</td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -46,7 +46,7 @@
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -131,9 +131,9 @@
 <span id="L61"><span class="lineNum">      61</span>              :     : public base::contract::RequireCopyIntf&lt;ImplType&gt;</span>
 <span id="L62"><span class="lineNum">      62</span>              :     , public base::contract::RequireMoveIntf&lt;ImplType&gt;</span>
 <span id="L63"><span class="lineNum">      63</span>              : {</span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC tlaBgGNC">         349 :   StateMemIntf()</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         417 :   StateMemIntf() noexcept</span></span>
 <span id="L65"><span class="lineNum">      65</span>              :       : base::contract::RequireCopyIntf&lt;ImplType&gt;()</span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         349 :       , base::contract::RequireMoveIntf&lt;ImplType&gt;()</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         417 :       , base::contract::RequireMoveIntf&lt;ImplType&gt;()</span></span>
 <span id="L67"><span class="lineNum">      67</span>              : </span>
 <span id="L68"><span class="lineNum">      68</span>              :   {</span>
 <span id="L69"><span class="lineNum">      69</span>              :     static_assert(std::is_floating_point&lt;typename ImplType::value_type&gt;());</span>

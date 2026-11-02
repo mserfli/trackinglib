@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">math/linalg/contracts</a> - matrix_intf.h<span style="font-size: 80%;"> (source / <a href="matrix_intf.h.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory math/linalg/contracts">math/linalg/contracts</a> - matrix_intf.h</td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -46,7 +46,7 @@
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -126,9 +126,9 @@
 <span id="L56"><span class="lineNum">      56</span>              :     : public base::contract::RequireCopyIntf&lt;ImplType&gt;</span>
 <span id="L57"><span class="lineNum">      57</span>              :     , public base::contract::RequireMoveIntf&lt;ImplType&gt;</span>
 <span id="L58"><span class="lineNum">      58</span>              : {</span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC tlaBgGNC">       18233 :   MatrixIntf()</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">       19097 :   MatrixIntf() noexcept</span></span>
 <span id="L60"><span class="lineNum">      60</span>              :       : base::contract::RequireCopyIntf&lt;ImplType&gt;()</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       18233 :       , base::contract::RequireMoveIntf&lt;ImplType&gt;()</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       19097 :       , base::contract::RequireMoveIntf&lt;ImplType&gt;()</span></span>
 <span id="L62"><span class="lineNum">      62</span>              : </span>
 <span id="L63"><span class="lineNum">      63</span>              :   {</span>
 <span id="L64"><span class="lineNum">      64</span>              :     static_assert(std::is_floating_point&lt;typename ImplType::value_type&gt;() || std::is_integral&lt;typename ImplType::value_type&gt;());</span>

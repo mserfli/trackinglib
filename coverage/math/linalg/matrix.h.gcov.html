@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - matrix.h<span style="font-size: 80%;"> (source / <a href="matrix.h.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory math/linalg">math/linalg</a> - matrix.h<span style="font-size: 80%;"> (source / <a href="matrix.h.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -37,16 +37,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryLo">10.9&nbsp;%</td>
-            <td class="headerCovTableEntry">92</td>
-            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">98</td>
+            <td class="headerCovTableEntry">98</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -172,336 +172,341 @@
 <span id="L102"><span class="lineNum">     102</span>              :   static constexpr auto IsRowMajor = IsRowMajor_; ///&lt; memory layout of the matrix</span>
 <span id="L103"><span class="lineNum">     103</span>              : </span>
 <span id="L104"><span class="lineNum">     104</span>              :   // rule of 5 declarations</span>
-<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC tlaBgGNC">       18233 :   Matrix()                                     = default;</span></span>
-<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">        4737 :   Matrix(const Matrix&amp;)                        = default;</span></span>
-<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">        3329 :   Matrix(Matrix&amp;&amp;) noexcept                    = default;</span></span>
-<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">          14 :   auto operator=(const Matrix&amp;) -&gt; Matrix&amp;     = default;</span></span>
-<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">         503 :   auto operator=(Matrix&amp;&amp;) noexcept -&gt; Matrix&amp; = default;</span></span>
-<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">        8323 :   virtual ~Matrix()                            = default;</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">       19093 :   Matrix()                                     = default;</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">        5466 :   Matrix(const Matrix&amp;)                        = default;</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">        6082 :   Matrix(Matrix&amp;&amp;) noexcept                    = default;</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">         287 :   auto operator=(const Matrix&amp;) -&gt; Matrix&amp;     = default;</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">         249 :   auto operator=(Matrix&amp;&amp;) noexcept -&gt; Matrix&amp; = default;</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">       12203 :   virtual ~Matrix()                            = default;</span></span>
 <span id="L111"><span class="lineNum">     111</span>              : </span>
-<span id="L112"><span class="lineNum">     112</span>              :   //////////////////////////////////////////////////</span>
-<span id="L113"><span class="lineNum">     113</span>              :   // additional constructors  ---&gt;</span>
-<span id="L114"><span class="lineNum">     114</span>              :   /// \brief Construct a Zero matrix</span>
-<span id="L115"><span class="lineNum">     115</span>              :   /// \return Zero matrix</span>
-<span id="L116"><span class="lineNum">     116</span>              :   [[nodiscard]] static auto Zeros() -&gt; Matrix;</span>
-<span id="L117"><span class="lineNum">     117</span>              : </span>
-<span id="L118"><span class="lineNum">     118</span>              :   /// \brief Construct a matrix filled with ones</span>
-<span id="L119"><span class="lineNum">     119</span>              :   /// \return One matrix</span>
-<span id="L120"><span class="lineNum">     120</span>              :   [[nodiscard]] static auto Ones() -&gt; Matrix;</span>
-<span id="L121"><span class="lineNum">     121</span>              : </span>
-<span id="L122"><span class="lineNum">     122</span>              :   /// \brief Creates a Matrix from a nested initializer list</span>
-<span id="L123"><span class="lineNum">     123</span>              :   ///</span>
-<span id="L124"><span class="lineNum">     124</span>              :   /// This function constructs a Matrix from a nested initializer list where each inner list</span>
-<span id="L125"><span class="lineNum">     125</span>              :   /// represents a row of the matrix. The dimensions must match the template parameters exactly.</span>
-<span id="L126"><span class="lineNum">     126</span>              :   ///</span>
-<span id="L127"><span class="lineNum">     127</span>              :   /// \param[in] list Nested initializer list in logical row-major format</span>
-<span id="L128"><span class="lineNum">     128</span>              :   /// \return Matrix instance initialized with the provided values</span>
-<span id="L129"><span class="lineNum">     129</span>              :   /// \throws std::runtime_error If the list dimensions don't match the matrix dimensions</span>
-<span id="L130"><span class="lineNum">     130</span>              :   [[nodiscard]] static auto FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) -&gt; Matrix;</span>
-<span id="L131"><span class="lineNum">     131</span>              :   // &lt;---</span>
-<span id="L132"><span class="lineNum">     132</span>              : </span>
-<span id="L133"><span class="lineNum">     133</span>              :   //////////////////////////////////////////////////</span>
-<span id="L134"><span class="lineNum">     134</span>              :   // access operators  ---&gt;</span>
-<span id="L135"><span class="lineNum">     135</span>              :   /// \brief Element read-only access with bounds checking</span>
-<span id="L136"><span class="lineNum">     136</span>              :   /// \param[in] row  row of the element to read (0-based index)</span>
-<span id="L137"><span class="lineNum">     137</span>              :   /// \param[in] col  column of the element to read (0-based index)</span>
-<span id="L138"><span class="lineNum">     138</span>              :   /// \return tl::expected&lt;ValueType_, Errors&gt;   either the value at (row,col) or an Error descriptor</span>
-<span id="L139"><span class="lineNum">     139</span>              :   /// \note Bounds checking is performed. Returns Errors::OutOfBounds if row &lt; 0 || row &gt;= Rows || col &lt; 0 || col &gt;= Cols</span>
-<span id="L140"><span class="lineNum">     140</span>              :   [[nodiscard]] auto operator()(sint32 row, sint32 col) const -&gt; tl::expected&lt;ValueType_, Errors&gt;;</span>
-<span id="L141"><span class="lineNum">     141</span>              : </span>
-<span id="L142"><span class="lineNum">     142</span>              :   /// \brief Element modify access with bounds checking</span>
-<span id="L143"><span class="lineNum">     143</span>              :   /// \param[in] row  row of the element to modify (0-based index)</span>
-<span id="L144"><span class="lineNum">     144</span>              :   /// \param[in] col  column of the element to modify (0-based index)</span>
-<span id="L145"><span class="lineNum">     145</span>              :   /// \return tl::expected&lt;std::reference_wrapper&lt;ValueType_&gt;, Errors&gt;   either the reference at (row,col) or an Error descriptor</span>
-<span id="L146"><span class="lineNum">     146</span>              :   /// \note Bounds checking is performed. Returns Errors::OutOfBounds if row &lt; 0 || row &gt;= Rows || col &lt; 0 || col &gt;= Cols</span>
-<span id="L147"><span class="lineNum">     147</span>              :   [[nodiscard]] auto operator()(sint32 row, sint32 col) -&gt; tl::expected&lt;std::reference_wrapper&lt;ValueType_&gt;, Errors&gt;;</span>
-<span id="L148"><span class="lineNum">     148</span>              :   // &lt;---</span>
-<span id="L149"><span class="lineNum">     149</span>              : </span>
-<span id="L150"><span class="lineNum">     150</span>              :   //////////////////////////////////////////////////</span>
-<span id="L151"><span class="lineNum">     151</span>              :   // comparison operators  ---&gt;</span>
-<span id="L152"><span class="lineNum">     152</span>              :   /// \brief Comparison to other matrix</span>
-<span id="L153"><span class="lineNum">     153</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
-<span id="L154"><span class="lineNum">     154</span>              :   /// \param[in] other  matrix with any memory layout</span>
-<span id="L155"><span class="lineNum">     155</span>              :   /// \return true   if all elements are equal</span>
-<span id="L156"><span class="lineNum">     156</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
-<span id="L157"><span class="lineNum">     157</span>              :   [[nodiscard]] auto operator==(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other) const -&gt; bool;</span>
-<span id="L158"><span class="lineNum">     158</span>              : </span>
-<span id="L159"><span class="lineNum">     159</span>              :   /// \brief Inequality comparison to other matrix</span>
-<span id="L160"><span class="lineNum">     160</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
-<span id="L161"><span class="lineNum">     161</span>              :   /// \param[in] other  matrix with any memory layout</span>
-<span id="L162"><span class="lineNum">     162</span>              :   /// \return true   if any element differs</span>
-<span id="L163"><span class="lineNum">     163</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
-<span id="L164"><span class="lineNum">     164</span>              :   [[nodiscard]] auto operator!=(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other) const -&gt; bool;</span>
-<span id="L165"><span class="lineNum">     165</span>              :   // &lt;---</span>
-<span id="L166"><span class="lineNum">     166</span>              : </span>
-<span id="L167"><span class="lineNum">     167</span>              :   //////////////////////////////////////////////////</span>
-<span id="L168"><span class="lineNum">     168</span>              :   // arithmetic assignment operators  ---&gt;</span>
-<span id="L169"><span class="lineNum">     169</span>              :   /// \brief Calculates Self = Self + Other</span>
-<span id="L170"><span class="lineNum">     170</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
-<span id="L171"><span class="lineNum">     171</span>              :   /// \param[in] other  matrix with any memory layout</span>
-<span id="L172"><span class="lineNum">     172</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
-<span id="L173"><span class="lineNum">     173</span>              :   void operator+=(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other);</span>
-<span id="L174"><span class="lineNum">     174</span>              : </span>
-<span id="L175"><span class="lineNum">     175</span>              :   /// \brief Calculates Self = Self - Other</span>
-<span id="L176"><span class="lineNum">     176</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
-<span id="L177"><span class="lineNum">     177</span>              :   /// \param[in] other  matrix with any memory layout</span>
-<span id="L178"><span class="lineNum">     178</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
-<span id="L179"><span class="lineNum">     179</span>              :   void operator-=(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other);</span>
-<span id="L180"><span class="lineNum">     180</span>              : </span>
-<span id="L181"><span class="lineNum">     181</span>              :   /// \brief Calculates Self = Self * scalar</span>
-<span id="L182"><span class="lineNum">     182</span>              :   /// \param[in] scalar   scalar value</span>
-<span id="L183"><span class="lineNum">     183</span>              :   void operator*=(ValueType_ scalar);</span>
-<span id="L184"><span class="lineNum">     184</span>              : </span>
-<span id="L185"><span class="lineNum">     185</span>              :   /// \brief Calculates Self = Self / scalar for integral matrixes</span>
-<span id="L186"><span class="lineNum">     186</span>              :   /// \param[in] scalar   integral scalar value</span>
-<span id="L187"><span class="lineNum">     187</span>              :   /// \return tl::expected&lt;void, Errors&gt;   success or divide_by_zero error</span>
-<span id="L188"><span class="lineNum">     188</span>              :   /// \note Division by zero (scalar == 0) returns Errors::DivideByZero</span>
-<span id="L189"><span class="lineNum">     189</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_integral&lt;T&gt;::value, bool&gt; = true&gt;</span>
-<span id="L190"><span class="lineNum">     190</span>              :   auto operator/=(T scalar) -&gt; tl::expected&lt;void, Errors&gt;;</span>
-<span id="L191"><span class="lineNum">     191</span>              : </span>
-<span id="L192"><span class="lineNum">     192</span>              :   /// \brief Calculates Self = Self / scalar for floating-point matrixes</span>
-<span id="L193"><span class="lineNum">     193</span>              :   /// \param[in] scalar   floating-point scalar value</span>
-<span id="L194"><span class="lineNum">     194</span>              :   /// \return tl::expected&lt;void, Errors&gt;   success or divide_by_zero error</span>
-<span id="L195"><span class="lineNum">     195</span>              :   /// \note Division by zero (scalar == 0.0) returns Errors::DivideByZero</span>
-<span id="L196"><span class="lineNum">     196</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_floating_point&lt;T&gt;::value, bool&gt; = true&gt;</span>
-<span id="L197"><span class="lineNum">     197</span>              :   auto operator/=(T scalar) -&gt; tl::expected&lt;void, Errors&gt;;</span>
-<span id="L198"><span class="lineNum">     198</span>              :   // &lt;---</span>
-<span id="L199"><span class="lineNum">     199</span>              : </span>
-<span id="L200"><span class="lineNum">     200</span>              :   //////////////////////////////////////////////////</span>
-<span id="L201"><span class="lineNum">     201</span>              :   // arithmentic operators ---&gt;</span>
-<span id="L202"><span class="lineNum">     202</span>              :   /// \brief Calculates Self + Other</span>
-<span id="L203"><span class="lineNum">     203</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
-<span id="L204"><span class="lineNum">     204</span>              :   /// \param[in] other  matrix with any memory layout</span>
-<span id="L205"><span class="lineNum">     205</span>              :   /// \return Matrix   result of Self + Other</span>
-<span id="L206"><span class="lineNum">     206</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
-<span id="L207"><span class="lineNum">     207</span>              :   [[nodiscard]] auto operator+(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other) const -&gt; Matrix;</span>
-<span id="L208"><span class="lineNum">     208</span>              : </span>
-<span id="L209"><span class="lineNum">     209</span>              :   /// \brief Calculates Self - Other</span>
-<span id="L210"><span class="lineNum">     210</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
-<span id="L211"><span class="lineNum">     211</span>              :   /// \param[in] other  matrix with any memory layout</span>
-<span id="L212"><span class="lineNum">     212</span>              :   /// \return Matrix   result of Self - Other</span>
-<span id="L213"><span class="lineNum">     213</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
-<span id="L214"><span class="lineNum">     214</span>              :   [[nodiscard]] auto operator-(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other) const -&gt; Matrix;</span>
-<span id="L215"><span class="lineNum">     215</span>              : </span>
-<span id="L216"><span class="lineNum">     216</span>              :   /// \brief Calculates Self + scalar (adds scalar to each element)</span>
-<span id="L217"><span class="lineNum">     217</span>              :   /// \param[in] scalar  a scalar value</span>
-<span id="L218"><span class="lineNum">     218</span>              :   /// \return Matrix   result of Self + scalar</span>
-<span id="L219"><span class="lineNum">     219</span>              :   [[nodiscard]] auto operator+(ValueType_ scalar) const -&gt; Matrix;</span>
+<span id="L112"><span class="lineNum">     112</span>              :   /// \brief Creates a Matrix from a nested initializer list</span>
+<span id="L113"><span class="lineNum">     113</span>              :   ///</span>
+<span id="L114"><span class="lineNum">     114</span>              :   /// This function constructs a Matrix from a nested initializer list where each inner list</span>
+<span id="L115"><span class="lineNum">     115</span>              :   /// represents a row of the matrix. The dimensions must match the template parameters exactly.</span>
+<span id="L116"><span class="lineNum">     116</span>              :   ///</span>
+<span id="L117"><span class="lineNum">     117</span>              :   /// \param[in] list Nested initializer list in logical row-major format</span>
+<span id="L118"><span class="lineNum">     118</span>              :   /// \return tl::expected containing the matrix or invalid_initializer_list_row_count /</span>
+<span id="L119"><span class="lineNum">     119</span>              :   ///         invalid_initializer_list_col_count</span>
+<span id="L120"><span class="lineNum">     120</span>              :   /// \note Checks the outer row count, then every row width before copying, for either storage layout.</span>
+<span id="L121"><span class="lineNum">     121</span>              :   ///       Checks shape only; noexcept describes exception behavior, not numeric validity.</span>
+<span id="L122"><span class="lineNum">     122</span>              :   [[nodiscard]] static auto FromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) noexcept</span>
+<span id="L123"><span class="lineNum">     123</span>              :       -&gt; tl::expected&lt;Matrix, math::Errors&gt;;</span>
+<span id="L124"><span class="lineNum">     124</span>              : </span>
+<span id="L125"><span class="lineNum">     125</span>              :   //////////////////////////////////////////////////</span>
+<span id="L126"><span class="lineNum">     126</span>              :   // additional constructors  ---&gt;</span>
+<span id="L127"><span class="lineNum">     127</span>              :   /// \brief Construct a Zero matrix</span>
+<span id="L128"><span class="lineNum">     128</span>              :   /// \return Zero matrix</span>
+<span id="L129"><span class="lineNum">     129</span>              :   [[nodiscard]] static auto Zeros() -&gt; Matrix;</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              :   /// \brief Construct a matrix filled with ones</span>
+<span id="L132"><span class="lineNum">     132</span>              :   /// \return One matrix</span>
+<span id="L133"><span class="lineNum">     133</span>              :   [[nodiscard]] static auto Ones() -&gt; Matrix;</span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span>              : </span>
+<span id="L136"><span class="lineNum">     136</span>              :   // &lt;---</span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span>              :   //////////////////////////////////////////////////</span>
+<span id="L139"><span class="lineNum">     139</span>              :   // access operators  ---&gt;</span>
+<span id="L140"><span class="lineNum">     140</span>              :   /// \brief Element read-only access with bounds checking</span>
+<span id="L141"><span class="lineNum">     141</span>              :   /// \param[in] row  row of the element to read (0-based index)</span>
+<span id="L142"><span class="lineNum">     142</span>              :   /// \param[in] col  column of the element to read (0-based index)</span>
+<span id="L143"><span class="lineNum">     143</span>              :   /// \return tl::expected&lt;ValueType_, Errors&gt;   either the value at (row,col) or an Error descriptor</span>
+<span id="L144"><span class="lineNum">     144</span>              :   /// \note Bounds checking is performed. Returns Errors::OutOfBounds if row &lt; 0 || row &gt;= Rows || col &lt; 0 || col &gt;= Cols</span>
+<span id="L145"><span class="lineNum">     145</span>              :   [[nodiscard]] auto operator()(sint32 row, sint32 col) const -&gt; tl::expected&lt;ValueType_, Errors&gt;;</span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span>              :   /// \brief Element modify access with bounds checking</span>
+<span id="L148"><span class="lineNum">     148</span>              :   /// \param[in] row  row of the element to modify (0-based index)</span>
+<span id="L149"><span class="lineNum">     149</span>              :   /// \param[in] col  column of the element to modify (0-based index)</span>
+<span id="L150"><span class="lineNum">     150</span>              :   /// \return tl::expected&lt;std::reference_wrapper&lt;ValueType_&gt;, Errors&gt;   either the reference at (row,col) or an Error descriptor</span>
+<span id="L151"><span class="lineNum">     151</span>              :   /// \note Bounds checking is performed. Returns Errors::OutOfBounds if row &lt; 0 || row &gt;= Rows || col &lt; 0 || col &gt;= Cols</span>
+<span id="L152"><span class="lineNum">     152</span>              :   [[nodiscard]] auto operator()(sint32 row, sint32 col) -&gt; tl::expected&lt;std::reference_wrapper&lt;ValueType_&gt;, Errors&gt;;</span>
+<span id="L153"><span class="lineNum">     153</span>              :   // &lt;---</span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span>              :   //////////////////////////////////////////////////</span>
+<span id="L156"><span class="lineNum">     156</span>              :   // comparison operators  ---&gt;</span>
+<span id="L157"><span class="lineNum">     157</span>              :   /// \brief Comparison to other matrix</span>
+<span id="L158"><span class="lineNum">     158</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
+<span id="L159"><span class="lineNum">     159</span>              :   /// \param[in] other  matrix with any memory layout</span>
+<span id="L160"><span class="lineNum">     160</span>              :   /// \return true   if all elements are equal</span>
+<span id="L161"><span class="lineNum">     161</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
+<span id="L162"><span class="lineNum">     162</span>              :   [[nodiscard]] auto operator==(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other) const -&gt; bool;</span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span>              :   /// \brief Inequality comparison to other matrix</span>
+<span id="L165"><span class="lineNum">     165</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
+<span id="L166"><span class="lineNum">     166</span>              :   /// \param[in] other  matrix with any memory layout</span>
+<span id="L167"><span class="lineNum">     167</span>              :   /// \return true   if any element differs</span>
+<span id="L168"><span class="lineNum">     168</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
+<span id="L169"><span class="lineNum">     169</span>              :   [[nodiscard]] auto operator!=(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other) const -&gt; bool;</span>
+<span id="L170"><span class="lineNum">     170</span>              :   // &lt;---</span>
+<span id="L171"><span class="lineNum">     171</span>              : </span>
+<span id="L172"><span class="lineNum">     172</span>              :   //////////////////////////////////////////////////</span>
+<span id="L173"><span class="lineNum">     173</span>              :   // arithmetic assignment operators  ---&gt;</span>
+<span id="L174"><span class="lineNum">     174</span>              :   /// \brief Calculates Self = Self + Other</span>
+<span id="L175"><span class="lineNum">     175</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
+<span id="L176"><span class="lineNum">     176</span>              :   /// \param[in] other  matrix with any memory layout</span>
+<span id="L177"><span class="lineNum">     177</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
+<span id="L178"><span class="lineNum">     178</span>              :   void operator+=(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other);</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              :   /// \brief Calculates Self = Self - Other</span>
+<span id="L181"><span class="lineNum">     181</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
+<span id="L182"><span class="lineNum">     182</span>              :   /// \param[in] other  matrix with any memory layout</span>
+<span id="L183"><span class="lineNum">     183</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
+<span id="L184"><span class="lineNum">     184</span>              :   void operator-=(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other);</span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span>              :   /// \brief Calculates Self = Self * scalar</span>
+<span id="L187"><span class="lineNum">     187</span>              :   /// \param[in] scalar   scalar value</span>
+<span id="L188"><span class="lineNum">     188</span>              :   void operator*=(ValueType_ scalar);</span>
+<span id="L189"><span class="lineNum">     189</span>              : </span>
+<span id="L190"><span class="lineNum">     190</span>              :   /// \brief Calculates Self = Self / scalar for integral matrixes</span>
+<span id="L191"><span class="lineNum">     191</span>              :   /// \param[in] scalar   integral scalar value</span>
+<span id="L192"><span class="lineNum">     192</span>              :   /// \return tl::expected&lt;void, Errors&gt;   success or divide_by_zero error</span>
+<span id="L193"><span class="lineNum">     193</span>              :   /// \note Division by zero (scalar == 0) returns Errors::DivideByZero</span>
+<span id="L194"><span class="lineNum">     194</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_integral&lt;T&gt;::value, bool&gt; = true&gt;</span>
+<span id="L195"><span class="lineNum">     195</span>              :   auto operator/=(T scalar) -&gt; tl::expected&lt;void, Errors&gt;;</span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              :   /// \brief Calculates Self = Self / scalar for floating-point matrixes</span>
+<span id="L198"><span class="lineNum">     198</span>              :   /// \param[in] scalar   floating-point scalar value</span>
+<span id="L199"><span class="lineNum">     199</span>              :   /// \return tl::expected&lt;void, Errors&gt;   success or divide_by_zero error</span>
+<span id="L200"><span class="lineNum">     200</span>              :   /// \note Division by zero (scalar == 0.0) returns Errors::DivideByZero</span>
+<span id="L201"><span class="lineNum">     201</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_floating_point&lt;T&gt;::value, bool&gt; = true&gt;</span>
+<span id="L202"><span class="lineNum">     202</span>              :   auto operator/=(T scalar) -&gt; tl::expected&lt;void, Errors&gt;;</span>
+<span id="L203"><span class="lineNum">     203</span>              :   // &lt;---</span>
+<span id="L204"><span class="lineNum">     204</span>              : </span>
+<span id="L205"><span class="lineNum">     205</span>              :   //////////////////////////////////////////////////</span>
+<span id="L206"><span class="lineNum">     206</span>              :   // arithmentic operators ---&gt;</span>
+<span id="L207"><span class="lineNum">     207</span>              :   /// \brief Calculates Self + Other</span>
+<span id="L208"><span class="lineNum">     208</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
+<span id="L209"><span class="lineNum">     209</span>              :   /// \param[in] other  matrix with any memory layout</span>
+<span id="L210"><span class="lineNum">     210</span>              :   /// \return Matrix   result of Self + Other</span>
+<span id="L211"><span class="lineNum">     211</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
+<span id="L212"><span class="lineNum">     212</span>              :   [[nodiscard]] auto operator+(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other) const -&gt; Matrix;</span>
+<span id="L213"><span class="lineNum">     213</span>              : </span>
+<span id="L214"><span class="lineNum">     214</span>              :   /// \brief Calculates Self - Other</span>
+<span id="L215"><span class="lineNum">     215</span>              :   /// \tparam IsRowMajor2_  memory layout of other matrix</span>
+<span id="L216"><span class="lineNum">     216</span>              :   /// \param[in] other  matrix with any memory layout</span>
+<span id="L217"><span class="lineNum">     217</span>              :   /// \return Matrix   result of Self - Other</span>
+<span id="L218"><span class="lineNum">     218</span>              :   template &lt;bool IsRowMajor2_&gt;</span>
+<span id="L219"><span class="lineNum">     219</span>              :   [[nodiscard]] auto operator-(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor2_&gt;&amp; other) const -&gt; Matrix;</span>
 <span id="L220"><span class="lineNum">     220</span>              : </span>
-<span id="L221"><span class="lineNum">     221</span>              :   /// \brief Calculates Self - scalar (subtracts scalar from each element)</span>
+<span id="L221"><span class="lineNum">     221</span>              :   /// \brief Calculates Self + scalar (adds scalar to each element)</span>
 <span id="L222"><span class="lineNum">     222</span>              :   /// \param[in] scalar  a scalar value</span>
-<span id="L223"><span class="lineNum">     223</span>              :   /// \return Matrix   result of Self - scalar</span>
-<span id="L224"><span class="lineNum">     224</span>              :   [[nodiscard]] auto operator-(ValueType_ scalar) const -&gt; Matrix;</span>
+<span id="L223"><span class="lineNum">     223</span>              :   /// \return Matrix   result of Self + scalar</span>
+<span id="L224"><span class="lineNum">     224</span>              :   [[nodiscard]] auto operator+(ValueType_ scalar) const -&gt; Matrix;</span>
 <span id="L225"><span class="lineNum">     225</span>              : </span>
-<span id="L226"><span class="lineNum">     226</span>              :   /// \brief Calculates Self * scalar</span>
+<span id="L226"><span class="lineNum">     226</span>              :   /// \brief Calculates Self - scalar (subtracts scalar from each element)</span>
 <span id="L227"><span class="lineNum">     227</span>              :   /// \param[in] scalar  a scalar value</span>
-<span id="L228"><span class="lineNum">     228</span>              :   /// \return Matrix   result of Self * scalar</span>
-<span id="L229"><span class="lineNum">     229</span>              :   [[nodiscard]] auto operator*(ValueType_ scalar) const -&gt; Matrix;</span>
+<span id="L228"><span class="lineNum">     228</span>              :   /// \return Matrix   result of Self - scalar</span>
+<span id="L229"><span class="lineNum">     229</span>              :   [[nodiscard]] auto operator-(ValueType_ scalar) const -&gt; Matrix;</span>
 <span id="L230"><span class="lineNum">     230</span>              : </span>
-<span id="L231"><span class="lineNum">     231</span>              :   /// \brief Calculates Self / scalar for integral matrixes</span>
+<span id="L231"><span class="lineNum">     231</span>              :   /// \brief Calculates Self * scalar</span>
 <span id="L232"><span class="lineNum">     232</span>              :   /// \param[in] scalar  a scalar value</span>
-<span id="L233"><span class="lineNum">     233</span>              :   /// \return tl::expected&lt;Matrix, Errors&gt;   either the result Self / scalar or an Error descriptor</span>
-<span id="L234"><span class="lineNum">     234</span>              :   /// \note Division by zero (scalar == 0) returns Errors::DivideByZero</span>
-<span id="L235"><span class="lineNum">     235</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_integral&lt;T&gt;::value, bool&gt; = true&gt;</span>
-<span id="L236"><span class="lineNum">     236</span>              :   [[nodiscard]] auto operator/(T scalar) const -&gt; tl::expected&lt;Matrix, Errors&gt;;</span>
-<span id="L237"><span class="lineNum">     237</span>              : </span>
-<span id="L238"><span class="lineNum">     238</span>              :   /// \brief Calculates Self / scalar for floating-point matrixes</span>
-<span id="L239"><span class="lineNum">     239</span>              :   /// \param[in] scalar  a scalar value</span>
-<span id="L240"><span class="lineNum">     240</span>              :   /// \return tl::expected&lt;Matrix, Errors&gt;   either the result Self / scalar or an Error descriptor</span>
-<span id="L241"><span class="lineNum">     241</span>              :   /// \note Division by zero (scalar == 0.0) returns Errors::DivideByZero</span>
-<span id="L242"><span class="lineNum">     242</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_floating_point&lt;T&gt;::value, bool&gt; = true&gt;</span>
-<span id="L243"><span class="lineNum">     243</span>              :   [[nodiscard]] auto operator/(T scalar) const -&gt; tl::expected&lt;Matrix, Errors&gt;;</span>
-<span id="L244"><span class="lineNum">     244</span>              : </span>
-<span id="L245"><span class="lineNum">     245</span>              :   /// \brief Calculates matrix multiplication Self * Other</span>
-<span id="L246"><span class="lineNum">     246</span>              :   /// \tparam Cols2_  Number of columns in the other matrix</span>
-<span id="L247"><span class="lineNum">     247</span>              :   /// \tparam IsRowMajor2_  Storage layout of the other matrix</span>
-<span id="L248"><span class="lineNum">     248</span>              :   /// \param[in] other  Right-hand side matrix for multiplication</span>
-<span id="L249"><span class="lineNum">     249</span>              :   /// \return Matrix&lt;ValueType_, Rows_, Cols2_, IsRowMajor_&gt;  Result matrix with dimensions (Rows x Cols2)</span>
-<span id="L250"><span class="lineNum">     250</span>              :   /// \note Matrix multiplication requires that Self.Cols == Other.Rows. The result layout matches the left operand.</span>
-<span id="L251"><span class="lineNum">     251</span>              :   template &lt;sint32 Cols2_, bool IsRowMajor2_&gt;</span>
-<span id="L252"><span class="lineNum">     252</span>              :   [[nodiscard]] auto operator*(const Matrix&lt;ValueType_, Cols_, Cols2_, IsRowMajor2_&gt;&amp; other) const</span>
-<span id="L253"><span class="lineNum">     253</span>              :       -&gt; Matrix&lt;ValueType_, Rows_, Cols2_, IsRowMajor_&gt;;</span>
-<span id="L254"><span class="lineNum">     254</span>              :   // &lt;---</span>
-<span id="L255"><span class="lineNum">     255</span>              : </span>
-<span id="L256"><span class="lineNum">     256</span>              :   //////////////////////////////////////////////////</span>
-<span id="L257"><span class="lineNum">     257</span>              :   // other operations ---&gt;</span>
-<span id="L258"><span class="lineNum">     258</span>              :   /// \brief Sets all elements to zero</span>
-<span id="L259"><span class="lineNum">     259</span>              :   void setZeros();</span>
+<span id="L233"><span class="lineNum">     233</span>              :   /// \return Matrix   result of Self * scalar</span>
+<span id="L234"><span class="lineNum">     234</span>              :   [[nodiscard]] auto operator*(ValueType_ scalar) const -&gt; Matrix;</span>
+<span id="L235"><span class="lineNum">     235</span>              : </span>
+<span id="L236"><span class="lineNum">     236</span>              :   /// \brief Calculates Self / scalar for integral matrixes</span>
+<span id="L237"><span class="lineNum">     237</span>              :   /// \param[in] scalar  a scalar value</span>
+<span id="L238"><span class="lineNum">     238</span>              :   /// \return tl::expected&lt;Matrix, Errors&gt;   either the result Self / scalar or an Error descriptor</span>
+<span id="L239"><span class="lineNum">     239</span>              :   /// \note Division by zero (scalar == 0) returns Errors::DivideByZero</span>
+<span id="L240"><span class="lineNum">     240</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_integral&lt;T&gt;::value, bool&gt; = true&gt;</span>
+<span id="L241"><span class="lineNum">     241</span>              :   [[nodiscard]] auto operator/(T scalar) const -&gt; tl::expected&lt;Matrix, Errors&gt;;</span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span>              :   /// \brief Calculates Self / scalar for floating-point matrixes</span>
+<span id="L244"><span class="lineNum">     244</span>              :   /// \param[in] scalar  a scalar value</span>
+<span id="L245"><span class="lineNum">     245</span>              :   /// \return tl::expected&lt;Matrix, Errors&gt;   either the result Self / scalar or an Error descriptor</span>
+<span id="L246"><span class="lineNum">     246</span>              :   /// \note Division by zero (scalar == 0.0) returns Errors::DivideByZero</span>
+<span id="L247"><span class="lineNum">     247</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_floating_point&lt;T&gt;::value, bool&gt; = true&gt;</span>
+<span id="L248"><span class="lineNum">     248</span>              :   [[nodiscard]] auto operator/(T scalar) const -&gt; tl::expected&lt;Matrix, Errors&gt;;</span>
+<span id="L249"><span class="lineNum">     249</span>              : </span>
+<span id="L250"><span class="lineNum">     250</span>              :   /// \brief Calculates matrix multiplication Self * Other</span>
+<span id="L251"><span class="lineNum">     251</span>              :   /// \tparam Cols2_  Number of columns in the other matrix</span>
+<span id="L252"><span class="lineNum">     252</span>              :   /// \tparam IsRowMajor2_  Storage layout of the other matrix</span>
+<span id="L253"><span class="lineNum">     253</span>              :   /// \param[in] other  Right-hand side matrix for multiplication</span>
+<span id="L254"><span class="lineNum">     254</span>              :   /// \return Matrix&lt;ValueType_, Rows_, Cols2_, IsRowMajor_&gt;  Result matrix with dimensions (Rows x Cols2)</span>
+<span id="L255"><span class="lineNum">     255</span>              :   /// \note Matrix multiplication requires that Self.Cols == Other.Rows. The result layout matches the left operand.</span>
+<span id="L256"><span class="lineNum">     256</span>              :   template &lt;sint32 Cols2_, bool IsRowMajor2_&gt;</span>
+<span id="L257"><span class="lineNum">     257</span>              :   [[nodiscard]] auto operator*(const Matrix&lt;ValueType_, Cols_, Cols2_, IsRowMajor2_&gt;&amp; other) const</span>
+<span id="L258"><span class="lineNum">     258</span>              :       -&gt; Matrix&lt;ValueType_, Rows_, Cols2_, IsRowMajor_&gt;;</span>
+<span id="L259"><span class="lineNum">     259</span>              :   // &lt;---</span>
 <span id="L260"><span class="lineNum">     260</span>              : </span>
-<span id="L261"><span class="lineNum">     261</span>              :   /// \brief Sets all elements to one</span>
-<span id="L262"><span class="lineNum">     262</span>              :   void setOnes();</span>
-<span id="L263"><span class="lineNum">     263</span>              : </span>
-<span id="L264"><span class="lineNum">     264</span>              :   /// \brief Checks if the matrix is a zero matrix</span>
-<span id="L265"><span class="lineNum">     265</span>              :   /// \return true if all elements are zero</span>
-<span id="L266"><span class="lineNum">     266</span>              :   [[nodiscard]] auto isZeros() const -&gt; bool;</span>
-<span id="L267"><span class="lineNum">     267</span>              : </span>
-<span id="L268"><span class="lineNum">     268</span>              :   /// \brief Get min value of the matrix</span>
-<span id="L269"><span class="lineNum">     269</span>              :   /// \return min value</span>
-<span id="L270"><span class="lineNum">     270</span>              :   [[nodiscard]] auto min() const -&gt; ValueType_ { return *std::min_element(data().begin(), data().end()); }</span>
-<span id="L271"><span class="lineNum">     271</span>              : </span>
-<span id="L272"><span class="lineNum">     272</span>              :   /// \brief Get max value of the matrix</span>
-<span id="L273"><span class="lineNum">     273</span>              :   /// \return max value</span>
-<span id="L274"><span class="lineNum">     274</span>              :   [[nodiscard]] auto max() const -&gt; ValueType_ { return *std::max_element(data().begin(), data().end()); }</span>
-<span id="L275"><span class="lineNum">     275</span>              : </span>
-<span id="L276"><span class="lineNum">     276</span>              :   /// \brief Get min and max value of the matrix</span>
-<span id="L277"><span class="lineNum">     277</span>              :   /// \return tuple of min, max value</span>
-<span id="L278"><span class="lineNum">     278</span>              :   [[nodiscard]] auto minmax() const -&gt; std::tuple&lt;ValueType_, ValueType_&gt;;</span>
-<span id="L279"><span class="lineNum">     279</span>              : </span>
-<span id="L280"><span class="lineNum">     280</span>              :   /// \brief Calculate Frobenius norm (L2 norm): sqrt(sum of squared elements)</span>
-<span id="L281"><span class="lineNum">     281</span>              :   /// \note Only available for floating-point types. For integral types, this method is not instantiated.</span>
-<span id="L282"><span class="lineNum">     282</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_floating_point&lt;T&gt;::value, bool&gt; = true&gt;</span>
-<span id="L283"><span class="lineNum">     283</span>              :   [[nodiscard]] auto frobenius_norm() const -&gt; ValueType_;</span>
+<span id="L261"><span class="lineNum">     261</span>              :   //////////////////////////////////////////////////</span>
+<span id="L262"><span class="lineNum">     262</span>              :   // other operations ---&gt;</span>
+<span id="L263"><span class="lineNum">     263</span>              :   /// \brief Sets all elements to zero</span>
+<span id="L264"><span class="lineNum">     264</span>              :   void setZeros();</span>
+<span id="L265"><span class="lineNum">     265</span>              : </span>
+<span id="L266"><span class="lineNum">     266</span>              :   /// \brief Sets all elements to one</span>
+<span id="L267"><span class="lineNum">     267</span>              :   void setOnes();</span>
+<span id="L268"><span class="lineNum">     268</span>              : </span>
+<span id="L269"><span class="lineNum">     269</span>              :   /// \brief Checks if the matrix is a zero matrix</span>
+<span id="L270"><span class="lineNum">     270</span>              :   /// \return true if all elements are zero</span>
+<span id="L271"><span class="lineNum">     271</span>              :   [[nodiscard]] auto isZeros() const -&gt; bool;</span>
+<span id="L272"><span class="lineNum">     272</span>              : </span>
+<span id="L273"><span class="lineNum">     273</span>              :   /// \brief Get min value of the matrix</span>
+<span id="L274"><span class="lineNum">     274</span>              :   /// \return min value</span>
+<span id="L275"><span class="lineNum">     275</span>              :   [[nodiscard]] auto min() const -&gt; ValueType_ { return *std::min_element(data().begin(), data().end()); }</span>
+<span id="L276"><span class="lineNum">     276</span>              : </span>
+<span id="L277"><span class="lineNum">     277</span>              :   /// \brief Get max value of the matrix</span>
+<span id="L278"><span class="lineNum">     278</span>              :   /// \return max value</span>
+<span id="L279"><span class="lineNum">     279</span>              :   [[nodiscard]] auto max() const -&gt; ValueType_ { return *std::max_element(data().begin(), data().end()); }</span>
+<span id="L280"><span class="lineNum">     280</span>              : </span>
+<span id="L281"><span class="lineNum">     281</span>              :   /// \brief Get min and max value of the matrix</span>
+<span id="L282"><span class="lineNum">     282</span>              :   /// \return tuple of min, max value</span>
+<span id="L283"><span class="lineNum">     283</span>              :   [[nodiscard]] auto minmax() const -&gt; std::tuple&lt;ValueType_, ValueType_&gt;;</span>
 <span id="L284"><span class="lineNum">     284</span>              : </span>
-<span id="L285"><span class="lineNum">     285</span>              :   /// \brief Fast transpose without changing the layout (zero-copy view)</span>
-<span id="L286"><span class="lineNum">     286</span>              :   /// \return const transpose_type&amp;   const reference to same data as Self, but differently interpreted as transposed</span>
-<span id="L287"><span class="lineNum">     287</span>              :   /// \note This creates a view with swapped dimensions and opposite layout. No data is copied.</span>
-<span id="L288"><span class="lineNum">     288</span>              :   [[nodiscard]] auto transpose() const -&gt; const transpose_type&amp;;</span>
+<span id="L285"><span class="lineNum">     285</span>              :   /// \brief Calculate Frobenius norm (L2 norm): sqrt(sum of squared elements)</span>
+<span id="L286"><span class="lineNum">     286</span>              :   /// \note Only available for floating-point types. For integral types, this method is not instantiated.</span>
+<span id="L287"><span class="lineNum">     287</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_floating_point&lt;T&gt;::value, bool&gt; = true&gt;</span>
+<span id="L288"><span class="lineNum">     288</span>              :   [[nodiscard]] auto frobenius_norm() const -&gt; ValueType_;</span>
 <span id="L289"><span class="lineNum">     289</span>              : </span>
 <span id="L290"><span class="lineNum">     290</span>              :   /// \brief Fast transpose without changing the layout (zero-copy view)</span>
-<span id="L291"><span class="lineNum">     291</span>              :   /// \return transpose_type&amp;   reference to same data as Self, but differently interpreted as transposed</span>
+<span id="L291"><span class="lineNum">     291</span>              :   /// \return const transpose_type&amp;   const reference to same data as Self, but differently interpreted as transposed</span>
 <span id="L292"><span class="lineNum">     292</span>              :   /// \note This creates a view with swapped dimensions and opposite layout. No data is copied.</span>
-<span id="L293"><span class="lineNum">     293</span>              :   [[nodiscard]] auto transpose() -&gt; transpose_type&amp;;</span>
+<span id="L293"><span class="lineNum">     293</span>              :   [[nodiscard]] auto transpose() const -&gt; const transpose_type&amp;;</span>
 <span id="L294"><span class="lineNum">     294</span>              : </span>
-<span id="L295"><span class="lineNum">     295</span>              :   /// \brief Fast transpose without changing the layout (rvalue version)</span>
-<span id="L296"><span class="lineNum">     296</span>              :   /// \return transpose_type   rvalue reference to same data as Self, but differently interpreted as transposed</span>
-<span id="L297"><span class="lineNum">     297</span>              :   /// \note This creates a view with swapped dimensions and opposite layout. No data is copied. Use for temporary objects.</span>
-<span id="L298"><span class="lineNum">     298</span>              :   [[nodiscard]] auto transpose_rvalue() &amp;&amp; -&gt; transpose_type;</span>
+<span id="L295"><span class="lineNum">     295</span>              :   /// \brief Fast transpose without changing the layout (zero-copy view)</span>
+<span id="L296"><span class="lineNum">     296</span>              :   /// \return transpose_type&amp;   reference to same data as Self, but differently interpreted as transposed</span>
+<span id="L297"><span class="lineNum">     297</span>              :   /// \note This creates a view with swapped dimensions and opposite layout. No data is copied.</span>
+<span id="L298"><span class="lineNum">     298</span>              :   [[nodiscard]] auto transpose() -&gt; transpose_type&amp;;</span>
 <span id="L299"><span class="lineNum">     299</span>              : </span>
-<span id="L300"><span class="lineNum">     300</span>              :   /// \brief Set a block matrix at given position (compile-time parameters)</span>
-<span id="L301"><span class="lineNum">     301</span>              :   /// \tparam SrcRowSize_      Rows of the source block matrix</span>
-<span id="L302"><span class="lineNum">     302</span>              :   /// \tparam SrcColSize_      Cols of the source block matrix</span>
-<span id="L303"><span class="lineNum">     303</span>              :   /// \tparam SrcRowCount_     Number of rows to copy from source (must be &gt; 0)</span>
-<span id="L304"><span class="lineNum">     304</span>              :   /// \tparam SrcColCount_     Number of cols to copy from source (must be &gt; 0)</span>
-<span id="L305"><span class="lineNum">     305</span>              :   /// \tparam SrcRowBeg_       Begin row index in source (0-based, must be &gt;= 0)</span>
-<span id="L306"><span class="lineNum">     306</span>              :   /// \tparam SrcColBeg_       Begin col index in source (0-based, must be &gt;= 0)</span>
-<span id="L307"><span class="lineNum">     307</span>              :   /// \tparam SrcIsRowMajor_   Memory layout of source matrix</span>
-<span id="L308"><span class="lineNum">     308</span>              :   /// \tparam DstRowBeg_       Begin row index in destination (0-based, must be &gt;= 0)</span>
-<span id="L309"><span class="lineNum">     309</span>              :   /// \tparam DstColBeg_       Begin col index in destination (0-based, must be &gt;= 0)</span>
-<span id="L310"><span class="lineNum">     310</span>              :   /// \param[in] block         Source block matrix to copy from</span>
-<span id="L311"><span class="lineNum">     311</span>              :   /// \note All indices and counts are compile-time constants. The copied region must fit within both matrixes. No runtime bounds</span>
-<span id="L312"><span class="lineNum">     312</span>              :   /// checking.</span>
-<span id="L313"><span class="lineNum">     313</span>              :   template &lt;sint32 SrcRowSize_,</span>
-<span id="L314"><span class="lineNum">     314</span>              :             sint32 SrcColSize_,</span>
-<span id="L315"><span class="lineNum">     315</span>              :             sint32 SrcRowCount_,</span>
-<span id="L316"><span class="lineNum">     316</span>              :             sint32 SrcColCount_,</span>
-<span id="L317"><span class="lineNum">     317</span>              :             sint32 SrcRowBeg_,</span>
-<span id="L318"><span class="lineNum">     318</span>              :             sint32 SrcColBeg_,</span>
-<span id="L319"><span class="lineNum">     319</span>              :             bool   SrcIsRowMajor_,</span>
-<span id="L320"><span class="lineNum">     320</span>              :             sint32 DstRowBeg_,</span>
-<span id="L321"><span class="lineNum">     321</span>              :             sint32 DstColBeg_&gt;</span>
-<span id="L322"><span class="lineNum">     322</span>              :   void setBlock(const Matrix&lt;ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_&gt;&amp; block);</span>
-<span id="L323"><span class="lineNum">     323</span>              : </span>
-<span id="L324"><span class="lineNum">     324</span>              :   /// \brief Set a block matrix at given position</span>
-<span id="L325"><span class="lineNum">     325</span>              :   /// \tparam SrcRowSize_      Rows of the source block matrix</span>
-<span id="L326"><span class="lineNum">     326</span>              :   /// \tparam SrcColSize_      Cols of the source block matrix</span>
-<span id="L327"><span class="lineNum">     327</span>              :   /// \tparam SrcIsRowMajor_   Memory layout of source matrix</span>
-<span id="L328"><span class="lineNum">     328</span>              :   /// \param srcRowCount       Number of rows to copy from source (must be &gt; 0)</span>
-<span id="L329"><span class="lineNum">     329</span>              :   /// \param srcColCount       Number of cols to copy from source (must be &gt; 0)</span>
-<span id="L330"><span class="lineNum">     330</span>              :   /// \param srcRowBeg         Begin row index in source (0-based, must be &gt;= 0)</span>
-<span id="L331"><span class="lineNum">     331</span>              :   /// \param srcColBeg         Begin col index in source (0-based, must be &gt;= 0)</span>
-<span id="L332"><span class="lineNum">     332</span>              :   /// \param dstRowBeg         Begin row index in destination (0-based, must be &gt;= 0)</span>
-<span id="L333"><span class="lineNum">     333</span>              :   /// \param dstColBeg         Begin col index in destination (0-based, must be &gt;= 0)</span>
-<span id="L334"><span class="lineNum">     334</span>              :   /// \param[in] block         Source block matrix to copy from</span>
-<span id="L335"><span class="lineNum">     335</span>              :   /// \note The copied region must fit within both source and destination bounds. No bounds checking is performed.</span>
-<span id="L336"><span class="lineNum">     336</span>              :   template &lt;sint32 SrcRowSize_, sint32 SrcColSize_, bool SrcIsRowMajor_&gt;</span>
-<span id="L337"><span class="lineNum">     337</span>              :   void setBlock(const sint32                                                        srcRowCount,</span>
-<span id="L338"><span class="lineNum">     338</span>              :                 const sint32                                                        srcColCount,</span>
-<span id="L339"><span class="lineNum">     339</span>              :                 const sint32                                                        srcRowBeg,</span>
-<span id="L340"><span class="lineNum">     340</span>              :                 const sint32                                                        srcColBeg,</span>
-<span id="L341"><span class="lineNum">     341</span>              :                 const sint32                                                        dstRowBeg,</span>
-<span id="L342"><span class="lineNum">     342</span>              :                 const sint32                                                        dstColBeg,</span>
-<span id="L343"><span class="lineNum">     343</span>              :                 const Matrix&lt;ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_&gt;&amp; block);</span>
-<span id="L344"><span class="lineNum">     344</span>              :   // &lt;---</span>
-<span id="L345"><span class="lineNum">     345</span>              : </span>
-<span id="L346"><span class="lineNum">     346</span>              :   //////////////////////////////////////////////////</span>
-<span id="L347"><span class="lineNum">     347</span>              :   // unsafe access operators  ---&gt;</span>
-<span id="L348"><span class="lineNum">     348</span>              :   /// \brief Unsafe element read-only access (no bounds checking)</span>
-<span id="L349"><span class="lineNum">     349</span>              :   /// \param[in] row  row of the element to read (0-based index, must be valid)</span>
-<span id="L350"><span class="lineNum">     350</span>              :   /// \param[in] col  column of the element to read (0-based index, must be valid)</span>
-<span id="L351"><span class="lineNum">     351</span>              :   /// \return ValueType_   the value at (row,col)</span>
-<span id="L352"><span class="lineNum">     352</span>              :   /// \warning No bounds checking is performed. Undefined behavior if indices are out of bounds.</span>
-<span id="L353"><span class="lineNum">     353</span>              :   [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const -&gt; ValueType_;</span>
-<span id="L354"><span class="lineNum">     354</span>              : </span>
-<span id="L355"><span class="lineNum">     355</span>              :   /// \brief Unsafe element modify access (no bounds checking)</span>
-<span id="L356"><span class="lineNum">     356</span>              :   /// \param[in] row  row of the element to modify (0-based index, must be valid)</span>
-<span id="L357"><span class="lineNum">     357</span>              :   /// \param[in] col  column of the element to modify (0-based index, must be valid)</span>
-<span id="L358"><span class="lineNum">     358</span>              :   /// \return ValueType_&amp;   reference to the value at (row,col)</span>
-<span id="L359"><span class="lineNum">     359</span>              :   /// \warning No bounds checking is performed. Undefined behavior if indices are out of bounds.</span>
-<span id="L360"><span class="lineNum">     360</span>              :   [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) -&gt; ValueType_&amp;;</span>
-<span id="L361"><span class="lineNum">     361</span>              :   // &lt;---</span>
-<span id="L362"><span class="lineNum">     362</span>              : </span>
-<span id="L363"><span class="lineNum">     363</span>              :   // clang-format off</span>
-<span id="L364"><span class="lineNum">     364</span>              : TEST_REMOVE_PROTECTED:</span>
-<span id="L365"><span class="lineNum">     365</span>              :   ; // workaround for correct indentation</span>
-<span id="L366"><span class="lineNum">     366</span>              :   // clang-format on</span>
-<span id="L367"><span class="lineNum">     367</span>              :   /// \brief number of rows and columns in memory layout</span>
-<span id="L368"><span class="lineNum">     368</span>              :   static constexpr auto RowsInMem = IsRowMajor_ ? Rows_ : Cols_;</span>
-<span id="L369"><span class="lineNum">     369</span>              :   static constexpr auto ColsInMem = IsRowMajor_ ? Cols_ : Rows_;</span>
-<span id="L370"><span class="lineNum">     370</span>              : </span>
-<span id="L371"><span class="lineNum">     371</span>              :   using Storage = std::array&lt;ValueType_, static_cast&lt;sint32&gt;(Rows* Cols)&gt;; ///&lt; type of the internal storage</span>
-<span id="L372"><span class="lineNum">     372</span>              : </span>
-<span id="L373"><span class="lineNum">     373</span>              :   //////////////////////////////////////////////////</span>
-<span id="L374"><span class="lineNum">     374</span>              :   // access operators  ---&gt;</span>
-<span id="L375"><span class="lineNum">     375</span>              :   /// \brief  Read-only access to the internal data</span>
-<span id="L376"><span class="lineNum">     376</span>              :   /// \return const Storage&amp;</span>
-<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">       19547 :   auto data() const -&gt; const Storage&amp; { return _data; }</span></span>
-<span id="L378"><span class="lineNum">     378</span>              : </span>
-<span id="L379"><span class="lineNum">     379</span>              :   /// \brief Modify access to the internal data</span>
-<span id="L380"><span class="lineNum">     380</span>              :   /// \return Storage&amp;</span>
-<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">       34371 :   auto data() -&gt; Storage&amp; { return _data; }</span></span>
-<span id="L382"><span class="lineNum">     382</span>              :   // &lt;---</span>
+<span id="L300"><span class="lineNum">     300</span>              :   /// \brief Fast transpose without changing the layout (rvalue version)</span>
+<span id="L301"><span class="lineNum">     301</span>              :   /// \return transpose_type   rvalue reference to same data as Self, but differently interpreted as transposed</span>
+<span id="L302"><span class="lineNum">     302</span>              :   /// \note This creates a view with swapped dimensions and opposite layout. No data is copied. Use for temporary objects.</span>
+<span id="L303"><span class="lineNum">     303</span>              :   [[nodiscard]] auto transpose_rvalue() &amp;&amp; -&gt; transpose_type;</span>
+<span id="L304"><span class="lineNum">     304</span>              : </span>
+<span id="L305"><span class="lineNum">     305</span>              :   /// \brief Set a block matrix at given position (compile-time parameters)</span>
+<span id="L306"><span class="lineNum">     306</span>              :   /// \tparam SrcRowSize_      Rows of the source block matrix</span>
+<span id="L307"><span class="lineNum">     307</span>              :   /// \tparam SrcColSize_      Cols of the source block matrix</span>
+<span id="L308"><span class="lineNum">     308</span>              :   /// \tparam SrcRowCount_     Number of rows to copy from source (must be &gt; 0)</span>
+<span id="L309"><span class="lineNum">     309</span>              :   /// \tparam SrcColCount_     Number of cols to copy from source (must be &gt; 0)</span>
+<span id="L310"><span class="lineNum">     310</span>              :   /// \tparam SrcRowBeg_       Begin row index in source (0-based, must be &gt;= 0)</span>
+<span id="L311"><span class="lineNum">     311</span>              :   /// \tparam SrcColBeg_       Begin col index in source (0-based, must be &gt;= 0)</span>
+<span id="L312"><span class="lineNum">     312</span>              :   /// \tparam SrcIsRowMajor_   Memory layout of source matrix</span>
+<span id="L313"><span class="lineNum">     313</span>              :   /// \tparam DstRowBeg_       Begin row index in destination (0-based, must be &gt;= 0)</span>
+<span id="L314"><span class="lineNum">     314</span>              :   /// \tparam DstColBeg_       Begin col index in destination (0-based, must be &gt;= 0)</span>
+<span id="L315"><span class="lineNum">     315</span>              :   /// \param[in] block         Source block matrix to copy from</span>
+<span id="L316"><span class="lineNum">     316</span>              :   /// \note All indices and counts are compile-time constants. The copied region must fit within both matrixes. No runtime bounds</span>
+<span id="L317"><span class="lineNum">     317</span>              :   /// checking.</span>
+<span id="L318"><span class="lineNum">     318</span>              :   template &lt;sint32 SrcRowSize_,</span>
+<span id="L319"><span class="lineNum">     319</span>              :             sint32 SrcColSize_,</span>
+<span id="L320"><span class="lineNum">     320</span>              :             sint32 SrcRowCount_,</span>
+<span id="L321"><span class="lineNum">     321</span>              :             sint32 SrcColCount_,</span>
+<span id="L322"><span class="lineNum">     322</span>              :             sint32 SrcRowBeg_,</span>
+<span id="L323"><span class="lineNum">     323</span>              :             sint32 SrcColBeg_,</span>
+<span id="L324"><span class="lineNum">     324</span>              :             bool   SrcIsRowMajor_,</span>
+<span id="L325"><span class="lineNum">     325</span>              :             sint32 DstRowBeg_,</span>
+<span id="L326"><span class="lineNum">     326</span>              :             sint32 DstColBeg_&gt;</span>
+<span id="L327"><span class="lineNum">     327</span>              :   void setBlock(const Matrix&lt;ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_&gt;&amp; block);</span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span>              :   /// \brief Set a block matrix at given position</span>
+<span id="L330"><span class="lineNum">     330</span>              :   /// \tparam SrcRowSize_      Rows of the source block matrix</span>
+<span id="L331"><span class="lineNum">     331</span>              :   /// \tparam SrcColSize_      Cols of the source block matrix</span>
+<span id="L332"><span class="lineNum">     332</span>              :   /// \tparam SrcIsRowMajor_   Memory layout of source matrix</span>
+<span id="L333"><span class="lineNum">     333</span>              :   /// \param srcRowCount       Number of rows to copy from source (must be &gt; 0)</span>
+<span id="L334"><span class="lineNum">     334</span>              :   /// \param srcColCount       Number of cols to copy from source (must be &gt; 0)</span>
+<span id="L335"><span class="lineNum">     335</span>              :   /// \param srcRowBeg         Begin row index in source (0-based, must be &gt;= 0)</span>
+<span id="L336"><span class="lineNum">     336</span>              :   /// \param srcColBeg         Begin col index in source (0-based, must be &gt;= 0)</span>
+<span id="L337"><span class="lineNum">     337</span>              :   /// \param dstRowBeg         Begin row index in destination (0-based, must be &gt;= 0)</span>
+<span id="L338"><span class="lineNum">     338</span>              :   /// \param dstColBeg         Begin col index in destination (0-based, must be &gt;= 0)</span>
+<span id="L339"><span class="lineNum">     339</span>              :   /// \param[in] block         Source block matrix to copy from</span>
+<span id="L340"><span class="lineNum">     340</span>              :   /// \note The copied region must fit within both source and destination bounds. No bounds checking is performed.</span>
+<span id="L341"><span class="lineNum">     341</span>              :   template &lt;sint32 SrcRowSize_, sint32 SrcColSize_, bool SrcIsRowMajor_&gt;</span>
+<span id="L342"><span class="lineNum">     342</span>              :   void setBlock(const sint32                                                        srcRowCount,</span>
+<span id="L343"><span class="lineNum">     343</span>              :                 const sint32                                                        srcColCount,</span>
+<span id="L344"><span class="lineNum">     344</span>              :                 const sint32                                                        srcRowBeg,</span>
+<span id="L345"><span class="lineNum">     345</span>              :                 const sint32                                                        srcColBeg,</span>
+<span id="L346"><span class="lineNum">     346</span>              :                 const sint32                                                        dstRowBeg,</span>
+<span id="L347"><span class="lineNum">     347</span>              :                 const sint32                                                        dstColBeg,</span>
+<span id="L348"><span class="lineNum">     348</span>              :                 const Matrix&lt;ValueType_, SrcRowSize_, SrcColSize_, SrcIsRowMajor_&gt;&amp; block);</span>
+<span id="L349"><span class="lineNum">     349</span>              :   // &lt;---</span>
+<span id="L350"><span class="lineNum">     350</span>              : </span>
+<span id="L351"><span class="lineNum">     351</span>              :   //////////////////////////////////////////////////</span>
+<span id="L352"><span class="lineNum">     352</span>              :   // unsafe access operators  ---&gt;</span>
+<span id="L353"><span class="lineNum">     353</span>              :   /// \brief Unsafe element read-only access (no bounds checking)</span>
+<span id="L354"><span class="lineNum">     354</span>              :   /// \param[in] row  row of the element to read (0-based index, must be valid)</span>
+<span id="L355"><span class="lineNum">     355</span>              :   /// \param[in] col  column of the element to read (0-based index, must be valid)</span>
+<span id="L356"><span class="lineNum">     356</span>              :   /// \return ValueType_   the value at (row,col)</span>
+<span id="L357"><span class="lineNum">     357</span>              :   /// \warning No bounds checking is performed. Undefined behavior if indices are out of bounds.</span>
+<span id="L358"><span class="lineNum">     358</span>              :   [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) const noexcept -&gt; ValueType_;</span>
+<span id="L359"><span class="lineNum">     359</span>              : </span>
+<span id="L360"><span class="lineNum">     360</span>              :   /// \brief Unsafe element modify access (no bounds checking)</span>
+<span id="L361"><span class="lineNum">     361</span>              :   /// \param[in] row  row of the element to modify (0-based index, must be valid)</span>
+<span id="L362"><span class="lineNum">     362</span>              :   /// \param[in] col  column of the element to modify (0-based index, must be valid)</span>
+<span id="L363"><span class="lineNum">     363</span>              :   /// \return ValueType_&amp;   reference to the value at (row,col)</span>
+<span id="L364"><span class="lineNum">     364</span>              :   /// \warning No bounds checking is performed. Undefined behavior if indices are out of bounds.</span>
+<span id="L365"><span class="lineNum">     365</span>              :   [[nodiscard]] auto at_unsafe(sint32 row, sint32 col) noexcept -&gt; ValueType_&amp;;</span>
+<span id="L366"><span class="lineNum">     366</span>              :   // &lt;---</span>
+<span id="L367"><span class="lineNum">     367</span>              : </span>
+<span id="L368"><span class="lineNum">     368</span>              :   // clang-format off</span>
+<span id="L369"><span class="lineNum">     369</span>              : TEST_REMOVE_PROTECTED:</span>
+<span id="L370"><span class="lineNum">     370</span>              :   ; // workaround for correct indentation</span>
+<span id="L371"><span class="lineNum">     371</span>              :   // clang-format on</span>
+<span id="L372"><span class="lineNum">     372</span>              :   /// \brief number of rows and columns in memory layout</span>
+<span id="L373"><span class="lineNum">     373</span>              :   static constexpr auto RowsInMem = IsRowMajor_ ? Rows_ : Cols_;</span>
+<span id="L374"><span class="lineNum">     374</span>              :   static constexpr auto ColsInMem = IsRowMajor_ ? Cols_ : Rows_;</span>
+<span id="L375"><span class="lineNum">     375</span>              : </span>
+<span id="L376"><span class="lineNum">     376</span>              :   using Storage = std::array&lt;ValueType_, static_cast&lt;sint32&gt;(Rows* Cols)&gt;; ///&lt; type of the internal storage</span>
+<span id="L377"><span class="lineNum">     377</span>              : </span>
+<span id="L378"><span class="lineNum">     378</span>              :   //////////////////////////////////////////////////</span>
+<span id="L379"><span class="lineNum">     379</span>              :   // access operators  ---&gt;</span>
+<span id="L380"><span class="lineNum">     380</span>              :   /// \brief  Read-only access to the internal data</span>
+<span id="L381"><span class="lineNum">     381</span>              :   /// \return const Storage&amp;</span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">        2237 :   auto data() const noexcept -&gt; const Storage&amp; { return _data; }</span></span>
 <span id="L383"><span class="lineNum">     383</span>              : </span>
-<span id="L384"><span class="lineNum">     384</span>              :   // clang-format off</span>
-<span id="L385"><span class="lineNum">     385</span>              : TEST_REMOVE_PRIVATE:</span>
-<span id="L386"><span class="lineNum">     386</span>              :   ; // workaround for correct indentation</span>
-<span id="L387"><span class="lineNum">     387</span>              :   // clang-format on</span>
-<span id="L388"><span class="lineNum">     388</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_integral&lt;T&gt;::value, bool&gt; = true&gt;</span>
-<span id="L389"><span class="lineNum">     389</span>              :   void inplace_div_by_int_unsafe(T scalar);</span>
-<span id="L390"><span class="lineNum">     390</span>              : </span>
-<span id="L391"><span class="lineNum">     391</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_floating_point&lt;T&gt;::value, bool&gt; = true&gt;</span>
-<span id="L392"><span class="lineNum">     392</span>              :   void inplace_mul_by_inverse_factor_unsafe(T scalar);</span>
-<span id="L393"><span class="lineNum">     393</span>              : </span>
-<span id="L394"><span class="lineNum">     394</span>              :   Storage _data{}; ///&lt; internal data to store the matrix</span>
-<span id="L395"><span class="lineNum">     395</span>              : };</span>
-<span id="L396"><span class="lineNum">     396</span>              : </span>
-<span id="L397"><span class="lineNum">     397</span>              : //////////////////////////////////////////////////</span>
-<span id="L398"><span class="lineNum">     398</span>              : // non member operations  ---&gt;</span>
-<span id="L399"><span class="lineNum">     399</span>              : </span>
-<span id="L400"><span class="lineNum">     400</span>              : /// \brief Calculates Scalar + Matrix (element-wise addition)</span>
-<span id="L401"><span class="lineNum">     401</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
-<span id="L402"><span class="lineNum">     402</span>              : /// \tparam Rows_  Number of rows in the matrix</span>
-<span id="L403"><span class="lineNum">     403</span>              : /// \tparam Cols_  Number of columns in the matrix</span>
-<span id="L404"><span class="lineNum">     404</span>              : /// \tparam IsRowMajor_  Storage layout of the matrix</span>
-<span id="L405"><span class="lineNum">     405</span>              : /// \param[in] scalar  Scalar value to add to each element</span>
-<span id="L406"><span class="lineNum">     406</span>              : /// \param[in] mat  Matrix operand</span>
-<span id="L407"><span class="lineNum">     407</span>              : /// \return Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;  Result of scalar + matrix</span>
-<span id="L408"><span class="lineNum">     408</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
-<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">           3 : [[nodiscard]] static auto operator+(ValueType_ scalar, const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; mat)</span></span>
-<span id="L410"><span class="lineNum">     410</span>              :     -&gt; Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;</span>
-<span id="L411"><span class="lineNum">     411</span>              : {</span>
-<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">           3 :   return mat + scalar;</span></span>
-<span id="L413"><span class="lineNum">     413</span>              : }</span>
-<span id="L414"><span class="lineNum">     414</span>              : </span>
-<span id="L415"><span class="lineNum">     415</span>              : /// \brief Calculates Scalar * Matrix (element-wise multiplication)</span>
-<span id="L416"><span class="lineNum">     416</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
-<span id="L417"><span class="lineNum">     417</span>              : /// \tparam Rows_  Number of rows in the matrix</span>
-<span id="L418"><span class="lineNum">     418</span>              : /// \tparam Cols_  Number of columns in the matrix</span>
-<span id="L419"><span class="lineNum">     419</span>              : /// \tparam IsRowMajor_  Storage layout of the matrix</span>
-<span id="L420"><span class="lineNum">     420</span>              : /// \param[in] scalar  Scalar value to multiply with each element</span>
-<span id="L421"><span class="lineNum">     421</span>              : /// \param[in] mat  Matrix operand</span>
-<span id="L422"><span class="lineNum">     422</span>              : /// \return Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;  Result of scalar * matrix</span>
-<span id="L423"><span class="lineNum">     423</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
-<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">          40 : [[nodiscard]] static auto operator*(ValueType_ scalar, const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; mat)</span></span>
-<span id="L425"><span class="lineNum">     425</span>              :     -&gt; Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;</span>
-<span id="L426"><span class="lineNum">     426</span>              : {</span>
-<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">          40 :   return mat * scalar;</span></span>
-<span id="L428"><span class="lineNum">     428</span>              : }</span>
-<span id="L429"><span class="lineNum">     429</span>              : // &lt;---</span>
-<span id="L430"><span class="lineNum">     430</span>              : </span>
-<span id="L431"><span class="lineNum">     431</span>              : } // namespace math</span>
-<span id="L432"><span class="lineNum">     432</span>              : } // namespace tracking</span>
-<span id="L433"><span class="lineNum">     433</span>              : </span>
-<span id="L434"><span class="lineNum">     434</span>              : #endif // FDEAAACC_9EF1_4C87_94DC_2FA494822664</span>
+<span id="L384"><span class="lineNum">     384</span>              :   /// \brief Modify access to the internal data</span>
+<span id="L385"><span class="lineNum">     385</span>              :   /// \return Storage&amp;</span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">        9980 :   auto data() noexcept -&gt; Storage&amp; { return _data; }</span></span>
+<span id="L387"><span class="lineNum">     387</span>              :   // &lt;---</span>
+<span id="L388"><span class="lineNum">     388</span>              : </span>
+<span id="L389"><span class="lineNum">     389</span>              :   // clang-format off</span>
+<span id="L390"><span class="lineNum">     390</span>              : TEST_REMOVE_PRIVATE:</span>
+<span id="L391"><span class="lineNum">     391</span>              :   ; // workaround for correct indentation</span>
+<span id="L392"><span class="lineNum">     392</span>              :   // clang-format on</span>
+<span id="L393"><span class="lineNum">     393</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_integral&lt;T&gt;::value, bool&gt; = true&gt;</span>
+<span id="L394"><span class="lineNum">     394</span>              :   void inplace_div_by_int_unsafe(T scalar);</span>
+<span id="L395"><span class="lineNum">     395</span>              : </span>
+<span id="L396"><span class="lineNum">     396</span>              :   template &lt;typename T = ValueType_, typename std::enable_if_t&lt;std::is_floating_point&lt;T&gt;::value, bool&gt; = true&gt;</span>
+<span id="L397"><span class="lineNum">     397</span>              :   void inplace_mul_by_inverse_factor_unsafe(T scalar);</span>
+<span id="L398"><span class="lineNum">     398</span>              : </span>
+<span id="L399"><span class="lineNum">     399</span>              :   Storage _data{}; ///&lt; internal data to store the matrix</span>
+<span id="L400"><span class="lineNum">     400</span>              : };</span>
+<span id="L401"><span class="lineNum">     401</span>              : </span>
+<span id="L402"><span class="lineNum">     402</span>              : //////////////////////////////////////////////////</span>
+<span id="L403"><span class="lineNum">     403</span>              : // non member operations  ---&gt;</span>
+<span id="L404"><span class="lineNum">     404</span>              : </span>
+<span id="L405"><span class="lineNum">     405</span>              : /// \brief Calculates Scalar + Matrix (element-wise addition)</span>
+<span id="L406"><span class="lineNum">     406</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L407"><span class="lineNum">     407</span>              : /// \tparam Rows_  Number of rows in the matrix</span>
+<span id="L408"><span class="lineNum">     408</span>              : /// \tparam Cols_  Number of columns in the matrix</span>
+<span id="L409"><span class="lineNum">     409</span>              : /// \tparam IsRowMajor_  Storage layout of the matrix</span>
+<span id="L410"><span class="lineNum">     410</span>              : /// \param[in] scalar  Scalar value to add to each element</span>
+<span id="L411"><span class="lineNum">     411</span>              : /// \param[in] mat  Matrix operand</span>
+<span id="L412"><span class="lineNum">     412</span>              : /// \return Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;  Result of scalar + matrix</span>
+<span id="L413"><span class="lineNum">     413</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">           3 : [[nodiscard]] static auto operator+(ValueType_ scalar, const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; mat)</span></span>
+<span id="L415"><span class="lineNum">     415</span>              :     -&gt; Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;</span>
+<span id="L416"><span class="lineNum">     416</span>              : {</span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">           3 :   return mat + scalar;</span></span>
+<span id="L418"><span class="lineNum">     418</span>              : }</span>
+<span id="L419"><span class="lineNum">     419</span>              : </span>
+<span id="L420"><span class="lineNum">     420</span>              : /// \brief Calculates Scalar * Matrix (element-wise multiplication)</span>
+<span id="L421"><span class="lineNum">     421</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L422"><span class="lineNum">     422</span>              : /// \tparam Rows_  Number of rows in the matrix</span>
+<span id="L423"><span class="lineNum">     423</span>              : /// \tparam Cols_  Number of columns in the matrix</span>
+<span id="L424"><span class="lineNum">     424</span>              : /// \tparam IsRowMajor_  Storage layout of the matrix</span>
+<span id="L425"><span class="lineNum">     425</span>              : /// \param[in] scalar  Scalar value to multiply with each element</span>
+<span id="L426"><span class="lineNum">     426</span>              : /// \param[in] mat  Matrix operand</span>
+<span id="L427"><span class="lineNum">     427</span>              : /// \return Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;  Result of scalar * matrix</span>
+<span id="L428"><span class="lineNum">     428</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">          40 : [[nodiscard]] static auto operator*(ValueType_ scalar, const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; mat)</span></span>
+<span id="L430"><span class="lineNum">     430</span>              :     -&gt; Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;</span>
+<span id="L431"><span class="lineNum">     431</span>              : {</span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">          40 :   return mat * scalar;</span></span>
+<span id="L433"><span class="lineNum">     433</span>              : }</span>
+<span id="L434"><span class="lineNum">     434</span>              : // &lt;---</span>
+<span id="L435"><span class="lineNum">     435</span>              : </span>
+<span id="L436"><span class="lineNum">     436</span>              : } // namespace math</span>
+<span id="L437"><span class="lineNum">     437</span>              : } // namespace tracking</span>
+<span id="L438"><span class="lineNum">     438</span>              : </span>
+<span id="L439"><span class="lineNum">     439</span>              : #endif // FDEAAACC_9EF1_4C87_94DC_2FA494822664</span>
         </pre>
               </td>
             </tr>

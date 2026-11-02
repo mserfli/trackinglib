@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - matrix_row_view.hpp<span style="font-size: 80%;"> (source / <a href="matrix_row_view.hpp.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory math/linalg">math/linalg</a> - matrix_row_view.hpp<span style="font-size: 80%;"> (source / <a href="matrix_row_view.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -31,22 +31,22 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">23</td>
+            <td class="headerCovTableEntryHi">95.8&nbsp;%</td>
+            <td class="headerCovTableEntry">24</td>
             <td class="headerCovTableEntry">23</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryMed">84.2&nbsp;%</td>
-            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntryMed">78.0&nbsp;%</td>
+            <td class="headerCovTableEntry">41</td>
             <td class="headerCovTableEntry">32</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -84,7 +84,7 @@
 <span id="L14"><span class="lineNum">      14</span>              : {</span>
 <span id="L15"><span class="lineNum">      15</span>              : </span>
 <span id="L16"><span class="lineNum">      16</span>              : template &lt;typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_&gt;</span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC tlaBgGNC">        6832 : MatrixRowView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::MatrixRowView(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; matrix,</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">        6832 : MatrixRowView&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;::MatrixRowView(const Matrix&lt;ValueType_, Rows_, Cols_, IsRowMajor_&gt;&amp; matrix,</span></span>
 <span id="L18"><span class="lineNum">      18</span>              :                                                                     const sint32                                         row,</span>
 <span id="L19"><span class="lineNum">      19</span>              :                                                                     const sint32                                         colBegin,</span>
 <span id="L20"><span class="lineNum">      20</span>              :                                                                     const sint32                                         colEnd)</span>
@@ -131,7 +131,7 @@
 <span id="L61"><span class="lineNum">      61</span>              : {</span>
 <span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        6830 :   assert(_colCount == other.getRowCount());</span></span>
 <span id="L63"><span class="lineNum">      63</span>              :   // calc dot product</span>
-<span id="L64"><span class="lineNum">      64</span>              :   ValueType_ result{};</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC">           0 :   ValueType_ result{};</span></span>
 <span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       24950 :   for (auto idx = 0; idx &lt; _colCount; ++idx)</span></span>
 <span id="L66"><span class="lineNum">      66</span>              :   {</span>
 <span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       18120 :     result += at_unsafe(idx) * other.at_unsafe(idx);</span></span>

@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - covariance_matrix_full.hpp<span style="font-size: 80%;"> (source / <a href="covariance_matrix_full.hpp.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory math/linalg">math/linalg</a> - covariance_matrix_full.hpp<span style="font-size: 80%;"> (source / <a href="covariance_matrix_full.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -37,16 +37,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryMed">84.2&nbsp;%</td>
-            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntryMed">80.0&nbsp;%</td>
+            <td class="headerCovTableEntry">20</td>
             <td class="headerCovTableEntry">16</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -83,7 +83,7 @@
 <span id="L13"><span class="lineNum">      13</span>              : {</span>
 <span id="L14"><span class="lineNum">      14</span>              : </span>
 <span id="L15"><span class="lineNum">      15</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">          85 : auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::FromDiagonal(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; diag) -&gt; CovarianceMatrixFull</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">          85 : auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::FromDiagonal(const DiagonalMatrix&lt;ValueType_, Size_&gt;&amp; diag) -&gt; CovarianceMatrixFull</span></span>
 <span id="L17"><span class="lineNum">      17</span>              : {</span>
 <span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">          85 :   assert(diag.isPositiveDefinite() &amp;&amp; &quot;Bad diagonal matrix not fullfilling the constraint isPositiveDefinite&quot;);</span></span>
 <span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">          85 :   return CovarianceMatrixFull{diag};</span></span>
@@ -137,7 +137,7 @@
 <span id="L67"><span class="lineNum">      67</span>              : </span>
 <span id="L68"><span class="lineNum">      68</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
 <span id="L69"><span class="lineNum">      69</span>              : template &lt;bool IsRowMajor_&gt;</span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           2 : inline auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::apaT(</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           1 : inline auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::apaT(</span></span>
 <span id="L71"><span class="lineNum">      71</span>              :     const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull</span>
 <span id="L72"><span class="lineNum">      72</span>              : {</span>
 <span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">           3 :   auto copy(*this);</span></span>

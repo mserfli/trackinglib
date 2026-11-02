@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">math/linalg/conversions</a> - covariance_matrix_conversions.hpp<span style="font-size: 80%;"> (source / <a href="covariance_matrix_conversions.hpp.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory math/linalg/conversions">math/linalg/conversions</a> - covariance_matrix_conversions.hpp<span style="font-size: 80%;"> (source / <a href="covariance_matrix_conversions.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -32,21 +32,21 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">13</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntry">20</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -96,51 +96,59 @@
 <span id="L26"><span class="lineNum">      26</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
 <span id="L27"><span class="lineNum">      27</span>              : /// \tparam Size_ The dimension of the covariance matrix</span>
 <span id="L28"><span class="lineNum">      28</span>              : /// \param[in] other Full covariance matrix to decompose</span>
-<span id="L29"><span class="lineNum">      29</span>              : /// \return tl::expected containing the CovarianceMatrixFactored instance on success</span>
-<span id="L30"><span class="lineNum">      30</span>              : /// \see CovarianceMatrixFactoredFromList() (overloaded) for nested initializer list input</span>
-<span id="L31"><span class="lineNum">      31</span>              : /// \see CovarianceMatrixFullFromList() for full covariance matrixes</span>
-<span id="L32"><span class="lineNum">      32</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC tlaBgGNC">          81 : inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(</span></span>
-<span id="L34"><span class="lineNum">      34</span>              :     const typename CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::compose_type&amp; other)</span>
-<span id="L35"><span class="lineNum">      35</span>              :     -&gt; tl::expected&lt;CovarianceMatrixFactored&lt;ValueType_, Size_&gt;, Errors&gt;</span>
-<span id="L36"><span class="lineNum">      36</span>              : {</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          81 :   const auto retVal = other.decomposeUDUT();</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">          81 :   if (retVal.has_value())</span></span>
-<span id="L39"><span class="lineNum">      39</span>              :   {</span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          80 :     const auto [u, d] = retVal.value_or(std::make_pair(TriangularMatrix&lt;ValueType_, Size_, false, true&gt;::Identity(),</span></span>
-<span id="L41"><span class="lineNum">      41</span>              :                                                        DiagonalMatrix&lt;ValueType_, Size_&gt;::Identity()));</span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">          80 :     return CovarianceMatrixFactored{std::move(u), std::move(d)};</span></span>
-<span id="L43"><span class="lineNum">      43</span>              :   }</span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">           1 :   return tl::unexpected&lt;Errors&gt;{retVal.error()};</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          81 : }</span></span>
-<span id="L46"><span class="lineNum">      46</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : /// \return tl::expected containing the factored covariance or the decomposition error</span>
+<span id="L30"><span class="lineNum">      30</span>              : /// \note Preserves existing UDU pivot clamping to epsilon; input is not required to be strictly PD.</span>
+<span id="L31"><span class="lineNum">      31</span>              : ///       No comprehensive NaN/Inf rejection is provided. noexcept specifies exception behavior only.</span>
+<span id="L32"><span class="lineNum">      32</span>              : /// \see CovarianceMatrixFactoredFromList() for nested initializer list input</span>
+<span id="L33"><span class="lineNum">      33</span>              : /// \see CovarianceMatrixFull::FromList() for full covariance matrices</span>
+<span id="L34"><span class="lineNum">      34</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">         129 : inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(</span></span>
+<span id="L36"><span class="lineNum">      36</span>              :     const typename CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::compose_type&amp; other) noexcept</span>
+<span id="L37"><span class="lineNum">      37</span>              :     -&gt; tl::expected&lt;CovarianceMatrixFactored&lt;ValueType_, Size_&gt;, Errors&gt;</span>
+<span id="L38"><span class="lineNum">      38</span>              : {</span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         129 :   const auto retVal = other.decomposeUDUT();</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">         129 :   if (retVal.has_value())</span></span>
+<span id="L41"><span class="lineNum">      41</span>              :   {</span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         128 :     const auto&amp; [u, d] = retVal.value();</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         128 :     return CovarianceMatrixFactored{u, d};</span></span>
+<span id="L44"><span class="lineNum">      44</span>              :   }</span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">           1 :   return tl::unexpected&lt;Errors&gt;{retVal.error()};</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         129 : }</span></span>
 <span id="L47"><span class="lineNum">      47</span>              : </span>
-<span id="L48"><span class="lineNum">      48</span>              : /// \brief Creates a CovarianceMatrixFactored from a nested initializer list</span>
-<span id="L49"><span class="lineNum">      49</span>              : ///</span>
-<span id="L50"><span class="lineNum">      50</span>              : /// This function constructs a factored covariance matrix by decomposing the input</span>
-<span id="L51"><span class="lineNum">      51</span>              : /// covariance matrix into UDU^T form. The input must be symmetric.</span>
-<span id="L52"><span class="lineNum">      52</span>              : ///</span>
-<span id="L53"><span class="lineNum">      53</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
-<span id="L54"><span class="lineNum">      54</span>              : /// \tparam Size_ The dimension of the covariance matrix</span>
-<span id="L55"><span class="lineNum">      55</span>              : /// \param[in] list Nested initializer list representing the full covariance matrix</span>
-<span id="L56"><span class="lineNum">      56</span>              : /// \return tl::expected containing the CovarianceMatrixFactored instance on success, or</span>
-<span id="L57"><span class="lineNum">      57</span>              : ///         Errors::matrix_not_positive_definite if the input cannot be factored into UDU^T form</span>
-<span id="L58"><span class="lineNum">      58</span>              : /// \note The input matrix must be symmetric, otherwise assertion fails</span>
-<span id="L59"><span class="lineNum">      59</span>              : /// \see CovarianceMatrixFactoredFromList() (overloaded) for separate U and D input</span>
-<span id="L60"><span class="lineNum">      60</span>              : /// \see CovarianceMatrixFullFromList() for full covariance matrixes</span>
-<span id="L61"><span class="lineNum">      61</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">          45 : inline auto CovarianceMatrixFactoredFromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list)</span></span>
-<span id="L63"><span class="lineNum">      63</span>              :     -&gt; tl::expected&lt;CovarianceMatrixFactored&lt;ValueType_, Size_&gt;, Errors&gt;</span>
-<span id="L64"><span class="lineNum">      64</span>              : {</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">          45 :   const auto other = CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::compose_type::FromList(list);</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          45 :   return CovarianceMatrixFactoredFromCovarianceMatrixFull&lt;ValueType_, Size_&gt;(other);</span></span>
-<span id="L67"><span class="lineNum">      67</span>              : }</span>
-<span id="L68"><span class="lineNum">      68</span>              : </span>
-<span id="L69"><span class="lineNum">      69</span>              : } // namespace conversions</span>
-<span id="L70"><span class="lineNum">      70</span>              : } // namespace math</span>
-<span id="L71"><span class="lineNum">      71</span>              : } // namespace tracking</span>
-<span id="L72"><span class="lineNum">      72</span>              : </span>
-<span id="L73"><span class="lineNum">      73</span>              : #endif // A170ADCF_D2AE_4DF6_B6B6_D3DF0FA46A72</span>
+<span id="L48"><span class="lineNum">      48</span>              : </span>
+<span id="L49"><span class="lineNum">      49</span>              : /// \brief Creates a CovarianceMatrixFactored from a nested initializer list</span>
+<span id="L50"><span class="lineNum">      50</span>              : ///</span>
+<span id="L51"><span class="lineNum">      51</span>              : /// This function constructs a factored covariance matrix by decomposing the input</span>
+<span id="L52"><span class="lineNum">      52</span>              : /// covariance matrix into UDU^T form. The input must be symmetric.</span>
+<span id="L53"><span class="lineNum">      53</span>              : ///</span>
+<span id="L54"><span class="lineNum">      54</span>              : /// \tparam ValueType_ The atomic data type of internal elements</span>
+<span id="L55"><span class="lineNum">      55</span>              : /// \tparam Size_ The dimension of the covariance matrix</span>
+<span id="L56"><span class="lineNum">      56</span>              : /// \param[in] list Nested initializer list representing the full covariance matrix</span>
+<span id="L57"><span class="lineNum">      57</span>              : /// \return tl::expected containing the factored covariance or a propagated dimension, symmetry, or decomposition error</span>
+<span id="L58"><span class="lineNum">      58</span>              : /// \note Checks dimensions and symmetry before decomposition. The existing UDU</span>
+<span id="L59"><span class="lineNum">      59</span>              : ///       algorithm clamps non-positive pivots to epsilon; it does not enforce strict</span>
+<span id="L60"><span class="lineNum">      60</span>              : ///       positive definiteness of the input. For example, diag(-1, 1) succeeds here</span>
+<span id="L61"><span class="lineNum">      61</span>              : ///       with the first pivot clamped, while full-policy model creation rejects it.</span>
+<span id="L62"><span class="lineNum">      62</span>              : /// \note No comprehensive NaN/Inf check is provided. noexcept describes exception</span>
+<span id="L63"><span class="lineNum">      63</span>              : ///       behavior and does not guarantee successful construction or finite numbers.</span>
+<span id="L64"><span class="lineNum">      64</span>              : /// \see CovarianceMatrixFactored::FromList for explicit U/D input without clamping</span>
+<span id="L65"><span class="lineNum">      65</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         157 : inline auto CovarianceMatrixFactoredFromList(const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) noexcept</span></span>
+<span id="L67"><span class="lineNum">      67</span>              :     -&gt; tl::expected&lt;CovarianceMatrixFactored&lt;ValueType_, Size_&gt;, Errors&gt;</span>
+<span id="L68"><span class="lineNum">      68</span>              : {</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">         157 :   const auto other = CovarianceMatrixFactored&lt;ValueType_, Size_&gt;::compose_type::FromList(list);</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">         157 :   if (!other)</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :   {</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">          64 :     return tl::unexpected&lt;Errors&gt;{other.error()};</span></span>
+<span id="L73"><span class="lineNum">      73</span>              :   }</span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">          93 :   return CovarianceMatrixFactoredFromCovarianceMatrixFull&lt;ValueType_, Size_&gt;(other.value());</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">         157 : }</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span>              : } // namespace conversions</span>
+<span id="L78"><span class="lineNum">      78</span>              : } // namespace math</span>
+<span id="L79"><span class="lineNum">      79</span>              : } // namespace tracking</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span>              : #endif // A170ADCF_D2AE_4DF6_B6B6_D3DF0FA46A72</span>
         </pre>
               </td>
             </tr>

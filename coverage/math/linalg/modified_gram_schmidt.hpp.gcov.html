@@ -19,7 +19,7 @@
                 <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">math/linalg</a> - modified_gram_schmidt.hpp<span style="font-size: 80%;"> (source / <a href="modified_gram_schmidt.hpp.func-c.html">functions</a>)</span></td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory math/linalg">math/linalg</a> - modified_gram_schmidt.hpp<span style="font-size: 80%;"> (source / <a href="modified_gram_schmidt.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="5%"></td>
             <td width="5%" class="headerCovTableHead">Coverage</td>
@@ -37,16 +37,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-08-02 21:36:35</td>
+            <td class="headerValue">2026-11-02 21:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryHi">94.1&nbsp;%</td>
-            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntryMed">84.2&nbsp;%</td>
+            <td class="headerCovTableEntry">19</td>
             <td class="headerCovTableEntry">16</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
-            <td class="headerValueLeg">            Lines:
+            <td class="headerValueLeg">            Lines:&nbsp&nbsp&nbsp&nbsp
             <span class="coverLegendCov">hit</span>
             <span class="coverLegendNoCov">not hit</span>
 </td>
@@ -83,7 +83,7 @@
 <span id="L13"><span class="lineNum">      13</span>              : namespace math</span>
 <span id="L14"><span class="lineNum">      14</span>              : {</span>
 <span id="L15"><span class="lineNum">      15</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC tlaBgGNC">          77 : void ModifiedGramSchmidt&lt;ValueType_, Size_&gt;::run(TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; u,</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">          77 : void ModifiedGramSchmidt&lt;ValueType_, Size_&gt;::run(TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; u,</span></span>
 <span id="L17"><span class="lineNum">      17</span>              :                                                  DiagonalMatrix&lt;ValueType_, Size_&gt;&amp;                d,</span>
 <span id="L18"><span class="lineNum">      18</span>              :                                                  const SquareMatrix&lt;ValueType_, Size_, true&gt;&amp;      Phi)</span>
 <span id="L19"><span class="lineNum">      19</span>              : {</span>
@@ -106,7 +106,7 @@
 <span id="L36"><span class="lineNum">      36</span>              :     {</span>
 <span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">        1195 :       sigma += (PhiU.at_unsafe(i, j) * PhiU.at_unsafe(i, j)) * Din.at_unsafe(j);</span></span>
 <span id="L38"><span class="lineNum">      38</span>              :     }</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         344 :     d.at_unsafe(i) = std::max(sigma, std::numeric_limits&lt;ValueType_&gt;::epsilon());</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         529 :     d.at_unsafe(i) = std::max(sigma, std::numeric_limits&lt;ValueType_&gt;::epsilon());</span></span>
 <span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">         743 :     for (sint32 j = 0; j &lt; i; ++j)</span></span>
 <span id="L41"><span class="lineNum">      41</span>              :     {</span>
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         452 :       sigma = static_cast&lt;ValueType_&gt;(0.0);</span></span>
@@ -162,7 +162,7 @@
 <span id="L92"><span class="lineNum">      92</span>              :     {</span>
 <span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">         408 :       sigma += Gin.at_unsafe(i, j) * Gin.at_unsafe(i, j) * Q.at_unsafe(j);</span></span>
 <span id="L94"><span class="lineNum">      94</span>              :     }</span>
-<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">         131 :     d.at_unsafe(i) = std::max(sigma, std::numeric_limits&lt;ValueType_&gt;::epsilon());</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">         262 :     d.at_unsafe(i) = std::max(sigma, std::numeric_limits&lt;ValueType_&gt;::epsilon());</span></span>
 <span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">         385 :     for (sint32 j = 0; j &lt; i; ++j)</span></span>
 <span id="L97"><span class="lineNum">      97</span>              :     {</span>
 <span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">         254 :       sigma = static_cast&lt;ValueType_&gt;(0.0);</span></span>
