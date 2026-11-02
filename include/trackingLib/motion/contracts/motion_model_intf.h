@@ -60,7 +60,7 @@ concept has_computeG_static_member_func = requires {
 template <typename ImplType>
 struct MotionModelIntf
 {
-  MotionModelIntf()
+  MotionModelIntf() noexcept
   {
     static_assert(std::is_floating_point<typename ImplType::value_type>());
     static_assert(ImplType::NUM_STATE_VARIABLES > 0);

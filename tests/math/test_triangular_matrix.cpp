@@ -11,11 +11,13 @@ TEST(TriangularMatrix, ctor_default) // NOLINT
 {
   // clang-format off
   using TriangularMatrix = TriangularMatrix<float32, 3, false, true>;
-  const auto expMat = TriangularMatrix::FromList({
+  auto expMatResult = TriangularMatrix::FromList({
     {0, 0, 0},
     {0, 0, 0},
     {0, 0, 0}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -28,16 +30,20 @@ TEST(TriangularMatrix, ctor_triu) // NOLINT
 {
   // clang-format off
   using TriangularMatrix = TriangularMatrix<float32, 3, false, true>;
-  const auto mat = TriangularMatrix::FromList({
+  auto matResult = TriangularMatrix::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
   });
-  const auto expMat = TriangularMatrix::FromList({
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
+  auto expMatResult = TriangularMatrix::FromList({
     {1, 2, 3},
     {0, 5, 6},
     {0, 0, 9}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -78,11 +84,13 @@ TYPED_TEST(GTestTriangularMatrix, ctor_FromList_Upper__Success) // NOLINT
 {
   // clang-format off
   // call UUT
-  const auto result = TriangularMatrix<sint32, 3, false, TypeParam::IsRowMajor>::FromList({
+  auto resultResult = TriangularMatrix<sint32, 3, false, TypeParam::IsRowMajor>::FromList({
       {1, 2, 3},
       {0, 5, 6},
       {0, 0, 9},
   });
+  ASSERT_TRUE(resultResult.has_value());
+  const auto result = resultResult.value();
   // clang-format on
 
   EXPECT_EQ(result.at_unsafe(0, 0), 1);
@@ -97,11 +105,13 @@ TYPED_TEST(GTestTriangularMatrix, ctor_FromList_Lower__Success) // NOLINT
 {
   // clang-format off
   // call UUT
-  const auto result = TriangularMatrix<sint32, 3, true, TypeParam::IsRowMajor>::FromList({
+  auto resultResult = TriangularMatrix<sint32, 3, true, TypeParam::IsRowMajor>::FromList({
       {1, 0, 0},
       {4, 5, 0},
       {7, 8, 9},
   });
+  ASSERT_TRUE(resultResult.has_value());
+  const auto result = resultResult.value();
   // clang-format on
 
   // Lower triangular: elements on and below diagonal should be preserved
@@ -117,11 +127,13 @@ TEST(TriangularMatrix, Identity) // NOLINT
 {
   // clang-format off
   using TriangularMatrix = TriangularMatrix<float32, 3, false, true>;
-  const auto expMat = TriangularMatrix::FromList({
+  auto expMatResult = TriangularMatrix::FromList({
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -135,11 +147,13 @@ TEST(TriangularMatrix, setIdentity) // NOLINT
   // clang-format off
   using TriangularMatrix = TriangularMatrix<float32, 3, false, true>;
   TriangularMatrix triuMat{};
-  const auto expMat = TriangularMatrix::FromList({
+  auto expMatResult = TriangularMatrix::FromList({
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -151,20 +165,26 @@ TEST(TriangularMatrix, setIdentity) // NOLINT
 TEST(TriangularMatrix, setBlock_lowerTopLeft) // NOLINT
 {
   // clang-format off
-  auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {1, 1, 0},
     {1, 1, 1}
   });
-  const auto trilBlockMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  auto trilMat = trilMatResult.value();
+  auto trilBlockMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {2, 0},
     {4, 3}
   });
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(trilBlockMatResult.has_value());
+  const auto trilBlockMat = trilBlockMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {2, 0, 0},
     {4, 3, 0},
     {1, 1, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -176,20 +196,26 @@ TEST(TriangularMatrix, setBlock_lowerTopLeft) // NOLINT
 TEST(TriangularMatrix, setBlock_lowerBottomLeft) // NOLINT
 {
   // clang-format off
-  auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {1, 1, 0},
     {1, 1, 1}
   });
-  const auto trilBlockMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  auto trilMat = trilMatResult.value();
+  auto trilBlockMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {2, 0},
     {4, 3}
   });
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(trilBlockMatResult.has_value());
+  const auto trilBlockMat = trilBlockMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {2, 1, 0},
     {4, 3, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -201,20 +227,26 @@ TEST(TriangularMatrix, setBlock_lowerBottomLeft) // NOLINT
 TEST(TriangularMatrix, setBlock_lowerBottomRight) // NOLINT
 {
   // clang-format off
-  auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {1, 1, 0},
     {1, 1, 1}
   });
-  const auto trilBlockMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  auto trilMat = trilMatResult.value();
+  auto trilBlockMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {2, 0},
     {4, 3}
   });
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(trilBlockMatResult.has_value());
+  const auto trilBlockMat = trilBlockMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {1, 2, 0},
     {1, 4, 3}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -226,20 +258,26 @@ TEST(TriangularMatrix, setBlock_lowerBottomRight) // NOLINT
 TEST(TriangularMatrix, setBlock_upperTopLeft) // NOLINT
 {
   // clang-format off
-  auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 1, 1},
     {0, 1, 1},
     {0, 0, 1}
   });
-  const auto triuBlockMat = TriangularMatrix<float32, 2, false, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  auto triuMat = triuMatResult.value();
+  auto triuBlockMatResult = TriangularMatrix<float32, 2, false, true>::FromList({
     {2, 4},
     {0, 3}
   });
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(triuBlockMatResult.has_value());
+  const auto triuBlockMat = triuBlockMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {2, 4, 1},
     {0, 3, 1},
     {0, 0, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -251,20 +289,26 @@ TEST(TriangularMatrix, setBlock_upperTopLeft) // NOLINT
 TEST(TriangularMatrix, setBlock_upperTopRight) // NOLINT
 {
   // clang-format off
-  auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 1, 1},
     {0, 1, 1},
     {0, 0, 1}
   });
-  const auto triuBlockMat = TriangularMatrix<float32, 2, false, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  auto triuMat = triuMatResult.value();
+  auto triuBlockMatResult = TriangularMatrix<float32, 2, false, true>::FromList({
     {2, 4},
     {0, 3}
   });
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(triuBlockMatResult.has_value());
+  const auto triuBlockMat = triuBlockMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 4},
     {0, 1, 3},
     {0, 0, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
   // call UUT
   triuMat.setBlock<2, 2, 0, 0, 0, 1>(triuBlockMat);
@@ -275,20 +319,26 @@ TEST(TriangularMatrix, setBlock_upperTopRight) // NOLINT
 TEST(TriangularMatrix, setBlock_upperBottomRight) // NOLINT
 {
   // clang-format off
-  auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 1, 1},
     {0, 1, 1},
     {0, 0, 1}
   });
-  const auto triuBlockMat = TriangularMatrix<float32, 2, false, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  auto triuMat = triuMatResult.value();
+  auto triuBlockMatResult = TriangularMatrix<float32, 2, false, true>::FromList({
     {2, 4},
     {0, 3}
   });
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(triuBlockMatResult.has_value());
+  const auto triuBlockMat = triuBlockMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 1, 1},
     {0, 2, 4},
     {0, 0, 3}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -300,21 +350,27 @@ TEST(TriangularMatrix, setBlock_upperBottomRight) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_mat_lower) // NOLINT
 {
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
   {1,  0,  0},
   {4,  5,  0},
   {6,  7,  8}
   });
-  const auto mat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto matResult = Matrix<float32, 3, 4, true>::FromList({
     {1,  2,  3,  4},
     {5,  6,  7,  8},
     {9, 10, 11, 12}
   });
-  const auto expMat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
+  auto expMatResult = Matrix<float32, 3, 4, true>::FromList({
     { 1,  2,  3,  4},
     {29, 38, 47, 56},
     {113, 134, 155, 176}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -326,21 +382,27 @@ TEST(TriangularMatrix, op_mul_rhs_mat_lower) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_mat_upper) // NOLINT
 {
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1,  4,  6},
     {0,  5,  7},
     {0,  0,  8}
   });
-  const auto mat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto matResult = Matrix<float32, 3, 4, true>::FromList({
     {1,  2,  3,  4},
     {5,  6,  7,  8},
     {9, 10, 11, 12}
   });
-  const auto expMat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
+  auto expMatResult = Matrix<float32, 3, 4, true>::FromList({
     {75,  86,  97, 108},
     {88, 100, 112, 124},
     {72,  80,  88,  96}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -352,21 +414,27 @@ TEST(TriangularMatrix, op_mul_rhs_mat_upper) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_lower_both) // NOLINT
 {
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1,  0,  0},
     {4,  5,  0},
     {6,  7,  8}
   });
-  const auto trilMat2 = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto trilMat2Result = TriangularMatrix<float32, 3, true, true>::FromList({
     {8,  0,  0},
     {7,  5,  0},
     {6,  4,  1}
   });
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(trilMat2Result.has_value());
+  const auto trilMat2 = trilMat2Result.value();
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {  8,  0, 0},
     { 67, 25, 0},
     {145, 67, 8}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -378,21 +446,27 @@ TEST(TriangularMatrix, op_mul_rhs_lower_both) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_upper_both) // NOLINT
 {
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1,  4,  6},
     {0,  5,  7},
     {0,  0,  8}
   });
-  const auto triuMat2 = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto triuMat2Result = TriangularMatrix<float32, 3, false, true>::FromList({
     {8,  7,  6},
     {0,  5,  4},
     {0,  0,  1}
   });
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(triuMat2Result.has_value());
+  const auto triuMat2 = triuMat2Result.value();
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     { 8, 27, 28},
     { 0, 25, 27},
     { 0,  0,  8}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -404,21 +478,27 @@ TEST(TriangularMatrix, op_mul_rhs_upper_both) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_tria_opposite) // NOLINT
 {
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1,  0,  0},
     {4,  5,  0},
     {6,  7,  8}
   });
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {8,  7,  6},
     {0,  5,  4},
     {0,  0,  1}
   });
-  const auto expMat = SquareMatrix<float32, 3, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto expMatResult = SquareMatrix<float32, 3, true>::FromList({
     { 8,  7,  6},
     {32, 53, 44},
     {48, 77, 72}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -430,21 +510,27 @@ TEST(TriangularMatrix, op_mul_rhs_tria_opposite) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_diag_lower) // NOLINT
 {
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1,  0,  0},
     {4,  5,  0},
     {6,  7,  8}
   });
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 2, 0},
     {0, 0, 3}
   });
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1,  0,  0},
     {4, 10,  0},
     {6, 14, 24}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -456,21 +542,27 @@ TEST(TriangularMatrix, op_mul_rhs_diag_lower) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_diag_upper) // NOLINT
 {
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1,  2,  3},
     {0,  5,  6},
     {0,  0,  8}
   });
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 2, 0},
     {0, 0, 3}
   });
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1,  4,  9},
     {0, 10, 18},
     {0,  0, 24}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -482,17 +574,21 @@ TEST(TriangularMatrix, op_mul_rhs_diag_upper) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_scal) // NOLINT
 {
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1,  2,  3},
     {0,  5,  6},
     {0,  0,  8}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
   const float32 scalar = 3;
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {3,  6,  9},
     {0, 15, 18},
     {0,  0, 24}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -504,17 +600,21 @@ TEST(TriangularMatrix, op_mul_rhs_scal) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_scal_upper_inplace) // NOLINT
 {
   // clang-format off
-  auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1,  2,  3},
     {0,  4,  5},
     {0,  0,  6}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  auto triuMat = triuMatResult.value();
   const float32 scalar = 3;
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {3,  6,  9},
     {0, 12, 15},
     {0,  0, 18}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -526,17 +626,21 @@ TEST(TriangularMatrix, op_mul_rhs_scal_upper_inplace) // NOLINT
 TEST(TriangularMatrix, op_mul_rhs_scal_lower_inplace) // NOLINT
 {
   // clang-format off
-  auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1,  0,  0},
     {2,  3,  0},
     {4,  5,  6}
   });
+  ASSERT_TRUE(trilMatResult.has_value());
+  auto trilMat = trilMatResult.value();
   const float32 scalar = 3;
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {3,  0,  0},
     {6,  9,  0},
     {12, 15, 18}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -548,16 +652,20 @@ TEST(TriangularMatrix, op_mul_rhs_scal_lower_inplace) // NOLINT
 TEST(TriangularMatrix, inverse_lower) // NOLINT
 {
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1,  0,  0},
     {2,  4,  0},
     {3,  5,  6}
   });
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     { 1.000000000000000,                  0,                 0},
     {-0.500000000000000,  0.250000000000000,                 0},
     {-0.083333333333333, -0.208333333333333, 0.166666666666667}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -569,16 +677,20 @@ TEST(TriangularMatrix, inverse_lower) // NOLINT
 TEST(TriangularMatrix, inverse_upper) // NOLINT
 {
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1,  2,  3},
     {0,  4,  5},
     {0,  0,  6}
   });
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1.000000000000000, -0.500000000000000, -0.083333333333333},
     {0,                 0.250000000000000, -0.208333333333333},
     {0,                 0,                 0.166666666666667}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -596,17 +708,21 @@ TEST(TriangularMatrix, inverse_upper) // NOLINT
 TEST(TriangularMatrix, transpose_upper) // NOLINT
 {
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1,  2,  3},
     {0,  4,  5},
     {0,  0,  6}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
   using LowerTriangularMatrix3 = TriangularMatrix<float32, 3, true, true>;
-  const LowerTriangularMatrix3 expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {2, 4, 0},
     {3, 5, 6}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const LowerTriangularMatrix3 expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -624,21 +740,27 @@ TEST(TriangularMatrix, transpose_upper) // NOLINT
 TEST(TriangularMatrix, solve_lower) // NOLINT
 {
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1,  0,  0},
     {4,  5,  0},
     {6,  7,  8}
   });
-  const auto bMat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 3, 4, true>::FromList({
     {1,  2,  3,  4},
     {5,  6,  7,  8},
     {9, 10, 11, 12}
   });
-  const auto expMat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
+  auto expMatResult = Matrix<float32, 3, 4, true>::FromList({
     {1.0,  2.0,  3.0,  4.0},
     {0.2, -0.4, -1.0, -1.6},
     {0.2,  0.1,  0.0, -0.1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -656,21 +778,27 @@ TEST(TriangularMatrix, solve_lower) // NOLINT
 TEST(TriangularMatrix, solve_upper) // NOLINT
 {
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1,  4,  6},
     {0,  5,  7},
     {0,  0,  8}
   });
-  const auto bMat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto bMatResult = Matrix<float32, 3, 4, true>::FromList({
     {1,  2,  3,  4},
     {5,  6,  7,  8},
     {9, 10, 11, 12}
   });
-  const auto expMat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
+  auto expMatResult = Matrix<float32, 3, 4, true>::FromList({
     {-3.450, -3.30, -3.150, -3.00},
     {-0.575, -0.55, -0.525, -0.50},
     { 1.125,  1.25,  1.375,  1.50}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -688,11 +816,13 @@ TEST(TriangularMatrix, solve_upper) // NOLINT
 TEST(TriangularMatrix, isUnitUpperTriangular_false) // NOLINT
 {
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
     {0, 1.01, 5},
     {0, 0, 0.9999999}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
   // clang-format on
 
   // call UUT
@@ -704,11 +834,13 @@ TEST(TriangularMatrix, isUnitUpperTriangular_false) // NOLINT
 TEST(TriangularMatrix, isUnitUpperTriangular_true) // NOLINT
 {
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
     {0, 1, 5},
     {0, 0, 1}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
   // clang-format on
 
   // call UUT
@@ -725,10 +857,12 @@ TEST(TriangularMatrix, determinant_UpperTriangular_2x2__Success) // NOLINT
 {
   // Create a 2x2 upper triangular matrix
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 2, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 2, false, true>::FromList({
     {1, 2},
     {0, 3}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
   // clang-format on
 
   // call UUT
@@ -742,10 +876,12 @@ TEST(TriangularMatrix, determinant_LowerTriangular_2x2__Success) // NOLINT
 {
   // Create a 2x2 lower triangular matrix
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {1, 0},
     {2, 3}
   });
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
   // clang-format on
 
   // call UUT
@@ -759,11 +895,13 @@ TEST(TriangularMatrix, determinant_UpperTriangular_3x3__Success) // NOLINT
 {
   // Create a 3x3 upper triangular matrix
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
     {0, 4, 5},
     {0, 0, 6}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
   // clang-format on
 
   // call UUT
@@ -777,11 +915,13 @@ TEST(TriangularMatrix, determinant_LowerTriangular_3x3__Success) // NOLINT
 {
   // Create a 3x3 lower triangular matrix
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {2, 3, 0},
     {4, 5, 6}
   });
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
   // clang-format on
 
   // call UUT
@@ -795,11 +935,13 @@ TEST(TriangularMatrix, determinant_UnitTriangular_Upper__Success) // NOLINT
 {
   // Create a 3x3 unit upper triangular matrix
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
     {0, 1, 4},
     {0, 0, 1}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
   // clang-format on
 
   // call UUT
@@ -813,11 +955,13 @@ TEST(TriangularMatrix, determinant_UnitTriangular_Lower__Success) // NOLINT
 {
   // Create a 3x3 unit lower triangular matrix
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {2, 1, 0},
     {3, 4, 1}
   });
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
   // clang-format on
 
   // call UUT
@@ -831,11 +975,13 @@ TEST(TriangularMatrix, determinant_Singular_Upper__Success) // NOLINT
 {
   // Create a singular upper triangular matrix (zero on diagonal)
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
     {0, 0, 4},
     {0, 0, 5}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
   // clang-format on
 
   // call UUT
@@ -849,11 +995,13 @@ TEST(TriangularMatrix, determinant_Singular_Lower__Success) // NOLINT
 {
   // Create a singular lower triangular matrix (zero on diagonal)
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {0, 0, 0},
     {1, 2, 0},
     {3, 4, 5}
   });
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
   // clang-format on
 
   // call UUT
@@ -867,11 +1015,13 @@ TEST(TriangularMatrix, determinant_Double_Upper__Success) // NOLINT
 {
   // Create a 3x3 upper triangular matrix with double precision
   // clang-format off
-  const auto triuMat = TriangularMatrix<float64, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float64, 3, false, true>::FromList({
     {1.0, 2.0, 3.0},
     {0.0, 4.0, 5.0},
     {0.0, 0.0, 6.0}
   });
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
   // clang-format on
 
   // call UUT
@@ -885,11 +1035,13 @@ TEST(TriangularMatrix, determinant_Double_Lower__Success) // NOLINT
 {
   // Create a 3x3 lower triangular matrix with double precision
   // clang-format off
-  const auto trilMat = TriangularMatrix<float64, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float64, 3, true, true>::FromList({
     {1.0, 0.0, 0.0},
     {2.0, 3.0, 0.0},
     {4.0, 5.0, 6.0}
   });
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
   // clang-format on
 
   // call UUT
@@ -907,18 +1059,24 @@ TEST(TriangularMatrix, solve_ForwardSubstitution_2x2__Success) // NOLINT
 {
   // Test forward substitution for lower triangular matrix (2x2)
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {2, 0},
     {1, 3}
   });
-  const auto bMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 2, 1, true>::FromList({
     {4},
     {7}
   });
-  const auto expMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
+  auto expMatResult = Matrix<float32, 2, 1, true>::FromList({
     {2.0},
     {1.6666667}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT - forward substitution for lower triangular
@@ -932,18 +1090,24 @@ TEST(TriangularMatrix, solve_BackwardSubstitution_2x2__Success) // NOLINT
 {
   // Test backward substitution for upper triangular matrix (2x2)
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 2, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 2, false, true>::FromList({
     {2, 1},
     {0, 3}
   });
-  const auto bMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto bMatResult = Matrix<float32, 2, 1, true>::FromList({
     {5},
     {9}
   });
-  const auto expMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
+  auto expMatResult = Matrix<float32, 2, 1, true>::FromList({
     {1.0},
     {3.0}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT - backward substitution for upper triangular
@@ -957,16 +1121,20 @@ TEST(TriangularMatrix, solve_MultipleRHS_3x3__Success) // NOLINT
 {
   // Test solving with multiple right-hand sides (3x3 system, 2 RHS)
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {2, 3, 0},
     {4, 5, 6}
   });
-  const auto bMat = Matrix<float32, 3, 2, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 3, 2, true>::FromList({
     {1, 2},
     {5, 6},
     {9, 10}
   });
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
   // clang-format on
 
   // call UUT
@@ -988,16 +1156,20 @@ TEST(TriangularMatrix, inverse_UnitTriangular_Upper__Success) // NOLINT
 {
   // Test inversion of unit upper triangular matrix
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3},
     {0, 1, 4},
     {0, 0, 1}
   });
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, -2, 5},
     {0, 1, -4},
     {0, 0, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1016,16 +1188,20 @@ TEST(TriangularMatrix, inverse_UnitTriangular_Lower__Success) // NOLINT
 {
   // Test inversion of unit lower triangular matrix
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {2, 1, 0},
     {3, 4, 1}
   });
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {-2, 1, 0},
     {5, -4, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1044,14 +1220,18 @@ TEST(TriangularMatrix, solve_NearSingular_Lower__Success) // NOLINT
 {
   // Test solving with near-singular lower triangular matrix
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {1, 0},
     {1, 0.0001}  // Very small diagonal element
   });
-  const auto bMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 2, 1, true>::FromList({
     {1},
     {1}
   });
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1066,14 +1246,18 @@ TEST(TriangularMatrix, solve_NearSingular_Upper__Success) // NOLINT
 {
   // Test solving with near-singular upper triangular matrix
   // clang-format off
-  const auto triuMat = TriangularMatrix<float32, 2, false, true>::FromList({
+  auto triuMatResult = TriangularMatrix<float32, 2, false, true>::FromList({
     {0.0001, 1},  // Very small diagonal element
     {0, 2}
   });
-  const auto bMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto bMatResult = Matrix<float32, 2, 1, true>::FromList({
     {1},
     {2}
   });
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1088,10 +1272,12 @@ TEST(TriangularMatrix, inverse_NearSingular_Lower__Success) // NOLINT
 {
   // Test inversion of near-singular lower triangular matrix
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {1, 0},
     {1, 0.001}  // Very small diagonal element
   });
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1107,16 +1293,20 @@ TEST(TriangularMatrix, solve_IdentityMatrix__Success) // NOLINT
 {
   // Test solving with identity matrix (should return the same as input)
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
   });
-  const auto bMat = Matrix<float32, 3, 2, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 3, 2, true>::FromList({
     {1, 4},
     {2, 5},
     {3, 6}
   });
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1136,11 +1326,13 @@ TEST(TriangularMatrix, inverse_IdentityMatrix__Success) // NOLINT
 {
   // Test inversion of identity matrix (should return identity)
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
   });
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1167,21 +1359,27 @@ TEST(TriangularMatrix, solve_DiagonalMatrix__Success) // NOLINT
 {
   // Test solving with diagonal matrix (special case of triangular)
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {2, 0, 0},
     {0, 3, 0},
     {0, 0, 4}
   });
-  const auto bMat = Matrix<float32, 3, 1, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 3, 1, true>::FromList({
     {2},
     {6},
     {12}
   });
-  const auto expMat = Matrix<float32, 3, 1, true>::FromList({
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
+  auto expMatResult = Matrix<float32, 3, 1, true>::FromList({
     {1.0},
     {2.0},
     {3.0}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1197,16 +1395,20 @@ TEST(TriangularMatrix, inverse_DiagonalMatrix__Success) // NOLINT
 {
   // Test inversion of diagonal matrix (special case of triangular)
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {2, 0, 0},
     {0, 3, 0},
     {0, 0, 4}
   });
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {0.5, 0, 0},
     {0, 1.0/3.0, 0},
     {0, 0, 0.25}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1225,18 +1427,24 @@ TEST(TriangularMatrix, solve_LargeValues__Success) // NOLINT
 {
   // Test solving with large values to check numerical stability
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {1000, 0},
     {2000, 3000}
   });
-  const auto bMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 2, 1, true>::FromList({
     {1000},
     {5000}
   });
-  const auto expMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
+  auto expMatResult = Matrix<float32, 2, 1, true>::FromList({
     {1.0},
     {1.0}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1250,18 +1458,24 @@ TEST(TriangularMatrix, solve_SmallValues__Success) // NOLINT
 {
   // Test solving with small values to check numerical stability
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {0.001, 0},
     {0.002, 0.003}
   });
-  const auto bMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 2, 1, true>::FromList({
     {0.001},
     {0.005}
   });
-  const auto expMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
+  auto expMatResult = Matrix<float32, 2, 1, true>::FromList({
     {1.0},
     {1.0}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1275,18 +1489,24 @@ TEST(TriangularMatrix, solve_NegativeValues__Success) // NOLINT
 {
   // Test solving with negative values
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {-1, 0},
     {2, -3}
   });
-  const auto bMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 2, 1, true>::FromList({
     {-1},
     {5}
   });
-  const auto expMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
+  auto expMatResult = Matrix<float32, 2, 1, true>::FromList({
     {1.0},
     {-1.0}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1300,14 +1520,18 @@ TEST(TriangularMatrix, inverse_NegativeValues__Success) // NOLINT
 {
   // Test inversion with negative values
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {-1, 0},
     {2, -3}
   });
-  const auto expMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {-1, 0},
     {-2.0/3.0, -1.0/3.0}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1326,16 +1550,20 @@ TEST(TriangularMatrix, solve_MixedPrecision__Success) // NOLINT
 {
   // Test solving with double precision for better accuracy
   // clang-format off
-  const auto trilMat = TriangularMatrix<float64, 3, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float64, 3, true, true>::FromList({
     {1.0, 0.0, 0.0},
     {2.0, 3.0, 0.0},
     {4.0, 5.0, 6.0}
   });
-  const auto bMat = Matrix<float64, 3, 1, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float64, 3, 1, true>::FromList({
     {1.0},
     {5.0},
     {9.0}
   });
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1354,14 +1582,18 @@ TEST(TriangularMatrix, inverse_MixedPrecision__Success) // NOLINT
 {
   // Test inversion with double precision for better accuracy
   // clang-format off
-  const auto trilMat = TriangularMatrix<float64, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float64, 2, true, true>::FromList({
     {2.0, 0.0},
     {1.0, 3.0}
   });
-  const auto expMat = TriangularMatrix<float64, 2, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto expMatResult = TriangularMatrix<float64, 2, true, true>::FromList({
     {0.5, 0.0},
     {-1.0/6.0, 1.0/3.0}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1380,14 +1612,18 @@ TEST(TriangularMatrix, solve_VerifySolution__Success) // NOLINT
 {
   // Test that the solution actually satisfies the original equation
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {2, 0},
     {1, 3}
   });
-  const auto bMat = Matrix<float32, 2, 1, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto bMatResult = Matrix<float32, 2, 1, true>::FromList({
     {4},
     {7}
   });
+  ASSERT_TRUE(bMatResult.has_value());
+  const auto bMat = bMatResult.value();
   // clang-format on
 
   // call UUT
@@ -1403,10 +1639,12 @@ TEST(TriangularMatrix, inverse_VerifyInverse__Success) // NOLINT
 {
   // Test that the inverse actually satisfies T * T^(-1) = I
   // clang-format off
-  const auto trilMat = TriangularMatrix<float32, 2, true, true>::FromList({
+  auto trilMatResult = TriangularMatrix<float32, 2, true, true>::FromList({
     {2, 0},
     {1, 3}
   });
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
   // clang-format on
 
   // call UUT

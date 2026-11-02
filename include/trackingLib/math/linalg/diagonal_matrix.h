@@ -50,6 +50,33 @@ public:
   auto operator=(const DiagonalMatrix&) -> DiagonalMatrix&     = default;
   auto operator=(DiagonalMatrix&&) noexcept -> DiagonalMatrix& = default;
 
+  /// \brief Creates a DiagonalMatrix from a flat initializer list
+  ///
+  /// This function creates a diagonal matrix where the diagonal elements are taken from
+  /// a flat initializer list. The list size must exactly match the matrix dimension.
+  ///
+  /// \param[in] list Initializer list containing the diagonal values
+  /// \return tl::expected containing the diagonal matrix or invalid_initializer_list_size
+  /// \note Checks length before copying, with no positivity or finite-number validation.
+  ///       noexcept describes exception behavior, not construction success.
+  [[nodiscard]] static auto FromList(const std::initializer_list<ValueType_>& list) noexcept
+      -> tl::expected<DiagonalMatrix, Errors>;
+
+  /// \brief Creates a DiagonalMatrix from the diagonal of a nested initializer list
+  ///
+  /// This function creates a diagonal matrix by extracting the diagonal elements from
+  /// a nested initializer list representing a full matrix. Only the diagonal elements
+  /// (where row index equals column index) are used.
+  ///
+  /// \param[in] list Nested initializer list representing a square matrix
+  /// \return tl::expected containing the diagonal matrix or invalid_initializer_list_row_count /
+  ///         invalid_initializer_list_col_count
+  /// \note Checks outer rows, then every row width before extracting the diagonal.
+  ///       Off-diagonal values are ignored. No positivity or finite-number validation is added.
+  ///       noexcept describes exception behavior, not construction success.
+  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) noexcept
+      -> tl::expected<DiagonalMatrix, Errors>;
+
   /// \brief Construct an identity diagonal matrix.
   ///
   /// Creates a diagonal matrix with ones on the diagonal (identity matrix).
@@ -66,26 +93,6 @@ public:
   /// \note This operation modifies the matrix in-place and does not change its size
   void setIdentity();
 
-  /// \brief Creates a DiagonalMatrix from a flat initializer list
-  ///
-  /// This function creates a diagonal matrix where the diagonal elements are taken from
-  /// a flat initializer list. The list size must exactly match the matrix dimension.
-  ///
-  /// \param[in] list Initializer list containing the diagonal values
-  /// \return DiagonalMatrix with the specified diagonal elements
-  /// \note The list size must equal Size_, otherwise assertion fails
-  [[nodiscard]] static auto FromList(const std::initializer_list<ValueType_>& list) -> DiagonalMatrix;
-
-  /// \brief Creates a DiagonalMatrix from the diagonal of a nested initializer list
-  ///
-  /// This function creates a diagonal matrix by extracting the diagonal elements from
-  /// a nested initializer list representing a full matrix. Only the diagonal elements
-  /// (where row index equals column index) are used.
-  ///
-  /// \param[in] list Nested initializer list representing a square matrix
-  /// \return DiagonalMatrix containing the diagonal elements from the input list
-  /// \note The outer list size must equal Size_, and each inner list size must equal Size_
-  [[nodiscard]] static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& list) -> DiagonalMatrix;
 
   /// \brief Set a diagonal block matrix at given position
   /// \tparam SrcSize_    Size_ of the source block
@@ -199,7 +206,7 @@ public:
   /// \return true if all diagonal elements are > 0, false otherwise
   ///
   /// \note For diagonal matrixes, positive definiteness is equivalent to all elements > 0
-  [[nodiscard]] auto isPositiveDefinite() const -> bool;
+  [[nodiscard]] auto isPositiveDefinite() const noexcept -> bool;
 
   /// \brief Check if the diagonal matrix is positive semi-definite.
   ///
@@ -215,12 +222,12 @@ public:
   /// \brief Element read-only access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_  Scalar vector value
-  [[nodiscard]] auto at_unsafe(sint32 idx) const -> ValueType_ { return _data.at_unsafe(idx); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) const noexcept -> ValueType_ { return _data.at_unsafe(idx); }
 
   /// \brief Element access to a scalar vector value
   /// \param[in] idx  Row index of the element
   /// \return ValueType_&  Reference to the scalar vector value
-  [[nodiscard]] auto at_unsafe(sint32 idx) -> ValueType_& { return _data.at_unsafe(idx); }
+  [[nodiscard]] auto at_unsafe(sint32 idx) noexcept -> ValueType_& { return _data.at_unsafe(idx); }
   // <---
 
   // clang-format off

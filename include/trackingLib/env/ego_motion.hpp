@@ -178,13 +178,11 @@ void EgoMotion<CovarianceMatrixPolicy_>::calcDisplacementCovariance(Displacement
                                                                     const math::SquareMatrix<value_type, 3, true>& J,
                                                                     const InertialMotion&                          motion)
 {
-  // clang-format off
-  // Create diagonal matrix from motion uncertainties
-  auto diag =
-    math::DiagonalMatrix<value_type, 3>::FromList({
-      math::pow<2>(motion.sv), math::pow<2>(motion.sa), math::pow<2>(motion.sw)
-  });
-  // clang-format on
+  // Compute the fixed three diagonal entries directly; there is no list input boundary here.
+  math::DiagonalMatrix<value_type, 3> diag{};
+  diag.at_unsafe(0) = math::pow<2>(motion.sv);
+  diag.at_unsafe(1) = math::pow<2>(motion.sa);
+  diag.at_unsafe(2) = math::pow<2>(motion.sw);
 
   // Create covariance matrix using generic FromDiagonal constructor
   displacement.cov = std::move(DisplacementCov::FromDiagonal(diag));

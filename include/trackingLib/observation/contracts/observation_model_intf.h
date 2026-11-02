@@ -40,7 +40,7 @@ concept has_computeJacobianSensorFrame_const_member_func = requires {
 template <typename ImplType>
 struct ObservationModelIntf
 {
-  ObservationModelIntf()
+  ObservationModelIntf() noexcept
   {
     static_assert(std::is_floating_point<typename ImplType::value_type>());
     static_assert(ImplType::DimZ > 0);

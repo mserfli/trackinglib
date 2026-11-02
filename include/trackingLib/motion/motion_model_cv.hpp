@@ -5,7 +5,6 @@
 
 #include "motion/state_cov_converter.hpp" // IWYU pragma: keep
 #include "motion/state_vec_converter.hpp" // IWYU pragma: keep
-#include <iostream>
 
 namespace tracking
 {
@@ -13,7 +12,9 @@ namespace motion
 {
 
 template <typename CovarianceMatrixPolicy_>
-MotionModelCV<CovarianceMatrixPolicy_>::MotionModelCV(const StateVec& vec, const StateCov& cov)
+MotionModelCV<CovarianceMatrixPolicy_>::MotionModelCV(const StateVec& vec, const StateCov& cov) noexcept(
+    std::is_nothrow_copy_constructible<StateVec>::value && std::is_nothrow_copy_constructible<StateCov>::value &&
+    noexcept(cov.isPositiveDefinite()))
     : BaseExtendedMotionModel{vec, cov}
 {
 }

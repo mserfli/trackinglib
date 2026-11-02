@@ -22,7 +22,7 @@ namespace conversions
 /// \tparam IsRowMajor_ The storage layout of the source matrix
 /// \param[in] mat The source square matrix
 /// \return DiagonalMatrix containing the diagonal elements of the input matrix
-/// \see DiagonalFromList() for creating diagonal matrixes from initializer lists
+/// \see DiagonalMatrix::FromList() for checked initializer-list construction
 /// \see SquareFromDiagonal() for the reverse conversion
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto DiagonalFromSquare(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& mat) -> DiagonalMatrix<ValueType_, Size_>

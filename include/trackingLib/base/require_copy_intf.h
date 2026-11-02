@@ -14,7 +14,7 @@ template <typename ImplType>
 class RequireCopyIntf
 {
 public:
-  RequireCopyIntf()
+  RequireCopyIntf() noexcept
   {
     static_assert(std::is_copy_constructible<ImplType>::value, "missing copy ctor");
     static_assert(std::is_copy_assignable<ImplType>::value, "missing copy assignment operator");

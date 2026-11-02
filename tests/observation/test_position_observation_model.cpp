@@ -77,10 +77,12 @@ void expectJacobianMatchesFiniteDifference(const ObservationModel_&             
 TEST(PositionObservationModel, ctor_FromLists__Success) // NOLINT
 {
   // clang-format off
-  const auto obs = PosModel::FromLists({10.5, 5.2}, {
+  auto obsResult = PosModel::FromLists({10.5, 5.2}, {
     {0.5, 0.0},
     {0.0, 0.4}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
 
   EXPECT_DOUBLE_EQ(obs[PosModel::MEAS_X], 10.5);
@@ -91,7 +93,9 @@ TEST(PositionObservationModel, ctor_FromLists__Success) // NOLINT
 
 TEST(PositionObservationModel, getDim__ReturnsDimZ) // NOLINT
 {
-  const auto obs = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
+  auto obsResult = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   EXPECT_EQ(obs.getDim(), 2);
   EXPECT_EQ(PosModel::DimZ, 2);
   EXPECT_EQ(PosModel::DimX, 4);
@@ -99,8 +103,12 @@ TEST(PositionObservationModel, getDim__ReturnsDimZ) // NOLINT
 
 TEST(PositionObservationModel, predictMeasurement__ReturnsPosition) // NOLINT
 {
-  const auto obs       = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
-  const auto state     = PosModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0}); // {X, VX, Y, VY}
+  auto obsResult = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = PosModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -111,16 +119,24 @@ TEST(PositionObservationModel, predictMeasurement__ReturnsPosition) // NOLINT
 
 TEST(PositionObservationModel, computeJacobian__MatchesFiniteDifference) // NOLINT
 {
-  const auto obs   = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}}).value();
-  const auto state = PosModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  auto obsResult = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = PosModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-9);
 }
 
 TEST(PositionObservationModel, computeInnovation__ComponentWiseDifference) // NOLINT
 {
-  const auto obs       = PosModel::FromLists({10.5, 5.2}, {{1, 0}, {0, 1}}).value();
-  const auto predicted = PosModel::MeasurementVecFromList({10.0, 5.0});
+  auto obsResult = PosModel::FromLists({10.5, 5.2}, {{1, 0}, {0, 1}});
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs             = obsResult.value();
+  auto       predictedResult = PosModel::MeasurementVecFromList({10.0, 5.0});
+  ASSERT_TRUE(predictedResult.has_value());
+  const auto predicted = predictedResult.value();
 
   const auto innovation = obs.computeInnovation(obs.getVec(), predicted);
 
@@ -131,8 +147,12 @@ TEST(PositionObservationModel, computeInnovation__ComponentWiseDifference) // NO
 TEST(PositionObservationModel, predictMeasurement__AppliesSensorMountingPose) // NOLINT
 {
   const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs       = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
-  const auto state     = PosModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0}); // {X, VX, Y, VY}
+  auto       obsResult = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = PosModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state     = stateResult.value(); // {X, VX, Y, VY}
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
   const auto predicted = obs.predictMeasurement(state, egoMotion);
@@ -144,17 +164,25 @@ TEST(PositionObservationModel, predictMeasurement__AppliesSensorMountingPose) //
 
 TEST(PositionObservationModel, computeJacobian__MatchesFiniteDifferenceWithSensorMountingPose) // NOLINT
 {
-  const auto pose  = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
-  const auto obs   = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose).value();
-  const auto state = PosModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  const auto pose      = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, std::acos(-1.0) / 2.0);
+  auto       obsResult = PosModel::FromLists({0, 0}, {{1, 0}, {0, 1}}, pose);
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs         = obsResult.value();
+  auto       stateResult = PosModel::StateVec::FromList({10.0, 2.0, 5.0, 1.0});
+  ASSERT_TRUE(stateResult.has_value());
+  const auto state = stateResult.value();
 
   expectJacobianMatchesFiniteDifference(obs, state, 1e-7);
 }
 
 TEST(PositionObservationModel, TryCreate__Success) // NOLINT
 {
-  const auto vec = PosModel::MeasurementVecFromList({10.5, 5.2});
-  const auto cov = PosModel::MeasurementCovFromList({{0.5, 0.0}, {0.0, 0.4}}).value();
+  auto vecResult = PosModel::MeasurementVecFromList({10.5, 5.2});
+  ASSERT_TRUE(vecResult.has_value());
+  const auto vec       = vecResult.value();
+  auto       covResult = PosModel::MeasurementCovFromList({{0.5, 0.0}, {0.0, 0.4}});
+  ASSERT_TRUE(covResult.has_value());
+  const auto cov = covResult.value();
 
   const auto obs = PosModel::TryCreate(vec, cov);
 
@@ -167,8 +195,12 @@ TEST(PositionObservationModel, TryCreate_WithPose__Success) // NOLINT
 {
   using PosModelFactored = tracking::observation::PositionObservationModel<FactoredPolicy, StateDefCV>;
   const auto pose        = tracking::observation::SensorMountingPose<Testvalue_type>::FromValues(1.0, 0.0, 0.0);
-  const auto vec         = PosModelFactored::MeasurementVecFromList({10.5, 5.2});
-  const auto cov         = PosModelFactored::MeasurementCovFromList({{0.5, 0.0}, {0.0, 0.4}}).value();
+  auto       vecResult   = PosModelFactored::MeasurementVecFromList({10.5, 5.2});
+  ASSERT_TRUE(vecResult.has_value());
+  const auto vec       = vecResult.value();
+  auto       covResult = PosModelFactored::MeasurementCovFromList({{0.5, 0.0}, {0.0, 0.4}});
+  ASSERT_TRUE(covResult.has_value());
+  const auto cov = covResult.value();
 
   const auto obs = PosModelFactored::TryCreate(vec, cov, pose);
 
@@ -180,12 +212,16 @@ TEST(PositionObservationModel, TryCreate_WithPose__Success) // NOLINT
 // PD) at construction, so this reaches TryCreate's own check instead of aborting earlier (see
 // plans/recent/decomposeLDLT_error_handling_resolution.md for why the factored policy can't
 // construct an equivalent counterexample: its ctor asserts PD directly, and
-// MeasurementCovFromList's UDU decomposition already rejects a non-PD list before a
-// MeasurementCov exists to pass in).
+// MeasurementCovFromList's UDU decomposition clamps non-positive pivots instead of
+// preserving this input).
 TEST(PositionObservationModel, TryCreate_NegativeDefinite__ExpectError) // NOLINT
 {
-  const auto vec = PosModel::MeasurementVecFromList({10.5, 5.2});
-  const auto cov = PosModel::MeasurementCov::FromList({{-1, 0}, {0, -1}});
+  auto vecResult = PosModel::MeasurementVecFromList({10.5, 5.2});
+  ASSERT_TRUE(vecResult.has_value());
+  const auto vec       = vecResult.value();
+  auto       covResult = PosModel::MeasurementCov::FromList({{-1, 0}, {0, -1}});
+  ASSERT_TRUE(covResult.has_value());
+  const auto cov = covResult.value();
 
   const auto obs = PosModel::TryCreate(vec, cov);
 

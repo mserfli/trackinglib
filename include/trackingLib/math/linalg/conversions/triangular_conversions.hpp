@@ -23,7 +23,7 @@ namespace conversions
 /// \tparam IsRowMajor_ The storage layout
 /// \param[in] mat The source square matrix
 /// \return TriangularMatrix containing the triangular part of the input matrix
-/// \see TriangularFromList() for creating from initializer lists
+/// \see TriangularMatrix::FromList() for checked initializer-list construction
 /// \see DiagonalFromSquare() for extracting diagonal elements
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularFromSquare(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& mat)

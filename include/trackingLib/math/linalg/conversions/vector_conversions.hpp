@@ -22,7 +22,7 @@ namespace conversions
 /// \param[in] colView The source matrix column view
 /// \return Vector containing the elements from the column view
 /// \note The column view row count must equal Size_, otherwise assertion fails
-/// \see VectorFromList() for creating from initializer lists
+/// \see Vector::FromList() for checked initializer-list construction
 /// \see MatrixFromVector() for the reverse conversion
 template <typename ValueType_, sint32 Size_>
 inline auto VectorFromMatrixColumnView(const MatrixColumnView<ValueType_, Size_, 1, true>& colView) -> Vector<ValueType_, Size_>

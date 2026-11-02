@@ -68,20 +68,28 @@ struct TestPredictCV
     FilterTypeInst filter{};
 
     // clang-format off
-    auto vec = MM::StateVecFromList({10, 2, 0, 0});
-    auto cov = MM::StateCovFromList({
+    auto vecResult = MM::StateVecFromList({10, 2, 0, 0});
+    ASSERT_TRUE(vecResult.has_value());
+    auto vec = vecResult.value();
+    auto covResult = MM::StateCovFromList({
       {5, 0, 0, 0.0},
       {0, 1, 0, 0.0},
       {0, 0, 1, 0.0},
       {0, 0, 0, 0.1}
-    }).value();
-    auto expVec = MM::StateVecFromList({11, 2, 0, 0});
-    auto expCov = MM::StateCovFromList({
+    });
+    ASSERT_TRUE(covResult.has_value());
+    auto cov = covResult.value();
+    auto expVecResult = MM::StateVecFromList({11, 2, 0, 0});
+    ASSERT_TRUE(expVecResult.has_value());
+    auto expVec = expVecResult.value();
+    auto expCovResult = MM::StateCovFromList({
       {+5.29125, +0.62500, +0.00000, +0.00000},
       {+0.62500, +1.50000, +0.00000, +0.00000},
       {+0.00000, +0.00000, +1.06625, +0.17500},
       {+0.00000, +0.00000, +0.17500, +0.60000}
-    }).value();
+    });
+    ASSERT_TRUE(expCovResult.has_value());
+    auto expCov = expCovResult.value();
     // clang-format on
 
     init(vec, expVec, cov, expCov, filter);
@@ -124,20 +132,28 @@ struct TestPredictCV
     FilterTypeInst filter{};
 
     // clang-format off
-    auto vec = MM::StateVecFromList({10, 2, 0, 0});
-    auto cov = MM::StateCovFromList({
+    auto vecResult = MM::StateVecFromList({10, 2, 0, 0});
+    ASSERT_TRUE(vecResult.has_value());
+    auto vec = vecResult.value();
+    auto covResult = MM::StateCovFromList({
       {5, 0, 0, 0.0},
       {0, 1, 0, 0.0},
       {0, 0, 1, 0.0},
       {0, 0, 0, 0.1}
-    }).value();
-    auto expVec = MM::StateVecFromList({+9.9604310989, +1.9975004196, -0.5741304159, -0.0999583453});
-    auto expCov = MM::StateCovFromList({
+    });
+    ASSERT_TRUE(covResult.has_value());
+    auto cov = covResult.value();
+    auto expVecResult = MM::StateVecFromList({+9.9604310989, +1.9975004196, -0.5741304159, -0.0999583453});
+    ASSERT_TRUE(expVecResult.has_value());
+    auto expVec = expVecResult.value();
+    auto expCovResult = MM::StateCovFromList({
       {+5.2812027931,  +0.6238771081,  -0.2107825130,  -0.0224393737},
       {+0.6238771081,  +1.4977520704,  -0.0224399883,  -0.0449210368},
       {-0.2107825130,  -0.0224399883,  +1.0793461800,  +0.1765742004},
       {-0.0224393737,  -0.0449210368,  +0.1765742004,  +0.6023279428}
-    }).value();
+    });
+    ASSERT_TRUE(expCovResult.has_value());
+    auto expCov = expCovResult.value();
     // clang-format on
 
     init(vec, expVec, cov, expCov, filter);
@@ -260,13 +276,17 @@ TEST(MotionModelCV, predict_fullCov_informationFilter_singularPe_updatesY) // NO
   FilterTypeInst filter{};
 
   // clang-format off
-  auto vec = MM::StateVecFromList({10, 2, 0, 0});
-  auto cov = MM::StateCovFromList({
+  auto vecResult = MM::StateVecFromList({10, 2, 0, 0});
+  ASSERT_TRUE(vecResult.has_value());
+  auto vec = vecResult.value();
+  auto covResult = MM::StateCovFromList({
     {5, 0, 0, 0},
     {0, 1, 0, 0},
     {0, 0, 1, 0},
     {0, 0, 0, 0.1}
-  }).value();
+  });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // InformationFilter convention: transform state/covariance into information space
@@ -333,22 +353,27 @@ TEST(MotionModelCV, predict_informationFilter_singularPe_fullMatchesFactored) //
   tracking::filter::InformationFilter<CovPolicyFactored> filterFactored{};
 
   // clang-format off
-  auto vecFull = MMFull::StateVecFromList({10, 2, 0, 0});
-  auto covFull = MMFull::StateCovFromList({
+  auto vecFullResult = MMFull::StateVecFromList({10, 2, 0, 0});
+  ASSERT_TRUE(vecFullResult.has_value());
+  auto vecFull = vecFullResult.value();
+  auto covFullResult = MMFull::StateCovFromList({
     {5, 0, 0, 0},
     {0, 1, 0, 0},
     {0, 0, 1, 0},
     {0, 0, 0, 0.1}
-  }).value();
+  });
+  ASSERT_TRUE(covFullResult.has_value());
+  auto covFull = covFullResult.value();
   // clang-format on
-  auto vecFactored = vecFull;
-  auto covFactored = MMFactored::StateCovFromList({
-                                                      {5, 0, 0, 0},
-                                                      {0, 1, 0, 0},
-                                                      {0, 0, 1, 0},
-                                                      {0, 0, 0, 0.1},
-                                                  })
-                         .value();
+  auto vecFactored       = vecFull;
+  auto covFactoredResult = MMFactored::StateCovFromList({
+      {5, 0, 0, 0},
+      {0, 1, 0, 0},
+      {0, 0, 1, 0},
+      {0, 0, 0, 0.1},
+  });
+  ASSERT_TRUE(covFactoredResult.has_value());
+  auto covFactored = covFactoredResult.value();
 
   covFull     = covFull.inverse().value();
   vecFull     = static_cast<typename MMFull::StateVec>(covFull() * vecFull);
@@ -380,15 +405,19 @@ TEST(MotionModelCV, convertCA_fullCov) // NOLINT
   // clang-format off
   using MMCV = tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
   using MMCA = tracking::motion::MotionModelCA<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
-  auto vec = MMCA::StateVecFromList({10, 2, 0, 0, 2, 0.1});
-  auto cov = MMCA::StateCovFromList({
+  auto vecResult = MMCA::StateVecFromList({10, 2, 0, 0, 2, 0.1});
+  ASSERT_TRUE(vecResult.has_value());
+  auto vec = vecResult.value();
+  auto covResult = MMCA::StateCovFromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
     { 5.0849,   -1.1132,   -0.2259,    2.6187,   -0.1260,    1.2376},
     {-0.4707,    0.3277,   -0.9420,   -0.1260,    1.2990,    0.8641},
     { 2.3979,    0.1886,   -0.3686,    1.2376,    0.8641,    1.5631},
-  }).value();
+  });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   MMCA mm_ca{vec, cov};
   MMCV mm_cv{};
 
@@ -426,15 +455,19 @@ TEST(MotionModelCV, convertCA_facCov) // NOLINT
   // clang-format off
   using MMCV = tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>>;
   using MMCA = tracking::motion::MotionModelCA<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>>;
-  auto vec = MMCA::StateVecFromList({10, 2, 0, 0, 2, 0.1});
-  auto cov = MMCA::StateCovFromList({
+  auto vecResult = MMCA::StateVecFromList({10, 2, 0, 0, 2, 0.1});
+  ASSERT_TRUE(vecResult.has_value());
+  auto vec = vecResult.value();
+  auto covResult = MMCA::StateCovFromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
     { 5.0849,   -1.1132,   -0.2259,    2.6187,   -0.1260,    1.2376},
     {-0.4707,    0.3277,   -0.9420,   -0.1260,    1.2990,    0.8641},
     { 2.3979,    0.1886,   -0.3686,    1.2376,    0.8641,    1.5631},
-  }).value();
+  });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   auto mm_ca = MMCA{vec, cov};
   MMCV mm_cv{};
 
@@ -469,9 +502,13 @@ TEST(MotionModelCV, convertCA_facCov) // NOLINT
 
 TEST(MotionModelCV, TryCreate_fullCov__Success) // NOLINT
 {
-  using MM = tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
-  auto vec = MM::StateVecFromList({10, 2, 0, 0});
-  auto cov = MM::StateCovFromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}}).value();
+  using MM       = tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
+  auto vecResult = MM::StateVecFromList({10, 2, 0, 0});
+  ASSERT_TRUE(vecResult.has_value());
+  auto vec       = vecResult.value();
+  auto covResult = MM::StateCovFromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   auto mm  = MM::TryCreate(vec, cov);
   ASSERT_TRUE(mm.has_value());
   EXPECT_FLOAT_EQ(mm.value().getX(), 10);
@@ -479,9 +516,13 @@ TEST(MotionModelCV, TryCreate_fullCov__Success) // NOLINT
 
 TEST(MotionModelCV, TryCreate_factoredCov__Success) // NOLINT
 {
-  using MM = tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>>;
-  auto vec = MM::StateVecFromList({10, 2, 0, 0});
-  auto cov = MM::StateCovFromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}}).value();
+  using MM       = tracking::motion::MotionModelCV<tracking::math::FactoredCovarianceMatrixPolicy<Testvalue_type>>;
+  auto vecResult = MM::StateVecFromList({10, 2, 0, 0});
+  ASSERT_TRUE(vecResult.has_value());
+  auto vec       = vecResult.value();
+  auto covResult = MM::StateCovFromList({{5, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 0.1}});
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   auto mm  = MM::TryCreate(vec, cov);
   ASSERT_TRUE(mm.has_value());
   EXPECT_FLOAT_EQ(mm.value().getX(), 10);
@@ -491,18 +532,22 @@ TEST(MotionModelCV, TryCreate_factoredCov__Success) // NOLINT
 // construction, so this reaches TryCreate's own check rather than aborting earlier (see
 // plans/recent/decomposeLDLT_error_handling_resolution.md for why the factored policy can't
 // construct an equivalent counterexample: its ctor asserts PD directly, and StateCovFromList's
-// UDU decomposition already rejects a non-PD list before a StateCov exists to pass in).
+// UDU decomposition clamps non-positive pivots, so it does not preserve this input).
 TEST(MotionModelCV, TryCreate_fullCov_NegativeDefinite__ExpectError) // NOLINT
 {
-  using MM = tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
-  auto vec = MM::StateVecFromList({10, 2, 0, 0});
+  using MM       = tracking::motion::MotionModelCV<tracking::math::FullCovarianceMatrixPolicy<Testvalue_type>>;
+  auto vecResult = MM::StateVecFromList({10, 2, 0, 0});
+  ASSERT_TRUE(vecResult.has_value());
+  auto vec = vecResult.value();
   // clang-format off
-  auto cov = MM::StateCov::FromList({
+  auto covResult = MM::StateCov::FromList({
     {-1,  0,  0,  0},
     { 0, -1,  0,  0},
     { 0,  0, -1,  0},
     { 0,  0,  0, -1}
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
   auto mm = MM::TryCreate(vec, cov);
   ASSERT_FALSE(mm.has_value());

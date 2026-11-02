@@ -1,3 +1,4 @@
+#include "checked_value.h"
 #include "math/linalg/covariance_matrix_policies.h"
 #include "trackingLib/env/ego_motion.hpp"                                    // IWYU pragma: keep
 #include "trackingLib/filter/information_filter.hpp"                         // IWYU pragma: keep
@@ -47,14 +48,14 @@ int main(int argc, char** argv)
   // roughly towards the ego vehicle's path. The velocity is unknown at initialization - a single
   // radar detection gives no velocity information - so it is set to 0 rather than a prior guess.
   // clang-format off
-  auto motionModel = MM::FromLists(
+  auto motionModel = checkedValue(MM::FromLists(
     {60.0, 0.0, -20.0, 0.0}, // State vector: [X, VX, Y, VY]
     {
       {1e-9, 0.0,  0.0,  0.0 },  // Information matrix Y, diagonal in state order [X, VX, Y, VY]:
       {0.0,  1e-5, 0.0,  0.0 },  //   X, Y  positions -> ~no prior information (1e-9, near-singular).
       {0.0,  0.0,  1e-9, 0.0 },  //   VX, VY velocities -> weak prior (1e-5, std ~300 m/s): the initial
       {0.0,  0.0,  0.0,  1e-5}   //   velocity is unknown but bounded to a plausible range, which bounds
-  }).value();                   //   the startup transient symmetrically on both axes without seeding a value.
+  }));                   //   the startup transient symmetrically on both axes without seeding a value.
 
   // Ego vehicle drives a gentle left turn: constant forward speed with a non-zero yaw rate.
   EgoMotionType::InertialMotion motionParams{
@@ -109,11 +110,11 @@ int main(int argc, char** argv)
   const value_type bearingStd = static_cast<value_type>(1.0 * M_PI / 180.0);
   const value_type dopplerStd = static_cast<value_type>(0.5);
   // clang-format off
-  const RangeBearingDopplerType::MeasurementCov R = RangeBearingDopplerType::MeasurementCovFromList({
+  const auto R = checkedValue(RangeBearingDopplerType::MeasurementCovFromList({
     {rangeStd * rangeStd, static_cast<value_type>(0.0),         static_cast<value_type>(0.0)        },
     {static_cast<value_type>(0.0),         bearingStd * bearingStd, static_cast<value_type>(0.0)        },
     {static_cast<value_type>(0.0),         static_cast<value_type>(0.0),         dopplerStd * dopplerStd}
-  }).value();
+  }));
   // clang-format on
 
   // Fixed-seed RNG so the example produces reproducible output run to run.
@@ -195,7 +196,7 @@ int main(int argc, char** argv)
     const value_type currentTime = step * dt;
 
     // Create ego motion for this time step (constant turn-rate-and-velocity motion)
-    auto egoMotion = EgoMotionType::TryCreate(motionParams, geometry, dt).value();
+    auto egoMotion = checkedValue(EgoMotionType::TryCreate(motionParams, geometry, dt));
 
     std::cout << "Step " << step << " (t=" << currentTime << "s):" << std::endl;
 
@@ -264,10 +265,8 @@ int main(int argc, char** argv)
     const value_type zBearing = gtBearing + bearingNoise(rng);
     const value_type zDoppler = gtDoppler + dopplerNoise(rng);
 
-    const RangeBearingDopplerType obs =
-        RangeBearingDopplerType::TryCreate(
-            RangeBearingDopplerType::MeasurementVec::FromList({zRange, zBearing, zDoppler}), R, sensorPose)
-            .value();
+    const auto measurementVec = checkedValue(RangeBearingDopplerType::MeasurementVecFromList({zRange, zBearing, zDoppler}));
+    const auto obs            = checkedValue(RangeBearingDopplerType::TryCreate(measurementVec, R, sensorPose));
 
     // Correct step: nonlinear measurement update via the EKF, linearizing h(x) at the current
     // estimate. Bootstrap regime accumulates information (Y += H'*inv(R)*H); Kalman regime corrects

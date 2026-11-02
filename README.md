@@ -34,10 +34,11 @@ The factored implementations are mainly based on publications from D'Souza, Bier
 
 ### Code Example: Interchangeable Filters and Covariance Types
 
-The library's advanced architecture allows seamless interchangeability between Kalman and Information filters, as well as between full and factored covariance matrices during prediction. Below is a minimal example demonstrating this flexibility:
+The library's advanced architecture allows seamless interchangeability between Kalman and Information filters, as well as between full and factored covariance matrices during prediction. Below is a minimal example demonstrating this flexibility (function-body fragment; input details omitted):
 
 ```cpp
 #include "trackingLib/motion/motion_model_cv.hpp"
+#include "trackingLib/env/ego_motion.hpp"
 #include "trackingLib/filter/kalman_filter.hpp"
 #include "trackingLib/filter/information_filter.hpp"
 
@@ -59,19 +60,30 @@ KalmanFilter      kalmanFilter{};
 InformationFilter informationFilter{};
 
 // Corresponding ego motion types (stationary for simplicity)
-auto egoMotion_full     = MMCV_Full::EgoMotionType{/* parameters */};
-auto egoMotion_factored = MMCV_Factored::EgoMotionType{/* parameters */};
+auto egoMotion_full     = MMCV_Full::EgoMotionType::TryCreate(/* parameters */);
+auto egoMotion_factored = MMCV_Factored::EgoMotionType::TryCreate(/* parameters */);
 
 // Initialize motion models with initial state and covariance
 auto mm_full = MMCV_Full::FromLists({/* State ... */}, {/* Covariance ... */ });
 auto mm_factored = MMCV_Factored::FromLists({/* State ... */}, {/* Covariance ..., will be factored */ });
+if (!mm_full.has_value() || !mm_factored.has_value() ||
+    !egoMotion_full.has_value() || !egoMotion_factored.has_value())
+{
+  // Handle construction errors before using the models.
+  return;
+}
 
 // Perform predictions with different filter-covariance combinations
-mm_full.predict(0.1, kalmanFilter, egoMotion_full);       // Kalman + Full Covariance
-mm_factored.predict(0.1, informationFilter, egoMotion_factored); // Information + Factored Covariance
+mm_full.value().predict(0.1, kalmanFilter, egoMotion_full.value());       // Kalman + Full Covariance
+mm_factored.value().predict(0.1, informationFilter, egoMotion_factored.value()); // Information + Factored Covariance
 ```
 
 This example highlights the template-based design enabling compile-time selection of filter types and covariance representations, ensuring optimal performance and numerical stability.
+
+`FromList` and component list helpers now return `tl::expected`, matching `FromLists`.
+Check results before accessing their values, including for constant inputs. See
+[checked construction and safety review](doc/checked_construction.md) for migration,
+error precedence, covariance-policy limits, and `noexcept` guarantees.
 
 ### Code Example: Measurement Update with Observation Models
 
@@ -91,6 +103,7 @@ composed together) — this is the correct way to fuse simultaneous measurements
 
 ```cpp
 #include "trackingLib/motion/motion_model_cv.hpp"
+#include "trackingLib/env/ego_motion.hpp"
 #include "trackingLib/filter/kalman_filter.hpp"
 #include "trackingLib/observation/position_observation_model.h"
 #include "trackingLib/observation/velocity_observation_model.h"
@@ -106,17 +119,23 @@ using VelocityObs = observation::VelocityObservationModel<Policy, motion::StateD
 
 MM::KalmanFilterType kalmanFilter{};
 auto motionModel = MM::FromLists({/* State ... */}, {/* Covariance ... */});
+auto egoMotion = MM::EgoMotionType::TryCreate(/* parameters */);
 
 // Measurement vector z and covariance R per observation model
 auto posObs = PositionObs::FromLists({/* x, y */},     {/* R ... */});
 auto velObs = VelocityObs::FromLists({/* vx, vy */},   {/* R ... */});
+if (!motionModel.has_value() || !posObs.has_value() || !velObs.has_value() || !egoMotion.has_value())
+{
+  // Handle construction errors before applying measurements.
+  return;
+}
 
 // Single-model update (block for full, sequential for factored — chosen automatically)
-motionModel.update(kalmanFilter, posObs);
+motionModel.value().update(kalmanFilter, egoMotion.value(), posObs.value());
 
 // One device measuring BOTH position and velocity at this time step: list both models in a
 // single call so they are fused as one joint (stacked) update — NOT two consecutive update() calls
-motionModel.update(kalmanFilter, posObs, velObs);
+motionModel.value().update(kalmanFilter, egoMotion.value(), posObs.value(), velObs.value());
 ```
 
 For the Information filter the same call operates in information space; the observation models are
@@ -133,7 +152,7 @@ runnable scenario combining prediction and updates.
 - **Filter Variants**: EKF and IF with both full and factored covariance support, with block and sequential measurement update modes
 
 **Key Requirements**:
-- **Standards**: C++17 minimum, AUTOSAR C++14 compliant
+- **Standards**: C++17 minimum, with safety policies guided by AUTOSAR C++14; full conformance remains unverified
 - **Safety**: No exceptions (tl::expected pattern), no dynamic allocation in core algorithms
 - **Quality**: Zero compile warnings, Comprehensive unit tests, >90% line coverage target, comprehensive Doxygen documentation
 
@@ -154,6 +173,10 @@ runnable scenario combining prediction and updates.
 - **Testing**: GoogleTest framework, lcov coverage
 - **Quality**: clang-format, clang-tidy, Doxygen
 - **Error Handling**: tl::expected (Rust-style Result pattern)
+
+Safety policies and passing tests do not certify AUTOSAR conformance. Language tailoring,
+dependency assessment, and exception-policy applicability/deviation reviews remain pending;
+see the [safety review](doc/checked_construction.md#safety-policy-qualification-and-review-status).
 
 
 ## Visualized Examples

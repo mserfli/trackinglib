@@ -11,29 +11,39 @@ using namespace tracking::math;
 TEST(Rank1Update, udu_update) // NOLINT
 {
   // clang-format off
-  auto U = TriangularMatrix<float64, 4, false, true>::FromList({
+  auto UResult = TriangularMatrix<float64, 4, false, true>::FromList({
     {1.000000000000000,  1.100446217617032,  0.451685496026601,  0.566995242706580},
     {                0,  1.000000000000000, -1.706345585301695, -0.639830177853812},
     {                0,                  0,  1.000000000000000,  0.379147889723543},
     {                0,                  0,                  0,  1.000000000000000}
   });
-  auto D = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(UResult.has_value());
+  auto U = UResult.value();
+  auto DResult = DiagonalMatrix<float64, 4>::FromList({
   1.744764006421280e+00, 2.623463785299294e-01, 1.298863681833844e+00, 5.511441032938980e-02
   });
-  const auto w = Vector<float64, 4>::FromList({
+  ASSERT_TRUE(DResult.has_value());
+  auto D = DResult.value();
+  auto wResult = Vector<float64, 4>::FromList({
     3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01
   });
+  ASSERT_TRUE(wResult.has_value());
+  const auto w = wResult.value();
   const auto sigma = 3.0;
 
-  const auto expU = TriangularMatrix<float64, 4, false, true>::FromList({
+  auto expUResult = TriangularMatrix<float64, 4, false, true>::FromList({
     {1.000000000000000,  1.058842071465176,  0.450068003458539,  0.646515574457400},
     {                0,  1.000000000000000, -1.711109275424165,  0.228103592207166},
     {                0,                  0,  1.000000000000000,  0.170448646290043},
     {                0,                  0,                  0,  1.000000000000000}
   });
-  const auto expD = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(expUResult.has_value());
+  const auto expU = expUResult.value();
+  auto expDResult = DiagonalMatrix<float64, 4>::FromList({
     1.753069000330330,  0.277520518292310,  1.301391550356693,  1.094096507971646
   });
+  ASSERT_TRUE(expDResult.has_value());
+  const auto expD = expDResult.value();
   // clang-format on
 
   // call UUT
@@ -54,29 +64,39 @@ TEST(Rank1Update, udu_downdate) // NOLINT
   // reverse test of the udu_update
 
   // clang-format off
-  auto U = TriangularMatrix<float64, 4, false, true>::FromList({
+  auto UResult = TriangularMatrix<float64, 4, false, true>::FromList({
     {1.000000000000000,  1.058842071465176,  0.450068003458539,  0.646515574457400},
     {                0,  1.000000000000000, -1.711109275424165,  0.228103592207166},
     {                0,                  0,  1.000000000000000,  0.170448646290043},
     {                0,                  0,                  0,  1.000000000000000}
   });
-  auto D = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(UResult.has_value());
+  auto U = UResult.value();
+  auto DResult = DiagonalMatrix<float64, 4>::FromList({
     1.753069000330330,  0.277520518292310,  1.301391550356693,  1.094096507971646
   });
-  const auto w = Vector<float64, 4>::FromList({
+  ASSERT_TRUE(DResult.has_value());
+  auto D = DResult.value();
+  auto wResult = Vector<float64, 4>::FromList({
     3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01
   });
+  ASSERT_TRUE(wResult.has_value());
+  const auto w = wResult.value();
   const auto sigma = 3.0;
 
-  const auto expU = TriangularMatrix<float64, 4, false, true>::FromList({
+  auto expUResult = TriangularMatrix<float64, 4, false, true>::FromList({
     {1.000000000000000,  1.100446217617032,  0.451685496026601,  0.566995242706580},
     {                0,  1.000000000000000, -1.706345585301695, -0.639830177853812},
     {                0,                  0,  1.000000000000000,  0.379147889723543},
     {                0,                  0,                  0,  1.000000000000000}
   });
-  const auto expD = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(expUResult.has_value());
+  const auto expU = expUResult.value();
+  auto expDResult = DiagonalMatrix<float64, 4>::FromList({
   1.744764006421280e+00, 2.623463785299294e-01, 1.298863681833844e+00, 5.511441032938980e-02
   });
+  ASSERT_TRUE(expDResult.has_value());
+  const auto expD = expDResult.value();
   // clang-format on
 
   // call UUT
@@ -96,29 +116,39 @@ TEST(Rank1Update, udu_downdate) // NOLINT
 TEST(Rank1Update, ldl_update) // NOLINT
 {
   // clang-format off
-  auto L = TriangularMatrix<float64, 4, true, true>::FromList({
+  auto LResult = TriangularMatrix<float64, 4, true, true>::FromList({
     {1.000000000000000,  0.000000000000000,  0.000000000000000,  0.000000000000000},
     {1.100446217617032,  1.000000000000000,  0.000000000000000,  0.000000000000000},
     {0.451685496026601, -1.706345585301695,  1.000000000000000,  0.000000000000000},
     {0.566995242706580, -0.639830177853812,  0.379147889723543,  1.000000000000000}
   });
-  auto D = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(LResult.has_value());
+  auto L = LResult.value();
+  auto DResult = DiagonalMatrix<float64, 4>::FromList({
       1.744764006421280e+00, 2.623463785299294e-01, 1.298863681833844e+00, 5.511441032938980e-02
   });
-  const auto w = Vector<float64, 4>::FromList({
+  ASSERT_TRUE(DResult.has_value());
+  auto D = DResult.value();
+  auto wResult = Vector<float64, 4>::FromList({
     3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01
   });
+  ASSERT_TRUE(wResult.has_value());
+  const auto w = wResult.value();
   const auto sigma = 3.0;
 
-  const auto expL = TriangularMatrix<float64, 4, true, true>::FromList({
+  auto expLResult = TriangularMatrix<float64, 4, true, true>::FromList({
     {1.000000000000000,                  0,                  0,                  0},
     {0.963676245213974,  1.000000000000000,                  0,                  0},
     {0.410046948367661, -0.938497570939665,  1.000000000000000,                  0},
     {0.762280461386267, -0.940741810056261,  0.195856283828150,  1.000000000000000}
   });
-  const auto expD = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(expLResult.has_value());
+  const auto expL = expLResult.value();
+  auto expDResult = DiagonalMatrix<float64, 4>::FromList({
     2.184725700773844, 0.424415494704770, 1.703921082760869, 0.238675924218862
   });
+  ASSERT_TRUE(expDResult.has_value());
+  const auto expD = expDResult.value();
   // clang-format on
 
   // call UUT
@@ -139,29 +169,39 @@ TEST(Rank1Update, ldl_downdate) // NOLINT
   // reverse test of the ldl_update
 
   // clang-format off
-  auto L = TriangularMatrix<float64, 4, true, true>::FromList({
+  auto LResult = TriangularMatrix<float64, 4, true, true>::FromList({
     {1.000000000000000,                  0,                  0,                  0},
     {0.963676245213974,  1.000000000000000,                  0,                  0},
     {0.410046948367661, -0.938497570939665,  1.000000000000000,                  0},
     {0.762280461386267, -0.940741810056261,  0.195856283828150,  1.000000000000000}
   });
-  auto D = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(LResult.has_value());
+  auto L = LResult.value();
+  auto DResult = DiagonalMatrix<float64, 4>::FromList({
     2.184725700773844, 0.424415494704770, 1.703921082760869, 0.238675924218862
   });
-  const auto w = Vector<float64, 4>::FromList({
+  ASSERT_TRUE(DResult.has_value());
+  auto D = DResult.value();
+  auto wResult = Vector<float64, 4>::FromList({
     3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01
   });
+  ASSERT_TRUE(wResult.has_value());
+  const auto w = wResult.value();
   const auto sigma = 3.0;
 
-  const auto expL = TriangularMatrix<float64, 4, true, true>::FromList({
+  auto expLResult = TriangularMatrix<float64, 4, true, true>::FromList({
     {1.000000000000000,                  0,                  0,                  0},
     {1.100446217617032,  1.000000000000000,                  0,                  0},
     {0.451685496026601, -1.706345585301694,  1.000000000000000,                  0},
     {0.566995242706581, -0.639830177853813,  0.379147889723543,  1.000000000000000}
   });
-  const auto expD = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(expLResult.has_value());
+  const auto expL = expLResult.value();
+  auto expDResult = DiagonalMatrix<float64, 4>::FromList({
     1.744764006421280e+00, 2.623463785299295e-01, 1.298863681833845e+00, 5.511441032938941e-02
   });
+  ASSERT_TRUE(expDResult.has_value());
+  const auto expD = expDResult.value();
   // clang-format on
 
   // call UUT
@@ -183,20 +223,26 @@ TEST(Rank1Update, ldl_update_zeroIncomingPivot__StaysFinite) // NOLINT
   // not poison the update via an unguarded division by that pivot.
 
   // clang-format off
-  auto L = TriangularMatrix<float64, 4, true, true>::FromList({
+  auto LResult = TriangularMatrix<float64, 4, true, true>::FromList({
     {1.000000000000000,                  0,                  0,                  0},
     {0.963676245213974,  1.000000000000000,                  0,                  0},
     {0.410046948367661, -0.938497570939665,  1.000000000000000,                  0},
     {0.762280461386267, -0.940741810056261,  0.195856283828150,  1.000000000000000}
   });
-  auto D = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(LResult.has_value());
+  auto L = LResult.value();
+  auto DResult = DiagonalMatrix<float64, 4>::FromList({
     2.184725700773844, 0.424415494704770, 1.703921082760869, 0.238675924218862
   });
+  ASSERT_TRUE(DResult.has_value());
+  auto D = DResult.value();
   // clang-format on
   D.at_unsafe(3) = 0.0; // simulate a degenerate incoming pivot
 
-  const auto w =
+  auto wResult =
       Vector<float64, 4>::FromList({3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01});
+  ASSERT_TRUE(wResult.has_value());
+  const auto w     = wResult.value();
   const auto sigma = 3.0;
 
   // call UUT
@@ -215,23 +261,29 @@ TEST(Rank1Update, ldl_update_zeroIncomingPivot__StaysFinite) // NOLINT
 TEST(Rank1Update, ldl_downdate_zeroIncomingPivot__StaysFinite) // NOLINT
 {
   // clang-format off
-  auto L = TriangularMatrix<float64, 4, true, true>::FromList({
+  auto LResult = TriangularMatrix<float64, 4, true, true>::FromList({
     {1.000000000000000,                  0,                  0,                  0},
     {0.963676245213974,  1.000000000000000,                  0,                  0},
     {0.410046948367661, -0.938497570939665,  1.000000000000000,                  0},
     {0.762280461386267, -0.940741810056261,  0.195856283828150,  1.000000000000000}
   });
-  auto D = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(LResult.has_value());
+  auto L = LResult.value();
+  auto DResult = DiagonalMatrix<float64, 4>::FromList({
     2.184725700773844, 0.424415494704770, 1.703921082760869, 0.238675924218862
   });
+  ASSERT_TRUE(DResult.has_value());
+  auto D = DResult.value();
   // clang-format on
   // A strictly-positive (denormalized) pivot: passes the downdate's up-front d.inverse() gate
   // (which requires d > 0 for every entry, a separate assert out of this task's scope) while still
   // being small enough that an unguarded division by it overflows to Inf.
   D.at_unsafe(0) = std::numeric_limits<float64>::denorm_min();
 
-  const auto w =
+  auto wResult =
       Vector<float64, 4>::FromList({3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01});
+  ASSERT_TRUE(wResult.has_value());
+  const auto w     = wResult.value();
   const auto sigma = 3.0;
 
   // call UUT
@@ -250,29 +302,39 @@ TEST(Rank1Update, ldl_downdate_zeroIncomingPivot__StaysFinite) // NOLINT
 TEST(Rank1Update, ldl_downdate_belowEpsilon) // NOLINT
 {
   // clang-format off
-  auto L = TriangularMatrix<float64, 4, true, true>::FromList({
+  auto LResult = TriangularMatrix<float64, 4, true, true>::FromList({
     {1.000000000000000,                  0,                  0,                  0},
     {0.963676245213974,  1.000000000000000,                  0,                  0},
     {0.410046948367661, -0.938497570939665,  1.000000000000000,                  0},
     {0.762280461386267, -0.940741810056261,  0.195856283828150,  1.000000000000000}
   });
-  auto D = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(LResult.has_value());
+  auto L = LResult.value();
+  auto DResult = DiagonalMatrix<float64, 4>::FromList({
     2.184725700773844, 0.424415494704770, 1.703921082760869, 0.238675924218862
   });
-  const auto w = Vector<float64, 4>::FromList({
+  ASSERT_TRUE(DResult.has_value());
+  auto D = DResult.value();
+  auto wResult = Vector<float64, 4>::FromList({
     3.829541723464068e-01, 1.613328887439391e-01, 9.379321662496187e-02, 5.884958503513444e-01
   });
+  ASSERT_TRUE(wResult.has_value());
+  const auto w = wResult.value();
   const auto sigma = 20.0;
 
-  const auto expL = TriangularMatrix<float64, 4, true, true>::FromList({
+  auto expLResult = TriangularMatrix<float64, 4, true, true>::FromList({
     {1.000000000000000,                  0,                  0,                  0},
     {1.117144553721805,  1.000000000000000,                  0,                  0},
     {0.456769173763075, -1.870378532677200,  1.000000000000000,                  0},
     {0.543152741604089, -0.575547375780341,  0.434181260080981,  1.000000000000000}
   });
-  const auto expD = DiagonalMatrix<float64, 4>::FromList({
+  ASSERT_TRUE(expLResult.has_value());
+  const auto expL = expLResult.value();
+  auto expDResult = DiagonalMatrix<float64, 4>::FromList({
     1.702895413761838e+00, 2.425592532820298e-01, 1.212332547953755e+00, 2.746814709096464e-17
   });
+  ASSERT_TRUE(expDResult.has_value());
+  const auto expD = expDResult.value();
   // clang-format on
 
   // call UUT

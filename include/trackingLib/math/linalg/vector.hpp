@@ -35,9 +35,13 @@ inline auto Vector<ValueType_, Size_>::UnitVector() -> Vector
 }
 
 template <typename ValueType_, sint32 Size_>
-inline auto Vector<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) -> Vector
+inline auto Vector<ValueType_, Size_>::FromList(const std::initializer_list<ValueType_>& list) noexcept
+    -> tl::expected<Vector, Errors>
 {
-  assert(list.size() == Size_);
+  if (list.size() != static_cast<std::size_t>(Size_))
+  {
+    return tl::unexpected<Errors>{Errors::invalid_initializer_list_size};
+  }
 
   Vector tmp;
   auto   iter = tmp.data().begin();

@@ -4,7 +4,6 @@
 #include "base/first_include.h"                           // IWYU pragma: keep
 #include "math/linalg/contracts/covariance_matrix_intf.h" // IWYU pragma: keep
 #include <initializer_list>
-#include <iostream> // IWYU pragma: keep
 
 namespace tracking
 {
@@ -71,13 +70,30 @@ public:
   auto operator=(CovarianceMatrixFactored&&) noexcept -> CovarianceMatrixFactored& = default;
   virtual ~CovarianceMatrixFactored()                                              = default;
 
+  /// \brief Creates a CovarianceMatrixFactored from separate U and D initializer lists
+  ///
+  /// This function constructs a factored covariance matrix from separate initializer lists
+  /// for the upper triangular U matrix and diagonal D matrix components.
+  ///
+  /// \param[in] u Nested initializer list for the upper triangular U matrix
+  /// \param[in] d Flat initializer list for the diagonal D matrix
+  /// \return tl::expected containing the factored covariance or the first failing error:
+  ///         invalid_initializer_list_row_count, invalid_initializer_list_col_count,
+  ///         invalid_initializer_list_size, matrix_not_unit_upper_triangular, or matrix_not_positive_definite
+  /// \note Checks U dimensions, D length, unit U diagonal, then strictly positive D.
+  ///       The lower triangle of U is ignored. Explicit D values are never clamped.
+  /// \note The existing predicates/tolerances are preserved; no comprehensive NaN/Inf rejection is added.
+  ///       noexcept describes exception behavior, not general numeric-input validation or construction success.
+  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& u,
+                       const std::initializer_list<ValueType_>& d) noexcept -> tl::expected<CovarianceMatrixFactored, Errors>;
+
   //////////////////////////////////////////////////
   // additional constructors  --->
   /// \brief Construct a new Covariance Matrix Factored object
   /// \param[in] u   Unit upper triangular matrix
   /// \param[in] d   Diagonal matrix
   explicit CovarianceMatrixFactored(const TriangularMatrix<ValueType_, Size_, false, true>& u,
-                                    const DiagonalMatrix<ValueType_, Size_>&                d);
+                                    const DiagonalMatrix<ValueType_, Size_>&                d) noexcept;
 
   /// \brief Construct an Identity matrix
   /// \return CovarianceMatrixFactored
@@ -88,16 +104,6 @@ public:
   /// \return CovarianceMatrixFactored
   static auto FromDiagonal(const DiagonalMatrix<ValueType_, Size_>& diag) -> CovarianceMatrixFactored;
 
-  /// \brief Creates a CovarianceMatrixFactored from separate U and D initializer lists
-  ///
-  /// This function constructs a factored covariance matrix from separate initializer lists
-  /// for the upper triangular U matrix and diagonal D matrix components.
-  ///
-  /// \param[in] u Nested initializer list for the upper triangular U matrix
-  /// \param[in] d Flat initializer list for the diagonal D matrix
-  /// \return CovarianceMatrixFactored instance with the specified U and D components
-  static auto FromList(const std::initializer_list<std::initializer_list<ValueType_>>& u,
-                       const std::initializer_list<ValueType_>&                        d) -> CovarianceMatrixFactored;
   // <---
 
   /// \brief Set Identity covariance
@@ -271,7 +277,7 @@ public:
   /// A positive definite matrix satisfies x^T * A * x > 0 for all non-zero vectors x.
   ///
   /// \return true if the matrix is positive definite, false otherwise
-  [[nodiscard]] auto isPositiveDefinite() const -> bool { return _d.isPositiveDefinite(); }
+  [[nodiscard]] auto isPositiveDefinite() const noexcept -> bool { return _d.isPositiveDefinite(); }
 
   /// \brief Checks if the matrix is positive semi-definite.
   ///

@@ -23,10 +23,14 @@ TEST(InformationFilterPredict, predictCovariance_FactoredNegativeQ__StaysFiniteA
 {
   auto Y = CovType::Identity();
 
-  const auto A = tracking::math::SquareMatrix<ValueType_, 2>::Identity();
-  const auto G = tracking::math::Matrix<ValueType_, 2, 2>::FromList({{1.0, 0.0}, {0.0, 1.0}});
+  const auto A       = tracking::math::SquareMatrix<ValueType_, 2>::Identity();
+  auto       GResult = tracking::math::Matrix<ValueType_, 2, 2>::FromList({{1.0, 0.0}, {0.0, 1.0}});
+  ASSERT_TRUE(GResult.has_value());
+  const auto G = GResult.value();
   // clang-format off
-  const auto Q = tracking::math::DiagonalMatrix<ValueType_, 2>::FromList({1.0, -1.0});
+  auto QResult = tracking::math::DiagonalMatrix<ValueType_, 2>::FromList({1.0, -1.0});
+  ASSERT_TRUE(QResult.has_value());
+  const auto Q = QResult.value();
   // clang-format on
 
   IF::predictCovariance<2, 2>(Y, A, G, Q);

@@ -13,6 +13,9 @@
 #include "observation/iobservation_model.h"
 #include "observation/sensor_mounting_pose.h"
 
+#include <type_traits>
+#include <utility>
+
 namespace tracking
 {
 namespace observation
@@ -73,17 +76,25 @@ public:
 
   /// \brief Create measurement vector from initializer list
   /// \param[in] list  Initializer list with measurement values
-  /// \return MeasurementVec
-  static auto MeasurementVecFromList(const std::initializer_list<value_type>& list) -> MeasurementVec
+  /// \return tl::expected containing MeasurementVec or invalid_initializer_list_size
+  /// \note Checks length before copying; noexcept specifies exception behavior, not finite numeric inputs.
+  static auto MeasurementVecFromList(const std::initializer_list<value_type>& list) noexcept
+      -> tl::expected<MeasurementVec, math::Errors>
   {
     return MeasurementVec::FromList(list);
   }
 
   /// \brief Create measurement covariance from initializer list
   /// \param[in] list  Nested initializer list with covariance values
-  /// \return tl::expected containing MeasurementCov on success, or Errors::matrix_not_positive_definite
-  ///         if the list cannot be factored into a valid covariance (factored policy only)
-  static auto MeasurementCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list)
+  /// \return tl::expected containing MeasurementCov or a propagated dimension, symmetry, or decomposition error
+  /// \note Checks outer rows, then every row width, then symmetry using the existing tolerance.
+  ///       Full policy supports singular/indefinite symmetric inputs at this boundary.
+  ///       Factored policy preserves UDU pivot clamping; success does not prove the input was PD.
+  ///       For example, a negative diagonal can be retained by full construction and clamped by factored construction.
+  /// \note noexcept for built-in policies specifies exception behavior, not finite numeric validity.
+  static auto MeasurementCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list) noexcept(
+      std::is_same<MeasurementCov, math::CovarianceMatrixFull<value_type, DimZ>>::value ||
+      std::is_same<MeasurementCov, math::CovarianceMatrixFactored<value_type, DimZ>>::value)
       -> tl::expected<MeasurementCov, math::Errors>
   {
     if constexpr (CovarianceMatrixPolicy::is_factored)
@@ -97,14 +108,17 @@ public:
   }
 
   /// \brief Create factored measurement covariance from initializer list
-  /// \tparam T  SFINAE helper defaulting to CovarianceMatrixPolicy
+  /// \tparam T Covariance policy, enabling this overload only for factored policies
   /// \param[in] u Nested initializer list for the upper triangular U matrix
   /// \param[in] d Flat initializer list for the diagonal D matrix
-  /// \return MeasurementCov
+  /// \return tl::expected containing MeasurementCov or the first U-dimension, D-length, unit-upper, or positive-D error
+  /// \note Extracts upper U, ignores its lower triangle, and never clamps explicit D.
+  ///       Uses the component factory's conditional noexcept contract; no comprehensive NaN/Inf validation is added.
   template <typename T = CovarianceMatrixPolicy>
   static auto MeasurementCovFromList(const std::initializer_list<std::initializer_list<value_type>>& u,
-                                     const std::initializer_list<value_type>&                        d)
-      -> std::enable_if_t<T::is_factored, MeasurementCov>
+                                     const std::initializer_list<value_type>& d) noexcept(noexcept(MeasurementCov::FromList(u,
+                                                                                                                            d)))
+      -> std::enable_if_t<T::is_factored, tl::expected<MeasurementCov, math::Errors>>
   {
     return MeasurementCov::FromList(u, d);
   }
@@ -112,13 +126,25 @@ public:
   /// \brief Create complete ObservationModel from initializer lists
   /// \param[in] vecList  Initializer list for the measurement vector
   /// \param[in] covList  Nested initializer list for the measurement covariance matrix
-  /// \return tl::expected containing the ObservationModel_ instance on success, or
-  ///         Errors::matrix_not_positive_definite if covList cannot be factored into a valid covariance
-  static auto FromLists(const std::initializer_list<value_type>&                        vecList,
-                        const std::initializer_list<std::initializer_list<value_type>>& covList)
+  /// \return tl::expected containing ObservationModel_ or the first error from vector, covariance, then concrete TryCreate
+  /// \note Vector length is checked before covariance dimensions/symmetry/decomposition.
+  ///       Built-in TryCreate requires the resulting covariance to be positive definite.
+  ///       Full and factored policies can accept different numeric inputs due to existing UDU clamping.
+  /// \note noexcept is conditional on the supplied helpers/model and true for built-ins.
+  ///       It does not guarantee finite numeric inputs or construction success. Check the result before value access.
+  static auto FromLists(const std::initializer_list<value_type>& vecList,
+                        const std::initializer_list<std::initializer_list<value_type>>&
+                            covList) noexcept(noexcept(MeasurementVecFromList(vecList)) &&
+                                              noexcept(MeasurementCovFromList(covList)) &&
+                                              noexcept(ObservationModel_::TryCreate(std::declval<const MeasurementVec&>(),
+                                                                                    std::declval<const MeasurementCov&>())))
       -> tl::expected<ObservationModel_, math::Errors>
   {
-    auto       vec = MeasurementVecFromList(vecList);
+    const auto vec = MeasurementVecFromList(vecList);
+    if (!vec.has_value())
+    {
+      return tl::unexpected<math::Errors>{vec.error()};
+    }
     const auto cov = MeasurementCovFromList(covList);
     if (!cov.has_value())
     {
@@ -128,20 +154,33 @@ public:
     // derived class's protected ctor without a friend declaration, which AUTOSAR A11-3-1
     // prohibits. TryCreate is a member of ObservationModel_ itself, so it can reach its own
     // protected ctor.
-    return ObservationModel_::TryCreate(vec, cov.value());
+    return ObservationModel_::TryCreate(vec.value(), cov.value());
   }
 
   /// \brief Create complete ObservationModel from initializer lists and a sensor mounting pose
   /// \param[in] vecList  Initializer list for the measurement vector
   /// \param[in] covList  Nested initializer list for the measurement covariance matrix
   /// \param[in] pose     Static SE(2) sensor mounting pose relative to the tracking frame
-  /// \return tl::expected containing the ObservationModel_ instance on success, or
-  ///         Errors::matrix_not_positive_definite if covList cannot be factored into a valid covariance
+  /// \return tl::expected containing ObservationModel_ or the first error from vector, covariance, then concrete TryCreate
+  /// \note Uses the same vector-first covariance checks as the two-list overload and forwards pose unchanged.
+  ///       Built-in TryCreate requires a positive-definite resulting covariance; existing factored-policy clamping remains.
+  /// \note noexcept depends on the supplied model's pose overload and component helpers; true for built-ins.
+  ///       This does not guarantee finite numeric inputs, construction success, or freedom from assertions outside
+  ///       the checked dimensions and listed predicates. Check the result before value access.
   static auto FromLists(const std::initializer_list<value_type>&                        vecList,
                         const std::initializer_list<std::initializer_list<value_type>>& covList,
-                        const SensorPose& pose) -> tl::expected<ObservationModel_, math::Errors>
+                        const SensorPose& pose) noexcept(noexcept(MeasurementVecFromList(vecList)) &&
+                                                         noexcept(MeasurementCovFromList(covList)) &&
+                                                         noexcept(ObservationModel_::TryCreate(
+                                                             std::declval<const MeasurementVec&>(),
+                                                             std::declval<const MeasurementCov&>(),
+                                                             pose))) -> tl::expected<ObservationModel_, math::Errors>
   {
-    auto       vec = MeasurementVecFromList(vecList);
+    const auto vec = MeasurementVecFromList(vecList);
+    if (!vec.has_value())
+    {
+      return tl::unexpected<math::Errors>{vec.error()};
+    }
     const auto cov = MeasurementCovFromList(covList);
     if (!cov.has_value())
     {
@@ -149,7 +188,7 @@ public:
     }
     // ObservationModel_::TryCreate (not the ctor directly): see the rationale in the other
     // FromLists() overload above.
-    return ObservationModel_::TryCreate(vec, cov.value(), pose);
+    return ObservationModel_::TryCreate(vec.value(), cov.value(), pose);
   }
 
   /// \brief Read access to the measurement dimension
@@ -227,15 +266,18 @@ TEST_REMOVE_PROTECTED:
   }
 
   // rule of 5 declarations (remaining declarations are protected according to A12-8-6)
-  ExtendedObservationModel(const ExtendedObservationModel& other)                    = default;
-  ExtendedObservationModel(ExtendedObservationModel&&) noexcept                      = default;
+  ExtendedObservationModel(const ExtendedObservationModel& other) = default;
+  ExtendedObservationModel(ExtendedObservationModel&&) noexcept(std::is_nothrow_move_constructible<MeasurementCov>::value) =
+      default;
   auto operator=(const ExtendedObservationModel& other) -> ExtendedObservationModel& = default;
   auto operator=(ExtendedObservationModel&&) noexcept -> ExtendedObservationModel&   = default;
 
   /// \brief Construct a new Extended Observation Model object
   /// \param[in] vec  Measurement vector z
   /// \param[in] cov  Measurement covariance R
-  explicit ExtendedObservationModel(const MeasurementVec& vec, const MeasurementCov& cov)
+  explicit ExtendedObservationModel(const MeasurementVec& vec, const MeasurementCov& cov) noexcept(
+      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
+      noexcept(cov.isPositiveDefinite()))
       : ExtendedObservationModel{vec, cov, SensorPose{}}
   {
   }
@@ -244,7 +286,9 @@ TEST_REMOVE_PROTECTED:
   /// \param[in] vec  Measurement vector z
   /// \param[in] cov  Measurement covariance R
   /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
-  explicit ExtendedObservationModel(const MeasurementVec& vec, const MeasurementCov& cov, const SensorPose& pose)
+  explicit ExtendedObservationModel(const MeasurementVec& vec, const MeasurementCov& cov, const SensorPose& pose) noexcept(
+      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
+      noexcept(cov.isPositiveDefinite()) && std::is_nothrow_copy_constructible<SensorPose>::value)
       : BaseIObservationModel{}
       , BaseStateMem{vec, cov}
       , _sensorPose{pose}

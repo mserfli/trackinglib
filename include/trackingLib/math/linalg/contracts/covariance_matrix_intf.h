@@ -115,7 +115,7 @@ struct CovarianceMatrixIntf
     : public base::contract::RequireCopyIntf<ImplType>
     , public base::contract::RequireMoveIntf<ImplType>
 {
-  CovarianceMatrixIntf()
+  CovarianceMatrixIntf() noexcept
       : base::contract::RequireCopyIntf<ImplType>()
       , base::contract::RequireMoveIntf<ImplType>()
   {

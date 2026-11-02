@@ -17,7 +17,9 @@ using namespace tracking::math;
 
 TEST(MatrixIO, BasicMatrixOutput) // NOLINT
 {
-  const auto mat = Matrix<float32, 2, 2, true>::FromList({{1.0F, 2.0F}, {3.0F, 4.0F}});
+  auto matResult = Matrix<float32, 2, 2, true>::FromList({{1.0F, 2.0F}, {3.0F, 4.0F}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
 
   std::stringstream ss;
   ss << mat;
@@ -30,7 +32,9 @@ TEST(MatrixIO, BasicMatrixOutput) // NOLINT
 
 TEST(MatrixIO, IntegerMatrixOutput) // NOLINT
 {
-  const auto mat = Matrix<sint32, 2, 2, true>::FromList({{1, 2}, {3, 4}});
+  auto matResult = Matrix<sint32, 2, 2, true>::FromList({{1, 2}, {3, 4}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
 
   std::stringstream ss;
   ss << mat;
@@ -43,7 +47,9 @@ TEST(MatrixIO, IntegerMatrixOutput) // NOLINT
 
 TEST(MatrixIO, SquareMatrixOutput) // NOLINT
 {
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({{1.0F, 2.0F, 3.0F}, {4.0F, 5.0F, 6.0F}, {7.0F, 8.0F, 9.0F}});
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({{1.0F, 2.0F, 3.0F}, {4.0F, 5.0F, 6.0F}, {7.0F, 8.0F, 9.0F}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
 
   std::stringstream ss;
   ss << mat;
@@ -57,7 +63,9 @@ TEST(MatrixIO, SquareMatrixOutput) // NOLINT
 
 TEST(MatrixIO, DiagonalMatrixOutput) // NOLINT
 {
-  const auto mat = DiagonalMatrix<float32, 3>::FromList({1.0F, 2.0F, 3.0F});
+  auto matResult = DiagonalMatrix<float32, 3>::FromList({1.0F, 2.0F, 3.0F});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
 
   std::stringstream ss;
   ss << mat;
@@ -71,8 +79,10 @@ TEST(MatrixIO, DiagonalMatrixOutput) // NOLINT
 
 TEST(MatrixIO, TriangularMatrixOutput) // NOLINT
 {
-  const auto mat =
+  auto matResult =
       TriangularMatrix<float32, 3, true, true>::FromList({{1.0F, 0.0F, 0.0F}, {2.0F, 3.0F, 0.0F}, {4.0F, 5.0F, 6.0F}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
 
   std::stringstream ss;
   ss << mat;
@@ -86,7 +96,9 @@ TEST(MatrixIO, TriangularMatrixOutput) // NOLINT
 
 TEST(MatrixIO, FileOutput) // NOLINT
 {
-  const auto mat = Matrix<float32, 2, 2, true>::FromList({{1.0F, 2.0F}, {3.0F, 4.0F}});
+  auto matResult = Matrix<float32, 2, 2, true>::FromList({{1.0F, 2.0F}, {3.0F, 4.0F}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
 
   std::ofstream file("test_matrix_io_output.txt");
   file << mat;
@@ -103,7 +115,9 @@ TEST(MatrixIO, FileOutput) // NOLINT
 
 TEST(MatrixIO, ChainingOutput) // NOLINT
 {
-  const auto mat = Matrix<float32, 2, 2, true>::FromList({{1.0F, 2.0F}, {3.0F, 4.0F}});
+  auto matResult = Matrix<float32, 2, 2, true>::FromList({{1.0F, 2.0F}, {3.0F, 4.0F}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
 
   std::stringstream ss;
   ss << "Matrix: " << mat << "End";
@@ -117,14 +131,18 @@ TEST(MatrixIO, ChainingOutput) // NOLINT
 TEST(MatrixIO, DifferentValueTypes) // NOLINT
 {
   // Test float64
-  const auto float64Mat = Matrix<float64, 2, 2, true>::FromList({{1.0, 2.0}, {3.0, 4.0}});
+  auto float64MatResult = Matrix<float64, 2, 2, true>::FromList({{1.0, 2.0}, {3.0, 4.0}});
+  ASSERT_TRUE(float64MatResult.has_value());
+  const auto float64Mat = float64MatResult.value();
 
   std::stringstream ss1;
   ss1 << float64Mat;
   EXPECT_NE(ss1.str().find("+1.000000"), std::string::npos);
 
   // Test sint32
-  const auto sint32Mat = Matrix<sint32, 2, 2, true>::FromList({{1, 2}, {3, 4}});
+  auto sint32MatResult = Matrix<sint32, 2, 2, true>::FromList({{1, 2}, {3, 4}});
+  ASSERT_TRUE(sint32MatResult.has_value());
+  const auto sint32Mat = sint32MatResult.value();
 
   std::stringstream ss2;
   ss2 << sint32Mat;
@@ -134,7 +152,9 @@ TEST(MatrixIO, DifferentValueTypes) // NOLINT
 
 TEST(MatrixIO, SingleElementMatrix) // NOLINT
 {
-  const auto mat = Matrix<float32, 1, 1, true>::FromList({{42.0F}});
+  auto matResult = Matrix<float32, 1, 1, true>::FromList({{42.0F}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
 
   std::stringstream ss;
   ss << mat;
@@ -146,12 +166,14 @@ TEST(MatrixIO, SingleElementMatrix) // NOLINT
 TEST(MatrixIO, LargeMatrix) // NOLINT
 {
   // clang-format off
-  const auto mat = Matrix<float32, 4, 4, true>::FromList({
+  auto matResult = Matrix<float32, 4, 4, true>::FromList({
   {1.0F, 2.0F, 3.0F, 4.0F}, 
   {5.0F, 6.0F, 7.0F, 8.0F}, 
   {9.0F, 10.0F, 11.0F, 12.0F}, 
   {13.0F, 14.0F, 15.0F, 16.0F}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   std::stringstream ss;
@@ -171,11 +193,13 @@ TEST(MatrixIO, LargeMatrix) // NOLINT
 TEST(MatrixIO, MatrixDouble4x3RowMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = Matrix<double, 4, 3, true>::FromList({
+  auto matResult = Matrix<double, 4, 3, true>::FromList({
       {1.0, 2.0, 3.0},
       {4.0, 5.0, 6.0},
       {7.0, 8.0, 9.0},
       {10.0, 11.0, 12.0}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   std::stringstream ss;
@@ -193,13 +217,15 @@ TEST(MatrixIO, MatrixDouble4x3RowMajor__Success) // NOLINT
 TEST(MatrixIO, MatrixDouble6x3RowMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = Matrix<double, 6, 3, true>::FromList({
+  auto matResult = Matrix<double, 6, 3, true>::FromList({
       {1.0, 2.0, 3.0},
       {4.0, 5.0, 6.0},
       {7.0, 8.0, 9.0},
       {10.0, 11.0, 12.0},
       {13.0, 14.0, 15.0},
       {16.0, 17.0, 18.0}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   std::stringstream ss;
@@ -217,11 +243,13 @@ TEST(MatrixIO, MatrixDouble6x3RowMajor__Success) // NOLINT
 TEST(MatrixIO, SquareMatrixDouble4x4RowMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = SquareMatrix<double, 4, true>::FromList({
+  auto matResult = SquareMatrix<double, 4, true>::FromList({
       {1.0, 2.0, 3.0, 4.0},
       {5.0, 6.0, 7.0, 8.0},
       {9.0, 10.0, 11.0, 12.0},
       {13.0, 14.0, 15.0, 16.0}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   std::stringstream ss;
@@ -239,13 +267,15 @@ TEST(MatrixIO, SquareMatrixDouble4x4RowMajor__Success) // NOLINT
 TEST(MatrixIO, SquareMatrixDouble6x6RowMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = SquareMatrix<double, 6, true>::FromList({
+  auto matResult = SquareMatrix<double, 6, true>::FromList({
       {1.0, 2.0, 3.0, 4.0, 5.0, 6.0},
       {7.0, 8.0, 9.0, 10.0, 11.0, 12.0},
       {13.0, 14.0, 15.0, 16.0, 17.0, 18.0},
       {19.0, 20.0, 21.0, 22.0, 23.0, 24.0},
       {25.0, 26.0, 27.0, 28.0, 29.0, 30.0},
       {31.0, 32.0, 33.0, 34.0, 35.0, 36.0}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   std::stringstream ss;
@@ -263,11 +293,13 @@ TEST(MatrixIO, SquareMatrixDouble6x6RowMajor__Success) // NOLINT
 TEST(MatrixIO, MatrixDouble4x3ColumnMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = Matrix<double, 4, 3, false>::FromList({
+  auto matResult = Matrix<double, 4, 3, false>::FromList({
       {1.0, 2.0, 3.0},
       {4.0, 5.0, 6.0},
       {7.0, 8.0, 9.0},
       {10.0, 11.0, 12.0}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   std::stringstream ss;
@@ -285,11 +317,13 @@ TEST(MatrixIO, MatrixDouble4x3ColumnMajor__Success) // NOLINT
 TEST(MatrixIO, SquareMatrixDouble4x4ColumnMajor__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = SquareMatrix<double, 4, false>::FromList({
+  auto matResult = SquareMatrix<double, 4, false>::FromList({
       {1.0, 2.0, 3.0, 4.0},
       {5.0, 6.0, 7.0, 8.0},
       {9.0, 10.0, 11.0, 12.0},
       {13.0, 14.0, 15.0, 16.0}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   std::stringstream ss;
@@ -307,11 +341,13 @@ TEST(MatrixIO, SquareMatrixDouble4x4ColumnMajor__Success) // NOLINT
 TEST(MatrixIO, MatrixDouble4x3RowMajor_NegativeValues__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = Matrix<double, 4, 3, true>::FromList({
+  auto matResult = Matrix<double, 4, 3, true>::FromList({
       {-1.0, -2.0, 3.0},
       {4.0, -5.0, -6.0},
       {-7.0, 8.0, -9.0},
       {10.0, -11.0, 12.0}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   std::stringstream ss;
@@ -325,11 +361,13 @@ TEST(MatrixIO, MatrixDouble4x3RowMajor_NegativeValues__Success) // NOLINT
 TEST(MatrixIO, SquareMatrixDouble4x4RowMajor_NegativeValues__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = SquareMatrix<double, 4, true>::FromList({
+  auto matResult = SquareMatrix<double, 4, true>::FromList({
       {-1.0, -2.0, -3.0, -4.0},
       {-5.0, -6.0, -7.0, -8.0},
       {-9.0, -10.0, -11.0, -12.0},
       {-13.0, -14.0, -15.0, -16.0}});
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   std::stringstream ss;
@@ -375,7 +413,9 @@ TEST(MatrixIO, SquareMatrixDouble4x4RowMajor_ZeroMatrix__Success) // NOLINT
 
 TEST(MatrixIO, VectorFloat3__Success) // NOLINT
 {
-  const auto vec = Vector<float32, 3>::FromList({1.0F, 2.0F, 3.0F});
+  auto vecResult = Vector<float32, 3>::FromList({1.0F, 2.0F, 3.0F});
+  ASSERT_TRUE(vecResult.has_value());
+  const auto vec = vecResult.value();
 
   std::stringstream ss;
   ss << vec;
@@ -389,7 +429,9 @@ TEST(MatrixIO, VectorFloat3__Success) // NOLINT
 
 TEST(MatrixIO, VectorInt4__Success) // NOLINT
 {
-  const auto vec = Vector<sint32, 4>::FromList({10, 20, 30, 40});
+  auto vecResult = Vector<sint32, 4>::FromList({10, 20, 30, 40});
+  ASSERT_TRUE(vecResult.has_value());
+  const auto vec = vecResult.value();
 
   std::stringstream ss;
   ss << vec;

@@ -23,7 +23,7 @@ namespace conversions
 /// \param[in] diag The source diagonal matrix
 /// \return SquareMatrix with diagonal elements from the input and zeros elsewhere
 /// \see DiagonalFromSquare() for the reverse conversion
-/// \see SquareFromList() for creating from initializer lists
+/// \see SquareMatrix::FromList() for checked initializer-list construction
 template <typename ValueType_, sint32 Size_, bool IsRowMajor_>
 inline auto SquareFromDiagonal(const DiagonalMatrix<ValueType_, Size_>& diag) -> SquareMatrix<ValueType_, Size_, IsRowMajor_>
 {

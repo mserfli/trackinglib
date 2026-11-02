@@ -12,11 +12,13 @@ using namespace tracking::math;
 TEST(DiagonalMatrix, ctor_default) // NOLINT
 {
   // clang-format off
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {0, 0, 0},
     {0, 0, 0},
     {0, 0, 0}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -27,7 +29,9 @@ TEST(DiagonalMatrix, ctor_default) // NOLINT
 
 TEST(DiagonalMatrix, ctor_FromList_Flat__Success) // NOLINT
 {
-  const auto result = DiagonalMatrix<sint32, 3>::FromList({1, 2, 3});
+  auto resultResult = DiagonalMatrix<sint32, 3>::FromList({1, 2, 3});
+  ASSERT_TRUE(resultResult.has_value());
+  const auto result = resultResult.value();
 
   EXPECT_EQ(result.at_unsafe(0), 1);
   EXPECT_EQ(result.at_unsafe(1), 2);
@@ -37,11 +41,13 @@ TEST(DiagonalMatrix, ctor_FromList_Flat__Success) // NOLINT
 TEST(DiagonalMatrix, ctor_FromList_Nested__Success) // NOLINT
 {
   // clang-format off
-  const auto result = DiagonalMatrix<sint32, 3>::FromList({
+  auto resultResult = DiagonalMatrix<sint32, 3>::FromList({
       {1, 0, 0},
       {0, 2, 0},
       {0, 0, 3},
   });
+  ASSERT_TRUE(resultResult.has_value());
+  const auto result = resultResult.value();
   // clang-format on
 
   EXPECT_EQ(result.at_unsafe(0), 1);
@@ -52,11 +58,13 @@ TEST(DiagonalMatrix, ctor_FromList_Nested__Success) // NOLINT
 TEST(DiagonalMatrix, Identity) // NOLINT
 {
   // clang-format off
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -70,11 +78,13 @@ TEST(DiagonalMatrix, setIdentity) // NOLINT
   // clang-format off
   using DiagonalMatrix = DiagonalMatrix<float32, 3>;
   DiagonalMatrix diagMat{}; 
-  const auto expMat = DiagonalMatrix::FromList({
+  auto expMatResult = DiagonalMatrix::FromList({
     {1, 0, 0}, 
     {0, 1, 0}, 
     {0, 0, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -86,20 +96,26 @@ TEST(DiagonalMatrix, setIdentity) // NOLINT
 TEST(DiagonalMatrix, setBlock_topLeft) // NOLINT
 {
   // clang-format off
-  auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 1, 0}, 
     {0, 0, 1}
   });
-  const auto diagBlockMat = DiagonalMatrix<float32, 2>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  auto diagMat = diagMatResult.value();
+  auto diagBlockMatResult = DiagonalMatrix<float32, 2>::FromList({
     {2, 0},  
     {0, 3}
   });
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(diagBlockMatResult.has_value());
+  const auto diagBlockMat = diagBlockMatResult.value();
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {2, 0, 0}, 
     {0, 3, 0}, 
     {0, 0, 1}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -111,20 +127,26 @@ TEST(DiagonalMatrix, setBlock_topLeft) // NOLINT
 TEST(DiagonalMatrix, setBlock_bottomRight) // NOLINT
 {
   // clang-format off
-  auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 1, 0}, 
     {0, 0, 1}
   });
-  const auto diagBlockMat = DiagonalMatrix<float32, 2>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  auto diagMat = diagMatResult.value();
+  auto diagBlockMatResult = DiagonalMatrix<float32, 2>::FromList({
     {2, 0},  
     {0, 3}
   });
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(diagBlockMatResult.has_value());
+  const auto diagBlockMat = diagBlockMatResult.value();
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -136,16 +158,20 @@ TEST(DiagonalMatrix, setBlock_bottomRight) // NOLINT
 TEST(DiagonalMatrix, inverse) // NOLINT
 {
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 4}
   });
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0,   0}, 
     {0, 0.5, 0}, 
     {0, 0,   0.25}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -157,16 +183,20 @@ TEST(DiagonalMatrix, inverse) // NOLINT
 TEST(DiagonalMatrix, inverse_inplace) // NOLINT
 {
   // clang-format off
-  auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 4}
   });
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  auto diagMat = diagMatResult.value();
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0,   0}, 
     {0, 0.5, 0}, 
     {0, 0,   0.25}
-  }); // clang-format on
+  });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value(); // clang-format on
 
   // call UUT
   diagMat.inverse();
@@ -177,17 +207,23 @@ TEST(DiagonalMatrix, inverse_inplace) // NOLINT
 TEST(DiagonalMatrix, op_mul_rhs_vec) // NOLINT
 {
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
-  const auto vec = Vector<float32, 3>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto vecResult = Vector<float32, 3>::FromList({
     4, 5, 6
   });
-  const auto expMat = Vector<float32, 3>::FromList({
+  ASSERT_TRUE(vecResult.has_value());
+  const auto vec = vecResult.value();
+  auto expMatResult = Vector<float32, 3>::FromList({
     4,  10,  18
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -199,21 +235,27 @@ TEST(DiagonalMatrix, op_mul_rhs_vec) // NOLINT
 TEST(DiagonalMatrix, op_mul_rhs_mat) // NOLINT
 {
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
-  const auto mat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto matResult = Matrix<float32, 3, 4, true>::FromList({
     {1,  2,  3,  4}, 
     {5,  6,  7,  8}, 
     {9, 10, 11, 12}
   });
-  const auto expMat = Matrix<float32, 3, 4, true>::FromList({
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
+  auto expMatResult = Matrix<float32, 3, 4, true>::FromList({
     {1,  2,  3,  4}, 
     {10, 12, 14, 16}, 
     {27, 30, 33, 36}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -225,21 +267,27 @@ TEST(DiagonalMatrix, op_mul_rhs_mat) // NOLINT
 TEST(DiagonalMatrix, op_mul_lhs_mat) // NOLINT
 {
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
-  const auto mat = Matrix<float32, 3, 3, true>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto matResult = Matrix<float32, 3, 3, true>::FromList({
     {1, 2, 3}, 
     {4, 5, 6}, 
     {7, 8, 9}
   });
-  const auto expMat = Matrix<float32, 3, 3, true>::FromList({
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
+  auto expMatResult = Matrix<float32, 3, 3, true>::FromList({
     {1, 4, 9}, 
     {4, 10, 18}, 
     {7, 16, 27}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -251,21 +299,27 @@ TEST(DiagonalMatrix, op_mul_lhs_mat) // NOLINT
 TEST(DiagonalMatrix, op_mul_rhs_lowerTria) // NOLINT
 {
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
-  const auto trilMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto trilMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0}, 
     {4, 5, 0}, 
     {6, 7, 8}
   });
-  const auto expMat = TriangularMatrix<float32, 3, true, true>::FromList({
+  ASSERT_TRUE(trilMatResult.has_value());
+  const auto trilMat = trilMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, true, true>::FromList({
     {1, 0, 0}, 
     {8, 10, 0}, 
     {18, 21, 24}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -277,21 +331,27 @@ TEST(DiagonalMatrix, op_mul_rhs_lowerTria) // NOLINT
 TEST(DiagonalMatrix, op_mul_rhs_upperTria) // NOLINT
 {
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
-  const auto triuMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto triuMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3}, 
     {0, 5, 6}, 
     {0, 0, 8}
   });
-  const auto expMat = TriangularMatrix<float32, 3, false, true>::FromList({
+  ASSERT_TRUE(triuMatResult.has_value());
+  const auto triuMat = triuMatResult.value();
+  auto expMatResult = TriangularMatrix<float32, 3, false, true>::FromList({
     {1, 2, 3}, 
     {0, 10, 12}, 
     {0, 0, 24}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -303,21 +363,27 @@ TEST(DiagonalMatrix, op_mul_rhs_upperTria) // NOLINT
 TEST(DiagonalMatrix, op_mul_diag) // NOLINT
 {
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
-  const auto diagMatOther = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto diagMatOtherResult = DiagonalMatrix<float32, 3>::FromList({
     {4, 0, 0}, 
     {0, 5, 0}, 
     {0, 0, 6}
   });
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(diagMatOtherResult.has_value());
+  const auto diagMatOther = diagMatOtherResult.value();
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {4, 0, 0}, 
     {0, 10, 0}, 
     {0, 0, 18}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -329,21 +395,27 @@ TEST(DiagonalMatrix, op_mul_diag) // NOLINT
 TEST(DiagonalMatrix, op_mul_diag_inplace) // NOLINT
 {
   // clang-format off
-  auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
-  const auto diagMatOther = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  auto diagMat = diagMatResult.value();
+  auto diagMatOtherResult = DiagonalMatrix<float32, 3>::FromList({
     {4, 0, 0}, 
     {0, 5, 0}, 
     {0, 0, 6}
   });
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  ASSERT_TRUE(diagMatOtherResult.has_value());
+  const auto diagMatOther = diagMatOtherResult.value();
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {4, 0, 0}, 
     {0, 10, 0}, 
     {0, 0, 18}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -355,17 +427,21 @@ TEST(DiagonalMatrix, op_mul_diag_inplace) // NOLINT
 TEST(DiagonalMatrix, op_mul_scal) // NOLINT
 {
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   const float32 scal = 3;
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {3, 0, 0}, 
     {0, 6, 0}, 
     {0, 0, 9}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -377,17 +453,21 @@ TEST(DiagonalMatrix, op_mul_scal) // NOLINT
 TEST(DiagonalMatrix, op_mul_scal_inplace) // NOLINT
 {
   // clang-format off
-  auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0}, 
     {0, 2, 0}, 
     {0, 0, 3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  auto diagMat = diagMatResult.value();
   const float32 scal = 3;
-  const auto expMat = DiagonalMatrix<float32, 3>::FromList({
+  auto expMatResult = DiagonalMatrix<float32, 3>::FromList({
     {3, 0, 0}, 
     {0, 6, 0}, 
     {0, 0, 9}
   });
+  ASSERT_TRUE(expMatResult.has_value());
+  const auto expMat = expMatResult.value();
   // clang-format on
 
   // call UUT
@@ -400,11 +480,13 @@ TEST(DiagonalMatrix, isPositiveDefinite_true) // NOLINT
 {
   // clang-format off
   const auto val = std::numeric_limits<float32>::min();
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {val,   0,   0}, 
     {  0, val,   0}, 
     {  0,   0, val}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -417,11 +499,13 @@ TEST(DiagonalMatrix, isPositiveDefinite_false) // NOLINT
 {
   // clang-format off
   const auto val = std::numeric_limits<float32>::min();
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {val, 0,   0},
     {  0, 0,   0},
     {  0, 0, val}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -439,10 +523,12 @@ TEST(DiagonalMatrix, trace_2x2__Success) // NOLINT
 {
   // Create a 2x2 diagonal matrix
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 2>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 2>::FromList({
     {1, 0},
     {0, 2}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -456,11 +542,13 @@ TEST(DiagonalMatrix, trace_3x3__Success) // NOLINT
 {
   // Create a 3x3 diagonal matrix
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 2, 0},
     {0, 0, 3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -474,12 +562,14 @@ TEST(DiagonalMatrix, trace_4x4__Success) // NOLINT
 {
   // Create a 4x4 diagonal matrix
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 4>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 4>::FromList({
     {1, 0, 0, 0},
     {0, 2, 0, 0},
     {0, 0, 3, 0},
     {0, 0, 0, 4}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -515,11 +605,13 @@ TEST(DiagonalMatrix, trace_Double__Success) // NOLINT
 {
   // Create a 3x3 diagonal matrix with double precision
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float64, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float64, 3>::FromList({
     {1.0, 0.0, 0.0},
     {0.0, 2.0, 0.0},
     {0.0, 0.0, 3.0}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -533,9 +625,11 @@ TEST(DiagonalMatrix, trace_1x1_Consistency__Success) // NOLINT
 {
   // Create a 1x1 diagonal matrix
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 1>::FromList(
+  auto diagMatResult = DiagonalMatrix<float32, 1>::FromList(
     {5}
   );
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -551,10 +645,12 @@ TEST(DiagonalMatrix, determinant_2x2__Success) // NOLINT
 {
   // Create a 2x2 diagonal matrix
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 2>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 2>::FromList({
     {1, 0},
     {0, 2}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -568,11 +664,13 @@ TEST(DiagonalMatrix, determinant_3x3__Success) // NOLINT
 {
   // Create a 3x3 diagonal matrix
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 2, 0},
     {0, 0, 3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -597,11 +695,13 @@ TEST(DiagonalMatrix, determinant_SingularMatrix__Success) // NOLINT
 {
   // Create a singular diagonal matrix (zero on diagonal)
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 0, 0},
     {0, 0, 3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -615,11 +715,13 @@ TEST(DiagonalMatrix, determinant_Double__Success) // NOLINT
 {
   // Create a 3x3 diagonal matrix with double precision
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float64, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float64, 3>::FromList({
     {1.0, 0.0, 0.0},
     {0.0, 2.0, 0.0},
     {0.0, 0.0, 3.0}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -633,11 +735,13 @@ TEST(DiagonalMatrix, determinant_NegativeElements__Success) // NOLINT
 {
   // Create a diagonal matrix with negative elements
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {-1, 0,  0},
     { 0, 2,  0},
     { 0, 0, -3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -655,11 +759,13 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_AllPositive__Success) // NOLINT
 {
   // Create a diagonal matrix with all positive elements
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 2, 0},
     {0, 0, 3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -673,11 +779,13 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_WithZero__Success) // NOLINT
 {
   // Create a diagonal matrix with one zero element
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0, 0},
     {0, 0, 0},
     {0, 0, 3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -703,11 +811,13 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_WithNegative__Success) // NOLINT
 {
   // Create a diagonal matrix with one negative element
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {1, 0,  0},
     {0, 2,  0},
     {0, 0, -3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -721,11 +831,13 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_MixedSigns__Success) // NOLINT
 {
   // Create a diagonal matrix with mixed positive and negative elements
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {-1, 0,  0},
     { 0, 2,  0},
     { 0, 0, -3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -752,11 +864,13 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_SmallPositiveValues__Success) // NOL
   // Create a diagonal matrix with very small positive values
   const auto val = std::numeric_limits<float32>::min();
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 3>::FromList({
     {val,   0,   0},
     {  0, val,   0},
     {  0,   0, val}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -770,11 +884,13 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_DoublePrecision__Success) // NOLINT
 {
   // Create a diagonal matrix with double precision
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float64, 3>::FromList({
+  auto diagMatResult = DiagonalMatrix<float64, 3>::FromList({
     {1.0, 0.0, 0.0},
     {0.0, 0.0, 0.0},
     {0.0, 0.0, 3.0}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -788,12 +904,14 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_LargeMatrix__Success) // NOLINT
 {
   // Create a larger diagonal matrix (4x4) with mixed values
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 4>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 4>::FromList({
     {0, 0, 0, 0},
     {0, 1, 0, 0},
     {0, 0, 2, 0},
     {0, 0, 0, 3}
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -807,10 +925,12 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_EdgeCaseNegativeZero__Success) // NO
 {
   // Create a diagonal matrix with negative zero (should be treated as zero)
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float32, 2>::FromList({
+  auto diagMatResult = DiagonalMatrix<float32, 2>::FromList({
     {0.0f, 0.0f},
     {0.0f, -0.0f}  // negative zero
   });
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
   // clang-format on
 
   // call UUT
@@ -827,14 +947,18 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_EdgeCaseNegativeZero__Success) // NO
 TEST(DiagonalMatrix, isPositiveSemiDefinite_ZeroDiagonal_AgreesWithFullSquare__PolicyConsistent) // NOLINT
 {
   // clang-format off
-  const auto diagMat = DiagonalMatrix<float64, 2>::FromList({
+  auto diagMatResult = DiagonalMatrix<float64, 2>::FromList({
     {1.0, 0.0},
     {0.0, 0.0}  // zero diagonal element -> singular PSD
   });
-  const auto equivalentFull = SquareMatrix<float64, 2, true>::FromList({
+  ASSERT_TRUE(diagMatResult.has_value());
+  const auto diagMat = diagMatResult.value();
+  auto equivalentFullResult = SquareMatrix<float64, 2, true>::FromList({
     {1.0, 0.0},
     {0.0, 0.0}
   });
+  ASSERT_TRUE(equivalentFullResult.has_value());
+  const auto equivalentFull = equivalentFullResult.value();
   // clang-format on
 
   // both the diagonal (factored) and full paths accept the same singular PSD matrix

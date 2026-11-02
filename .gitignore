@@ -5,7 +5,7 @@ compile_commands.json
 dev-env.sh
 DockerfileMac
 build
-build_cov
+build_*
 doxydoc
 pytracking.*
 plans

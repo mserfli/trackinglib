@@ -52,11 +52,13 @@ protected:
 
     // Expected covariance matrix (from J * Pin * J^T)
     // clang-format off
-    const auto expected_cov = math::SquareMatrix<value_type, 3, true>::FromList({
+    auto expected_covResult = math::SquareMatrix<value_type, 3, true>::FromList({
       {2.501000000000001e-03,                     0,                     0},
       {                    0, 6.375625000000005e-06, 1.262500000000001e-05},
       {                    0, 1.262500000000001e-05, 2.500000000000001e-05}
     });
+    ASSERT_TRUE(expected_covResult.has_value());
+    const auto expected_cov = expected_covResult.value();
     // clang-format on
 
     // Verify displacement vector
@@ -250,11 +252,13 @@ protected:
 
     // Expected covariance matrix (from J * Pin * J^T)
     // clang-format off
-    const auto expected_cov = math::SquareMatrix<value_type, 3, true>::FromList({
+    auto expected_covResult = math::SquareMatrix<value_type, 3, true>::FromList({
       {+2.498923608418034e-03, +6.227359670916502e-05, -4.207281343930892e-07},
       {+6.227359670916502e-05, +7.930132885369052e-06, +1.261711047085165e-05},
       {-4.207281343930892e-07, +1.261711047085165e-05, +2.500000000000001e-05}
     });
+    ASSERT_TRUE(expected_covResult.has_value());
+    const auto expected_cov = expected_covResult.value();
     // clang-format on
 
     // Verify covariance matrix

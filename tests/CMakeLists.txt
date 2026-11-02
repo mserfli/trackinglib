@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.24)
 
 # 1. Define the list of test source files
 set(TEST_SOURCES
+    motion/test_checked_model_factories.cpp
+    math/test_checked_primitive_factories.cpp
+    math/test_checked_covariance_factories.cpp
     math/test_functions.cpp
     math/test_matrix.cpp
     math/test_vector.cpp
@@ -68,6 +71,23 @@ foreach(test_source ${TEST_SOURCES})
     list(APPEND ALL_TEST_EXECUTABLES ${test_name})
 endforeach()
 
+# Exercise public factory instantiations without the test-only access macros or
+# GoogleTest. Keep exceptions-disabled flags local to these smoke executables.
+foreach(smoke_target factory_smoke factory_smoke_ndebug)
+    add_executable(${smoke_target} factory_smoke.cpp)
+    target_include_directories(${smoke_target} PRIVATE ${PROJECT_SOURCE_DIR}/include)
+    # expected v1.0.0 leaves its exception argument unused with -fno-exceptions.
+    # Treat dependency headers as system headers on these targets only.
+    target_include_directories(${smoke_target} SYSTEM PRIVATE $<TARGET_PROPERTY:expected,INTERFACE_INCLUDE_DIRECTORIES>)
+    target_link_libraries(${smoke_target} PRIVATE trackingLib::trackingLib)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        target_compile_options(${smoke_target} PRIVATE -fno-exceptions)
+    endif()
+    add_test(NAME ${smoke_target} COMMAND ${smoke_target})
+    list(APPEND ALL_TEST_EXECUTABLES ${smoke_target})
+endforeach()
+target_compile_definitions(factory_smoke_ndebug PRIVATE NDEBUG)
+
 # 3. Setup unified coverage
 # By using 'ctest' as the EXECUTABLE, lcov will collect data from all 
 # the individual test runs executed by the CTest runner.
@@ -79,13 +99,15 @@ if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQ
         DEPENDENCIES ${ALL_TEST_EXECUTABLES}
         BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
         LCOV_ARGS
-            --ignore-errors unused,mismatch
+            # GCC-generated function end lines are classified as "mismatch"
+            # by lcov 2.0 and "inconsistent" by newer versions.
+            --ignore-errors unused,mismatch,inconsistent
             --filter brace
             --rc geninfo_unexecuted_blocks=0
             --rc derive_function_end_line=0
         GENHTML_ARGS
             --no-branch-coverage
-            --ignore-errors mismatch
+            --ignore-errors mismatch,inconsistent
             --filter brace
             --legend
         EXCLUDE 

@@ -15,7 +15,7 @@ namespace contract
 template <typename PolicyType>
 struct CovarianceMatrixPolicyIntf
 {
-  CovarianceMatrixPolicyIntf()
+  CovarianceMatrixPolicyIntf() noexcept
   {
 #if __cplusplus == 202002L
     // Check inheritance from base policy

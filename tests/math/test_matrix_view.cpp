@@ -8,11 +8,13 @@ TEST(MatrixView, ctor_view) // NOLINT
 {
   // testing MatrixView on existing matrix
   // clang-format off
-  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
-  })};
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
   // clang-format on
 
   // View of the top-left 2x2 block
@@ -29,11 +31,13 @@ TEST(MatrixView, ctor_view) // NOLINT
 TEST(MatrixView, add_views) // NOLINT
 {
   // clang-format off
-  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
-  })};
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
   // clang-format on
 
   // View 1: top-left 2x2
@@ -59,11 +63,13 @@ TEST(MatrixView, add_views) // NOLINT
 TEST(MatrixView, mul_views) // NOLINT
 {
   // clang-format off
-  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
-  })};
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
   // clang-format on
 
   // View 1: top-left 2x2
@@ -89,11 +95,13 @@ TEST(MatrixView, mul_views) // NOLINT
 TEST(MatrixView, scalar_ops) // NOLINT
 {
   // clang-format off
-  const auto mat{Matrix<sint32, 3, 3, true>::FromList({
+  auto matFactoryResult = Matrix<sint32, 3, 3, true>::FromList({
     {1, 2, 3}, 
     {4, 5, 6}, 
     {7, 8, 9}
-  })};
+  });
+  ASSERT_TRUE(matFactoryResult.has_value());
+  const auto mat = matFactoryResult.value();
   // clang-format on
   const MatrixView<sint32, 3, 3> view(mat, 0, 0, 1, 1);
 

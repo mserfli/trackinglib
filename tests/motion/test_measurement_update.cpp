@@ -55,7 +55,7 @@ void expectSamePosterior(const ModelA_& actual, const ModelB_& expected, const T
 
 /// \brief Prior used across the cross-check tests (correlated, positive definite)
 template <typename MM_>
-auto makePrior() -> MM_
+auto makePrior() -> tl::expected<MM_, tracking::math::Errors>
 {
   // clang-format off
   return MM_::FromLists({10, 2, 5, 1}, {
@@ -63,7 +63,7 @@ auto makePrior() -> MM_
     {0.5, 1.0, 0.0, 0.1},
     {0.2, 0.0, 2.0, 0.3},
     {0.0, 0.1, 0.3, 0.5}
-  }).value();
+  });
   // clang-format on
 }
 
@@ -74,16 +74,20 @@ TEST(MeasurementUpdate, update_KalmanFullBlock__MatchesHandComputedPosterior) //
   // diagonal prior so the posterior is hand-computable per axis:
   // S = diag(4+1, 2+0.5) ; K = diag-selective with K_x = 4/5, K_y = 2/2.5
   // clang-format off
-  auto mm = MMFull::FromLists({10, 2, 5, 1}, {
+  auto mmResult = MMFull::FromLists({10, 2, 5, 1}, {
     {4.0, 0.0, 0.0, 0.0},
     {0.0, 1.0, 0.0, 0.0},
     {0.0, 0.0, 2.0, 0.0},
     {0.0, 0.0, 0.0, 0.5}
-  }).value();
-  const auto obs = PosFull::FromLists({10.6, 5.3}, {
+  });
+  ASSERT_TRUE(mmResult.has_value());
+  auto mm = mmResult.value();
+  auto obsResult = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -105,13 +109,19 @@ TEST(MeasurementUpdate, update_KalmanFullBlock__MatchesHandComputedPosterior) //
 
 TEST(MeasurementUpdate, update_KalmanFullSequentialVsBlock__SamePosterior) // NOLINT
 {
-  auto mmBlock      = makePrior<MMFull>();
-  auto mmSequential = makePrior<MMFull>();
+  const auto mmBlockFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmBlockFactoryResult.has_value());
+  auto       mmBlock                   = mmBlockFactoryResult.value();
+  const auto mmSequentialFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmSequentialFactoryResult.has_value());
+  auto mmSequential = mmSequentialFactoryResult.value();
   // clang-format off
-  const auto obs = PosFull::FromLists({10.6, 5.3}, {
+  auto obsResult = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -124,17 +134,25 @@ TEST(MeasurementUpdate, update_KalmanFullSequentialVsBlock__SamePosterior) // NO
 
 TEST(MeasurementUpdate, update_KalmanFactoredVsFull__SamePosterior) // NOLINT
 {
-  auto mmFull = makePrior<MMFull>();
-  auto mmFact = makePrior<MMFact>();
+  const auto mmFullFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmFullFactoryResult.has_value());
+  auto       mmFull              = mmFullFactoryResult.value();
+  const auto mmFactFactoryResult = makePrior<MMFact>();
+  ASSERT_TRUE(mmFactFactoryResult.has_value());
+  auto mmFact = mmFactFactoryResult.value();
   // clang-format off
-  const auto obsFull = PosFull::FromLists({10.6, 5.3}, {
+  auto obsFullResult = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  }).value();
-  const auto obsFact = PosFact::FromLists({10.6, 5.3}, {
+  });
+  ASSERT_TRUE(obsFullResult.has_value());
+  const auto obsFull = obsFullResult.value();
+  auto obsFactResult = PosFact::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  }).value();
+  });
+  ASSERT_TRUE(obsFactResult.has_value());
+  const auto obsFact = obsFactResult.value();
   // clang-format on
   const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
   const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
@@ -147,13 +165,19 @@ TEST(MeasurementUpdate, update_KalmanFactoredVsFull__SamePosterior) // NOLINT
 
 TEST(MeasurementUpdate, update_InformationVsKalman__SamePosterior) // NOLINT
 {
-  auto mmKalman = makePrior<MMFull>();
-  auto mmInfo   = makePrior<MMFull>();
+  const auto mmKalmanFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmKalmanFactoryResult.has_value());
+  auto       mmKalman            = mmKalmanFactoryResult.value();
+  const auto mmInfoFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmInfoFactoryResult.has_value());
+  auto mmInfo = mmInfoFactoryResult.value();
   // clang-format off
-  const auto obs = PosFull::FromLists({10.6, 5.3}, {
+  auto obsResult = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
   const auto egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -173,13 +197,19 @@ TEST(MeasurementUpdate, update_InformationVsKalman__SamePosterior) // NOLINT
 
 TEST(MeasurementUpdate, update_InformationFactoredVsKalmanFactored__SamePosterior) // NOLINT
 {
-  auto mmKalman = makePrior<MMFact>();
-  auto mmInfo   = makePrior<MMFact>();
+  const auto mmKalmanFactoryResult = makePrior<MMFact>();
+  ASSERT_TRUE(mmKalmanFactoryResult.has_value());
+  auto       mmKalman            = mmKalmanFactoryResult.value();
+  const auto mmInfoFactoryResult = makePrior<MMFact>();
+  ASSERT_TRUE(mmInfoFactoryResult.has_value());
+  auto mmInfo = mmInfoFactoryResult.value();
   // clang-format off
-  const auto obs = PosFact::FromLists({10.6, 5.3}, {
+  auto obsResult = PosFact::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
   const auto egoMotion = makeNoEgoMotion<FactoredPolicy>();
 
@@ -199,14 +229,20 @@ TEST(MeasurementUpdate, update_InformationFactoredVsKalmanFactored__SamePosterio
 
 TEST(MeasurementUpdate, update_KalmanFullSequentialCorrelatedR_VsBlock__SamePosterior) // NOLINT
 {
-  auto mmBlock      = makePrior<MMFull>();
-  auto mmSequential = makePrior<MMFull>();
+  const auto mmBlockFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmBlockFactoryResult.has_value());
+  auto       mmBlock                   = mmBlockFactoryResult.value();
+  const auto mmSequentialFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmSequentialFactoryResult.has_value());
+  auto mmSequential = mmSequentialFactoryResult.value();
   // correlated measurement covariance: the sequential path must decorrelate via R = U*D*U'
   // clang-format off
-  const auto obs = PosFull::FromLists({10.6, 5.3}, {
+  auto obsResult = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.3},
     {0.3, 0.5}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -219,18 +255,26 @@ TEST(MeasurementUpdate, update_KalmanFullSequentialCorrelatedR_VsBlock__SamePost
 
 TEST(MeasurementUpdate, update_KalmanFactoredCorrelatedR_VsFullBlock__SamePosterior) // NOLINT
 {
-  auto mmFull = makePrior<MMFull>();
-  auto mmFact = makePrior<MMFact>();
+  const auto mmFullFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmFullFactoryResult.has_value());
+  auto       mmFull              = mmFullFactoryResult.value();
+  const auto mmFactFactoryResult = makePrior<MMFact>();
+  ASSERT_TRUE(mmFactFactoryResult.has_value());
+  auto mmFact = mmFactFactoryResult.value();
   // correlated measurement covariance: the factored sequential path must decorrelate via U and D
   // clang-format off
-  const auto obsFull = PosFull::FromLists({10.6, 5.3}, {
+  auto obsFullResult = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.3},
     {0.3, 0.5}
-  }).value();
-  const auto obsFact = PosFact::FromLists({10.6, 5.3}, {
+  });
+  ASSERT_TRUE(obsFullResult.has_value());
+  const auto obsFull = obsFullResult.value();
+  auto obsFactResult = PosFact::FromLists({10.6, 5.3}, {
     {1.0, 0.3},
     {0.3, 0.5}
-  }).value();
+  });
+  ASSERT_TRUE(obsFactResult.has_value());
+  const auto obsFact = obsFactResult.value();
   // clang-format on
   const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
   const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
@@ -243,13 +287,19 @@ TEST(MeasurementUpdate, update_KalmanFactoredCorrelatedR_VsFullBlock__SamePoster
 
 TEST(MeasurementUpdate, update_InformationFactoredCorrelatedR_VsKalman__SamePosterior) // NOLINT
 {
-  auto mmKalman = makePrior<MMFact>();
-  auto mmInfo   = makePrior<MMFact>();
+  const auto mmKalmanFactoryResult = makePrior<MMFact>();
+  ASSERT_TRUE(mmKalmanFactoryResult.has_value());
+  auto       mmKalman            = mmKalmanFactoryResult.value();
+  const auto mmInfoFactoryResult = makePrior<MMFact>();
+  ASSERT_TRUE(mmInfoFactoryResult.has_value());
+  auto mmInfo = mmInfoFactoryResult.value();
   // clang-format off
-  const auto obs = PosFact::FromLists({10.6, 5.3}, {
+  auto obsResult = PosFact::FromLists({10.6, 5.3}, {
     {1.0, 0.3},
     {0.3, 0.5}
-  }).value();
+  });
+  ASSERT_TRUE(obsResult.has_value());
+  const auto obs = obsResult.value();
   // clang-format on
   const auto egoMotion = makeNoEgoMotion<FactoredPolicy>();
 
@@ -269,17 +319,25 @@ TEST(MeasurementUpdate, update_InformationFactoredCorrelatedR_VsKalman__SamePost
 
 TEST(MeasurementUpdate, update_ComposedPositionVelocity__EqualsRepeatedSingleUpdates) // NOLINT
 {
-  auto mmComposed = makePrior<MMFull>();
-  auto mmRepeated = makePrior<MMFull>();
+  const auto mmComposedFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmComposedFactoryResult.has_value());
+  auto       mmComposed              = mmComposedFactoryResult.value();
+  const auto mmRepeatedFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmRepeatedFactoryResult.has_value());
+  auto mmRepeated = mmRepeatedFactoryResult.value();
   // clang-format off
-  const auto pos = PosFull::FromLists({10.6, 5.3}, {
+  auto posResult = PosFull::FromLists({10.6, 5.3}, {
     {1.0, 0.0},
     {0.0, 0.5}
-  }).value();
-  const auto vel = VelFull::FromLists({2.2, 0.8}, {
+  });
+  ASSERT_TRUE(posResult.has_value());
+  const auto pos = posResult.value();
+  auto velResult = VelFull::FromLists({2.2, 0.8}, {
     {0.2, 0.0},
     {0.0, 0.2}
-  }).value();
+  });
+  ASSERT_TRUE(velResult.has_value());
+  const auto vel = velResult.value();
   // clang-format on
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
@@ -294,13 +352,25 @@ TEST(MeasurementUpdate, update_ComposedPositionVelocity__EqualsRepeatedSingleUpd
 
 TEST(MeasurementUpdate, update_ComposedFactoredVsComposedFull__SamePosterior) // NOLINT
 {
-  auto mmFull = makePrior<MMFull>();
-  auto mmFact = makePrior<MMFact>();
+  const auto mmFullFactoryResult = makePrior<MMFull>();
+  ASSERT_TRUE(mmFullFactoryResult.has_value());
+  auto       mmFull              = mmFullFactoryResult.value();
+  const auto mmFactFactoryResult = makePrior<MMFact>();
+  ASSERT_TRUE(mmFactFactoryResult.has_value());
+  auto mmFact = mmFactFactoryResult.value();
   // clang-format off
-  const auto posFull = PosFull::FromLists({10.6, 5.3}, {{1.0, 0.0}, {0.0, 0.5}}).value();
-  const auto posFact = PosFact::FromLists({10.6, 5.3}, {{1.0, 0.0}, {0.0, 0.5}}).value();
-  const auto velFull = VelFull::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}}).value();
-  const auto velFact = VelFact::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}}).value();
+  auto posFullResult = PosFull::FromLists({10.6, 5.3}, {{1.0, 0.0}, {0.0, 0.5}});
+  ASSERT_TRUE(posFullResult.has_value());
+  const auto posFull = posFullResult.value();
+  auto posFactResult = PosFact::FromLists({10.6, 5.3}, {{1.0, 0.0}, {0.0, 0.5}});
+  ASSERT_TRUE(posFactResult.has_value());
+  const auto posFact = posFactResult.value();
+  auto velFullResult = VelFull::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}});
+  ASSERT_TRUE(velFullResult.has_value());
+  const auto velFull = velFullResult.value();
+  auto velFactResult = VelFact::FromLists({2.2, 0.8}, {{0.2, 0.0}, {0.0, 0.2}});
+  ASSERT_TRUE(velFactResult.has_value());
+  const auto velFact = velFactResult.value();
   // clang-format on
   const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
   const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
@@ -325,16 +395,20 @@ TEST(MeasurementUpdate, predictUpdateLoop__ConvergesToGroundTruth) // NOLINT
 
   // heavily offset initial estimate with large uncertainty
   // clang-format off
-  auto mm = MMFull::FromLists({5, 0, -5, 0}, {
+  auto mmResult = MMFull::FromLists({5, 0, -5, 0}, {
     {100.0,  0.0,   0.0,  0.0},
     {  0.0, 10.0,   0.0,  0.0},
     {  0.0,  0.0, 100.0,  0.0},
     {  0.0,  0.0,   0.0, 10.0}
-  }).value();
-  const auto R = PosFull::MeasurementCovFromList({
+  });
+  ASSERT_TRUE(mmResult.has_value());
+  auto mm = mmResult.value();
+  auto RResult = PosFull::MeasurementCovFromList({
     {0.25, 0.00},
     {0.00, 0.25}
-  }).value();
+  });
+  ASSERT_TRUE(RResult.has_value());
+  const auto R = RResult.value();
   // clang-format on
 
   const int steps = 50;

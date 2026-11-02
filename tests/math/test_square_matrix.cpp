@@ -8,11 +8,13 @@ TEST(SquareMatrix, householderQR) // NOLINT
 {
   // Create a square matrix for testing
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -33,16 +35,20 @@ TEST(SquareMatrix, inverse) // NOLINT
 {
   // Create a square matrix for testing
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     { 9.25, -6.0,  1.25},
     {-6.00,  4.5, -1.00},
     { 1.25, -1.0,  0.25}
   });
-  const auto expInvMat = SquareMatrix<float32, 3, true>::FromList({
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
+  auto expInvMatResult = SquareMatrix<float32, 3, true>::FromList({
     {1.0,  2.0,  3.0},
     {2.0,  6.0, 14.0},
     {3.0, 14.0, 45.0}
   });
+  ASSERT_TRUE(expInvMatResult.has_value());
+  const auto expInvMat = expInvMatResult.value();
   // clang-format on
 
   // call UUT
@@ -61,7 +67,7 @@ TEST(SquareMatrix, inverse) // NOLINT
 TEST(SquareMatrix, decomposeLLT) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float32, 6, true>::FromList({
+  auto covResult = SquareMatrix<float32, 6, true>::FromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
@@ -69,6 +75,8 @@ TEST(SquareMatrix, decomposeLLT) // NOLINT
     {-0.4707,    0.3277,   -0.9420,   -0.1260,    1.2990,    0.8641},
     { 2.3979,    0.1886,   -0.3686,    1.2376,    0.8641,    1.5631},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -90,10 +98,12 @@ TEST(SquareMatrix, decomposeLLT) // NOLINT
 TEST(SquareMatrix, decomposeLLT_NotSymmetric_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, -4},
     {-3, 13},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -105,10 +115,12 @@ TEST(SquareMatrix, decomposeLLT_NotSymmetric_ExpectError) // NOLINT
 TEST(SquareMatrix, decomposeLLT_SymmetricNotPositiveDefinite_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, -3},
     {-3, -13},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -120,11 +132,13 @@ TEST(SquareMatrix, decomposeLLT_SymmetricNotPositiveDefinite_ExpectError) // NOL
 TEST(SquareMatrix, symmetrize) // NOLINT
 {
   // clang-format off
-  auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
   });
+  ASSERT_TRUE(matResult.has_value());
+  auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -147,11 +161,13 @@ TEST(SquareMatrix, symmetrize) // NOLINT
 TEST(SquareMatrix, decomposeUDUT) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float32, 3, true>::FromList({
+  auto covResult = SquareMatrix<float32, 3, true>::FromList({
     {10, 2, 1},
     { 2, 5, 1},
     { 1, 1, 2}
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -177,10 +193,12 @@ TEST(SquareMatrix, decomposeUDUT) // NOLINT
 TEST(SquareMatrix, decomposeUDUT_NotSymmetric_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, 2},
     { 1, 5}
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -192,7 +210,7 @@ TEST(SquareMatrix, decomposeUDUT_NotSymmetric_ExpectError) // NOLINT
 TEST(SquareMatrix, decomposeLDLT) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float32, 6, true>::FromList({
+  auto covResult = SquareMatrix<float32, 6, true>::FromList({
     {10.9911,   -3.3077,    0.4975,    5.0849,   -0.4707,    2.3979},
     {-3.3077,   13.7164,   -3.5610,   -1.1132,    0.3277,    0.1886},
     { 0.4975,   -3.5610,    2.7362,   -0.2259,   -0.9420,   -0.3686},
@@ -200,6 +218,8 @@ TEST(SquareMatrix, decomposeLDLT) // NOLINT
     {-0.4707,    0.3277,   -0.9420,   -0.1260,    1.2990,    0.8641},
     { 2.3979,    0.1886,   -0.3686,    1.2376,    0.8641,    1.5631},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -220,10 +240,12 @@ TEST(SquareMatrix, decomposeLDLT) // NOLINT
 TEST(SquareMatrix, decomposeLDLT_NotSymmetric_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, -4},
     {-3, 13},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -235,10 +257,12 @@ TEST(SquareMatrix, decomposeLDLT_NotSymmetric_ExpectError) // NOLINT
 TEST(SquareMatrix, decomposeLDLT_SymmetricNotPositiveDefinite_ExpectError) // NOLINT
 {
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {10, -3},
     {-3, -13},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -252,10 +276,12 @@ TEST(SquareMatrix, decomposeLDLT_SingularPositiveSemiDefinite_ExpectError) // NO
   // Rank-deficient but symmetric, strictly-positive-diagonal PSD matrix: pivot at (1,1)
   // becomes exactly 0 mid-factorization even though the input diagonal itself is positive.
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {1, 1},
     {1, 1},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -269,10 +295,12 @@ TEST(SquareMatrix, decomposeLDLT_IndefiniteInteriorPivot_ExpectError) // NOLINT
   // Symmetric, strictly-positive-diagonal, indefinite matrix: pivot at (1,1) becomes
   // negative mid-factorization even though the input diagonal itself is positive.
   // clang-format off
-  auto cov = SquareMatrix<float32, 2, true>::FromList({
+  auto covResult = SquareMatrix<float32, 2, true>::FromList({
     {1, 2},
     {2, 1},
   });
+  ASSERT_TRUE(covResult.has_value());
+  auto cov = covResult.value();
   // clang-format on
 
   // call UUT
@@ -316,18 +344,19 @@ TYPED_TEST(GTestSquareMatrix, ctor_FromList__Success) // NOLINT
   auto resultExp = std::vector<sint32>{1, 2, 3, 4, 5, 6, 7, 8, 9};
   // clang-format on
 
+  ASSERT_TRUE(result.has_value());
   size_t index = 0;
   for (sint32 r = 0; r < 3; ++r)
   {
     for (sint32 c = 0; c < 3; ++c)
     {
-      EXPECT_EQ(result.at_unsafe(r, c), resultExp[index]);
+      EXPECT_EQ(result.value().at_unsafe(r, c), resultExp[index]);
       ++index;
     }
   }
 }
 
-TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidRows__ThrowsRuntimeError) // NOLINT
+TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidRows__ReturnsError) // NOLINT
 {
   // clang-format off
   auto throwFunc = []() {
@@ -338,10 +367,12 @@ TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidRows__ThrowsRuntimeError) // 
     });
   };
   // clang-format on
-  EXPECT_THROW(throwFunc(), std::runtime_error);
+  const auto result = throwFunc();
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), Errors::invalid_initializer_list_row_count);
 }
 
-TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidCols__ThrowsRuntimeError) // NOLINT
+TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidCols__ReturnsError) // NOLINT
 {
   // clang-format off
   auto throwFunc = []() {
@@ -353,7 +384,9 @@ TYPED_TEST(GTestSquareMatrix, ctor_FromList_InvalidCols__ThrowsRuntimeError) // 
     });
   };
   // clang-format on
-  EXPECT_THROW(throwFunc(), std::runtime_error);
+  const auto result = throwFunc();
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), Errors::invalid_initializer_list_col_count);
 }
 
 // ============================================================================
@@ -374,10 +407,12 @@ TEST(SquareMatrix, isOrthogonal_NonOrthogonalMatrix__Fail) // NOLINT
 {
   // Create a non-orthogonal matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 2, true>::FromList({
+  auto matResult = SquareMatrix<float32, 2, true>::FromList({
     {1, 2},
     {3, 4}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -393,10 +428,12 @@ TEST(SquareMatrix, isOrthogonal_OrthogonalMatrix__Success) // NOLINT
   const float32 sin_theta = std::sin(0.5F);
 
   // clang-format off
-  const auto mat = SquareMatrix<float32, 2, true>::FromList({
+  auto matResult = SquareMatrix<float32, 2, true>::FromList({
     {cos_theta, -sin_theta},
     {sin_theta, cos_theta}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -419,11 +456,13 @@ TEST(SquareMatrix, isUpperTriangular_UpperTriangularMatrix__Success) // NOLINT
 {
   // Create an upper triangular matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {0, 4, 5},
     {0, 0, 6}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -436,11 +475,13 @@ TEST(SquareMatrix, isUpperTriangular_NonUpperTriangularMatrix__Fail) // NOLINT
 {
   // Create a non-upper triangular matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},  // Has non-zero element below diagonal
     {7, 8, 9}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -463,11 +504,13 @@ TEST(SquareMatrix, isLowerTriangular_LowerTriangularMatrix__Success) // NOLINT
 {
   // Create a lower triangular matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 0, 0},
     {2, 3, 0},
     {4, 5, 6}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -480,11 +523,13 @@ TEST(SquareMatrix, isLowerTriangular_NonLowerTriangularMatrix__Fail) // NOLINT
 {
   // Create a non-lower triangular matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},  // Has non-zero elements above diagonal
     {4, 5, 6},
     {7, 8, 9}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -507,11 +552,13 @@ TEST(SquareMatrix, hasUnitDiagonal_UnitDiagonalMatrix__Success) // NOLINT
 {
   // Create a matrix with unit diagonal
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {4, 1, 6},
     {7, 8, 1}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -524,11 +571,13 @@ TEST(SquareMatrix, hasUnitDiagonal_NonUnitDiagonalMatrix__Fail) // NOLINT
 {
   // Create a matrix without unit diagonal
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {2, 2, 3},  // Diagonal element is 2, not 1
     {4, 1, 6},
     {7, 8, 1}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -541,10 +590,12 @@ TEST(SquareMatrix, isOrthogonal_WithTolerance__Success) // NOLINT
 {
   // Create a matrix that's almost orthogonal but not exactly
   // clang-format off
-  const auto mat = SquareMatrix<float32, 2, true>::FromList({
+  auto matResult = SquareMatrix<float32, 2, true>::FromList({
     {0.999F, -0.01F},
     {0.01F, 0.999F}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // Should pass with loose tolerance
@@ -558,11 +609,13 @@ TEST(SquareMatrix, isUpperTriangular_WithTolerance__Success) // NOLINT
 {
   // Create a matrix that's almost upper triangular
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {0.001F, 4, 5},  // Small non-zero element below diagonal
     {0, 0, 6}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // Should pass with loose tolerance
@@ -586,11 +639,13 @@ TEST(SquareMatrix, isUpperTriangular_Double__Success) // NOLINT
 {
   // Create an upper triangular matrix with double precision
   // clang-format off
-  const auto mat = SquareMatrix<float64, 3, true>::FromList({
+  auto matResult = SquareMatrix<float64, 3, true>::FromList({
     {1.0, 2.0, 3.0},
     {0.0, 4.0, 5.0},
     {0.0, 0.0, 6.0}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -617,10 +672,12 @@ TEST(SquareMatrix, trace_2x2__Success) // NOLINT
 {
   // Create a 2x2 matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 2, true>::FromList({
+  auto matResult = SquareMatrix<float32, 2, true>::FromList({
     {1, 2},
     {3, 4}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -634,11 +691,13 @@ TEST(SquareMatrix, trace_3x3__Success) // NOLINT
 {
   // Create a 3x3 matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {4, 5, 6},
     {7, 8, 9}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -652,12 +711,14 @@ TEST(SquareMatrix, trace_4x4__Success) // NOLINT
 {
   // Create a 4x4 matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 4, true>::FromList({
+  auto matResult = SquareMatrix<float32, 4, true>::FromList({
     {1,  2,  3,  4},
     {5,  6,  7,  8},
     {9, 10, 11, 12},
     {13, 14, 15, 16}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -693,11 +754,13 @@ TEST(SquareMatrix, trace_Double__Success) // NOLINT
 {
   // Create a 3x3 matrix with double precision
   // clang-format off
-  const auto mat = SquareMatrix<float64, 3, true>::FromList({
+  auto matResult = SquareMatrix<float64, 3, true>::FromList({
     {1.0, 2.0, 3.0},
     {4.0, 5.0, 6.0},
     {7.0, 8.0, 9.0}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -711,10 +774,12 @@ TEST(SquareMatrix, determinant_2x2__Success) // NOLINT
 {
   // Create a 2x2 matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 2, true>::FromList({
+  auto matResult = SquareMatrix<float32, 2, true>::FromList({
     {1, 2},
     {3, 4}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -728,11 +793,13 @@ TEST(SquareMatrix, determinant_3x3__Success) // NOLINT
 {
   // Create a 3x3 matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {0, 1, 4},
     {5, 6, 0}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -759,11 +826,13 @@ TEST(SquareMatrix, determinant_SingularMatrix__Success) // NOLINT
 {
   // Create a singular matrix (determinant should be 0)
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1, 2, 3},
     {1, 2, 3},
     {4, 5, 6}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -777,11 +846,13 @@ TEST(SquareMatrix, determinant_IllConditionedMatrix__Success) // NOLINT
 {
   // Create an ill-conditioned matrix
   // clang-format off
-  const auto mat = SquareMatrix<float32, 3, true>::FromList({
+  auto matResult = SquareMatrix<float32, 3, true>::FromList({
     {1.0, 2.0, 3.0},
     {2.1, 4.2, 6.3},
     {3.0, 6.0, 9.0}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -795,11 +866,13 @@ TEST(SquareMatrix, determinant_Double__Success) // NOLINT
 {
   // Create a 3x3 matrix with double precision
   // clang-format off
-  const auto mat = SquareMatrix<float64, 3, true>::FromList({
+  auto matResult = SquareMatrix<float64, 3, true>::FromList({
     {1.0, 2.0, 3.0},
     {0.0, 1.0, 4.0},
     {5.0, 6.0, 0.0}
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
 
   // call UUT
@@ -813,15 +886,19 @@ TEST(SquareMatrix, isPositiveSemiDefinite_SingularPSD__ReturnsTrue) // NOLINT
 {
   // [[1,0],[0,0]]: symmetric, eigenvalues {1, 0} -> rank-deficient positive semi-definite.
   // clang-format off
-  const auto singularDiag = SquareMatrix<float64, 2, true>::FromList({
+  auto singularDiagResult = SquareMatrix<float64, 2, true>::FromList({
     {1.0, 0.0},
     {0.0, 0.0}
   });
+  ASSERT_TRUE(singularDiagResult.has_value());
+  const auto singularDiag = singularDiagResult.value();
   // [[1,1],[1,1]]: symmetric, eigenvalues {2, 0} -> rank-deficient positive semi-definite.
-  const auto singularRank1 = SquareMatrix<float64, 2, true>::FromList({
+  auto singularRank1Result = SquareMatrix<float64, 2, true>::FromList({
     {1.0, 1.0},
     {1.0, 1.0}
   });
+  ASSERT_TRUE(singularRank1Result.has_value());
+  const auto singularRank1 = singularRank1Result.value();
   // clang-format on
 
   // correct answer is true for both; the strict Cholesky path returns false (RED on this branch)
@@ -832,10 +909,12 @@ TEST(SquareMatrix, isPositiveSemiDefinite_SingularPSD__ReturnsTrue) // NOLINT
 TEST(SquareMatrix, isPositiveSemiDefinite_NegativeDefinite__ReturnsFalse) // NOLINT
 {
   // clang-format off
-  const auto negDef = SquareMatrix<float64, 2, true>::FromList({
+  auto negDefResult = SquareMatrix<float64, 2, true>::FromList({
     {-1.0,  0.0},
     { 0.0, -1.0}
   });
+  ASSERT_TRUE(negDefResult.has_value());
+  const auto negDef = negDefResult.value();
   // clang-format on
 
   EXPECT_FALSE(negDef.isPositiveSemiDefinite());
@@ -845,10 +924,12 @@ TEST(SquareMatrix, isPositiveSemiDefinite_PositiveDefinite__ReturnsTrue) // NOLI
 {
   // strictly positive definite control that pins the intended contract
   // clang-format off
-  const auto posDef = SquareMatrix<float64, 2, true>::FromList({
+  auto posDefResult = SquareMatrix<float64, 2, true>::FromList({
     {2.0, 1.0},
     {1.0, 2.0}
   });
+  ASSERT_TRUE(posDefResult.has_value());
+  const auto posDef = posDefResult.value();
   // clang-format on
 
   EXPECT_TRUE(posDef.isPositiveSemiDefinite());

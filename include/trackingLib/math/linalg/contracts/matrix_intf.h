@@ -56,7 +56,7 @@ struct MatrixIntf
     : public base::contract::RequireCopyIntf<ImplType>
     , public base::contract::RequireMoveIntf<ImplType>
 {
-  MatrixIntf()
+  MatrixIntf() noexcept
       : base::contract::RequireCopyIntf<ImplType>()
       , base::contract::RequireMoveIntf<ImplType>()
 

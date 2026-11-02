@@ -52,13 +52,19 @@ protected:
   void SetUp() override
   {
     // clang-format off
-    _testSquareMat = IntSquareMatType::FromList({
+    auto _testSquareMatResult = IntSquareMatType::FromList({
         {1, 2, 3},
         {4, 5, 6},
         {7, 8, 9},
     });
-    _testDiagMat = IntDiagMatType::FromList({1, 5, 9});
-    _testVec = IntVecType::FromList({10, 20, 30});
+    ASSERT_TRUE(_testSquareMatResult.has_value());
+    _testSquareMat = _testSquareMatResult.value();
+    auto _testDiagMatResult = IntDiagMatType::FromList({1, 5, 9});
+    ASSERT_TRUE(_testDiagMatResult.has_value());
+    _testDiagMat = _testDiagMatResult.value();
+    auto _testVecResult = IntVecType::FromList({10, 20, 30});
+    ASSERT_TRUE(_testVecResult.has_value());
+    _testVec = _testVecResult.value();
     // clang-format on
   }
 
@@ -145,11 +151,13 @@ TYPED_TEST(GTestConversions, TriangularFromSquare_Lower__Success) // NOLINT
 TEST(GTestConversionsSpecial, VectorFromMatrixColumnView__Success) // NOLINT
 {
   // clang-format off
-  const auto mat = Matrix<sint32, 3, 1, true>::FromList({
+  auto matResult = Matrix<sint32, 3, 1, true>::FromList({
       {10},
       {20},
       {30},
   });
+  ASSERT_TRUE(matResult.has_value());
+  const auto mat = matResult.value();
   // clang-format on
   const auto colView = MatrixColumnView<sint32, 3, 1, true>{mat, 0, 0, 2};
 
@@ -167,7 +175,9 @@ TEST(GTestConversionsSpecial, VectorFromMatrixColumnView__Success) // NOLINT
 
 TEST(GTestConversionsSpecial, MatrixFromVector__Success) // NOLINT
 {
-  const auto vec = Vector<sint32, 3>::FromList({1, 2, 3});
+  auto vecResult = Vector<sint32, 3>::FromList({1, 2, 3});
+  ASSERT_TRUE(vecResult.has_value());
+  const auto vec = vecResult.value();
 
   // call UUT
   const auto result = conversions::MatrixFromVector(vec);
@@ -202,10 +212,12 @@ TEST(GTestConversionsSpecial, CovarianceMatrixFactoredFromCovarianceMatrixFull_N
   // is ever reached. Exercise the conversion itself directly on a compose_type value whose symmetry is
   // broken post-construction (at_unsafe mutation isn't invariant-checked), which is the only way to reach
   // the real (non-assert) `if (isSymmetric())` guard inside decomposeUDUT().
-  auto broken            = CovarianceMatrixFull<float32, 2>::FromList({
+  auto brokenResult = CovarianceMatrixFull<float32, 2>::FromList({
       {1.0F, 2.0F},
       {2.0F, 1.0F},
   });
+  ASSERT_TRUE(brokenResult.has_value());
+  auto broken            = brokenResult.value();
   broken.at_unsafe(0, 1) = 3.0F;
 
   // call UUT
