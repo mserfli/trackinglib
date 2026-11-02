@@ -84,6 +84,7 @@ foreach(smoke_target factory_smoke factory_smoke_ndebug)
         target_compile_options(${smoke_target} PRIVATE -fno-exceptions)
     endif()
     add_test(NAME ${smoke_target} COMMAND ${smoke_target})
+    list(APPEND ALL_TEST_EXECUTABLES ${smoke_target})
 endforeach()
 target_compile_definitions(factory_smoke_ndebug PRIVATE NDEBUG)
 
@@ -98,13 +99,15 @@ if(UNIX AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQ
         DEPENDENCIES ${ALL_TEST_EXECUTABLES}
         BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
         LCOV_ARGS
-            --ignore-errors unused,mismatch
+            # GCC-generated function end lines are classified as "mismatch"
+            # by lcov 2.0 and "inconsistent" by newer versions.
+            --ignore-errors unused,mismatch,inconsistent
             --filter brace
             --rc geninfo_unexecuted_blocks=0
             --rc derive_function_end_line=0
         GENHTML_ARGS
             --no-branch-coverage
-            --ignore-errors mismatch
+            --ignore-errors mismatch,inconsistent
             --filter brace
             --legend
         EXCLUDE 
