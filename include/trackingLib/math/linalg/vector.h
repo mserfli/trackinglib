@@ -137,7 +137,8 @@ public:
   /// \return The L2 norm value
   /// \note Only available for floating-point ValueType_
   /// \note Mathematically: \f$ \|\mathbf{v}\|_2 = \sqrt{\sum_{i=0}^{n-1} v_i^2} \f$
-  template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename U = ValueType_, std::enable_if_t<std::is_floating_point_v<U>, int> = 0>
   [[nodiscard]] auto norm() const -> ValueType_;
 
   /// \brief Normalize this vector in-place to unit length
@@ -145,7 +146,8 @@ public:
   /// \note Modifies this vector in-place
   /// \warning Undefined behavior if the vector norm is zero
   /// \note Mathematically: \f$ \mathbf{v} \leftarrow \frac{\mathbf{v}}{\|\mathbf{v}\|_2} \f$
-  template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename U = ValueType_, std::enable_if_t<std::is_floating_point_v<U>, int> = 0>
   void normalize();
 
   /// \brief Create a new normalized vector of unit length
@@ -154,7 +156,8 @@ public:
   /// \note Returns a new normalized vector, leaving this vector unchanged
   /// \warning Undefined behavior if the vector norm is zero
   /// \note Mathematically: \f$ \mathbf{w} = \frac{\mathbf{v}}{\|\mathbf{v}\|_2} \f$
-  template <typename U = ValueType_, std::enable_if_t<std::is_floating_point<U>::value, int> = 0>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename U = ValueType_, std::enable_if_t<std::is_floating_point_v<U>, int> = 0>
   [[nodiscard]] auto normalize() const -> Vector;
   // <---
 

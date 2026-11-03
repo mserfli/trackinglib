@@ -1,12 +1,20 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/triangular_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/vector_conversions.hpp"
-#include "trackingLib/math/linalg/rank1_update.hpp" // IWYU pragma: keep
+#include "base/atomic_types.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/rank1_update.h"
+#include "math/linalg/triangular_matrix.h"
+#include "math/linalg/vector.h"
+#include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"   // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/triangular_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/vector_conversions.hpp"     // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/rank1_update.hpp"                       // IWYU pragma: keep
 #include <cmath>
 #include <limits>
 
-using namespace tracking::math;
+using tracking::math::DiagonalMatrix;
+using tracking::math::Rank1Update;
+using tracking::math::TriangularMatrix;
+using tracking::math::Vector;
 
 TEST(Rank1Update, udu_update) // NOLINT
 {
@@ -326,7 +334,7 @@ TEST(Rank1Update, ldl_downdate_belowEpsilon) // NOLINT
     {1.000000000000000,                  0,                  0,                  0},
     {1.117144553721805,  1.000000000000000,                  0,                  0},
     {0.456769173763075, -1.870378532677200,  1.000000000000000,                  0},
-    {0.543152741604089, -0.575547375780341,  0.434181260080981,  1.000000000000000}
+    {0.543152741604089, -0.575547375780341,  0.434181260080981,  1.000000000000000} // NOLINT(modernize-use-std-numbers) -- Computed reference matrix entry, not log10e.
   });
   ASSERT_TRUE(expLResult.has_value());
   const auto expL = expLResult.value();

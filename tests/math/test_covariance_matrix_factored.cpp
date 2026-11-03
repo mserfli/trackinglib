@@ -1,12 +1,18 @@
 #include "gtest/gtest.h"
+#include "base/atomic_types.h"
 #include "math/linalg/covariance_matrix_factored.h"
+#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/vector.h"
 #include "trackingLib/math/linalg/conversions/covariance_matrix_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/square_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/vector_conversions.hpp"
-#include "trackingLib/math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep
-#include "trackingLib/math/linalg/covariance_matrix_full.hpp"     // IWYU pragma: keep
+#include "trackingLib/math/linalg/conversions/square_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/vector_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/covariance_matrix_factored.hpp"     // IWYU pragma: keep
+#include "trackingLib/math/linalg/covariance_matrix_full.hpp"         // IWYU pragma: keep
 #include "trackingLib/math/linalg/square_matrix.h"
 #include <cmath>
+#include <tuple>
 
 // instatiate all templates for full coverage report
 template class tracking::math::CovarianceMatrixFactored<float32, 3>;
@@ -14,7 +20,13 @@ template class tracking::math::CovarianceMatrixFactored<float64, 4>;
 template class tracking::math::CovarianceMatrixFull<float32, 3>;
 template class tracking::math::CovarianceMatrixFull<float64, 4>;
 
-using namespace tracking::math;
+using tracking::math::CovarianceMatrixFactored;
+using tracking::math::CovarianceMatrixFull;
+using tracking::math::DiagonalMatrix;
+using tracking::math::Matrix;
+using tracking::math::SquareMatrix;
+using tracking::math::Vector;
+namespace conversions = tracking::math::conversions;
 
 // Helper function to create a factored symmetric positive definite matrix
 template <typename ValueType_, sint32 Size_>
@@ -27,7 +39,7 @@ auto createFactoredSymmetricPositiveDefiniteMatrix() -> CovarianceMatrixFactored
     result.at_unsafe(i, i) = static_cast<ValueType_>(1.0 + i * 0.5); // Diagonal dominance
     for (sint32 j = i + 1; j < Size_; ++j)
     {
-      ValueType_ val         = static_cast<ValueType_>(0.1 * (i + 1) * (j + 1));
+      const auto val         = static_cast<ValueType_>(0.1 * (i + 1) * (j + 1));
       result.at_unsafe(i, j) = val;
       result.at_unsafe(j, i) = val; // Ensure symmetry
     }
@@ -49,7 +61,7 @@ auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFactored<ValueType_
     for (sint32 j = 0; j < Size_; ++j)
     {
       // Create a matrix that's close to singular
-      ValueType_ val         = static_cast<ValueType_>(1.0) + static_cast<ValueType_>(0.001 * (i == j ? Size_ - i : i + j));
+      const auto val         = static_cast<ValueType_>(1.0) + static_cast<ValueType_>(0.001 * (i == j ? Size_ - i : i + j));
       result.at_unsafe(i, j) = val;
       if (i != j)
       {
@@ -79,6 +91,7 @@ TEST(CovarianceMatrixFactored, ctor_FromDiagonal__Success) // NOLINT
     {
       // off-diagonal elements
       EXPECT_FLOAT_EQ(0, result.at_unsafe(row, col));
+      // NOLINTNEXTLINE(readability-suspicious-call-argument) -- Check the mirrored off-diagonal element.
       EXPECT_FLOAT_EQ(0, result.at_unsafe(col, row));
     }
   }
@@ -129,8 +142,8 @@ TEST(CovarianceMatrixFactored, compose) // NOLINT
 
 struct CovarianceMatrixFactoredWithParams: public testing::TestWithParam<std::tuple<int, int>>
 {
-  CovarianceMatrixFactored<float32, 3> _cov{};
-  CovarianceMatrixFull<float32, 3>     _covFull{};
+  CovarianceMatrixFactored<float32, 3> _cov;
+  CovarianceMatrixFull<float32, 3>     _covFull;
 
   void SetUp() override
   {
@@ -168,7 +181,7 @@ TEST(CovarianceMatrixFactored, apaT) // NOLINT
     {                0,   1.000000000000000,  -1.241186420682381,   0.272017178830240},
     {                0,                   0,   1.000000000000000,  -0.986409098619786},
     {                0,                   0,                   0,   1.000000000000000}},
-    { 0.692626242247276,   0.639133727238215,   0.839636056501929,   0.821337656508534});
+    { 0.692626242247276,   0.639133727238215,   0.839636056501929,   0.821337656508534}); // NOLINT(modernize-use-std-numbers) -- Computed covariance data, not ln2.
   ASSERT_TRUE(covResult.has_value());
   auto cov = covResult.value();
 
@@ -212,7 +225,7 @@ TEST(CovarianceMatrixFactored, apaT_const) // NOLINT
     {                0,   1.000000000000000,  -1.241186420682381,   0.272017178830240},
     {                0,                   0,   1.000000000000000,  -0.986409098619786},
     {                0,                   0,                   0,   1.000000000000000}},
-    { 0.692626242247276,   0.639133727238215,   0.839636056501929,   0.821337656508534});
+    { 0.692626242247276,   0.639133727238215,   0.839636056501929,   0.821337656508534}); // NOLINT(modernize-use-std-numbers) -- Computed covariance data, not ln2.
   ASSERT_TRUE(covResult.has_value());
   const auto cov = covResult.value();
 
@@ -354,7 +367,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_identity__Success) // NOLINT
   {
     for (sint32 j = 0; j < 3; ++j)
     {
-      float64 expected_val = (i == j) ? 1.0 : 0.0;
+      const float64 expected_val = (i == j) ? 1.0 : 0.0;
       EXPECT_NEAR(inv.at_unsafe(i, j), expected_val, 1e-6);
     }
   }
@@ -421,7 +434,7 @@ TEST(CovarianceMatrixFactored, composed_inverse_consistency__Success) // NOLINT
   {
     for (sint32 j = 0; j < 3; ++j)
     {
-      float64 expected_val = (i == j) ? 1.0 : 0.0;
+      const float64 expected_val = (i == j) ? 1.0 : 0.0;
       EXPECT_NEAR(product.at_unsafe(i, j), expected_val, 1e-4); // Looser tolerance for numerical stability
     }
   }
@@ -458,24 +471,24 @@ TEST(CovarianceMatrixFactored, composed_inverse_different_sizes__Success) // NOL
   // Test 3x3
   auto cov3 = CovarianceMatrixFactored<float32, 3>::Identity();
   auto inv3 = cov3.composed_inverse().value();
-  EXPECT_NEAR(inv3.at_unsafe(0, 0), 1.0f, 1e-5);
-  EXPECT_NEAR(inv3.at_unsafe(1, 1), 1.0f, 1e-5);
-  EXPECT_NEAR(inv3.at_unsafe(2, 2), 1.0f, 1e-5);
+  EXPECT_NEAR(inv3.at_unsafe(0, 0), 1.0F, 1e-5);
+  EXPECT_NEAR(inv3.at_unsafe(1, 1), 1.0F, 1e-5);
+  EXPECT_NEAR(inv3.at_unsafe(2, 2), 1.0F, 1e-5);
 
   // Test 4x4
   auto cov4 = CovarianceMatrixFactored<float32, 4>::Identity();
   auto inv4 = cov4.composed_inverse().value();
-  EXPECT_NEAR(inv4.at_unsafe(0, 0), 1.0f, 1e-5);
-  EXPECT_NEAR(inv4.at_unsafe(1, 1), 1.0f, 1e-5);
-  EXPECT_NEAR(inv4.at_unsafe(2, 2), 1.0f, 1e-5);
-  EXPECT_NEAR(inv4.at_unsafe(3, 3), 1.0f, 1e-5);
+  EXPECT_NEAR(inv4.at_unsafe(0, 0), 1.0F, 1e-5);
+  EXPECT_NEAR(inv4.at_unsafe(1, 1), 1.0F, 1e-5);
+  EXPECT_NEAR(inv4.at_unsafe(2, 2), 1.0F, 1e-5);
+  EXPECT_NEAR(inv4.at_unsafe(3, 3), 1.0F, 1e-5);
 }
 
 TEST(CovarianceMatrixFactored, symmetry_preservation_rank1Update__Success) // NOLINT
 {
   // Test that rank1Update operation preserves symmetry
   auto cov     = createFactoredSymmetricPositiveDefiniteMatrix<float32, 3>();
-  auto xResult = Vector<float32, 3>::FromList({1.0f, 2.0f, 3.0f});
+  auto xResult = Vector<float32, 3>::FromList({1.0F, 2.0F, 3.0F});
   ASSERT_TRUE(xResult.has_value());
   auto x = xResult.value();
 
@@ -484,7 +497,7 @@ TEST(CovarianceMatrixFactored, symmetry_preservation_rank1Update__Success) // NO
   EXPECT_TRUE(initialFull.isSymmetric());
 
   // Apply rank1Update operation
-  cov.rank1Update(0.5f, x);
+  cov.rank1Update(0.5F, x);
 
   // Verify symmetry is preserved
   auto resultFull = cov();
@@ -854,7 +867,7 @@ TEST(CovarianceMatrixFactored, Identity_double4__Success) // NOLINT
   {
     for (sint32 j = 0; j < 4; ++j)
     {
-      float64 expected = (i == j) ? 1.0 : 0.0;
+      const float64 expected = (i == j) ? 1.0 : 0.0;
       EXPECT_NEAR(fullCov.at_unsafe(i, j), expected, 1e-6);
     }
   }
@@ -874,7 +887,7 @@ TEST(CovarianceMatrixFactored, setIdentity_double4__Success) // NOLINT
   {
     for (sint32 j = 0; j < 4; ++j)
     {
-      float64 expected = (i == j) ? 1.0 : 0.0;
+      const float64 expected = (i == j) ? 1.0 : 0.0;
       EXPECT_NEAR(result.at_unsafe(i, j), expected, 1e-6);
     }
   }
@@ -913,7 +926,7 @@ TEST(CovarianceMatrixFactored, at_unsafe_float6__Success) // NOLINT
   {
     for (sint32 j = 0; j < 6; ++j)
     {
-      float32 result = cov.at_unsafe(i, j);
+      const float32 result = cov.at_unsafe(i, j);
       EXPECT_NEAR(result, fullCov.at_unsafe(i, j), 1e-5);
     }
   }
@@ -929,8 +942,8 @@ TEST(CovarianceMatrixFactored, at_unsafe_consistency__Success) // NOLINT
   {
     for (sint32 j = 0; j < 6; ++j)
     {
-      float32 unsafe_result = cov.at_unsafe(i, j);
-      auto    safe_result   = cov(i, j);
+      const float32 unsafe_result = cov.at_unsafe(i, j);
+      auto          safe_result   = cov(i, j);
 
       ASSERT_TRUE(safe_result.has_value());
       EXPECT_NEAR(unsafe_result, safe_result.value(), 1e-5);
@@ -1005,7 +1018,7 @@ TEST(CovarianceMatrixFactored, inverse_NotPositiveDefinite_ExpectError) // NOLIN
   // Create a non-positive definite matrix (negative eigenvalue) directly
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float32, 3>();
   // Negative diagonal element makes it non-positive definite
-  cov._d.at_unsafe(1) = -1.0f;
+  cov._d.at_unsafe(1) = -1.0F;
 
   // Test inverse() - should return error
   auto result = cov.inverse();
@@ -1017,7 +1030,7 @@ TEST(CovarianceMatrixFactored, inverse_SingularMatrix_ExpectError) // NOLINT
   // Create a singular matrix (determinant = 0) directly
   auto cov = createFactoredSymmetricPositiveDefiniteMatrix<float32, 3>();
   // Zero diagonal element makes it singular
-  cov._d.at_unsafe(2) = 0.0f;
+  cov._d.at_unsafe(2) = 0.0F;
 
   // Test inverse() - should return error
   auto result = cov.inverse();

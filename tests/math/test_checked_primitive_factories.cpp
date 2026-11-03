@@ -1,15 +1,26 @@
 #include <gtest/gtest.h>
+#include "trackingLib/base/atomic_types.h"
 #include "trackingLib/math/linalg/diagonal_matrix.hpp"
-#include "trackingLib/math/linalg/square_matrix.hpp"
+#include "trackingLib/math/linalg/errors.h"
+#include "trackingLib/math/linalg/matrix.h"
+#include "trackingLib/math/linalg/square_matrix.h"
+#include "trackingLib/math/linalg/square_matrix.hpp" // IWYU pragma: keep -- Required template definitions.
+#include "trackingLib/math/linalg/triangular_matrix.h"
 #include "trackingLib/math/linalg/triangular_matrix.hpp"
-#include "trackingLib/math/linalg/vector.hpp"
+#include "trackingLib/math/linalg/vector.h"
+#include "trackingLib/math/linalg/vector.hpp" // IWYU pragma: keep -- Required template definitions.
+#include <initializer_list>
 #include <type_traits>
 #include <utility>
 
-using namespace tracking;
-using namespace tracking::math;
+using tracking::math::DiagonalMatrix;
+using tracking::math::Errors;
+using tracking::math::Matrix;
+using tracking::math::SquareMatrix;
+using tracking::math::TriangularMatrix;
+using tracking::math::Vector;
 
-static_assert(std::is_same<std::underlying_type_t<Errors>, int>::value, "Preserve the original enum representation");
+static_assert(std::is_same_v<std::underlying_type_t<Errors>, int>, "Preserve the original enum representation");
 static_assert(static_cast<int>(Errors::invalid_access_row) == 0);
 static_assert(static_cast<int>(Errors::invalid_access_col) == 1);
 static_assert(static_cast<int>(Errors::invalid_access_idx) == 2);

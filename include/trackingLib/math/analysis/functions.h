@@ -41,7 +41,7 @@ namespace math
 /// constexpr int template_param = tracking::math::pow<4>(3); // can be used in templates
 /// \endcode
 template <int N, class T>
-constexpr auto pow(T const x) noexcept(std::is_arithmetic<T>::value) -> T
+constexpr auto pow(T const x) noexcept(std::is_arithmetic_v<T>) -> T
 {
   if constexpr (N == 0)
   {

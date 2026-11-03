@@ -79,7 +79,7 @@ inline auto Vector<ValueType_, Size_>::normSq() const -> ValueType_
 }
 
 template <typename ValueType_, sint32 Size_>
-template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
+template <typename U, std::enable_if_t<std::is_floating_point_v<U>, int>>
 inline auto Vector<ValueType_, Size_>::norm() const -> ValueType_
 {
   if constexpr (Size_ == 1)
@@ -93,7 +93,7 @@ inline auto Vector<ValueType_, Size_>::norm() const -> ValueType_
 }
 
 template <typename ValueType_, sint32 Size_>
-template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
+template <typename U, std::enable_if_t<std::is_floating_point_v<U>, int>>
 inline void Vector<ValueType_, Size_>::normalize()
 {
   if constexpr (Size_ == 1)
@@ -109,7 +109,7 @@ inline void Vector<ValueType_, Size_>::normalize()
 }
 
 template <typename ValueType_, sint32 Size_>
-template <typename U, std::enable_if_t<std::is_floating_point<U>::value, int>>
+template <typename U, std::enable_if_t<std::is_floating_point_v<U>, int>>
 inline auto Vector<ValueType_, Size_>::normalize() const -> Vector
 {
   Vector tmp(*this);

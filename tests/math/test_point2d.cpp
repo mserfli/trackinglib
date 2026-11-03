@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "base/atomic_types.h"
 #include "trackingLib/math/linalg/point2d.h" // IWYU pragma: keep
 
 TEST(Point2d, ctor_default) // NOLINT

@@ -262,7 +262,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*=(ValueType_
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename T, typename std::enable_if_t<std::is_integral<T>::value, bool>>
+template <typename T, typename std::enable_if_t<std::is_integral_v<T>, bool>>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(T scalar) -> tl::expected<void, Errors>
 {
   if (std::abs(scalar) > static_cast<T>(0))
@@ -274,7 +274,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(T scalar) 
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename T, typename std::enable_if_t<std::is_floating_point<T>::value, bool>>
+template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>, bool>>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/=(T scalar) -> tl::expected<void, Errors>
 {
   if (std::abs(scalar) > std::numeric_limits<value_type>::min())
@@ -336,7 +336,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator*(ValueType_ 
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename T, typename std::enable_if_t<std::is_integral<T>::value, bool>>
+template <typename T, typename std::enable_if_t<std::is_integral_v<T>, bool>>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(T scalar) const -> tl::expected<Matrix, Errors>
 {
   if (std::abs(scalar) > static_cast<T>(0))
@@ -349,7 +349,7 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(T scalar) c
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename T, typename std::enable_if_t<std::is_floating_point<T>::value, bool>>
+template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>, bool>>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::operator/(T scalar) const -> tl::expected<Matrix, Errors>
 {
   if (std::abs(scalar) > std::numeric_limits<T>::min())
@@ -399,10 +399,10 @@ inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::minmax() const -> std
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename T, typename std::enable_if_t<std::is_floating_point<T>::value, bool>>
+template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>, bool>>
 inline auto Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::frobenius_norm() const -> ValueType_
 {
-  ValueType_ sum_of_squares = static_cast<ValueType_>(0);
+  auto sum_of_squares = static_cast<ValueType_>(0);
   for (const auto& val : data())
   {
     sum_of_squares += val * val;
@@ -483,7 +483,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::setBlock(
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename T, typename std::enable_if_t<std::is_integral<T>::value, bool>>
+template <typename T, typename std::enable_if_t<std::is_integral_v<T>, bool>>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_div_by_int_unsafe(T scalar)
 {
   for (auto& val : data())
@@ -493,7 +493,7 @@ inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_div_by_int_un
 }
 
 template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_>
-template <typename T, typename std::enable_if_t<std::is_floating_point<T>::value, bool>>
+template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>, bool>>
 inline void Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>::inplace_mul_by_inverse_factor_unsafe(T scalar)
 {
   const T factor = 1 / scalar;

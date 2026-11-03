@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 #include "base/atomic_types.h"
+#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/errors.h"
 #include "trackingLib/math/linalg/conversions/conversions.h"                     // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/covariance_matrix_conversions.hpp" // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"          // IWYU pragma: keep
@@ -15,7 +17,15 @@
 #include "trackingLib/math/linalg/triangular_matrix.hpp"                         // IWYU pragma: keep
 #include "trackingLib/math/linalg/vector.hpp"                                    // IWYU pragma: keep
 
-using namespace tracking::math;
+using tracking::math::CovarianceMatrixFull;
+using tracking::math::DiagonalMatrix;
+using tracking::math::Errors;
+using tracking::math::Matrix;
+using tracking::math::MatrixColumnView;
+using tracking::math::SquareMatrix;
+using tracking::math::TriangularMatrix;
+using tracking::math::Vector;
+namespace conversions = tracking::math::conversions;
 
 namespace
 {
@@ -69,7 +79,7 @@ protected:
   }
 
   IntSquareMatType _testSquareMat{};
-  IntDiagMatType   _testDiagMat{};
+  IntDiagMatType   _testDiagMat;
   IntVecType       _testVec{};
 };
 

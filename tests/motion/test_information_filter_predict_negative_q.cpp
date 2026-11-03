@@ -1,4 +1,9 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
+#include "filter/information_filter.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/matrix.h"
 
 #include "trackingLib/filter/information_filter.hpp"              // IWYU pragma: keep
 #include "trackingLib/math/linalg/covariance_matrix_factored.hpp" // IWYU pragma: keep

@@ -33,9 +33,9 @@ function(create_header_test_applications)
         
         # Generate the main.cpp content for this header
         set(main_content 
-"#include <trackingLib/${relative_path}>
+"#include <trackingLib/${relative_path}> // IWYU pragma: keep
 
-int main() {
+auto main() -> int {
     // Empty main to test header inclusion
     return 0;
 }"

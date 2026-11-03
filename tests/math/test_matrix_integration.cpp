@@ -1,4 +1,8 @@
 #include "gtest/gtest.h"
+#include "base/atomic_types.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/square_matrix.h"
+#include "math/linalg/triangular_matrix.h"
 #include "trackingLib/math/linalg/conversions/conversions.h"              // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"   // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/square_conversions.hpp"     // IWYU pragma: keep
@@ -7,7 +11,9 @@
 #include "trackingLib/math/linalg/square_matrix.hpp"                      // IWYU pragma: keep
 #include "trackingLib/math/linalg/triangular_matrix.hpp"                  // IWYU pragma: keep
 
-using namespace tracking::math;
+using tracking::math::DiagonalMatrix;
+using tracking::math::SquareMatrix;
+using tracking::math::TriangularMatrix;
 
 // ============================================================================
 // Integration Tests for Trace and Determinant across Matrix Types

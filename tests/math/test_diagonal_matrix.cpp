@@ -1,4 +1,10 @@
 #include "gtest/gtest.h"
+#include "base/atomic_types.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/square_matrix.h"
+#include "math/linalg/triangular_matrix.h"
+#include "math/linalg/vector.h"
 #include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"   // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"     // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/triangular_conversions.hpp" // IWYU pragma: keep
@@ -7,7 +13,11 @@
 #include "trackingLib/math/linalg/square_matrix.hpp"                      // IWYU pragma: keep
 #include <limits>
 
-using namespace tracking::math;
+using tracking::math::DiagonalMatrix;
+using tracking::math::Matrix;
+using tracking::math::SquareMatrix;
+using tracking::math::TriangularMatrix;
+using tracking::math::Vector;
 
 TEST(DiagonalMatrix, ctor_default) // NOLINT
 {
@@ -926,8 +936,8 @@ TEST(DiagonalMatrix, isPositiveSemiDefinite_EdgeCaseNegativeZero__Success) // NO
   // Create a diagonal matrix with negative zero (should be treated as zero)
   // clang-format off
   auto diagMatResult = DiagonalMatrix<float32, 2>::FromList({
-    {0.0f, 0.0f},
-    {0.0f, -0.0f}  // negative zero
+    {0.0F, 0.0F},
+    {0.0F, -0.0F}  // negative zero
   });
   ASSERT_TRUE(diagMatResult.has_value());
   const auto diagMat = diagMatResult.value();

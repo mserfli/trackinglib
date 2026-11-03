@@ -25,7 +25,9 @@ inline void Rank1Update<ValueType_, Size_, IsRowMajor_>::run(TriangularMatrix<Va
   // https://scicomp.stackexchange.com/questions/8323/computational-complexity-and-implementation-of-udu-modified-cholesky-rank-1-upda
 
   if (c == 0)
+  {
     return; // no update required
+  }
 
   // update or downdate ?
   const ValueType_ sign = (c > 0) ? +1 : -1;

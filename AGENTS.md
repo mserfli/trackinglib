@@ -131,11 +131,64 @@ a no-transform fast path.
   prerequisite includes) — enforced by the `header_tests` CMake target (see Commands above), not
   just a style preference.
 
+# Required clang-tidy gate
+
+For changes to repository-owned C++ code or its build configuration, run clang-format on
+changed C++ files, then clang-tidy before declaring the task complete or submitting a PR.
+Documentation-only changes do not require a C++ scan. clang-tidy is not currently enforced
+by CI; agents must run this gate locally and report the results.
+
+- Use the checked-in `.clang-tidy` with warnings-as-errors. Do not override checks or weaken
+  the policy to obtain a clean result. Configuration changes still require user approval.
+- Use `scripts/clang_tidy_inventory.py` with real CMake compilation databases. Cover
+  `include/trackingLib/`, `tests/`, and `examples/` in Clang C++17/C++20 × Debug/Release.
+  Enable examples and standalone header targets. Preserve production, TEST_BUILD, and NDEBUG
+  smoke commands; a test-only scan cannot prove production headers clean.
+- During editing, `--file <repo-relative-source>` may restrict checks to affected translation
+  units (repeatable). For header edits include standalone wrappers and dependent translation
+  units that instantiate the changed templates. Run the complete four-configuration gate
+  on the final source before claiming compliance; header files are not standalone runner inputs.
+- Require zero diagnostics and zero failed/skipped analyses. Inspect `results.json` and raw
+  logs, not just a process exit or absence of warning text. Retain commands, tool version,
+  policy, logs, and results in the analysis build directories. Use an unused output directory
+  for each run; do not overwrite completed evidence. Bound concurrency to available memory.
+- Review fixes individually; do not apply blanket automatic fixes. Preserve C++17 support,
+  public interfaces, numerical values/evaluation order, and no-allocation/no-exception contracts.
+  In particular, `auto` can retain a reference wrapper into a temporary where an explicit
+  numeric type copies the value. Run relevant regressions and compare deterministic example
+  CSVs when numerical paths change; a clean scan alone does not prove equivalent behavior.
+- For false positives or required idioms, use only local, check-specific suppressions with a
+  reason. Keep required template-definition includes with a justified `IWYU pragma: keep`.
+  Do not replace computed reference values with nearby mathematical constants or adopt C++20
+  features merely to satisfy modernization checks. Existing suppressions do not authorize
+  new broad suppressions.
+- Report the tool version, covered configurations, invocation/diagnostic/failure totals, and
+  any justified exceptions. If a required scan cannot run, state the blocker and leave the
+  gate incomplete. The verified inventory used LLVM 18.1.3; other versions may enable different
+  wildcard checks and must be reported explicitly.
+
+Run from the repository root (choose a new output name instead of `review-001` on later runs):
+
+```bash
+for tidy_standard in 17 20; do
+  for tidy_mode in Debug Release; do
+    tidy_build="build_tidy_${tidy_standard}_${tidy_mode}"
+    cmake -S . -B "$tidy_build" -DCMAKE_CXX_COMPILER=clang++ \
+      -DCMAKE_CXX_STANDARD="$tidy_standard" -DCMAKE_BUILD_TYPE="$tidy_mode" \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_EXAMPLES=ON -DBUILD_HEADER_TESTS=ON || exit 1
+    python3 scripts/clang_tidy_inventory.py "$tidy_build" \
+      --output "$tidy_build/analysis/review-001" --jobs 2 || exit 1
+  done
+done
+```
+
 # Testing
 
 - GoogleTest, entrypoint `tests/test.cpp`, layout mirrors `include/trackingLib/` under `tests/`.
 - **Naming convention**: `<operation>__<expected_result>`, e.g. `ctor_Zeros__Success`,
-  `op_at__FailBadRowIdx`. Add `// NOLINT` where clang-tidy objects to the test name format.
+  `op_at__FailBadRowIdx`. Where clang-tidy objects to this required format, use
+  `// NOLINT(google-readability-avoid-underscore-in-googletest-name)` with a comment
+  explaining the repository naming convention.
 - Use `TYPED_TEST`/`TYPED_TEST_SUITE` for template instantiations (e.g. row-major vs.
   column-major), `TEST_P`/`INSTANTIATE_TEST_SUITE_P` for parameterized value sweeps.
 - Test-only macros flip access for testability and must never leak into non-test builds:

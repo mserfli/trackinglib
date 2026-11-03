@@ -100,7 +100,7 @@ public:
                   const DiagonalMatrix<ValueType_, SizeQ_>&         Q);
 
   /// \brief Contract to restrict usage on floating-point value types
-  static_assert(std::is_floating_point<ValueType_>::value, "ModifiedGramSchmidt requires floating-point value types");
+  static_assert(std::is_floating_point_v<ValueType_>, "ModifiedGramSchmidt requires floating-point value types");
 };
 
 } // namespace math

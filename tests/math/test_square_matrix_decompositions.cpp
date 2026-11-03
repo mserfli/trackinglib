@@ -1,11 +1,15 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/conversions/square_conversions.hpp"
+#include "base/atomic_types.h"
+#include "math/linalg/errors.h"
+#include "math/linalg/square_matrix.h"
+#include "trackingLib/math/linalg/conversions/square_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
 #include "trackingLib/math/linalg/diagonal_matrix.hpp"
 #include "trackingLib/math/linalg/square_matrix.hpp" // IWYU pragma: keep
 #include "trackingLib/math/linalg/triangular_matrix.hpp"
 #include <cmath>
 
-using namespace tracking::math;
+using tracking::math::Errors;
+using tracking::math::SquareMatrix;
 
 // Helper function to create test matrixes
 template <typename ValueType_, sint32 Size_>

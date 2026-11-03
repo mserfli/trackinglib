@@ -155,7 +155,7 @@ template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(
     const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> BaseSquareMatrix
 {
-  BaseSquareMatrix other{mat};
+  BaseSquareMatrix const& other{mat};
   return BaseSquareMatrix{this->operator*(other)};
 }
 
@@ -282,12 +282,15 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
   // unlike decomposeLLT/decomposeUDUT's factors). Preserve sign so a legitimate negative pivot
   // (R's diagonal can be either sign) is left untouched; only a genuine zero is pushed to the
   // epsilon boundary, mirroring decomposeUDUT's pivot clamp.
-  constexpr ValueType_ epsilon = std::numeric_limits<ValueType_>::epsilon();
+  const auto safePivot = [](const ValueType_ diag) -> ValueType_ {
+    constexpr ValueType_ epsilon = std::numeric_limits<ValueType_>::epsilon();
+    return (std::abs(diag) > epsilon) ? diag : std::copysign(epsilon, diag);
+  };
 
   Matrix<ValueType_, Size_, Cols_, IsRowMajor2_> x{};
-  if constexpr (IsLower_)
+  for (auto k = 0; k < Cols_; ++k)
   {
-    for (auto k = 0; k < Cols_; ++k)
+    if constexpr (IsLower_)
     {
       for (auto row = 0; row < Size_; ++row)
       {
@@ -297,14 +300,11 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
           sum += this->at_unsafe(row, col) * x.at_unsafe(col, k);
         }
         const ValueType_ diag     = this->at_unsafe(row, row);
-        const ValueType_ diagSafe = (std::abs(diag) > epsilon) ? diag : std::copysign(epsilon, diag);
+        const ValueType_ diagSafe = safePivot(diag);
         x.at_unsafe(row, k)       = (b.at_unsafe(row, k) - sum) / diagSafe;
       }
     }
-  }
-  else
-  {
-    for (auto k = 0; k < Cols_; ++k)
+    else
     {
       for (auto row = Size_ - 1; row >= 0; --row)
       {
@@ -314,7 +314,7 @@ inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::solve(
           sum += this->at_unsafe(row, col) * x.at_unsafe(col, k);
         }
         const ValueType_ diag     = this->at_unsafe(row, row);
-        const ValueType_ diagSafe = (std::abs(diag) > epsilon) ? diag : std::copysign(epsilon, diag);
+        const ValueType_ diagSafe = safePivot(diag);
         x.at_unsafe(row, k)       = (b.at_unsafe(row, k) - sum) / diagSafe;
       }
     }

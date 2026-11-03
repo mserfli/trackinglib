@@ -1,12 +1,26 @@
+#include "base/atomic_types.h"
+#include "math/linalg/covariance_matrix_factored.h"
+#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/errors.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/square_matrix.h"
+#include "math/linalg/triangular_matrix.h"
+#include "math/linalg/vector.h"
+#include "motion/motion_model_ca.h"
+#include "motion/motion_model_cv.h"
 #include "trackingLib/math/linalg/conversions/covariance_matrix_conversions.hpp"
-#include "trackingLib/motion/motion_model_ca.hpp"
-#include "trackingLib/motion/motion_model_cv.hpp"
+#include "trackingLib/motion/motion_model_ca.hpp" // IWYU pragma: keep -- Required template definitions.
+#include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep -- Required template definitions.
 #include "trackingLib/observation/bearing_observation_model.h"
 #include "trackingLib/observation/position_observation_model.h"
 #include "trackingLib/observation/range_bearing_doppler_observation_model.h"
 #include "trackingLib/observation/range_bearing_observation_model.h"
 #include "trackingLib/observation/range_observation_model.h"
 #include "trackingLib/observation/velocity_observation_model.h"
+#include <tl/expected.hpp>
+#include <algorithm>
 
 #include <initializer_list>
 #include <limits>
@@ -19,10 +33,12 @@
 
 namespace
 {
-using namespace tracking;
+namespace math        = tracking::math;
+namespace motion      = tracking::motion;
+namespace observation = tracking::observation;
 using math::Errors;
 
-static_assert(std::is_same<std::underlying_type_t<Errors>, int>::value, "Preserve error enum representation");
+static_assert(std::is_same_v<std::underlying_type_t<Errors>, int>, "Preserve error enum representation");
 static_assert(static_cast<int>(Errors::invalid_access_row) == 0);
 static_assert(static_cast<int>(Errors::invalid_access_col) == 1);
 static_assert(static_cast<int>(Errors::invalid_access_idx) == 2);
@@ -107,15 +123,11 @@ auto primitives() -> bool
       return false;
     }
   }
-  for (const auto& bad : {Flat{}, Flat{1}, Flat{1, 2, 3}})
-  {
-    if (!hasError(Vector::FromList(bad), Errors::invalid_initializer_list_size) ||
-        !hasError(Diagonal::FromList(bad), Errors::invalid_initializer_list_size))
-    {
-      return false;
-    }
-  }
-  return true;
+  const auto malformed = {Flat{}, Flat{1}, Flat{1, 2, 3}};
+  return std::all_of(malformed.begin(), malformed.end(), [](const Flat& bad) {
+    return hasError(Vector::FromList(bad), Errors::invalid_initializer_list_size) &&
+           hasError(Diagonal::FromList(bad), Errors::invalid_initializer_list_size);
+  });
 }
 
 /// \brief Verify covariance boundaries and retained full-list UDU clamping.
@@ -280,7 +292,7 @@ auto models() -> bool
 
 /// \brief Return a family-specific failure code; ordinary checks also run under NDEBUG.
 /// \return Zero on success, or a factory-family failure code
-int main()
+auto main() -> int
 {
   if (!primitives<sint32>() || !primitives<float32>() || !primitives<float64>())
   {

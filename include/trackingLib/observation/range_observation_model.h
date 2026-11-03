@@ -32,6 +32,7 @@ class RangeObservationModel TEST_REMOVE_FINAL
 public:
   static_assert(motion::has_position_v<StateDef_>, "RangeObservationModel requires a StateDef providing X and Y");
 
+  // NOLINTNEXTLINE(performance-enum-size) -- Preserve the public enum representation.
   enum MeasurementDef
   {
     MEAS_RANGE = 0,
@@ -56,7 +57,8 @@ public:
   RangeObservationModel(RangeObservationModel&&) noexcept(std::is_nothrow_move_constructible<MeasurementCov>::value) = default;
   auto operator=(const RangeObservationModel&) -> RangeObservationModel&                                             = default;
   auto operator=(RangeObservationModel&&) noexcept -> RangeObservationModel&                                         = default;
-  virtual ~RangeObservationModel() TEST_REMOVE_FINAL                                                                 = default;
+  // NOLINTNEXTLINE(modernize-use-override) -- TEST_BUILD removes final; override is required in that configuration.
+  ~RangeObservationModel() TEST_REMOVE_FINAL override = default;
 
   /// \brief Construct a new RangeObservationModel after checking covariance positive definiteness
   ///
@@ -72,8 +74,8 @@ public:
   /// \note Uses the existing covariance predicate/tolerance; no comprehensive NaN/Inf rejection is added.
   ///       noexcept holds for built-in policies and is conditional on supplied covariance operations.
   static auto TryCreate(const MeasurementVec& vec, const MeasurementCov& cov) noexcept(
-      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
-      std::is_nothrow_move_constructible<MeasurementCov>::value &&
+      std::is_nothrow_copy_constructible_v<MeasurementVec> && std::is_nothrow_copy_constructible_v<MeasurementCov> &&
+      std::is_nothrow_move_constructible_v<MeasurementCov> &&
       noexcept(cov.isPositiveDefinite())) -> tl::expected<RangeObservationModel, math::Errors>
   {
     if (!cov.isPositiveDefinite())
@@ -101,10 +103,10 @@ public:
       const MeasurementVec& vec,
       const MeasurementCov& cov,
       const typename BaseExtendedObservationModel::SensorPose&
-          pose) noexcept(std::is_nothrow_copy_constructible<MeasurementVec>::value &&
-                         std::is_nothrow_copy_constructible<MeasurementCov>::value && noexcept(cov.isPositiveDefinite()) &&
-                         std::is_nothrow_copy_constructible<typename BaseExtendedObservationModel::SensorPose>::value &&
-                         std::is_nothrow_move_constructible<MeasurementCov>::value)
+          pose) noexcept(std::is_nothrow_copy_constructible_v<MeasurementVec> &&
+                         std::is_nothrow_copy_constructible_v<MeasurementCov> && noexcept(cov.isPositiveDefinite()) &&
+                         std::is_nothrow_copy_constructible_v<typename BaseExtendedObservationModel::SensorPose> &&
+                         std::is_nothrow_move_constructible_v<MeasurementCov>)
       -> tl::expected<RangeObservationModel, math::Errors>
   {
     if (!cov.isPositiveDefinite())
@@ -118,7 +120,7 @@ public:
   /// \param[in] state      Sensor-frame state vector the measurement is predicted for
   /// \param[in] egoMotion  Ego motion of the sensor platform (unused, model measures range only)
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurementSensorFrame(
+  [[nodiscard]] auto predictMeasurementSensorFrame(
       const StateVec& state, const typename BaseExtendedObservationModel::EgoMotionType& egoMotion) const -> MeasurementVec
   {
     static_cast<void>(egoMotion);
@@ -166,8 +168,8 @@ TEST_REMOVE_PROTECTED:
   /// \param[in] vec  Measurement vector z = [range]'
   /// \param[in] cov  Measurement covariance R
   explicit RangeObservationModel(const MeasurementVec& vec,
-                                 const MeasurementCov& cov) noexcept(std::is_nothrow_copy_constructible<MeasurementVec>::value &&
-                                                                     std::is_nothrow_copy_constructible<MeasurementCov>::value &&
+                                 const MeasurementCov& cov) noexcept(std::is_nothrow_copy_constructible_v<MeasurementVec> &&
+                                                                     std::is_nothrow_copy_constructible_v<MeasurementCov> &&
                                                                      noexcept(cov.isPositiveDefinite()))
       : BaseExtendedObservationModel{vec, cov}
   {
@@ -184,9 +186,9 @@ TEST_REMOVE_PROTECTED:
       const MeasurementVec& vec,
       const MeasurementCov& cov,
       const typename BaseExtendedObservationModel::SensorPose&
-          pose) noexcept(std::is_nothrow_copy_constructible<MeasurementVec>::value &&
-                         std::is_nothrow_copy_constructible<MeasurementCov>::value && noexcept(cov.isPositiveDefinite()) &&
-                         std::is_nothrow_copy_constructible<typename BaseExtendedObservationModel::SensorPose>::value)
+          pose) noexcept(std::is_nothrow_copy_constructible_v<MeasurementVec> &&
+                         std::is_nothrow_copy_constructible_v<MeasurementCov> && noexcept(cov.isPositiveDefinite()) &&
+                         std::is_nothrow_copy_constructible_v<typename BaseExtendedObservationModel::SensorPose>)
       : BaseExtendedObservationModel{vec, cov, pose}
   {
   }

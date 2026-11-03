@@ -191,14 +191,16 @@ public:
   /// \param[in] scalar   integral scalar value
   /// \return tl::expected<void, Errors>   success or divide_by_zero error
   /// \note Division by zero (scalar == 0) returns Errors::DivideByZero
-  template <typename T = ValueType_, typename std::enable_if_t<std::is_integral<T>::value, bool> = true>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_integral_v<T>, bool> = true>
   auto operator/=(T scalar) -> tl::expected<void, Errors>;
 
   /// \brief Calculates Self = Self / scalar for floating-point matrixes
   /// \param[in] scalar   floating-point scalar value
   /// \return tl::expected<void, Errors>   success or divide_by_zero error
   /// \note Division by zero (scalar == 0.0) returns Errors::DivideByZero
-  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point_v<T>, bool> = true>
   auto operator/=(T scalar) -> tl::expected<void, Errors>;
   // <---
 
@@ -237,14 +239,16 @@ public:
   /// \param[in] scalar  a scalar value
   /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
   /// \note Division by zero (scalar == 0) returns Errors::DivideByZero
-  template <typename T = ValueType_, typename std::enable_if_t<std::is_integral<T>::value, bool> = true>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_integral_v<T>, bool> = true>
   [[nodiscard]] auto operator/(T scalar) const -> tl::expected<Matrix, Errors>;
 
   /// \brief Calculates Self / scalar for floating-point matrixes
   /// \param[in] scalar  a scalar value
   /// \return tl::expected<Matrix, Errors>   either the result Self / scalar or an Error descriptor
   /// \note Division by zero (scalar == 0.0) returns Errors::DivideByZero
-  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point_v<T>, bool> = true>
   [[nodiscard]] auto operator/(T scalar) const -> tl::expected<Matrix, Errors>;
 
   /// \brief Calculates matrix multiplication Self * Other
@@ -284,7 +288,8 @@ public:
 
   /// \brief Calculate Frobenius norm (L2 norm): sqrt(sum of squared elements)
   /// \note Only available for floating-point types. For integral types, this method is not instantiated.
-  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point_v<T>, bool> = true>
   [[nodiscard]] auto frobenius_norm() const -> ValueType_;
 
   /// \brief Fast transpose without changing the layout (zero-copy view)
@@ -379,7 +384,7 @@ TEST_REMOVE_PROTECTED:
   // access operators  --->
   /// \brief  Read-only access to the internal data
   /// \return const Storage&
-  auto data() const noexcept -> const Storage& { return _data; }
+  [[nodiscard]] auto data() const noexcept -> const Storage& { return _data; }
 
   /// \brief Modify access to the internal data
   /// \return Storage&
@@ -390,10 +395,12 @@ TEST_REMOVE_PROTECTED:
 TEST_REMOVE_PRIVATE:
   ; // workaround for correct indentation
   // clang-format on
-  template <typename T = ValueType_, typename std::enable_if_t<std::is_integral<T>::value, bool> = true>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_integral_v<T>, bool> = true>
   void inplace_div_by_int_unsafe(T scalar);
 
-  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+  // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
+  template <typename T = ValueType_, typename std::enable_if_t<std::is_floating_point_v<T>, bool> = true>
   void inplace_mul_by_inverse_factor_unsafe(T scalar);
 
   Storage _data{}; ///< internal data to store the matrix

@@ -1,10 +1,16 @@
 #include "gtest/gtest.h"
+#include "base/atomic_types.h"
+#include "math/linalg/covariance_matrix_factored.h"
+#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/vector.h"
 #include "trackingLib/math/linalg/conversions/covariance_matrix_conversions.hpp"
 #include "trackingLib/math/linalg/conversions/square_conversions.hpp" // IWYU pragma: keep
 #include "trackingLib/math/linalg/covariance_matrix_factored.hpp"     // IWYU pragma: keep
 #include "trackingLib/math/linalg/covariance_matrix_full.hpp"         // IWYU pragma: keep
 #include "trackingLib/math/linalg/square_matrix.h"
 #include <cmath>
+#include <initializer_list>
 
 // instatiate all templates for full coverage report
 template class tracking::math::CovarianceMatrixFull<float32, 3>;
@@ -12,7 +18,11 @@ template class tracking::math::CovarianceMatrixFull<float64, 4>;
 template class tracking::math::CovarianceMatrixFactored<float32, 3>;
 template class tracking::math::CovarianceMatrixFactored<float64, 4>;
 
-using namespace tracking::math;
+using tracking::math::CovarianceMatrixFull;
+using tracking::math::DiagonalMatrix;
+using tracking::math::SquareMatrix;
+using tracking::math::Vector;
+namespace conversions = tracking::math::conversions;
 
 // Helper function to create a symmetric positive definite matrix
 template <typename ValueType_, sint32 Size_>
@@ -25,7 +35,7 @@ auto createSymmetricPositiveDefiniteMatrix() -> CovarianceMatrixFull<ValueType_,
     result.at_unsafe(i, i) = static_cast<ValueType_>(1.0 + i * 0.5); // Diagonal dominance
     for (sint32 j = i + 1; j < Size_; ++j)
     {
-      ValueType_ val         = static_cast<ValueType_>(0.1 * (i + 1) * (j + 1));
+      const auto val         = static_cast<ValueType_>(0.1 * (i + 1) * (j + 1));
       result.at_unsafe(i, j) = val;
       result.at_unsafe(j, i) = val; // Ensure symmetry
     }
@@ -45,7 +55,7 @@ auto createFactoredIllConditionedMatrix() -> CovarianceMatrixFull<ValueType_, Si
     for (sint32 j = 0; j < Size_; ++j)
     {
       // Create a matrix that's close to singular
-      ValueType_ val         = static_cast<ValueType_>(1.0) + static_cast<ValueType_>(0.001 * (i == j ? Size_ - i : i + j));
+      const auto val         = static_cast<ValueType_>(1.0) + static_cast<ValueType_>(0.001 * (i == j ? Size_ - i : i + j));
       result.at_unsafe(i, j) = val;
       if (i != j)
       {
@@ -73,6 +83,7 @@ TEST(CovarianceMatrixFull, ctor_FromDiagonal__Success) // NOLINT
     {
       // off-diagonal elements
       EXPECT_FLOAT_EQ(0, result.at_unsafe(row, col));
+      // NOLINTNEXTLINE(readability-suspicious-call-argument) -- Check the mirrored off-diagonal element.
       EXPECT_FLOAT_EQ(0, result.at_unsafe(col, row));
     }
   }
@@ -201,7 +212,8 @@ TEST(CovarianceMatrixFull, apaT_const) // NOLINT
   }
 }
 
-TEST(CovarianceMatrixFull, apaT_equality)
+TEST(CovarianceMatrixFull,
+     apaT_equality) // NOLINT(google-readability-avoid-underscore-in-googletest-name) -- Repository convention.
 {
   // clang-format off
   auto covResult = CovarianceMatrixFull<float64,4>::FromList({
@@ -334,7 +346,7 @@ TEST(CovarianceMatrixFull, symmetry_preservation_setVariance__Success) // NOLINT
   EXPECT_TRUE(cov.isSymmetric());
 
   // Apply setVariance operation
-  cov.setVariance(1, 5.0f);
+  cov.setVariance(1, 5.0F);
 
   // Verify symmetry is preserved
   EXPECT_TRUE(cov.isSymmetric());
@@ -403,7 +415,7 @@ TEST(CovarianceMatrixFull, conversion_to_factored__Success) // NOLINT
   auto fullCov = createSymmetricPositiveDefiniteMatrix<float32, 3>();
 
   // Create nested initializer list from full matrix data for conversion
-  std::initializer_list<std::initializer_list<float32>> covList = {
+  const std::initializer_list<std::initializer_list<float32>> covList = {
       {fullCov.at_unsafe(0, 0), fullCov.at_unsafe(0, 1), fullCov.at_unsafe(0, 2)},
       {fullCov.at_unsafe(1, 0), fullCov.at_unsafe(1, 1), fullCov.at_unsafe(1, 2)},
       {fullCov.at_unsafe(2, 0), fullCov.at_unsafe(2, 1), fullCov.at_unsafe(2, 2)}};
@@ -421,7 +433,7 @@ TEST(CovarianceMatrixFull, conversion_to_factored__Success) // NOLINT
   {
     for (sint32 j = 0; j < 3; ++j)
     {
-      EXPECT_NEAR(fullCov.at_unsafe(i, j), convertedFull.at_unsafe(i, j), 1e-5f);
+      EXPECT_NEAR(fullCov.at_unsafe(i, j), convertedFull.at_unsafe(i, j), 1e-5F);
     }
   }
 }
@@ -436,7 +448,7 @@ TEST(CovarianceMatrixFull, conversion_roundtrip__Success) // NOLINT
   EXPECT_TRUE(original.isPositiveSemiDefinite());
 
   // Create nested initializer list from original matrix data for conversion
-  std::initializer_list<std::initializer_list<float64>> covList = {
+  const std::initializer_list<std::initializer_list<float64>> covList = {
       {original.at_unsafe(0, 0), original.at_unsafe(0, 1), original.at_unsafe(0, 2), original.at_unsafe(0, 3)},
       {original.at_unsafe(1, 0), original.at_unsafe(1, 1), original.at_unsafe(1, 2), original.at_unsafe(1, 3)},
       {original.at_unsafe(2, 0), original.at_unsafe(2, 1), original.at_unsafe(2, 2), original.at_unsafe(2, 3)},
@@ -471,7 +483,7 @@ TEST(CovarianceMatrixFull, large_matrix_apaT__Success) // NOLINT
   // Scale the identity matrix to create a non-trivial transformation
   for (sint32 i = 0; i < 6; ++i)
   {
-    A.at_unsafe(i, i) = 0.9f + i * 0.02f;
+    A.at_unsafe(i, i) = 0.9F + static_cast<float32>(i) * 0.02F;
   }
 
   // Verify initial properties
@@ -642,7 +654,7 @@ TEST(CovarianceMatrixFull, Identity_float3__Success) // NOLINT
   {
     for (sint32 j = 0; j < 3; ++j)
     {
-      float32 expected = (i == j) ? 1.0f : 0.0f;
+      const float32 expected = (i == j) ? 1.0F : 0.0F;
       EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
     }
   }
@@ -661,7 +673,7 @@ TEST(CovarianceMatrixFull, Identity_float4__Success) // NOLINT
   {
     for (sint32 j = 0; j < 4; ++j)
     {
-      float32 expected = (i == j) ? 1.0f : 0.0f;
+      const float32 expected = (i == j) ? 1.0F : 0.0F;
       EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
     }
   }
@@ -680,7 +692,7 @@ TEST(CovarianceMatrixFull, Identity_float6__Success) // NOLINT
   {
     for (sint32 j = 0; j < 6; ++j)
     {
-      float32 expected = (i == j) ? 1.0f : 0.0f;
+      const float32 expected = (i == j) ? 1.0F : 0.0F;
       EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
     }
   }
@@ -735,7 +747,7 @@ TEST(CovarianceMatrixFull, operator_call_const_identity__Success) // NOLINT
   {
     for (sint32 j = 0; j < 3; ++j)
     {
-      float32 expected = (i == j) ? 1.0f : 0.0f;
+      const float32 expected = (i == j) ? 1.0F : 0.0F;
       EXPECT_FLOAT_EQ(result.at_unsafe(i, j), expected);
     }
   }
@@ -754,7 +766,7 @@ TEST(CovarianceMatrixFull, setIdentity_float3__Success) // NOLINT
   {
     for (sint32 j = 0; j < 3; ++j)
     {
-      float32 expected = (i == j) ? 1.0f : 0.0f;
+      const float32 expected = (i == j) ? 1.0F : 0.0F;
       EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
     }
   }
@@ -773,7 +785,7 @@ TEST(CovarianceMatrixFull, setIdentity_double4__Success) // NOLINT
   {
     for (sint32 j = 0; j < 4; ++j)
     {
-      float64 expected = (i == j) ? 1.0 : 0.0;
+      const float64 expected = (i == j) ? 1.0 : 0.0;
       EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
     }
   }
@@ -792,7 +804,7 @@ TEST(CovarianceMatrixFull, setIdentity_float6__Success) // NOLINT
   {
     for (sint32 j = 0; j < 6; ++j)
     {
-      float32 expected = (i == j) ? 1.0f : 0.0f;
+      const float32 expected = (i == j) ? 1.0F : 0.0F;
       EXPECT_FLOAT_EQ(cov.at_unsafe(i, j), expected);
     }
   }

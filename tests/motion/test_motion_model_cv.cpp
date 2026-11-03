@@ -1,8 +1,15 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
+#include "env/ego_motion.h"
+#include "filter/information_filter.h"
+#include "filter/kalman_filter.h"
 #include "gmock/gmock.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "math/linalg/errors.h"
+#include "motion/motion_model_ca.h"
+#include "motion/motion_model_cv.h"
 
 #include "mocks/motion_model_no_ego_motion.hpp"   // IWYU pragma: keep
-#include "trackingLib/math/linalg/matrix_io.h"    // for operator<<
 #include "trackingLib/motion/motion_model_ca.hpp" // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
 #include <cmath>                                  // for std::isfinite
@@ -58,14 +65,15 @@ struct TestPredictCV
     }
   }
 
-  static void run_without_ego_motion_compensation()
+  // GoogleTest assertions expand into control flow; retain the full trajectory check.
+  static void run_without_ego_motion_compensation() // NOLINT(readability-function-cognitive-complexity)
   {
-    const int      steps     = 5;
-    const auto     dt        = static_cast<value_type>(0.1);
-    const auto     motion    = typename EgoMotionInst::InertialMotion{};
-    const auto     geometry  = typename EgoMotionInst::Geometry{};
-    const auto     egoMotion = EgoMotionInst(motion, geometry, dt);
-    FilterTypeInst filter{};
+    const int            steps     = 5;
+    const auto           dt        = static_cast<value_type>(0.1);
+    const auto           motion    = typename EgoMotionInst::InertialMotion{};
+    const auto           geometry  = typename EgoMotionInst::Geometry{};
+    const auto           egoMotion = EgoMotionInst(motion, geometry, dt);
+    const FilterTypeInst filter{};
 
     // clang-format off
     auto vecResult = MM::StateVecFromList({10, 2, 0, 0});
@@ -116,7 +124,8 @@ struct TestPredictCV
     }
   }
 
-  static void run_with_ego_motion_compensation()
+  // GoogleTest assertions expand into control flow; retain the full trajectory check.
+  static void run_with_ego_motion_compensation() // NOLINT(readability-function-cognitive-complexity)
   {
     const int  steps = 5;
     const auto dt    = static_cast<value_type>(0.1);
@@ -129,7 +138,7 @@ struct TestPredictCV
         .distCog2Ego = 1.0, .distFrontAxle2Ego = 2.5, .distFrontAxle2RearAxle = 2.5};
     const auto     egoMotion = EgoMotionInst(motion, geometry, dt);
     // clang-format on
-    FilterTypeInst filter{};
+    const FilterTypeInst filter{};
 
     // clang-format off
     auto vecResult = MM::StateVecFromList({10, 2, 0, 0});
@@ -273,7 +282,7 @@ TEST(MotionModelCV, predict_fullCov_informationFilter_singularPe_updatesY) // NO
                    pe.at_unsafe(0, 2) * (pe.at_unsafe(1, 0) * pe.at_unsafe(2, 1) - pe.at_unsafe(1, 1) * pe.at_unsafe(2, 0));
   ASSERT_NEAR(det, 0.0, 1e-6);
 
-  FilterTypeInst filter{};
+  const FilterTypeInst filter{};
 
   // clang-format off
   auto vecResult = MM::StateVecFromList({10, 2, 0, 0});
@@ -349,8 +358,8 @@ TEST(MotionModelCV, predict_informationFilter_singularPe_fullMatchesFactored) //
   const auto egoMotionFactored = EgoMotionInstFactored(motionFactored, geometryFactored, dt);
   // clang-format on
 
-  tracking::filter::InformationFilter<CovPolicyFull>     filterFull{};
-  tracking::filter::InformationFilter<CovPolicyFactored> filterFactored{};
+  const tracking::filter::InformationFilter<CovPolicyFull>     filterFull{};
+  const tracking::filter::InformationFilter<CovPolicyFactored> filterFactored{};
 
   // clang-format off
   auto vecFullResult = MMFull::StateVecFromList({10, 2, 0, 0});

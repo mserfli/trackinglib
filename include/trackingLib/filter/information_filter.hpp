@@ -54,7 +54,7 @@ void InformationFilter<CovarianceMatrixPolicy_>::predictCovariance(CovarianceMat
       Y.rank1Update(ci, xi);
     }
     // propagate factorization by inv(A)'
-    const math::SquareMatrix<value_type, DimX_, true> invAT{invA.transpose()};
+    const auto& invAT = invA.transpose();
     Y.apaT(invAT);
   }
   else

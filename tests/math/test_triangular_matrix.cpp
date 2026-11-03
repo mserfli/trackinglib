@@ -1,11 +1,18 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/square_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/triangular_conversions.hpp"
-#include "trackingLib/math/linalg/triangular_matrix.hpp" // IWYU pragma: keep
+#include "base/atomic_types.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/triangular_matrix.h"
+#include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"   // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"     // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/square_conversions.hpp"     // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/triangular_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/triangular_matrix.hpp"                  // IWYU pragma: keep
+#include <cmath>
 
-using namespace tracking::math;
+using tracking::math::DiagonalMatrix;
+using tracking::math::Matrix;
+using tracking::math::SquareMatrix;
+using tracking::math::TriangularMatrix;
 
 TEST(TriangularMatrix, ctor_default) // NOLINT
 {
@@ -47,6 +54,7 @@ TEST(TriangularMatrix, ctor_triu) // NOLINT
   // clang-format on
 
   // call UUT
+  // NOLINTNEXTLINE(performance-unnecessary-copy-initialization) -- This test exercises the copy constructor.
   const TriangularMatrix triuMat{mat};
 
   for (auto row = 0; row < 3; ++row)

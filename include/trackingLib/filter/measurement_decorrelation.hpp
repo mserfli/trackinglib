@@ -17,6 +17,27 @@ namespace filter
 namespace detail
 {
 
+/// \brief Check the strict upper triangle for nonzero correlations.
+/// \tparam Dim_ Matrix dimension
+/// \tparam Matrix_ Matrix type providing value_type and unchecked element access
+/// \param[in] matrix Matrix to inspect
+/// \return Whether an upper off-diagonal element is nonzero
+template <sint32 Dim_, typename Matrix_>
+[[nodiscard]] inline auto hasUpperCorrelations(const Matrix_& matrix) -> bool
+{
+  for (sint32 row = 0; row < Dim_; ++row)
+  {
+    for (sint32 col = row + 1; col < Dim_; ++col)
+    {
+      if (matrix.at_unsafe(row, col) != static_cast<typename Matrix_::value_type>(0.0))
+      {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 /// \brief Decorrelate a measurement for sequential (scalar) processing
 ///
 /// Sequential measurement updates process one measurement component at a time and therefore
@@ -52,20 +73,7 @@ template <typename CovarianceMatrixPolicy_, sint32 DimX_, sint32 DimZ_>
     // R is stored as U*D*U': the decorrelated covariance is D itself
     rDiag = R.D();
 
-    bool hasCorrelations = false;
-    for (sint32 row = 0; (row < DimZ_) && !hasCorrelations; ++row)
-    {
-      for (sint32 col = row + 1; col < DimZ_; ++col)
-      {
-        if (R.U().at_unsafe(row, col) != static_cast<value_type>(0.0))
-        {
-          hasCorrelations = true;
-          break;
-        }
-      }
-    }
-
-    if (hasCorrelations)
+    if (hasUpperCorrelations<DimZ_>(R.U()))
     {
       vec = math::Vector<value_type, DimZ_>{R.U().solve(vec)};
       H   = R.U().solve(H);
@@ -74,20 +82,7 @@ template <typename CovarianceMatrixPolicy_, sint32 DimX_, sint32 DimZ_>
   }
   else
   {
-    bool hasCorrelations = false;
-    for (sint32 row = 0; (row < DimZ_) && !hasCorrelations; ++row)
-    {
-      for (sint32 col = row + 1; col < DimZ_; ++col)
-      {
-        if (R.at_unsafe(row, col) != static_cast<value_type>(0.0))
-        {
-          hasCorrelations = true;
-          break;
-        }
-      }
-    }
-
-    if (!hasCorrelations)
+    if (!hasUpperCorrelations<DimZ_>(R))
     {
       for (sint32 i = 0; i < DimZ_; ++i)
       {

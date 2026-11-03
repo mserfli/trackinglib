@@ -1,5 +1,7 @@
+#include "base/atomic_types.h"
 #include "checked_value.h"
 #include "math/linalg/covariance_matrix_policies.h"
+#include "motion/motion_model_ca.h"
 #include "trackingLib/env/ego_motion.hpp"                                    // IWYU pragma: keep
 #include "trackingLib/filter/information_filter.hpp"                         // IWYU pragma: keep
 #include "trackingLib/filter/kalman_filter.hpp"                              // IWYU pragma: keep
@@ -7,6 +9,7 @@
 #include "trackingLib/motion/motion_model_ca.hpp"                            // IWYU pragma: keep
 #include "trackingLib/observation/range_bearing_doppler_observation_model.h" // IWYU pragma: keep
 #include "trackingLib/observation/sensor_mounting_pose.h"                    // IWYU pragma: keep
+#include <tuple>
 
 #include <cmath>
 #include <fstream>
@@ -14,10 +17,14 @@
 #include <random>
 #include <string>
 
-using namespace tracking;
+namespace math        = tracking::math;
+namespace motion      = tracking::motion;
+namespace observation = tracking::observation;
 
-int main(int argc, char** argv)
+auto main(int argc, char** argv) -> int
 {
+  // C++17 has no std::numbers; retain the double precision value used by the scenario.
+  constexpr double pi = 3.14159265358979323846; // NOLINT(modernize-use-std-numbers)
   // Optional structured CSV export (one row per step) for offline visualization; see examples/viz.
   // Console output above is unaffected. Path defaults so a plain `./single_nonlinear_figure8_object_tracking`
   // run behaves exactly as before. Same column contract as single_nonlinear_object_tracking.cpp, so
@@ -43,8 +50,8 @@ int main(int argc, char** argv)
   using RangeBearingDopplerType =
       observation::RangeBearingDopplerObservationModel<math::FactoredCovarianceMatrixPolicy<float64>, motion::StateDefCA>;
 
-  InformationFilterType informationFilter{};
-  KalmanFilterType      kalmanFilter{};
+  const InformationFilterType informationFilter{};
+  const KalmanFilterType      kalmanFilter{};
 
   // Initialize the object state: the figure-8 is constructed (see below) so the target sits exactly
   // at its self-intersection point at t=0, i.e. dead ahead at the pattern's center - so the initial
@@ -66,7 +73,7 @@ int main(int argc, char** argv)
   // Ego vehicle drives the same shape of gentle left turn as the other nonlinear example, just
   // slower - a slow-moving ego isolates the target's own maneuver as the dominant source of
   // process-model mismatch, rather than conflating it with a fast-moving sensor platform.
-  EgoMotionType::InertialMotion motionParams{
+  const EgoMotionType::InertialMotion motionParams{
       .v  = static_cast<value_type>(3.0),   // velocity [m/s]
       .a  = static_cast<value_type>(0.0),   // acceleration
       .w  = static_cast<value_type>(0.02),  // yaw rate [rad/s]
@@ -75,7 +82,7 @@ int main(int argc, char** argv)
       .sw = static_cast<value_type>(0.01)   // yaw rate uncertainty
   };
 
-  EgoMotionType::Geometry geometry{
+  const EgoMotionType::Geometry geometry{
       .width                  = static_cast<value_type>(2.0),
       .length                 = static_cast<value_type>(4.5),
       .height                 = static_cast<value_type>(1.5),
@@ -91,13 +98,13 @@ int main(int argc, char** argv)
   const RangeBearingDopplerType::BaseExtendedObservationModel::SensorPose sensorPose =
       RangeBearingDopplerType::BaseExtendedObservationModel::SensorPose::FromValues(
           static_cast<value_type>(2.0), static_cast<value_type>(-0.2),
-          static_cast<value_type>(-0.1 * M_PI / 180.0));
+          static_cast<value_type>(-0.1 * pi / 180.0));
   // clang-format on
 
   // Simulation parameters. numSteps spans exactly two figure-8 periods (see figure8Period below) so
   // the pattern closes cleanly rather than stopping mid-loop.
-  const value_type dt       = static_cast<value_type>(0.1); // time step of 0.1 seconds
-  const sint32     numSteps = 160;                          // simulate 160 time steps (16 seconds total)
+  const auto   dt       = static_cast<value_type>(0.1); // time step of 0.1 seconds
+  const sint32 numSteps = 160;                          // simulate 160 time steps (16 seconds total)
 
   // Ground truth is easiest to reason about in a fixed world frame: the ego vehicle drives its CTRV
   // arc, the target drives its own independent figure-8, and both are independent of each other.
@@ -105,9 +112,9 @@ int main(int argc, char** argv)
   // ego-centered and ego-aligned - so every step the world-frame ground truth is re-expressed
   // relative to the ego's new world pose before it is used to synthesize a measurement. This is
   // exactly the transform predict() performs internally via ego-motion compensation.
-  value_type egoWorldX   = static_cast<value_type>(0.0);
-  value_type egoWorldY   = static_cast<value_type>(0.0);
-  value_type egoWorldPsi = static_cast<value_type>(0.0);
+  auto egoWorldX   = static_cast<value_type>(0.0);
+  auto egoWorldY   = static_cast<value_type>(0.0);
+  auto egoWorldPsi = static_cast<value_type>(0.0);
 
   // Target world-frame ground truth: a Lemniscate of Gerono, x(t) = cx + (Rx/2)*sin(2*w*t),
   // y(t) = cy + Ry*sin(w*t), centered 90 m ahead of the ego's start. The lateral amplitude (Ry)
@@ -119,12 +126,12 @@ int main(int argc, char** argv)
   // the way one constant-direction turn would - the reason a figure-8 is the harder of the two
   // shapes for this estimation problem. The CA model used here can represent the steady curvature
   // between reversals but, lacking a jerk term, still lags briefly at the reversal itself.
-  const value_type figure8CenterX          = static_cast<value_type>(90.0);
-  const value_type figure8CenterY          = static_cast<value_type>(0.0);
-  const value_type figure8RangeAmplitude   = static_cast<value_type>(10.0); // Rx: range sway is +-Rx/2
-  const value_type figure8LateralAmplitude = static_cast<value_type>(12.0); // Ry: lateral sway is +-Ry
-  const value_type figure8Period           = static_cast<value_type>(8.0);  // seconds per loop
-  const value_type figure8Omega            = static_cast<value_type>(2.0 * M_PI) / figure8Period;
+  const auto figure8CenterX          = static_cast<value_type>(90.0);
+  const auto figure8CenterY          = static_cast<value_type>(0.0);
+  const auto figure8RangeAmplitude   = static_cast<value_type>(10.0); // Rx: range sway is +-Rx/2
+  const auto figure8LateralAmplitude = static_cast<value_type>(12.0); // Ry: lateral sway is +-Ry
+  const auto figure8Period           = static_cast<value_type>(8.0);  // seconds per loop
+  const auto figure8Omega            = static_cast<value_type>(2.0 * pi) / figure8Period;
 
   value_type targetWorldX = figure8CenterX;
   value_type targetWorldY = figure8CenterY;
@@ -132,9 +139,9 @@ int main(int argc, char** argv)
   // Measurement noise for the radar: range std 1.0 m, bearing std 1 deg, doppler std 0.5 m/s. Same
   // noise levels as the other nonlinear example, again to isolate the target maneuver as the
   // variable under test.
-  const value_type rangeStd   = static_cast<value_type>(1.0);
-  const value_type bearingStd = static_cast<value_type>(1.0 * M_PI / 180.0);
-  const value_type dopplerStd = static_cast<value_type>(0.5);
+  const auto rangeStd   = static_cast<value_type>(1.0);
+  const auto bearingStd = static_cast<value_type>(1.0 * pi / 180.0);
+  const auto dopplerStd = static_cast<value_type>(0.5);
   // clang-format off
   const auto R = checkedValue(RangeBearingDopplerType::MeasurementCovFromList({
     {rangeStd * rangeStd, static_cast<value_type>(0.0),         static_cast<value_type>(0.0)        },
@@ -149,29 +156,28 @@ int main(int argc, char** argv)
   std::normal_distribution<value_type> bearingNoise{static_cast<value_type>(0.0), bearingStd};
   std::normal_distribution<value_type> dopplerNoise{static_cast<value_type>(0.0), dopplerStd};
 
-  std::cout << "Single Nonlinear Object Tracking Example - Figure-8 Maneuvering Target" << std::endl;
-  std::cout << "with RangeBearingDoppler observations and a slow-moving ego vehicle" << std::endl;
-  std::cout << "================================================================" << std::endl;
-  std::cout << "Scenario: Target drives a figure-8 (Lemniscate of Gerono), center 90 m ahead," << std::endl;
+  std::cout << "Single Nonlinear Object Tracking Example - Figure-8 Maneuvering Target" << '\n';
+  std::cout << "with RangeBearingDoppler observations and a slow-moving ego vehicle" << '\n';
+  std::cout << "================================================================" << '\n';
+  std::cout << "Scenario: Target drives a figure-8 (Lemniscate of Gerono), center 90 m ahead," << '\n';
   std::cout << "          Rx=" << figure8RangeAmplitude << " m (range sway), Ry=" << figure8LateralAmplitude
-            << " m (lateral sway), period=" << figure8Period << " s" << std::endl;
-  std::cout << "Ego vehicle: Moving forward at 3 m/s, turning left at 0.02 rad/s" << std::endl;
-  std::cout << "Sensor: front-mounted radar, offset (tx=2 m, ty=-0.2 m, yaw=-0.1 deg) from the tracking-frame origin"
-            << std::endl;
-  std::cout << "Filter: InformationFilter (suitable for high initial uncertainty)" << std::endl;
-  std::cout << "Filter: KalmanFilter (EKF, after uncertainty has been initialized)" << std::endl;
-  std::cout << "Motion Model: Constant Acceleration (CA/DWPA) - can represent steady curvature, not its reversal" << std::endl;
-  std::cout << "Measurements: noisy (range, bearing, doppler), std=(" << rangeStd << " m, " << (bearingStd * 180.0 / M_PI)
-            << " deg, " << dopplerStd << " m/s)" << std::endl;
-  std::cout << std::endl;
+            << " m (lateral sway), period=" << figure8Period << " s" << '\n';
+  std::cout << "Ego vehicle: Moving forward at 3 m/s, turning left at 0.02 rad/s" << '\n';
+  std::cout << "Sensor: front-mounted radar, offset (tx=2 m, ty=-0.2 m, yaw=-0.1 deg) from the tracking-frame origin" << '\n';
+  std::cout << "Filter: InformationFilter (suitable for high initial uncertainty)" << '\n';
+  std::cout << "Filter: KalmanFilter (EKF, after uncertainty has been initialized)" << '\n';
+  std::cout << "Motion Model: Constant Acceleration (CA/DWPA) - can represent steady curvature, not its reversal" << '\n';
+  std::cout << "Measurements: noisy (range, bearing, doppler), std=(" << rangeStd << " m, " << (bearingStd * 180.0 / pi)
+            << " deg, " << dopplerStd << " m/s)" << '\n';
+  std::cout << '\n';
 
-  std::cout << "Initial State:" << std::endl;
-  std::cout << "  Position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << std::endl;
-  std::cout << "  Velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << std::endl;
-  std::cout << "  Acceleration: (" << motionModel.getAx() << ", " << motionModel.getAy() << ")" << std::endl;
-  std::cout << "  Initial Information Matrix (Y):" << std::endl;
-  std::cout << static_cast<const MM&>(motionModel).getCov()() << std::endl;
-  std::cout << std::endl;
+  std::cout << "Initial State:" << '\n';
+  std::cout << "  Position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << '\n';
+  std::cout << "  Velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << '\n';
+  std::cout << "  Acceleration: (" << motionModel.getAx() << ", " << motionModel.getAy() << ")" << '\n';
+  std::cout << "  Initial Information Matrix (Y):" << '\n';
+  std::cout << static_cast<const MM&>(motionModel).getCov()() << '\n';
+  std::cout << '\n';
 
   // FromLists stores the state in Cartesian state space, but the InformationFilter operates on the
   // information vector y = Y*x. Transform the initial state into information space once, up front, so
@@ -190,8 +196,11 @@ int main(int argc, char** argv)
     value_type ey  = motionModel.getY();
     value_type evx = motionModel.getVx();
     value_type evy = motionModel.getVy();
+    // NOLINTNEXTLINE(modernize-use-auto) -- Copy the numeric value; auto retains a reference wrapper into a temporary.
     value_type pXX = static_cast<const MM&>(motionModel).getCov()()(0, 0).value();
+    // NOLINTNEXTLINE(modernize-use-auto) -- Copy the numeric value; auto retains a reference wrapper into a temporary.
     value_type pXY = static_cast<const MM&>(motionModel).getCov()()(0, motion::StateDefCA::Y).value();
+    // NOLINTNEXTLINE(modernize-use-auto) -- Copy the numeric value; auto retains a reference wrapper into a temporary.
     value_type pYY = static_cast<const MM&>(motionModel).getCov()()(motion::StateDefCA::Y, motion::StateDefCA::Y).value();
     if (!useKalman)
     {
@@ -216,7 +225,7 @@ int main(int argc, char** argv)
     static_cast<void>(pXX);
     static_cast<void>(pXY);
     static_cast<void>(pYY);
-    std::cout << label << " (" << ex << ", " << ey << ") v=(" << evx << ", " << evy << ")" << std::endl;
+    std::cout << label << " (" << ex << ", " << ey << ") v=(" << evx << ", " << evy << ")" << '\n';
   };
 
   // Simulation loop
@@ -227,7 +236,7 @@ int main(int argc, char** argv)
     // Create ego motion for this time step (constant turn-rate-and-velocity motion)
     auto egoMotion = checkedValue(EgoMotionType::TryCreate(motionParams, geometry, dt));
 
-    std::cout << "Step " << step << " (t=" << currentTime << "s):" << std::endl;
+    std::cout << "Step " << step << " (t=" << currentTime << "s):" << '\n';
 
     // Advance the ego vehicle's world-frame pose along its CTRV arc.
     const value_type psiNew = egoWorldPsi + (motionParams.w * dt);
@@ -327,7 +336,7 @@ int main(int argc, char** argv)
         motionModel.convertStateVecIntoStateSpace();
         if (motionModel.invertCov().has_value())
         {
-          std::cout << "  !!! Switching from InformationFilter to KalmanFilter !!!" << std::endl;
+          std::cout << "  !!! Switching from InformationFilter to KalmanFilter !!!" << '\n';
           filter_cov_str = "  Covariance Matrix (P):";
           useKalman      = true;
         }
@@ -340,25 +349,25 @@ int main(int argc, char** argv)
     }
 
     std::cout << "  Measurement z:   (range=" << zRange << ", bearing=" << zBearing << ", doppler=" << zDoppler
-              << ")  [ground truth: (" << gtRange << ", " << gtBearing << ", " << gtDoppler << ")]" << std::endl;
+              << ")  [ground truth: (" << gtRange << ", " << gtBearing << ", " << gtDoppler << ")]" << '\n';
     printEstimate("  Corrected State:");
-    std::cout << "  [ground truth position: (" << gtX << ", " << gtY << ")]" << std::endl;
+    std::cout << "  [ground truth position: (" << gtX << ", " << gtY << ")]" << '\n';
 
-    std::cout << filter_cov_str << std::endl;
-    std::cout << static_cast<const MM&>(motionModel).getCov()() << std::endl;
-    std::cout << std::endl;
+    std::cout << filter_cov_str << '\n';
+    std::cout << static_cast<const MM&>(motionModel).getCov()() << '\n';
+    std::cout << '\n';
 
     const auto [ex, ey, evx, evy, pXX, pXY, pYY] = getEstimate();
     csv << step << ',' << currentTime << ',' << gtX << ',' << gtY << ',' << ex << ',' << ey << ',' << evx << ',' << evy << ','
-        << pXX << ',' << pXY << ',' << pYY << ',' << (useKalman ? 1 : 0) << ',' << egoWorldX << ',' << egoWorldY << ','
+        << pXX << ',' << pXY << ',' << pYY << ',' << (static_cast<int>(useKalman)) << ',' << egoWorldX << ',' << egoWorldY << ','
         << egoWorldPsi << ',' << targetWorldX << ',' << targetWorldY << ',' << zRange << ',' << zBearing << ',' << zDoppler
         << '\n';
   }
 
-  std::cout << "Simulation completed successfully!" << std::endl;
-  std::cout << "Final position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << std::endl;
-  std::cout << "Final velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << std::endl;
-  std::cout << "Final acceleration: (" << motionModel.getAx() << ", " << motionModel.getAy() << ")" << std::endl;
+  std::cout << "Simulation completed successfully!" << '\n';
+  std::cout << "Final position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << '\n';
+  std::cout << "Final velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << '\n';
+  std::cout << "Final acceleration: (" << motionModel.getAx() << ", " << motionModel.getAy() << ")" << '\n';
 
   return 0;
 }

@@ -96,7 +96,7 @@ public:
                   Vector<ValueType_, Size_>                               x);
 
   /// \brief Contract to restrict usage on floating-point value types
-  static_assert(std::is_floating_point<ValueType_>::value, "Rank1Update requires floating-point value types");
+  static_assert(std::is_floating_point_v<ValueType_>, "Rank1Update requires floating-point value types");
 };
 
 } // namespace math

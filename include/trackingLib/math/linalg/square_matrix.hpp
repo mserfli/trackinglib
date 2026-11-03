@@ -159,9 +159,11 @@ inline void SquareMatrix<ValueType_, Size_, IsRowMajor_>::symmetrize()
   {
     for (sint32 col = row + 1; col < Size_; ++col)
     {
-      const ValueType_ avg      = (this->at_unsafe(row, col) + this->at_unsafe(col, row)) * static_cast<ValueType_>(0.5);
-      this->at_unsafe(row, col) = avg;
-      this->at_unsafe(col, row) = avg;
+      // NOLINTNEXTLINE(readability-suspicious-call-argument) -- Intentional transposed element for symmetry.
+      auto&            transposed = this->at_unsafe(col, row);
+      const ValueType_ avg        = (this->at_unsafe(row, col) + transposed) * static_cast<ValueType_>(0.5);
+      this->at_unsafe(row, col)   = avg;
+      transposed                  = avg;
     }
   }
 }
@@ -176,7 +178,8 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isSymmetric(ValueType_
   {
     for (auto col = row + 1; col < Size_; ++col)
     {
-      const auto absDiff = std::abs(this->at_unsafe(row, col) - this->at_unsafe(col, row));
+      // NOLINTNEXTLINE(readability-suspicious-call-argument) -- Intentional transposed element for symmetry.
+      const auto absDiff = std::abs(this->at_unsafe(row, col) - this->at_unsafe(/*row=*/col, /*col=*/row));
       if (absDiff > tolerance)
       {
         return false;
@@ -209,7 +212,7 @@ inline auto SquareMatrix<ValueType_, Size_, IsRowMajor_>::isPositiveSemiDefinite
 
   // scale-relative tolerance from the largest diagonal magnitude (all diagonals of a PSD matrix
   // are non-negative, so this bounds the spectral scale)
-  ValueType_ scale = static_cast<ValueType_>(0);
+  auto scale = static_cast<ValueType_>(0);
   for (auto idx = 0; idx < Size_; ++idx)
   {
     scale = std::max(scale, std::abs(this->at_unsafe(idx, idx)));

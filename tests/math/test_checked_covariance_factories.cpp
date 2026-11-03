@@ -1,9 +1,17 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
+#include "math/linalg/covariance_matrix_factored.h"
+#include "math/linalg/covariance_matrix_full.h"
+#include "math/linalg/errors.h"
 #include "trackingLib/math/linalg/conversions/covariance_matrix_conversions.hpp"
+#include <initializer_list>
 #include <limits>
 #include <utility>
 
-using namespace tracking::math;
+using tracking::math::CovarianceMatrixFactored;
+using tracking::math::CovarianceMatrixFull;
+using tracking::math::Errors;
+namespace conversions = tracking::math::conversions;
 
 template <typename T>
 class CheckedCovarianceFactories: public ::testing::Test

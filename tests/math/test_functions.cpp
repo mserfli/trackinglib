@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "trackingLib/math/analysis/functions.h"
+#include <array>
 
 /// \file test_functions.cpp
 /// \brief Unit tests for compile-time mathematical functions
@@ -22,104 +23,120 @@ protected:
   static constexpr double kEpsilon    = 1e-10;
   static constexpr int    kIntBase    = 2;
   static constexpr double kDoubleBase = 2.5;
-  static constexpr float  kFloatBase  = 1.5f;
+  static constexpr float  kFloatBase  = 1.5F;
 };
 
 // Test compile-time power function with integer types
-TEST_F(GTestFunctions, pow_IntBase_Exponent0__Success)
+TEST_F(GTestFunctions, pow_IntBase_Exponent0__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                       // Repository test naming convention.
 {
   constexpr int result = pow<0>(kIntBase);
   EXPECT_EQ(result, 1); // x^0 = 1 for any x
 }
 
-TEST_F(GTestFunctions, pow_IntBase_Exponent1__Success)
+TEST_F(GTestFunctions, pow_IntBase_Exponent1__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                       // Repository test naming convention.
 {
   constexpr int result = pow<1>(kIntBase);
   EXPECT_EQ(result, kIntBase); // x^1 = x
 }
 
-TEST_F(GTestFunctions, pow_IntBase_Exponent2__Success)
+TEST_F(GTestFunctions, pow_IntBase_Exponent2__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                       // Repository test naming convention.
 {
   constexpr int result = pow<2>(kIntBase);
   EXPECT_EQ(result, 4); // 2^2 = 4
 }
 
-TEST_F(GTestFunctions, pow_IntBase_Exponent3__Success)
+TEST_F(GTestFunctions, pow_IntBase_Exponent3__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                       // Repository test naming convention.
 {
   constexpr int result = pow<3>(kIntBase);
   EXPECT_EQ(result, 8); // 2^3 = 8
 }
 
-TEST_F(GTestFunctions, pow_IntBase_Exponent5__Success)
+TEST_F(GTestFunctions, pow_IntBase_Exponent5__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                       // Repository test naming convention.
 {
   constexpr int result = pow<5>(kIntBase);
   EXPECT_EQ(result, 32); // 2^5 = 32
 }
 
 // Test compile-time power function with double types
-TEST_F(GTestFunctions, pow_DoubleBase_Exponent0__Success)
+TEST_F(GTestFunctions, pow_DoubleBase_Exponent0__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                          // Repository test naming convention.
 {
   constexpr double result = pow<0>(kDoubleBase);
   EXPECT_NEAR(result, 1.0, kEpsilon); // x^0 = 1 for any x
 }
 
-TEST_F(GTestFunctions, pow_DoubleBase_Exponent1__Success)
+TEST_F(GTestFunctions, pow_DoubleBase_Exponent1__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                          // Repository test naming convention.
 {
   constexpr double result = pow<1>(kDoubleBase);
   EXPECT_NEAR(result, kDoubleBase, kEpsilon); // x^1 = x
 }
 
-TEST_F(GTestFunctions, pow_DoubleBase_Exponent2__Success)
+TEST_F(GTestFunctions, pow_DoubleBase_Exponent2__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                          // Repository test naming convention.
 {
   constexpr double result = pow<2>(kDoubleBase);
   EXPECT_NEAR(result, 6.25, kEpsilon); // 2.5^2 = 6.25
 }
 
-TEST_F(GTestFunctions, pow_DoubleBase_Exponent3__Success)
+TEST_F(GTestFunctions, pow_DoubleBase_Exponent3__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                          // Repository test naming convention.
 {
   constexpr double result = pow<3>(kDoubleBase);
   EXPECT_NEAR(result, 15.625, kEpsilon); // 2.5^3 = 15.625
 }
 
-TEST_F(GTestFunctions, pow_DoubleBase_Exponent4__Success)
+TEST_F(GTestFunctions, pow_DoubleBase_Exponent4__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                          // Repository test naming convention.
 {
   constexpr double result = pow<4>(kDoubleBase);
   EXPECT_NEAR(result, 39.0625, kEpsilon); // 2.5^4 = 39.0625
 }
 
 // Test compile-time power function with float types
-TEST_F(GTestFunctions, pow_FloatBase_Exponent0__Success)
+TEST_F(GTestFunctions, pow_FloatBase_Exponent0__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                         // Repository test naming convention.
 {
   constexpr float result = pow<0>(kFloatBase);
-  EXPECT_NEAR(result, 1.0f, kEpsilon); // x^0 = 1 for any x
+  EXPECT_NEAR(result, 1.0F, kEpsilon); // x^0 = 1 for any x
 }
 
-TEST_F(GTestFunctions, pow_FloatBase_Exponent1__Success)
+TEST_F(GTestFunctions, pow_FloatBase_Exponent1__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                         // Repository test naming convention.
 {
   constexpr float result = pow<1>(kFloatBase);
   EXPECT_NEAR(result, kFloatBase, kEpsilon); // x^1 = x
 }
 
-TEST_F(GTestFunctions, pow_FloatBase_Exponent2__Success)
+TEST_F(GTestFunctions, pow_FloatBase_Exponent2__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                         // Repository test naming convention.
 {
   constexpr float result = pow<2>(kFloatBase);
-  EXPECT_NEAR(result, 2.25f, kEpsilon); // 1.5^2 = 2.25
+  EXPECT_NEAR(result, 2.25F, kEpsilon); // 1.5^2 = 2.25
 }
 
-TEST_F(GTestFunctions, pow_FloatBase_Exponent3__Success)
+TEST_F(GTestFunctions, pow_FloatBase_Exponent3__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                         // Repository test naming convention.
 {
   constexpr float result = pow<3>(kFloatBase);
-  EXPECT_NEAR(result, 3.375f, kEpsilon); // 1.5^3 = 3.375
+  EXPECT_NEAR(result, 3.375F, kEpsilon); // 1.5^3 = 3.375
 }
 
-TEST_F(GTestFunctions, pow_FloatBase_Exponent4__Success)
+TEST_F(GTestFunctions, pow_FloatBase_Exponent4__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                         // Repository test naming convention.
 {
   constexpr float result = pow<4>(kFloatBase);
-  EXPECT_NEAR(result, 5.0625f, kEpsilon); // 1.5^4 = 5.0625
+  EXPECT_NEAR(result, 5.0625F, kEpsilon); // 1.5^4 = 5.0625
 }
 
 // Test constexpr evaluation in template parameters
-TEST_F(GTestFunctions, pow_TemplateParameter__Success)
+TEST_F(GTestFunctions, pow_TemplateParameter__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                       // Repository test naming convention.
 {
   // This test verifies that the pow function can be used in template parameters
   // which requires constexpr evaluation
@@ -128,30 +145,35 @@ TEST_F(GTestFunctions, pow_TemplateParameter__Success)
   constexpr int result   = pow<exponent>(base);
 
   // Use the result in a template parameter to ensure it's truly constexpr
-  std::array<int, result> test_array;
+  const std::array<int, result> test_array{};
   EXPECT_EQ(test_array.size(), 8); // 2^3 = 8
 }
 
 // Test edge cases
-TEST_F(GTestFunctions, pow_NegativeBase_PositiveExponent__Success)
+TEST_F(GTestFunctions,
+       pow_NegativeBase_PositiveExponent__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                   // -- Repository test naming convention.
 {
   constexpr double result = pow<3>(-2.0);
   EXPECT_NEAR(result, -8.0, kEpsilon); // (-2)^3 = -8
 }
 
-TEST_F(GTestFunctions, pow_NegativeBase_EvenExponent__Success)
+TEST_F(GTestFunctions, pow_NegativeBase_EvenExponent__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                               // -- Repository test naming convention.
 {
   constexpr double result = pow<4>(-2.0);
   EXPECT_NEAR(result, 16.0, kEpsilon); // (-2)^4 = 16
 }
 
-TEST_F(GTestFunctions, pow_ZeroBase_PositiveExponent__Success)
+TEST_F(GTestFunctions, pow_ZeroBase_PositiveExponent__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                               // -- Repository test naming convention.
 {
   constexpr double result = pow<5>(0.0);
   EXPECT_NEAR(result, 0.0, kEpsilon); // 0^5 = 0
 }
 
-TEST_F(GTestFunctions, pow_ZeroBase_ZeroExponent__Success)
+TEST_F(GTestFunctions, pow_ZeroBase_ZeroExponent__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                           // Repository test naming convention.
 {
   // Note: 0^0 is mathematically undefined, but conventionally treated as 1
   // in many programming contexts
@@ -159,7 +181,8 @@ TEST_F(GTestFunctions, pow_ZeroBase_ZeroExponent__Success)
   EXPECT_NEAR(result, 1.0, kEpsilon);
 }
 
-TEST_F(GTestFunctions, pow_OneBase_VariousExponents__Success)
+TEST_F(GTestFunctions, pow_OneBase_VariousExponents__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                              // Repository test naming convention.
 {
   constexpr double result1 = pow<0>(1.0);
   constexpr double result2 = pow<1>(1.0);
@@ -171,7 +194,8 @@ TEST_F(GTestFunctions, pow_OneBase_VariousExponents__Success)
 }
 
 // Test larger exponents to verify the iterative approach works correctly
-TEST_F(GTestFunctions, pow_LargeExponent__Success)
+TEST_F(GTestFunctions, pow_LargeExponent__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) -- Repository
+                                                   // test naming convention.
 {
   constexpr double result = pow<10>(2.0);
   EXPECT_NEAR(result, 1024.0, kEpsilon); // 2^10 = 1024

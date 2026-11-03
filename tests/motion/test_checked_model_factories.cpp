@@ -1,16 +1,23 @@
 #include <gtest/gtest.h>
-#include "trackingLib/motion/motion_model_ca.hpp"
-#include "trackingLib/motion/motion_model_cv.hpp"
+#include "base/atomic_types.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "math/linalg/errors.h"
+#include "motion/motion_model_ca.h"
+#include "motion/motion_model_cv.h"
+#include "trackingLib/motion/motion_model_ca.hpp" // IWYU pragma: keep -- Required template definitions.
+#include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep -- Required template definitions.
 #include "trackingLib/observation/bearing_observation_model.h"
 #include "trackingLib/observation/position_observation_model.h"
 #include "trackingLib/observation/range_bearing_doppler_observation_model.h"
 #include "trackingLib/observation/range_bearing_observation_model.h"
 #include "trackingLib/observation/range_observation_model.h"
 #include "trackingLib/observation/velocity_observation_model.h"
-#include <type_traits>
+#include <initializer_list>
 #include <utility>
 
-using namespace tracking;
+namespace math        = tracking::math;
+namespace motion      = tracking::motion;
+namespace observation = tracking::observation;
 using math::Errors;
 
 template <typename Policy>
@@ -51,7 +58,8 @@ void checkMotionFactories()
 /// \brief Check every observation factory overload and its inherited helpers.
 /// \tparam Model Built-in observation model
 template <typename Model>
-void checkObservationFactories()
+// Assertion macro expansion inflates complexity; keep the factory contract checks together.
+void checkObservationFactories() // NOLINT(readability-function-cognitive-complexity)
 {
   using T    = typename Model::value_type;
   using Flat = std::initializer_list<T>;
