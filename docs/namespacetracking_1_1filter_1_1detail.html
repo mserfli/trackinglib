@@ -83,6 +83,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:abbf82c3a80f41d145d3a9ebc20dae48b" id="r_abbf82c3a80f41d145d3a9ebc20dae48b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Dim_, typename Matrix_&gt; </td></tr>
+<tr class="memitem:abbf82c3a80f41d145d3a9ebc20dae48b template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbf82c3a80f41d145d3a9ebc20dae48b">hasUpperCorrelations</a> (const Matrix_ &amp;matrix) -&gt; bool</td></tr>
+<tr class="memdesc:abbf82c3a80f41d145d3a9ebc20dae48b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the strict upper triangle for nonzero correlations.  <br /></td></tr>
 <tr class="memitem:a7a50ffad7efca5cfa8f70e01c5a31111" id="r_a7a50ffad7efca5cfa8f70e01c5a31111"><td class="memTemplParams" colspan="2">template&lt;typename CovarianceMatrixPolicy_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimX_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> DimZ_&gt; </td></tr>
 <tr class="memitem:a7a50ffad7efca5cfa8f70e01c5a31111 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7a50ffad7efca5cfa8f70e01c5a31111">decorrelateMeasurement</a> (<a class="el" href="classtracking_1_1math_1_1Vector.html">math::Vector</a>&lt; typename CovarianceMatrixPolicy_::value_type, DimZ_ &gt; &amp;vec, <a class="el" href="classtracking_1_1math_1_1Matrix.html">math::Matrix</a>&lt; typename CovarianceMatrixPolicy_::value_type, DimZ_, DimX_ &gt; &amp;H, <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">math::DiagonalMatrix</a>&lt; typename CovarianceMatrixPolicy_::value_type, DimZ_ &gt; &amp;rDiag, const typename CovarianceMatrixPolicy_::template Instantiate&lt; DimZ_ &gt; &amp;R) -&gt; bool</td></tr>
 <tr class="memdesc:a7a50ffad7efca5cfa8f70e01c5a31111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decorrelate a measurement for sequential (scalar) processing.  <br /></td></tr>
@@ -153,9 +156,62 @@ template&lt;typename CovarianceMatrixPolicy_, <a class="el" href="atomic__types_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if decorrelation succeeded, false if the update must be skipped (R could not be decomposed) </dd></dl>
 <div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetracking_1_1filter_1_1detail_a7a50ffad7efca5cfa8f70e01c5a31111_cgraph.svg" width="423" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetracking_1_1filter_1_1detail_a7a50ffad7efca5cfa8f70e01c5a31111_icgraph.svg" width="448" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="abbf82c3a80f41d145d3a9ebc20dae48b" name="abbf82c3a80f41d145d3a9ebc20dae48b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbf82c3a80f41d145d3a9ebc20dae48b">&#9670;&#160;</a></span>hasUpperCorrelations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Dim_, typename Matrix_&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto tracking::filter::detail::hasUpperCorrelations </td>
+          <td>(</td>
+          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span></td><td>)</td>
+          <td>-&gt;bool</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check the strict upper triangle for nonzero correlations. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Dim_</td><td>Matrix dimension </td></tr>
+    <tr><td class="paramname">Matrix_</td><td>Matrix type providing value_type and unchecked element access </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Matrix to inspect </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether an upper off-diagonal element is nonzero </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetracking_1_1filter_1_1detail_abbf82c3a80f41d145d3a9ebc20dae48b_icgraph.svg" width="667" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

@@ -127,13 +127,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a723f6bc4536182198f4412f268b526c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the dot product with another vector.  <br /></td></tr>
 <tr class="memitem:a0f839b3b261c9a949ba0f0dfa133f7ca" id="r_a0f839b3b261c9a949ba0f0dfa133f7ca"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f839b3b261c9a949ba0f0dfa133f7ca">normSq</a> () const -&gt; ValueType_</td></tr>
 <tr class="memdesc:a0f839b3b261c9a949ba0f0dfa133f7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the squared Euclidean norm (L2 norm squared) of the vector.  <br /></td></tr>
-<tr class="memitem:a2a093a2f59247f405801cda330da997a" id="r_a2a093a2f59247f405801cda330da997a"><td class="memTemplParams" colspan="2">template&lt;typename U = ValueType_, std::enable_if_t&lt; std::is_floating_point&lt; U &gt;::value, int &gt; = 0&gt; </td></tr>
+<tr class="memitem:a2a093a2f59247f405801cda330da997a" id="r_a2a093a2f59247f405801cda330da997a"><td class="memTemplParams" colspan="2">template&lt;typename U = ValueType_, std::enable_if_t&lt; std::is_floating_point_v&lt; U &gt;, int &gt; = 0&gt; </td></tr>
 <tr class="memitem:a2a093a2f59247f405801cda330da997a template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a093a2f59247f405801cda330da997a">norm</a> () const -&gt; ValueType_</td></tr>
 <tr class="memdesc:a2a093a2f59247f405801cda330da997a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the Euclidean norm (L2 norm) of the vector.  <br /></td></tr>
-<tr class="memitem:ac68c5dfeb6608b1db26264cd4410a933" id="r_ac68c5dfeb6608b1db26264cd4410a933"><td class="memTemplParams" colspan="2">template&lt;typename U = ValueType_, std::enable_if_t&lt; std::is_floating_point&lt; U &gt;::value, int &gt; = 0&gt; </td></tr>
+<tr class="memitem:ac68c5dfeb6608b1db26264cd4410a933" id="r_ac68c5dfeb6608b1db26264cd4410a933"><td class="memTemplParams" colspan="2">template&lt;typename U = ValueType_, std::enable_if_t&lt; std::is_floating_point_v&lt; U &gt;, int &gt; = 0&gt; </td></tr>
 <tr class="memitem:ac68c5dfeb6608b1db26264cd4410a933 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac68c5dfeb6608b1db26264cd4410a933">normalize</a> ()</td></tr>
 <tr class="memdesc:ac68c5dfeb6608b1db26264cd4410a933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalize this vector in-place to unit length.  <br /></td></tr>
-<tr class="memitem:ab30558a6336045ae4c6848f217ddecb9" id="r_ab30558a6336045ae4c6848f217ddecb9"><td class="memTemplParams" colspan="2">template&lt;typename U = ValueType_, std::enable_if_t&lt; std::is_floating_point&lt; U &gt;::value, int &gt; = 0&gt; </td></tr>
+<tr class="memitem:ab30558a6336045ae4c6848f217ddecb9" id="r_ab30558a6336045ae4c6848f217ddecb9"><td class="memTemplParams" colspan="2">template&lt;typename U = ValueType_, std::enable_if_t&lt; std::is_floating_point_v&lt; U &gt;, int &gt; = 0&gt; </td></tr>
 <tr class="memitem:ab30558a6336045ae4c6848f217ddecb9 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab30558a6336045ae4c6848f217ddecb9">normalize</a> () const -&gt; <a class="el" href="#aec0a6c75358f5a47e1d4c056c8aebb12">Vector</a></td></tr>
 <tr class="memdesc:ab30558a6336045ae4c6848f217ddecb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new normalized vector of unit length.  <br /></td></tr>
 <tr class="memitem:a2da76bfaec4e3c25b5f11078a632c960" id="r_a2da76bfaec4e3c25b5f11078a632c960"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2da76bfaec4e3c25b5f11078a632c960">at_unsafe</a> (<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> idx) const noexcept -&gt; ValueType_</td></tr>
@@ -668,7 +668,7 @@ Here is the call graph for this function:</div>
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </div>
 <div class="memtemplate">
-template&lt;typename U, std::enable_if_t&lt; std::is_floating_point&lt; U &gt;::value, int &gt;&gt; </div>
+template&lt;typename U, std::enable_if_t&lt; std::is_floating_point_v&lt; U &gt;, int &gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -713,7 +713,7 @@ Here is the caller graph for this function:</div>
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </div>
 <div class="memtemplate">
-template&lt;typename U, std::enable_if_t&lt; std::is_floating_point&lt; U &gt;::value, int &gt;&gt; </div>
+template&lt;typename U, std::enable_if_t&lt; std::is_floating_point_v&lt; U &gt;, int &gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -759,7 +759,7 @@ Here is the caller graph for this function:</div>
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </div>
 <div class="memtemplate">
-template&lt;typename U, std::enable_if_t&lt; std::is_floating_point&lt; U &gt;::value, int &gt;&gt; </div>
+template&lt;typename U, std::enable_if_t&lt; std::is_floating_point_v&lt; U &gt;, int &gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">

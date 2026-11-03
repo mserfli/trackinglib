@@ -11,6 +11,7 @@ var searchData=
   ['has_5fvelocity_5fv_8',['has_velocity_v',['../namespacetracking_1_1motion.html#ab38bf9cf9860a68e9bb0b9b358598dba',1,'tracking::motion']]],
   ['hasstrictlypositivediagonalelems_9',['hasStrictlyPositiveDiagonalElems',['../classtracking_1_1math_1_1SquareMatrix.html#ad6aee1928883e749a396866d7d20e609',1,'tracking::math::SquareMatrix']]],
   ['hasunitdiagonal_10',['hasUnitDiagonal',['../classtracking_1_1math_1_1SquareMatrix.html#aca13bd5fb9df7661fcacd47e70a65fac',1,'tracking::math::SquareMatrix']]],
-  ['height_11',['height',['../structtracking_1_1env_1_1EgoMotion_1_1Geometry.html#a7f92d6ce486206a02269645b83e731f0',1,'tracking::env::EgoMotion::Geometry']]],
-  ['householderqr_12',['householderQR',['../classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b',1,'tracking::math::SquareMatrix']]]
+  ['hasuppercorrelations_11',['hasUpperCorrelations',['../namespacetracking_1_1filter_1_1detail.html#abbf82c3a80f41d145d3a9ebc20dae48b',1,'tracking::filter::detail']]],
+  ['height_12',['height',['../structtracking_1_1env_1_1EgoMotion_1_1Geometry.html#a7f92d6ce486206a02269645b83e731f0',1,'tracking::env::EgoMotion::Geometry']]],
+  ['householderqr_13',['householderQR',['../classtracking_1_1math_1_1SquareMatrix.html#aa0f3f741e9c040da36cfb465e630bf6b',1,'tracking::math::SquareMatrix']]]
 ];

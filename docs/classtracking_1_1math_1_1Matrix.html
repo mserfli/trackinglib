@@ -136,10 +136,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2a3ed5ee9a358c9149a19ef3b64d3c2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates Self = Self - Other.  <br /></td></tr>
 <tr class="memitem:ac7fda44d97f3f2f417ef2862c081951b" id="r_ac7fda44d97f3f2f417ef2862c081951b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7fda44d97f3f2f417ef2862c081951b">operator*=</a> (ValueType_ scalar)</td></tr>
 <tr class="memdesc:ac7fda44d97f3f2f417ef2862c081951b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates Self = Self * scalar.  <br /></td></tr>
-<tr class="memitem:a7371d074f772f271e444a653994b2bd8" id="r_a7371d074f772f271e444a653994b2bd8"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_integral&lt; T &gt;::value, bool &gt; = true&gt; </td></tr>
+<tr class="memitem:a7371d074f772f271e444a653994b2bd8" id="r_a7371d074f772f271e444a653994b2bd8"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, bool &gt; = true&gt; </td></tr>
 <tr class="memitem:a7371d074f772f271e444a653994b2bd8 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7371d074f772f271e444a653994b2bd8">operator/=</a> (T scalar) -&gt; tl::expected&lt; void, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">Errors</a> &gt;</td></tr>
 <tr class="memdesc:a7371d074f772f271e444a653994b2bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates Self = Self / scalar for integral matrixes.  <br /></td></tr>
-<tr class="memitem:a7371d074f772f271e444a653994b2bd8" id="r_a7371d074f772f271e444a653994b2bd8"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt; = true&gt; </td></tr>
+<tr class="memitem:a7371d074f772f271e444a653994b2bd8" id="r_a7371d074f772f271e444a653994b2bd8"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt; = true&gt; </td></tr>
 <tr class="memitem:a7371d074f772f271e444a653994b2bd8 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7371d074f772f271e444a653994b2bd8">operator/=</a> (T scalar) -&gt; tl::expected&lt; void, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">Errors</a> &gt;</td></tr>
 <tr class="memdesc:a7371d074f772f271e444a653994b2bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates Self = Self / scalar for floating-point matrixes.  <br /></td></tr>
 <tr class="memitem:a100260d39911a8ff11c6c7f1a867acd9" id="r_a100260d39911a8ff11c6c7f1a867acd9"><td class="memTemplParams" colspan="2">template&lt;bool IsRowMajor2_&gt; </td></tr>
@@ -154,10 +154,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aea24f343c207ca0396114cff44eb3196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates Self - scalar (subtracts scalar from each element).  <br /></td></tr>
 <tr class="memitem:ab49523344a922ba4458b0a3e3435370e" id="r_ab49523344a922ba4458b0a3e3435370e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab49523344a922ba4458b0a3e3435370e">operator*</a> (ValueType_ scalar) const -&gt; <a class="el" href="#aedaf2c7db2e20735acb4c3648ea58494">Matrix</a></td></tr>
 <tr class="memdesc:ab49523344a922ba4458b0a3e3435370e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates Self * scalar.  <br /></td></tr>
-<tr class="memitem:a8b1ca4b5ff201281ce92781e2ae90f10" id="r_a8b1ca4b5ff201281ce92781e2ae90f10"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_integral&lt; T &gt;::value, bool &gt; = true&gt; </td></tr>
+<tr class="memitem:a8b1ca4b5ff201281ce92781e2ae90f10" id="r_a8b1ca4b5ff201281ce92781e2ae90f10"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, bool &gt; = true&gt; </td></tr>
 <tr class="memitem:a8b1ca4b5ff201281ce92781e2ae90f10 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b1ca4b5ff201281ce92781e2ae90f10">operator/</a> (T scalar) const -&gt; tl::expected&lt; <a class="el" href="#aedaf2c7db2e20735acb4c3648ea58494">Matrix</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">Errors</a> &gt;</td></tr>
 <tr class="memdesc:a8b1ca4b5ff201281ce92781e2ae90f10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates Self / scalar for integral matrixes.  <br /></td></tr>
-<tr class="memitem:a8b1ca4b5ff201281ce92781e2ae90f10" id="r_a8b1ca4b5ff201281ce92781e2ae90f10"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt; = true&gt; </td></tr>
+<tr class="memitem:a8b1ca4b5ff201281ce92781e2ae90f10" id="r_a8b1ca4b5ff201281ce92781e2ae90f10"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt; = true&gt; </td></tr>
 <tr class="memitem:a8b1ca4b5ff201281ce92781e2ae90f10 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b1ca4b5ff201281ce92781e2ae90f10">operator/</a> (T scalar) const -&gt; tl::expected&lt; <a class="el" href="#aedaf2c7db2e20735acb4c3648ea58494">Matrix</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">Errors</a> &gt;</td></tr>
 <tr class="memdesc:a8b1ca4b5ff201281ce92781e2ae90f10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates Self / scalar for floating-point matrixes.  <br /></td></tr>
 <tr class="memitem:abcffe22dc0aafe575bc41673a938828f" id="r_abcffe22dc0aafe575bc41673a938828f"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols2_, bool IsRowMajor2_&gt; </td></tr>
@@ -175,7 +175,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aba21624386501bb4f47750d245a2ddee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get max value of the matrix.  <br /></td></tr>
 <tr class="memitem:adf3791d6a7c8e961b74e27f5c1713ada" id="r_adf3791d6a7c8e961b74e27f5c1713ada"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf3791d6a7c8e961b74e27f5c1713ada">minmax</a> () const -&gt; std::tuple&lt; ValueType_, ValueType_ &gt;</td></tr>
 <tr class="memdesc:adf3791d6a7c8e961b74e27f5c1713ada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get min and max value of the matrix.  <br /></td></tr>
-<tr class="memitem:ad585b749b2d308e0d096ad1009d5a3bf" id="r_ad585b749b2d308e0d096ad1009d5a3bf"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt; = true&gt; </td></tr>
+<tr class="memitem:ad585b749b2d308e0d096ad1009d5a3bf" id="r_ad585b749b2d308e0d096ad1009d5a3bf"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt; = true&gt; </td></tr>
 <tr class="memitem:ad585b749b2d308e0d096ad1009d5a3bf template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad585b749b2d308e0d096ad1009d5a3bf">frobenius_norm</a> () const -&gt; ValueType_</td></tr>
 <tr class="memdesc:ad585b749b2d308e0d096ad1009d5a3bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate Frobenius norm (L2 norm): sqrt(sum of squared elements).  <br /></td></tr>
 <tr class="memitem:a478f0eea63246477537c07d88584371d" id="r_a478f0eea63246477537c07d88584371d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a478f0eea63246477537c07d88584371d">transpose</a> () const -&gt; const <a class="el" href="#acd53bf25d79a6eeaaa603599d03074c9">transpose_type</a> &amp;</td></tr>
@@ -239,9 +239,9 @@ Static Protected Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-methods" class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:ae90f0082de34a029cf9f33ef339f657c" id="r_ae90f0082de34a029cf9f33ef339f657c"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_integral&lt; T &gt;::value, bool &gt; = true&gt; </td></tr>
+<tr class="memitem:ae90f0082de34a029cf9f33ef339f657c" id="r_ae90f0082de34a029cf9f33ef339f657c"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, bool &gt; = true&gt; </td></tr>
 <tr class="memitem:ae90f0082de34a029cf9f33ef339f657c template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae90f0082de34a029cf9f33ef339f657c">inplace_div_by_int_unsafe</a> (T scalar)</td></tr>
-<tr class="memitem:ab92f8eea384dad26bfa26060aefa7175" id="r_ab92f8eea384dad26bfa26060aefa7175"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt; = true&gt; </td></tr>
+<tr class="memitem:ab92f8eea384dad26bfa26060aefa7175" id="r_ab92f8eea384dad26bfa26060aefa7175"><td class="memTemplParams" colspan="2">template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt; = true&gt; </td></tr>
 <tr class="memitem:ab92f8eea384dad26bfa26060aefa7175 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab92f8eea384dad26bfa26060aefa7175">inplace_mul_by_inverse_factor_unsafe</a> (T scalar)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-attribs" class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
@@ -644,7 +644,7 @@ template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d0
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -697,7 +697,7 @@ template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d0
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Rows_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols_, bool IsRowMajor_&gt; </div>
 <div class="memtemplate">
-template&lt;typename T, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt;&gt; </div>
+template&lt;typename T, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -718,11 +718,6 @@ template&lt;typename T, typename std::enable_if_t&lt; std::is_floating_point&lt;
 
 <p>Calculate Frobenius norm (L2 norm): sqrt(sum of squared elements). </p>
 <dl class="section note"><dt>Note</dt><dd>Only available for floating-point types. For integral types, this method is not instantiated. </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_ad585b749b2d308e0d096ad1009d5a3bf_cgraph.svg" width="392" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -777,7 +772,7 @@ Here is the call graph for this function:</div>
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Rows_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols_, bool IsRowMajor_&gt; </div>
 <div class="memtemplate">
-template&lt;typename T, typename std::enable_if_t&lt; std::is_integral&lt; T &gt;::value, bool &gt;&gt; </div>
+template&lt;typename T, typename std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, bool &gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -816,7 +811,7 @@ Here is the caller graph for this function:</div>
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Rows_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols_, bool IsRowMajor_&gt; </div>
 <div class="memtemplate">
-template&lt;typename T, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt;&gt; </div>
+template&lt;typename T, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -872,7 +867,7 @@ template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d0
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_a8bd77e248357a81a0e7c6bbf7a913398_cgraph.svg" width="428" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_a8bd77e248357a81a0e7c6bbf7a913398_cgraph.svg" width="643" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -907,7 +902,7 @@ template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d0
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_aba21624386501bb4f47750d245a2ddee_icgraph.svg" width="428" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_aba21624386501bb4f47750d245a2ddee_icgraph.svg" width="100%" height="567"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -942,7 +937,7 @@ template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d0
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_a87fa8f08a9f3be4d6cdf9f1e047c6337_icgraph.svg" width="424" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_a87fa8f08a9f3be4d6cdf9f1e047c6337_icgraph.svg" width="100%" height="567"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -974,6 +969,11 @@ template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d0
 
 <p>Get min and max value of the matrix. </p>
 <dl class="section return"><dt>Returns</dt><dd>tuple of min, max value </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_adf3791d6a7c8e961b74e27f5c1713ada_cgraph.svg" width="428" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1558,7 +1558,7 @@ template&lt;bool IsRowMajor2_&gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_a2a3ed5ee9a358c9149a19ef3b64d3c2d_cgraph.svg" width="392" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1math_1_1Matrix_a2a3ed5ee9a358c9149a19ef3b64d3c2d_cgraph.svg" width="392" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1571,7 +1571,7 @@ Here is the call graph for this function:</div>
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Rows_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols_, bool IsRowMajor_ = true&gt; </div>
 <div class="memtemplate">
-template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt; = true&gt; </div>
+template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt; = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1610,7 +1610,7 @@ template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_float
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Rows_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols_, bool IsRowMajor_&gt; </div>
 <div class="memtemplate">
-template&lt;typename T, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt;&gt; </div>
+template&lt;typename T, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1654,7 +1654,7 @@ Here is the call graph for this function:</div>
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Rows_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols_, bool IsRowMajor_ = true&gt; </div>
 <div class="memtemplate">
-template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt; = true&gt; </div>
+template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt; = true&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">auto <a class="el" href="classtracking_1_1math_1_1Matrix.html">tracking::math::Matrix</a>&lt; ValueType_, Rows_, Cols_, IsRowMajor_ &gt;::operator/= </td>
@@ -1685,7 +1685,7 @@ template&lt;typename T = ValueType_, typename std::enable_if_t&lt; std::is_float
 <div class="memtemplate">
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Rows_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols_, bool IsRowMajor_&gt; </div>
 <div class="memtemplate">
-template&lt;typename T, typename std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value, bool &gt;&gt; </div>
+template&lt;typename T, typename std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">

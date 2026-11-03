@@ -132,7 +132,7 @@ Public Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab5f751664ea386c74e2884e7c155e278" id="r_ab5f751664ea386c74e2884e7c155e278"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5f751664ea386c74e2884e7c155e278">ExtendedMotionModel</a> ()=default</td></tr>
-<tr class="memitem:ab882ae09e17989e006cc96b6313f3c8d" id="r_ab882ae09e17989e006cc96b6313f3c8d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab882ae09e17989e006cc96b6313f3c8d">~ExtendedMotionModel</a> ()=default</td></tr>
+<tr class="memitem:affd776c56098f9b946e482dcd1e3d078" id="r_affd776c56098f9b946e482dcd1e3d078"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affd776c56098f9b946e482dcd1e3d078">~ExtendedMotionModel</a> () override=default</td></tr>
 <tr class="memitem:acba2af9a262873006d10f2a5bc9fe27f" id="r_acba2af9a262873006d10f2a5bc9fe27f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acba2af9a262873006d10f2a5bc9fe27f">getX</a> () const -&gt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> final</td></tr>
 <tr class="memdesc:acba2af9a262873006d10f2a5bc9fe27f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read access to x position.  <br /></td></tr>
 <tr class="memitem:acf6d9003beae8bdfb689fee5f8cdfe2f" id="r_acf6d9003beae8bdfb689fee5f8cdfe2f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf6d9003beae8bdfb689fee5f8cdfe2f">getY</a> () const -&gt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> final</td></tr>
@@ -203,12 +203,12 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aee85edf23b4f45d1db1a02a09cb3ba9e" id="r_aee85edf23b4f45d1db1a02a09cb3ba9e"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee85edf23b4f45d1db1a02a09cb3ba9e">StateVecFromList</a> (const std::initializer_list&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> &gt; &amp;list) noexcept -&gt; tl::expected&lt; <a class="el" href="#a7053c23b5eb1cc6aced49e0c700a2ec1">StateVec</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
 <tr class="memdesc:aee85edf23b4f45d1db1a02a09cb3ba9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create state vector from initializer list.  <br /></td></tr>
-<tr class="memitem:a29a452edb91c9aa1e52e1384c8e802d9" id="r_a29a452edb91c9aa1e52e1384c8e802d9"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29a452edb91c9aa1e52e1384c8e802d9">StateCovFromList</a> (const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> &gt; &gt; &amp;list) noexcept(std::is_same&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a>, <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFull.html">math::CovarianceMatrixFull</a>&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a>, MotionModelTrait_::Size &gt; &gt;::value||std::is_same&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a>, <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFactored.html">math::CovarianceMatrixFactored</a>&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a>, MotionModelTrait_::Size &gt; &gt;::value) -&gt; tl::expected&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
-<tr class="memdesc:a29a452edb91c9aa1e52e1384c8e802d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create state covariance from initializer list.  <br /></td></tr>
+<tr class="memitem:a0304335c74ae8db838446be6d59af03c" id="r_a0304335c74ae8db838446be6d59af03c"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0304335c74ae8db838446be6d59af03c">StateCovFromList</a> (const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> &gt; &gt; &amp;list) noexcept(std::is_same_v&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a>, <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFull.html">math::CovarianceMatrixFull</a>&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a>, MotionModelTrait_::Size &gt; &gt;||std::is_same_v&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a>, <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFactored.html">math::CovarianceMatrixFactored</a>&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a>, MotionModelTrait_::Size &gt; &gt;) -&gt; tl::expected&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
+<tr class="memdesc:a0304335c74ae8db838446be6d59af03c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create state covariance from initializer list.  <br /></td></tr>
 <tr class="memitem:aefff3999bcb497ef6a5e231d4a12b51e" id="r_aefff3999bcb497ef6a5e231d4a12b51e"><td class="memTemplParams" colspan="2">template&lt;typename T = CovarianceMatrixPolicy&gt; </td></tr>
 <tr class="memitem:aefff3999bcb497ef6a5e231d4a12b51e template"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefff3999bcb497ef6a5e231d4a12b51e">StateCovFromList</a> (const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> &gt; &gt; &amp;u, const std::initializer_list&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> &gt; &amp;d) noexcept(noexcept(StateCov::FromList(u, d))) -&gt; std::enable_if_t&lt; T::is_factored, tl::expected&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt; &gt;</td></tr>
 <tr class="memdesc:aefff3999bcb497ef6a5e231d4a12b51e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create factored state covariance from initializer list.  <br /></td></tr>
-<tr class="memitem:a6b92364de24a8aa5e3a2791990a1e3d7" id="r_a6b92364de24a8aa5e3a2791990a1e3d7"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b92364de24a8aa5e3a2791990a1e3d7">FromLists</a> (const std::initializer_list&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> &gt; &gt; &amp;covList) noexcept(noexcept(<a class="el" href="#aee85edf23b4f45d1db1a02a09cb3ba9e">StateVecFromList</a>(vecList)) &amp;&amp;noexcept(<a class="el" href="#a29a452edb91c9aa1e52e1384c8e802d9">StateCovFromList</a>(covList)) &amp;&amp;noexcept(MotionModel_::TryCreate(std::declval&lt; const <a class="el" href="#a7053c23b5eb1cc6aced49e0c700a2ec1">StateVec</a> &amp; &gt;(), std::declval&lt; const <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a> &amp; &gt;()))) -&gt; tl::expected&lt; MotionModel_, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
+<tr class="memitem:a6b92364de24a8aa5e3a2791990a1e3d7" id="r_a6b92364de24a8aa5e3a2791990a1e3d7"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b92364de24a8aa5e3a2791990a1e3d7">FromLists</a> (const std::initializer_list&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#a3f6ebbdb25acc0ac900cb6b31cc85487">value_type</a> &gt; &gt; &amp;covList) noexcept(noexcept(<a class="el" href="#aee85edf23b4f45d1db1a02a09cb3ba9e">StateVecFromList</a>(vecList)) &amp;&amp;noexcept(<a class="el" href="#a0304335c74ae8db838446be6d59af03c">StateCovFromList</a>(covList)) &amp;&amp;noexcept(MotionModel_::TryCreate(std::declval&lt; const <a class="el" href="#a7053c23b5eb1cc6aced49e0c700a2ec1">StateVec</a> &amp; &gt;(), std::declval&lt; const <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a> &amp; &gt;()))) -&gt; tl::expected&lt; MotionModel_, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
 <tr class="memdesc:a6b92364de24a8aa5e3a2791990a1e3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create complete <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html" title="Abstract MotionModel with known dimension, keeping the model memory for State and StateCovariance.">ExtendedMotionModel</a> from initializer lists.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
@@ -217,8 +217,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a26d8eaf5c9edd9b54cde77fd18a13f9a" id="r_a26d8eaf5c9edd9b54cde77fd18a13f9a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26d8eaf5c9edd9b54cde77fd18a13f9a">ExtendedMotionModel</a> (ExtendedMotionModel &amp;&amp;) noexcept(std::is_nothrow_move_constructible&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a> &gt;::value)=default</td></tr>
 <tr class="memitem:aa90febef41677d50c99f1a98a75f9248" id="r_aa90febef41677d50c99f1a98a75f9248"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa90febef41677d50c99f1a98a75f9248">operator=</a> (const <a class="el" href="#ab5f751664ea386c74e2884e7c155e278">ExtendedMotionModel</a> &amp;other) -&gt; <a class="el" href="#ab5f751664ea386c74e2884e7c155e278">ExtendedMotionModel</a> &amp;=default</td></tr>
 <tr class="memitem:ad025ae08470ff902b51128eca5a2f546" id="r_ad025ae08470ff902b51128eca5a2f546"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad025ae08470ff902b51128eca5a2f546">operator=</a> (<a class="el" href="#ab5f751664ea386c74e2884e7c155e278">ExtendedMotionModel</a> &amp;&amp;) noexcept -&gt; <a class="el" href="#ab5f751664ea386c74e2884e7c155e278">ExtendedMotionModel</a> &amp;=default</td></tr>
-<tr class="memitem:affab6219dc6b1cc5591f4311fe32ed43" id="r_affab6219dc6b1cc5591f4311fe32ed43"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affab6219dc6b1cc5591f4311fe32ed43">ExtendedMotionModel</a> (const <a class="el" href="#a7053c23b5eb1cc6aced49e0c700a2ec1">StateVec</a> &amp;vec, const <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a> &amp;cov) noexcept(std::is_nothrow_copy_constructible&lt; <a class="el" href="#a7053c23b5eb1cc6aced49e0c700a2ec1">StateVec</a> &gt;::value &amp;&amp;std::is_nothrow_copy_constructible&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a> &gt;::value &amp;&amp;noexcept(cov.isPositiveDefinite()))</td></tr>
-<tr class="memdesc:affab6219dc6b1cc5591f4311fe32ed43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Testing: Construct a new Extended Motion Model object.  <br /></td></tr>
+<tr class="memitem:a0dda28f33d598880228cf5dddca601e9" id="r_a0dda28f33d598880228cf5dddca601e9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0dda28f33d598880228cf5dddca601e9">ExtendedMotionModel</a> (const <a class="el" href="#a7053c23b5eb1cc6aced49e0c700a2ec1">StateVec</a> &amp;vec, const <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a> &amp;cov) noexcept(std::is_nothrow_copy_constructible_v&lt; <a class="el" href="#a7053c23b5eb1cc6aced49e0c700a2ec1">StateVec</a> &gt; &amp;&amp;std::is_nothrow_copy_constructible_v&lt; <a class="el" href="#ab9700a1713d42e896897cdec440e7f3c">StateCov</a> &gt; &amp;&amp;noexcept(cov.isPositiveDefinite()))</td></tr>
+<tr class="memdesc:a0dda28f33d598880228cf5dddca601e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Testing: Construct a new Extended Motion Model object.  <br /></td></tr>
 <tr class="inherit_header pro_methods_classtracking_1_1motion_1_1IMotionModel"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classtracking_1_1motion_1_1IMotionModel')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="classtracking_1_1motion_1_1IMotionModel.html">tracking::motion::IMotionModel&lt; MotionModelTrait_::CovarianceMatrixPolicy &gt;</a></td></tr>
 <tr class="memitem:ad1729e975f360d6c054044db9dd9b478 inherit pro_methods_classtracking_1_1motion_1_1IMotionModel" id="r_ad1729e975f360d6c054044db9dd9b478"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1motion_1_1IMotionModel.html#ad1729e975f360d6c054044db9dd9b478">operator=</a> (const <a class="el" href="classtracking_1_1motion_1_1IMotionModel.html#a64b3721c14793ae166e8549cdc572744">IMotionModel</a> &amp;other) -&gt; <a class="el" href="classtracking_1_1motion_1_1IMotionModel.html#a64b3721c14793ae166e8549cdc572744">IMotionModel</a> &amp;=default</td></tr>
 </table>
@@ -437,8 +437,8 @@ template&lt;typename MotionModel_, typename MotionModelTrait_&gt; </div>
 
 </div>
 </div>
-<a id="ab882ae09e17989e006cc96b6313f3c8d" name="ab882ae09e17989e006cc96b6313f3c8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab882ae09e17989e006cc96b6313f3c8d">&#9670;&#160;</a></span>~ExtendedMotionModel()</h2>
+<a id="affd776c56098f9b946e482dcd1e3d078" name="affd776c56098f9b946e482dcd1e3d078"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affd776c56098f9b946e482dcd1e3d078">&#9670;&#160;</a></span>~ExtendedMotionModel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -449,7 +449,7 @@ template&lt;typename MotionModel_, typename MotionModelTrait_&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html">tracking::motion::ExtendedMotionModel</a>&lt; MotionModel_, MotionModelTrait_ &gt;::~<a class="el" href="#ab5f751664ea386c74e2884e7c155e278">ExtendedMotionModel</a> </td>
+          <td class="memname"><a class="el" href="classtracking_1_1motion_1_1ExtendedMotionModel.html">tracking::motion::ExtendedMotionModel</a>&lt; MotionModel_, MotionModelTrait_ &gt;::~<a class="el" href="#ab5f751664ea386c74e2884e7c155e278">ExtendedMotionModel</a> </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -457,7 +457,7 @@ template&lt;typename MotionModel_, typename MotionModelTrait_&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel virtual">virtual</span><span class="mlabel default">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel default">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -518,8 +518,8 @@ template&lt;typename MotionModel_, typename MotionModelTrait_&gt; </div>
 
 </div>
 </div>
-<a id="affab6219dc6b1cc5591f4311fe32ed43" name="affab6219dc6b1cc5591f4311fe32ed43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affab6219dc6b1cc5591f4311fe32ed43">&#9670;&#160;</a></span>ExtendedMotionModel() <span class="overload">[4/4]</span></h2>
+<a id="a0dda28f33d598880228cf5dddca601e9" name="a0dda28f33d598880228cf5dddca601e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dda28f33d598880228cf5dddca601e9">&#9670;&#160;</a></span>ExtendedMotionModel() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -681,7 +681,7 @@ template&lt;typename MotionModel_, typename MotionModelTrait_&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -713,7 +713,7 @@ template&lt;typename MotionModel_, typename MotionModelTrait_&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -897,8 +897,8 @@ template&lt;typename MotionModel_, typename MotionModelTrait_&gt; </div>
 
 </div>
 </div>
-<a id="a29a452edb91c9aa1e52e1384c8e802d9" name="a29a452edb91c9aa1e52e1384c8e802d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29a452edb91c9aa1e52e1384c8e802d9">&#9670;&#160;</a></span>StateCovFromList() <span class="overload">[1/2]</span></h2>
+<a id="a0304335c74ae8db838446be6d59af03c" name="a0304335c74ae8db838446be6d59af03c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0304335c74ae8db838446be6d59af03c">&#9670;&#160;</a></span>StateCovFromList() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

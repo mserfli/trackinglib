@@ -105,7 +105,7 @@ var sectionId = 'dynsection-16';
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="namespacetracking_1_1math.html#a1595a2bf28d9a6f8b59495b2ee803908" target="_top" xlink:title="Compile&#45;time power function.">
+<g id="a_Node000004"><a xlink:href="namespacetracking_1_1math.html#a1f16e3eea4ba91241c1aa3a42af4bfba" target="_top" xlink:title="Compile&#45;time power function.">
 <polygon fill="white" stroke="#666666" points="529.5,-20.75 416,-20.75 416,0 529.5,0 529.5,-20.75"/>
 <text xml:space="preserve" text-anchor="middle" x="472.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::math::pow</text>
 </a>

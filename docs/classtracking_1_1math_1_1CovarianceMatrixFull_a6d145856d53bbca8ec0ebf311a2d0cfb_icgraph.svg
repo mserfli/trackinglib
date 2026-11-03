@@ -87,7 +87,7 @@ var sectionId = 'dynsection-5';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a98187b78a47120322100f0eb8235be73" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classtracking_1_1observation_1_1ExtendedObservationModel.html#a115df5a42621150e35087332b3f0dfca" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="386.38,-123.62 199.38,-123.62 199.38,-64.62 386.38,-64.62 386.38,-123.62"/>
 <text xml:space="preserve" text-anchor="start" x="207.38" y="-110.12" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::observation</text>
 <text xml:space="preserve" text-anchor="start" x="207.38" y="-97.38" font-family="Helvetica,sans-Serif" font-size="10.00">::ExtendedObservationModel</text>
@@ -108,7 +108,7 @@ var sectionId = 'dynsection-5';
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a29a452edb91c9aa1e52e1384c8e802d9" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="classtracking_1_1motion_1_1ExtendedMotionModel.html#a0304335c74ae8db838446be6d59af03c" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="387.5,-46.25 198.25,-46.25 198.25,0 387.5,0 387.5,-46.25"/>
 <text xml:space="preserve" text-anchor="start" x="206.25" y="-32.75" font-family="Helvetica,sans-Serif" font-size="10.00">tracking::motion::Extended</text>
 <text xml:space="preserve" text-anchor="start" x="206.25" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">MotionModel&lt; instance_type,</text>

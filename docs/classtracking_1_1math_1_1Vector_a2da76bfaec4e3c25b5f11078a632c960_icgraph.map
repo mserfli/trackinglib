@@ -1,33 +1,31 @@
 <map id="tracking::math::Vector::at_unsafe" name="tracking::math::Vector::at_unsafe">
-<area shape="rect" id="Node000001" title="Element read&#45;only access to a scalar vector value (unchecked)." alt="" coords="798,484,964,529"/>
+<area shape="rect" id="Node000001" title="Element read&#45;only access to a scalar vector value (unchecked)." alt="" coords="798,463,964,507"/>
 <area shape="rect" id="Node000002" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a8f7277bd2b2dbba73979c997b7bce166" title="Unsafe element read&#45;only access." alt="" coords="531,75,728,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="875,468,866,398,846,307,829,260,808,214,781,171,749,134,729,119,728,114,752,130,786,168,813,212,834,258,851,306,872,397,880,470"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="874,446,864,380,843,295,826,251,806,208,780,169,749,134,729,119,728,114,752,130,784,165,810,206,831,249,848,294,869,379,879,448"/>
 <area shape="rect" id="Node000006" href="$classtracking_1_1env_1_1EgoMotion.html#a241a57ddc4cd1ab0d7daa7b157a7d8f9" title="Calculate displacement vector." alt="" coords="536,144,723,189"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="872,468,859,411,836,339,820,302,800,266,776,232,749,203,724,187,723,181,752,199,781,229,805,263,825,299,841,337,864,409,877,470"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="871,447,857,393,833,327,798,260,775,230,749,203,723,187,723,181,752,199,779,226,802,257,838,325,862,392,876,449"/>
 <area shape="rect" id="Node000008" href="$classtracking_1_1math_1_1Vector.html#ac68c5dfeb6608b1db26264cd4410a933" title="Normalize this vector in&#45;place to unit length." alt="" coords="547,213,712,258"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="867,468,850,425,826,371,792,318,772,294,749,273,713,253,713,247,752,268,775,290,796,315,830,369,855,423,872,470"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="864,447,847,407,822,360,789,313,749,272,713,253,712,248,752,268,793,309,827,357,852,405,870,448"/>
 <area shape="rect" id="Node000010" href="$namespacetracking_1_1math.html#a5da1defd9816130013342221228abf76" title="Multiply a matrix by a column view." alt="" coords="536,282,723,310"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="862,469,844,435,819,395,787,356,749,323,723,310,723,305,752,319,791,352,823,392,848,433,867,471"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="859,448,815,384,784,351,749,323,724,311,723,306,752,319,788,347,819,381,864,449"/>
 <area shape="rect" id="Node000011" href="$classtracking_1_1math_1_1Vector.html#a723f6bc4536182198f4412f268b526c7" title="Compute the dot product with another vector." alt="" coords="547,333,712,378"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="847,472,804,432,749,393,713,377,712,371,752,388,807,427,852,472"/>
-<area shape="rect" id="Node000012" href="$namespacetracking_1_1math.html#a82f9afc8296b216c9bbecf27a0621773" title="Specialization of operator&lt;&lt; for Vector." alt="" coords="529,402,730,430"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="826,477,749,444,713,433,712,427,751,438,831,476"/>
-<area shape="rect" id="Node000013" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a34cd544de76b4730f4ce492e33de2b7f" title="Rank&#45;1 update: P ± c*x*x^T." alt="" coords="531,453,728,498"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="781,495,729,490,728,485,786,494"/>
-<area shape="rect" id="Node000014" href="$classtracking_1_1math_1_1Rank1Update.html#a335f5f6a2e52510210adae871025324a" title="Performs rank&#45;1 update on UDU factorization (upper triangular form)." alt="" coords="509,522,750,550"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="780,519,751,524,750,519,785,517"/>
-<area shape="rect" id="Node000016" href="$classtracking_1_1math_1_1Rank1Update.html#a96bda483dc5a922f919304d2e0412025" title="Performs rank&#45;1 update on LDL factorization (lower triangular form)." alt="" coords="509,574,750,602"/>
-<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="815,537,751,564,706,576,704,571,750,558,820,534"/>
-<area shape="rect" id="Node000017" href="$classtracking_1_1motion_1_1generic_1_1Update.html#a29afaf5db9f6ff2961e8ff514591040f" title="Stack innovation, Jacobian and covariance blocks of the observation models." alt="" coords="527,625,732,670"/>
-<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="849,538,805,580,752,615,725,627,723,622,749,611,802,576,845,541"/>
-<area shape="rect" id="Node000018" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a296007bba3bccb799ebe4889828930e9" title=" " alt="" coords="525,694,734,772"/>
-<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="863,540,818,614,787,651,752,684,736,696,733,691,749,680,783,648,814,611,859,544"/>
-<area shape="rect" id="Node000019" href="$classtracking_1_1filter_1_1InformationFilter.html#a7b21589d9b27015411de1f4ecc272528" title="Information measurement update of information vector and information matrix." alt="" coords="532,796,728,841"/>
-<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="874,542,861,599,837,663,801,729,778,759,752,786,729,801,727,796,749,782,774,756,797,726,832,661,856,597,871,546"/>
-<area shape="rect" id="Node000020" href="$classtracking_1_1filter_1_1KalmanFilter.html#a4df70b5fa33fdf85a95d6a528da0344f" title="Kalman measurement update of state and covariance." alt="" coords="544,865,715,910"/>
-<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="878,542,869,611,847,695,830,738,809,781,784,820,752,855,735,867,716,877,714,871,732,863,749,851,779,817,805,778,826,736,842,693,864,610,875,546"/>
-<area shape="rect" id="Node000021" href="$namespacetracking_1_1math_1_1conversions.html#ae19f4f6e08b673ef7b162cd9b2c83697" title="Creates a Vector from a MatrixColumnView." alt="" coords="516,935,743,979"/>
-<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="881,542,876,623,856,725,840,779,818,832,789,881,752,924,736,937,734,932,748,920,784,878,813,829,835,777,851,724,870,622,878,546"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="840,452,798,422,749,393,713,378,712,373,752,388,801,418,845,452"/>
+<area shape="rect" id="Node000012" href="$classtracking_1_1math_1_1CovarianceMatrixFull.html#a34cd544de76b4730f4ce492e33de2b7f" title="Rank&#45;1 update: P ± c*x*x^T." alt="" coords="531,403,728,447"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="781,462,727,451,726,445,786,461"/>
+<area shape="rect" id="Node000013" href="$classtracking_1_1math_1_1Rank1Update.html#a335f5f6a2e52510210adae871025324a" title="Performs rank&#45;1 update on UDU factorization (upper triangular form)." alt="" coords="509,471,750,499"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="780,486,751,488,750,482,785,484"/>
+<area shape="rect" id="Node000015" href="$classtracking_1_1math_1_1Rank1Update.html#a96bda483dc5a922f919304d2e0412025" title="Performs rank&#45;1 update on LDL factorization (lower triangular form)." alt="" coords="509,523,750,551"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="781,506,701,525,699,520,786,504"/>
+<area shape="rect" id="Node000016" href="$classtracking_1_1motion_1_1generic_1_1Update.html#a29afaf5db9f6ff2961e8ff514591040f" title="Stack innovation, Jacobian and covariance blocks of the observation models." alt="" coords="527,575,732,619"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="837,515,795,543,751,565,720,577,718,572,749,560,793,538,832,517"/>
+<area shape="rect" id="Node000017" href="$classtracking_1_1observation_1_1ExtendedObservationModel.html#a296007bba3bccb799ebe4889828930e9" title=" " alt="" coords="525,643,734,722"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="858,519,812,578,783,608,752,634,735,645,732,640,749,630,780,604,808,575,854,522"/>
+<area shape="rect" id="Node000018" href="$classtracking_1_1filter_1_1InformationFilter.html#a7b21589d9b27015411de1f4ecc272528" title="Information measurement update of information vector and information matrix." alt="" coords="532,745,728,790"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="872,520,857,571,832,628,798,686,776,712,752,735,729,749,727,745,749,731,772,708,793,683,828,626,852,569,868,524"/>
+<area shape="rect" id="Node000019" href="$classtracking_1_1filter_1_1KalmanFilter.html#a4df70b5fa33fdf85a95d6a528da0344f" title="Kalman measurement update of state and covariance." alt="" coords="544,815,715,859"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="877,520,866,584,843,660,826,699,806,737,781,773,752,804,735,817,716,826,714,821,732,812,749,800,777,770,802,735,822,697,838,658,860,583,873,524"/>
+<area shape="rect" id="Node000020" href="$namespacetracking_1_1math_1_1conversions.html#ae19f4f6e08b673ef7b162cd9b2c83697" title="Creates a Vector from a MatrixColumnView." alt="" coords="516,884,743,929"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="880,521,873,597,852,691,836,740,814,789,787,834,752,874,736,886,734,881,749,870,782,831,809,786,831,738,847,689,867,596,876,525"/>
 <area shape="rect" id="Node000003" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#abec29dff62a82724a87508a1cf58e6b8" title="Access operator to the covariance value at (row, col)." alt="" coords="257,5,454,50"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="521,71,448,53,446,48,526,69"/>
 <area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#ae9912545d51d82230396ebbdfe289713" title="Calculate the trace of the square matrix." alt="" coords="257,75,454,119"/>
@@ -38,6 +36,6 @@
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="519,168,448,169,446,164,523,165"/>
 <area shape="rect" id="Node000009" href="$classtracking_1_1math_1_1Vector.html#ab30558a6336045ae4c6848f217ddecb9" title="Create a new normalized vector of unit length." alt="" coords="273,213,438,258"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="529,237,440,238,438,233,534,234"/>
-<area shape="rect" id="Node000015" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a8d64779f4ed5705bc05fd9768f00e36b" title="Agee&#45;Turner rank&#45;1 update: P ± x*x^T." alt="" coords="251,513,461,558"/>
-<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="491,537,462,538,460,533,496,535"/>
+<area shape="rect" id="Node000014" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a8d64779f4ed5705bc05fd9768f00e36b" title="Agee&#45;Turner rank&#45;1 update: P ± x*x^T." alt="" coords="251,463,461,507"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="491,486,462,488,460,482,496,484"/>
 </map>

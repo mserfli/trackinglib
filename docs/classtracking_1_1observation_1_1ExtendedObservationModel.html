@@ -123,8 +123,8 @@ Public Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a47499d5e30938c457a3090e2fc40464b" id="r_a47499d5e30938c457a3090e2fc40464b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47499d5e30938c457a3090e2fc40464b">ExtendedObservationModel</a> ()=default</td></tr>
-<tr class="memitem:ad63dc7d8c7ca693583a2716dad7b1a85" id="r_ad63dc7d8c7ca693583a2716dad7b1a85"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad63dc7d8c7ca693583a2716dad7b1a85">~ExtendedObservationModel</a> ()=0</td></tr>
-<tr class="memdesc:ad63dc7d8c7ca693583a2716dad7b1a85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure virtual destructor keeping this CRTP layer abstract (RequireAbstractIntf contract) without introducing vtable entries for the statically dispatched hooks.  <br /></td></tr>
+<tr class="memitem:aca2f73c3791d1dcf2b8b4d4786884843" id="r_aca2f73c3791d1dcf2b8b4d4786884843"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca2f73c3791d1dcf2b8b4d4786884843">~ExtendedObservationModel</a> () override=0</td></tr>
+<tr class="memdesc:aca2f73c3791d1dcf2b8b4d4786884843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure virtual destructor keeping this CRTP layer abstract (RequireAbstractIntf contract) without introducing vtable entries for the statically dispatched hooks.  <br /></td></tr>
 <tr class="memitem:a87055ba5f83013fd515e50415ccef959" id="r_a87055ba5f83013fd515e50415ccef959"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87055ba5f83013fd515e50415ccef959">getDim</a> () const -&gt; <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> final</td></tr>
 <tr class="memdesc:a87055ba5f83013fd515e50415ccef959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read access to the measurement dimension.  <br /></td></tr>
 <tr class="memitem:a8aea79e4a1e87fa9deb6266b476034d3" id="r_a8aea79e4a1e87fa9deb6266b476034d3"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8aea79e4a1e87fa9deb6266b476034d3">getSensorPose</a> () const -&gt; const <a class="el" href="#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;</td></tr>
@@ -173,14 +173,14 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a337c89bf5f6ba5f174bb98a206201939" id="r_a337c89bf5f6ba5f174bb98a206201939"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a337c89bf5f6ba5f174bb98a206201939">MeasurementVecFromList</a> (const std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;list) noexcept -&gt; tl::expected&lt; <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
 <tr class="memdesc:a337c89bf5f6ba5f174bb98a206201939"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create measurement vector from initializer list.  <br /></td></tr>
-<tr class="memitem:a98187b78a47120322100f0eb8235be73" id="r_a98187b78a47120322100f0eb8235be73"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98187b78a47120322100f0eb8235be73">MeasurementCovFromList</a> (const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;list) noexcept(std::is_same&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>, <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFull.html">math::CovarianceMatrixFull</a>&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a>, <a class="el" href="#ad513f2e6a02541042652b2f30985533c">DimZ</a> &gt; &gt;::value||std::is_same&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>, <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFactored.html">math::CovarianceMatrixFactored</a>&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a>, <a class="el" href="#ad513f2e6a02541042652b2f30985533c">DimZ</a> &gt; &gt;::value) -&gt; tl::expected&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
-<tr class="memdesc:a98187b78a47120322100f0eb8235be73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create measurement covariance from initializer list.  <br /></td></tr>
+<tr class="memitem:a115df5a42621150e35087332b3f0dfca" id="r_a115df5a42621150e35087332b3f0dfca"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a115df5a42621150e35087332b3f0dfca">MeasurementCovFromList</a> (const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;list) noexcept(std::is_same_v&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>, <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFull.html">math::CovarianceMatrixFull</a>&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a>, <a class="el" href="#ad513f2e6a02541042652b2f30985533c">DimZ</a> &gt; &gt;||std::is_same_v&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>, <a class="el" href="classtracking_1_1math_1_1CovarianceMatrixFactored.html">math::CovarianceMatrixFactored</a>&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a>, <a class="el" href="#ad513f2e6a02541042652b2f30985533c">DimZ</a> &gt; &gt;) -&gt; tl::expected&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
+<tr class="memdesc:a115df5a42621150e35087332b3f0dfca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create measurement covariance from initializer list.  <br /></td></tr>
 <tr class="memitem:a4251eba69d7d3a98483890349289b4ef" id="r_a4251eba69d7d3a98483890349289b4ef"><td class="memTemplParams" colspan="2">template&lt;typename T = CovarianceMatrixPolicy&gt; </td></tr>
 <tr class="memitem:a4251eba69d7d3a98483890349289b4ef template"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4251eba69d7d3a98483890349289b4ef">MeasurementCovFromList</a> (const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;u, const std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;d) noexcept(noexcept(MeasurementCov::FromList(u, d))) -&gt; std::enable_if_t&lt; T::is_factored, tl::expected&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a>, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt; &gt;</td></tr>
 <tr class="memdesc:a4251eba69d7d3a98483890349289b4ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create factored measurement covariance from initializer list.  <br /></td></tr>
-<tr class="memitem:a1f407d531813d3da5522c223ef222a26" id="r_a1f407d531813d3da5522c223ef222a26"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f407d531813d3da5522c223ef222a26">FromLists</a> (const std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList) noexcept(noexcept(<a class="el" href="#a337c89bf5f6ba5f174bb98a206201939">MeasurementVecFromList</a>(vecList)) &amp;&amp;noexcept(<a class="el" href="#a98187b78a47120322100f0eb8235be73">MeasurementCovFromList</a>(covList)) &amp;&amp;noexcept(ObservationModel_::TryCreate(std::declval&lt; const <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp; &gt;(), std::declval&lt; const <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp; &gt;()))) -&gt; tl::expected&lt; ObservationModel_, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
+<tr class="memitem:a1f407d531813d3da5522c223ef222a26" id="r_a1f407d531813d3da5522c223ef222a26"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f407d531813d3da5522c223ef222a26">FromLists</a> (const std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList) noexcept(noexcept(<a class="el" href="#a337c89bf5f6ba5f174bb98a206201939">MeasurementVecFromList</a>(vecList)) &amp;&amp;noexcept(<a class="el" href="#a115df5a42621150e35087332b3f0dfca">MeasurementCovFromList</a>(covList)) &amp;&amp;noexcept(ObservationModel_::TryCreate(std::declval&lt; const <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp; &gt;(), std::declval&lt; const <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp; &gt;()))) -&gt; tl::expected&lt; ObservationModel_, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
 <tr class="memdesc:a1f407d531813d3da5522c223ef222a26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create complete ObservationModel from initializer lists.  <br /></td></tr>
-<tr class="memitem:aaf9c6f25fc786bf2b5ac15ace6c3a1b6" id="r_aaf9c6f25fc786bf2b5ac15ace6c3a1b6"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf9c6f25fc786bf2b5ac15ace6c3a1b6">FromLists</a> (const std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList, const <a class="el" href="#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;pose) noexcept(noexcept(<a class="el" href="#a337c89bf5f6ba5f174bb98a206201939">MeasurementVecFromList</a>(vecList)) &amp;&amp;noexcept(<a class="el" href="#a98187b78a47120322100f0eb8235be73">MeasurementCovFromList</a>(covList)) &amp;&amp;noexcept(ObservationModel_::TryCreate(std::declval&lt; const <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp; &gt;(), std::declval&lt; const <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp; &gt;(), pose))) -&gt; tl::expected&lt; ObservationModel_, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
+<tr class="memitem:aaf9c6f25fc786bf2b5ac15ace6c3a1b6" id="r_aaf9c6f25fc786bf2b5ac15ace6c3a1b6"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf9c6f25fc786bf2b5ac15ace6c3a1b6">FromLists</a> (const std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &amp;vecList, const std::initializer_list&lt; std::initializer_list&lt; <a class="el" href="#ac6cf1a37b03a4015175348f86206511e">value_type</a> &gt; &gt; &amp;covList, const <a class="el" href="#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;pose) noexcept(noexcept(<a class="el" href="#a337c89bf5f6ba5f174bb98a206201939">MeasurementVecFromList</a>(vecList)) &amp;&amp;noexcept(<a class="el" href="#a115df5a42621150e35087332b3f0dfca">MeasurementCovFromList</a>(covList)) &amp;&amp;noexcept(ObservationModel_::TryCreate(std::declval&lt; const <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp; &gt;(), std::declval&lt; const <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp; &gt;(), pose))) -&gt; tl::expected&lt; ObservationModel_, <a class="el" href="namespacetracking_1_1math.html#ae09f7ac8f79abea869f36e4836d470ec">math::Errors</a> &gt;</td></tr>
 <tr class="memdesc:aaf9c6f25fc786bf2b5ac15ace6c3a1b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create complete ObservationModel from initializer lists and a sensor mounting pose.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-attribs" class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -198,10 +198,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aed663e6a8e5f3d423c0257dd81993f33" id="r_aed663e6a8e5f3d423c0257dd81993f33"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed663e6a8e5f3d423c0257dd81993f33">ExtendedObservationModel</a> (ExtendedObservationModel &amp;&amp;) noexcept(std::is_nothrow_move_constructible&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &gt;::value)=default</td></tr>
 <tr class="memitem:afef7542212965615496e3366ac3d529c" id="r_afef7542212965615496e3366ac3d529c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afef7542212965615496e3366ac3d529c">operator=</a> (const <a class="el" href="#a47499d5e30938c457a3090e2fc40464b">ExtendedObservationModel</a> &amp;other) -&gt; <a class="el" href="#a47499d5e30938c457a3090e2fc40464b">ExtendedObservationModel</a> &amp;=default</td></tr>
 <tr class="memitem:a5aa122dfc92504d12b893596704071c2" id="r_a5aa122dfc92504d12b893596704071c2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aa122dfc92504d12b893596704071c2">operator=</a> (<a class="el" href="#a47499d5e30938c457a3090e2fc40464b">ExtendedObservationModel</a> &amp;&amp;) noexcept -&gt; <a class="el" href="#a47499d5e30938c457a3090e2fc40464b">ExtendedObservationModel</a> &amp;=default</td></tr>
-<tr class="memitem:a23d455fa0eeb0d62b6f83a3e020848bb" id="r_a23d455fa0eeb0d62b6f83a3e020848bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23d455fa0eeb0d62b6f83a3e020848bb">ExtendedObservationModel</a> (const <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp;vec, const <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp;cov) noexcept(std::is_nothrow_copy_constructible&lt; <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &gt;::value &amp;&amp;std::is_nothrow_copy_constructible&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &gt;::value &amp;&amp;noexcept(cov.isPositiveDefinite()))</td></tr>
-<tr class="memdesc:a23d455fa0eeb0d62b6f83a3e020848bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Extended Observation Model object.  <br /></td></tr>
-<tr class="memitem:a021c1f442f6264b19fc5e9caafa12b53" id="r_a021c1f442f6264b19fc5e9caafa12b53"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a021c1f442f6264b19fc5e9caafa12b53">ExtendedObservationModel</a> (const <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp;vec, const <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp;cov, const <a class="el" href="#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;pose) noexcept(std::is_nothrow_copy_constructible&lt; <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &gt;::value &amp;&amp;std::is_nothrow_copy_constructible&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &gt;::value &amp;&amp;noexcept(cov.isPositiveDefinite()) &amp;&amp;std::is_nothrow_copy_constructible&lt; <a class="el" href="#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &gt;::value)</td></tr>
-<tr class="memdesc:a021c1f442f6264b19fc5e9caafa12b53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Extended Observation Model object with a non-identity sensor mounting pose.  <br /></td></tr>
+<tr class="memitem:ac7c051e30e64891698e13a2f92369ab4" id="r_ac7c051e30e64891698e13a2f92369ab4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7c051e30e64891698e13a2f92369ab4">ExtendedObservationModel</a> (const <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp;vec, const <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp;cov) noexcept(std::is_nothrow_copy_constructible_v&lt; <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &gt; &amp;&amp;std::is_nothrow_copy_constructible_v&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &gt; &amp;&amp;noexcept(cov.isPositiveDefinite()))</td></tr>
+<tr class="memdesc:ac7c051e30e64891698e13a2f92369ab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Extended Observation Model object.  <br /></td></tr>
+<tr class="memitem:aea4e000cbd6b39dba8baa08bc5cbc88d" id="r_aea4e000cbd6b39dba8baa08bc5cbc88d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea4e000cbd6b39dba8baa08bc5cbc88d">ExtendedObservationModel</a> (const <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &amp;vec, const <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &amp;cov, const <a class="el" href="#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &amp;pose) noexcept(std::is_nothrow_copy_constructible_v&lt; <a class="el" href="#a7a412c41f78b59082af1cfaebe700143">MeasurementVec</a> &gt; &amp;&amp;std::is_nothrow_copy_constructible_v&lt; <a class="el" href="#a7a7eafa777d208e0a993b6b806d5334a">MeasurementCov</a> &gt; &amp;&amp;noexcept(cov.isPositiveDefinite()) &amp;&amp;std::is_nothrow_copy_constructible_v&lt; <a class="el" href="#a4fca23ab6d9c182fba13acc4be44b61f">SensorPose</a> &gt;)</td></tr>
+<tr class="memdesc:aea4e000cbd6b39dba8baa08bc5cbc88d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Extended Observation Model object with a non-identity sensor mounting pose.  <br /></td></tr>
 <tr class="inherit_header pro_methods_classtracking_1_1observation_1_1IObservationModel"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classtracking_1_1observation_1_1IObservationModel')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="classtracking_1_1observation_1_1IObservationModel.html">tracking::observation::IObservationModel&lt; ObservationModelTrait_::CovarianceMatrixPolicy &gt;</a></td></tr>
 <tr class="memitem:a39ac7a2e4eb0e4becb55fe15705f5355 inherit pro_methods_classtracking_1_1observation_1_1IObservationModel" id="r_a39ac7a2e4eb0e4becb55fe15705f5355"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtracking_1_1observation_1_1IObservationModel.html#a39ac7a2e4eb0e4becb55fe15705f5355">operator=</a> (const <a class="el" href="classtracking_1_1observation_1_1IObservationModel.html#a4f0a8fb019e0f0eb3c27d338905e7c1c">IObservationModel</a> &amp;other) -&gt; <a class="el" href="classtracking_1_1observation_1_1IObservationModel.html#a4f0a8fb019e0f0eb3c27d338905e7c1c">IObservationModel</a> &amp;=default</td></tr>
 </table><table class="memberdecls">
@@ -438,8 +438,8 @@ template&lt;typename ObservationModel_, typename ObservationModelTrait_&gt; </di
 
 </div>
 </div>
-<a id="ad63dc7d8c7ca693583a2716dad7b1a85" name="ad63dc7d8c7ca693583a2716dad7b1a85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad63dc7d8c7ca693583a2716dad7b1a85">&#9670;&#160;</a></span>~ExtendedObservationModel()</h2>
+<a id="aca2f73c3791d1dcf2b8b4d4786884843" name="aca2f73c3791d1dcf2b8b4d4786884843"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca2f73c3791d1dcf2b8b4d4786884843">&#9670;&#160;</a></span>~ExtendedObservationModel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -458,7 +458,7 @@ template&lt;typename ObservationModel_, typename ObservationModelTrait_&gt; </di
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span><span class="mlabel default">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel pure-virtual">pure virtual</span><span class="mlabel default">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -521,8 +521,8 @@ template&lt;typename ObservationModel_, typename ObservationModelTrait_&gt; </di
 
 </div>
 </div>
-<a id="a23d455fa0eeb0d62b6f83a3e020848bb" name="a23d455fa0eeb0d62b6f83a3e020848bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23d455fa0eeb0d62b6f83a3e020848bb">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[4/5]</span></h2>
+<a id="ac7c051e30e64891698e13a2f92369ab4" name="ac7c051e30e64891698e13a2f92369ab4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7c051e30e64891698e13a2f92369ab4">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -561,8 +561,8 @@ template&lt;typename ObservationModel_, typename ObservationModelTrait_&gt; </di
 
 </div>
 </div>
-<a id="a021c1f442f6264b19fc5e9caafa12b53" name="a021c1f442f6264b19fc5e9caafa12b53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a021c1f442f6264b19fc5e9caafa12b53">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[5/5]</span></h2>
+<a id="aea4e000cbd6b39dba8baa08bc5cbc88d" name="aea4e000cbd6b39dba8baa08bc5cbc88d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea4e000cbd6b39dba8baa08bc5cbc88d">&#9670;&#160;</a></span>ExtendedObservationModel() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -673,7 +673,7 @@ template&lt;typename ObservationModel_, typename ObservationModelTrait_&gt; </di
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -758,7 +758,7 @@ template&lt;typename ObservationModel_, typename ObservationModelTrait_&gt; </di
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -924,7 +924,7 @@ template&lt;typename ObservationModel_, typename ObservationModelTrait_&gt; </di
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -956,7 +956,7 @@ template&lt;typename ObservationModel_, typename ObservationModelTrait_&gt; </di
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -971,8 +971,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a98187b78a47120322100f0eb8235be73" name="a98187b78a47120322100f0eb8235be73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98187b78a47120322100f0eb8235be73">&#9670;&#160;</a></span>MeasurementCovFromList() <span class="overload">[1/2]</span></h2>
+<a id="a115df5a42621150e35087332b3f0dfca" name="a115df5a42621150e35087332b3f0dfca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a115df5a42621150e35087332b3f0dfca">&#9670;&#160;</a></span>MeasurementCovFromList() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1010,7 +1010,7 @@ noexcept for built-in policies specifies exception behavior, not finite numeric 
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a98187b78a47120322100f0eb8235be73_icgraph.svg" width="478" height="192"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtracking_1_1observation_1_1ExtendedObservationModel_a115df5a42621150e35087332b3f0dfca_icgraph.svg" width="478" height="192"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

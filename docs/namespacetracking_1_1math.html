@@ -159,9 +159,9 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1595a2bf28d9a6f8b59495b2ee803908" id="r_a1595a2bf28d9a6f8b59495b2ee803908"><td class="memTemplParams" colspan="2">template&lt;int N, class T&gt; </td></tr>
-<tr class="memitem:a1595a2bf28d9a6f8b59495b2ee803908 template"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1595a2bf28d9a6f8b59495b2ee803908">pow</a> (T const x) noexcept(std::is_arithmetic&lt; T &gt;::value) -&gt; T</td></tr>
-<tr class="memdesc:a1595a2bf28d9a6f8b59495b2ee803908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile-time power function.  <br /></td></tr>
+<tr class="memitem:a1f16e3eea4ba91241c1aa3a42af4bfba" id="r_a1f16e3eea4ba91241c1aa3a42af4bfba"><td class="memTemplParams" colspan="2">template&lt;int N, class T&gt; </td></tr>
+<tr class="memitem:a1f16e3eea4ba91241c1aa3a42af4bfba template"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f16e3eea4ba91241c1aa3a42af4bfba">pow</a> (T const x) noexcept(std::is_arithmetic_v&lt; T &gt;) -&gt; T</td></tr>
+<tr class="memdesc:a1f16e3eea4ba91241c1aa3a42af4bfba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile-time power function.  <br /></td></tr>
 <tr class="memitem:ae8c2f6288ea8b30c11b8f6d055edbc06" id="r_ae8c2f6288ea8b30c11b8f6d055edbc06"><td class="memTemplParams" colspan="2">template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Rows_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols_, bool IsRowMajor_&gt; </td></tr>
 <tr class="memitem:ae8c2f6288ea8b30c11b8f6d055edbc06 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8c2f6288ea8b30c11b8f6d055edbc06">operator*</a> (const <a class="el" href="classtracking_1_1math_1_1Matrix.html">Matrix</a>&lt; ValueType_, Rows_, Cols_, IsRowMajor_ &gt; &amp;mat, const <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">DiagonalMatrix</a>&lt; ValueType_, Cols_ &gt; &amp;diag) -&gt; <a class="el" href="classtracking_1_1math_1_1Matrix.html">Matrix</a>&lt; ValueType_, Rows_, Cols_, IsRowMajor_ &gt;</td></tr>
 <tr class="memitem:a6fa452ca1f5c01fb5a02e7adbb4aff21" id="r_a6fa452ca1f5c01fb5a02e7adbb4aff21"><td class="memTemplParams" colspan="2">template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Rows_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Cols_, bool IsRowMajor_&gt; </td></tr>
@@ -176,15 +176,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a00264e1bffd11d758928a44a02d90b86" id="r_a00264e1bffd11d758928a44a02d90b86"><td class="memTemplParams" colspan="2">template&lt;typename M&gt; </td></tr>
 <tr class="memitem:a00264e1bffd11d758928a44a02d90b86 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00264e1bffd11d758928a44a02d90b86">operator&lt;&lt;</a> (std::ostream &amp;os, const M &amp;matrix) -&gt; std::enable_if_t&lt; <a class="el" href="#a17b227589db08c5e32475f5d36c9a40b">is_matrix_like_v</a>&lt; M &gt;, std::ostream &amp; &gt;</td></tr>
 <tr class="memdesc:a00264e1bffd11d758928a44a02d90b86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Template operator&lt;&lt; for streaming matrix-like objects to output streams.  <br /></td></tr>
-<tr class="memitem:a2dad4117cf86719dd3f638d123444e30" id="r_a2dad4117cf86719dd3f638d123444e30"><td class="memTemplParams" colspan="2">template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_, bool IsLower_, bool IsRowMajor_&gt; </td></tr>
-<tr class="memitem:a2dad4117cf86719dd3f638d123444e30 template"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2dad4117cf86719dd3f638d123444e30">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtracking_1_1math_1_1TriangularMatrix.html">tracking::math::TriangularMatrix</a>&lt; ValueType_, Size_, IsLower_, IsRowMajor_ &gt; &amp;matrix)</td></tr>
-<tr class="memdesc:a2dad4117cf86719dd3f638d123444e30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of operator&lt;&lt; for <a class="el" href="classtracking_1_1math_1_1TriangularMatrix.html">TriangularMatrix</a>.  <br /></td></tr>
-<tr class="memitem:a5045ecb02f61ff4f70f0af9ca81b8ad3" id="r_a5045ecb02f61ff4f70f0af9ca81b8ad3"><td class="memTemplParams" colspan="2">template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </td></tr>
-<tr class="memitem:a5045ecb02f61ff4f70f0af9ca81b8ad3 template"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5045ecb02f61ff4f70f0af9ca81b8ad3">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">tracking::math::DiagonalMatrix</a>&lt; ValueType_, Size_ &gt; &amp;matrix)</td></tr>
-<tr class="memdesc:a5045ecb02f61ff4f70f0af9ca81b8ad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of operator&lt;&lt; for <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">DiagonalMatrix</a>.  <br /></td></tr>
-<tr class="memitem:a82f9afc8296b216c9bbecf27a0621773" id="r_a82f9afc8296b216c9bbecf27a0621773"><td class="memTemplParams" colspan="2">template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </td></tr>
-<tr class="memitem:a82f9afc8296b216c9bbecf27a0621773 template"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82f9afc8296b216c9bbecf27a0621773">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtracking_1_1math_1_1Vector.html">tracking::math::Vector</a>&lt; ValueType_, Size_ &gt; &amp;vector)</td></tr>
-<tr class="memdesc:a82f9afc8296b216c9bbecf27a0621773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of operator&lt;&lt; for <a class="el" href="classtracking_1_1math_1_1Vector.html" title="A column vector class template, specializing Matrix for single-column matrixes.">Vector</a>.  <br /></td></tr>
+<tr class="memitem:a087b80dc205de3bed7f4b8b6129a979c" id="r_a087b80dc205de3bed7f4b8b6129a979c"><td class="memTemplParams" colspan="2">template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_, bool IsLower_, bool IsRowMajor_&gt; </td></tr>
+<tr class="memitem:a087b80dc205de3bed7f4b8b6129a979c template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a087b80dc205de3bed7f4b8b6129a979c">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtracking_1_1math_1_1TriangularMatrix.html">tracking::math::TriangularMatrix</a>&lt; ValueType_, Size_, IsLower_, IsRowMajor_ &gt; &amp;matrix) -&gt; std::ostream &amp;</td></tr>
+<tr class="memdesc:a087b80dc205de3bed7f4b8b6129a979c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of operator&lt;&lt; for <a class="el" href="classtracking_1_1math_1_1TriangularMatrix.html">TriangularMatrix</a>.  <br /></td></tr>
+<tr class="memitem:a4678378ab06ddd7436dffca0d1bcd06d" id="r_a4678378ab06ddd7436dffca0d1bcd06d"><td class="memTemplParams" colspan="2">template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </td></tr>
+<tr class="memitem:a4678378ab06ddd7436dffca0d1bcd06d template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4678378ab06ddd7436dffca0d1bcd06d">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">tracking::math::DiagonalMatrix</a>&lt; ValueType_, Size_ &gt; &amp;matrix) -&gt; std::ostream &amp;</td></tr>
+<tr class="memdesc:a4678378ab06ddd7436dffca0d1bcd06d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of operator&lt;&lt; for <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">DiagonalMatrix</a>.  <br /></td></tr>
+<tr class="memitem:a6c1c6e98249a118403ba77d2bd83d52f" id="r_a6c1c6e98249a118403ba77d2bd83d52f"><td class="memTemplParams" colspan="2">template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </td></tr>
+<tr class="memitem:a6c1c6e98249a118403ba77d2bd83d52f template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c1c6e98249a118403ba77d2bd83d52f">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtracking_1_1math_1_1Vector.html">tracking::math::Vector</a>&lt; ValueType_, Size_ &gt; &amp;vector) -&gt; std::ostream &amp;</td></tr>
+<tr class="memdesc:a6c1c6e98249a118403ba77d2bd83d52f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of operator&lt;&lt; for <a class="el" href="classtracking_1_1math_1_1Vector.html" title="A column vector class template, specializing Matrix for single-column matrixes.">Vector</a>.  <br /></td></tr>
 <tr class="memitem:ad59b912a93d23b51952426698d3e6c22" id="r_ad59b912a93d23b51952426698d3e6c22"><td class="memTemplParams" colspan="2">template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> RowsA_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> ColsA_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> RowsB_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> ColsB_&gt; </td></tr>
 <tr class="memitem:ad59b912a93d23b51952426698d3e6c22 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad59b912a93d23b51952426698d3e6c22">operator+</a> (const MatrixView&lt; ValueType_, RowsA_, ColsA_ &gt; &amp;a, const MatrixView&lt; ValueType_, RowsB_, ColsB_ &gt; &amp;b) -&gt; <a class="el" href="classtracking_1_1math_1_1Matrix.html">Matrix</a>&lt; ValueType_, std::min(RowsA_, RowsB_), std::min(ColsA_, ColsB_)&gt;</td></tr>
 <tr class="memdesc:ad59b912a93d23b51952426698d3e6c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add two matrix views element-wise.  <br /></td></tr>
@@ -747,7 +747,7 @@ template&lt;typename M&gt; </div>
 <dl class="section note"><dt>Note</dt><dd>Uses at_unsafe() for element access, which is future-proof for packed storage </dd>
 <dd>
 Formatting is optimized for readability in debug/console output</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a5045ecb02f61ff4f70f0af9ca81b8ad3" title="Specialization of operator&lt;&lt; for DiagonalMatrix.">operator&lt;&lt;(std::ostream&amp;, const DiagonalMatrix&amp;)</a> for <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">DiagonalMatrix</a> specialization</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>operator&lt;&lt;(std::ostream&amp;, const DiagonalMatrix&amp;) for <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">DiagonalMatrix</a> specialization</dd></dl>
 <p>Usage example: </p><div class="fragment"><div class="line"><a class="code hl_class" href="classtracking_1_1math_1_1Matrix.html">Matrix&lt;float32, 2, 3&gt;</a> mat = <span class="comment">/* ... */</span>;</div>
 <div class="line">std::cout &lt;&lt; mat &lt;&lt; std::endl;</div>
 <div class="line"><span class="comment">// Output:</span></div>
@@ -757,8 +757,8 @@ Formatting is optimized for readability in debug/console output</dd></dl>
 </div><!-- fragment --> 
 </div>
 </div>
-<a id="a5045ecb02f61ff4f70f0af9ca81b8ad3" name="a5045ecb02f61ff4f70f0af9ca81b8ad3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5045ecb02f61ff4f70f0af9ca81b8ad3">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[2/4]</span></h2>
+<a id="a4678378ab06ddd7436dffca0d1bcd06d" name="a4678378ab06ddd7436dffca0d1bcd06d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4678378ab06ddd7436dffca0d1bcd06d">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -766,14 +766,14 @@ Formatting is optimized for readability in debug/console output</dd></dl>
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream &amp; tracking::math::operator&lt;&lt; </td>
+          <td class="memname">auto tracking::math::operator&lt;&lt; </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>os</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">tracking::math::DiagonalMatrix</a>&lt; ValueType_, Size_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1DiagonalMatrix.html">tracking::math::DiagonalMatrix</a>&lt; ValueType_, Size_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>&#160;)-&gt;std::ostream &amp;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -814,8 +814,8 @@ operator&lt;&lt;(std::ostream&amp;, const M&amp;) for general matrix streaming</
 </div><!-- fragment --> 
 </div>
 </div>
-<a id="a2dad4117cf86719dd3f638d123444e30" name="a2dad4117cf86719dd3f638d123444e30"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dad4117cf86719dd3f638d123444e30">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[3/4]</span></h2>
+<a id="a087b80dc205de3bed7f4b8b6129a979c" name="a087b80dc205de3bed7f4b8b6129a979c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a087b80dc205de3bed7f4b8b6129a979c">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -823,14 +823,14 @@ operator&lt;&lt;(std::ostream&amp;, const M&amp;) for general matrix streaming</
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_, bool IsLower_, bool IsRowMajor_&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream &amp; tracking::math::operator&lt;&lt; </td>
+          <td class="memname">auto tracking::math::operator&lt;&lt; </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>os</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1TriangularMatrix.html">tracking::math::TriangularMatrix</a>&lt; ValueType_, Size_, IsLower_, IsRowMajor_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1TriangularMatrix.html">tracking::math::TriangularMatrix</a>&lt; ValueType_, Size_, IsLower_, IsRowMajor_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>&#160;)-&gt;std::ostream &amp;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -866,8 +866,8 @@ operator&lt;&lt;(std::ostream&amp;, const M&amp;) for general matrix streaming <
 
 </div>
 </div>
-<a id="a82f9afc8296b216c9bbecf27a0621773" name="a82f9afc8296b216c9bbecf27a0621773"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82f9afc8296b216c9bbecf27a0621773">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[4/4]</span></h2>
+<a id="a6c1c6e98249a118403ba77d2bd83d52f" name="a6c1c6e98249a118403ba77d2bd83d52f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c1c6e98249a118403ba77d2bd83d52f">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -875,14 +875,14 @@ operator&lt;&lt;(std::ostream&amp;, const M&amp;) for general matrix streaming <
 template&lt;typename ValueType_, <a class="el" href="atomic__types_8h.html#a82d014af9141520341a92493a8ccb8c3">sint32</a> Size_&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream &amp; tracking::math::operator&lt;&lt; </td>
+          <td class="memname">auto tracking::math::operator&lt;&lt; </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>os</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1Vector.html">tracking::math::Vector</a>&lt; ValueType_, Size_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>vector</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtracking_1_1math_1_1Vector.html">tracking::math::Vector</a>&lt; ValueType_, Size_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>vector</em></span>&#160;)-&gt;std::ostream &amp;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -920,16 +920,11 @@ operator&lt;&lt;(std::ostream&amp;, const M&amp;) for general matrix streaming</
 <div class="line"><span class="comment">// +2.000000</span></div>
 <div class="line"><span class="comment">// +3.000000</span></div>
 <div class="ttc" id="aclasstracking_1_1math_1_1Vector_html"><div class="ttname"><a href="classtracking_1_1math_1_1Vector.html">tracking::math::Vector</a></div><div class="ttdoc">A column vector class template, specializing Matrix for single-column matrixes.</div><div class="ttdef"><b>Definition</b> vector.h:34</div></div>
-</div><!-- fragment --> <div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetracking_1_1math_a82f9afc8296b216c9bbecf27a0621773_cgraph.svg" width="426" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
+</div><!-- fragment --> 
 </div>
 </div>
-<a id="a1595a2bf28d9a6f8b59495b2ee803908" name="a1595a2bf28d9a6f8b59495b2ee803908"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1595a2bf28d9a6f8b59495b2ee803908">&#9670;&#160;</a></span>pow()</h2>
+<a id="a1f16e3eea4ba91241c1aa3a42af4bfba" name="a1f16e3eea4ba91241c1aa3a42af4bfba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f16e3eea4ba91241c1aa3a42af4bfba">&#9670;&#160;</a></span>pow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -974,13 +969,13 @@ template&lt;int N, class T&gt; </div>
 Negative exponents are not supported (would require floating-point division) </dd>
 <dd>
 For runtime exponents, use std::pow from cmath</dd></dl>
-<p>Example usage: </p><div class="fragment"><div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">double</span> result = <a class="code hl_function" href="#a1595a2bf28d9a6f8b59495b2ee803908">tracking::math::pow&lt;3&gt;</a>(2.0); <span class="comment">// result = 8.0</span></div>
-<div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">int</span> template_param = <a class="code hl_function" href="#a1595a2bf28d9a6f8b59495b2ee803908">tracking::math::pow&lt;4&gt;</a>(3); <span class="comment">// can be used in templates</span></div>
-<div class="ttc" id="anamespacetracking_1_1math_html_a1595a2bf28d9a6f8b59495b2ee803908"><div class="ttname"><a href="#a1595a2bf28d9a6f8b59495b2ee803908">tracking::math::pow</a></div><div class="ttdeci">constexpr auto pow(T const x) noexcept(std::is_arithmetic&lt; T &gt;::value) -&gt; T</div><div class="ttdoc">Compile-time power function.</div><div class="ttdef"><b>Definition</b> functions.h:44</div></div>
+<p>Example usage: </p><div class="fragment"><div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">double</span> result = <a class="code hl_function" href="#a1f16e3eea4ba91241c1aa3a42af4bfba">tracking::math::pow&lt;3&gt;</a>(2.0); <span class="comment">// result = 8.0</span></div>
+<div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">int</span> template_param = <a class="code hl_function" href="#a1f16e3eea4ba91241c1aa3a42af4bfba">tracking::math::pow&lt;4&gt;</a>(3); <span class="comment">// can be used in templates</span></div>
+<div class="ttc" id="anamespacetracking_1_1math_html_a1f16e3eea4ba91241c1aa3a42af4bfba"><div class="ttname"><a href="#a1f16e3eea4ba91241c1aa3a42af4bfba">tracking::math::pow</a></div><div class="ttdeci">constexpr auto pow(T const x) noexcept(std::is_arithmetic_v&lt; T &gt;) -&gt; T</div><div class="ttdoc">Compile-time power function.</div><div class="ttdef"><b>Definition</b> functions.h:44</div></div>
 </div><!-- fragment --> <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetracking_1_1math_a1595a2bf28d9a6f8b59495b2ee803908_icgraph.svg" width="100%" height="575"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetracking_1_1math_a1f16e3eea4ba91241c1aa3a42af4bfba_icgraph.svg" width="100%" height="575"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

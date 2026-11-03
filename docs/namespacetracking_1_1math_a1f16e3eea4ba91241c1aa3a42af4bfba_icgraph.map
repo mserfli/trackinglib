@@ -1,0 +1,23 @@
+<map id="tracking::math::pow" name="tracking::math::pow">
+<area shape="rect" id="Node000001" title="Compile&#45;time power function." alt="" coords="554,187,705,215"/>
+<area shape="rect" id="Node000002" href="$classtracking_1_1env_1_1EgoMotion.html#a253c2bb648180106b9d53f8fcde0be65" title="Calculate Jacobian for circular motion case." alt="" coords="283,5,488,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="609,173,566,119,537,90,505,65,483,53,483,48,507,60,541,86,570,116,614,174"/>
+<area shape="rect" id="Node000004" href="$classtracking_1_1env_1_1EgoMotion.html#a78a88909c9ccc71f8378976e11714184" title="Calculate displacement covariance." alt="" coords="276,75,494,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="591,178,551,157,505,134,474,123,474,117,507,129,554,152,596,179"/>
+<area shape="rect" id="Node000005" href="$classtracking_1_1math_1_1SquareMatrix.html#a5d97dae5cffbe0453dfdfad414126307" title="Performs Cholesky decomposition (LLT) of a symmetric positive definite matrix." alt="" coords="280,213,491,258"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="536,214,492,223,491,218,541,213"/>
+<area shape="rect" id="Node000007" href="$classtracking_1_1env_1_1EgoMotion.html#aa49618a2033a3035ce01881f12097b1f" title=" " alt="" coords="294,144,476,189"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="536,189,477,182,477,177,541,188"/>
+<area shape="rect" id="Node000008" href="$classtracking_1_1math_1_1Rank1Update.html#a335f5f6a2e52510210adae871025324a" title="Performs rank&#45;1 update on UDU factorization (upper triangular form)." alt="" coords="265,282,506,310"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="598,223,555,250,507,273,471,284,470,279,505,268,552,246,593,224"/>
+<area shape="rect" id="Node000010" href="$classtracking_1_1math_1_1Rank1Update.html#a96bda483dc5a922f919304d2e0412025" title="Performs rank&#45;1 update on LDL factorization (lower triangular form)." alt="" coords="265,334,506,362"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="611,226,567,278,539,303,507,323,477,336,476,331,505,319,535,298,563,274,607,228"/>
+<area shape="rect" id="Node000003" href="$classtracking_1_1env_1_1EgoMotion.html#af757959575cb1711704b3a150dca3403" title="Compute displacement from internal motion parameters." alt="" coords="20,75,202,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="277,56,203,76,201,72,281,53"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="259,98,204,100,202,94,263,96"/>
+<area shape="rect" id="Node000006" href="$classtracking_1_1math_1_1SquareMatrix.html#ad6db96247e4ecc19e83478a8c3fe74cb" title="Check if the diagonal matrix is positive definite." alt="" coords="5,209,217,254"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="262,235,217,236,216,231,267,233"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="277,141,203,123,202,117,282,138"/>
+<area shape="rect" id="Node000009" href="$classtracking_1_1math_1_1CovarianceMatrixFactored.html#a8d64779f4ed5705bc05fd9768f00e36b" title="Agee&#45;Turner rank&#45;1 update: P ± x*x^T." alt="" coords="6,279,216,323"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="246,299,217,302,216,296,251,298"/>
+</map>

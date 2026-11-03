@@ -134,8 +134,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a76de37a01b83105f8d0a244a5e36a17e" id="r_a76de37a01b83105f8d0a244a5e36a17e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76de37a01b83105f8d0a244a5e36a17e">StateMem</a> (const <a class="el" href="#af4a3e9236bd4df64babb8aa22a10bcee">StateVec</a> &amp;vec, const <a class="el" href="#a5f8416e89f22c81a1976ee0c72fb3a4f">StateCov</a> &amp;cov) noexcept(std::is_nothrow_copy_constructible&lt; <a class="el" href="#af4a3e9236bd4df64babb8aa22a10bcee">StateVec</a> &gt;::value &amp;&amp;std::is_nothrow_copy_constructible&lt; <a class="el" href="#a5f8416e89f22c81a1976ee0c72fb3a4f">StateCov</a> &gt;::value)</td></tr>
-<tr class="memdesc:a76de37a01b83105f8d0a244a5e36a17e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new State Mem object.  <br /></td></tr>
+<tr class="memitem:a4e7874b36e647d79387723ac04b02627" id="r_a4e7874b36e647d79387723ac04b02627"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e7874b36e647d79387723ac04b02627">StateMem</a> (const <a class="el" href="#af4a3e9236bd4df64babb8aa22a10bcee">StateVec</a> &amp;vec, const <a class="el" href="#a5f8416e89f22c81a1976ee0c72fb3a4f">StateCov</a> &amp;cov) noexcept(std::is_nothrow_copy_constructible_v&lt; <a class="el" href="#af4a3e9236bd4df64babb8aa22a10bcee">StateVec</a> &gt; &amp;&amp;std::is_nothrow_copy_constructible_v&lt; <a class="el" href="#a5f8416e89f22c81a1976ee0c72fb3a4f">StateCov</a> &gt;)</td></tr>
+<tr class="memdesc:a4e7874b36e647d79387723ac04b02627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new State Mem object.  <br /></td></tr>
 <tr class="memitem:af55a8f1ac97f75144ca075394885810b" id="r_af55a8f1ac97f75144ca075394885810b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af55a8f1ac97f75144ca075394885810b">getVec</a> () -&gt; <a class="el" href="#af4a3e9236bd4df64babb8aa22a10bcee">StateVec</a> &amp;</td></tr>
 <tr class="memdesc:af55a8f1ac97f75144ca075394885810b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write access to full state vector.  <br /></td></tr>
 <tr class="memitem:ada90b03a93dd10b2993be3dd37c5001b" id="r_ada90b03a93dd10b2993be3dd37c5001b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada90b03a93dd10b2993be3dd37c5001b">getCov</a> () -&gt; <a class="el" href="#a5f8416e89f22c81a1976ee0c72fb3a4f">StateCov</a> &amp;</td></tr>
@@ -350,8 +350,8 @@ template&lt;typename CovarianceMatrixPolicy_, <a class="el" href="atomic__types_
 
 </div>
 </div>
-<a id="a76de37a01b83105f8d0a244a5e36a17e" name="a76de37a01b83105f8d0a244a5e36a17e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76de37a01b83105f8d0a244a5e36a17e">&#9670;&#160;</a></span>StateMem() <span class="overload">[4/4]</span></h2>
+<a id="a4e7874b36e647d79387723ac04b02627" name="a4e7874b36e647d79387723ac04b02627"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e7874b36e647d79387723ac04b02627">&#9670;&#160;</a></span>StateMem() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -441,7 +441,7 @@ template&lt;typename CovarianceMatrixPolicy_, <a class="el" href="atomic__types_
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -537,7 +537,7 @@ template&lt;typename CovarianceMatrixPolicy_, <a class="el" href="atomic__types_
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

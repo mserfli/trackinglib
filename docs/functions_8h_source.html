@@ -93,7 +93,7 @@ $(function() {
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>{</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> N, <span class="keyword">class</span> T&gt;</div>
 <div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacetracking_1_1math.html#a1595a2bf28d9a6f8b59495b2ee803908">   44</a></span><span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacetracking_1_1math.html#a1595a2bf28d9a6f8b59495b2ee803908">pow</a>(T <span class="keyword">const</span> x) <span class="keyword">noexcept</span>(std::is_arithmetic&lt;T&gt;::value) -&gt; T</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacetracking_1_1math.html#a1f16e3eea4ba91241c1aa3a42af4bfba">   44</a></span><span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacetracking_1_1math.html#a1f16e3eea4ba91241c1aa3a42af4bfba">pow</a>(T <span class="keyword">const</span> x) <span class="keyword">noexcept</span>(std::is_arithmetic_v&lt;T&gt;) -&gt; T</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (N == 0)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
@@ -123,7 +123,7 @@ $(function() {
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#endif </span><span class="comment">// B8E086B0_F27F_43B8_9748_96B243918772</span></div>
 <div class="ttc" id="afirst__include_8h_html"><div class="ttname"><a href="first__include_8h.html">first_include.h</a></div></div>
 <div class="ttc" id="anamespacetracking_1_1math_html"><div class="ttname"><a href="namespacetracking_1_1math.html">tracking::math</a></div><div class="ttdef"><b>Definition</b> functions.h:21</div></div>
-<div class="ttc" id="anamespacetracking_1_1math_html_a1595a2bf28d9a6f8b59495b2ee803908"><div class="ttname"><a href="namespacetracking_1_1math.html#a1595a2bf28d9a6f8b59495b2ee803908">tracking::math::pow</a></div><div class="ttdeci">constexpr auto pow(T const x) noexcept(std::is_arithmetic&lt; T &gt;::value) -&gt; T</div><div class="ttdoc">Compile-time power function.</div><div class="ttdef"><b>Definition</b> functions.h:44</div></div>
+<div class="ttc" id="anamespacetracking_1_1math_html_a1f16e3eea4ba91241c1aa3a42af4bfba"><div class="ttname"><a href="namespacetracking_1_1math.html#a1f16e3eea4ba91241c1aa3a42af4bfba">tracking::math::pow</a></div><div class="ttdeci">constexpr auto pow(T const x) noexcept(std::is_arithmetic_v&lt; T &gt;) -&gt; T</div><div class="ttdoc">Compile-time power function.</div><div class="ttdef"><b>Definition</b> functions.h:44</div></div>
 <div class="ttc" id="anamespacetracking_html"><div class="ttname"><a href="namespacetracking.html">tracking</a></div><div class="ttdef"><b>Definition</b> interface_contract.h:11</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
