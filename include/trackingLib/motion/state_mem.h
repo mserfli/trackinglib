@@ -43,7 +43,7 @@ public:
 
   /// \brief Read access to full state vector
   /// \return const StateVec&
-  auto getVec() const -> ConstStateVec& { return _vec; }
+  [[nodiscard]] auto getVec() const -> ConstStateVec& { return _vec; }
 
   /// \brief Read/Write access to state vector
   /// \return StateVec&
@@ -52,7 +52,7 @@ public:
 
   /// \brief Read access to state covariance matrix
   /// \return const StateCov&
-  auto getCov() const -> ConstStateCov& { return _cov; }
+  [[nodiscard]] auto getCov() const -> ConstStateCov& { return _cov; }
 
   /// \brief Read/Write access to state covariance matrix
   /// \return StateCov&
@@ -78,8 +78,9 @@ TEST_REMOVE_PROTECTED:
   /// \brief Construct a new State Mem object
   /// \param[in] vec
   /// \param[in] cov
-  explicit StateMem(const StateVec& vec, const StateCov& cov) noexcept(std::is_nothrow_copy_constructible<StateVec>::value &&
-                                                                       std::is_nothrow_copy_constructible<StateCov>::value)
+  // NOLINTNEXTLINE(modernize-pass-by-value) -- Preserve the public constructor signature and copy contract.
+  explicit StateMem(const StateVec& vec, const StateCov& cov) noexcept(std::is_nothrow_copy_constructible_v<StateVec> &&
+                                                                       std::is_nothrow_copy_constructible_v<StateCov>)
       : _vec{vec}
       , _cov{cov}
   {

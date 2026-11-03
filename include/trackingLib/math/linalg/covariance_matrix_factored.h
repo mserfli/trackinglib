@@ -156,7 +156,7 @@ public:
   ///
   /// \note Time complexity: O(n^3) where n = Size_
   /// \note More stable than full matrix inversion for ill-conditioned covariances
-  auto inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>;
+  [[nodiscard]] auto inverse() const -> tl::expected<CovarianceMatrixFactored, Errors>;
 
   /// \brief Compute inverse as full covariance matrix
   ///
@@ -166,7 +166,7 @@ public:
   /// \return Full covariance matrix containing the inverse
   ///
   /// \note Time complexity: O(n^3) where n = Size_
-  auto composed_inverse() const -> tl::expected<compose_type, Errors>;
+  [[nodiscard]] auto composed_inverse() const -> tl::expected<compose_type, Errors>;
 
   /// \brief Compute A*P*A^T in-place (factored covariance propagation)
   ///
@@ -194,7 +194,7 @@ public:
   /// \note Used for coordinate transformations in factored Kalman filters
   /// \note Maintains numerical stability of the UDU representation
   template <bool IsRowMajor_>
-  auto apaT(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFactored;
+  [[nodiscard]] auto apaT(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFactored;
 
   /// \brief Thornton update: Φ*P*Φ^T + G*Q*G^T (Kalman prediction)
   ///
@@ -304,7 +304,7 @@ TEST_REMOVE_PRIVATE:
   // clang-format on
 
   TriangularMatrix<ValueType_, Size_, false, true> _u{};
-  DiagonalMatrix<ValueType_, Size_>                _d{};
+  DiagonalMatrix<ValueType_, Size_>                _d;
 };
 
 } // namespace math

@@ -43,12 +43,12 @@ public:
   IMotionModel()          = default;
   virtual ~IMotionModel() = default;
 
-  virtual auto getX() const -> value_type  = 0;
-  virtual auto getVx() const -> value_type = 0;
-  virtual auto getAx() const -> value_type = 0;
-  virtual auto getY() const -> value_type  = 0;
-  virtual auto getVy() const -> value_type = 0;
-  virtual auto getAy() const -> value_type = 0;
+  [[nodiscard]] virtual auto getX() const -> value_type  = 0;
+  [[nodiscard]] virtual auto getVx() const -> value_type = 0;
+  [[nodiscard]] virtual auto getAx() const -> value_type = 0;
+  [[nodiscard]] virtual auto getY() const -> value_type  = 0;
+  [[nodiscard]] virtual auto getVy() const -> value_type = 0;
+  [[nodiscard]] virtual auto getAy() const -> value_type = 0;
 
   /// \brief Predicts the underlying MotionModel with the given filter (includes ego motion compensation)
   /// \param[in] dt         The delta time from last state to predicted state
@@ -99,8 +99,8 @@ public:
   using typename BaseStateMem::StateVec;
 
   // rule of 5 declarations
-  ExtendedMotionModel()          = default;
-  virtual ~ExtendedMotionModel() = default;
+  ExtendedMotionModel()           = default;
+  ~ExtendedMotionModel() override = default;
 
   /// \brief Create state vector from initializer list
   /// \param[in] list  Initializer list with state values
@@ -120,8 +120,8 @@ public:
   ///       For example, a negative diagonal can be retained by full construction and clamped by factored construction.
   /// \note noexcept for built-in policies specifies exception behavior, not finite numeric validity.
   static auto StateCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list) noexcept(
-      std::is_same<StateCov, math::CovarianceMatrixFull<value_type, MotionModelTrait_::Size>>::value ||
-      std::is_same<StateCov, math::CovarianceMatrixFactored<value_type, MotionModelTrait_::Size>>::value)
+      std::is_same_v<StateCov, math::CovarianceMatrixFull<value_type, MotionModelTrait_::Size>> ||
+      std::is_same_v<StateCov, math::CovarianceMatrixFactored<value_type, MotionModelTrait_::Size>>)
       -> tl::expected<StateCov, math::Errors>
   {
     if constexpr (CovarianceMatrixPolicy::is_factored)
@@ -144,6 +144,7 @@ public:
   template <typename T = CovarianceMatrixPolicy>
   static auto StateCovFromList(const std::initializer_list<std::initializer_list<value_type>>& u,
                                const std::initializer_list<value_type>& d) noexcept(noexcept(StateCov::FromList(u, d)))
+      // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
       -> std::enable_if_t<T::is_factored, tl::expected<StateCov, math::Errors>>
   {
     return StateCov::FromList(u, d);
@@ -183,11 +184,11 @@ public:
 
   /// \brief Read access to x position
   /// \return value_type
-  auto getX() const -> value_type final { return this->operator[](StateDef::X); }
+  [[nodiscard]] auto getX() const -> value_type final { return this->operator[](StateDef::X); }
 
   /// \brief Read access to y position
   /// \return value_type
-  auto getY() const -> value_type final { return this->operator[](StateDef::Y); }
+  [[nodiscard]] auto getY() const -> value_type final { return this->operator[](StateDef::Y); }
 
   /// \brief Inverts the state covariance matrix into information form and vice versa
   auto invertCov() -> tl::expected<void, math::Errors>;
@@ -300,8 +301,8 @@ TEST_REMOVE_PROTECTED:
   /// \param[in] vec
   /// \param[in] cov
   explicit ExtendedMotionModel(const StateVec& vec,
-                               const StateCov& cov) noexcept(std::is_nothrow_copy_constructible<StateVec>::value &&
-                                                             std::is_nothrow_copy_constructible<StateCov>::value &&
+                               const StateCov& cov) noexcept(std::is_nothrow_copy_constructible_v<StateVec> &&
+                                                             std::is_nothrow_copy_constructible_v<StateCov> &&
                                                              noexcept(cov.isPositiveDefinite()))
       : BaseIMotionModel{}
       , BaseStateMem{vec, cov}
@@ -319,10 +320,8 @@ auto ExtendedMotionModel<MotionModel_, MotionModelTrait_>::invertCov() -> tl::ex
     this->getCovForInternalUse() = res.value();
     return {};
   }
-  else
-  {
-    return tl::unexpected<math::Errors>{res.error()};
-  }
+
+  return tl::unexpected<math::Errors>{res.error()};
 }
 
 } // namespace motion

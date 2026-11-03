@@ -72,7 +72,7 @@ public:
   ExtendedObservationModel() = default;
   /// \brief Pure virtual destructor keeping this CRTP layer abstract (RequireAbstractIntf
   ///        contract) without introducing vtable entries for the statically dispatched hooks
-  virtual ~ExtendedObservationModel() = 0;
+  ~ExtendedObservationModel() override = 0;
 
   /// \brief Create measurement vector from initializer list
   /// \param[in] list  Initializer list with measurement values
@@ -93,8 +93,8 @@ public:
   ///       For example, a negative diagonal can be retained by full construction and clamped by factored construction.
   /// \note noexcept for built-in policies specifies exception behavior, not finite numeric validity.
   static auto MeasurementCovFromList(const std::initializer_list<std::initializer_list<value_type>>& list) noexcept(
-      std::is_same<MeasurementCov, math::CovarianceMatrixFull<value_type, DimZ>>::value ||
-      std::is_same<MeasurementCov, math::CovarianceMatrixFactored<value_type, DimZ>>::value)
+      std::is_same_v<MeasurementCov, math::CovarianceMatrixFull<value_type, DimZ>> ||
+      std::is_same_v<MeasurementCov, math::CovarianceMatrixFactored<value_type, DimZ>>)
       -> tl::expected<MeasurementCov, math::Errors>
   {
     if constexpr (CovarianceMatrixPolicy::is_factored)
@@ -118,6 +118,7 @@ public:
   static auto MeasurementCovFromList(const std::initializer_list<std::initializer_list<value_type>>& u,
                                      const std::initializer_list<value_type>& d) noexcept(noexcept(MeasurementCov::FromList(u,
                                                                                                                             d)))
+      // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
       -> std::enable_if_t<T::is_factored, tl::expected<MeasurementCov, math::Errors>>
   {
     return MeasurementCov::FromList(u, d);
@@ -193,11 +194,11 @@ public:
 
   /// \brief Read access to the measurement dimension
   /// \return sint32  Number of measurement components
-  auto getDim() const -> sint32 final { return DimZ; }
+  [[nodiscard]] auto getDim() const -> sint32 final { return DimZ; }
 
   /// \brief Read access to the sensor mounting pose
   /// \return SensorPose  Static SE(2) sensor mounting pose relative to the tracking frame
-  auto getSensorPose() const -> const SensorPose& { return _sensorPose; }
+  [[nodiscard]] auto getSensorPose() const -> const SensorPose& { return _sensorPose; }
 
   /// \brief Predict the measurement h(x) for the given tracking-frame state
   ///
@@ -240,7 +241,7 @@ public:
   /// \param[in] measurement  Measurement vector z
   /// \param[in] predicted    Predicted measurement h(x)
   /// \return MeasurementVec  Innovation nu = z - h(x)
-  auto computeInnovation(const MeasurementVec& measurement, const MeasurementVec& predicted) const -> MeasurementVec
+  [[nodiscard]] auto computeInnovation(const MeasurementVec& measurement, const MeasurementVec& predicted) const -> MeasurementVec
   {
     return MeasurementVec{measurement - predicted};
   }
@@ -275,9 +276,10 @@ TEST_REMOVE_PROTECTED:
   /// \brief Construct a new Extended Observation Model object
   /// \param[in] vec  Measurement vector z
   /// \param[in] cov  Measurement covariance R
-  explicit ExtendedObservationModel(const MeasurementVec& vec, const MeasurementCov& cov) noexcept(
-      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
-      noexcept(cov.isPositiveDefinite()))
+  explicit ExtendedObservationModel(const MeasurementVec& vec,
+                                    const MeasurementCov& cov) noexcept(std::is_nothrow_copy_constructible_v<MeasurementVec> &&
+                                                                        std::is_nothrow_copy_constructible_v<MeasurementCov> &&
+                                                                        noexcept(cov.isPositiveDefinite()))
       : ExtendedObservationModel{vec, cov, SensorPose{}}
   {
   }
@@ -287,8 +289,8 @@ TEST_REMOVE_PROTECTED:
   /// \param[in] cov  Measurement covariance R
   /// \param[in] pose Static SE(2) sensor mounting pose relative to the tracking frame
   explicit ExtendedObservationModel(const MeasurementVec& vec, const MeasurementCov& cov, const SensorPose& pose) noexcept(
-      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
-      noexcept(cov.isPositiveDefinite()) && std::is_nothrow_copy_constructible<SensorPose>::value)
+      std::is_nothrow_copy_constructible_v<MeasurementVec> && std::is_nothrow_copy_constructible_v<MeasurementCov> &&
+      noexcept(cov.isPositiveDefinite()) && std::is_nothrow_copy_constructible_v<SensorPose>)
       : BaseIObservationModel{}
       , BaseStateMem{vec, cov}
       , _sensorPose{pose}
@@ -299,7 +301,7 @@ TEST_REMOVE_PROTECTED:
 private:
   /// \brief CRTP downcast to the concrete derived observation model
   /// \return const ObservationModel_&  The concrete model this base is instantiated for
-  auto derived() const -> const ObservationModel_& { return static_cast<const ObservationModel_&>(*this); }
+  [[nodiscard]] auto derived() const -> const ObservationModel_& { return static_cast<const ObservationModel_&>(*this); }
 
   /// \brief Transform every present state component (position/velocity/acceleration) into the sensor frame
   ///

@@ -22,6 +22,7 @@ namespace math
 /// \note Currently not used by the Matrix class, but reserved for future
 ///
 /// \see Matrix for usage in matrix template parameters
+// NOLINTNEXTLINE(performance-enum-size) -- Preserve the public enum representation.
 enum class RowColumnOrder
 {
   RowMajor,   ///< Elements are stored row by row (C/C++ default)
@@ -34,6 +35,7 @@ enum class RowColumnOrder
 /// particularly for TriangularMatrix specializations.
 ///
 /// \see TriangularMatrix for usage in template parameters
+// NOLINTNEXTLINE(performance-enum-size) -- Preserve the public enum representation.
 enum class UpLoType
 {
   LowerTria, ///< Lower triangular matrix (elements above diagonal are zero)

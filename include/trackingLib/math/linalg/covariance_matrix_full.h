@@ -49,7 +49,7 @@ public:
   CovarianceMatrixFull(CovarianceMatrixFull&&) noexcept                    = default;
   auto operator=(const CovarianceMatrixFull&) -> CovarianceMatrixFull&     = default;
   auto operator=(CovarianceMatrixFull&&) noexcept -> CovarianceMatrixFull& = default;
-  virtual ~CovarianceMatrixFull()                                          = default;
+  ~CovarianceMatrixFull() override                                         = default;
 
   /// \brief Creates a CovarianceMatrixFull from a nested initializer list
   ///
@@ -136,7 +136,7 @@ public:
   ///
   /// \return ValueType_ The determinant of the matrix
   /// \note uses SquareMatrix::determinant
-  auto determinant() const -> ValueType_ { return BaseSquareMatrix::determinant(); }
+  [[nodiscard]] auto determinant() const -> ValueType_ { return BaseSquareMatrix::determinant(); }
 
   /// \brief Calculates the matrix inverse using Cholesky decomposition
   ///
@@ -148,14 +148,14 @@ public:
   ///
   /// \note Time complexity: O(n^3) where n = Size_
   /// \note The result satisfies: (*this) * result = Identity()
-  auto inverse() const -> tl::expected<CovarianceMatrixFull, Errors>;
+  [[nodiscard]] auto inverse() const -> tl::expected<CovarianceMatrixFull, Errors>;
 
   /// \brief Compute inverse as full covariance matrix
   ///
   /// Alias for inverse() to match the contract definitions
   ///
   /// \return Full covariance matrix containing the inverse
-  auto composed_inverse() const -> tl::expected<compose_type, Errors> { return this->inverse(); }
+  [[nodiscard]] auto composed_inverse() const -> tl::expected<compose_type, Errors> { return this->inverse(); }
 
   /// \brief Compute A*P*A^T in-place (covariance propagation)
   ///
@@ -188,7 +188,7 @@ public:
   /// \note This is a key operation in Kalman filter prediction
   /// \note Time complexity: O(n^3) where n = Size_
   template <bool IsRowMajor_>
-  auto apaT(const tracking::math::SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull;
+  [[nodiscard]] auto apaT(const tracking::math::SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull;
 
   /// \brief Rank-1 update: P ± c*x*x^T
   ///

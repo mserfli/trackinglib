@@ -30,6 +30,7 @@ class PositionObservationModel TEST_REMOVE_FINAL
 public:
   static_assert(motion::has_position_v<StateDef_>, "PositionObservationModel requires a StateDef providing X and Y");
 
+  // NOLINTNEXTLINE(performance-enum-size) -- Preserve the public enum representation.
   enum MeasurementDef
   {
     MEAS_X = 0,
@@ -53,7 +54,7 @@ public:
       default;
   auto operator=(const PositionObservationModel&) -> PositionObservationModel&     = default;
   auto operator=(PositionObservationModel&&) noexcept -> PositionObservationModel& = default;
-  virtual ~PositionObservationModel() TEST_REMOVE_FINAL                            = default;
+  ~PositionObservationModel() TEST_REMOVE_FINAL override                           = default;
 
   /// \brief Construct a new PositionObservationModel after checking covariance positive definiteness
   ///
@@ -69,8 +70,8 @@ public:
   /// \note Uses the existing covariance predicate/tolerance; no comprehensive NaN/Inf rejection is added.
   ///       noexcept holds for built-in policies and is conditional on supplied covariance operations.
   static auto TryCreate(const MeasurementVec& vec, const MeasurementCov& cov) noexcept(
-      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
-      std::is_nothrow_move_constructible<MeasurementCov>::value &&
+      std::is_nothrow_copy_constructible_v<MeasurementVec> && std::is_nothrow_copy_constructible_v<MeasurementCov> &&
+      std::is_nothrow_move_constructible_v<MeasurementCov> &&
       noexcept(cov.isPositiveDefinite())) -> tl::expected<PositionObservationModel, math::Errors>
   {
     if (!cov.isPositiveDefinite())
@@ -98,10 +99,10 @@ public:
       const MeasurementVec& vec,
       const MeasurementCov& cov,
       const typename BaseExtendedObservationModel::SensorPose&
-          pose) noexcept(std::is_nothrow_copy_constructible<MeasurementVec>::value &&
-                         std::is_nothrow_copy_constructible<MeasurementCov>::value && noexcept(cov.isPositiveDefinite()) &&
-                         std::is_nothrow_copy_constructible<typename BaseExtendedObservationModel::SensorPose>::value &&
-                         std::is_nothrow_move_constructible<MeasurementCov>::value)
+          pose) noexcept(std::is_nothrow_copy_constructible_v<MeasurementVec> &&
+                         std::is_nothrow_copy_constructible_v<MeasurementCov> && noexcept(cov.isPositiveDefinite()) &&
+                         std::is_nothrow_copy_constructible_v<typename BaseExtendedObservationModel::SensorPose> &&
+                         std::is_nothrow_move_constructible_v<MeasurementCov>)
       -> tl::expected<PositionObservationModel, math::Errors>
   {
     if (!cov.isPositiveDefinite())
@@ -115,7 +116,7 @@ public:
   /// \param[in] state      Sensor-frame state vector the measurement is predicted for
   /// \param[in] egoMotion  Ego motion of the sensor platform (unused, model is a direct position measurement)
   /// \return MeasurementVec  Predicted measurement
-  auto predictMeasurementSensorFrame(
+  [[nodiscard]] auto predictMeasurementSensorFrame(
       const StateVec& state, const typename BaseExtendedObservationModel::EgoMotionType& egoMotion) const -> MeasurementVec
   {
     static_cast<void>(egoMotion);
@@ -155,9 +156,10 @@ TEST_REMOVE_PROTECTED:
   ///
   /// \param[in] vec  Measurement vector z = [x, y]'
   /// \param[in] cov  Measurement covariance R
-  explicit PositionObservationModel(const MeasurementVec& vec, const MeasurementCov& cov) noexcept(
-      std::is_nothrow_copy_constructible<MeasurementVec>::value && std::is_nothrow_copy_constructible<MeasurementCov>::value &&
-      noexcept(cov.isPositiveDefinite()))
+  explicit PositionObservationModel(const MeasurementVec& vec,
+                                    const MeasurementCov& cov) noexcept(std::is_nothrow_copy_constructible_v<MeasurementVec> &&
+                                                                        std::is_nothrow_copy_constructible_v<MeasurementCov> &&
+                                                                        noexcept(cov.isPositiveDefinite()))
       : BaseExtendedObservationModel{vec, cov}
   {
   }
@@ -173,9 +175,9 @@ TEST_REMOVE_PROTECTED:
       const MeasurementVec& vec,
       const MeasurementCov& cov,
       const typename BaseExtendedObservationModel::SensorPose&
-          pose) noexcept(std::is_nothrow_copy_constructible<MeasurementVec>::value &&
-                         std::is_nothrow_copy_constructible<MeasurementCov>::value && noexcept(cov.isPositiveDefinite()) &&
-                         std::is_nothrow_copy_constructible<typename BaseExtendedObservationModel::SensorPose>::value)
+          pose) noexcept(std::is_nothrow_copy_constructible_v<MeasurementVec> &&
+                         std::is_nothrow_copy_constructible_v<MeasurementCov> && noexcept(cov.isPositiveDefinite()) &&
+                         std::is_nothrow_copy_constructible_v<typename BaseExtendedObservationModel::SensorPose>)
       : BaseExtendedObservationModel{vec, cov, pose}
   {
   }

@@ -7,6 +7,7 @@ set(TEST_SOURCES
     math/test_checked_covariance_factories.cpp
     math/test_functions.cpp
     math/test_matrix.cpp
+    math/test_matrix_integration.cpp
     math/test_vector.cpp
     math/test_point2d.cpp
     math/test_rotation2d.cpp

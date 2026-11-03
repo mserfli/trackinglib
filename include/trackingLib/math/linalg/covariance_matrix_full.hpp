@@ -52,7 +52,7 @@ inline void CovarianceMatrixFull<ValueType_, Size_>::apaT(const tracking::math::
   {
     for (sint32 j = i; j < Size_; ++j)
     {
-      ValueType_ element = static_cast<ValueType_>(0);
+      auto element = static_cast<ValueType_>(0);
       for (sint32 k = 0; k < Size_; ++k)
       {
         element += AP.at_unsafe(i, k) * A.at_unsafe(j, k);
@@ -67,7 +67,7 @@ inline void CovarianceMatrixFull<ValueType_, Size_>::apaT(const tracking::math::
 
 template <typename ValueType_, sint32 Size_>
 template <bool IsRowMajor_>
-inline auto CovarianceMatrixFull<ValueType_, Size_>::apaT(
+[[nodiscard]] inline auto CovarianceMatrixFull<ValueType_, Size_>::apaT(
     const tracking::math::SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFull
 {
   auto copy(*this);

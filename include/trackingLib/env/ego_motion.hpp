@@ -73,7 +73,7 @@ auto EgoMotion<CovarianceMatrixPolicy_>::getVelocityAt(value_type mountX, value_
 template <typename CovarianceMatrixPolicy_>
 auto EgoMotion<CovarianceMatrixPolicy_>::isLinearMotion() const -> bool
 {
-  constexpr value_type omegaThreshold = static_cast<value_type>(9e-3);
+  constexpr auto omegaThreshold = static_cast<value_type>(9e-3);
   return (math::pow<4>(_motion.w) < omegaThreshold);
 }
 

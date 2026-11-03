@@ -111,8 +111,8 @@ inline auto CovarianceMatrixFactored<ValueType_, Size_>::at_unsafe(sint32 row, s
   {
     ud.at_unsafe(i) = _u.at_unsafe(row, i) * _d.at_unsafe(i);
   }
-  MatrixColumnView<ValueType_, Size_, 1, true>  udView{ud, 0, col, Size_ - 1};
-  MatrixRowView<ValueType_, Size_, Size_, true> uTView{_u, col, col, Size_ - 1};
+  MatrixColumnView<ValueType_, Size_, 1, true> const  udView{ud, 0, col, Size_ - 1};
+  MatrixRowView<ValueType_, Size_, Size_, true> const uTView{_u, col, col, Size_ - 1};
   result = uTView * udView; // calc the scalar product of ud*uT on relevant elements
   return result;
 }
@@ -150,10 +150,8 @@ inline auto CovarianceMatrixFactored<ValueType_, Size_>::inverse() const -> tl::
     // the resulting UDUt matrix describes the covariance matrix in information form, i.e. the inverse covariance matrix
     return CovarianceMatrixFactored{std::move(l.inverse().transpose()), std::move(d.inverse())};
   }
-  else
-  {
-    return tl::unexpected<Errors>{ldlt.error()};
-  }
+
+  return tl::unexpected<Errors>{ldlt.error()};
 }
 
 template <typename ValueType_, sint32 Size_>
@@ -177,8 +175,8 @@ inline void CovarianceMatrixFactored<ValueType_, Size_>::apaT(const SquareMatrix
 
 template <typename ValueType_, sint32 Size_>
 template <bool IsRowMajor_>
-inline auto CovarianceMatrixFactored<ValueType_, Size_>::apaT(const SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const
-    -> CovarianceMatrixFactored
+[[nodiscard]] inline auto CovarianceMatrixFactored<ValueType_, Size_>::apaT(
+    const SquareMatrix<ValueType_, Size_, IsRowMajor_>& A) const -> CovarianceMatrixFactored
 {
   CovarianceMatrixFactored cov{*this};
   cov.apaT(A);

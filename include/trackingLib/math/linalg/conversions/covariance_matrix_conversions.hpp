@@ -39,7 +39,7 @@ inline auto CovarianceMatrixFactoredFromCovarianceMatrixFull(
   const auto retVal = other.decomposeUDUT();
   if (retVal.has_value())
   {
-    const auto& [u, d] = retVal.value();
+    const auto& [u, d] = *retVal;
     return CovarianceMatrixFactored{u, d};
   }
   return tl::unexpected<Errors>{retVal.error()};
@@ -71,7 +71,7 @@ inline auto CovarianceMatrixFactoredFromList(const std::initializer_list<std::in
   {
     return tl::unexpected<Errors>{other.error()};
   }
-  return CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(other.value());
+  return CovarianceMatrixFactoredFromCovarianceMatrixFull<ValueType_, Size_>(*other);
 }
 
 } // namespace conversions

@@ -155,7 +155,7 @@ template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
 inline auto TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>::operator*(
     const TriangularMatrix<ValueType_, Size_, !IsLower_, IsRowMajor_>& mat) const -> BaseSquareMatrix
 {
-  BaseSquareMatrix other{mat};
+  BaseSquareMatrix const other{mat};
   return BaseSquareMatrix{this->operator*(other)};
 }
 

@@ -111,6 +111,7 @@ inline constexpr bool is_matrix_like_v = is_matrix_like<T>::value;
 /// // +4.000000, +5.000000, +6.000000
 /// \endcode
 template <typename M>
+// NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.
 auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix_like_v<M>, std::ostream&>
 {
   using value_type = typename M::value_type;
@@ -165,8 +166,8 @@ auto operator<<(std::ostream& os, const M& matrix) -> std::enable_if_t<is_matrix
 /// \see TriangularMatrix for the matrix class
 /// \see operator<<(std::ostream&, const M&) for general matrix streaming
 template <typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_>
-std::ostream& operator<<(std::ostream&                                                                     os,
-                         const tracking::math::TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>& matrix)
+auto operator<<(std::ostream&                                                                     os,
+                const tracking::math::TriangularMatrix<ValueType_, Size_, IsLower_, IsRowMajor_>& matrix) -> std::ostream&
 {
   for (sint32 row = 0; row < Size_; ++row)
   {
@@ -234,7 +235,7 @@ std::ostream& operator<<(std::ostream&                                          
 /// // +0.000000, +0.000000, +3.000000
 /// \endcode
 template <typename ValueType_, sint32 Size_>
-std::ostream& operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<ValueType_, Size_>& matrix)
+auto operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<ValueType_, Size_>& matrix) -> std::ostream&
 {
   for (sint32 row = 0; row < Size_; ++row)
   {
@@ -302,7 +303,7 @@ std::ostream& operator<<(std::ostream& os, const tracking::math::DiagonalMatrix<
 /// // +3.000000
 /// \endcode
 template <typename ValueType_, sint32 Size_>
-std::ostream& operator<<(std::ostream& os, const tracking::math::Vector<ValueType_, Size_>& vector)
+auto operator<<(std::ostream& os, const tracking::math::Vector<ValueType_, Size_>& vector) -> std::ostream&
 {
   for (sint32 row = 0; row < Size_; ++row)
   {

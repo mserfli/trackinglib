@@ -28,6 +28,7 @@ namespace math
 /// \note The explicit sint32 base preserves the original int representation on supported targets.
 ///       Original enumerator values are retained; list-boundary errors are appended.
 /// \see tl::expected for the error handling pattern used
+// NOLINTNEXTLINE(performance-enum-size) -- Preserve the public enum representation.
 enum class Errors : sint32
 {
   invalid_access_row,                 ///< Row index is out of bounds (e.g., accessing row 5 in a 3x3 matrix)

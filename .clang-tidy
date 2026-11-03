@@ -25,7 +25,7 @@ Checks: >
   readability-*,
   -modernize-concat-nested-namespaces,
   -modernize-make-unique,
-  -readability-simplify-boolean-expr
+  -readability-simplify-boolean-expr,
   -readability-avoid-const-params-in-decls,
   -readability-identifier-length,
   -bugprone-easily-swappable-parameters,

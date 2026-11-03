@@ -21,6 +21,7 @@ class MotionModelCA;
 
 struct StateDefCV
 {
+  // NOLINTNEXTLINE(performance-enum-size) -- Preserve the public enum representation.
   enum _
   {
     X = 0,
@@ -37,6 +38,7 @@ class MotionModelCV TEST_REMOVE_FINAL
     , public ExtendedMotionModel<MotionModelCV<CovarianceMatrixPolicy_>, MotionModelTraits<CovarianceMatrixPolicy_, StateDefCV>>
 {
 public:
+  // NOLINTNEXTLINE(performance-enum-size) -- Preserve the public enum representation.
   enum NoiseDef
   {
     Q_VX = 0,
@@ -69,7 +71,7 @@ public:
   MotionModelCV(MotionModelCV&&) noexcept(std::is_nothrow_move_constructible<StateCov>::value) = default;
   auto operator=(const MotionModelCV&) -> MotionModelCV&                                       = default;
   auto operator=(MotionModelCV&&) noexcept -> MotionModelCV&                                   = default;
-  virtual ~MotionModelCV() TEST_REMOVE_FINAL                                                   = default;
+  ~MotionModelCV() TEST_REMOVE_FINAL override                                                  = default;
 
   /// \brief Construct a new CV after checking covariance positive definiteness
   ///
@@ -85,8 +87,8 @@ public:
   /// \note Uses the existing covariance predicate/tolerance; no comprehensive NaN/Inf rejection is added.
   ///       noexcept holds for built-in policies and is conditional on supplied covariance operations.
   static auto TryCreate(const StateVec& vec, const StateCov& cov) noexcept(
-      std::is_nothrow_copy_constructible<StateVec>::value && std::is_nothrow_copy_constructible<StateCov>::value &&
-      std::is_nothrow_move_constructible<StateCov>::value &&
+      std::is_nothrow_copy_constructible_v<StateVec> && std::is_nothrow_copy_constructible_v<StateCov> &&
+      std::is_nothrow_move_constructible_v<StateCov> &&
       noexcept(cov.isPositiveDefinite())) -> tl::expected<MotionModelCV, math::Errors>
   {
     if (!cov.isPositiveDefinite())
@@ -98,16 +100,16 @@ public:
 
   /// \brief Read access to x velocity
   /// \return value_type
-  auto getVx() const -> value_type final { return this->operator[](StateDefCV::VX); }
+  [[nodiscard]] auto getVx() const -> value_type final { return this->operator[](StateDefCV::VX); }
   /// \brief Read access to y velocity
   /// \return value_type
-  auto getVy() const -> value_type final { return this->operator[](StateDefCV::VY); }
+  [[nodiscard]] auto getVy() const -> value_type final { return this->operator[](StateDefCV::VY); }
   /// \brief Read access to x acceleration
   /// \return value_type
-  auto getAx() const -> value_type final { return static_cast<value_type>(0.0); }
+  [[nodiscard]] auto getAx() const -> value_type final { return static_cast<value_type>(0.0); }
   /// \brief Read access to y acceleration
   /// \return value_type
-  auto getAy() const -> value_type final { return static_cast<value_type>(0.0); }
+  [[nodiscard]] auto getAy() const -> value_type final { return static_cast<value_type>(0.0); }
   // ... all the other virtual functions
 
   /// \brief Creates a CV model based on a CA model
@@ -156,8 +158,8 @@ TEST_REMOVE_PROTECTED:
   ///
   /// \param[in] vec  Initial state vector [x, vx, y, vy]'
   /// \param[in] cov  Initial state covariance (full or UDU-factored per the covariance policy)
-  explicit MotionModelCV(const StateVec& vec, const StateCov& cov) noexcept(std::is_nothrow_copy_constructible<StateVec>::value &&
-                                                                            std::is_nothrow_copy_constructible<StateCov>::value &&
+  explicit MotionModelCV(const StateVec& vec, const StateCov& cov) noexcept(std::is_nothrow_copy_constructible_v<StateVec> &&
+                                                                            std::is_nothrow_copy_constructible_v<StateCov> &&
                                                                             noexcept(cov.isPositiveDefinite()));
 };
 

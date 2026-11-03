@@ -32,7 +32,7 @@ public:
 
   /// \brief Read access to the measurement dimension
   /// \return sint32  Number of measurement components
-  virtual auto getDim() const -> sint32 = 0;
+  [[nodiscard]] virtual auto getDim() const -> sint32 = 0;
 
   // clang-format off
 TEST_REMOVE_PROTECTED:

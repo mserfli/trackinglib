@@ -48,6 +48,7 @@ public:
   /// - DS_X: X-position displacement
   /// - DS_Y: Y-position displacement
   /// - DS_PSI: Yaw angle displacement (Δψ)
+  // NOLINTNEXTLINE(performance-enum-size) -- Preserve the public enum representation.
   enum DisplacementStates
   {
     DS_X = 0,        ///< X-position displacement index
@@ -158,15 +159,15 @@ public:
 
   /// \brief Get the time interval for this ego motion compensation
   /// \return Time interval Δt [s]
-  auto getDeltaTime() const -> value_type { return _dt; }
+  [[nodiscard]] auto getDeltaTime() const -> value_type { return _dt; }
 
   /// \brief Get the displacement information for center of gravity
   /// \return Constant reference to displacement structure
-  auto getDisplacementCog() const -> const Displacement& { return _displacementCog; }
+  [[nodiscard]] auto getDisplacementCog() const -> const Displacement& { return _displacementCog; }
 
   /// \brief Get the vehicle geometry parameters
   /// \return Constant reference to geometry structure
-  auto getGeometry() const -> const Geometry& { return _geometry; }
+  [[nodiscard]] auto getGeometry() const -> const Geometry& { return _geometry; }
 
   /// \brief Compensate object position for ego vehicle motion
   ///
@@ -198,7 +199,7 @@ public:
 
   /// \brief Get the motion parameters
   /// \return Constant reference to motion parameters structure
-  auto getMotion() const -> const InertialMotion& { return _motion; }
+  [[nodiscard]] auto getMotion() const -> const InertialMotion& { return _motion; }
 
   /// \brief Compute the tracking-frame velocity of a point rigidly attached to the ego vehicle
   ///
