@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-11-02 21:59:17</td>
+            <td class="headerValue">2026-11-03 15:13:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">66.7&nbsp;%</td>
@@ -124,7 +124,7 @@
 <span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">          96 :       Y.rank1Update(ci, xi);</span></span>
 <span id="L55"><span class="lineNum">      55</span>              :     }</span>
 <span id="L56"><span class="lineNum">      56</span>              :     // propagate factorization by inv(A)'</span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">          26 :     const math::SquareMatrix&lt;value_type, DimX_, true&gt; invAT{invA.transpose()};</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">          26 :     const auto&amp; invAT = invA.transpose();</span></span>
 <span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">          26 :     Y.apaT(invAT);</span></span>
 <span id="L59"><span class="lineNum">      59</span>              :   }</span>
 <span id="L60"><span class="lineNum">      60</span>              :   else</span>

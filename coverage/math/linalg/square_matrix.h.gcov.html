@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryMed">80.0&nbsp;%</td>
-            <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryMed">81.8&nbsp;%</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">9</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-11-02 21:59:17</td>
+            <td class="headerValue">2026-11-03 15:13:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">68.4&nbsp;%</td>
@@ -113,7 +113,7 @@
 <span id="L43"><span class="lineNum">      43</span>              : /// \see TriangularMatrix for triangular matrix operations</span>
 <span id="L44"><span class="lineNum">      44</span>              : /// \see DiagonalMatrix for diagonal matrix operations</span>
 <span id="L45"><span class="lineNum">      45</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsRowMajor_ = true&gt;</span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       11736 : class SquareMatrix: public Matrix&lt;ValueType_, Size_, Size_, IsRowMajor_&gt;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       11755 : class SquareMatrix: public Matrix&lt;ValueType_, Size_, Size_, IsRowMajor_&gt;</span></span>
 <span id="L47"><span class="lineNum">      47</span>              : {</span>
 <span id="L48"><span class="lineNum">      48</span>              : public:</span>
 <span id="L49"><span class="lineNum">      49</span>              :   using BaseMatrix = Matrix&lt;ValueType_, Size_, Size_, IsRowMajor_&gt;; ///&lt; type of the parent class</span>
@@ -132,8 +132,8 @@
 <span id="L62"><span class="lineNum">      62</span>              : </span>
 <span id="L63"><span class="lineNum">      63</span>              :   /// \brief Move construct a new Square Matrix&lt;ValueType_, Size_&gt; object</span>
 <span id="L64"><span class="lineNum">      64</span>              :   /// \param[in] other A base class object</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        2733 :   explicit SquareMatrix(BaseMatrix&amp;&amp; other) noexcept</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        2315 :       : BaseMatrix{std::move(other)}</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        2741 :   explicit SquareMatrix(BaseMatrix&amp;&amp; other) noexcept</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        2323 :       : BaseMatrix{std::move(other)}</span></span>
 <span id="L67"><span class="lineNum">      67</span>              :   {</span>
 <span id="L68"><span class="lineNum">      68</span>              :   }</span>
 <span id="L69"><span class="lineNum">      69</span>              : </span>
@@ -184,7 +184,7 @@
 <span id="L114"><span class="lineNum">     114</span>              :   /// \brief Fast transpose without changing the layout (zero-copy view)</span>
 <span id="L115"><span class="lineNum">     115</span>              :   /// \return const transpose_type&amp;   const reference to same data as Self, but differently interpreted as transposed</span>
 <span id="L116"><span class="lineNum">     116</span>              :   /// \note This creates a view with swapped dimensions and opposite layout. No data is copied.</span>
-<span id="L117"><span class="lineNum">     117</span>              :   [[nodiscard]] auto transpose() const -&gt; const SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&amp;</span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">          26 :   [[nodiscard]] auto transpose() const -&gt; const SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&amp;</span></span>
 <span id="L118"><span class="lineNum">     118</span>              :   {</span>
 <span id="L119"><span class="lineNum">     119</span>              :     return static_cast&lt;const SquareMatrix&lt;ValueType_, Size_, !IsRowMajor_&gt;&amp;&gt;(BaseMatrix::transpose());</span>
 <span id="L120"><span class="lineNum">     120</span>              :   };</span>

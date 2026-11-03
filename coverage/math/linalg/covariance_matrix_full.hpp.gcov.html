@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-11-02 21:59:17</td>
+            <td class="headerValue">2026-11-03 15:13:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">80.0&nbsp;%</td>
@@ -122,7 +122,7 @@
 <span id="L52"><span class="lineNum">      52</span>              :   {</span>
 <span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        8514 :     for (sint32 j = i; j &lt; Size_; ++j)</span></span>
 <span id="L54"><span class="lineNum">      54</span>              :     {</span>
-<span id="L55"><span class="lineNum">      55</span>              :       ValueType_ element = static_cast&lt;ValueType_&gt;(0);</span>
+<span id="L55"><span class="lineNum">      55</span>              :       auto element = static_cast&lt;ValueType_&gt;(0);</span>
 <span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       30777 :       for (sint32 k = 0; k &lt; Size_; ++k)</span></span>
 <span id="L57"><span class="lineNum">      57</span>              :       {</span>
 <span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       24696 :         element += AP.at_unsafe(i, k) * A.at_unsafe(j, k);</span></span>
@@ -137,7 +137,7 @@
 <span id="L67"><span class="lineNum">      67</span>              : </span>
 <span id="L68"><span class="lineNum">      68</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
 <span id="L69"><span class="lineNum">      69</span>              : template &lt;bool IsRowMajor_&gt;</span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           1 : inline auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::apaT(</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           1 : [[nodiscard]] inline auto CovarianceMatrixFull&lt;ValueType_, Size_&gt;::apaT(</span></span>
 <span id="L71"><span class="lineNum">      71</span>              :     const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull</span>
 <span id="L72"><span class="lineNum">      72</span>              : {</span>
 <span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">           3 :   auto copy(*this);</span></span>

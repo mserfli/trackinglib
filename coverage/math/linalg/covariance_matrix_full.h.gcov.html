@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-11-02 21:59:17</td>
+            <td class="headerValue">2026-11-03 15:13:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">83.9&nbsp;%</td>
@@ -115,11 +115,11 @@
 <span id="L45"><span class="lineNum">      45</span>              : </span>
 <span id="L46"><span class="lineNum">      46</span>              :   // rule of 5 declarations</span>
 <span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          39 :   CovarianceMatrixFull()                                                   = default;</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         529 :   CovarianceMatrixFull(const CovarianceMatrixFull&amp;)                        = default;</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         524 :   CovarianceMatrixFull(const CovarianceMatrixFull&amp;)                        = default;</span></span>
 <span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         401 :   CovarianceMatrixFull(CovarianceMatrixFull&amp;&amp;) noexcept                    = default;</span></span>
 <span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">           2 :   auto operator=(const CovarianceMatrixFull&amp;) -&gt; CovarianceMatrixFull&amp;     = default;</span></span>
 <span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         176 :   auto operator=(CovarianceMatrixFull&amp;&amp;) noexcept -&gt; CovarianceMatrixFull&amp; = default;</span></span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">        1319 :   virtual ~CovarianceMatrixFull()                                          = default;</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">        1316 :   ~CovarianceMatrixFull() override                                         = default;</span></span>
 <span id="L53"><span class="lineNum">      53</span>              : </span>
 <span id="L54"><span class="lineNum">      54</span>              :   /// \brief Creates a CovarianceMatrixFull from a nested initializer list</span>
 <span id="L55"><span class="lineNum">      55</span>              :   ///</span>
@@ -206,7 +206,7 @@
 <span id="L136"><span class="lineNum">     136</span>              :   ///</span>
 <span id="L137"><span class="lineNum">     137</span>              :   /// \return ValueType_ The determinant of the matrix</span>
 <span id="L138"><span class="lineNum">     138</span>              :   /// \note uses SquareMatrix::determinant</span>
-<span id="L139"><span class="lineNum">     139</span> <span class="tlaUNC">           0 :   auto determinant() const -&gt; ValueType_ { return BaseSquareMatrix::determinant(); }</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaUNC">           0 :   [[nodiscard]] auto determinant() const -&gt; ValueType_ { return BaseSquareMatrix::determinant(); }</span></span>
 <span id="L140"><span class="lineNum">     140</span>              : </span>
 <span id="L141"><span class="lineNum">     141</span>              :   /// \brief Calculates the matrix inverse using Cholesky decomposition</span>
 <span id="L142"><span class="lineNum">     142</span>              :   ///</span>
@@ -218,14 +218,14 @@
 <span id="L148"><span class="lineNum">     148</span>              :   ///</span>
 <span id="L149"><span class="lineNum">     149</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
 <span id="L150"><span class="lineNum">     150</span>              :   /// \note The result satisfies: (*this) * result = Identity()</span>
-<span id="L151"><span class="lineNum">     151</span>              :   auto inverse() const -&gt; tl::expected&lt;CovarianceMatrixFull, Errors&gt;;</span>
+<span id="L151"><span class="lineNum">     151</span>              :   [[nodiscard]] auto inverse() const -&gt; tl::expected&lt;CovarianceMatrixFull, Errors&gt;;</span>
 <span id="L152"><span class="lineNum">     152</span>              : </span>
 <span id="L153"><span class="lineNum">     153</span>              :   /// \brief Compute inverse as full covariance matrix</span>
 <span id="L154"><span class="lineNum">     154</span>              :   ///</span>
 <span id="L155"><span class="lineNum">     155</span>              :   /// Alias for inverse() to match the contract definitions</span>
 <span id="L156"><span class="lineNum">     156</span>              :   ///</span>
 <span id="L157"><span class="lineNum">     157</span>              :   /// \return Full covariance matrix containing the inverse</span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaUNC">           0 :   auto composed_inverse() const -&gt; tl::expected&lt;compose_type, Errors&gt; { return this-&gt;inverse(); }</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaUNC">           0 :   [[nodiscard]] auto composed_inverse() const -&gt; tl::expected&lt;compose_type, Errors&gt; { return this-&gt;inverse(); }</span></span>
 <span id="L159"><span class="lineNum">     159</span>              : </span>
 <span id="L160"><span class="lineNum">     160</span>              :   /// \brief Compute A*P*A^T in-place (covariance propagation)</span>
 <span id="L161"><span class="lineNum">     161</span>              :   ///</span>
@@ -258,7 +258,7 @@
 <span id="L188"><span class="lineNum">     188</span>              :   /// \note This is a key operation in Kalman filter prediction</span>
 <span id="L189"><span class="lineNum">     189</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
 <span id="L190"><span class="lineNum">     190</span>              :   template &lt;bool IsRowMajor_&gt;</span>
-<span id="L191"><span class="lineNum">     191</span>              :   auto apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull;</span>
+<span id="L191"><span class="lineNum">     191</span>              :   [[nodiscard]] auto apaT(const tracking::math::SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFull;</span>
 <span id="L192"><span class="lineNum">     192</span>              : </span>
 <span id="L193"><span class="lineNum">     193</span>              :   /// \brief Rank-1 update: P ± c*x*x^T</span>
 <span id="L194"><span class="lineNum">     194</span>              :   ///</span>

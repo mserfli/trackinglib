@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">104</td>
-            <td class="headerCovTableEntry">104</td>
+            <td class="headerCovTableEntry">105</td>
+            <td class="headerCovTableEntry">105</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-11-02 21:59:17</td>
+            <td class="headerValue">2026-11-03 15:13:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">89.8&nbsp;%</td>
@@ -90,34 +90,34 @@
 <span id="L20"><span class="lineNum">      20</span>              : class SquareMatrix;</span>
 <span id="L21"><span class="lineNum">      21</span>              : </span>
 <span id="L22"><span class="lineNum">      22</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">         203 : inline TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::TriangularMatrix(const BaseSquareMatrix&amp; other) noexcept</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">         203 :     : BaseSquareMatrix{}</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">         211 : inline TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::TriangularMatrix(const BaseSquareMatrix&amp; other) noexcept</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">         211 :     : BaseSquareMatrix{}</span></span>
 <span id="L25"><span class="lineNum">      25</span>              : {</span>
 <span id="L26"><span class="lineNum">      26</span>              :   // copy triangular elements from other</span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         750 :   for (sint32 row = 0; row &lt; Size_; ++row)</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         782 :   for (sint32 row = 0; row &lt; Size_; ++row)</span></span>
 <span id="L28"><span class="lineNum">      28</span>              :   {</span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">         547 :     this-&gt;at_unsafe(row, row) = other.at_unsafe(row, row);</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">        1063 :     for (sint32 col = row + 1; col &lt; Size_; ++col)</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">         571 :     this-&gt;at_unsafe(row, row) = other.at_unsafe(row, row);</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">        1111 :     for (sint32 col = row + 1; col &lt; Size_; ++col)</span></span>
 <span id="L31"><span class="lineNum">      31</span>              :     {</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">         516 :       const sint32 rowIdx = IsLower_ ? col : row;</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">         516 :       const sint32 colIdx = IsLower_ ? row : col;</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">         540 :       const sint32 rowIdx = IsLower_ ? col : row;</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">         540 :       const sint32 colIdx = IsLower_ ? row : col;</span></span>
 <span id="L34"><span class="lineNum">      34</span>              : </span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">         516 :       this-&gt;at_unsafe(rowIdx, colIdx) = other.at_unsafe(rowIdx, colIdx);</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">         540 :       this-&gt;at_unsafe(rowIdx, colIdx) = other.at_unsafe(rowIdx, colIdx);</span></span>
 <span id="L36"><span class="lineNum">      36</span>              :     }</span>
 <span id="L37"><span class="lineNum">      37</span>              :   }</span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">         203 : }</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">         211 : }</span></span>
 <span id="L39"><span class="lineNum">      39</span>              : </span>
 <span id="L40"><span class="lineNum">      40</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">         332 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::FromList(</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">         340 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::FromList(</span></span>
 <span id="L42"><span class="lineNum">      42</span>              :     const std::initializer_list&lt;std::initializer_list&lt;ValueType_&gt;&gt;&amp; list) noexcept -&gt; tl::expected&lt;TriangularMatrix, Errors&gt;</span>
 <span id="L43"><span class="lineNum">      43</span>              : {</span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">         332 :   const auto square = BaseSquareMatrix::FromList(list);</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         332 :   if (!square)</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">         340 :   const auto square = BaseSquareMatrix::FromList(list);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         340 :   if (!square)</span></span>
 <span id="L46"><span class="lineNum">      46</span>              :   {</span>
 <span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         133 :     return tl::unexpected&lt;Errors&gt;{square.error()};</span></span>
 <span id="L48"><span class="lineNum">      48</span>              :   }</span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         199 :   return TriangularMatrix{square.value()};</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         332 : }</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         207 :   return TriangularMatrix{square.value()};</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         340 : }</span></span>
 <span id="L51"><span class="lineNum">      51</span>              : </span>
 <span id="L52"><span class="lineNum">      52</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
 <span id="L53"><span class="lineNum">      53</span>              : template &lt;sint32 SrcSize, sint32 SrcCount, sint32 SrcRowBeg, sint32 SrcColBeg, sint32 DstRowBeg, sint32 DstColBeg&gt;</span>
@@ -225,7 +225,7 @@
 <span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">           1 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::operator*(</span></span>
 <span id="L156"><span class="lineNum">     156</span>              :     const TriangularMatrix&lt;ValueType_, Size_, !IsLower_, IsRowMajor_&gt;&amp; mat) const -&gt; BaseSquareMatrix</span>
 <span id="L157"><span class="lineNum">     157</span>              : {</span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">           1 :   BaseSquareMatrix other{mat};</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">           1 :   BaseSquareMatrix const&amp; other{mat};</span></span>
 <span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">           1 :   return BaseSquareMatrix{this-&gt;operator*(other)};</span></span>
 <span id="L160"><span class="lineNum">     160</span>              : }</span>
 <span id="L161"><span class="lineNum">     161</span>              : </span>
@@ -316,18 +316,18 @@
 <span id="L246"><span class="lineNum">     246</span>              : }</span>
 <span id="L247"><span class="lineNum">     247</span>              : </span>
 <span id="L248"><span class="lineNum">     248</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
-<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">       48135 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::at_unsafe(sint32 row,</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">       48156 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::at_unsafe(sint32 row,</span></span>
 <span id="L250"><span class="lineNum">     250</span>              :                                                                                   sint32 col) const noexcept -&gt; ValueType_</span>
 <span id="L251"><span class="lineNum">     251</span>              : {</span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       48113 :   assert((IsLower_ ? row &gt;= col : row &lt;= col) &amp;&amp; &quot;accessing off-triangular elements&quot;);</span></span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       48132 :   return BaseSquareMatrix::at_unsafe(row, col);</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       48134 :   assert((IsLower_ ? row &gt;= col : row &lt;= col) &amp;&amp; &quot;accessing off-triangular elements&quot;);</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       48153 :   return BaseSquareMatrix::at_unsafe(row, col);</span></span>
 <span id="L254"><span class="lineNum">     254</span>              : }</span>
 <span id="L255"><span class="lineNum">     255</span>              : </span>
 <span id="L256"><span class="lineNum">     256</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
-<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       31741 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::at_unsafe(sint32 row, sint32 col) noexcept -&gt; ValueType_&amp;</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       31789 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::at_unsafe(sint32 row, sint32 col) noexcept -&gt; ValueType_&amp;</span></span>
 <span id="L258"><span class="lineNum">     258</span>              : {</span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       31245 :   assert((IsLower_ ? row &gt;= col : row &lt;= col) &amp;&amp; &quot;accessing off-triangular elements&quot;);</span></span>
-<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       31741 :   return BaseSquareMatrix::at_unsafe(row, col);</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       31293 :   assert((IsLower_ ? row &gt;= col : row &lt;= col) &amp;&amp; &quot;accessing off-triangular elements&quot;);</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       31789 :   return BaseSquareMatrix::at_unsafe(row, col);</span></span>
 <span id="L261"><span class="lineNum">     261</span>              : }</span>
 <span id="L262"><span class="lineNum">     262</span>              : </span>
 <span id="L263"><span class="lineNum">     263</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
@@ -352,29 +352,29 @@
 <span id="L282"><span class="lineNum">     282</span>              :   // unlike decomposeLLT/decomposeUDUT's factors). Preserve sign so a legitimate negative pivot</span>
 <span id="L283"><span class="lineNum">     283</span>              :   // (R's diagonal can be either sign) is left untouched; only a genuine zero is pushed to the</span>
 <span id="L284"><span class="lineNum">     284</span>              :   // epsilon boundary, mirroring decomposeUDUT's pivot clamp.</span>
-<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">         546 :   constexpr ValueType_ epsilon = std::numeric_limits&lt;ValueType_&gt;::epsilon();</span></span>
-<span id="L286"><span class="lineNum">     286</span>              : </span>
-<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">         546 :   Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt; x{};</span></span>
-<span id="L288"><span class="lineNum">     288</span>              :   if constexpr (IsLower_)</span>
-<span id="L289"><span class="lineNum">     289</span>              :   {</span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">         248 :     for (auto k = 0; k &lt; Cols_; ++k)</span></span>
-<span id="L291"><span class="lineNum">     291</span>              :     {</span>
-<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">         993 :       for (auto row = 0; row &lt; Size_; ++row)</span></span>
-<span id="L293"><span class="lineNum">     293</span>              :       {</span>
-<span id="L294"><span class="lineNum">     294</span>              :         ValueType_ sum{};</span>
-<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">        2224 :         for (auto col = 0; col &lt; row; ++col)</span></span>
-<span id="L296"><span class="lineNum">     296</span>              :         {</span>
-<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">        1422 :           sum += this-&gt;at_unsafe(row, col) * x.at_unsafe(col, k);</span></span>
-<span id="L298"><span class="lineNum">     298</span>              :         }</span>
-<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">         802 :         const ValueType_ diag     = this-&gt;at_unsafe(row, row);</span></span>
-<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">         802 :         const ValueType_ diagSafe = (std::abs(diag) &gt; epsilon) ? diag : std::copysign(epsilon, diag);</span></span>
-<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">         802 :         x.at_unsafe(row, k)       = (b.at_unsafe(row, k) - sum) / diagSafe;</span></span>
-<span id="L302"><span class="lineNum">     302</span>              :       }</span>
-<span id="L303"><span class="lineNum">     303</span>              :     }</span>
-<span id="L304"><span class="lineNum">     304</span>              :   }</span>
-<span id="L305"><span class="lineNum">     305</span>              :   else</span>
-<span id="L306"><span class="lineNum">     306</span>              :   {</span>
-<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">        1946 :     for (auto k = 0; k &lt; Cols_; ++k)</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        6307 :   const auto safePivot = [](const ValueType_ diag) -&gt; ValueType_ {</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">        6307 :     constexpr ValueType_ epsilon = std::numeric_limits&lt;ValueType_&gt;::epsilon();</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">        6307 :     return (std::abs(diag) &gt; epsilon) ? diag : std::copysign(epsilon, diag);</span></span>
+<span id="L288"><span class="lineNum">     288</span>              :   };</span>
+<span id="L289"><span class="lineNum">     289</span>              : </span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">         546 :   Matrix&lt;ValueType_, Size_, Cols_, IsRowMajor2_&gt; x{};</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">        2194 :   for (auto k = 0; k &lt; Cols_; ++k)</span></span>
+<span id="L292"><span class="lineNum">     292</span>              :   {</span>
+<span id="L293"><span class="lineNum">     293</span>              :     if constexpr (IsLower_)</span>
+<span id="L294"><span class="lineNum">     294</span>              :     {</span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">         993 :       for (auto row = 0; row &lt; Size_; ++row)</span></span>
+<span id="L296"><span class="lineNum">     296</span>              :       {</span>
+<span id="L297"><span class="lineNum">     297</span>              :         ValueType_ sum{};</span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">        2224 :         for (auto col = 0; col &lt; row; ++col)</span></span>
+<span id="L299"><span class="lineNum">     299</span>              :         {</span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">        1422 :           sum += this-&gt;at_unsafe(row, col) * x.at_unsafe(col, k);</span></span>
+<span id="L301"><span class="lineNum">     301</span>              :         }</span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">         802 :         const ValueType_ diag     = this-&gt;at_unsafe(row, row);</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">         802 :         const ValueType_ diagSafe = safePivot(diag);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">         802 :         x.at_unsafe(row, k)       = (b.at_unsafe(row, k) - sum) / diagSafe;</span></span>
+<span id="L305"><span class="lineNum">     305</span>              :       }</span>
+<span id="L306"><span class="lineNum">     306</span>              :     }</span>
+<span id="L307"><span class="lineNum">     307</span>              :     else</span>
 <span id="L308"><span class="lineNum">     308</span>              :     {</span>
 <span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">        6962 :       for (auto row = Size_ - 1; row &gt;= 0; --row)</span></span>
 <span id="L310"><span class="lineNum">     310</span>              :       {</span>
@@ -384,7 +384,7 @@
 <span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">        8995 :           sum += this-&gt;at_unsafe(row, col) * x.at_unsafe(col, k);</span></span>
 <span id="L315"><span class="lineNum">     315</span>              :         }</span>
 <span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">        5505 :         const ValueType_ diag     = this-&gt;at_unsafe(row, row);</span></span>
-<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">        5505 :         const ValueType_ diagSafe = (std::abs(diag) &gt; epsilon) ? diag : std::copysign(epsilon, diag);</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">        5505 :         const ValueType_ diagSafe = safePivot(diag);</span></span>
 <span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">        5505 :         x.at_unsafe(row, k)       = (b.at_unsafe(row, k) - sum) / diagSafe;</span></span>
 <span id="L319"><span class="lineNum">     319</span>              :       }</span>
 <span id="L320"><span class="lineNum">     320</span>              :     }</span>
@@ -399,14 +399,14 @@
 <span id="L329"><span class="lineNum">     329</span>              : }</span>
 <span id="L330"><span class="lineNum">     330</span>              : </span>
 <span id="L331"><span class="lineNum">     331</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>
-<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">          10 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::determinant() const -&gt; ValueType_</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">          17 : inline auto TriangularMatrix&lt;ValueType_, Size_, IsLower_, IsRowMajor_&gt;::determinant() const -&gt; ValueType_</span></span>
 <span id="L333"><span class="lineNum">     333</span>              : {</span>
-<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">          10 :   ValueType_ det{1.0};</span></span>
-<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">          38 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">          17 :   ValueType_ det{1.0};</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">          66 :   for (auto idx = 0; idx &lt; Size_; ++idx)</span></span>
 <span id="L336"><span class="lineNum">     336</span>              :   {</span>
-<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">          28 :     det *= this-&gt;at_unsafe(idx, idx);</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">          49 :     det *= this-&gt;at_unsafe(idx, idx);</span></span>
 <span id="L338"><span class="lineNum">     338</span>              :   }</span>
-<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">          10 :   return det;</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">          17 :   return det;</span></span>
 <span id="L340"><span class="lineNum">     340</span>              : }</span>
 <span id="L341"><span class="lineNum">     341</span>              : </span>
 <span id="L342"><span class="lineNum">     342</span>              : template &lt;typename ValueType_, sint32 Size_, bool IsLower_, bool IsRowMajor_&gt;</span>

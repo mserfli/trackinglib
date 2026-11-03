@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-11-02 21:59:17</td>
+            <td class="headerValue">2026-11-03 15:13:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">82.6&nbsp;%</td>
@@ -138,7 +138,7 @@
 <span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">         166 :   CovarianceMatrixFactored(CovarianceMatrixFactored&amp;&amp;) noexcept                    = default;</span></span>
 <span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">           9 :   auto operator=(const CovarianceMatrixFactored&amp;) -&gt; CovarianceMatrixFactored&amp;     = default;</span></span>
 <span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">          52 :   auto operator=(CovarianceMatrixFactored&amp;&amp;) noexcept -&gt; CovarianceMatrixFactored&amp; = default;</span></span>
-<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">         502 :   virtual ~CovarianceMatrixFactored()                                              = default;</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">         501 :   virtual ~CovarianceMatrixFactored()                                              = default;</span></span>
 <span id="L72"><span class="lineNum">      72</span>              : </span>
 <span id="L73"><span class="lineNum">      73</span>              :   /// \brief Creates a CovarianceMatrixFactored from separate U and D initializer lists</span>
 <span id="L74"><span class="lineNum">      74</span>              :   ///</span>
@@ -191,7 +191,7 @@
 <span id="L121"><span class="lineNum">     121</span>              : </span>
 <span id="L122"><span class="lineNum">     122</span>              :   /// \brief Access operator to the triangular matrix U</span>
 <span id="L123"><span class="lineNum">     123</span>              :   /// \return const reference to the internal triangular matrix U</span>
-<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">          30 :   [[nodiscard]] auto U() const -&gt; const TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; { return _u; }</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">          17 :   [[nodiscard]] auto U() const -&gt; const TriangularMatrix&lt;ValueType_, Size_, false, true&gt;&amp; { return _u; }</span></span>
 <span id="L125"><span class="lineNum">     125</span>              : </span>
 <span id="L126"><span class="lineNum">     126</span>              :   /// \brief Access operator to the diagonal matrix D</span>
 <span id="L127"><span class="lineNum">     127</span>              :   /// \return const reference to the internal diagonal matrix D</span>
@@ -226,7 +226,7 @@
 <span id="L156"><span class="lineNum">     156</span>              :   ///</span>
 <span id="L157"><span class="lineNum">     157</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
 <span id="L158"><span class="lineNum">     158</span>              :   /// \note More stable than full matrix inversion for ill-conditioned covariances</span>
-<span id="L159"><span class="lineNum">     159</span>              :   auto inverse() const -&gt; tl::expected&lt;CovarianceMatrixFactored, Errors&gt;;</span>
+<span id="L159"><span class="lineNum">     159</span>              :   [[nodiscard]] auto inverse() const -&gt; tl::expected&lt;CovarianceMatrixFactored, Errors&gt;;</span>
 <span id="L160"><span class="lineNum">     160</span>              : </span>
 <span id="L161"><span class="lineNum">     161</span>              :   /// \brief Compute inverse as full covariance matrix</span>
 <span id="L162"><span class="lineNum">     162</span>              :   ///</span>
@@ -236,7 +236,7 @@
 <span id="L166"><span class="lineNum">     166</span>              :   /// \return Full covariance matrix containing the inverse</span>
 <span id="L167"><span class="lineNum">     167</span>              :   ///</span>
 <span id="L168"><span class="lineNum">     168</span>              :   /// \note Time complexity: O(n^3) where n = Size_</span>
-<span id="L169"><span class="lineNum">     169</span>              :   auto composed_inverse() const -&gt; tl::expected&lt;compose_type, Errors&gt;;</span>
+<span id="L169"><span class="lineNum">     169</span>              :   [[nodiscard]] auto composed_inverse() const -&gt; tl::expected&lt;compose_type, Errors&gt;;</span>
 <span id="L170"><span class="lineNum">     170</span>              : </span>
 <span id="L171"><span class="lineNum">     171</span>              :   /// \brief Compute A*P*A^T in-place (factored covariance propagation)</span>
 <span id="L172"><span class="lineNum">     172</span>              :   ///</span>
@@ -264,7 +264,7 @@
 <span id="L194"><span class="lineNum">     194</span>              :   /// \note Used for coordinate transformations in factored Kalman filters</span>
 <span id="L195"><span class="lineNum">     195</span>              :   /// \note Maintains numerical stability of the UDU representation</span>
 <span id="L196"><span class="lineNum">     196</span>              :   template &lt;bool IsRowMajor_&gt;</span>
-<span id="L197"><span class="lineNum">     197</span>              :   auto apaT(const SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFactored;</span>
+<span id="L197"><span class="lineNum">     197</span>              :   [[nodiscard]] auto apaT(const SquareMatrix&lt;ValueType_, Size_, IsRowMajor_&gt;&amp; A) const -&gt; CovarianceMatrixFactored;</span>
 <span id="L198"><span class="lineNum">     198</span>              : </span>
 <span id="L199"><span class="lineNum">     199</span>              :   /// \brief Thornton update: Φ*P*Φ^T + G*Q*G^T (Kalman prediction)</span>
 <span id="L200"><span class="lineNum">     200</span>              :   ///</span>
@@ -374,7 +374,7 @@
 <span id="L304"><span class="lineNum">     304</span>              :   // clang-format on</span>
 <span id="L305"><span class="lineNum">     305</span>              : </span>
 <span id="L306"><span class="lineNum">     306</span>              :   TriangularMatrix&lt;ValueType_, Size_, false, true&gt; _u{};</span>
-<span id="L307"><span class="lineNum">     307</span>              :   DiagonalMatrix&lt;ValueType_, Size_&gt;                _d{};</span>
+<span id="L307"><span class="lineNum">     307</span>              :   DiagonalMatrix&lt;ValueType_, Size_&gt;                _d;</span>
 <span id="L308"><span class="lineNum">     308</span>              : };</span>
 <span id="L309"><span class="lineNum">     309</span>              : </span>
 <span id="L310"><span class="lineNum">     310</span>              : } // namespace math</span>

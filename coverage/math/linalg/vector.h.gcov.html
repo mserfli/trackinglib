@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-11-02 21:59:17</td>
+            <td class="headerValue">2026-11-03 15:13:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -100,7 +100,7 @@
 <span id="L30"><span class="lineNum">      30</span>              : ///</span>
 <span id="L31"><span class="lineNum">      31</span>              : /// \see Matrix for the base class functionality</span>
 <span id="L32"><span class="lineNum">      32</span>              : template &lt;typename ValueType_, sint32 Size_&gt;</span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">       14853 : class Vector: public Matrix&lt;ValueType_, Size_, 1, true&gt;</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">       14885 : class Vector: public Matrix&lt;ValueType_, Size_, 1, true&gt;</span></span>
 <span id="L34"><span class="lineNum">      34</span>              : {</span>
 <span id="L35"><span class="lineNum">      35</span>              : public:</span>
 <span id="L36"><span class="lineNum">      36</span>              :   using BaseMatrix = Matrix&lt;ValueType_, Size_, 1, true&gt;; ///&lt; type of the parent class</span>
@@ -207,53 +207,56 @@
 <span id="L137"><span class="lineNum">     137</span>              :   /// \return The L2 norm value</span>
 <span id="L138"><span class="lineNum">     138</span>              :   /// \note Only available for floating-point ValueType_</span>
 <span id="L139"><span class="lineNum">     139</span>              :   /// \note Mathematically: \f$ \|\mathbf{v}\|_2 = \sqrt{\sum_{i=0}^{n-1} v_i^2} \f$</span>
-<span id="L140"><span class="lineNum">     140</span>              :   template &lt;typename U = ValueType_, std::enable_if_t&lt;std::is_floating_point&lt;U&gt;::value, int&gt; = 0&gt;</span>
-<span id="L141"><span class="lineNum">     141</span>              :   [[nodiscard]] auto norm() const -&gt; ValueType_;</span>
-<span id="L142"><span class="lineNum">     142</span>              : </span>
-<span id="L143"><span class="lineNum">     143</span>              :   /// \brief Normalize this vector in-place to unit length</span>
-<span id="L144"><span class="lineNum">     144</span>              :   /// \note Only available for floating-point ValueType_</span>
-<span id="L145"><span class="lineNum">     145</span>              :   /// \note Modifies this vector in-place</span>
-<span id="L146"><span class="lineNum">     146</span>              :   /// \warning Undefined behavior if the vector norm is zero</span>
-<span id="L147"><span class="lineNum">     147</span>              :   /// \note Mathematically: \f$ \mathbf{v} \leftarrow \frac{\mathbf{v}}{\|\mathbf{v}\|_2} \f$</span>
-<span id="L148"><span class="lineNum">     148</span>              :   template &lt;typename U = ValueType_, std::enable_if_t&lt;std::is_floating_point&lt;U&gt;::value, int&gt; = 0&gt;</span>
-<span id="L149"><span class="lineNum">     149</span>              :   void normalize();</span>
-<span id="L150"><span class="lineNum">     150</span>              : </span>
-<span id="L151"><span class="lineNum">     151</span>              :   /// \brief Create a new normalized vector of unit length</span>
-<span id="L152"><span class="lineNum">     152</span>              :   /// \return A new vector normalized to unit length</span>
-<span id="L153"><span class="lineNum">     153</span>              :   /// \note Only available for floating-point ValueType_</span>
-<span id="L154"><span class="lineNum">     154</span>              :   /// \note Returns a new normalized vector, leaving this vector unchanged</span>
-<span id="L155"><span class="lineNum">     155</span>              :   /// \warning Undefined behavior if the vector norm is zero</span>
-<span id="L156"><span class="lineNum">     156</span>              :   /// \note Mathematically: \f$ \mathbf{w} = \frac{\mathbf{v}}{\|\mathbf{v}\|_2} \f$</span>
-<span id="L157"><span class="lineNum">     157</span>              :   template &lt;typename U = ValueType_, std::enable_if_t&lt;std::is_floating_point&lt;U&gt;::value, int&gt; = 0&gt;</span>
-<span id="L158"><span class="lineNum">     158</span>              :   [[nodiscard]] auto normalize() const -&gt; Vector;</span>
-<span id="L159"><span class="lineNum">     159</span>              :   // &lt;---</span>
-<span id="L160"><span class="lineNum">     160</span>              : </span>
-<span id="L161"><span class="lineNum">     161</span>              :   //////////////////////////////////////////////////</span>
-<span id="L162"><span class="lineNum">     162</span>              :   // unsafe access operators  ---&gt;</span>
-<span id="L163"><span class="lineNum">     163</span>              :   /// \brief Element read-only access to a scalar vector value (unchecked)</span>
-<span id="L164"><span class="lineNum">     164</span>              :   /// \param[in] idx Row index of the element (must be valid)</span>
-<span id="L165"><span class="lineNum">     165</span>              :   /// \return The scalar vector value</span>
-<span id="L166"><span class="lineNum">     166</span>              :   /// \note No bounds checking performed - use with caution</span>
-<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       38001 :   [[nodiscard]] auto at_unsafe(sint32 idx) const noexcept -&gt; ValueType_ { return BaseMatrix::at_unsafe(idx, 0); }</span></span>
-<span id="L168"><span class="lineNum">     168</span>              : </span>
-<span id="L169"><span class="lineNum">     169</span>              :   /// \brief Element access to a scalar vector value (unchecked)</span>
-<span id="L170"><span class="lineNum">     170</span>              :   /// \param[in] idx Row index of the element (must be valid)</span>
-<span id="L171"><span class="lineNum">     171</span>              :   /// \return Reference to the scalar vector value</span>
-<span id="L172"><span class="lineNum">     172</span>              :   /// \note No bounds checking performed - use with caution</span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       31893 :   [[nodiscard]] auto at_unsafe(sint32 idx) noexcept -&gt; ValueType_&amp; { return BaseMatrix::at_unsafe(idx, 0); }</span></span>
-<span id="L174"><span class="lineNum">     174</span>              :   // &lt;---</span>
-<span id="L175"><span class="lineNum">     175</span>              : </span>
-<span id="L176"><span class="lineNum">     176</span>              : protected:</span>
-<span id="L177"><span class="lineNum">     177</span>              :   using BaseMatrix::Ones;</span>
-<span id="L178"><span class="lineNum">     178</span>              :   using BaseMatrix::Zeros;</span>
-<span id="L179"><span class="lineNum">     179</span>              :   using BaseMatrix::operator();</span>
-<span id="L180"><span class="lineNum">     180</span>              :   using BaseMatrix::at_unsafe;</span>
-<span id="L181"><span class="lineNum">     181</span>              : };</span>
-<span id="L182"><span class="lineNum">     182</span>              : </span>
-<span id="L183"><span class="lineNum">     183</span>              : } // namespace math</span>
-<span id="L184"><span class="lineNum">     184</span>              : } // namespace tracking</span>
+<span id="L140"><span class="lineNum">     140</span>              :   // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.</span>
+<span id="L141"><span class="lineNum">     141</span>              :   template &lt;typename U = ValueType_, std::enable_if_t&lt;std::is_floating_point_v&lt;U&gt;, int&gt; = 0&gt;</span>
+<span id="L142"><span class="lineNum">     142</span>              :   [[nodiscard]] auto norm() const -&gt; ValueType_;</span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span>              :   /// \brief Normalize this vector in-place to unit length</span>
+<span id="L145"><span class="lineNum">     145</span>              :   /// \note Only available for floating-point ValueType_</span>
+<span id="L146"><span class="lineNum">     146</span>              :   /// \note Modifies this vector in-place</span>
+<span id="L147"><span class="lineNum">     147</span>              :   /// \warning Undefined behavior if the vector norm is zero</span>
+<span id="L148"><span class="lineNum">     148</span>              :   /// \note Mathematically: \f$ \mathbf{v} \leftarrow \frac{\mathbf{v}}{\|\mathbf{v}\|_2} \f$</span>
+<span id="L149"><span class="lineNum">     149</span>              :   // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.</span>
+<span id="L150"><span class="lineNum">     150</span>              :   template &lt;typename U = ValueType_, std::enable_if_t&lt;std::is_floating_point_v&lt;U&gt;, int&gt; = 0&gt;</span>
+<span id="L151"><span class="lineNum">     151</span>              :   void normalize();</span>
+<span id="L152"><span class="lineNum">     152</span>              : </span>
+<span id="L153"><span class="lineNum">     153</span>              :   /// \brief Create a new normalized vector of unit length</span>
+<span id="L154"><span class="lineNum">     154</span>              :   /// \return A new vector normalized to unit length</span>
+<span id="L155"><span class="lineNum">     155</span>              :   /// \note Only available for floating-point ValueType_</span>
+<span id="L156"><span class="lineNum">     156</span>              :   /// \note Returns a new normalized vector, leaving this vector unchanged</span>
+<span id="L157"><span class="lineNum">     157</span>              :   /// \warning Undefined behavior if the vector norm is zero</span>
+<span id="L158"><span class="lineNum">     158</span>              :   /// \note Mathematically: \f$ \mathbf{w} = \frac{\mathbf{v}}{\|\mathbf{v}\|_2} \f$</span>
+<span id="L159"><span class="lineNum">     159</span>              :   // NOLINTNEXTLINE(modernize-use-constraints) -- C++17 support requires enable_if.</span>
+<span id="L160"><span class="lineNum">     160</span>              :   template &lt;typename U = ValueType_, std::enable_if_t&lt;std::is_floating_point_v&lt;U&gt;, int&gt; = 0&gt;</span>
+<span id="L161"><span class="lineNum">     161</span>              :   [[nodiscard]] auto normalize() const -&gt; Vector;</span>
+<span id="L162"><span class="lineNum">     162</span>              :   // &lt;---</span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span>              :   //////////////////////////////////////////////////</span>
+<span id="L165"><span class="lineNum">     165</span>              :   // unsafe access operators  ---&gt;</span>
+<span id="L166"><span class="lineNum">     166</span>              :   /// \brief Element read-only access to a scalar vector value (unchecked)</span>
+<span id="L167"><span class="lineNum">     167</span>              :   /// \param[in] idx Row index of the element (must be valid)</span>
+<span id="L168"><span class="lineNum">     168</span>              :   /// \return The scalar vector value</span>
+<span id="L169"><span class="lineNum">     169</span>              :   /// \note No bounds checking performed - use with caution</span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">       38072 :   [[nodiscard]] auto at_unsafe(sint32 idx) const noexcept -&gt; ValueType_ { return BaseMatrix::at_unsafe(idx, 0); }</span></span>
+<span id="L171"><span class="lineNum">     171</span>              : </span>
+<span id="L172"><span class="lineNum">     172</span>              :   /// \brief Element access to a scalar vector value (unchecked)</span>
+<span id="L173"><span class="lineNum">     173</span>              :   /// \param[in] idx Row index of the element (must be valid)</span>
+<span id="L174"><span class="lineNum">     174</span>              :   /// \return Reference to the scalar vector value</span>
+<span id="L175"><span class="lineNum">     175</span>              :   /// \note No bounds checking performed - use with caution</span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       31914 :   [[nodiscard]] auto at_unsafe(sint32 idx) noexcept -&gt; ValueType_&amp; { return BaseMatrix::at_unsafe(idx, 0); }</span></span>
+<span id="L177"><span class="lineNum">     177</span>              :   // &lt;---</span>
+<span id="L178"><span class="lineNum">     178</span>              : </span>
+<span id="L179"><span class="lineNum">     179</span>              : protected:</span>
+<span id="L180"><span class="lineNum">     180</span>              :   using BaseMatrix::Ones;</span>
+<span id="L181"><span class="lineNum">     181</span>              :   using BaseMatrix::Zeros;</span>
+<span id="L182"><span class="lineNum">     182</span>              :   using BaseMatrix::operator();</span>
+<span id="L183"><span class="lineNum">     183</span>              :   using BaseMatrix::at_unsafe;</span>
+<span id="L184"><span class="lineNum">     184</span>              : };</span>
 <span id="L185"><span class="lineNum">     185</span>              : </span>
-<span id="L186"><span class="lineNum">     186</span>              : #endif // CE10BDD8_6874_4771_89BA_D153438C3E01</span>
+<span id="L186"><span class="lineNum">     186</span>              : } // namespace math</span>
+<span id="L187"><span class="lineNum">     187</span>              : } // namespace tracking</span>
+<span id="L188"><span class="lineNum">     188</span>              : </span>
+<span id="L189"><span class="lineNum">     189</span>              : #endif // CE10BDD8_6874_4771_89BA_D153438C3E01</span>
         </pre>
               </td>
             </tr>
