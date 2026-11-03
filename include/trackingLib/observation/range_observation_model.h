@@ -57,7 +57,8 @@ public:
   RangeObservationModel(RangeObservationModel&&) noexcept(std::is_nothrow_move_constructible<MeasurementCov>::value) = default;
   auto operator=(const RangeObservationModel&) -> RangeObservationModel&                                             = default;
   auto operator=(RangeObservationModel&&) noexcept -> RangeObservationModel&                                         = default;
-  ~RangeObservationModel() TEST_REMOVE_FINAL override                                                                = default;
+  // NOLINTNEXTLINE(modernize-use-override) -- TEST_BUILD removes final; override is required in that configuration.
+  ~RangeObservationModel() TEST_REMOVE_FINAL override = default;
 
   /// \brief Construct a new RangeObservationModel after checking covariance positive definiteness
   ///

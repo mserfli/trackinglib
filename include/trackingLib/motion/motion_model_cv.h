@@ -71,7 +71,8 @@ public:
   MotionModelCV(MotionModelCV&&) noexcept(std::is_nothrow_move_constructible<StateCov>::value) = default;
   auto operator=(const MotionModelCV&) -> MotionModelCV&                                       = default;
   auto operator=(MotionModelCV&&) noexcept -> MotionModelCV&                                   = default;
-  ~MotionModelCV() TEST_REMOVE_FINAL override                                                  = default;
+  // NOLINTNEXTLINE(modernize-use-override) -- TEST_BUILD removes final; override is required in that configuration.
+  ~MotionModelCV() TEST_REMOVE_FINAL override = default;
 
   /// \brief Construct a new CV after checking covariance positive definiteness
   ///

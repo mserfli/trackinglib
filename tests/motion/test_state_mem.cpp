@@ -1,3 +1,6 @@
+#include "base/atomic_types.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "motion/state_mem.h"
 #include "trackingLib/motion/state_mem.hpp" // IWYU pragma: keep
 
 

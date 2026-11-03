@@ -1,4 +1,13 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
+#include "env/ego_motion.h"
+#include "filter/information_filter.h"
+#include "filter/kalman_filter.h"
+#include "filter/update_mode.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "math/linalg/errors.h"
+#include "motion/motion_model_cv.h"
+#include <tl/expected.hpp>
 
 #include "trackingLib/env/ego_motion.hpp"         // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep

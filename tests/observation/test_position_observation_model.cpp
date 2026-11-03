@@ -1,4 +1,8 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
+#include "env/ego_motion.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "math/linalg/errors.h"
 
 #include "trackingLib/env/ego_motion.hpp"       // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_ca.h" // IWYU pragma: keep  (StateDefCA)

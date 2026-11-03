@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
 
 #include "trackingLib/math/linalg/matrix.h"
 #include "trackingLib/observation/sensor_mounting_pose.h"

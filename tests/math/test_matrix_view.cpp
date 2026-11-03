@@ -1,8 +1,13 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"
-#include "trackingLib/math/linalg/matrix_view.hpp" // IWYU pragma: keep
+#include "base/atomic_types.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/matrix_view.h"
+#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/matrix_view.hpp"                    // IWYU pragma: keep
+#include <type_traits>
 
-using namespace tracking::math;
+using tracking::math::Matrix;
+using tracking::math::MatrixView;
 
 TEST(MatrixView, ctor_view) // NOLINT
 {
@@ -49,7 +54,7 @@ TEST(MatrixView, add_views) // NOLINT
   auto res = view1 + view2;
 
   // res is Matrix<sint32, 3, 3>
-  static_assert(std::is_same<decltype(res), Matrix<sint32, 3, 3, true>>::value);
+  static_assert(std::is_same_v<decltype(res), Matrix<sint32, 3, 3, true>>);
 
   // view1: {{1, 2}, {4, 5}}
   // view2: {{5, 6}, {8, 9}}

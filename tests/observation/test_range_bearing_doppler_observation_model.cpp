@@ -1,4 +1,8 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
+#include "env/ego_motion.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include <cstdint>
 
 #include "trackingLib/env/ego_motion.hpp"       // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.h" // IWYU pragma: keep  (StateDefCV)
@@ -32,7 +36,7 @@ namespace
 /// \brief Position-only StateDef exercising the has_velocity_v == false branch
 struct StateDefPosOnly
 {
-  enum
+  enum : std::uint8_t
   {
     X = 0,
     Y,

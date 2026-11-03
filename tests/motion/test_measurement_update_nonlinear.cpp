@@ -1,4 +1,15 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
+#include "env/ego_motion.h"
+#include "filter/information_filter.h"
+#include "filter/kalman_filter.h"
+#include "filter/update_mode.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "math/linalg/errors.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/square_matrix.h"
+#include "motion/motion_model_cv.h"
+#include <tl/expected.hpp>
 
 #include "trackingLib/env/ego_motion.hpp"         // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
@@ -94,7 +105,7 @@ TEST(MeasurementUpdateNonlinear, update_KalmanFullRangeBearing__MatchesManualEkf
   auto       mm               = mmFactoryResult.value();
   const auto obsFactoryResult = makeRangeBearingObs<RbFull>();
   ASSERT_TRUE(obsFactoryResult.has_value());
-  const auto obs = obsFactoryResult.value();
+  const auto& obs = obsFactoryResult.value();
 
   // manual EKF reference composed with plain matrix operations at the prior state
   const auto x0 = mm._vec;
@@ -141,7 +152,7 @@ TEST(MeasurementUpdateNonlinear, update_InformationVsKalman_RangeBearing__SamePo
   auto       mmInfo           = mmInfoFactoryResult.value();
   const auto obsFactoryResult = makeRangeBearingObs<RbFull>();
   ASSERT_TRUE(obsFactoryResult.has_value());
-  const auto obs = obsFactoryResult.value();
+  const auto& obs = obsFactoryResult.value();
 
   // transform the information model into information space: Y = inv(P), y = Y*x
   mmInfo._cov = mmInfo._cov.inverse().value();
@@ -169,10 +180,10 @@ TEST(MeasurementUpdateNonlinear, update_KalmanFactoredVsFull_RangeBearing__SameP
   auto       mmFact               = mmFactFactoryResult.value();
   const auto obsFullFactoryResult = makeRangeBearingObs<RbFull>();
   ASSERT_TRUE(obsFullFactoryResult.has_value());
-  const auto obsFull              = obsFullFactoryResult.value();
-  const auto obsFactFactoryResult = makeRangeBearingObs<RbFact>();
+  const auto& obsFull              = obsFullFactoryResult.value();
+  const auto  obsFactFactoryResult = makeRangeBearingObs<RbFact>();
   ASSERT_TRUE(obsFactFactoryResult.has_value());
-  const auto obsFact = obsFactFactoryResult.value();
+  const auto& obsFact = obsFactFactoryResult.value();
 
   const auto egoMotionFull = makeNoEgoMotion<FullPolicy>();
   const auto egoMotionFact = makeNoEgoMotion<FactoredPolicy>();
@@ -192,7 +203,7 @@ TEST(MeasurementUpdateNonlinear, update_InformationFactoredVsKalmanFactored_Rang
   auto       mmInfo           = mmInfoFactoryResult.value();
   const auto obsFactoryResult = makeRangeBearingObs<RbFact>();
   ASSERT_TRUE(obsFactoryResult.has_value());
-  const auto obs = obsFactoryResult.value();
+  const auto& obs = obsFactoryResult.value();
 
   // transform the information model into information space: Y = inv(P), y = Y*x
   mmInfo._cov = mmInfo._cov.inverse().value();
@@ -219,7 +230,7 @@ TEST(MeasurementUpdateNonlinear, update_KalmanFullSequentialVsBlock_RangeBearing
   auto       mmSequential     = mmSequentialFactoryResult.value();
   const auto obsFactoryResult = makeRangeBearingObs<RbFull>();
   ASSERT_TRUE(obsFactoryResult.has_value());
-  const auto       obs = obsFactoryResult.value();
+  const auto&      obs = obsFactoryResult.value();
   const KalmanFull filter{};
   const auto       egoMotion = makeNoEgoMotion<FullPolicy>();
 
@@ -280,10 +291,10 @@ TEST(MeasurementUpdateNonlinear, update_ComposedRangeBearingPlusPosition_Factore
   // clang-format off
   const auto rbFullFactoryResult = makeRangeBearingObs<RbFull>();
   ASSERT_TRUE(rbFullFactoryResult.has_value());
-  const auto rbFull = rbFullFactoryResult.value();
+  const auto& rbFull = rbFullFactoryResult.value();
   const auto rbFactFactoryResult = makeRangeBearingObs<RbFact>();
   ASSERT_TRUE(rbFactFactoryResult.has_value());
-  const auto rbFact = rbFactFactoryResult.value();
+  const auto& rbFact = rbFactFactoryResult.value();
   auto posFullResult = PosFull::FromLists({10.4, 5.2}, {{1.0, 0.0}, {0.0, 0.5}});
   ASSERT_TRUE(posFullResult.has_value());
   const auto posFull = posFullResult.value();
@@ -314,8 +325,8 @@ TEST(MeasurementUpdateNonlinear, update_ComposedRangeBearing_MatchesJointRangeBe
   auto       mmSequential       = mmSequentialFactoryResult.value();
   const auto jointFactoryResult = makeRangeBearingObs<RbFull>();
   ASSERT_TRUE(jointFactoryResult.has_value());
-  const auto joint       = jointFactoryResult.value();
-  auto       rangeResult = RangeFull::FromLists({11.3}, {{0.04}});
+  const auto& joint       = jointFactoryResult.value();
+  auto        rangeResult = RangeFull::FromLists({11.3}, {{0.04}});
   ASSERT_TRUE(rangeResult.has_value());
   const auto range         = rangeResult.value();
   auto       bearingResult = BearingFull::FromLists({0.50}, {{0.0025}});

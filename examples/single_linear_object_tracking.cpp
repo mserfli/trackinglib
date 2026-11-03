@@ -1,19 +1,25 @@
+#include "base/atomic_types.h"
 #include "checked_value.h"
 #include "math/linalg/covariance_matrix_policies.h"
+#include "motion/motion_model_cv.h"
 #include "trackingLib/env/ego_motion.hpp"                       // IWYU pragma: keep
 #include "trackingLib/filter/information_filter.hpp"            // IWYU pragma: keep
 #include "trackingLib/filter/kalman_filter.hpp"                 // IWYU pragma: keep
 #include "trackingLib/math/linalg/matrix_io.h"                  // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_cv.hpp"               // IWYU pragma: keep
 #include "trackingLib/observation/position_observation_model.h" // IWYU pragma: keep
+#include <string>
+#include <tuple>
 
 #include <fstream>
 #include <iostream>
 #include <random>
 
-using namespace tracking;
+namespace math        = tracking::math;
+namespace motion      = tracking::motion;
+namespace observation = tracking::observation;
 
-int main(int argc, char** argv)
+auto main(int argc, char** argv) -> int
 {
   // Optional structured CSV export (one row per step) for offline visualization; see examples/viz.
   // Console output above is unaffected. Path defaults so a plain `./single_linear_object_tracking`
@@ -38,8 +44,8 @@ int main(int argc, char** argv)
       observation::PositionObservationModel<math::FactoredCovarianceMatrixPolicy<float64>, motion::StateDefCV>;
 
   // Create an Filter instance
-  InformationFilterType informationFilter{};
-  KalmanFilterType      kalmanFilter{};
+  const InformationFilterType informationFilter{};
+  const KalmanFilterType      kalmanFilter{};
 
   // Initialize the object state: starting at x=30, y=10. The velocity is unknown at initialization —
   // there is no measurement providing velocity information — so it is set to 0 rather than a prior guess.
@@ -57,7 +63,7 @@ int main(int argc, char** argv)
 
   // Create ego motion with zero motion (ego vehicle is not moving)
   // This is the scenario where ego vehicle is stationary
-  EgoMotionType::InertialMotion motionParams{
+  const EgoMotionType::InertialMotion motionParams{
       .v  = static_cast<value_type>(0.0), // velocity
       .a  = static_cast<value_type>(0.0), // acceleration
       .w  = static_cast<value_type>(0.0), // yaw rate
@@ -66,7 +72,7 @@ int main(int argc, char** argv)
       .sw = static_cast<value_type>(1e-6)  // yaw rate uncertainty
   };
 
-  EgoMotionType::Geometry geometry{
+  const EgoMotionType::Geometry geometry{
       .width                  = static_cast<value_type>(2.0),
       .length                 = static_cast<value_type>(4.5),
       .height                 = static_cast<value_type>(1.5),
@@ -77,15 +83,15 @@ int main(int argc, char** argv)
   // clang-format on
 
   // Simulation parameters
-  const value_type dt       = static_cast<value_type>(0.1); // time step of 0.1 seconds
-  const sint32     numSteps = 40;                           // simulate 40 time steps (4 seconds total)
+  const auto   dt       = static_cast<value_type>(0.1); // time step of 0.1 seconds
+  const sint32 numSteps = 40;                           // simulate 40 time steps (4 seconds total)
 
   // Ground-truth object: a perfect constant-velocity trajectory the filter is trying to recover.
   // The measurements below are noisy samples of this trajectory.
-  value_type       gtX  = static_cast<value_type>(30.0);
-  value_type       gtY  = static_cast<value_type>(10.0);
-  const value_type gtVx = static_cast<value_type>(10.0);
-  const value_type gtVy = static_cast<value_type>(2.5);
+  auto       gtX  = static_cast<value_type>(30.0);
+  auto       gtY  = static_cast<value_type>(10.0);
+  const auto gtVx = static_cast<value_type>(10.0);
+  const auto gtVy = static_cast<value_type>(2.5);
 
   // Measurement noise: position sensor with a standard deviation of 1.0 m per axis (R = diag(1.0, 1.0)).
   // Each information-form update adds only H'*inv(R)*H = 1/sigma^2 of information, so together with the
@@ -93,7 +99,7 @@ int main(int argc, char** argv)
   // determinant() check below), the information matrix still needs a few measurements before it is
   // well-conditioned enough to invert — i.e. the InformationFilter bootstraps for a few steps and only
   // then switches to the KalmanFilter.
-  const value_type measStd = static_cast<value_type>(1.0);
+  const auto measStd = static_cast<value_type>(1.0);
   // clang-format off
   const auto R = checkedValue(PositionObservationType::MeasurementCovFromList({
     {measStd * measStd, static_cast<value_type>(0.0)},
@@ -105,23 +111,23 @@ int main(int argc, char** argv)
   std::mt19937                         rng{42U};
   std::normal_distribution<value_type> measNoise{static_cast<value_type>(0.0), measStd};
 
-  std::cout << "Single Object Tracking Example" << std::endl;
-  std::cout << "with combined Information and Kalman Filter usage" << std::endl;
-  std::cout << "=================================================" << std::endl;
-  std::cout << "Scenario: Diagonal crossing object (x=30,y=10, vx=10, vy=2.5)" << std::endl;
-  std::cout << "Ego vehicle: Stationary (no motion)" << std::endl;
-  std::cout << "Filter: InformationFilter (suitable for high initial uncertainty)" << std::endl;
-  std::cout << "Filter: KalmanFilter (after uncertainty has been initialized)" << std::endl;
-  std::cout << "Motion Model: Constant Velocity (CV)" << std::endl;
-  std::cout << "Measurements: noisy (x, y) position, std=" << measStd << " m per axis" << std::endl;
-  std::cout << std::endl;
+  std::cout << "Single Object Tracking Example" << '\n';
+  std::cout << "with combined Information and Kalman Filter usage" << '\n';
+  std::cout << "=================================================" << '\n';
+  std::cout << "Scenario: Diagonal crossing object (x=30,y=10, vx=10, vy=2.5)" << '\n';
+  std::cout << "Ego vehicle: Stationary (no motion)" << '\n';
+  std::cout << "Filter: InformationFilter (suitable for high initial uncertainty)" << '\n';
+  std::cout << "Filter: KalmanFilter (after uncertainty has been initialized)" << '\n';
+  std::cout << "Motion Model: Constant Velocity (CV)" << '\n';
+  std::cout << "Measurements: noisy (x, y) position, std=" << measStd << " m per axis" << '\n';
+  std::cout << '\n';
 
-  std::cout << "Initial State:" << std::endl;
-  std::cout << "  Position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << std::endl;
-  std::cout << "  Velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << std::endl;
-  std::cout << "  Initial Information Matrix (Y):" << std::endl;
-  std::cout << static_cast<const MM&>(motionModel).getCov()() << std::endl;
-  std::cout << std::endl;
+  std::cout << "Initial State:" << '\n';
+  std::cout << "  Position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << '\n';
+  std::cout << "  Velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << '\n';
+  std::cout << "  Initial Information Matrix (Y):" << '\n';
+  std::cout << static_cast<const MM&>(motionModel).getCov()() << '\n';
+  std::cout << '\n';
 
   // FromLists stores the state in Cartesian state space, but the InformationFilter operates on the
   // information vector y = Y*x. Transform the initial state into information space once, up front, so
@@ -140,8 +146,11 @@ int main(int argc, char** argv)
     value_type ey  = motionModel.getY();
     value_type evx = motionModel.getVx();
     value_type evy = motionModel.getVy();
+    // NOLINTNEXTLINE(modernize-use-auto) -- Copy the numeric value; auto retains a reference wrapper into a temporary.
     value_type pXX = static_cast<const MM&>(motionModel).getCov()()(0, 0).value();
+    // NOLINTNEXTLINE(modernize-use-auto) -- Copy the numeric value; auto retains a reference wrapper into a temporary.
     value_type pXY = static_cast<const MM&>(motionModel).getCov()()(0, 2).value();
+    // NOLINTNEXTLINE(modernize-use-auto) -- Copy the numeric value; auto retains a reference wrapper into a temporary.
     value_type pYY = static_cast<const MM&>(motionModel).getCov()()(2, 2).value();
     if (!useKalman)
     {
@@ -166,7 +175,7 @@ int main(int argc, char** argv)
     static_cast<void>(pXX);
     static_cast<void>(pXY);
     static_cast<void>(pYY);
-    std::cout << label << " (" << ex << ", " << ey << ") v=(" << evx << ", " << evy << ")" << std::endl;
+    std::cout << label << " (" << ex << ", " << ey << ") v=(" << evx << ", " << evy << ")" << '\n';
   };
 
   // Simulation loop
@@ -177,7 +186,7 @@ int main(int argc, char** argv)
     // Create ego motion for this time step (zero motion)
     auto egoMotion = checkedValue(EgoMotionType::TryCreate(motionParams, geometry, dt));
 
-    std::cout << "Step " << step << " (t=" << currentTime << "s):" << std::endl;
+    std::cout << "Step " << step << " (t=" << currentTime << "s):" << '\n';
 
     // Advance the ground-truth object by one time step and take a noisy (x, y) position measurement of it.
     gtX += gtVx * dt;
@@ -212,7 +221,7 @@ int main(int argc, char** argv)
         motionModel.convertStateVecIntoStateSpace();
         if (motionModel.invertCov().has_value())
         {
-          std::cout << "  !!! Switching from InformationFilter to KalmanFilter !!!" << std::endl;
+          std::cout << "  !!! Switching from InformationFilter to KalmanFilter !!!" << '\n';
           filter_cov_str = "  Covariance Matrix (P):";
           useKalman      = true;
         }
@@ -224,21 +233,21 @@ int main(int argc, char** argv)
       }
     }
 
-    std::cout << "  Measurement z:   (" << zx << ", " << zy << ")  [ground truth: (" << gtX << ", " << gtY << ")]" << std::endl;
+    std::cout << "  Measurement z:   (" << zx << ", " << zy << ")  [ground truth: (" << gtX << ", " << gtY << ")]" << '\n';
     printEstimate("  Corrected State:");
 
-    std::cout << filter_cov_str << std::endl;
-    std::cout << static_cast<const MM&>(motionModel).getCov()() << std::endl;
-    std::cout << std::endl;
+    std::cout << filter_cov_str << '\n';
+    std::cout << static_cast<const MM&>(motionModel).getCov()() << '\n';
+    std::cout << '\n';
 
     const auto [ex, ey, evx, evy, pXX, pXY, pYY] = getEstimate();
     csv << step << ',' << currentTime << ',' << gtX << ',' << gtY << ',' << zx << ',' << zy << ',' << ex << ',' << ey << ','
-        << evx << ',' << evy << ',' << pXX << ',' << pXY << ',' << pYY << ',' << (useKalman ? 1 : 0) << '\n';
+        << evx << ',' << evy << ',' << pXX << ',' << pXY << ',' << pYY << ',' << (static_cast<int>(useKalman)) << '\n';
   }
 
-  std::cout << "Simulation completed successfully!" << std::endl;
-  std::cout << "Final position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << std::endl;
-  std::cout << "Final velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << std::endl;
+  std::cout << "Simulation completed successfully!" << '\n';
+  std::cout << "Final position: (" << motionModel.getX() << ", " << motionModel.getY() << ")" << '\n';
+  std::cout << "Final velocity: (" << motionModel.getVx() << ", " << motionModel.getVy() << ")" << '\n';
 
   return 0;
 }

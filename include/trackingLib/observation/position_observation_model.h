@@ -54,7 +54,8 @@ public:
       default;
   auto operator=(const PositionObservationModel&) -> PositionObservationModel&     = default;
   auto operator=(PositionObservationModel&&) noexcept -> PositionObservationModel& = default;
-  ~PositionObservationModel() TEST_REMOVE_FINAL override                           = default;
+  // NOLINTNEXTLINE(modernize-use-override) -- TEST_BUILD removes final; override is required in that configuration.
+  ~PositionObservationModel() TEST_REMOVE_FINAL override = default;
 
   /// \brief Construct a new PositionObservationModel after checking covariance positive definiteness
   ///

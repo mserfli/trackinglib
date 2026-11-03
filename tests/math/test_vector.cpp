@@ -1,4 +1,8 @@
 #include "gtest/gtest.h"
+#include "base/atomic_types.h"
+#include "math/linalg/errors.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/vector.h"
 #include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"   // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"     // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/square_conversions.hpp"     // IWYU pragma: keep
@@ -8,7 +12,9 @@
 #include "trackingLib/math/linalg/matrix_column_view.hpp"                 // IWYU pragma: keep
 #include "trackingLib/math/linalg/vector.hpp"                             // IWYU pragma: keep
 
-using namespace tracking::math;
+using tracking::math::Errors;
+using tracking::math::Matrix;
+using tracking::math::Vector;
 
 // Helper struct for typed tests with different value types
 template <typename ValueType_>

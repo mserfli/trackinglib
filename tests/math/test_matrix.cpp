@@ -1,9 +1,16 @@
 #include "gtest/gtest.h"
 #include "base/atomic_types.h"
 #include "trackingLib/math/linalg/conversions/matrix_conversions.hpp" // IWYU pragma: keep
-#include "trackingLib/math/linalg/matrix.hpp"                         // IWYU pragma: keep
+#include "trackingLib/math/linalg/errors.h"
+#include "trackingLib/math/linalg/matrix.h"
+#include "trackingLib/math/linalg/matrix.hpp" // IWYU pragma: keep
+#include <cstddef>
+#include <initializer_list>
+#include <limits>
+#include <vector>
 
-using namespace tracking::math;
+using tracking::math::Errors;
+using tracking::math::Matrix;
 
 /// \brief helper class to support typed tests which wraps the IsRowMajor param into a type
 template <bool IsRowMajor_>
@@ -140,8 +147,8 @@ protected:
 
   void test_op_mul_scalar_Success()
   {
-    IntMatType mat{_testIntMat};
-    IntMatType res{};
+    const IntMatType mat{_testIntMat};
+    IntMatType       res{};
 
     // call UUT
     res = 2 * mat;
@@ -155,8 +162,8 @@ protected:
 
   void test_op_plus_scalar_Success()
   {
-    IntMatType mat{_testIntMat};
-    IntMatType res{};
+    const IntMatType mat{_testIntMat};
+    IntMatType       res{};
 
     // call UUT
     res = 2 + mat;
@@ -170,8 +177,8 @@ protected:
 
   void test_op_minus_scalar_Success()
   {
-    IntMatType mat{_testIntMat};
-    IntMatType res{};
+    const IntMatType mat{_testIntMat};
+    IntMatType       res{};
 
     // call UUT
     res = mat - 2;
@@ -215,7 +222,7 @@ protected:
 
   void test_op_div_scalar_IntFailDivByZero()
   {
-    IntMatType mat{_testIntMat};
+    const IntMatType mat{_testIntMat};
 
     // call UUT
     auto res = mat / 0;
@@ -224,7 +231,7 @@ protected:
 
   void test_op_div_scalar_IntSuccess()
   {
-    IntMatType mat{_testIntMat};
+    const IntMatType mat{_testIntMat};
 
     // call UUT
     auto res = mat / 2;
@@ -238,7 +245,7 @@ protected:
 
   void test_op_div_scalar_FloatFailDivByZero()
   {
-    FloatMatType mat{_testFloatMat};
+    const FloatMatType mat{_testFloatMat};
 
     // call UUT
     auto res = mat / 0.0F;
@@ -247,7 +254,7 @@ protected:
 
   void test_op_div_scalar_FloatSuccess()
   {
-    FloatMatType mat{_testFloatMat};
+    const FloatMatType mat{_testFloatMat};
 
     // call UUT
     auto res = mat / 2.0F;
@@ -261,8 +268,8 @@ protected:
 
   void test_op_mul_mat_Success()
   {
-    IntMatType    mat1{_testIntMat};
-    IntMatMulType mat2{_testIntMatMul};
+    const IntMatType    mat1{_testIntMat};
+    const IntMatMulType mat2{_testIntMatMul};
 
     // call UUT
     auto res = mat1 * mat2;
@@ -305,7 +312,7 @@ void GTestMatrix<MatrixStorageType>::test_op_eq_Success()
 {
   if constexpr (SameMajorOrder)
   {
-    IntMatType       mat{_testIntMat};
+    const IntMatType mat{_testIntMat};
     const IntMatType other{_testIntMat};
 
     // call UUT
@@ -581,7 +588,7 @@ TYPED_TEST(GTestMatrix, ctor_FromList__Success) // NOLINT
   // clang-format on
 
   ASSERT_TRUE(result.has_value());
-  size_t index = 0;
+  std::size_t index = 0;
   for (sint32 r = 0; r < result.value().Rows; ++r)
   {
     for (sint32 c = 0; c < result.value().Cols; ++c)
@@ -1075,9 +1082,9 @@ TEST(GTestMatrixSpecial, setBlock_BoundaryCondition_OutOfBounds) // NOLINT
   EXPECT_DEATH(callSetBlock(), ".*");
 
   // Verify that the destination matrix remains unchanged
-  for (auto row = 0; row < dst.Rows; ++row)
+  for (auto row = 0; row < DstMatType::Rows; ++row)
   {
-    for (auto col = 0; col < dst.Cols; ++col)
+    for (auto col = 0; col < DstMatType::Cols; ++col)
     {
       EXPECT_EQ(dst.at_unsafe(row, col), 0);
     }
@@ -1243,9 +1250,9 @@ TEST(GTestMatrixSpecial, transpose_NonSquare_Chained) // NOLINT
   // trans_trans should be same as mat
   EXPECT_EQ(trans_trans.Rows, mat.Rows);
   EXPECT_EQ(trans_trans.Cols, mat.Cols);
-  for (auto r = 0; r < mat.Rows; ++r)
+  for (auto r = 0; r < decltype(mat)::Rows; ++r)
   {
-    for (auto c = 0; c < mat.Cols; ++c)
+    for (auto c = 0; c < decltype(mat)::Cols; ++c)
     {
       EXPECT_EQ(trans_trans.at_unsafe(r, c), mat.at_unsafe(r, c));
     }

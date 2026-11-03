@@ -1,4 +1,9 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
+#include "env/ego_motion.h"
+#include "filter/information_filter.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "motion/motion_model_cv.h"
 
 #include "trackingLib/motion/motion_model_cv.hpp" // IWYU pragma: keep
 #include <algorithm>                              // for std::max
@@ -52,7 +57,7 @@ TEST(InformationFilterPredict, predict_RankDeficientInformationMatrix__DoesNotFr
 {
   const auto dt        = static_cast<Testvalue_type>(0.1);
   const auto egoMotion = makeNoEgoMotion();
-  IF         filter{};
+  const IF   filter{};
 
   // Information matrix with the velocity subspace unobserved (zero information) -> singular PSD,
   // i.e. an exactly-zero eigenvalue. State order is {X, VX, Y, VY}.
@@ -95,7 +100,7 @@ TEST(InformationFilterPredict, predict_StrictlyPositiveDefiniteInformationMatrix
 {
   const auto dt        = static_cast<Testvalue_type>(0.1);
   const auto egoMotion = makeNoEgoMotion();
-  IF         filter{};
+  const IF   filter{};
 
   // strictly PD information matrix -> the predict must update it normally (regression guard: the
   // eventual fix must keep updating PD matrices and must NOT resurrect a genuinely zero-Y state)
@@ -135,7 +140,7 @@ TEST(InformationFilterPredict, predict_RankDeficientInformationMatrix__StateStay
   // state vector -- householderQR's pivot clamp (mirroring decomposeUDUT) is what prevents that.
   const auto dt        = static_cast<Testvalue_type>(0.1);
   const auto egoMotion = makeNoEgoMotion();
-  IF         filter{};
+  const IF   filter{};
 
   // Information matrix with the velocity subspace unobserved (zero information) -> singular PSD,
   // i.e. an exactly-zero eigenvalue. State order is {X, VX, Y, VY}.

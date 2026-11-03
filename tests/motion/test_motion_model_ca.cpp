@@ -1,5 +1,12 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
+#include "env/ego_motion.h"
+#include "filter/information_filter.h"
+#include "filter/kalman_filter.h"
 #include "gmock/gmock.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "motion/motion_model_ca.h"
+#include "motion/motion_model_cv.h"
 
 #include "mocks/motion_model_no_ego_motion.hpp"   // IWYU pragma: keep
 #include "trackingLib/motion/motion_model_ca.hpp" // IWYU pragma: keep
@@ -58,14 +65,15 @@ struct TestPredictCA
     }
   }
 
-  static void run_without_ego_motion_compensation()
+  // GoogleTest assertions expand into control flow; retain the full trajectory check.
+  static void run_without_ego_motion_compensation() // NOLINT(readability-function-cognitive-complexity)
   {
-    const int      steps     = 5;
-    const auto     dt        = static_cast<value_type>(0.1);
-    const auto     motion    = typename EgoMotionInst::InertialMotion{};
-    const auto     geometry  = typename EgoMotionInst::Geometry{};
-    const auto     egoMotion = EgoMotionInst(motion, geometry, dt);
-    FilterTypeInst filter{};
+    const int            steps     = 5;
+    const auto           dt        = static_cast<value_type>(0.1);
+    const auto           motion    = typename EgoMotionInst::InertialMotion{};
+    const auto           geometry  = typename EgoMotionInst::Geometry{};
+    const auto           egoMotion = EgoMotionInst(motion, geometry, dt);
+    const FilterTypeInst filter{};
 
     // clang-format off
     auto vecResult = MM::StateVecFromList({
@@ -125,7 +133,8 @@ struct TestPredictCA
     }
   }
 
-  static void run_with_ego_motion_compensation()
+  // GoogleTest assertions expand into control flow; retain the full trajectory check.
+  static void run_with_ego_motion_compensation() // NOLINT(readability-function-cognitive-complexity)
   {
     const int  steps = 5;
     const auto dt    = static_cast<value_type>(0.1);
@@ -138,7 +147,7 @@ struct TestPredictCA
         .distCog2Ego = 1.0, .distFrontAxle2Ego = 2.5, .distFrontAxle2RearAxle = 2.5};
     const auto     egoMotion = EgoMotionInst(motion, geometry, dt);
     // clang-format on
-    FilterTypeInst filter{};
+    const FilterTypeInst filter{};
 
     // clang-format off
     auto vecResult = MM::StateVecFromList({

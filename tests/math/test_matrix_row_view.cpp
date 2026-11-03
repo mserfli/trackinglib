@@ -1,8 +1,14 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"
-#include "trackingLib/math/linalg/matrix_row_view.hpp" // IWYU pragma: keep
+#include "base/atomic_types.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/matrix_column_view.h"
+#include "math/linalg/matrix_row_view.h"
+#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/matrix_row_view.hpp"                // IWYU pragma: keep
 
-using namespace tracking::math;
+using tracking::math::Matrix;
+using tracking::math::MatrixColumnView;
+using tracking::math::MatrixRowView;
 
 TEST(MatrixRowView, mul_rhs) // NOLINT
 {

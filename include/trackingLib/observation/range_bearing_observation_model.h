@@ -61,7 +61,8 @@ public:
       std::is_nothrow_move_constructible<MeasurementCov>::value)                           = default;
   auto operator=(const RangeBearingObservationModel&) -> RangeBearingObservationModel&     = default;
   auto operator=(RangeBearingObservationModel&&) noexcept -> RangeBearingObservationModel& = default;
-  ~RangeBearingObservationModel() TEST_REMOVE_FINAL override                               = default;
+  // NOLINTNEXTLINE(modernize-use-override) -- TEST_BUILD removes final; override is required in that configuration.
+  ~RangeBearingObservationModel() TEST_REMOVE_FINAL override = default;
 
   /// \brief Construct a new RangeBearingObservationModel after checking covariance positive definiteness
   ///

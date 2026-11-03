@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "base/atomic_types.h"
 
 #include "trackingLib/math/linalg/rotation2d.h"
 #include <cmath>

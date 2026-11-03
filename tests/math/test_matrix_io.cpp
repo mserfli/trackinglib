@@ -1,19 +1,28 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/square_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/triangular_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/vector_conversions.hpp"
+#include "base/atomic_types.h"
+#include "math/linalg/vector.h"
+#include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"   // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"     // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/square_conversions.hpp"     // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/triangular_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/vector_conversions.hpp"     // IWYU pragma: keep -- Conversion template definitions.
 #include "trackingLib/math/linalg/diagonal_matrix.h"
 #include "trackingLib/math/linalg/matrix.h"
 #include "trackingLib/math/linalg/matrix_io.h"
 #include "trackingLib/math/linalg/square_matrix.h"
 #include "trackingLib/math/linalg/triangular_matrix.h"
 #include <algorithm>
+#include <cstddef>
 #include <fstream>
+#include <iterator>
 #include <sstream>
+#include <string>
 
-using namespace tracking::math;
+using tracking::math::DiagonalMatrix;
+using tracking::math::Matrix;
+using tracking::math::SquareMatrix;
+using tracking::math::TriangularMatrix;
+using tracking::math::Vector;
 
 TEST(MatrixIO, BasicMatrixOutput) // NOLINT
 {
@@ -105,8 +114,8 @@ TEST(MatrixIO, FileOutput) // NOLINT
   file.close();
 
   // Verify file was created and has content
-  std::ifstream inFile("test_matrix_io_output.txt");
-  std::string   content((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
+  std::ifstream     inFile("test_matrix_io_output.txt");
+  const std::string content((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
   inFile.close();
 
   EXPECT_FALSE(content.empty());
@@ -122,7 +131,7 @@ TEST(MatrixIO, ChainingOutput) // NOLINT
   std::stringstream ss;
   ss << "Matrix: " << mat << "End";
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("Matrix:"), std::string::npos);
   EXPECT_NE(result.find("+1.000000"), std::string::npos);
   EXPECT_NE(result.find("End"), std::string::npos);
@@ -146,7 +155,7 @@ TEST(MatrixIO, DifferentValueTypes) // NOLINT
 
   std::stringstream ss2;
   ss2 << sint32Mat;
-  EXPECT_NE(ss2.str().find("1"), std::string::npos);
+  EXPECT_NE(ss2.str().find('1'), std::string::npos);
   EXPECT_EQ(ss2.str().find("+1.000000"), std::string::npos); // Should not have decimal places
 }
 
@@ -179,12 +188,12 @@ TEST(MatrixIO, LargeMatrix) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("+1.000000"), std::string::npos);
   EXPECT_NE(result.find("+16.000000"), std::string::npos);
 
   // Count newlines (should be 4 rows = 4 newlines)
-  size_t newlineCount = std::count(result.begin(), result.end(), '\n');
+  const std::size_t newlineCount = std::count(result.begin(), result.end(), '\n');
   EXPECT_EQ(newlineCount, 4);
 }
 
@@ -205,12 +214,12 @@ TEST(MatrixIO, MatrixDouble4x3RowMajor__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("+1.000000"), std::string::npos);
   EXPECT_NE(result.find("+12.000000"), std::string::npos);
 
   // Count newlines (should be 4 rows)
-  size_t newlineCount = std::count(result.begin(), result.end(), '\n');
+  const std::size_t newlineCount = std::count(result.begin(), result.end(), '\n');
   EXPECT_EQ(newlineCount, 4);
 }
 
@@ -231,12 +240,12 @@ TEST(MatrixIO, MatrixDouble6x3RowMajor__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("+1.000000"), std::string::npos);
   EXPECT_NE(result.find("+18.000000"), std::string::npos);
 
   // Count newlines (should be 6 rows)
-  size_t newlineCount = std::count(result.begin(), result.end(), '\n');
+  const std::size_t newlineCount = std::count(result.begin(), result.end(), '\n');
   EXPECT_EQ(newlineCount, 6);
 }
 
@@ -255,12 +264,12 @@ TEST(MatrixIO, SquareMatrixDouble4x4RowMajor__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("+1.000000"), std::string::npos);
   EXPECT_NE(result.find("+16.000000"), std::string::npos);
 
   // Count newlines (should be 4 rows)
-  size_t newlineCount = std::count(result.begin(), result.end(), '\n');
+  const std::size_t newlineCount = std::count(result.begin(), result.end(), '\n');
   EXPECT_EQ(newlineCount, 4);
 }
 
@@ -281,12 +290,12 @@ TEST(MatrixIO, SquareMatrixDouble6x6RowMajor__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("+1.000000"), std::string::npos);
   EXPECT_NE(result.find("+36.000000"), std::string::npos);
 
   // Count newlines (should be 6 rows)
-  size_t newlineCount = std::count(result.begin(), result.end(), '\n');
+  const std::size_t newlineCount = std::count(result.begin(), result.end(), '\n');
   EXPECT_EQ(newlineCount, 6);
 }
 
@@ -305,12 +314,12 @@ TEST(MatrixIO, MatrixDouble4x3ColumnMajor__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("+1.000000"), std::string::npos);
   EXPECT_NE(result.find("+12.000000"), std::string::npos);
 
   // Count newlines (should be 4 rows)
-  size_t newlineCount = std::count(result.begin(), result.end(), '\n');
+  const std::size_t newlineCount = std::count(result.begin(), result.end(), '\n');
   EXPECT_EQ(newlineCount, 4);
 }
 
@@ -329,12 +338,12 @@ TEST(MatrixIO, SquareMatrixDouble4x4ColumnMajor__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("+1.000000"), std::string::npos);
   EXPECT_NE(result.find("+16.000000"), std::string::npos);
 
   // Count newlines (should be 4 rows)
-  size_t newlineCount = std::count(result.begin(), result.end(), '\n');
+  const std::size_t newlineCount = std::count(result.begin(), result.end(), '\n');
   EXPECT_EQ(newlineCount, 4);
 }
 
@@ -353,7 +362,7 @@ TEST(MatrixIO, MatrixDouble4x3RowMajor_NegativeValues__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("-1.000000"), std::string::npos);
   EXPECT_NE(result.find("+12.000000"), std::string::npos);
 }
@@ -373,7 +382,7 @@ TEST(MatrixIO, SquareMatrixDouble4x4RowMajor_NegativeValues__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   EXPECT_NE(result.find("-1.000000"), std::string::npos);
   EXPECT_NE(result.find("-16.000000"), std::string::npos);
 }
@@ -386,11 +395,11 @@ TEST(MatrixIO, MatrixDouble4x3RowMajor_ZeroMatrix__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   // All values should be +0.000000
   EXPECT_NE(result.find("+0.000000"), std::string::npos);
   // Count occurrences of zero (should be 12 for 4x3 matrix)
-  size_t zeroCount = std::count(result.begin(), result.end(), '+');
+  const std::size_t zeroCount = std::count(result.begin(), result.end(), '+');
   EXPECT_EQ(zeroCount, 12);
 }
 
@@ -402,12 +411,12 @@ TEST(MatrixIO, SquareMatrixDouble4x4RowMajor_ZeroMatrix__Success) // NOLINT
   std::stringstream ss;
   ss << mat;
 
-  std::string result = ss.str();
+  const std::string result = ss.str();
   // All values should be +0.000000
   EXPECT_NE(result.find("+0.000000"), std::string::npos);
 
   // Count newlines (should be 4 rows)
-  size_t newlineCount = std::count(result.begin(), result.end(), '\n');
+  const std::size_t newlineCount = std::count(result.begin(), result.end(), '\n');
   EXPECT_EQ(newlineCount, 4);
 }
 

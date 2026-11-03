@@ -1,9 +1,15 @@
 #include "gtest/gtest.h"
-#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"
-#include "trackingLib/math/linalg/conversions/vector_conversions.hpp"
-#include "trackingLib/math/linalg/matrix_column_view.hpp" // IWYU pragma: keep
+#include "base/atomic_types.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/matrix_column_view.h"
+#include "math/linalg/vector.h"
+#include "trackingLib/math/linalg/conversions/matrix_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/conversions/vector_conversions.hpp" // IWYU pragma: keep -- Conversion template definitions.
+#include "trackingLib/math/linalg/matrix_column_view.hpp"             // IWYU pragma: keep
 
-using namespace tracking::math;
+using tracking::math::Matrix;
+using tracking::math::MatrixColumnView;
+using tracking::math::Vector;
 
 TEST(MatrixColumnView, mul_lhs) // NOLINT
 {
@@ -21,7 +27,7 @@ TEST(MatrixColumnView, mul_lhs) // NOLINT
   const MatrixColumnView<sint32, 3, 3, true> colView(mat, 2, 0, 2);
 
   // a lhs matrix
-  const auto lhs = mat;
+  const auto& lhs = mat;
 
   // calc expected result
   Matrix<sint32, 3, 1, true> col;

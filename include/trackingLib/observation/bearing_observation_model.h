@@ -60,7 +60,8 @@ public:
       default;
   auto operator=(const BearingObservationModel&) -> BearingObservationModel&     = default;
   auto operator=(BearingObservationModel&&) noexcept -> BearingObservationModel& = default;
-  ~BearingObservationModel() TEST_REMOVE_FINAL override                          = default;
+  // NOLINTNEXTLINE(modernize-use-override) -- TEST_BUILD removes final; override is required in that configuration.
+  ~BearingObservationModel() TEST_REMOVE_FINAL override = default;
 
   /// \brief Construct a new BearingObservationModel after checking covariance positive definiteness
   ///

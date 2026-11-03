@@ -1,8 +1,15 @@
 #include "gtest/gtest.h"
+#include "base/atomic_types.h"
+#include "math/linalg/errors.h"
+#include "math/linalg/square_matrix.h"
 #include "trackingLib/math/linalg/conversions/square_conversions.hpp" // IWYU pragma: keep
 #include "trackingLib/math/linalg/square_matrix.hpp"                  // IWYU pragma: keep
+#include <cmath>
+#include <cstddef>
+#include <vector>
 
-using namespace tracking::math;
+using tracking::math::Errors;
+using tracking::math::SquareMatrix;
 
 TEST(SquareMatrix, householderQR) // NOLINT
 {
@@ -345,7 +352,7 @@ TYPED_TEST(GTestSquareMatrix, ctor_FromList__Success) // NOLINT
   // clang-format on
 
   ASSERT_TRUE(result.has_value());
-  size_t index = 0;
+  std::size_t index = 0;
   for (sint32 r = 0; r < 3; ++r)
   {
     for (sint32 c = 0; c < 3; ++c)

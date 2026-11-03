@@ -1,3 +1,8 @@
+#include "base/atomic_types.h"
+#include "env/ego_motion.h"
+#include "math/linalg/covariance_matrix_policies.h"
+#include "math/linalg/errors.h"
+#include "math/linalg/square_matrix.h"
 // Copyright (c) 2026 Kilo Code
 // SPDX-License-Identifier: MIT
 
@@ -41,7 +46,8 @@ protected:
     dt = 0.1; // 100ms time step
   }
 
-  void test_LinearMotionDisplacement__Success()
+  // Assertion macros expand into control flow; keep the trajectory checks together.
+  void test_LinearMotionDisplacement_Success() // NOLINT(readability-function-cognitive-complexity)
   {
     auto egoMotion = EgoMotionType{motion, geometry, dt};
 
@@ -77,7 +83,7 @@ protected:
     }
   }
 
-  void test_GetVelocityAt_ZeroYawRate__ReducesToPureTranslation()
+  void test_GetVelocityAt_ZeroYawRate_ReducesToPureTranslation()
   {
     motion.w = 0.0;
 
@@ -93,7 +99,7 @@ protected:
     EXPECT_NEAR(velAtOther.y(), 0.0, epsilon);
   }
 
-  void test_GetVelocityAt_ZeroMountOffset__ReducesToCogVelocity()
+  void test_GetVelocityAt_ZeroMountOffset_ReducesToCogVelocity()
   {
     auto egoMotion = EgoMotionType{motion, geometry, dt};
 
@@ -104,7 +110,7 @@ protected:
     EXPECT_NEAR(velAtCog.y(), 0.0, epsilon);
   }
 
-  void test_GetVelocityAt_NonzeroYawRateAndOffset__AppliesLeverArmCrossProduct()
+  void test_GetVelocityAt_NonzeroYawRateAndOffset_AppliesLeverArmCrossProduct()
   {
     auto egoMotion = EgoMotionType{motion, geometry, dt};
 
@@ -123,7 +129,7 @@ protected:
   // The following GetVelocityAt tests derive the COG location independently from compensatePosition (which establishes
   // the COG at ego-x + distCog2Ego), NOT from getVelocityAt's own convention. They assert the
   // mathematically correct behavior, so a genuine sign bug in getVelocityAt makes them fail (RED).
-  void test_GetVelocityAt_AtCogFromCompensationConvention__ZeroLeverArmVelocity()
+  void test_GetVelocityAt_AtCogFromCompensationConvention_ZeroLeverArmVelocity()
   {
     // motion.w is nonzero (0.1 from SetUp). compensatePosition maps ego->COG via += distCog2Ego,
     // so the COG sits at ego-x = -distCog2Ego. A rigid point at the COG has no yaw-induced lateral
@@ -137,7 +143,7 @@ protected:
     EXPECT_NEAR(velAtCog.y(), 0.0, tol); // current code gives w*(-2*distCog2Ego) != 0
   }
 
-  void test_GetVelocityAt_LeverArmSignConsistentWithCompensatePosition__Success()
+  void test_GetVelocityAt_LeverArmSignConsistentWithCompensatePosition_Success()
   {
     auto egoMotion = EgoMotionType{motion, geometry, dt};
 
@@ -163,7 +169,7 @@ protected:
     }
   }
 
-  void test_GetVelocityAt_CogIsFixedPointOfPureRotation__ConsistentWithVelocity()
+  void test_GetVelocityAt_CogIsFixedPointOfPureRotation_ConsistentWithVelocity()
   {
     // Pure rotation (v=0, a=0, w!=0): calcDisplacementVector yields zero translation, so
     // compensatePosition is a pure rotation about the COG. The rotation's fixed point (the ego
@@ -193,7 +199,7 @@ protected:
     EXPECT_NEAR(velAtCog.y(), 0.0, tol); // no lever arm at the COG
   }
 
-  void test_TryCreate__Success()
+  void test_TryCreate_Success()
   {
     const auto result   = EgoMotionType::TryCreate(motion, geometry, dt);
     const auto expected = EgoMotionType{motion, geometry, dt};
@@ -201,7 +207,7 @@ protected:
     EXPECT_NEAR(result.value().getDisplacementCog().vec.at_unsafe(0), expected.getDisplacementCog().vec.at_unsafe(0), epsilon);
   }
 
-  void test_TryCreate_ZeroVelocityUncertainty__ExpectError()
+  void test_TryCreate_ZeroVelocityUncertainty_ExpectError()
   {
     motion.sv         = static_cast<value_type>(0.0);
     const auto result = EgoMotionType::TryCreate(motion, geometry, dt);
@@ -209,7 +215,7 @@ protected:
     EXPECT_EQ(result.error(), math::Errors::matrix_not_positive_definite);
   }
 
-  void test_TryCreate_ZeroAccelerationUncertainty__ExpectError()
+  void test_TryCreate_ZeroAccelerationUncertainty_ExpectError()
   {
     motion.sa         = static_cast<value_type>(0.0);
     const auto result = EgoMotionType::TryCreate(motion, geometry, dt);
@@ -217,7 +223,7 @@ protected:
     EXPECT_EQ(result.error(), math::Errors::matrix_not_positive_definite);
   }
 
-  void test_TryCreate_ZeroYawRateUncertainty__ExpectError()
+  void test_TryCreate_ZeroYawRateUncertainty_ExpectError()
   {
     motion.sw         = static_cast<value_type>(0.0);
     const auto result = EgoMotionType::TryCreate(motion, geometry, dt);
@@ -225,7 +231,7 @@ protected:
     EXPECT_EQ(result.error(), math::Errors::matrix_not_positive_definite);
   }
 
-  void test_TryCreate_NegativeVelocityUncertainty__ExpectError()
+  void test_TryCreate_NegativeVelocityUncertainty_ExpectError()
   {
     motion.sv         = static_cast<value_type>(-0.5);
     const auto result = EgoMotionType::TryCreate(motion, geometry, dt);
@@ -233,7 +239,8 @@ protected:
     EXPECT_EQ(result.error(), math::Errors::matrix_not_positive_definite);
   }
 
-  void test_CircularMotionDisplacement__Success()
+  // Assertion macros expand into control flow; keep the trajectory checks together.
+  void test_CircularMotionDisplacement_Success() // NOLINT(readability-function-cognitive-complexity)
   {
     // Use larger ω for circular motion
     motion.w = 0.5; // 0.5 rad/s
@@ -281,69 +288,89 @@ using CovarianceMatrixTypes = ::testing::Types<math::FullCovarianceMatrixPolicy<
 
 TYPED_TEST_SUITE(GTestEgoMotion, CovarianceMatrixTypes);
 
-TYPED_TEST(GTestEgoMotion, LinearMotionDisplacement__Success)
+TYPED_TEST(GTestEgoMotion, LinearMotionDisplacement__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) --
+                                                              // Repository test naming convention.
 {
-  GTestEgoMotion<TypeParam>::test_LinearMotionDisplacement__Success();
+  GTestEgoMotion<TypeParam>::test_LinearMotionDisplacement_Success();
 }
 
-TYPED_TEST(GTestEgoMotion, CircularMotionDisplacement__Success)
+TYPED_TEST(GTestEgoMotion, CircularMotionDisplacement__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                                // -- Repository test naming convention.
 {
-  GTestEgoMotion<TypeParam>::test_CircularMotionDisplacement__Success();
+  GTestEgoMotion<TypeParam>::test_CircularMotionDisplacement_Success();
 }
 
-TYPED_TEST(GTestEgoMotion, TryCreate__Success)
+TYPED_TEST(
+    GTestEgoMotion,
+    TryCreate__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name) -- Repository test naming convention.
 {
-  GTestEgoMotion<TypeParam>::test_TryCreate__Success();
+  GTestEgoMotion<TypeParam>::test_TryCreate_Success();
 }
 
 TYPED_TEST(GTestEgoMotion, TryCreate_ZeroVelocityUncertainty__ExpectError) // NOLINT
 {
-  GTestEgoMotion<TypeParam>::test_TryCreate_ZeroVelocityUncertainty__ExpectError();
+  GTestEgoMotion<TypeParam>::test_TryCreate_ZeroVelocityUncertainty_ExpectError();
 }
 
 TYPED_TEST(GTestEgoMotion, TryCreate_ZeroAccelerationUncertainty__ExpectError) // NOLINT
 {
-  GTestEgoMotion<TypeParam>::test_TryCreate_ZeroAccelerationUncertainty__ExpectError();
+  GTestEgoMotion<TypeParam>::test_TryCreate_ZeroAccelerationUncertainty_ExpectError();
 }
 
 TYPED_TEST(GTestEgoMotion, TryCreate_ZeroYawRateUncertainty__ExpectError) // NOLINT
 {
-  GTestEgoMotion<TypeParam>::test_TryCreate_ZeroYawRateUncertainty__ExpectError();
+  GTestEgoMotion<TypeParam>::test_TryCreate_ZeroYawRateUncertainty_ExpectError();
 }
 
 TYPED_TEST(GTestEgoMotion, TryCreate_NegativeVelocityUncertainty__ExpectError) // NOLINT
 {
-  GTestEgoMotion<TypeParam>::test_TryCreate_NegativeVelocityUncertainty__ExpectError();
+  GTestEgoMotion<TypeParam>::test_TryCreate_NegativeVelocityUncertainty_ExpectError();
 }
 
-TYPED_TEST(GTestEgoMotion, GetVelocityAt_ZeroYawRate__ReducesToPureTranslation)
+TYPED_TEST(GTestEgoMotion,
+           GetVelocityAt_ZeroYawRate__ReducesToPureTranslation) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                                // -- Repository test naming convention.
 {
-  GTestEgoMotion<TypeParam>::test_GetVelocityAt_ZeroYawRate__ReducesToPureTranslation();
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_ZeroYawRate_ReducesToPureTranslation();
 }
 
-TYPED_TEST(GTestEgoMotion, GetVelocityAt_ZeroMountOffset__ReducesToCogVelocity)
+TYPED_TEST(GTestEgoMotion,
+           GetVelocityAt_ZeroMountOffset__ReducesToCogVelocity) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                                // -- Repository test naming convention.
 {
-  GTestEgoMotion<TypeParam>::test_GetVelocityAt_ZeroMountOffset__ReducesToCogVelocity();
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_ZeroMountOffset_ReducesToCogVelocity();
 }
 
-TYPED_TEST(GTestEgoMotion, GetVelocityAt_NonzeroYawRateAndOffset__AppliesLeverArmCrossProduct)
+TYPED_TEST(
+    GTestEgoMotion,
+    GetVelocityAt_NonzeroYawRateAndOffset__AppliesLeverArmCrossProduct) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                                        // -- Repository test naming convention.
 {
-  GTestEgoMotion<TypeParam>::test_GetVelocityAt_NonzeroYawRateAndOffset__AppliesLeverArmCrossProduct();
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_NonzeroYawRateAndOffset_AppliesLeverArmCrossProduct();
 }
 
-TYPED_TEST(GTestEgoMotion, GetVelocityAt_AtCogFromCompensationConvention__ZeroLeverArmVelocity)
+TYPED_TEST(
+    GTestEgoMotion,
+    GetVelocityAt_AtCogFromCompensationConvention__ZeroLeverArmVelocity) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                                         // -- Repository test naming convention.
 {
-  GTestEgoMotion<TypeParam>::test_GetVelocityAt_AtCogFromCompensationConvention__ZeroLeverArmVelocity();
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_AtCogFromCompensationConvention_ZeroLeverArmVelocity();
 }
 
-TYPED_TEST(GTestEgoMotion, GetVelocityAt_LeverArmSignConsistentWithCompensatePosition__Success)
+TYPED_TEST(
+    GTestEgoMotion,
+    GetVelocityAt_LeverArmSignConsistentWithCompensatePosition__Success) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                                         // -- Repository test naming convention.
 {
-  GTestEgoMotion<TypeParam>::test_GetVelocityAt_LeverArmSignConsistentWithCompensatePosition__Success();
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_LeverArmSignConsistentWithCompensatePosition_Success();
 }
 
-TYPED_TEST(GTestEgoMotion, GetVelocityAt_CogIsFixedPointOfPureRotation__ConsistentWithVelocity)
+TYPED_TEST(
+    GTestEgoMotion,
+    GetVelocityAt_CogIsFixedPointOfPureRotation__ConsistentWithVelocity) // NOLINT(google-readability-avoid-underscore-in-googletest-name)
+                                                                         // -- Repository test naming convention.
 {
-  GTestEgoMotion<TypeParam>::test_GetVelocityAt_CogIsFixedPointOfPureRotation__ConsistentWithVelocity();
+  GTestEgoMotion<TypeParam>::test_GetVelocityAt_CogIsFixedPointOfPureRotation_ConsistentWithVelocity();
 }
 
 } // namespace env

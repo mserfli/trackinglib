@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "base/atomic_types.h"
 #include "trackingLib/math/linalg/point3d.h"  // IWYU pragma: keep
 #include "trackingLib/math/linalg/vector.hpp" // IWYU pragma: keep
 

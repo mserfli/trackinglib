@@ -1,5 +1,10 @@
 #include "gtest/gtest.h"
 #include "base/atomic_types.h"
+#include "math/linalg/diagonal_matrix.h"
+#include "math/linalg/matrix.h"
+#include "math/linalg/modified_gram_schmidt.h"
+#include "math/linalg/square_matrix.h"
+#include "math/linalg/triangular_matrix.h"
 #include "trackingLib/math/linalg/conversions/diagonal_conversions.hpp"   // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/matrix_conversions.hpp"     // IWYU pragma: keep
 #include "trackingLib/math/linalg/conversions/square_conversions.hpp"     // IWYU pragma: keep
@@ -11,7 +16,11 @@
 #include "trackingLib/math/linalg/triangular_matrix.hpp"                  // IWYU pragma: keep
 #include "trackingLib/math/linalg/vector.hpp"                             // IWYU pragma: keep
 
-using namespace tracking::math;
+using tracking::math::DiagonalMatrix;
+using tracking::math::Matrix;
+using tracking::math::ModifiedGramSchmidt;
+using tracking::math::SquareMatrix;
+using tracking::math::TriangularMatrix;
 
 /// \brief Test fixture for ModifiedGramSchmidt tests
 class GTestModifiedGramSchmidt: public ::testing::Test
@@ -25,7 +34,8 @@ protected:
   /// \param d Diagonal matrix
   /// \return Reconstructed matrix U*D*U'
   template <sint32 Size_>
-  auto reconstructUDU(const TriangularMatrix<float64, Size_, false, true>& u, const DiagonalMatrix<float64, Size_>& d) const
+  [[nodiscard]] auto reconstructUDU(const TriangularMatrix<float64, Size_, false, true>& u,
+                                    const DiagonalMatrix<float64, Size_>&                d) const
   {
     // U*D*U' = U * (D * U')
     const auto d_ut = d * u.transpose();
@@ -38,9 +48,9 @@ protected:
   /// \param tol Tolerance for comparison
   /// \return true if matrixes are approximately equal
   template <typename ValueType_, sint32 Rows_, sint32 Cols_, bool IsRowMajor_, bool IsRowMajor2_>
-  bool matrixesApproxEqual(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&  a,
-                           const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& b,
-                           float64                                               tol = TOLERANCE) const
+  [[nodiscard]] auto matrixesApproxEqual(const Matrix<ValueType_, Rows_, Cols_, IsRowMajor_>&  a,
+                                         const Matrix<ValueType_, Rows_, Cols_, IsRowMajor2_>& b,
+                                         float64                                               tol = TOLERANCE) const -> bool
   {
     if (a.Rows != b.Rows || a.Cols != b.Cols)
     {

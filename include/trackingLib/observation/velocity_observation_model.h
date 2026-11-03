@@ -54,7 +54,8 @@ public:
       default;
   auto operator=(const VelocityObservationModel&) -> VelocityObservationModel&     = default;
   auto operator=(VelocityObservationModel&&) noexcept -> VelocityObservationModel& = default;
-  ~VelocityObservationModel() TEST_REMOVE_FINAL override                           = default;
+  // NOLINTNEXTLINE(modernize-use-override) -- TEST_BUILD removes final; override is required in that configuration.
+  ~VelocityObservationModel() TEST_REMOVE_FINAL override = default;
 
   /// \brief Construct a new VelocityObservationModel after checking covariance positive definiteness
   ///
